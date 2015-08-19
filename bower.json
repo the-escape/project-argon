@@ -1,0 +1,22 @@
+{
+  "name": "argon",
+  "version": "0.0.1",
+  "authors": [
+    "Seb Pollard <seb.pollard@the-escape.co.uk>"
+  ],
+  "description": "Escape CMS",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "TBC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": ">=4.0.0-alpha"
+  }
+}
