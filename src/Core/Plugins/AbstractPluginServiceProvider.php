@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Core\Plugins;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Route;
 
@@ -9,20 +10,25 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 {
     protected $name = '';
 
-    public function addRoute($path, $definition, $methods = 'GET')
+    public function addRoute($path, $name, $controller, $methodName, $verbs = 'GET')
     {
-        if (is_string($methods)) {
-            $methods = [$methods];
+        if (is_string($verbs)) {
+            $verbs = [$verbs];
         }
+
+        $definition = [
+            'as' => $name,
+            'uses' => "{$controller}@{$methodName}"
+        ];
 
         $prefix = config('argon.admin_route_prefix');
         $prefix = rtrim($prefix, "/") . '/';
-        foreach ($methods as $method) {
-            switch (strtoupper($method)) {
-                case 'GET':
+        foreach ($verbs as $verb) {
+            switch (strtoupper($verb)) {
+                case Request::METHOD_GET:
                     Route::get($prefix . $path, $definition);
                     break;
-                case 'POST':
+                case Request::METHOD_POST:
                     Route::post($prefix . $path, $definition);
                     break;
             }

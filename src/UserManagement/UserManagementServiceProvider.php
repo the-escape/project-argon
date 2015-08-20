@@ -5,6 +5,8 @@ namespace Escape\Argon\UserManagement;
 use Escape\Argon\Authentication\PermissionManager;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Core\Plugins\PluginManager;
+use Escape\Argon\UserManagement\Controllers\RoleController;
+use Escape\Argon\UserManagement\Controllers\UserController;
 use Escape\Argon\UserManagement\UserManagementPlugin;
 use Illuminate\Http\Request;
 
@@ -21,61 +23,87 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
     {
         $this->addRoute(
             'users',
-            ['as' => 'cms:user:manage', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@index']
+            'cms:user:manage',
+            UserController::class,
+            'index'
         );
         $this->addRoute(
             'users/create',
-            ['as' => 'cms:user:create', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@create']
+            'cms:user:create',
+            UserController::class,
+            'create'
         );
         $this->addRoute(
             'users/create',
-            ['as' => 'cms:user:save', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@save'],
+            'cms:user:save',
+            UserController::class,
+            'save',
             Request::METHOD_POST
         );
         $this->addRoute(
             'users/profile',
-            ['as' => 'cms:user:profile', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@profile']
+            'cms:user:profile',
+            UserController::class,
+            'profile'
         );
         $this->addRoute(
             'users/{userId}/edit',
-            ['as' => 'cms:user:edit', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@edit']
+            'cms:user:edit',
+            UserController::class,
+            'edit'
         );
         $this->addRoute(
             'users/{userId}/edit',
-            ['as' => 'cms:user:update', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@update'],
+            'cms:user:update',
+            UserController::class,
+            'update',
             Request::METHOD_POST
         );
         $this->addRoute(
             'users/{userId}/delete',
-            ['as' => 'cms:user:delete', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\UserController@delete']
+            'cms:user:delete',
+            UserController::class,
+            'delete'
         );
 
         // Roles
         $this->addRoute(
             'roles',
-            ['as' => 'cms:role:manage', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@index']
+            'cms:role:manage',
+            RoleController::class,
+            'index'
         );
         $this->addRoute(
             'roles/create',
-            ['as' => 'cms:role:create', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@create']
+            'cms:role:create',
+            RoleController::class,
+            'create'
         );
         $this->addRoute(
             'roles/create',
-            ['as' => 'cms:role:save', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@save'],
+            'cms:role:save',
+            RoleController::class,
+            'save',
             Request::METHOD_POST
         );
         $this->addRoute(
             'roles/{roleId}/edit',
-            ['as' => 'cms:role:edit', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@edit']
+            'cms:role:edit',
+            RoleController::class,
+            'edit'
         );
         $this->addRoute(
             'roles/{roleId}/edit',
-            ['as' => 'cms:role:update', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@update'],
+            'cms:role:update',
+            RoleController::class,
+            'update',
             Request::METHOD_POST
         );
         $this->addRoute(
             'roles/{roleId}/delete',
-            ['as' => 'cms:role:delete', 'uses' => 'Escape\\Argon\\UserManagement\\Controllers\\RoleController@delete']
+            'cms:role:delete',
+            RoleController::class,
+            'delete'
         );
     }
 
