@@ -20,3 +20,4 @@ elixir(function(mix) {
 
     mix.copy('bower_components/bootstrap/dist/js/bootstrap.*', 'public/js');
 });
+
