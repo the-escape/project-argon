@@ -7,6 +7,8 @@ use Route;
 
 abstract class AbstractPluginServiceProvider extends ServiceProvider
 {
+    protected $name = '';
+
     public function addRoute($path, $definition, $methods = 'GET')
     {
         if (is_string($methods)) {
@@ -27,4 +29,15 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
         }
     }
+
+    public function getName()
+    {
+        if ($this->name == '') {
+            throw new \Exception('Plugin name has not been set.');
+        }
+
+        return $this->name;
+    }
+
+    abstract public function registerPlugin(PluginManager $manager);
 }

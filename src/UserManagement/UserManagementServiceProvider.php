@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class UserManagementServiceProvider extends AbstractPluginServiceProvider
 {
+    protected $name = 'User Management';
+
     /**
      * Register the service provider.
      *
@@ -82,9 +84,7 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         /** @var PluginManager $pluginManager */
         $pluginManager = $this->app['pluginManager'];
 
-        $plugin = new UserManagementPlugin();
-
-        $pluginManager->register($plugin);
+        $pluginManager->register($this);
 
         $this->loadViewsFrom(__DIR__ . '/views', 'argon');
 
@@ -97,4 +97,9 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'argon-users');
     }
 
+    public function registerPlugin(PluginManager $manager)
+    {
+        $manager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage');
+        $manager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage');
+    }
 }

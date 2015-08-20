@@ -3,7 +3,6 @@
 namespace Escape\Argon\Core\Plugins;
 
 use Escape\Argon\Authentication\User;
-use Escape\Argon\core\Plugins\AbstractPlugin;
 
 class PluginManager
 {
@@ -11,10 +10,10 @@ class PluginManager
 
     protected $navLinks = [];
 
-    public function register(AbstractPlugin $plugin)
+    public function register(AbstractPluginServiceProvider $plugin)
     {
         $this->registeredPlugins[$plugin->getName()] = $plugin;
-        $plugin->register($this);
+        $plugin->registerPlugin($this);
     }
 
     public function getPlugins()
