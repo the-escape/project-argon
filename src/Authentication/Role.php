@@ -50,12 +50,9 @@ class Role extends Model
 
     public function __get($key)
     {
-        if ($key == 'permissions')
-        {
+        if ($key == 'permissions') {
             return $this->permissions();
-        }
-        else
-        {
+        } else {
             return parent::__get($key);
         }
     }
