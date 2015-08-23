@@ -23,24 +23,31 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Roles</div>
+            <div class="card-header">Fields</div>
             <div class="card-block">
-                <table>
+                <table class="table">
                     <thead>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th></th>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
                     </thead>
                     @foreach ($type->fields as $field)
                         <tr>
                             <td>
-                                {{ json_encode($field) }}
+                                {{ $field->name }}
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                {{ $field->field_type }}
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
+                            </td>
                         </tr>
                     @endforeach
                 </table>
+                <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add</a>
             </div>
         </div>
 

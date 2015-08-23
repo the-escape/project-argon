@@ -13,7 +13,6 @@ class PluginManager
     public function register(AbstractPluginServiceProvider $plugin)
     {
         $this->registeredPlugins[$plugin->getName()] = $plugin;
-        $plugin->registerPlugin($this);
     }
 
     public function getPlugins()

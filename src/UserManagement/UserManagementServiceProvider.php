@@ -113,6 +113,7 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         $pluginManager = $this->app['pluginManager'];
 
         $pluginManager->register($this);
+        $this->registerPlugin($pluginManager);
 
         $this->loadViewsFrom(__DIR__ . '/views', 'argon');
 

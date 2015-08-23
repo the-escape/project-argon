@@ -1,9 +1,9 @@
 @extends('argon::layout.master')
 
 @section('content')
-    <h1 class="page-header">Create Type</h1>
+    <h1 class="page-header">Add Field</h1>
 
-    <form action="{{ route('cms:types:create') }}" method="POST">
+    <form action="{{ route('cms:types:fields:save', [$type->id]) }}" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="card">
             <div class="card-header">Details</div>
@@ -11,6 +11,15 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
+                </div>
+                <div class="form-group">
+                    <label for="name">Type</label>
+                    <select class="form-control" name="field_type">
+                        <option value="">Choose one...</option>
+                        @foreach ($fieldTypes as $fieldType)
+                            <option value="{{$fieldType->getKey()}}">{{$fieldType->getName()}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>

@@ -3,7 +3,9 @@
 namespace Escape\Argon\EntityManagement\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\EntityManagement\Eloquent\EntityFieldRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
+use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
@@ -41,7 +43,7 @@ class EntityTypeController extends BaseController
 
         $type = $this->typeRepository->create(Input::all());
 
-        return Redirect::route('cms:types:edit', [$type->id])->with('message', Lang::get('argon-users::type.created'));
+        return Redirect::route('cms:types:edit', [$type->id])->with('message', Lang::get('argon-content::type.created'));
     }
 
     public function edit($typeId)
@@ -49,5 +51,58 @@ class EntityTypeController extends BaseController
         $type = $this->typeRepository->find($typeId);
 
         return View::make('argon::types.edit', ['type' => $type]);
+    }
+
+    public function addField($typeId, FieldTypesManager $fieldTypesManager)
+    {
+        $type = $this->typeRepository->find($typeId);
+
+        $fieldTypes = $fieldTypesManager->getFieldTypes();
+
+        return View::make('argon::types.fields.add', ['type' => $type, 'fieldTypes' => $fieldTypes]);
+    }
+
+    public function saveField($typeId, EntityFieldRepository $fieldRepository, FieldTypesManager $fieldTypesManager)
+    {
+        $this->validate($this->request, [
+            'name' => 'required',
+            'field_type' => 'required',
+        ]);
+
+        $fieldType = $fieldTypesManager->get(Input::get('field_type'));
+
+        $field = $fieldRepository->create(
+            array_merge(
+                Input::all(),
+                [
+                    'entity_type_id' => $typeId,
+                    'settings' => $fieldType->getDefaultSettings()
+                ]
+            )
+        );
+
+        return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
+            ->with('message', Lang::get('argon-content::field.created'));
+    }
+
+    public function editField(
+        $typeId,
+        $fieldId,
+        FieldTypesManager $fieldTypesManager,
+        EntityFieldRepository $fieldRepository,
+        EntityTypeRepository $typeRepository
+    ) {
+        $type = $typeRepository->find($typeId);
+        $field = $fieldRepository->find($fieldId);
+        $fieldTypes = $fieldTypesManager->getFieldTypes();
+
+        return View::make(
+            'argon::types.fields.edit',
+            [
+                'type' => $type,
+                'field' => $field,
+                'fieldTypes' => $fieldTypes,
+            ]
+        );
     }
 }

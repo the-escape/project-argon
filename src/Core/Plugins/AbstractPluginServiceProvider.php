@@ -44,6 +44,4 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
         return $this->name;
     }
-
-    abstract public function registerPlugin(PluginManager $manager);
 }

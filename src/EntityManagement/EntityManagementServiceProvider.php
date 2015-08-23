@@ -7,6 +7,9 @@ use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Core\Plugins\PluginManager;
 use Escape\Argon\EntityManagement\Controllers\ContentController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
+use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
+use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
+use Faker\Provider\de_DE\Text;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
@@ -61,14 +64,46 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'update',
             Request::METHOD_POST
         );
+
+        $this->addRoute(
+            'types/{typeId}/fields/add',
+            'cms:types:fields:add',
+            EntityTypeController::class,
+            'addField'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/add',
+            'cms:types:fields:save',
+            EntityTypeController::class,
+            'saveField',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/edit',
+            'cms:types:fields:edit',
+            EntityTypeController::class,
+            'editField'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/edit',
+            'cms:types:fields:update',
+            EntityTypeController::class,
+            'updateField',
+            Request::METHOD_POST
+        );
     }
 
     public function boot()
     {
-        /** @var PluginManager $pluginManager */
-        $pluginManager = $this->app['pluginManager'];
+        $this->app->singleton('fieldTypes', function () {
+            return new FieldTypesManager();
+        });
 
-        $pluginManager->register($this);
+        $this->app->bind(FieldTypesManager::class, 'fieldTypes');
+
 
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
 
@@ -83,14 +118,23 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'argon-entities');
 
         $this->publishes([
-            __DIR__.'/Migrations' => database_path('migrations'),
+            __DIR__ . '/Migrations' => database_path('migrations'),
         ], 'migrations');
 
+        $this->registerPlugin();
     }
 
-    public function registerPlugin(PluginManager $manager)
+    public function registerPlugin()
     {
+        /** @var PluginManager $manager */
+        $manager = $this->app['pluginManager'];
+        $manager->register($this);
+
         $manager->registerNavLink('Content', route('cms:content:manage'), 'cms:content:manage');
         $manager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
+
+        /** @var FieldTypesManager $fieldTypes */
+        $fieldTypes = $this->app['fieldTypes'];
+        $fieldTypes->registerFieldType(new TextFieldType());
     }
 }

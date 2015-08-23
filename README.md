@@ -51,7 +51,7 @@ Add the ArgonServiceProvider to the providers array in `config/app.php`
      */
     ...
 
-    Escape\Argon\ArgonServiceProvider::class,
+    Escape\Argon\Core\ArgonServiceProvider::class,
 
 ],
 ```
