@@ -23,9 +23,9 @@ class EntityTypeController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage()
+    public function manage(EntityTypeRepository $typeRepository)
     {
-        $types = $this->typeRepository->all();
+        $types = $typeRepository->all();
 
         return View::make('argon::types.manage', ['types' => $types]);
     }
@@ -43,7 +43,8 @@ class EntityTypeController extends BaseController
 
         $type = $this->typeRepository->create(Input::all());
 
-        return Redirect::route('cms:types:edit', [$type->id])->with('message', Lang::get('argon-content::type.created'));
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-content::type.created'));
     }
 
     public function edit($typeId)

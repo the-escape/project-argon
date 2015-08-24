@@ -24,8 +24,21 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             ContentController::class,
             'manage'
         );
+        $this->addRoute(
+            'content/add/{type}',
+            'cms:content:create',
+            ContentController::class,
+            'create'
+        );
+        $this->addRoute(
+            'content/add/{type}',
+            'cms:content:save',
+            ContentController::class,
+            'save',
+            Request::METHOD_POST
+        );
 
-        //
+        // Types
         $this->addRoute(
             'types',
             'cms:types:manage',
