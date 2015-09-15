@@ -65,9 +65,10 @@ Publish the migrations for Argon.
 
 ```
 php artisan vendor:publish --tag=migrations
+php artisan migrate
 ```
 
-php artisan migrate
+
 
 
 ### Assets
