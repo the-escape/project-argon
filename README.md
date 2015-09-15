@@ -15,8 +15,7 @@ Add a repositories section to the composer.json:
 {
     "type": "vcs",
     "url": "git@bitbucket.org:theescape/project-argon.git"
-}],
-"minimum-stability": "dev"
+}]
 ```
 
 Run the following to install the base CMS:
