@@ -63,7 +63,7 @@ Set your database settings in the .env file.
 Publish the migrations for Argon.
 
 ```
-php artisan vendor:publish --tag=migrations
+php artisan vendor:publish --tag=migrations --force
 php artisan migrate
 ```
 
