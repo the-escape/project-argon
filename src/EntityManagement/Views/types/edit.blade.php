@@ -1,7 +1,7 @@
 @extends('argon::layout.master')
 
 @section('content')
-    <h1 class="page-header">Edit User</h1>
+    <h1 class="page-header">Edit Type</h1>
 
     @if (session('message'))
         <div class="alert alert-success" role="alert">
