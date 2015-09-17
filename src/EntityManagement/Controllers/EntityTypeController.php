@@ -47,6 +47,18 @@ class EntityTypeController extends BaseController
             ->with('message', Lang::get('argon-content::type.created'));
     }
 
+    public function update($typeId)
+    {
+        $this->validate($this->request, [
+            'name' => 'required',
+        ]);
+
+        $type = $this->typeRepository->update(Input::all(), $typeId);
+
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-content::type.updated'));
+    }
+
     public function edit($typeId)
     {
         $type = $this->typeRepository->find($typeId);
@@ -129,7 +141,7 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->update($attributes, $fieldId);
 
         return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
-            ->with('message', Lang::get('argon-content::field.created'));
+            ->with('message', Lang::get('argon-content::field.updated'));
     }
 
 

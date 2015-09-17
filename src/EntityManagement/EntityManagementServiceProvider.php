@@ -11,6 +11,15 @@ use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FileFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\VideoFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\WysiwygFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ColourpickerFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\LocationFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\SelectFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\UserFieldType;
 use Faker\Provider\de_DE\Text;
 use Illuminate\Http\Request;
 
@@ -153,5 +162,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $fieldTypes->registerFieldType(new TextFieldType());
         $fieldTypes->registerFieldType(new ImageFieldType());
         $fieldTypes->registerFieldType(new FileFieldType());
+        $fieldTypes->registerFieldType(new VideoFieldType());
+        $fieldTypes->registerFieldType(new BooleanFieldType());
+        $fieldTypes->registerFieldType(new ItemFieldType());
+        $fieldTypes->registerFieldType(new WysiwygFieldType());
+        $fieldTypes->registerFieldType(new DatetimeFieldType());
+        $fieldTypes->registerFieldType(new ColourpickerFieldType());
+        $fieldTypes->registerFieldType(new LocationFieldType());
+        $fieldTypes->registerFieldType(new UserFieldType());
     }
 }
