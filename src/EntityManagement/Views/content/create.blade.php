@@ -3,7 +3,7 @@
 @section('content')
     <h1>Create Content</h1>
 
-    <form action="{{ route('cms:content:save', [$type->name]) }}" method="POST">
+    <form action="{{ route('cms:content:save', [$type->id]) }}" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="card">
             <div class="card-header">Details</div>

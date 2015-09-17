@@ -21,14 +21,14 @@ class ContentController extends BaseController
         return View::make('argon::content.manage', ['types' => $types]);
     }
 
-    public function create($typeName, EntityTypeRepository $typeRepository)
+    public function create($typeId, EntityTypeRepository $typeRepository)
     {
-        $type = $typeRepository->findByField('name', $typeName)->first();
+        $type = $typeRepository->find($typeId);
         return View::make('argon::content.create', ['type' => $type]);
     }
 
     public function save(
-        $typeName,
+        $typeId,
         EntityTypeRepository $typeRepository,
         EntityRepository $entityRepository,
         EntityRevisionRepository $revisionRepository,
@@ -36,7 +36,7 @@ class ContentController extends BaseController
         Request $request
     ) {
         /** @var EntityType $type */
-        $type = $typeRepository->findByField('name', $typeName)->first();
+        $type = $typeRepository->find($typeId);
         $entity = $entityRepository->create(
             [
                 'name' => Input::get('name'),

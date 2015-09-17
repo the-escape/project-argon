@@ -36,13 +36,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'manage'
         );
         $this->addRoute(
-            'content/add/{type}',
+            'content/add/{typeId}',
             'cms:content:create',
             ContentController::class,
             'create'
         );
         $this->addRoute(
-            'content/add/{type}',
+            'content/add/{typeId}',
             'cms:content:save',
             ContentController::class,
             'save',

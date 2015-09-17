@@ -15,6 +15,12 @@ class TextFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'multiline' => [
+            'label' => 'Multiline',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => 'Display field as textarea',
+        ],
         'minlength' => [
             'label' => 'Minimum Length',
             'type' => 'integer',
