@@ -124,7 +124,7 @@ class EntityTypeController extends BaseController
             ? $fieldType->getDefaultSettings()
             : array_intersect_key(Input::all(), $properties);
 
-        $attributes = array_merge(Input::all(), ['entity_type_id' => $typeId, 'settings' => $settings]);
+        $attributes = array_merge_recursive(Input::all(), ['entity_type_id' => $typeId, 'settings' => $settings]);
 
         $field = $fieldRepository->update($attributes, $fieldId);
 

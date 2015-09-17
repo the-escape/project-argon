@@ -12,17 +12,20 @@ class TextFieldType extends AbstractFieldType
         'required' => [
             'label' => 'Required?',
             'type' => 'boolean',
-            'default' => false
+            'default' => false,
+            'help' => null,
         ],
         'minlength' => [
             'label' => 'Minimum Length',
             'type' => 'integer',
             'default' => null,
+            'help' => null,
         ],
         'maxlength' => [
             'label' => 'Maximum Length',
             'type' => 'integer',
             'default' => null,
+            'help' => null,
         ]
     ];
 }
