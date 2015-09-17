@@ -9,6 +9,7 @@ use Escape\Argon\EntityManagement\Controllers\ContentController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
 use Faker\Provider\de_DE\Text;
 use Illuminate\Http\Request;
 
@@ -149,5 +150,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         /** @var FieldTypesManager $fieldTypes */
         $fieldTypes = $this->app['fieldTypes'];
         $fieldTypes->registerFieldType(new TextFieldType());
+        $fieldTypes->registerFieldType(new ImageFieldType());
     }
 }

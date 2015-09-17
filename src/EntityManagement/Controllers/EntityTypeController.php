@@ -106,4 +106,32 @@ class EntityTypeController extends BaseController
             ]
         );
     }
+
+    public function updateField(
+        $typeId,
+        $fieldId,
+        EntityFieldRepository $fieldRepository,
+        FieldTypesManager $fieldTypesManager
+    ) {
+        $fieldType = $fieldTypesManager->get(Input::get('field_type'));
+
+        $properties = (array) $fieldType->getDefaultSettings();
+
+        $oldField = $fieldRepository->find($fieldId);
+
+        // if field type has changed use default settings
+        $settings = ($oldField->field_type != $fieldType->getKey())
+            ? $fieldType->getDefaultSettings()
+            : array_intersect_key(Input::all(), $properties);
+
+        $attributes = array_merge(Input::all(), ['entity_type_id' => $typeId, 'settings' => $settings]);
+
+        $field = $fieldRepository->update($attributes, $fieldId);
+
+        return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
+            ->with('message', Lang::get('argon-content::field.created'));
+    }
+
+
+
 }

@@ -33,12 +33,18 @@
                     @elseif ($property->type == 'integer')
                         <div class="form-group">
                             <label for="{{$name}}">{{$property->label}}</label>
-                            <input type="number" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                            <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                        </div>
+                    @elseif ($property->type == 'text')
+                        <div class="form-group">
+                            <label for="{{$name}}">{{$property->label}}</label>
+                            <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
                         </div>
                     @endif
                 @endforeach
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn" href="{{route('cms:types:edit', [$type->id])}}">Back</a>
     </form>
 @endsection
