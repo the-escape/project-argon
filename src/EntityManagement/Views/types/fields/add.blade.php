@@ -21,6 +21,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="name">Field Group</label>
+                    <input type="text" class="form-control" id="group" name="group" placeholder="Group name" value="{{ old('group') }}">
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>

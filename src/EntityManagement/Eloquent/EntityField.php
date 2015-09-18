@@ -21,14 +21,14 @@ class EntityField extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings'];
+    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'group'];
 
     /**
      * @return AbstractFieldType
      */
     public function getTypeAttribute()
     {
-        return app('fieldTypes')->get($this->field_type);
+        return app('fieldTypes')->getType($this->field_type);
     }
 
     public function getSettingsAttribute($value)

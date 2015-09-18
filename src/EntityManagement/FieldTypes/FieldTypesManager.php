@@ -15,7 +15,7 @@ class FieldTypesManager
      * @param $type
      * @return AbstractFieldType
      */
-    public function get($type)
+    public function getType($type)
     {
         return $this->fieldTypes[$type];
     }

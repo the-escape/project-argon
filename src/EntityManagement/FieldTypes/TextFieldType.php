@@ -2,6 +2,9 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\TextFieldValue;
+
 class TextFieldType extends AbstractFieldType
 {
     protected $name = 'Text';
@@ -25,4 +28,9 @@ class TextFieldType extends AbstractFieldType
             'default' => null,
         ]
     ];
+
+    public function getValue(FieldData $data)
+    {
+        return new TextFieldValue($data);
+    }
 }

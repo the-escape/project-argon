@@ -14,12 +14,7 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
 {
     protected $name = 'User Management';
 
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
+    public function registerRoutes()
     {
         $this->addRoute(
             'users',
@@ -107,28 +102,16 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         );
     }
 
-    public function boot()
+    public function startup()
     {
-        /** @var PluginManager $pluginManager */
-        $pluginManager = $this->app['pluginManager'];
-
-        $pluginManager->register($this);
-        $this->registerPlugin($pluginManager);
+        $this->pluginManager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage');
+        $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage');
 
         $this->loadViewsFrom(__DIR__ . '/views', 'argon');
 
-        /** @var PermissionManager $permissions */
-        $permissions = $this->app['permissions'];
-
-        $permissions->register('cms:user:manage');
-        $permissions->register('cms:role:manage');
+        $this->permissionsManager->register('cms:user:manage');
+        $this->permissionsManager->register('cms:role:manage');
 
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'argon-users');
-    }
-
-    public function registerPlugin(PluginManager $manager)
-    {
-        $manager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage');
-        $manager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage');
     }
 }

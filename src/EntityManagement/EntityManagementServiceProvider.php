@@ -5,7 +5,7 @@ namespace Escape\Argon\EntityManagement;
 use Escape\Argon\Authentication\PermissionManager;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Core\Plugins\PluginManager;
-use Escape\Argon\EntityManagement\Controllers\ContentController;
+use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
@@ -16,25 +16,39 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 {
     protected $name = 'Content';
 
-    public function register()
+    protected function registerRoutes()
     {
+        // Pages
         $this->addRoute(
-            'content',
-            'cms:content:manage',
-            ContentController::class,
+            'pages',
+            'cms:pages:manage',
+            PagesController::class,
             'manage'
         );
         $this->addRoute(
-            'content/add/{type}',
+            'pages/{id}/addchild/{type}',
             'cms:content:create',
-            ContentController::class,
+            PagesController::class,
             'create'
         );
         $this->addRoute(
-            'content/add/{type}',
+            'pages/{id}/addchild/{type}',
             'cms:content:save',
-            ContentController::class,
+            PagesController::class,
             'save',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'pages/{id}/edit',
+            'cms:pages:edit',
+            PagesController::class,
+            'edit'
+        );
+        $this->addRoute(
+            'pages/{id}/edit',
+            'cms:pages:update',
+            PagesController::class,
+            'update',
             Request::METHOD_POST
         );
 
@@ -117,16 +131,17 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 
         $this->app->bind(FieldTypesManager::class, 'fieldTypes');
 
+        parent::boot();
+    }
 
+    public function startup()
+    {
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
 
-        /** @var PermissionManager $permissions */
-        $permissions = $this->app['permissions'];
-
-        $permissions->register('cms:entity:type:manage');
-        $permissions->register('cms:entity:type:create');
-        $permissions->register('cms:entity:type:edit');
-        $permissions->register('cms:content:manage');
+        $this->permissionsManager->register('cms:entity:type:manage');
+        $this->permissionsManager->register('cms:entity:type:create');
+        $this->permissionsManager->register('cms:entity:type:edit');
+        $this->permissionsManager->register('cms:content:manage');
 
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'argon-entities');
 
@@ -134,20 +149,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Migrations' => database_path('migrations'),
         ], 'migrations');
 
-        $this->registerPlugin();
-    }
+        $this->pluginManager->registerNavLink('Pages', route('cms:pages:manage'), 'cms:content:manage');
+//        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
+        $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
 
-    public function registerPlugin()
-    {
-        /** @var PluginManager $manager */
-        $manager = $this->app['pluginManager'];
-        $manager->register($this);
-
-        $manager->registerNavLink('Content', route('cms:content:manage'), 'cms:content:manage');
-        $manager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
-
-        /** @var FieldTypesManager $fieldTypes */
-        $fieldTypes = $this->app['fieldTypes'];
-        $fieldTypes->registerFieldType(new TextFieldType());
+        $this->fieldTypesManager->registerFieldType(new TextFieldType());
     }
 }

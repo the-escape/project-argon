@@ -17,7 +17,7 @@ class CreateEntityFieldsTable extends Migration
             $table->integer('entity_type_id')->unsigned();
             $table->string('name');
             $table->string('field_type');
-            $table->integer('group_id');
+            $table->string('group');
             $table->text('settings');
             $table->timestamps();
             $table->softDeletes();

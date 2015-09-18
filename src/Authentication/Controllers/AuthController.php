@@ -2,7 +2,9 @@
 
 namespace Escape\Argon\Authentication\Controllers;
 
+use Escape\Argon\Authentication\User;
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
 use Lang;
 use Validator;
@@ -69,11 +71,6 @@ class AuthController extends BaseController
         return view('argon::auth.login');
     }
 
-//    public function postLogin(Request $request)
-//    {
-//        return $this->traitPostLogin($request);
-//    }
-
     /**
      * Get the failed login message.
      *
@@ -84,10 +81,11 @@ class AuthController extends BaseController
         return Lang::get('argon-auth::auth.failed');
     }
 
-    protected function authenticated($request, $user)
+    protected function authenticated(Request $request, User $user)
     {
+        $localeRepository = app(LocaleRepository::class);
+
+        $request->session()->put('locale', $localeRepository->primary()->id);
         return redirect()->intended('/admin');
     }
-
-
 }

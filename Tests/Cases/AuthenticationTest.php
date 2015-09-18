@@ -150,7 +150,9 @@ class AuthenticationTest extends TestCase
     {
         $manager = app('permissions');
 
-        $this->assertEquals(['cms:login', 'cms:user:manage', 'cms:role:manage'], $manager->getDefinedPermissions());
+        $this->assertContains('cms:login', $manager->getDefinedPermissions());
+        $this->assertContains('cms:user:manage', $manager->getDefinedPermissions());
+        $this->assertContains('cms:role:manage', $manager->getDefinedPermissions());
 
     }
 }

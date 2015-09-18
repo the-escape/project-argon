@@ -19,5 +19,9 @@ elixir(function(mix) {
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
     mix.copy('bower_components/bootstrap/dist/js/bootstrap.*', 'public/js');
+
+    mix.copy('bower_components/jstree/dist/jstree.min.js', 'public/js');
+
+    mix.copy('bower_components/jstree/dist/themes/default', 'public/js/jstree');
 });
 

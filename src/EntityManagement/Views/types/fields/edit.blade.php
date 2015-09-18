@@ -21,19 +21,26 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="name">Field Group</label>
+                    <input type="text" class="form-control" id="group" name="group" placeholder="Group name" value="{{ old('group', $field->group) }}">
+                </div>
 
                 @foreach ($field->type->getProperties() as $name => $property)
                     @if ($property->type == 'boolean')
                         <div class="checkbox">
+                            {{ $property->label }}
                             <label>
-                                <input type="checkbox" value="1" name="{{$name}}" @if ($field->settings->$name) checked="checked" @endif>
-                                {{ $property->label }}
+                                <input type="radio" value="0" name="settings[{{$name}}]" @if (!$field->settings->$name) checked="checked" @endif> No
+                            </label>
+                            <label>
+                                <input type="radio" value="1" name="settings[{{$name}}]" @if ($field->settings->$name) checked="checked" @endif> Yes
                             </label>
                         </div>
                     @elseif ($property->type == 'integer')
                         <div class="form-group">
                             <label for="{{$name}}">{{$property->label}}</label>
-                            <input type="number" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                            <input type="number" class="form-control" name="settings[{{$name}}]" value="{{ old($name, $field->settings->$name) }}">
                         </div>
                     @endif
                 @endforeach

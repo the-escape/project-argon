@@ -43,8 +43,7 @@ class AssertPermission
             }
         }
 
-        if (!$request->user()->hasPermission($perm))
-        {
+        if (!$request->user()->hasPermission($perm)) {
             return response('Unauthorized.', 401);
         }
 

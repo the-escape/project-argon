@@ -5,6 +5,7 @@ namespace Escape\Argon\Core;
 use Escape\Argon\Authentication\AuthenticationServiceProvider;
 use Escape\Argon\Core\Plugins\PluginServiceProvider;
 use Escape\Argon\EntityManagement\EntityManagementServiceProvider;
+use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\UserManagement\UserManagementServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
@@ -37,5 +38,6 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(PluginServiceProvider::class);
         $this->app->register(EntityManagementServiceProvider::class);
         $this->app->register(UserManagementServiceProvider::class);
+        $this->app->register(LocalesServiceProvider::class);
     }
 }

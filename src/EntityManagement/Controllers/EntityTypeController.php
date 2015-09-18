@@ -54,6 +54,14 @@ class EntityTypeController extends BaseController
         return View::make('argon::types.edit', ['type' => $type]);
     }
 
+    public function update($typeId)
+    {
+        $type = $this->typeRepository->update(Input::all(), $typeId);
+
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-content::type.saved'));
+    }
+
     public function addField($typeId, FieldTypesManager $fieldTypesManager)
     {
         $type = $this->typeRepository->find($typeId);
@@ -70,14 +78,14 @@ class EntityTypeController extends BaseController
             'field_type' => 'required',
         ]);
 
-        $fieldType = $fieldTypesManager->get(Input::get('field_type'));
+        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
 
         $field = $fieldRepository->create(
             array_merge(
                 Input::all(),
                 [
                     'entity_type_id' => $typeId,
-                    'settings' => $fieldType->getDefaultSettings()
+                    'settings' => $fieldType->getDefaultSettings(),
                 ]
             )
         );
@@ -105,5 +113,32 @@ class EntityTypeController extends BaseController
                 'fieldTypes' => $fieldTypes,
             ]
         );
+    }
+
+    public function updateField(
+        $typeId,
+        $fieldId,
+        FieldTypesManager $fieldTypesManager,
+        EntityFieldRepository $fieldRepository,
+        EntityTypeRepository $typeRepository
+    ) {
+        $field = $fieldRepository->find($fieldId);
+
+        $fieldType = $fieldTypesManager->getType($field->field_type);
+
+        $settings = $fieldType->parseSettings(Input::get('settings'));
+
+        $field = $fieldRepository->update(
+            array_merge(
+                Input::all(),
+                [
+                    'settings' => $settings
+                ]
+            ),
+            $fieldId
+        );
+
+        return Redirect::route('cms:types:edit', [$typeId])
+            ->with('message', Lang::get('argon-content::field.edited'));
     }
 }

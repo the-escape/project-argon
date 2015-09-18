@@ -16,4 +16,19 @@ class EntityTypeRepository extends BaseRepository
         return EntityType::class;
     }
 
+    public function getTypeByName($typeName)
+    {
+        return $this->findByField('name', $typeName)->first();
+    }
+
+    public function custom()
+    {
+        return $this->findWhere(['system' => 0]);
+    }
+
+    public function system()
+    {
+        return $this->findWhere(['system' => 1]);
+    }
+
 }

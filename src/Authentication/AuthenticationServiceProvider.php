@@ -20,7 +20,7 @@ class AuthenticationServiceProvider extends ServiceProvider
 //        AliasLoader::getInstance()->alias('Auth', Auth);
 
         $this->app->singleton('permissions', function () {
-            return new PermissionManager();
+            return new PermissionManager($this->app->make('Illuminate\\Contracts\\Auth\\Access\\Gate'));
         });
 
         /** @var PermissionManager $permissions */

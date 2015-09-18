@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Argon Admin Area</title>
         <link rel="stylesheet" href="/argon/css/app.css">
+        @section('styles')
+        @show
     </head>
 
     <body class="dashboard">
@@ -33,15 +35,23 @@
                     @endforeach
                 </div>
 
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
                     @yield('content')
                 </div>
             </div>
         </div>
 
+        <script src="/argon/js/jquery.min.js"></script>
+        <script src="/argon/js/bootstrap.min.js"></script>
+        <script>
+            $('#locale-select').change(function () {
+                var val = $(this).val();
+                var url = "{!! route('cms:locales:set', ['_ID_']) !!}";
+                url = url.replace('_ID_', val);
+            document.location = url + '?return=' + encodeURI(document.location);
+            });
+        </script>
         @section('footer')
-            <script src="/argon/js/jquery.min.js"></script>
-            <script src="/argon/js/bootstrap.min.js"></script>
         @show
 
     </body>

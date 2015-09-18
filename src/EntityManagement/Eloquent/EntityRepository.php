@@ -16,4 +16,11 @@ class EntityRepository extends BaseRepository
         return Entity::class;
     }
 
+    public function forLocale($localeId)
+    {
+        return $this->findWhere([
+            'locale' => $localeId
+        ]);
+    }
+
 }

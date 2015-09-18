@@ -2,7 +2,9 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
-class AbstractFieldType
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+
+abstract class AbstractFieldType
 {
     /** @var string */
     protected $name;
@@ -41,5 +43,29 @@ class AbstractFieldType
         return $settings;
     }
 
+    public function parseSettings($input)
+    {
+        $settings = new \stdClass();
+        foreach ($this->getProperties() as $name => $property) {
+            if (isset($input[$name])) {
+                switch ($property->type) {
+                    case 'integer':
+                        $settings->$name = intval($input[$name], 10);
+                        break;
+                    case 'boolean':
+                        $settings->$name = (bool)$input[$name];
+                        break;
+                    default:
+                        $settings->$name = $input[$name];
+                        break;
+                }
+            } elseif (property_exists($property, 'default')) {
+                $settings->$name = $property->default;
+            }
+        }
 
+        return $settings;
+    }
+
+    abstract public function getValue(FieldData $data);
 }
