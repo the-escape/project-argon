@@ -2,14 +2,11 @@
 
 namespace Escape\Argon\EntityManagement;
 
-use Escape\Argon\Authentication\PermissionManager;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
-use Escape\Argon\Core\Plugins\PluginManager;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
-use Faker\Provider\de_DE\Text;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
