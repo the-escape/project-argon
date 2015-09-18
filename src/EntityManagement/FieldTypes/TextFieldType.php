@@ -15,17 +15,26 @@ class TextFieldType extends AbstractFieldType
         'required' => [
             'label' => 'Required?',
             'type' => 'boolean',
-            'default' => false
+            'default' => false,
+            'help' => null,
+        ],
+        'multiline' => [
+            'label' => 'Multiline',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => 'Display field as textarea',
         ],
         'minlength' => [
             'label' => 'Minimum Length',
             'type' => 'integer',
             'default' => null,
+            'help' => null,
         ],
         'maxlength' => [
             'label' => 'Maximum Length',
             'type' => 'integer',
             'default' => null,
+            'help' => null,
         ]
     ];
 

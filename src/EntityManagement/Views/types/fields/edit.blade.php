@@ -13,7 +13,7 @@
                     <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $field->name) }}">
                 </div>
                 <div class="form-group">
-                    <label for="name">Type</label>
+                    <label for="field_type">Type</label>
                     <select class="form-control" name="field_type">
                         <option value="">Choose one...</option>
                         @foreach ($fieldTypes as $fieldType)
@@ -31,21 +31,30 @@
                         <div class="checkbox">
                             {{ $property->label }}
                             <label>
-                                <input type="radio" value="0" name="settings[{{$name}}]" @if (!$field->settings->$name) checked="checked" @endif> No
+                                <input type="hidden" value="0" name="{{$name}}">
+                                <input type="checkbox" value="1" name="{{$name}}" @if ($field->settings->$name) checked="checked" @endif>
+                                {{ $property->label }}
                             </label>
-                            <label>
-                                <input type="radio" value="1" name="settings[{{$name}}]" @if ($field->settings->$name) checked="checked" @endif> Yes
-                            </label>
+                            @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                         </div>
                     @elseif ($property->type == 'integer')
                         <div class="form-group">
                             <label for="{{$name}}">{{$property->label}}</label>
-                            <input type="number" class="form-control" name="settings[{{$name}}]" value="{{ old($name, $field->settings->$name) }}">
+                            <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                            @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
+                        </div>
+                    @elseif ($property->type == 'text')
+                        <div class="form-group">
+                            <label for="{{$name}}">{{$property->label}}</label>
+                            <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                            @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                         </div>
                     @endif
                 @endforeach
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
+        <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
     </form>
 @endsection

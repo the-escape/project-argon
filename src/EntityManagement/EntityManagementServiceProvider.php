@@ -7,6 +7,17 @@ use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\FileFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\VideoFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\WysiwygFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ColourpickerFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\LocationFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\SelectFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\UserFieldType;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
@@ -23,13 +34,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'manage'
         );
         $this->addRoute(
-            'pages/{id}/addchild/{type}',
+            'pages/{id}/addchild/{typeId}',
             'cms:content:create',
             PagesController::class,
             'create'
         );
         $this->addRoute(
-            'pages/{id}/addchild/{type}',
+            'pages/{id}/addchild/{typeId}',
             'cms:content:save',
             PagesController::class,
             'save',
@@ -151,5 +162,17 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
 
         $this->fieldTypesManager->registerFieldType(new TextFieldType());
+
+        $this->fieldTypesManager->registerFieldType(new TextFieldType());
+        $this->fieldTypesManager->registerFieldType(new ImageFieldType());
+        $this->fieldTypesManager->registerFieldType(new FileFieldType());
+        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
+        $this->fieldTypesManager->registerFieldType(new BooleanFieldType());
+        $this->fieldTypesManager->registerFieldType(new ItemFieldType());
+        $this->fieldTypesManager->registerFieldType(new WysiwygFieldType());
+        $this->fieldTypesManager->registerFieldType(new DatetimeFieldType());
+        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
+        $this->fieldTypesManager->registerFieldType(new LocationFieldType());
+        $this->fieldTypesManager->registerFieldType(new UserFieldType());
     }
 }

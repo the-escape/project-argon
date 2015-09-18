@@ -27,23 +27,30 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
             $verbs = [$verbs];
         }
 
+        $prefix = config('argon.admin_route_prefix');
+        $prefix = rtrim($prefix, "/") . '/';
+
+        $isUniqueRoute = $this->isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix);
+
+        if (!$isUniqueRoute)
+        {
+            throw new \Exception('Plugin URI duplication for route: '. $name);
+        }
+
         $definition = [
             'as' => $name,
             'uses' => "{$controller}@{$methodName}"
         ];
 
-        $prefix = config('argon.admin_route_prefix');
-        $prefix = rtrim($prefix, "/") . '/';
         foreach ($verbs as $verb) {
             switch (strtoupper($verb)) {
                 case Request::METHOD_GET:
-                    Route::get($prefix . $path, $definition);
+                    return Route::get($prefix . $path, $definition);
                     break;
                 case Request::METHOD_POST:
-                    Route::post($prefix . $path, $definition);
+                    return Route::post($prefix . $path, $definition);
                     break;
             }
-
         }
     }
 
@@ -82,4 +89,32 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
     }
 
     abstract public function startup();
+
+    /**
+     * Check whether new route is unique by looking at uri and verbs and comparing that with already registered routes.
+     * @param string $path new uri that is going to be registered
+     * @param $name
+     * @param $controller
+     * @param $methodName
+     * @param array $verbs HTTP request methods
+     * @param string $prefix admin area prefix
+     * @return bool
+     */
+    public function isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix)
+    {
+        $routes = Route::getRoutes();
+
+        foreach ($routes as $route)
+        {
+            if ($route->getPath() == ltrim($prefix.$path, '/'))
+            {
+                if (count(array_intersect($route->getMethods(), $verbs)))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

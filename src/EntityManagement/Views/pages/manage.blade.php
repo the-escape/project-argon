@@ -26,7 +26,7 @@
             <button type="button" disabled class="btn btn-primary-outline btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Child</button>
             <div class="dropdown-menu">
                 @foreach ($types as $type)
-                    <a class="dropdown-item" data-type="{{$type->name}}" href="">{{ $type->name }}</a>
+                    <a class="dropdown-item" data-type="{{$type->id}}" href="">{{ $type->name }}</a>
                 @endforeach
             </div>
         </div>

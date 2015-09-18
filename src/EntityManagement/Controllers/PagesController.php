@@ -45,16 +45,16 @@ class PagesController extends BaseController
         return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
     }
 
-    public function create($parentId, $typeName, EntityTypeRepository $typeRepository)
+    public function create($parentId, $typeId, EntityTypeRepository $typeRepository)
     {
-        $type = $typeRepository->findByField('name', $typeName)->first();
+        $type = $typeRepository->find($typeId);
 
         return View::make('argon::pages.create', ['type' => $type, 'parentId' => $parentId]);
     }
 
     public function save(
         $parentId,
-        $typeName,
+        $typeId,
         EntityTypeRepository $typeRepository,
         EntityRepository $entityRepository,
         EntityRevisionRepository $revisionRepository,
@@ -62,7 +62,7 @@ class PagesController extends BaseController
         Request $request
     ) {
         /** @var EntityType $type */
-        $type = $typeRepository->getTypeByName($typeName);
+        $type = $typeRepository->find($typeId);
         $entity = $entityRepository->create(
             [
                 'name' => Input::get('name'),

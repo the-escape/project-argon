@@ -15,7 +15,7 @@ Add a repositories section to the composer.json:
 {
     "type": "vcs",
     "url": "git@bitbucket.org:theescape/project-argon.git"
-}],
+}]
 ```
 
 Run the following to install the base CMS:
@@ -63,10 +63,11 @@ Set your database settings in the .env file.
 Publish the migrations for Argon.
 
 ```
-php artisan vendor:publish --tag=migrations
+php artisan vendor:publish --tag=migrations --force
+php artisan migrate
 ```
 
-php artisan migrate
+
 
 
 ### Assets

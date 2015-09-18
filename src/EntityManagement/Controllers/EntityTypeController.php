@@ -47,19 +47,23 @@ class EntityTypeController extends BaseController
             ->with('message', Lang::get('argon-content::type.created'));
     }
 
+    public function update($typeId)
+    {
+        $this->validate($this->request, [
+            'name' => 'required',
+        ]);
+
+        $type = $this->typeRepository->update(Input::all(), $typeId);
+
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-content::type.updated'));
+    }
+
     public function edit($typeId)
     {
         $type = $this->typeRepository->find($typeId);
 
         return View::make('argon::types.edit', ['type' => $type]);
-    }
-
-    public function update($typeId)
-    {
-        $type = $this->typeRepository->update(Input::all(), $typeId);
-
-        return Redirect::route('cms:types:edit', [$type->id])
-            ->with('message', Lang::get('argon-content::type.saved'));
     }
 
     public function addField($typeId, FieldTypesManager $fieldTypesManager)
@@ -118,27 +122,25 @@ class EntityTypeController extends BaseController
     public function updateField(
         $typeId,
         $fieldId,
-        FieldTypesManager $fieldTypesManager,
         EntityFieldRepository $fieldRepository,
-        EntityTypeRepository $typeRepository
+        FieldTypesManager $fieldTypesManager
     ) {
-        $field = $fieldRepository->find($fieldId);
+        $fieldType = $fieldTypesManager->get(Input::get('field_type'));
 
-        $fieldType = $fieldTypesManager->getType($field->field_type);
+        $properties = (array) $fieldType->getDefaultSettings();
 
-        $settings = $fieldType->parseSettings(Input::get('settings'));
+        $oldField = $fieldRepository->find($fieldId);
 
-        $field = $fieldRepository->update(
-            array_merge(
-                Input::all(),
-                [
-                    'settings' => $settings
-                ]
-            ),
-            $fieldId
-        );
+        // if field type has changed use default settings
+        $settings = ($oldField->field_type != $fieldType->getKey())
+            ? $fieldType->getDefaultSettings()
+            : array_intersect_key(Input::all(), $properties);
 
-        return Redirect::route('cms:types:edit', [$typeId])
-            ->with('message', Lang::get('argon-content::field.edited'));
+        $attributes = array_merge_recursive(Input::all(), ['entity_type_id' => $typeId, 'settings' => $settings]);
+
+        $field = $fieldRepository->update($attributes, $fieldId);
+
+        return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
+            ->with('message', Lang::get('argon-content::field.updated'));
     }
 }
