@@ -9,13 +9,17 @@ abstract class AbstractFieldValue
 {
     protected $data;
 
-    public function __construct(FieldData $data)
+    public function __construct(FieldData $data = null)
     {
         $this->data = $data;
     }
 
     public function __toString()
     {
-        return $this->data->value;
+        if ($this->data) {
+            return $this->data->value;
+        } else {
+            return '';
+        }
     }
 }

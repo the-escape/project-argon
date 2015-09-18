@@ -38,7 +38,7 @@ class TextFieldType extends AbstractFieldType
         ]
     ];
 
-    public function getValue(FieldData $data)
+    public function getValue(FieldData $data = null)
     {
         return new TextFieldValue($data);
     }
