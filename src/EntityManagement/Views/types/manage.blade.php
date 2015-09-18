@@ -1,33 +1,35 @@
 @extends('argon::layout.master')
 
 @section('content')
-    <h1 class="page-header">Types</h1>
+    <div class="main">
 
-    @if (session('message'))
-        <div class="alert alert-success" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
+            <h1 class="page-header">Types</h1>
+        @if (session('message'))
+            <div class="alert alert-success" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
 
-    <a href="{{ route('cms:types:create') }}" class="btn btn-primary">Create</a>
+        <a href="{{ route('cms:types:create') }}" class="btn btn-primary">Create</a>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach ($types->all() as $type)
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{$type->name}}</td>
-                <td>
-                    <a href="{{ route('cms:types:edit', ['typeId' => $type->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                    <a href="{{ route('cms:types:delete', ['typeId' => $type->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
-                </td>
+                <th>Name</th>
+                <th></th>
             </tr>
-        @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach ($types->all() as $type)
+                <tr>
+                    <td>{{$type->name}}</td>
+                    <td>
+                        <a href="{{ route('cms:types:edit', ['typeId' => $type->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
+                        <a href="{{ route('cms:types:delete', ['typeId' => $type->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 @stop
