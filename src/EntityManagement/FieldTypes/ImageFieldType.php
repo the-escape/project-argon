@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+
 class ImageFieldType extends AbstractFieldType
 {
     protected $name = 'Image';
@@ -40,4 +42,9 @@ class ImageFieldType extends AbstractFieldType
             'help' => null,
         ],
     ];
+
+    public function getValue(FieldData $data)
+    {
+        throw new Exception('Not implemented');
+    }
 }

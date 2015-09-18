@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+
 class ItemFieldType extends AbstractFieldType
 {
     protected $name = 'Item';
@@ -16,4 +18,9 @@ class ItemFieldType extends AbstractFieldType
             'help' => null,
         ],
     ];
+
+    public function getValue(FieldData $data)
+    {
+        throw new \Exception('Not implemented');
+    }
 }

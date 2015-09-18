@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+
 class DatetimeFieldType extends AbstractFieldType
 {
     protected $name = 'Datetime';
@@ -16,4 +18,9 @@ class DatetimeFieldType extends AbstractFieldType
             'help' => null,
         ],
     ];
+
+    public function getValue(FieldData $data)
+    {
+        throw new \Exception('Not implemented');
+    }
 }

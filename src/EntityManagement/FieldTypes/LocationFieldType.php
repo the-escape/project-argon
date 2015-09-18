@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+
 class LocationFieldType extends AbstractFieldType
 {
     protected $name = 'Location';
@@ -16,4 +18,9 @@ class LocationFieldType extends AbstractFieldType
             'help' => null,
         ],
     ];
+
+    public function getValue(FieldData $data)
+    {
+        throw new \Exception('Not implemented');
+    }
 }
