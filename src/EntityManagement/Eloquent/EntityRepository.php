@@ -22,5 +22,4 @@ class EntityRepository extends BaseRepository
             'locale' => $localeId
         ]);
     }
-
 }

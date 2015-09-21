@@ -40,5 +40,4 @@ class EntityField extends Model
     {
         $this->attributes['settings'] = json_encode($value);
     }
-
 }

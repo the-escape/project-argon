@@ -32,8 +32,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
         $isUniqueRoute = $this->isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix);
 
-        if (!$isUniqueRoute)
-        {
+        if (!$isUniqueRoute) {
             throw new \Exception('Plugin URI duplication for route: '. $name);
         }
 
@@ -104,12 +103,9 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
     {
         $routes = Route::getRoutes();
 
-        foreach ($routes as $route)
-        {
-            if ($route->getPath() == ltrim($prefix.$path, '/'))
-            {
-                if (count(array_intersect($route->getMethods(), $verbs)))
-                {
+        foreach ($routes as $route) {
+            if ($route->getPath() == ltrim($prefix.$path, '/')) {
+                if (count(array_intersect($route->getMethods(), $verbs))) {
                     return false;
                 }
             }

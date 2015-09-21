@@ -15,5 +15,4 @@ class EntityFieldRepository extends BaseRepository
     {
         return EntityField::class;
     }
-
 }

@@ -19,5 +19,4 @@ class DashboardController extends BaseController
     {
         return View::make('argon::page.overview', []);
     }
-
 }
