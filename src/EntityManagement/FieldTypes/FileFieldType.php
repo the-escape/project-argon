@@ -27,8 +27,7 @@ class FileFieldType extends AbstractFieldType
             'label' => 'Allowed Formats',
             'type' => 'text',
             'default' => 'text/plain, text/csv, text/comma-separated-values',
-            'help' => "Comma separated list of mime types. Example for CSV uploads: "
-                . "text/plain, text/csv, text/comma-separated-values"
+            'help' => "Comma separated list of mime types. Example for CSV uploads: text/plain, text/csv, text/comma-separated-values"
         ],
         'max_size' => [
             'label' => 'Max File Size',
