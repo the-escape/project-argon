@@ -21,7 +21,7 @@ class EntityField extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'group'];
+    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'group_id'];
 
     /**
      * @return AbstractFieldType

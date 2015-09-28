@@ -11,6 +11,8 @@ class TextFieldType extends AbstractFieldType
 
     protected $key = 'text';
 
+    protected $group;
+
     protected $properties = [
         'required' => [
             'label' => 'Required?',
@@ -23,6 +25,12 @@ class TextFieldType extends AbstractFieldType
             'type' => 'boolean',
             'default' => false,
             'help' => 'Display field as textarea',
+        ],
+        'multiple' => [
+            'label' => 'Multiple',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Allows multiple values.",
         ],
         'minlength' => [
             'label' => 'Minimum Length',

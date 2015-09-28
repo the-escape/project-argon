@@ -24,7 +24,14 @@
                     </div>
                     <div class="form-group">
                         <label for="group">Field Group</label>
-                        <input type="text" class="form-control" id="group" name="group" placeholder="Group name" value="{{ old('group', $field->group) }}">
+                        {{--<input type="text" class="form-control" id="group" name="group" placeholder="Group name" value="{{ old('group', $field->group) }}">--}}
+                        <select class="form-control" name="group" id="group" onchange="if(this.options[this.selectedIndex].text == 'Create new') var g = prompt('Please enter group name');  if (g != null){this.appendChild(new Option(g, g)); this.value=g;}">
+                            <option value="">Choose one...</option>
+                            @foreach ($fieldGroups as $fieldGroup)
+                                <option value="{{$fieldGroup->id}}" @if ($field->group_id == $fieldGroup->id) selected="selected" @endif >{{$fieldGroup->name}}</option>
+                            @endforeach
+                            <option class="create-new" value="">Create new</option>
+                        </select>
                     </div>
 
                     @foreach ($field->type->getProperties() as $name => $property)

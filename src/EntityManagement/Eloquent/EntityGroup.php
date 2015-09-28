@@ -1,0 +1,28 @@
+<?php
+
+namespace Escape\Argon\EntityManagement\Eloquent;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+/*
+ * @property int $id
+ * @property string $name
+ * @property boolean $system
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon $deleted_at
+ */
+class EntityGroup extends Model
+{
+    use SoftDeletes;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'order', 'settings'];
+
+}

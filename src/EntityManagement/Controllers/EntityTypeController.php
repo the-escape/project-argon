@@ -4,6 +4,7 @@ namespace Escape\Argon\EntityManagement\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\EntityManagement\Eloquent\EntityFieldRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Illuminate\Http\Request;
@@ -103,11 +104,13 @@ class EntityTypeController extends BaseController
         $fieldId,
         FieldTypesManager $fieldTypesManager,
         EntityFieldRepository $fieldRepository,
-        EntityTypeRepository $typeRepository
+        EntityTypeRepository $typeRepository,
+        EntityGroupRepository $entityGroupRepository
     ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
         $fieldTypes = $fieldTypesManager->getFieldTypes();
+        $fieldGroups = $entityGroupRepository->getByEntityType($typeId);
 
         return View::make(
             'argon::types.fields.edit',
@@ -115,6 +118,7 @@ class EntityTypeController extends BaseController
                 'type' => $type,
                 'field' => $field,
                 'fieldTypes' => $fieldTypes,
+                'fieldGroups' => $fieldGroups,
             ]
         );
     }
@@ -123,20 +127,59 @@ class EntityTypeController extends BaseController
         $typeId,
         $fieldId,
         EntityFieldRepository $fieldRepository,
-        FieldTypesManager $fieldTypesManager
+        FieldTypesManager $fieldTypesManager,
+        EntityGroupRepository $entityGroupRepository
     ) {
-        $fieldType = $fieldTypesManager->get(Input::get('field_type'));
 
-        $properties = (array) $fieldType->getDefaultSettings();
+        $this->validate($this->request, [
+            'name' => 'required',
+            'field_type' => 'required',
+        ]);
+
+        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+
+        $defaultSettings = $fieldType->getDefaultSettings();
 
         $oldField = $fieldRepository->find($fieldId);
 
         // if field type has changed use default settings
         $settings = ($oldField->field_type != $fieldType->getKey())
-            ? $fieldType->getDefaultSettings()
-            : array_intersect_key(Input::all(), $properties);
+            ? $defaultSettings
+            : array_intersect_key(Input::all(), (array) $defaultSettings);
 
-        $attributes = array_merge_recursive(Input::all(), ['entity_type_id' => $typeId, 'settings' => $settings]);
+
+        $groupId = 0;
+
+        if ($groupName = Input::get('group'))
+        {
+            $groups = $entityGroupRepository->getByEntityType($typeId);
+
+            $found = false;
+
+            foreach ($groups as $group)
+            {
+                if ($group->name == $groupName)
+                {
+                    $found = $group;
+                    break;
+                }
+            }
+
+            // TODO: insert new group
+            if (!$found)
+            {
+                $found = $entityGroupRepository->create(['name'=>$groupName]);
+            }
+
+            $groupId = $found->id;
+        }
+
+
+        $attributes = array_merge_recursive(Input::all(), [
+            'entity_type_id' => $typeId,
+            'group_id' => $groupId,
+            'settings' => $settings,
+        ]);
 
         $field = $fieldRepository->update($attributes, $fieldId);
 
