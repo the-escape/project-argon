@@ -12,5 +12,6 @@ Route::group(['prefix' => 'admin'], function () {
     );
     Route::get('/', ['as' => 'dashboard', 'uses' => 'Escape\\Argon\\Core\\Controllers\\DashboardController@dashboard']);
 
-    Route::get('settings', ['as' => 'settings', 'uses' => 'Escape\\Argon\\Controllers\\SettingsController@index']);
+    // TODO: Implement? Commented out since not present and breaks listing routes.
+    // Route::get('settings', ['as' => 'settings', 'uses' => 'Escape\\Argon\\Controllers\\SettingsController@index']);
 });

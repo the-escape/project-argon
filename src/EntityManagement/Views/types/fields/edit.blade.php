@@ -15,7 +15,7 @@
                     </div>
                     <div class="form-group">
                         <label for="field_type">Type</label>
-                        <select class="form-control" name="field_type">
+                        <select class="form-control" name="field_type" id="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
                                 <option value="{{$fieldType->getKey()}}" @if ($field->field_type == $fieldType->getKey()) selected="selected" @endif >{{$fieldType->getName()}}</option>
@@ -23,14 +23,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="name">Field Group</label>
+                        <label for="group">Field Group</label>
                         <input type="text" class="form-control" id="group" name="group" placeholder="Group name" value="{{ old('group', $field->group) }}">
                     </div>
 
                     @foreach ($field->type->getProperties() as $name => $property)
                         @if ($property->type == 'boolean')
                             <div class="checkbox">
-                                {{ $property->label }}
                                 <label>
                                     <input type="hidden" value="0" name="{{$name}}">
                                     <input type="checkbox" value="1" name="{{$name}}" @if ($field->settings->$name) checked="checked" @endif>
