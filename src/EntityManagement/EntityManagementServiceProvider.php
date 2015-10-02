@@ -129,6 +129,50 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'updateField',
             Request::METHOD_POST
         );
+
+        $this->addRoute(
+            'types/{typeId}/groups',
+            'cms:types:groups',
+            EntityTypeController::class,
+            'groupsManage'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/create',
+            'cms:types:groups:create',
+            EntityTypeController::class,
+            'createGroup'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/create',
+            'cms:types:groups:save',
+            EntityTypeController::class,
+            'saveGroup',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/{groupId}/edit',
+            'cms:types:groups:edit',
+            EntityTypeController::class,
+            'editGroup'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/{groupId}/edit',
+            'cms:types:groups:update',
+            EntityTypeController::class,
+            'updateGroup',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/{groupId}/delete',
+            'cms:types:groups:delete',
+            EntityTypeController::class,
+            'deleteGroup'
+        );
     }
 
     public function boot()
@@ -160,8 +204,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->pluginManager->registerNavLink('Pages', route('cms:pages:manage'), 'cms:content:manage');
 //        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
-
-        $this->fieldTypesManager->registerFieldType(new TextFieldType());
 
         $this->fieldTypesManager->registerFieldType(new TextFieldType());
         $this->fieldTypesManager->registerFieldType(new ImageFieldType());

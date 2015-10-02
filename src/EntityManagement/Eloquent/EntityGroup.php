@@ -23,6 +23,11 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order', 'settings'];
+    protected $fillable = ['name', 'order', 'entity_type_id'];
+
+    public function fields()
+    {
+        return $this->hasMany(EntityField::class);
+    }
 
 }

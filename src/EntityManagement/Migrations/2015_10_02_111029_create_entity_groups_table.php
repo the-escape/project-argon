@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEntityFieldsTable extends Migration
+class CreateEntityGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreateEntityFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('entity_fields', function (Blueprint $table) {
+        Schema::create('entity_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('entity_type_id')->unsigned();
-            $table->integer('entity_group_id')->unsigned();
             $table->string('name');
-            $table->string('field_type');
-            $table->text('settings');
+            $table->smallInteger('order')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +29,6 @@ class CreateEntityFieldsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('entity_fields');
+        Schema::drop('entity_groups');
     }
 }

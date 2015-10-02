@@ -16,22 +16,17 @@ class EntityGroupRepository extends BaseRepository
         return EntityGroup::class;
     }
 
-    public function custom()
-    {
-        return $this->findWhere(['system' => 0]);
-    }
-
-    public function system()
-    {
-        return $this->findWhere(['system' => 1]);
-    }
-
-    public function getByEntityType($type)
+    /**
+     * Get all groups in use for given entity (content) type
+     * @param int|string $type - if positive number given, $type be treated as entity_types.id, otherwise $type will be assumed as entity_types.name
+     * @return mixed collection result
+     */
+    public function getUsedGroupsByEntityType($type)
     {
         $groups = $this->model
             ->distinct()
-            ->select('entity_groups.id', 'entity_groups.name', 'entity_groups.order', 'entity_groups.settings')
-            ->join('entity_fields', 'entity_fields.group_id', '=', 'entity_groups.id')
+            ->select('entity_groups.*')
+            ->join('entity_fields', 'entity_fields.entity_group_id', '=', 'entity_groups.id')
             ->join('entity_types', 'entity_types.id', '=', 'entity_fields.entity_type_id');
 
         // check if $type is ID

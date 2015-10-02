@@ -10,6 +10,8 @@
             </div>
         @endif
 
+        @include('argon::inc.errors', compact($errors))
+
         <form action="{{ route('cms:types:update', [$type->id]) }}" method="POST" autocomplete="false">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -24,9 +26,9 @@
                     <div class="form-group">
                         <label>Type</label>
                         <div>
-                            <label class=""checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page"> Page</label>
-                            <label class=""checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Block</label>
-                            <label class=""checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Email</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page"> Page</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Block</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Email</label>
                         </div>
                     </div>
                 </div>
@@ -53,7 +55,7 @@
                                     {{ $field->field_type }}
                                 </td>
                                 <td>
-                                    {{ $field->group }}
+                                    {{ @$field->group->name }}
                                 </td>
                                 <td>
                                     <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
@@ -61,7 +63,8 @@
                             </tr>
                         @endforeach
                     </table>
-                    <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add</a>
+                    <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add Field</a>
+                    <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Type Groups</a>
                 </div>
             </div>
 

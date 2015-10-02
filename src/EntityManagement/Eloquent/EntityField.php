@@ -21,7 +21,12 @@ class EntityField extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'group_id'];
+    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'entity_group_id'];
+
+    public function group()
+    {
+        return $this->belongsTo(EntityGroup::class, 'entity_group_id');
+    }
 
     /**
      * @return AbstractFieldType

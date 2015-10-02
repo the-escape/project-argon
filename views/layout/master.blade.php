@@ -48,8 +48,27 @@
                 var val = $(this).val();
                 var url = "{!! route('cms:locales:set', ['_ID_']) !!}";
                 url = url.replace('_ID_', val);
-            document.location = url + '?return=' + encodeURI(document.location);
+                document.location = url + '?return=' + encodeURI(document.location);
             });
+
+            // Add confirm class to elements that should trigger confirm window
+            // To show custom text, add data-confirm attribute on html element
+            $('.confirm').on('click', function(){
+                return doubleCheck(this);
+            });
+
+            // Generic js confirm window wrapper.
+            // To show confirm window, just add confirm class to html elements that should trigger confirm window.
+            // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element.
+            function doubleCheck(el, text)
+            {
+                if(!text){
+                    // get value of data-confirm attribute if present or use default confirm text
+                    text = el.dataset.confirm || "Are you sure you want to continue?";
+                }
+                return confirm(text);
+            }
+
         </script>
         @section('footer')
         @show
