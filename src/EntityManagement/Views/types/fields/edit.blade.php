@@ -32,11 +32,22 @@
                     </div>
                     <div class="form-group">
                         <label for="group">Field Group</label>
-                        <select class="form-control" name="group" id="group" onchange="if(this.options[this.selectedIndex].text == 'Create new') var g = prompt('Please enter group name');  if (g != null){this.appendChild(new Option(g, g)); this.value=g;}">
+                        <select class="form-control groupCreate" name="group" id="group">
                             <option value="">Choose one...</option>
+
+                            <?php
+                            $submittedGroup = old('group');
+                            $selected = '';
+                            ?>
                             @foreach ($fieldGroups as $fieldGroup)
-                                <option value="{{$fieldGroup->id}}" @if ($field->entity_group_id == $fieldGroup->id) selected="selected" @endif >{{$fieldGroup->name}}</option>
+                                <?php if ($fieldGroup->id == $submittedGroup) $selected = 'selected="selected"'; ?>
+                                <option value="{{$fieldGroup->id}}" {{$selected}}>{{$fieldGroup->name}}</option>
                             @endforeach
+
+                            @if($submittedGroup && !$selected)
+                                <option value="{{$submittedGroup}}" selected="selected">{{$submittedGroup}}</option>
+                            @endif
+
                             <option class="create-new" value="">Create new</option>
                         </select>
                     </div>

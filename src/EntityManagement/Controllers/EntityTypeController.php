@@ -90,6 +90,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
+            'group' => 'min:1',
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -171,6 +172,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
+            'group' => 'min:1',
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -225,6 +227,22 @@ class EntityTypeController extends BaseController
         // new properties will be displayed and likely to customise.
         return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
             ->with('message', Lang::get('argon-entities::field.updated'));
+    }
+
+    public function deleteField(
+        $typeId,
+        $fieldId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+        $field = $fieldRepository->find($fieldId);
+
+        $deleted = $fieldRepository->delete($field->id);
+
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-entities::field.deleted'));
     }
 
     public function groupsManage(

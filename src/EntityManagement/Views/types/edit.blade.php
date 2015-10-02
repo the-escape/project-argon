@@ -59,6 +59,7 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
+                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
                                 </td>
                             </tr>
                         @endforeach
