@@ -67,6 +67,30 @@ class EntityTypeController extends BaseController
         return View::make('argon::types.edit', ['type' => $type]);
     }
 
+    public function delete(
+        $typeId,
+        EntityFieldRepository $fieldRepository,
+        EntityGroupRepository $groupRepository
+    ) {
+        // Delete content type.
+        $type = $this->typeRepository->find($typeId);
+        $this->typeRepository->delete($type->id);
+
+        // Delete content type groups.
+        $groups = $groupRepository->findByField('entity_type_id', $type->id);
+        foreach ($groups as $group) $groupRepository->delete($group->id);
+
+        // Delete content type fields.
+        $fields = $fieldRepository->findByField('entity_type_id', $type->id);
+        foreach ($fields as $field) $fieldRepository->delete($field->id);
+
+        return Redirect::route('cms:types:manage')
+            ->with('message', Lang::get('argon-entities::type.deleted'));
+    }
+
+
+
+
     public function addField($typeId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository)
     {
         $type = $this->typeRepository->find($typeId);

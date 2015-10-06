@@ -22,7 +22,7 @@
                     <td>{{$type->name}}</td>
                     <td>
                         <a href="{{ route('cms:types:edit', ['typeId' => $type->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                        <a href="{{ route('cms:types:delete', ['typeId' => $type->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
+                        <a href="{{ route('cms:types:delete', ['typeId' => $type->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
                     </td>
                 </tr>
             @endforeach
