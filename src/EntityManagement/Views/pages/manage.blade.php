@@ -49,7 +49,7 @@
                 // so that create works
                 "check_callback" : true,
                 "multiple": false
-            },
+            }
         });
         // 7 bind to events triggered on the tree
         $('#site-structure').on("changed.jstree", function (e, data) {

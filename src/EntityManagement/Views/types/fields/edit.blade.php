@@ -4,13 +4,7 @@
     <div class="main">
         <h1 class="page-header">Edit Field</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        @include('argon::inc.errors', compact($errors))
+        @include('argon::inc.alerts', compact($errors))
 
         <form action="{{ route('cms:types:fields:update', [$type->id, $field->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -26,7 +20,7 @@
                         <select class="form-control" name="field_type" id="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
-                                <option value="{{$fieldType->getKey()}}" @if ($field->field_type == $fieldType->getKey()) selected="selected" @endif >{{$fieldType->getName()}}</option>
+                                <option value="{{$fieldType->getKey()}}" @if (old('field_type', $field->field_type) == $fieldType->getKey()) selected="selected" @endif >{{$fieldType->getName()}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -36,7 +30,7 @@
                             <option value="">Choose one...</option>
 
                             <?php
-                            $submittedGroup = old('group');
+                            $submittedGroup = old('group', $field->entity_group_id);
                             $selected = '';
                             ?>
                             @foreach ($fieldGroups as $fieldGroup)

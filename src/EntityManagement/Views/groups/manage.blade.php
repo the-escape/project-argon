@@ -4,13 +4,7 @@
     <div class="main">
         <h1 class="page-header">Manage Type Groups</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        @include('argon::inc.errors', compact($errors))
+        @include('argon::inc.alerts', compact($errors))
 
         <div class="card">
             <div class="card-header">Groups</div>

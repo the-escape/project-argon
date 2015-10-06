@@ -4,6 +4,8 @@
     <div class="main">
         <h1>Edit Page</h1>
 
+        @include('argon::inc.alerts', compact($errors))
+
         <form action="{{ route('cms:pages:update', [$page->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">

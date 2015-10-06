@@ -3,12 +3,9 @@
 @section('content')
     <div class="main">
 
-            <h1 class="page-header">Types</h1>
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
+        <h1 class="page-header">Types</h1>
+
+        @include('argon::inc.alerts', compact($errors))
 
         <a href="{{ route('cms:types:create') }}" class="btn btn-primary">Create</a>
 

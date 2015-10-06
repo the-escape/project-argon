@@ -4,13 +4,7 @@
     <div class="main">
         <h1 class="page-header">Add Field</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        @include('argon::inc.errors', compact($errors))
+        @include('argon::inc.alerts', compact($errors))
 
         <form action="{{ route('cms:types:fields:save', [$type->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -26,7 +20,7 @@
                         <select class="form-control" name="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
-                                <option value="{{$fieldType->getKey()}}">{{$fieldType->getName()}}</option>
+                                <option value="{{$fieldType->getKey()}}" @if($fieldType->getKey() == old('field_type')) selected="selected" @endif>{{$fieldType->getName()}}</option>
                             @endforeach
                         </select>
                     </div>

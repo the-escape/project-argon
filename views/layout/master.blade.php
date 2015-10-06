@@ -91,6 +91,7 @@
                     else
                     {
                         el.options[0].selected = 'selected';
+                        return el;
                     }
                 }
                 return null;
