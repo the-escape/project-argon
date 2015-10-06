@@ -48,6 +48,9 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
+            <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
         </form>
+
     </div>
 @endsection
