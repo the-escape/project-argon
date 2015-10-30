@@ -137,6 +137,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'deleteField'
         );
 
+        // Groups
         $this->addRoute(
             'types/{typeId}/groups',
             'cms:types:groups',

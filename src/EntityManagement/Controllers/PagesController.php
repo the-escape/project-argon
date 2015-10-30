@@ -69,7 +69,8 @@ class PagesController extends BaseController
                 'entity_type_id' => $type->id,
                 'owner_id' => $request->user()->id,
                 'parent' => $parentId,
-                'locale' => $request->session()->get('locale')
+                'locale' => $request->session()->get('locale'),
+                'slug' => Input::get('slug'),
             ]
         );
 
@@ -111,7 +112,7 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionsRepository,
         FieldDataRepository $fieldDataRepository
     ) {
-        $entity = $entityRepository->update(Input::only('name'), $pageId);
+        $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_id' => $entity->id,

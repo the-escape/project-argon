@@ -16,8 +16,8 @@
                         <input type="text" class="form-control" name="name" value="{{ old('name', $page->name) }}">
                     </div>
                     <div class="form-group">
-                        <label for="name">URL Segment</label>
-                        <input type="text" class="form-control" name="segment" value="{{ old('segment', $page->name) }}">
+                        <label for="slug">URL Slug</label>
+                        <input type="text" class="form-control" name="slug" value="{{ old('segment', $page->slug) }}">
                     </div>
                 </div>
             </div>
