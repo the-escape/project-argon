@@ -44,9 +44,10 @@ class EntityType extends Model
         $groups = [];
 
         foreach ($this->fields as $field) {
-            $groups[$field->group][] = $field;
+            $groups[$field->entity_group_id][] = $field;
         }
 
         return $groups;
     }
+
 }

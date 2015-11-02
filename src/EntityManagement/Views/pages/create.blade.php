@@ -15,12 +15,16 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                     </div>
+                    <div class="form-group">
+                        <label for="slug">URL Slug</label>
+                        <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
+                    </div>
                 </div>
             </div>
 
-            @foreach($type->groups as $groupName => $fields)
+            @foreach($type->groups as $groupId => $fields)
                 <div class="card">
-                    <div class="card-header">{{ $groupName }}</div>
+                    <div class="card-header">{{ @$groups->find($groupId)->name }}</div>
                     <div class="card-block">
                         @foreach ($fields as $field)
                             <div class="form-group">
@@ -36,3 +40,5 @@
         </form>
     </div>
 @stop
+
+

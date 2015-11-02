@@ -8,6 +8,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityType;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
@@ -45,11 +46,12 @@ class PagesController extends BaseController
         return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
     }
 
-    public function create($parentId, $typeId, EntityTypeRepository $typeRepository)
+    public function create($parentId, $typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository)
     {
         $type = $typeRepository->find($typeId);
+        $groups = $groupRepository->all();
 
-        return View::make('argon::pages.create', ['type' => $type, 'parentId' => $parentId]);
+        return View::make('argon::pages.create', ['type' => $type, 'parentId' => $parentId, 'groups' => $groups]);
     }
 
     public function save(
@@ -70,7 +72,7 @@ class PagesController extends BaseController
                 'owner_id' => $request->user()->id,
                 'parent' => $parentId,
                 'locale' => $request->session()->get('locale'),
-                'slug' => Input::get('slug'),
+                'slug' => ($slug = Input::get('slug')) ? $slug : Input::get('name'), // TODO: implement slug convertion from page name
             ]
         );
 
@@ -82,7 +84,7 @@ class PagesController extends BaseController
             ]
         );
 
-        $fields = Input::get('fields');
+        $fields = Input::get('fields', []);
 
         foreach ($type->fields as $field) {
             $fieldDataRepository->create(
@@ -98,12 +100,13 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:manage');
     }
 
-    public function edit($pageId, EntityRepository $entityRepository, EntityTypeRepository $typeRepository)
+    public function edit($pageId, EntityRepository $entityRepository, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository)
     {
         $page = $entityRepository->find($pageId);
         $type = $typeRepository->find($page->entity_type_id);
+        $groups = $groupRepository->all();
 
-        return View::make('argon::pages.edit', ['page' => $page, 'type' => $type]);
+        return View::make('argon::pages.edit', ['page' => $page, 'type' => $type, 'groups' => $groups]);
     }
 
     public function update(
@@ -120,7 +123,7 @@ class PagesController extends BaseController
             'created_by' => $this->request->user()->id
         ]);
 
-        $fields = Input::get('fields');
+        $fields = Input::get('fields', []);
 
         foreach ($fields as $id => $value) {
             $fieldDataRepository->create([

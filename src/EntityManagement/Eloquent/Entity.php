@@ -18,7 +18,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'parent', 'entity_type_id', 'owner_id', 'locale'];
+    protected $fillable = ['name', 'slug', 'parent', 'entity_type_id', 'owner_id', 'locale'];
 
     public function addChild(Entity $child)
     {
