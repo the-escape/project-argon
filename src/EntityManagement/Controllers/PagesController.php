@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Input;
 use Redirect;
 use View;
+use Lang;
 
 class PagesController extends BaseController
 {
@@ -63,6 +64,28 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         Request $request
     ) {
+        /** @var $slug
+         * Slug validation based on slug and parent lookup
+         * If entered, will be validated.
+         * If left empty, will be generated and validated.
+         */
+
+        $this->validate($this->request, [
+            'name' => "required",
+            'slug' => "min:1|unique:entities,slug,NULL,slug,parent,{$parentId}",
+        ]);
+
+        $slug = str_slug( ($s = Input::get('slug')) ? $s : Input::get('name') );
+
+        $slugTaken = $entityRepository->findWhere(['slug'=>$slug, 'parent'=>$parentId]);
+
+        if (!$slugTaken->isEmpty())
+        {
+            return Redirect::route('cms:content:create', [$parentId, $typeId])
+                ->withInput()
+                ->with('errors', "The auto-generated slug '{$slug}' has already been taken. Please try a different one.");
+        };
+
         /** @var EntityType $type */
         $type = $typeRepository->find($typeId);
         $entity = $entityRepository->create(
@@ -72,7 +95,7 @@ class PagesController extends BaseController
                 'owner_id' => $request->user()->id,
                 'parent' => $parentId,
                 'locale' => $request->session()->get('locale'),
-                'slug' => ($slug = Input::get('slug')) ? $slug : Input::get('name'), // TODO: implement slug convertion from page name
+                'slug' => $slug,
             ]
         );
 
@@ -97,7 +120,9 @@ class PagesController extends BaseController
             );
         }
 
-        return Redirect::route('cms:pages:manage');
+        // return Redirect::route('cms:pages:manage');
+        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
+            ->with('message', Lang::get('argon-entities::page.created'));
     }
 
     public function edit($pageId, EntityRepository $entityRepository, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository)
@@ -134,7 +159,8 @@ class PagesController extends BaseController
             ]);
         }
 
-
-        return Redirect::route('cms:pages:manage');
+        // return Redirect::route('cms:pages:manage');
+        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
+            ->with('message', Lang::get('argon-entities::page.updated'));
     }
 }
