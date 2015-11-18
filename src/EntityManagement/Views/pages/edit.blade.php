@@ -37,6 +37,9 @@
             @endforeach
 
             <button type="submit" class="btn btn-primary">Save</button>
+
+            <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
+            
         </form>
     </div>
 @stop

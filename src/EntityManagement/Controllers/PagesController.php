@@ -67,24 +67,38 @@ class PagesController extends BaseController
         /** @var $slug
          * Slug validation based on slug and parent lookup
          * If entered, will be validated.
-         * If left empty, will be generated and validated.
+         * If left empty, will be generated from name and validated.
          */
 
         $this->validate($this->request, [
             'name' => "required",
-            'slug' => "min:1|unique:entities,slug,NULL,slug,parent,{$parentId}",
+            'slug' => "min:1", // not required, will attempt to auto generated from name
         ]);
 
-        $slug = str_slug( ($s = Input::get('slug')) ? $s : Input::get('name') );
+        // use submitted slug or auto-generate from name
+        $slug = str_slug( ($input_slug = Input::get('slug')) ? $input_slug : Input::get('name') );
 
         $slugTaken = $entityRepository->findWhere(['slug'=>$slug, 'parent'=>$parentId]);
 
         if (!$slugTaken->isEmpty())
         {
-            return Redirect::route('cms:content:create', [$parentId, $typeId])
-                ->withInput()
-                ->with('errors', "The auto-generated slug '{$slug}' has already been taken. Please try a different one.");
-        };
+            // update input value that goes back in the form to reflect str_slug
+            Input::merge(array('slug' => $slug));
+
+            $return =  Redirect::route('cms:content:create', [$parentId, $typeId])->withInput();
+
+            if (!$input_slug)
+            {
+                $return->with('errors', "The auto-generated slug '{$slug}' has already been taken. Please try a different one.");
+            }
+            else
+            {
+                $return->with('errors', "The slug '{$slug}' has already been taken. Please try a different one.");
+            }
+
+            return $return;
+
+        }
 
         /** @var EntityType $type */
         $type = $typeRepository->find($typeId);
@@ -140,6 +154,27 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionsRepository,
         FieldDataRepository $fieldDataRepository
     ) {
+        $page = $entityRepository->find($pageId);
+
+        $this->validate($this->request, [
+            'name' => "required",
+            'slug' => "required|min:1",
+        ]);
+
+        $slug = str_slug( Input::get('slug') );
+
+        $slugTaken = $entityRepository->findWhere(['slug'=>$slug, 'parent'=>$page->parent, ['id', '!=', $page->id]]);
+
+        if (!$slugTaken->isEmpty())
+        {
+            // update input value that goes back in the form to reflect str_slug
+            Input::merge(array('slug' => $slug));
+
+            return Redirect::route('cms:pages:edit', [$pageId])
+                ->withInput()
+                ->with('errors', "The slug '{$slug}' has already been taken. Please try a different one.");
+        }
+
         $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 
         $revision = $revisionsRepository->create([
@@ -163,4 +198,5 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
+
 }
