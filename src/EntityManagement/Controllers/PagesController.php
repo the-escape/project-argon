@@ -8,6 +8,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityType;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityGroup;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
@@ -50,8 +51,7 @@ class PagesController extends BaseController
     public function create($parentId, $typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository)
     {
         $type = $typeRepository->find($typeId);
-        $groups = $groupRepository->all();
-
+        $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
         return View::make('argon::pages.create', ['type' => $type, 'parentId' => $parentId, 'groups' => $groups]);
     }
 
@@ -139,13 +139,11 @@ class PagesController extends BaseController
             ->with('message', Lang::get('argon-entities::page.created'));
     }
 
-    public function edit($pageId, EntityRepository $entityRepository, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository)
+    public function edit($pageId, EntityRepository $entityRepository, EntityGroupRepository $groupRepository)
     {
         $page = $entityRepository->find($pageId);
-        $type = $typeRepository->find($page->entity_type_id);
-        $groups = $groupRepository->all();
-
-        return View::make('argon::pages.edit', ['page' => $page, 'type' => $type, 'groups' => $groups]);
+        $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        return View::make('argon::pages.edit', ['page' => $page, 'groups' => $groups]);
     }
 
     public function update(

@@ -22,11 +22,11 @@
                 </div>
             </div>
 
-            @foreach($type->groups as $groupId => $fields)
+            @foreach($groups as $group)
                 <div class="card">
-                    <div class="card-header">{{  @$groups->find($groupId)->name  }}</div>
+                    <div class="card-header">{{ $group->name }}</div>
                     <div class="card-block">
-                        @foreach ($fields as $field)
+                        @foreach ($group->fields as $field)
                             <div class="form-group">
                                 <label for="name">{{ $field->name }}</label>
                                 <input type="text" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($field->name, $page->field($field->name)) }}">

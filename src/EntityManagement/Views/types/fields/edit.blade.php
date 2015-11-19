@@ -24,6 +24,7 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="group">Field Group</label>
                         <select class="form-control groupCreate" name="group" id="group">
@@ -31,11 +32,15 @@
 
                             <?php
                             $submittedGroup = old('group', $field->entity_group_id);
-                            $selected = '';
+                            $selected = 0;
                             ?>
                             @foreach ($fieldGroups as $fieldGroup)
-                                <?php if ($fieldGroup->id == $submittedGroup) $selected = 'selected="selected"'; ?>
-                                <option value="{{$fieldGroup->id}}" {{$selected}}>{{$fieldGroup->name}}</option>
+                                @if($fieldGroup->id == $submittedGroup)
+                                    <?php $selected = 1;?>
+                                    <option value="{{$fieldGroup->id}}" selected>{{$fieldGroup->name}}</option>
+                                @else
+                                    <option value="{{$fieldGroup->id}}">{{$fieldGroup->name}}</option>
+                                @endif
                             @endforeach
 
                             @if($submittedGroup && !$selected)

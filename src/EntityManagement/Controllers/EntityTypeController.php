@@ -114,7 +114,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
-            'group' => 'min:1',
+            'group' => 'required',
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -196,7 +196,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
-            'group' => 'min:1',
+            'group' => 'required',
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
