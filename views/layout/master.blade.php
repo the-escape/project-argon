@@ -88,27 +88,33 @@
                     {
                         $accordionExpandCollapse.each(function()
                         {
-                            var self = this;
-                            var expandAllText = self.getAttribute('data-expand') || 'Expand all';
-                            self.innerHTML = expandAllText;
-                            self.className.replace(/[\n\t\r]]/g, " ").indexOf(" expanded ");
-                            self.removeAttribute('data-expanded');
+                            var $self = $(this);
+                            var expandAllText = $self.data('data-expand') || 'Expand all';
+
+                            if(!$('.accordion-header.ui-state-active').length)
+                            {
+                                $self.removeClass('expanded');
+                            }
+
+                            $self.text(expandAllText);
+                            $self.removeAttr('data-expanded');
                         });
                     }
                     else
                     {
                         $accordionExpandCollapse.each(function()
                         {
-                            var self = this;
-                            var collapseAllText = self.getAttribute('data-collapse') || 'Collapse all';
-                            self.setAttribute('data-expanded', true);
-                            self.innerHTML = collapseAllText;
-                            self.className + " expanded ";
+                            var $self = $(this);
+                            var collapseAllText = $self.data('data-collapse') || 'Collapse all';
+
+                            $self.addClass('expanded');
+                            $self.text(collapseAllText);
+                            $self.attr('data-expanded', true);
                         });
                     }
                 }
             });
-            
+
 
             $('#locale-select').change(function () {
                 var val = $(this).val();
