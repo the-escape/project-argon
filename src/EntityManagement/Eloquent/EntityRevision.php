@@ -33,9 +33,20 @@ class EntityRevision extends Model
         return new RevisionsCollection($models);
     }
 
-    public function field($name)
+    public function field($id)
     {
-        $field = $this->entity->type->field($name);
+        $field = $this->entity->type->field($id);
+        return $this->fieldValue($field);
+    }
+
+    public function fieldById($id)
+    {
+        $field = $this->entity->type->fieldById($id);
+        return $this->fieldValue($field);
+    }
+
+    private function fieldValue($field)
+    {
         $fieldData = $this->fields()->where('field_id', $field->id)->first();
 
         /** @var FieldTypesManager $fieldTypeManager */

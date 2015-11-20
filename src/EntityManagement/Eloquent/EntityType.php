@@ -39,6 +39,16 @@ class EntityType extends Model
         return $this->fields()->where('name', $name)->first();
     }
 
+    /**
+     * @param int $id
+     * @return EntityField
+     */
+    public function fieldById($id)
+    {
+        return $this->fields()->where('id', $id)->first();
+    }
+
+
     public function getGroupsAttribute()
     {
         $groups = [];

@@ -3,19 +3,16 @@
 namespace Escape\Argon\EntityManagement\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
-use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityType;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
-use Escape\Argon\EntityManagement\Eloquent\EntityGroup;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
-use Input;
-use Redirect;
+use Input;use Redirect;
 use View;
 use Lang;
 
@@ -64,77 +61,80 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         Request $request
     ) {
-        /** @var $slug
-         * Slug validation based on slug and parent lookup
-         * If entered, will be validated.
-         * If left empty, will be generated from name and validated.
-         */
 
-        $this->validate($this->request, [
-            'name' => "required",
-            'slug' => "min:1", // not required, will attempt to auto generated from name
-        ]);
+        $type = $typeRepository->find($typeId);
+
+        $fields = $type->fields;
+
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
 
         // use submitted slug or auto-generate from name
         $slug = str_slug( ($input_slug = Input::get('slug')) ? $input_slug : Input::get('name') );
 
-        $slugTaken = $entityRepository->findWhere(['slug'=>$slug, 'parent'=>$parentId]);
+        // update input slug value to reflect str_slug, then validate it
+        Input::merge(array('slug' => $slug));
 
-        if (!$slugTaken->isEmpty())
+        $rules = [
+            'name' => "required",
+            'slug' => "required|unique:entities,slug,NULL,id,parent,{$parentId}",
+        ];
+
+        foreach ($fields as $field)
         {
-            // update input value that goes back in the form to reflect str_slug
-            Input::merge(array('slug' => $slug));
+            $niceNames["fields.{$field->id}"] = $field->name;
 
-            $return =  Redirect::route('cms:content:create', [$parentId, $typeId])->withInput();
+            $settings = $field->settings;
 
-            if (!$input_slug)
+            if ($settings->required)
             {
-                $return->with('errors', "The auto-generated slug '{$slug}' has already been taken. Please try a different one.");
-            }
-            else
-            {
-                $return->with('errors', "The slug '{$slug}' has already been taken. Please try a different one.");
+                $rules["fields.{$field->id}"][] = 'required';
             }
 
-            return $return;
+            if ($settings->minlength)
+            {
+                $rules["fields.{$field->id}"][] = "min:{$settings->minlength}";
+            }
 
+            if ($settings->maxlength)
+            {
+                $rules["fields.{$field->id}"][] = "max:{$settings->maxlength}";
+            }
+
+            if (@$rules["fields.{$field->id}"])
+            {
+                $rules["fields.{$field->id}"] = implode('|', $rules["fields.{$field->id}"]);
+            }
         }
 
-        /** @var EntityType $type */
-        $type = $typeRepository->find($typeId);
-        $entity = $entityRepository->create(
-            [
-                'name' => Input::get('name'),
-                'entity_type_id' => $type->id,
-                'owner_id' => $request->user()->id,
-                'parent' => $parentId,
-                'locale' => $request->session()->get('locale'),
-                'slug' => $slug,
-            ]
-        );
+        $this->validate($this->request, $rules, [], $niceNames);
 
-        $revision = $revisionRepository->create(
-            [
-                'entity_id' => $entity->id,
-                'status' => RevisionStatus::DRAFT,
-                'created_by' => $request->user()->id
-            ]
-        );
+        $entity = $entityRepository->create([
+            'name' => Input::get('name'),
+            'entity_type_id' => $type->id,
+            'owner_id' => $request->user()->id,
+            'parent' => $parentId,
+            'locale' => $request->session()->get('locale'),
+            'slug' => $slug,
+        ]);
 
-        $fields = Input::get('fields', []);
+        $revision = $revisionRepository->create([
+            'entity_id' => $entity->id,
+            'status' => RevisionStatus::DRAFT,
+            'created_by' => $request->user()->id
+        ]);
 
-        foreach ($type->fields as $field) {
-            $fieldDataRepository->create(
-                [
-                    'field_id' => $field->id,
-                    'entity_revision_id' => $revision->id,
-                    'language' => 'en', // TODO: Make language dynamic
-                    'value' => $fields[$field->id]
-                ]
-            );
+        foreach ($fields as $field) {
+            $fieldDataRepository->create([
+                'field_id' => $field->id,
+                'entity_revision_id' => $revision->id,
+                'language' => 'en_GB',
+                'value' => Input::get("fields.{$field->id}"),
+            ]);
         }
 
-        // return Redirect::route('cms:pages:manage');
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])
             ->with('message', Lang::get('argon-entities::page.created'));
     }
@@ -142,7 +142,9 @@ class PagesController extends BaseController
     public function edit($pageId, EntityRepository $entityRepository, EntityGroupRepository $groupRepository)
     {
         $page = $entityRepository->find($pageId);
+
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+
         return View::make('argon::pages.edit', ['page' => $page, 'groups' => $groups]);
     }
 
@@ -150,28 +152,59 @@ class PagesController extends BaseController
         $pageId,
         EntityRepository $entityRepository,
         EntityRevisionRepository $revisionsRepository,
-        FieldDataRepository $fieldDataRepository
+        FieldDataRepository $fieldDataRepository,
+        EntityTypeRepository $typeRepository
     ) {
         $page = $entityRepository->find($pageId);
 
-        $this->validate($this->request, [
-            'name' => "required",
-            'slug' => "required|min:1",
-        ]);
+        $type = $typeRepository->find($page->entity_type_id);
+
+        $fields = $type->fields;
+
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
 
         $slug = str_slug( Input::get('slug') );
 
-        $slugTaken = $entityRepository->findWhere(['slug'=>$slug, 'parent'=>$page->parent, ['id', '!=', $page->id]]);
+        // update input slug value to reflect str_slug, then validate it
+        Input::merge(array('slug' => $slug));
 
-        if (!$slugTaken->isEmpty())
+        $rules = [
+            'name' => "required",
+            'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
+        ];
+
+        foreach ($fields as $field)
         {
-            // update input value that goes back in the form to reflect str_slug
-            Input::merge(array('slug' => $slug));
+            $niceNames["fields.{$field->id}"] = $field->name;
 
-            return Redirect::route('cms:pages:edit', [$pageId])
-                ->withInput()
-                ->with('errors', "The slug '{$slug}' has already been taken. Please try a different one.");
+            $settings = $field->settings;
+
+            if ($settings->required)
+            {
+                $rules["fields.{$field->id}"][] = 'required';
+            }
+
+            if ($settings->minlength)
+            {
+                $rules["fields.{$field->id}"][] = "min:{$settings->minlength}";
+            }
+
+            if ($settings->maxlength)
+            {
+                $rules["fields.{$field->id}"][] = "max:{$settings->maxlength}";
+            }
+
+            if (@$rules["fields.{$field->id}"])
+            {
+                $rules["fields.{$field->id}"] = implode('|', $rules["fields.{$field->id}"]);
+            }
         }
+
+        $this->validate($this->request, $rules, [], $niceNames);
+
 
         $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 
@@ -181,18 +214,15 @@ class PagesController extends BaseController
             'created_by' => $this->request->user()->id
         ]);
 
-        $fields = Input::get('fields', []);
-
-        foreach ($fields as $id => $value) {
+        foreach ($fields as $field) {
             $fieldDataRepository->create([
-                'field_id' => $id,
+                'field_id' => $field->id,
                 'entity_revision_id' => $revision->id,
                 'language' => 'en_GB',
-                'value' => $value
+                'value' => Input::get("fields.{$field->id}")
             ]);
         }
 
-        // return Redirect::route('cms:pages:manage');
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }

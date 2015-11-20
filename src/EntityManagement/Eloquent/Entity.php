@@ -41,6 +41,11 @@ class Entity extends Model
         return $this->latest()->field($name);
     }
 
+    public function fieldById($id)
+    {
+        return $this->latest()->fieldById($id);
+    }
+
     public function type()
     {
         return $this->belongsTo(EntityType::class, 'entity_type_id');

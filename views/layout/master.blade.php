@@ -42,8 +42,23 @@
         </div>
 
         <script src="/argon/js/jquery.min.js"></script>
+        <script src="/argon/js/core.js"></script>
+        <script src="/argon/js/widget.js"></script>
+        <script src="/argon/js/accordion.js"></script>
         <script src="/argon/js/bootstrap.min.js"></script>
+
         <script>
+            $( ".accordion" ).accordion({
+                active: false,
+                header: ".accordion-header",
+                collapsible: true,
+                heightStyle: "content",
+                icons: {
+                    activeHeader: "accordion-header-open",
+                    header: "accordion-header-close"
+                }
+            });
+
             $('#locale-select').change(function () {
                 var val = $(this).val();
                 var url = "{!! route('cms:locales:set', ['_ID_']) !!}";

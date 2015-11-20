@@ -9,6 +9,18 @@ body.dashboard {
         border: 0;
     }
 
+
+    .accordion {
+
+        .accordion-header {
+            cursor: pointer;
+            position: relative;
+            outline: none;
+        }
+
+    }
+
+
     /*
      * Sidebar
      */

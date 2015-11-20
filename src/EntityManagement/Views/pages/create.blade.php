@@ -12,25 +12,26 @@
                 <div class="card-header">Details</div>
                 <div class="card-block">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                        <label for="name" class="required">Name</label>
+                        <input type="text" class="form-control required" name="name" value="{{ old('name') }}">
                     </div>
                     <div class="form-group">
-                        <label for="slug">URL Slug</label>
-                        <input type="text" class="form-control" name="slug" value="{{ old('slug') }}">
+                        <label for="slug" class="required">URL Slug</label>
+                        <input type="text" class="form-control required" name="slug" value="{{ old('slug') }}">
                     </div>
                 </div>
             </div>
 
             @foreach($groups as $group)
-                <div class="card">
-                    <div class="card-header">{{ $group->name }}</div>
-                    <div class="card-block">
+                <div class="card accordion">
+                    <div class="card-header accordion-header">{{ $group->name }}</div>
+                    <div class="card-block accordion-body">
                         @foreach ($group->fields as $field)
+
                             <div class="form-group">
-                                <label for="name">{{ $field->name }}</label>
-                                <input type="text" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($field->name) }}">
+                                @include('argon::fields.field', ['value'=>old("fields.{$field->id}")])
                             </div>
+
                         @endforeach
                     </div>
                 </div>
