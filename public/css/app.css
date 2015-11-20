@@ -4518,6 +4518,8 @@ body.dashboard {
     cursor: pointer;
     position: relative;
     outline: none; }
+  body.dashboard .subnav {
+    margin-bottom: 0.75rem; }
   body.dashboard .sidebar {
     display: none; }
   @media (min-width: 768px) {

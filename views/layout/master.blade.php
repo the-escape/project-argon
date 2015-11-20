@@ -48,7 +48,27 @@
         <script src="/argon/js/bootstrap.min.js"></script>
 
         <script>
-            $( ".accordion" ).accordion({
+
+            var $accordionExpandCollapse = $('.accordion-expand-collapse');
+
+            $accordionExpandCollapse.click(function()
+            {
+                var isExpanded = this.getAttribute('data-expanded');
+
+                if (isExpanded)
+                {
+                    $('.accordion-header.ui-state-active').trigger('click');
+                }
+                else
+                {
+                    $('.accordion-header:not(.ui-state-active)').trigger('click');
+                }
+
+                return false;
+            });
+
+            $('.accordion').accordion(
+            {
                 active: false,
                 header: ".accordion-header",
                 collapsible: true,
@@ -56,8 +76,39 @@
                 icons: {
                     activeHeader: "accordion-header-open",
                     header: "accordion-header-close"
+                },
+                animate: {
+                    duration: 400
+                },
+                activate: function()
+                {
+                    var isActive = $(this).accordion("option", "active");
+
+                    if (isActive === false)
+                    {
+                        $accordionExpandCollapse.each(function()
+                        {
+                            var self = this;
+                            var expandAllText = self.getAttribute('data-expand') || 'Expand all';
+                            self.innerHTML = expandAllText;
+                            self.className.replace(/[\n\t\r]]/g, " ").indexOf(" expanded ");
+                            self.removeAttribute('data-expanded');
+                        });
+                    }
+                    else
+                    {
+                        $accordionExpandCollapse.each(function()
+                        {
+                            var self = this;
+                            var collapseAllText = self.getAttribute('data-collapse') || 'Collapse all';
+                            self.setAttribute('data-expanded', true);
+                            self.innerHTML = collapseAllText;
+                            self.className + " expanded ";
+                        });
+                    }
                 }
             });
+            
 
             $('#locale-select').change(function () {
                 var val = $(this).val();

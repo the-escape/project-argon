@@ -2,7 +2,15 @@
 
 @section('content')
     <div class="main">
-        <h1>Create Content</h1>
+
+        <div class="row">
+            <div class="col-md-9">
+                <h1>Create Content</h1>
+            </div>
+            <div class="col-md-3">
+                <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+            </div>
+        </div>
 
         @include('argon::inc.alerts', compact($errors))
 
@@ -13,14 +21,22 @@
                 <div class="card-block">
                     <div class="form-group">
                         <label for="name" class="required">Name</label>
-                        <input type="text" class="form-control required" name="name" value="{{ old('name') }}">
+                        <input type="text" id="name" class="form-control required" name="name" value="{{ old('name') }}">
                     </div>
                     <div class="form-group">
                         <label for="slug" class="required">URL Slug</label>
-                        <input type="text" class="form-control required" name="slug" value="{{ old('slug') }}">
+                        <input type="text" id="slug" class="form-control required" name="slug" value="{{ old('slug') }}">
                     </div>
                 </div>
             </div>
+
+
+            <div class="row subnav">
+                <div class="col-md-12">
+                    <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                </div>
+            </div>
+
 
             @foreach($groups as $group)
                 <div class="card accordion">

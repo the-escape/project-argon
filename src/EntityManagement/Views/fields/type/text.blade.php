@@ -4,10 +4,10 @@
 
         @if(@$field->settings->required)
             <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="required">{{ @$value }}</textarea>
+            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control required">{{ @$value }}</textarea>
         @else
             <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}">{{ @$value }}</textarea>
+            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control">{{ @$value }}</textarea>
         @endif
 
     @else
