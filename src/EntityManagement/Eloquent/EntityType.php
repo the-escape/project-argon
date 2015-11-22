@@ -27,7 +27,7 @@ class EntityType extends Model
 
     public function fields()
     {
-        return $this->hasMany(EntityField::class);
+        return $this->hasMany(EntityField::class)->orderBy('entity_group_id')->orderBy( 'name');
     }
 
     /**

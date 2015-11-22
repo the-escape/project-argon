@@ -8,7 +8,9 @@
                 <h1>Edit Page</h1>
             </div>
             <div class="col-md-3">
-                <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                @if(!$groups->isEmpty())
+                    <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                @endif
             </div>
         </div>
 
@@ -31,35 +33,37 @@
                 </div>
             </div>
 
+            @if(!$groups->isEmpty())
 
-            <div class="row subnav">
-                <div class="col-md-12">
-                    <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                <div class="row subnav">
+                    <div class="col-md-12">
+                        <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                    </div>
                 </div>
-            </div>
 
+                @foreach($groups as $group)
 
-            @foreach($groups as $group)
+                    <div class="card accordion">
 
-                <div class="card accordion">
+                        <div class="card-header accordion-header">{{ $group->name }}</div>
 
-                    <div class="card-header accordion-header">{{ $group->name }}</div>
+                        <div class="card-block accordion-body">
 
-                    <div class="card-block accordion-body">
+                            @foreach ($group->fields as $field)
 
-                        @foreach ($group->fields as $field)
+                                <div class="form-group">
+                                    @include('argon::fields.field', ['value'=>old("fields.{$field->id}", $page->fieldById($field->id))])
+                                </div>
 
-                            <div class="form-group">
-                                @include('argon::fields.field', ['value'=>old("fields.{$field->id}", $page->fieldById($field->id))])
-                            </div>
+                            @endforeach
 
-                        @endforeach
+                        </div>
 
                     </div>
 
-                </div>
+                @endforeach
 
-            @endforeach
+            @endif
 
             <button type="submit" class="btn btn-primary">Save</button>
 

@@ -8,7 +8,9 @@
                 <h1>Create Content</h1>
             </div>
             <div class="col-md-3">
-                <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                @if(!$groups->isEmpty())
+                    <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                @endif
             </div>
         </div>
 
@@ -30,28 +32,30 @@
                 </div>
             </div>
 
+            @if(!$groups->isEmpty())
 
-            <div class="row subnav">
-                <div class="col-md-12">
-                    <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
-                </div>
-            </div>
-
-
-            @foreach($groups as $group)
-                <div class="card accordion">
-                    <div class="card-header accordion-header">{{ $group->name }}</div>
-                    <div class="card-block accordion-body">
-                        @foreach ($group->fields as $field)
-
-                            <div class="form-group">
-                                @include('argon::fields.field', ['value'=>old("fields.{$field->id}")])
-                            </div>
-
-                        @endforeach
+                <div class="row subnav">
+                    <div class="col-md-12">
+                        <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
                     </div>
                 </div>
-            @endforeach
+
+                @foreach($groups as $group)
+                    <div class="card accordion">
+                        <div class="card-header accordion-header">{{ $group->name }}</div>
+                        <div class="card-block accordion-body">
+                            @foreach ($group->fields as $field)
+
+                                <div class="form-group">
+                                    @include('argon::fields.field', ['value'=>old("fields.{$field->id}")])
+                                </div>
+
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+
+            @endif
 
             <button type="submit" class="btn btn-primary">Save</button>
 

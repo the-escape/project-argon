@@ -21,8 +21,8 @@
                         <label>Type</label>
                         <div>
                             <label class="checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page"> Page</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Block</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="page"> Email</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="block"> Block</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="email"> Email</label>
                         </div>
                     </div>
                 </div>
