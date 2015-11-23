@@ -45,4 +45,9 @@ class EntityField extends Model
     {
         $this->attributes['settings'] = json_encode($value);
     }
+
+    public function getSetting($setting)
+    {
+        return @$this->settings->{$setting};
+    }
 }

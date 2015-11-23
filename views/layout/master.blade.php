@@ -125,7 +125,33 @@
             setTimeout(function(){
                 $accordionExpandCollapse.trigger('click');
             }, 300);
-            
+
+
+            // TODO: TBC
+            $(document).on('click', '.add-field', function(){
+                var $self = $(this);
+                var el = $self.data();
+
+                if (typeof el.clone != 'undefined')
+                {
+                    var $el = $(el.clone);
+
+                    if ($el.length)
+                    {
+                        var $cloned = $el.clone();
+                        var subfield = parseInt(el.clone_subfield, 10) + 1;
+                        $cloned.val('');
+                        $cloned.prop('name', 'fields[' + el.clone_field + '][' + subfield + ']');
+                        $cloned.prop('id', 'field-' + el.clone_field + '-' + subfield);
+                        $self.data('clone', '#field-' + el.clone_field + '-' + subfield);
+                        $self.data('clone_field', el.clone_field);
+                        $self.data('clone_subfield', subfield);
+                        if(window.console) console.log($self.data());
+                        $self.before($cloned);
+                    }
+                }
+            });
+
 
 
             $('#locale-select').change(function () {

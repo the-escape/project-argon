@@ -33,21 +33,53 @@ class EntityRevision extends Model
         return new RevisionsCollection($models);
     }
 
-    public function field($id)
+    // TODO: $name seems ambiguous
+    public function field($name, EntityRevision $revision)
     {
-        $field = $this->entity->type->field($id);
-        return $this->fieldValue($field);
+        $field = $this->entity->type->field($name);
+        return $this->fieldValue($field, $revision);
     }
 
-    public function fieldById($id)
+    public function fieldById($id, EntityRevision $revision)
     {
         $field = $this->entity->type->fieldById($id);
-        return $this->fieldValue($field);
+        return $this->fieldValue($field, $revision);
     }
 
-    private function fieldValue($field)
+    private function fieldValue($field, EntityRevision $revision)
     {
-        $fieldData = $this->fields()->where('field_id', $field->id)->first();
+        $fieldData = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
+
+        if (!$fieldData->isEmpty())
+        {
+            $multiple = (bool) $field->getSetting('multiple');
+
+            if ($multiple)
+            {
+                $first = $fieldData->first();
+
+                $flattenedDataCollection = new FieldData;
+                $flattenedDataCollection->field_id = $first->field_id;
+                $flattenedDataCollection->entity_revision_id = $first->entity_revision_id;
+                $flattenedDataCollection->language = $first->language;
+
+                $agregatedValue = [];
+
+                foreach ($fieldData as $data)
+                {
+                    $agregatedValue[] = $data->value;
+                }
+
+                $flattenedDataCollection->value = $agregatedValue;
+
+                $fieldData = $flattenedDataCollection;
+            }
+            else
+            {
+                $fieldData = $fieldData->first();
+            }
+        }
+
 
         /** @var FieldTypesManager $fieldTypeManager */
         $fieldTypeManager = app('fieldTypes');

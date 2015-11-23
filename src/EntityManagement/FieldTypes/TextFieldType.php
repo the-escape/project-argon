@@ -48,6 +48,7 @@ class TextFieldType extends AbstractFieldType
 
     public function getValue(FieldData $data = null)
     {
-        return new TextFieldValue($data);
+        return $data->value;
+//        return new TextFieldValue($data);
     }
 }

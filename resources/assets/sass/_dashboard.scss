@@ -24,10 +24,15 @@ body.dashboard {
         margin-bottom: 0.75rem;
     }
 
+    .form-control + .add-field,
+    .form-control + .form-control {
+        margin-top: .5rem;
+    }
 
-    /*
-     * Sidebar
-     */
+
+        /*
+         * Sidebar
+         */
 
     /* Hide for mobile, show later */
     .sidebar {

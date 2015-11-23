@@ -52,7 +52,7 @@
                             @foreach ($group->fields as $field)
 
                                 <div class="form-group">
-                                    @include('argon::fields.field', ['value'=>old("fields.{$field->id}", $page->fieldById($field->id))])
+                                    @include('argon::fields.field')
                                 </div>
 
                             @endforeach

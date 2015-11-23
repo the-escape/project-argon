@@ -38,20 +38,20 @@ class Entity extends Model
 
     public function field($name)
     {
-        if ($latest = $this->latest())
+        if ($revision = $this->latest())
         {
-            return $this->latest()->field($name);
+            return $revision->field($name, $revision);
         }
-        return $latest;
+        return $revision;
     }
 
     public function fieldById($id)
     {
-        if ($latest = $this->latest())
+        if ($revision = $this->latest())
         {
-            return $this->latest()->fieldById($id);
+            return $revision->fieldById($id, $revision);
         }
-        return $latest;
+        return $revision;
     }
 
     public function type()
