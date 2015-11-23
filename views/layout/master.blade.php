@@ -49,6 +49,9 @@
 
         <script>
 
+
+            <?php
+            // ACCORDIONS: Handle all accordion instances on the page with .accordion-expand-collapse trigger ?>
             var $accordionExpandCollapse = $('.accordion-expand-collapse');
 
             $accordionExpandCollapse.click(function()
@@ -67,6 +70,8 @@
                 return false;
             });
 
+            <?php
+            // ACCORDIONS: Handle individial accordions ?>
             $('.accordion').accordion(
             {
                 active: false,
@@ -115,6 +120,13 @@
                 }
             });
 
+            <?php
+            // ACCORDIONS: expand all instances on load after slight delay ?>
+            setTimeout(function(){
+                $accordionExpandCollapse.trigger('click');
+            }, 300);
+            
+
 
             $('#locale-select').change(function () {
                 var val = $(this).val();
@@ -123,10 +135,10 @@
                 document.location = url + '?return=' + encodeURI(document.location);
             });
 
+
             <?php
             // Add confirm class to elements that should trigger confirm window
-            // To show custom text, add data-confirm attribute on html element
-            ?>
+            // To show custom text, add data-confirm attribute on html element ?>
             $('.confirm').on('click', function(){
                 return doubleCheck(this);
             });
@@ -134,8 +146,7 @@
             <?php
             // Generic js confirm window wrapper.
             // To show confirm window, just add confirm class to html elements that should trigger confirm window.
-            // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element.
-            ?>
+            // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element. ?>
             function doubleCheck(el, text)
             {
                 if(!text){
