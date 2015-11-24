@@ -49,13 +49,27 @@
 
                         <div class="card-block accordion-body">
 
-                            @foreach ($group->fields as $field)
+                            @if (isset($errors) && count($errors) > 0)
 
-                                <div class="form-group">
-                                    @include('argon::fields.field')
-                                </div>
+                                @foreach ($group->fields as $field)
 
-                            @endforeach
+                                    <div class="form-group">
+                                        @include('argon::fields.field')
+                                    </div>
+
+                                @endforeach
+
+                            @else
+
+                                @foreach ($group->fields as $field)
+
+                                    <div class="form-group">
+                                        @include('argon::fields.field')
+                                    </div>
+
+                                @endforeach
+
+                            @endif
 
                         </div>
 

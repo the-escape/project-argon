@@ -28,6 +28,9 @@ body.dashboard {
     .form-control + .form-control {
         margin-top: .5rem;
     }
+    .form-control.error {
+        border-color: #a94442;
+    }
 
 
         /*

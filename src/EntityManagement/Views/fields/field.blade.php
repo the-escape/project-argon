@@ -2,7 +2,11 @@
 
     @if($field->field_type == 'text')
 
-        @include('argon::fields.type.text')
+        @if(@$field->settings->multiline)
+            @include('argon::fields.type.textarea')
+        @else
+            @include('argon::fields.type.text')
+        @endif
 
     @elseif($field->field_type == 'image')
 

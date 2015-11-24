@@ -121,33 +121,38 @@
             });
 
             <?php
-            // ACCORDIONS: expand all instances on load after slight delay ?>
+            // ACCORDIONS: expand all instances on load after slight delay. ?>
             setTimeout(function(){
                 $accordionExpandCollapse.trigger('click');
             }, 300);
 
 
-            // TODO: TBC
-            $(document).on('click', '.add-field', function(){
+            <?php
+            // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
+            $(document).on('click', '.add-field', function()
+            {
                 var $self = $(this);
-                var el = $self.data();
+                var selfData = $self.data();
 
-                if (typeof el.clone != 'undefined')
+                if (typeof selfData.clone != 'undefined')
                 {
-                    var $el = $(el.clone);
+                    var $el = $('#'+selfData.clone);
 
-                    if ($el.length)
+                    if ($el && $el.length)
                     {
-                        var $cloned = $el.clone();
-                        var subfield = parseInt(el.clone_subfield, 10) + 1;
-                        $cloned.val('');
-                        $cloned.prop('name', 'fields[' + el.clone_field + '][' + subfield + ']');
-                        $cloned.prop('id', 'field-' + el.clone_field + '-' + subfield);
-                        $self.data('clone', '#field-' + el.clone_field + '-' + subfield);
-                        $self.data('clone_field', el.clone_field);
-                        $self.data('clone_subfield', subfield);
-                        if(window.console) console.log($self.data());
-                        $self.before($cloned);
+                        var matches = $el.attr('id').match(/fields-(\d+)-(\d+)/); // get field and subfield values by running a regex match on data.clone value
+                        var field = parseInt(matches[1], 10);
+                        var subfield = parseInt(matches[2], 10) + 1; // increase for the new field
+                        var idString = 'field-' + field + '-' + subfield; // updated id string that goes on clone and self elements
+
+                        var $cloned = $el.clone(); // clone element
+                        $cloned.val('').removeAttr('value'); // clear cloned value
+                        $cloned.prop('name', 'fields[' + field + '][]'); // update cloned name
+                        $cloned.prop('id', idString); // update cloned id
+                        $cloned.removeClass('error'); // remove error class if exists from cloned element
+
+                        $self.data('clone', idString); // update $self with new values for new clone
+                        $el.parent('.form-group').children('.form-control').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
                     }
                 }
             });
