@@ -43,7 +43,7 @@ class FileFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data)
+    public function getValue(FieldData $data=null)
     {
         throw new \Exception('Not implemented');
     }

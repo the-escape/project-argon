@@ -76,12 +76,23 @@
 
     @else
 
+        <?php
+        $idString = "fields-{$field->id}";
+        $camelString = str_replace('-', '.', $idString);
+        $errorClass = '';
+
+        if (isset($errors) && is_object($errors) && $errors instanceof \Illuminate\Support\ViewErrorBag && $errors->has($camelString))
+        {
+            $errorClass = 'error';
+        }
+        ?>
+
         @if(@$field->settings->required)
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <input type="text" id="field-{{ $field->id }}" class="form-control required" name="fields[{{ $field->id }}]" value="{{ old("fields.{$field->id}", $page->fieldById($field->id)) }}">
+            <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
+            <input type="text" id="{{ $idString }}" class="form-control required {{ $errorClass }}" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page->fieldById($field->id)) }}">
         @else
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <input type="text" id="field-{{ $field->id }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old("fields.{$field->id}", $page->fieldById($field->id)) }}">
+            <label for="{{ $idString }}" class="required {{ $errorClass }}">{{ $field->name }}</label>
+            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page->fieldById($field->id)) }}">
         @endif
 
     @endif

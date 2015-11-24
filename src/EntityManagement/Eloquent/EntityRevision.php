@@ -48,24 +48,27 @@ class EntityRevision extends Model
 
     private function fieldValue($field, EntityRevision $revision)
     {
-        $fieldData = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
+        $fieldDataCollection = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
 
-        if (!$fieldData->isEmpty())
+        if ($fieldDataCollection->isEmpty())
         {
-            $multiple = (bool) $field->getSetting('multiple');
+            $fieldData = null;
+        }
+        else
+        {
+            $multiple = (bool) @$field->settings->multiple;
+            $fieldData = $fieldDataCollection->first();
 
             if ($multiple)
             {
-                $first = $fieldData->first();
-
                 $flattenedDataCollection = new FieldData;
-                $flattenedDataCollection->field_id = $first->field_id;
-                $flattenedDataCollection->entity_revision_id = $first->entity_revision_id;
-                $flattenedDataCollection->language = $first->language;
+                $flattenedDataCollection->field_id = $fieldData->field_id;
+                $flattenedDataCollection->entity_revision_id = $fieldData->entity_revision_id;
+                $flattenedDataCollection->language = $fieldData->language;
 
                 $agregatedValue = [];
 
-                foreach ($fieldData as $data)
+                foreach ($fieldDataCollection as $data)
                 {
                     $agregatedValue[] = $data->value;
                 }
@@ -73,10 +76,6 @@ class EntityRevision extends Model
                 $flattenedDataCollection->value = $agregatedValue;
 
                 $fieldData = $flattenedDataCollection;
-            }
-            else
-            {
-                $fieldData = $fieldData->first();
             }
         }
 

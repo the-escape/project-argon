@@ -107,6 +107,26 @@ class PagesController extends BaseController
             {
                 $rules["fields.{$field->id}"] = implode('|', $rules["fields.{$field->id}"]);
             }
+
+            // validate each multiple field value individually
+            // copy fields validation rules to individual subfields, then remove top level field validation since not needed
+            if ($settings->multiple)
+            {
+                foreach (Input::get("fields.{$field->id}") as $k => $v)
+                {
+                    $niceNames["fields.{$field->id}.{$k}"] = $field->name.' ['.($k+1).']';
+
+                    if (@$rules["fields.{$field->id}"])
+                    {
+                        $rules["fields.{$field->id}.{$k}"] = $rules["fields.{$field->id}"];
+                    }
+                }
+
+                if (@$rules["fields.{$field->id}"])
+                {
+                    unset($rules["fields.{$field->id}"]);
+                }
+            }
         }
 
         $this->validate($this->request, $rules, [], $niceNames);
@@ -126,13 +146,31 @@ class PagesController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
-        foreach ($fields as $field) {
-            $fieldDataRepository->create([
-                'field_id' => $field->id,
-                'entity_revision_id' => $revision->id,
-                'language' => 'en_GB',
-                'value' => Input::get("fields.{$field->id}"),
-            ]);
+        foreach ($fields as $field)
+        {
+            $settings = $field->settings;
+
+            if ($settings->multiple)
+            {
+                foreach (Input::get("fields.{$field->id}") as $k => $v)
+                {
+                    $fieldDataRepository->create([
+                        'field_id' => $field->id,
+                        'entity_revision_id' => $revision->id,
+                        'language' => 'en_GB',
+                        'value' => Input::get("fields.{$field->id}.{$k}")
+                    ]);
+                }
+            }
+            else
+            {
+                $fieldDataRepository->create([
+                    'field_id' => $field->id,
+                    'entity_revision_id' => $revision->id,
+                    'language' => 'en_GB',
+                    'value' => Input::get("fields.{$field->id}")
+                ]);
+            }
         }
 
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])

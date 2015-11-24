@@ -67,5 +67,5 @@ abstract class AbstractFieldType
         return $settings;
     }
 
-    abstract public function getValue(FieldData $data);
+    abstract public function getValue(FieldData $data=null);
 }
