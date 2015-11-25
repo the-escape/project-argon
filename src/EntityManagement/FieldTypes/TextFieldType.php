@@ -43,7 +43,31 @@ class TextFieldType extends AbstractFieldType
             'type' => 'integer',
             'default' => null,
             'help' => null,
-        ]
+        ],
+        'url' => [
+            'label' => 'Validate as url?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
+        'number' => [
+            'label' => 'Validate as number?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
+        'email' => [
+            'label' => 'Validate as email?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
+        'phone' => [
+            'label' => 'Validate as phone number?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
     ];
 
     public function getValue(FieldData $data=null)

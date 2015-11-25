@@ -156,11 +156,13 @@
 
                     if (isInputGroup)
                     {
-                        $parentFormGroup.children('.input-group').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                        $parentFormGroup.children('.input-group').last().after($cloned).next().find('.form-control').focus();
                     }
                     else
                     {
-                        $parentFormGroup.children('.form-control').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                        $parentFormGroup.children('.form-control').last().after($cloned).next('.form-control').focus();
                     }
                 }
 
@@ -191,7 +193,7 @@
 
                 if (!$field.siblings('.form-control, .input-group').length)
                 {
-                    alert("Cannot remove.\nAt least one field must be present.");
+                    alert("Can't remove.\nAt least one field instance must be present.");
                     return false;
                 }
 

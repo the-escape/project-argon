@@ -56,7 +56,7 @@
                             <div class="checkbox">
                                 <label>
                                     <input type="hidden" value="0" name="{{$name}}">
-                                    <input type="checkbox" value="1" name="{{$name}}" @if ($field->settings->$name) checked="checked" @endif>
+                                    <input type="checkbox" value="1" name="{{$name}}" @if (@$field->settings->$name) checked="checked" @endif>
                                     {{ $property->label }}
                                 </label>
                                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
@@ -64,13 +64,13 @@
                         @elseif ($property->type == 'integer')
                             <div class="form-group">
                                 <label for="{{$name}}">{{$property->label}}</label>
-                                <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                                <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}">
                                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                             </div>
                         @elseif ($property->type == 'text')
                             <div class="form-group">
                                 <label for="{{$name}}">{{$property->label}}</label>
-                                <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, $field->settings->$name) }}">
+                                <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}">
                                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                             </div>
                         @endif

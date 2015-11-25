@@ -174,6 +174,9 @@ class EntityTypeController extends BaseController
         $fieldTypes = $fieldTypesManager->getFieldTypes();
         $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
 
+
+        $p = $field->type;
+
         return View::make(
             'argon::types.fields.edit',
             [
