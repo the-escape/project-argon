@@ -24,12 +24,24 @@ body.dashboard {
         margin-bottom: 0.75rem;
     }
 
-    .form-control + .add-field,
+    .form-control + .field-clone,
+    .input-group + .field-clone,
+    .form-control + .input-group,
+    .input-group + .input-group,
     .form-control + .form-control {
         margin-top: .5rem;
     }
     .form-control.error {
         border-color: #a94442;
+    }
+
+    .field-reorder,
+    .field-remove {
+        cursor: pointer;
+    }
+
+    .field-reorder {
+        cursor: ns-resize;
     }
 
 

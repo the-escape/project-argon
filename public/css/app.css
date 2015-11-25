@@ -4520,11 +4520,19 @@ body.dashboard {
     outline: none; }
   body.dashboard .subnav {
     margin-bottom: 0.75rem; }
-  body.dashboard .form-control + .add-field,
+  body.dashboard .form-control + .field-clone,
+  body.dashboard .input-group + .field-clone,
+  body.dashboard .form-control + .input-group,
+  body.dashboard .input-group + .input-group,
   body.dashboard .form-control + .form-control {
     margin-top: .5rem; }
   body.dashboard .form-control.error {
     border-color: #a94442; }
+  body.dashboard .field-reorder,
+  body.dashboard .field-remove {
+    cursor: pointer; }
+  body.dashboard .field-reorder {
+    cursor: ns-resize; }
   body.dashboard .sidebar {
     display: none; }
   @media (min-width: 768px) {

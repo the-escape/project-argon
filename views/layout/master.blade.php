@@ -44,7 +44,9 @@
         <script src="/argon/js/jquery.min.js"></script>
         <script src="/argon/js/core.js"></script>
         <script src="/argon/js/widget.js"></script>
+        <script src="/argon/js/mouse.js"></script>
         <script src="/argon/js/accordion.js"></script>
+        <script src="/argon/js/sortable.js"></script>
         <script src="/argon/js/bootstrap.min.js"></script>
 
         <script>
@@ -129,35 +131,76 @@
 
             <?php
             // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
-            $(document).on('click', '.add-field', function()
+            $(document).on('click', '.field-clone', function()
             {
                 var $self = $(this);
-                var selfData = $self.data();
+                var $parentFormGroup = $self.parent('.form-group');
 
-                if (typeof selfData.clone != 'undefined')
+                if ($parentFormGroup && $parentFormGroup.length)
                 {
-                    var $el = $('#'+selfData.clone);
+                    var $el = $parentFormGroup.children('.form-control, .input-group').first();
+                    var selfData = $self.data();
 
-                    if ($el && $el.length)
+
+
+                    var $cloned = $el.clone(true, true); // clone element
+                    var isInputGroup = $el.hasClass('input-group');
+
+                    var $clonedInput = (isInputGroup) ? $cloned.find('.form-control') : $cloned // find input field within cloned html
+
+                    var matches = $clonedInput.attr('name').match(/fields\[(\d+)\]/); // get field value by running a regex match
+                    $clonedInput.val('').removeAttr('value'); // clear cloned value
+                    $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
+                    $clonedInput.removeAttr('id'); // update cloned id
+                    $clonedInput.removeClass('error'); // remove error class if exists from cloned element
+
+                    if (isInputGroup)
                     {
-                        var matches = $el.attr('id').match(/fields-(\d+)-(\d+)/); // get field and subfield values by running a regex match on data.clone value
-                        var field = parseInt(matches[1], 10);
-                        var subfield = parseInt(matches[2], 10) + 1; // increase for the new field
-                        var idString = 'field-' + field + '-' + subfield; // updated id string that goes on clone and self elements
-
-                        var $cloned = $el.clone(); // clone element
-                        $cloned.val('').removeAttr('value'); // clear cloned value
-                        $cloned.prop('name', 'fields[' + field + '][]'); // update cloned name
-                        $cloned.prop('id', idString); // update cloned id
-                        $cloned.removeClass('error'); // remove error class if exists from cloned element
-
-                        $self.data('clone', idString); // update $self with new values for new clone
-                        $el.parent('.form-group').children('.form-control').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                        $parentFormGroup.children('.input-group').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+                    }
+                    else
+                    {
+                        $parentFormGroup.children('.form-control').last().after($cloned); // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
                     }
                 }
+
+                $self.trigger('blur'); // unfocus the button
             });
 
 
+            <?php
+            // FIELDS SORTING: ?>
+            $('.form-group').sortable(
+            {
+                handle: ".field-reorder",
+                items: "> .sortable",
+                axis: "y"
+            }).disableSelection();
+
+
+            <?php
+            // FIELD REMOVING: except last one ?>
+            $(document).on('click', '.field-remove', function()
+            {
+                var $field;
+
+                var $self = $(this);
+                var $inputGroup = $self.parent('.input-group');
+
+                $field = ($inputGroup.length) ? $inputGroup :$self.siblings('.form-control');
+
+                if (!$field.siblings('.form-control, .input-group').length)
+                {
+                    alert("Cannot remove.\nAt least one field must be present.");
+                    return false;
+                }
+
+                if(doubleCheck(this))
+                {
+                    $field.remove();
+                    return;
+                }
+            });
 
             $('#locale-select').change(function () {
                 var val = $(this).val();

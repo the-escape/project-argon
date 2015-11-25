@@ -3,9 +3,9 @@
     @if(@$field->settings->multiple)
 
         @if(@$field->settings->required)
-            <label for="field-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
+            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
         @else
-            <label for="field-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
+            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
         @endif
 
 
@@ -24,15 +24,21 @@
                 }
                 ?>
 
-                @if(@$field->settings->required)
-                    <input type="text" id="{{ $idString }}" class="form-control required {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
-                @else
-                    <input type="text" id="{{ $idString }}" class="form-control {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
-                @endif
+                <div class="input-group sortable">
+                    <div class="input-group-addon field-reorder">&#8645;</div>
+
+                    @if(@$field->settings->required)
+                        <input type="text" id="{{ $idString }}" class="form-control required {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                    @else
+                        <input type="text" id="{{ $idString }}" class="form-control {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                    @endif
+
+                    <div class="input-group-addon field-remove">&#10005;</div>
+                </div>
 
             @endforeach
 
-            <a href="#addField" class="btn btn-secondary-outline btn-sm add-field" data-clone="{{ $idString }}">Add Field</a>
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
 
         @else
 
@@ -45,15 +51,21 @@
                     $camelString = str_replace('-', '.', $idString);
                     ?>
 
-                    @if(@$field->settings->required)
-                        <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
-                    @else
-                        <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
-                    @endif
+                    <div class="input-group sortable">
+                        <div class="input-group-addon field-reorder">&#8645;</div>
+
+                        @if(@$field->settings->required)
+                            <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                        @else
+                            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                        @endif
+
+                        <div class="input-group-addon field-remove">&#10005;</div>
+                    </div>
 
                 @endforeach
 
-                <a href="#addField" class="btn btn-secondary-outline btn-sm add-field" data-clone="{{ $idString }}">Add Field</a>
+                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
 
             @else
 
@@ -62,13 +74,19 @@
                 $camelString = str_replace('-', '.', $idString);
                 ?>
 
-                @if(@$field->settings->required)
-                    <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
-                @else
-                    <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
-                @endif
+                <div class="input-group sortable">
+                    <div class="input-group-addon field-reorder">&#8645;</div>
 
-                <a href="#addField" class="btn btn-secondary-outline btn-sm add-field" data-clone="{{ $idString }}">Add Field</a>
+                    @if(@$field->settings->required)
+                        <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
+                    @else
+                        <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
+                    @endif
+
+                    <div class="input-group-addon field-remove">&#10005;</div>
+                </div>
+
+                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
 
             @endif
 

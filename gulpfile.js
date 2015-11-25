@@ -20,7 +20,9 @@ elixir(function(mix) {
 
     mix.copy('bower_components/jquery.ui/ui/core.js', 'public/js');
     mix.copy('bower_components/jquery.ui/ui/widget.js', 'public/js');
+    mix.copy('bower_components/jquery.ui/ui/mouse.js', 'public/js');
     mix.copy('bower_components/jquery.ui/ui/accordion.js', 'public/js');
+    mix.copy('bower_components/jquery.ui/ui/sortable.js', 'public/js');
 
     mix.copy('bower_components/bootstrap/dist/js/bootstrap.*', 'public/js');
 
