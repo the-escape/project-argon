@@ -25,6 +25,7 @@ elixir(function(mix) {
     mix.copy('bower_components/jquery.ui/ui/sortable.js', 'public/js');
 
     mix.copy('bower_components/bootstrap/dist/js/bootstrap.*', 'public/js');
+    mix.copy('bower_components/tether/dist/js/tether.min.js', 'public/js');
 
     mix.copy('bower_components/jstree/dist/jstree.min.js', 'public/js');
 

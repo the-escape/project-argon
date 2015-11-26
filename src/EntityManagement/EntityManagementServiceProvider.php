@@ -5,6 +5,7 @@ namespace Escape\Argon\EntityManagement;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
+use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
@@ -181,6 +182,83 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'deleteGroup'
         );
+
+        // Combo
+        $this->addRoute(
+            'types/{typeId}/combos/add',
+            'cms:types:combos:add',
+            EntityTypeController::class,
+            'addCombo'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/add',
+            'cms:types:combos:save',
+            EntityTypeController::class,
+            'saveCombo',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/edit',
+            'cms:types:combos:edit',
+            EntityTypeController::class,
+            'editCombo'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/edit',
+            'cms:types:combos:update',
+            EntityTypeController::class,
+            'updateCombo',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/delete',
+            'cms:types:combos:delete',
+            EntityTypeController::class,
+            'deleteCombo'
+        );
+
+        // Combo (sub)Fields
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/field/add',
+            'cms:types:combos:fields:add',
+            EntityTypeController::class,
+            'addComboField'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/field/add',
+            'cms:types:combos:fields:save',
+            EntityTypeController::class,
+            'saveComboField',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/field/{fieldId}/edit',
+            'cms:types:combos:fields:edit',
+            EntityTypeController::class,
+            'editComboField'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/{fieldId}/edit',
+            'cms:types:combos:fields:update',
+            EntityTypeController::class,
+            'updateComboField',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/{fieldId}/delete',
+            'cms:types:combos:fields:delete',
+            EntityTypeController::class,
+            'deleteComboField'
+        );
+
     }
 
     public function boot()
@@ -224,5 +302,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
         $this->fieldTypesManager->registerFieldType(new LocationFieldType());
         $this->fieldTypesManager->registerFieldType(new UserFieldType());
+        $this->fieldTypesManager->registerFieldType(new ComboFieldType());
     }
 }

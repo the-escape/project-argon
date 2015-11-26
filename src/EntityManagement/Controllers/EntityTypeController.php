@@ -7,6 +7,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityFieldRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
+use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
@@ -60,11 +61,11 @@ class EntityTypeController extends BaseController
             ->with('message', Lang::get('argon-entities::type.updated'));
     }
 
-    public function edit($typeId)
+    public function edit($typeId,ComboFieldType $comboFieldType)
     {
         $type = $this->typeRepository->find($typeId);
 
-        return View::make('argon::types.edit', ['type' => $type]);
+        return View::make('argon::types.edit', ['type' => $type, 'comboFieldType' => $comboFieldType]);
     }
 
     public function delete(
@@ -87,9 +88,6 @@ class EntityTypeController extends BaseController
         return Redirect::route('cms:types:manage')
             ->with('message', Lang::get('argon-entities::type.deleted'));
     }
-
-
-
 
     public function addField($typeId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository)
     {
@@ -152,6 +150,7 @@ class EntityTypeController extends BaseController
         $attributes = array_merge_recursive(Input::all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
+            'parent_field_id' => 0,
             'settings' => $settings,
         ]);
 
@@ -242,6 +241,7 @@ class EntityTypeController extends BaseController
         $attributes = array_merge_recursive(Input::all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
+            'parent_field_id' => 0,
             'settings' => $settings,
         ]);
 
@@ -346,7 +346,6 @@ class EntityTypeController extends BaseController
     public function deleteGroup(
         $typeId,
         $groupId,
-        FieldTypesManager $fieldTypesManager,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository,
         EntityFieldRepository $fieldRepository
@@ -385,6 +384,264 @@ class EntityTypeController extends BaseController
 
         return Redirect::route('cms:types:groups', [$type->id])
             ->with('message', Lang::get('argon-entities::group.deleted'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function addCombo($typeId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository)
+    {
+        $type = $this->typeRepository->find($typeId);
+
+        $fieldTypes = $fieldTypesManager->getFieldTypes();
+        $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
+
+        return View::make('argon::types.combos.add', [
+            'type' => $type,
+            'fieldTypes' => $fieldTypes,
+            'fieldGroups' => $fieldGroups,
+        ]);
+    }
+
+    public function saveCombo(
+        $typeId,
+        EntityFieldRepository $fieldRepository,
+        EntityGroupRepository $groupRepository,
+        ComboFieldType $comboFieldType
+    ) {
+        $this->validate($this->request, [
+            'name' => 'required',
+            'group' => 'required',
+        ]);
+
+        $settings = $comboFieldType->getDefaultSettings();
+
+        $groupId = 0;
+
+        if ($groupName = Input::get('group'))
+        {
+            $groups = $groupRepository->findByField('entity_type_id', $typeId);
+
+            $found = false;
+
+            foreach ($groups as $group)
+            {
+                if ($group->id == $groupName)
+                {
+                    $found = $group;
+                    break;
+                }
+            }
+
+            if (!$found)
+            {
+                $found = $groupRepository->create([
+                    'name'=>$groupName,
+                    'entity_type_id'=>$typeId,
+                ]);
+            }
+
+            $groupId = $found->id;
+        }
+
+        $attributes = array_merge_recursive(Input::all(), [
+            'entity_type_id' => $typeId,
+            'entity_group_id' => $groupId,
+            'parent_field_id' => 0,
+            'field_type' => $comboFieldType->getKey(),
+            'settings' => $settings,
+        ]);
+
+        $field = $fieldRepository->create($attributes);
+
+        return Redirect::route('cms:types:combos:edit', [$typeId, $field->id])
+            ->with('message', Lang::get('argon-entities::combo.created'));
+    }
+
+    public function editCombo(
+        $typeId,
+        $fieldId,
+        EntityFieldRepository $fieldRepository,
+        EntityGroupRepository $groupRepository,
+        EntityTypeRepository $typeRepository,
+        ComboFieldType $comboFieldType,
+        FieldTypesManager $fieldTypesManager
+    ) {
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($fieldId);
+        $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
+
+        return View::make(
+            'argon::types.combos.edit',
+            [
+                'type' => $type,
+                'combo' => $combo,
+                'fieldGroups' => $fieldGroups,
+            ]
+        );
+    }
+
+    public function updateCombo(
+        $typeId,
+        $fieldId,
+        EntityFieldRepository $fieldRepository,
+        FieldTypesManager $fieldTypesManager,
+        EntityGroupRepository $groupRepository,
+        ComboFieldType $comboFieldType
+    ) {
+
+        $this->validate($this->request, [
+            'name' => 'required',
+            'group' => 'required',
+        ]);
+
+        $defaultSettings = $comboFieldType->getDefaultSettings();
+
+        $oldField = $fieldRepository->find($fieldId);
+
+        // if field type has changed use default settings
+        $settings = ($oldField->field_type != $comboFieldType->getKey())
+            ? $defaultSettings
+            : array_intersect_key(Input::all(), (array) $defaultSettings);
+
+
+        $groupId = 0;
+
+        if ($groupName = Input::get('group'))
+        {
+            $groups = $groupRepository->findByField('entity_type_id', $typeId);
+
+            $found = false;
+
+            foreach ($groups as $group)
+            {
+                if ($group->id == $groupName)
+                {
+                    $found = $group;
+                    break;
+                }
+            }
+
+            if (!$found)
+            {
+                $found = $groupRepository->create([
+                    'name'=>$groupName,
+                    'entity_type_id'=>$typeId,
+                ]);
+            }
+
+            $groupId = $found->id;
+        }
+
+        $attributes = array_merge_recursive(Input::all(), [
+            'entity_type_id' => $typeId,
+            'entity_group_id' => $groupId,
+            'parent_field_id' => 0,
+            'settings' => $settings,
+        ]);
+
+        $field = $fieldRepository->update($attributes, $fieldId);
+
+        // Don't redirect to cms:types:edit since if the field's type has changed
+        // new properties will be displayed and likely to customise.
+        return Redirect::route('cms:types:combos:edit', [$typeId, $field->id])
+            ->with('message', Lang::get('argon-entities::combo.updated'));
+    }
+
+    public function deleteCombo(
+        $typeId,
+        $fieldId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+        $field = $fieldRepository->find($fieldId);
+
+        $deleted = $fieldRepository->delete($field->id);
+
+        return Redirect::route('cms:types:edit', [$type->id])
+            ->with('message', Lang::get('argon-entities::combo.deleted'));
+    }
+
+
+    public function addComboField($typeId, $comboId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository, EntityFieldRepository $fieldRepository)
+    {
+        $type = $this->typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $fieldTypes = $fieldTypesManager->getFieldTypes();
+        $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
+
+        return View::make('argon::types.combos.subfields.add', [
+            'type' => $type,
+            'combo' => $combo,
+            'fieldTypes' => $fieldTypes,
+        ]);
+    }
+
+
+    public function saveComboField(
+        $typeId,
+        $comboId,
+        EntityFieldRepository $fieldRepository,
+        FieldTypesManager $fieldTypesManager
+    ) {
+        $this->validate($this->request, [
+            'name' => 'required',
+            'field_type' => 'required',
+        ]);
+
+        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+        $combo = $fieldRepository->find($comboId);
+
+        $settings = $fieldType->getDefaultSettings();
+
+        $groupId = 0;
+
+        $attributes = array_merge_recursive(Input::all(), [
+            'entity_type_id' => $typeId,
+            'entity_group_id' => $groupId,
+            'parent_field_id' => $combo->id,
+            'settings' => $settings,
+        ]);
+
+        $field = $fieldRepository->create($attributes);
+
+        return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
+            ->with('message', Lang::get('argon-entities::field.created'));
+    }
+
+    public function editComboField(
+        $typeId,
+        $comboId,
+        $fieldId,
+        FieldTypesManager $fieldTypesManager,
+        EntityFieldRepository $fieldRepository,
+        EntityTypeRepository $typeRepository
+    ) {
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+        $fieldTypes = $fieldTypesManager->getFieldTypes();
+
+        return View::make(
+            'argon::types.combos.subfields.edit',
+            [
+                'type' => $type,
+                'combo' => $combo,
+                'field' => $field,
+                'fieldTypes' => $fieldTypes,
+            ]
+        );
     }
 
 }

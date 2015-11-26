@@ -47,6 +47,7 @@
         <script src="/argon/js/mouse.js"></script>
         <script src="/argon/js/accordion.js"></script>
         <script src="/argon/js/sortable.js"></script>
+        <script src="/argon/js/tether.min.js"></script>
         <script src="/argon/js/bootstrap.min.js"></script>
 
         <script>
@@ -203,6 +204,10 @@
                     return;
                 }
             });
+
+
+            $('[data-toggle="tooltip"]').tooltip();
+
 
             $('#locale-select').change(function () {
                 var val = $(this).val();

@@ -43,7 +43,7 @@
                         @foreach ($type->fields as $field)
                             <tr>
                                 <td>
-                                    {{ $field->name }}
+                                    <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
                                 </td>
                                 <td>
                                     {{ $field->field_type }}
@@ -52,14 +52,20 @@
                                     {{ @$field->group->name }}
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
-                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
+                                    @if($field->field_type == $comboFieldType->getKey())
+                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
+                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
+                                    @else
+                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
+                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                     </table>
                     <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add Field</a>
-                    <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Type Groups</a>
+                    <a href="{{ route('cms:types:combos:add', [$type->id]) }}" class="btn btn-primary-outline">Add Combo</a>
+                    <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>
                 </div>
             </div>
 
