@@ -50,8 +50,14 @@ class TextFieldType extends AbstractFieldType
             'default' => null,
             'help' => null,
         ],
-        'number' => [
-            'label' => 'Validate as number?',
+        'integer' => [
+            'label' => 'Validate as integer?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
+        'float' => [
+            'label' => 'Validate as floating point number?',
             'type' => 'boolean',
             'default' => null,
             'help' => null,

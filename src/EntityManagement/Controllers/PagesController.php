@@ -1,7 +1,7 @@
 <?php
 
 namespace Escape\Argon\EntityManagement\Controllers;
-
+use Escape\Argon\EntityManagement\Helpers\Validation as ValidationHelpers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
@@ -82,52 +82,8 @@ class PagesController extends BaseController
             'slug' => "required|unique:entities,slug,NULL,id,parent,{$parentId}",
         ];
 
-        foreach ($fields as $field)
-        {
-            $niceNames["fields.{$field->id}"] = $field->name;
-
-            $settings = $field->settings;
-
-            if ($settings->required)
-            {
-                $rules["fields.{$field->id}"][] = 'required';
-            }
-
-            if ($settings->minlength)
-            {
-                $rules["fields.{$field->id}"][] = "min:{$settings->minlength}";
-            }
-
-            if ($settings->maxlength)
-            {
-                $rules["fields.{$field->id}"][] = "max:{$settings->maxlength}";
-            }
-
-            if (@$rules["fields.{$field->id}"])
-            {
-                $rules["fields.{$field->id}"] = implode('|', $rules["fields.{$field->id}"]);
-            }
-
-            // validate each multiple field value individually
-            // copy fields validation rules to individual subfields, then remove top level field validation since not needed
-            if ($settings->multiple)
-            {
-                foreach (Input::get("fields.{$field->id}") as $k => $v)
-                {
-                    $niceNames["fields.{$field->id}.{$k}"] = $field->name.' ['.($k+1).']';
-
-                    if (@$rules["fields.{$field->id}"])
-                    {
-                        $rules["fields.{$field->id}.{$k}"] = $rules["fields.{$field->id}"];
-                    }
-                }
-
-                if (@$rules["fields.{$field->id}"])
-                {
-                    unset($rules["fields.{$field->id}"]);
-                }
-            }
-        }
+        list($niceNames, $rules) = ValidationHelpers::validationFieldsSetup($fields, $niceNames, $rules);
+//        list($niceNames, $rules) = $this->preValidationSetup($fields, $niceNames, $rules);
 
         $this->validate($this->request, $rules, [], $niceNames);
 
@@ -214,52 +170,8 @@ class PagesController extends BaseController
             'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
         ];
 
-        foreach ($fields as $field)
-        {
-            $niceNames["fields.{$field->id}"] = $field->name;
-
-            $settings = $field->settings;
-
-            if ($settings->required)
-            {
-                $rules["fields.{$field->id}"][] = 'required';
-            }
-
-            if ($settings->minlength)
-            {
-                $rules["fields.{$field->id}"][] = "min:{$settings->minlength}";
-            }
-
-            if ($settings->maxlength)
-            {
-                $rules["fields.{$field->id}"][] = "max:{$settings->maxlength}";
-            }
-
-            if (@$rules["fields.{$field->id}"])
-            {
-                $rules["fields.{$field->id}"] = implode('|', $rules["fields.{$field->id}"]);
-            }
-
-            // validate each multiple field value individually
-            // copy fields validation rules to individual subfields, then remove top level field validation since not needed
-            if ($settings->multiple)
-            {
-                foreach (Input::get("fields.{$field->id}") as $k => $v)
-                {
-                    $niceNames["fields.{$field->id}.{$k}"] = $field->name.' ['.($k+1).']';
-
-                    if (@$rules["fields.{$field->id}"])
-                    {
-                        $rules["fields.{$field->id}.{$k}"] = $rules["fields.{$field->id}"];
-                    }
-                }
-
-                if (@$rules["fields.{$field->id}"])
-                {
-                    unset($rules["fields.{$field->id}"]);
-                }
-            }
-        }
+        list($niceNames, $rules) = ValidationHelpers::validationFieldsSetup($fields, $niceNames, $rules);
+//        list($niceNames, $rules) = $this->preValidationSetup($fields, $niceNames, $rules);
 
         $this->validate($this->request, $rules, [], $niceNames);
 

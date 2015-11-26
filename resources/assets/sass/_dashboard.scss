@@ -1,3 +1,6 @@
+$error-color: #a94442;
+$standard-margin-bottom: 0.75rem;
+
 body.dashboard {
     padding-top: 50px;
 
@@ -21,7 +24,7 @@ body.dashboard {
     }
 
     .subnav {
-        margin-bottom: 0.75rem;
+        margin-bottom: $standard-margin-bottom;
     }
 
     .form-control + .field-clone,
@@ -32,7 +35,7 @@ body.dashboard {
         margin-top: .5rem;
     }
     .form-control.error {
-        border-color: #a94442;
+        border-color: $error-color;
     }
 
     .field-reorder,
@@ -42,6 +45,14 @@ body.dashboard {
 
     .field-reorder {
         cursor: ns-resize;
+    }
+
+    .help-block {
+        font-size: 0.9rem;
+        display: block;
+        margin-top: 2px;
+        margin-bottom: $standard-margin-bottom;
+        color: #737373;
     }
 
 
