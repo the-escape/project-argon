@@ -45,4 +45,10 @@ class EntityField extends Model
     {
         $this->attributes['settings'] = json_encode($value);
     }
+
+    public function subfields()
+    {
+        return $this->hasMany(EntityField::class, 'parent_field_id');
+    }
+
 }

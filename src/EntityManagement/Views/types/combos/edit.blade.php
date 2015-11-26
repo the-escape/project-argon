@@ -56,7 +56,12 @@
 
                 <div class="card-block">
 
-                    <p>fields here</p>
+                    @foreach($combo->subfields as $field)
+                        <div class="form-group">
+                            {{ $field->name  }}
+                            {{--@include('argon::fields.field')--}}
+                        </div>
+                    @endforeach
 
                     <a href="{{ route('cms:types:combos:fields:add', [$type->id, $combo->id]) }}" class="btn btn-primary-outline">Add Field</a>
 
