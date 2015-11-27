@@ -142,6 +142,8 @@ class PagesController extends BaseController
         return View::make('argon::pages.edit', ['page' => $page, 'groups' => $groups]);
     }
 
+    // TODO: add validation for combo subfields in ValidationHelpers::validationFieldsSetup
+    // TODO: rethink the EntityType->fields(), EntityGroup->fields() method. Perhaps safer with pulling all there and other method with exclude arg.
     public function update(
         $pageId,
         EntityRepository $entityRepository,

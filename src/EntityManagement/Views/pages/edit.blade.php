@@ -49,27 +49,15 @@
 
                         <div class="card-block accordion-body">
 
-                            @if (isset($errors) && count($errors) > 0)
+                            <?php // echo "\n\n<pre>" . print_r($group->fields, TRUE) . "</pre>\n\n";?>
 
-                                @foreach ($group->fields as $field)
+                            @foreach ($group->fields as $field)
 
-                                    <div class="form-group sortable">
-                                        @include('argon::fields.field')
-                                    </div>
+                                <div class="form-group sortable">
+                                    @include('argon::fields.field')
+                                </div>
 
-                                @endforeach
-
-                            @else
-
-                                @foreach ($group->fields as $field)
-
-                                    <div class="form-group sortable">
-                                        @include('argon::fields.field')
-                                    </div>
-
-                                @endforeach
-
-                            @endif
+                            @endforeach
 
                         </div>
 

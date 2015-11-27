@@ -27,7 +27,8 @@ class EntityGroup extends Model
 
     public function fields()
     {
-        return $this->hasMany(EntityField::class);
+        return $this->hasMany(EntityField::class)->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
+//        return $this->hasMany(EntityField::class)->where('parent_field_id', 0)->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
     }
 
 }

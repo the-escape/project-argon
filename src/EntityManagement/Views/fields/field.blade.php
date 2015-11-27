@@ -48,6 +48,10 @@
 
         @include('argon::fields.type.user')
 
+    @elseif($field->field_type == 'combo')
+
+        @include('argon::fields.type.combo')
+
     @endif
 
 @endif
