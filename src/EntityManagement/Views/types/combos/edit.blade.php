@@ -50,23 +50,49 @@
 
             </div>
 
+
             <div class="card">
-
                 <div class="card-header">Subfields</div>
-
                 <div class="card-block">
 
-                    @foreach($combo->subfields as $field)
-                        <div class="form-group">
-                            {{ $field->name  }}
-                            {{--@include('argon::fields.field')--}}
-                        </div>
-                    @endforeach
+                    @if(($subfields = $combo->subfields) && (!$subfields->isEmpty()))
 
-                    <a href="{{ route('cms:types:combos:fields:add', [$type->id, $combo->id]) }}" class="btn btn-primary-outline">Add Field</a>
+                        <input id="order-{{$combo->id}}" type="hidden" name="order">
 
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="sortable" data-sortable_field="order-{{$combo->id}}">
+                                @foreach($subfields as $field)
+                                    <tr class="sortable-item" data-sortable_item="{{$field->id}}">
+                                        <td>
+                                            <span class="sortable-handle btn">&#8645;</span>
+                                        </td>
+                                        <td>
+                                            <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $field->field_type }}
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id]) }}">Edit</a>
+                                            <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:delete', [$type->id, $combo->id, $field->id]) }}">Remove</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    @endif
+
+                    <a href="{{ route('cms:types:combos:fields:add', [$type->id, $combo->id]) }}" class="btn btn-primary-outline">Add Subfield</a>
                 </div>
-
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>

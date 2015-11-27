@@ -245,7 +245,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'types/{typeId}/combos/{comboId}/{fieldId}/edit',
+            'types/{typeId}/combos/{comboId}/field/{fieldId}/edit',
             'cms:types:combos:fields:update',
             EntityTypeController::class,
             'updateComboField',
@@ -253,7 +253,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'types/{typeId}/combos/{comboId}/{fieldId}/delete',
+            'types/{typeId}/combos/{comboId}/field/{fieldId}/delete',
             'cms:types:combos:fields:delete',
             EntityTypeController::class,
             'deleteComboField'

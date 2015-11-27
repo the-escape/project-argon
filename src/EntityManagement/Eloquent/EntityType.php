@@ -25,9 +25,11 @@ class EntityType extends Model
      */
     protected $fillable = ['name'];
 
+    // get all fields except combo subfields
+    // combo field should be pulled here as a top level (standard) field, not its children
     public function fields()
     {
-        return $this->hasMany(EntityField::class)->orderBy('entity_group_id')->orderBy( 'name');
+        return $this->hasMany(EntityField::class)->where('parent_field_id', 0)->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
     }
 
     /**

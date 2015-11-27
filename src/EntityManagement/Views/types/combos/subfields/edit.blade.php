@@ -6,7 +6,7 @@
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:types:combos:fields:save', [$type->id, $combo->id, $field->id]) }}" method="POST">
+        <form action="{{ route('cms:types:combos:fields:update', [$type->id, $combo->id, $field->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">Details</div>
@@ -52,6 +52,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-link" href="{{route('cms:types:combos:edit', [$type->id, $combo->id])}}">Back to edit combo</a>
             <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
             <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
         </form>

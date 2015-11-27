@@ -38,13 +38,31 @@ body.dashboard {
         border-color: $error-color;
     }
 
-    .field-reorder,
+    .sortable-handle,
     .field-remove {
         cursor: pointer;
     }
 
-    .field-reorder {
+    .sortable-handle {
         cursor: ns-resize;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: normal;
+        line-height: 1;
+        color: #55595c;
+        text-align: center;
+        background-color: #eceeef;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+    }
+    .sortable-handle.input-group-addon:first-child {
+        border-right:0;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .ui-sortable-helper {
+        display: table; /* sorts out width when sorting table rows */
     }
 
     .help-block {
@@ -55,6 +73,19 @@ body.dashboard {
         color: #737373;
     }
 
+    .dropdown-menu {
+        padding: 0;
+        li {
+            padding: 1px 0;
+            border-bottom: inherit;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .btn-block {
+            text-align: left;
+        }
+    }
 
         /*
          * Sidebar

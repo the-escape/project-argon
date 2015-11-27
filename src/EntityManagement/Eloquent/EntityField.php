@@ -21,7 +21,7 @@ class EntityField extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'entity_group_id', 'parent_field_id'];
+    protected $fillable = ['name', 'field_type', 'entity_type_id', 'settings', 'entity_group_id', 'parent_field_id', 'order'];
 
     public function group()
     {
@@ -48,7 +48,7 @@ class EntityField extends Model
 
     public function subfields()
     {
-        return $this->hasMany(EntityField::class, 'parent_field_id');
+        return $this->hasMany(EntityField::class, 'parent_field_id')->orderBy('order')->orderBy('id');
     }
 
 }

@@ -24,8 +24,8 @@
                 }
                 ?>
 
-                <div class="input-group sortable">
-                    <div class="input-group-addon field-reorder">&#8645;</div>
+                <div class="input-group sortable-item">
+                    <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
                         <input type="text" id="{{ $idString }}" class="form-control required {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
@@ -51,8 +51,8 @@
                     $camelString = str_replace('-', '.', $idString);
                     ?>
 
-                    <div class="input-group sortable">
-                        <div class="input-group-addon field-reorder">&#8645;</div>
+                    <div class="input-group sortable-item">
+                        <div class="input-group-addon sortable-handle">&#8645;</div>
 
                         @if(@$field->settings->required)
                             <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
@@ -74,8 +74,8 @@
                 $camelString = str_replace('-', '.', $idString);
                 ?>
 
-                <div class="input-group sortable">
-                    <div class="input-group-addon field-reorder">&#8645;</div>
+                <div class="input-group sortable-item">
+                    <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
                         <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">

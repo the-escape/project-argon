@@ -82,7 +82,7 @@ class Validation
 
             // validate each multiple field value individually
             // copy fields validation rules to individual subfields, then remove top level field validation since not needed
-            if ($settings->multiple)
+            if (@$settings->multiple)
             {
                 foreach (Input::get("fields.{$field->id}") as $k => $v)
                 {

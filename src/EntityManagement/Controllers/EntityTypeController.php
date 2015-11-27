@@ -49,7 +49,7 @@ class EntityTypeController extends BaseController
             ->with('message', Lang::get('argon-entities::type.created'));
     }
 
-    public function update($typeId)
+    public function update($typeId, EntityFieldRepository $fieldRepository)
     {
         $this->validate($this->request, [
             'name' => 'required',
@@ -57,11 +57,33 @@ class EntityTypeController extends BaseController
 
         $type = $this->typeRepository->update(Input::all(), $typeId);
 
+        if ($order = Input::get('order'))
+        {
+            // get type fields for extra validation checks
+            $fields = $type->fields->keyBy('id');
+
+            if ($order = explode(',', $order))
+            {
+                foreach ($order as $i => $fieldId)
+                {
+                    // make sure $fieldId is a valid field of this content type
+                    // don't want to accidentally update unrelated fields...
+                    if (!isset($fields[$fieldId]))
+                    {
+                        return Redirect::route('cms:types:combos:edit', [$type->id])
+                            ->with('errors', "Field ID: {$fieldId} doesn't belong to this content type.");
+                    }
+
+                    $fieldRepository->update(['order'=>$i], $fieldId);
+                }
+            }
+        }
+
         return Redirect::route('cms:types:edit', [$type->id])
             ->with('message', Lang::get('argon-entities::type.updated'));
     }
 
-    public function edit($typeId,ComboFieldType $comboFieldType)
+    public function edit($typeId, ComboFieldType $comboFieldType)
     {
         $type = $this->typeRepository->find($typeId);
 
@@ -386,18 +408,6 @@ class EntityTypeController extends BaseController
             ->with('message', Lang::get('argon-entities::group.deleted'));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public function addCombo($typeId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository)
     {
         $type = $this->typeRepository->find($typeId);
@@ -469,15 +479,13 @@ class EntityTypeController extends BaseController
 
     public function editCombo(
         $typeId,
-        $fieldId,
+        $comboId,
         EntityFieldRepository $fieldRepository,
         EntityGroupRepository $groupRepository,
-        EntityTypeRepository $typeRepository,
-        ComboFieldType $comboFieldType,
-        FieldTypesManager $fieldTypesManager
+        EntityTypeRepository $typeRepository
     ) {
         $type = $typeRepository->find($typeId);
-        $combo = $fieldRepository->find($fieldId);
+        $combo = $fieldRepository->find($comboId);
         $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
 
         return View::make(
@@ -492,11 +500,11 @@ class EntityTypeController extends BaseController
 
     public function updateCombo(
         $typeId,
-        $fieldId,
+        $comboId,
         EntityFieldRepository $fieldRepository,
-        FieldTypesManager $fieldTypesManager,
         EntityGroupRepository $groupRepository,
-        ComboFieldType $comboFieldType
+        ComboFieldType $comboFieldType,
+        EntityTypeRepository $typeRepository
     ) {
 
         $this->validate($this->request, [
@@ -504,15 +512,13 @@ class EntityTypeController extends BaseController
             'group' => 'required',
         ]);
 
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+
         $defaultSettings = $comboFieldType->getDefaultSettings();
 
-        $oldField = $fieldRepository->find($fieldId);
-
         // if field type has changed use default settings
-        $settings = ($oldField->field_type != $comboFieldType->getKey())
-            ? $defaultSettings
-            : array_intersect_key(Input::all(), (array) $defaultSettings);
-
+        $settings = array_intersect_key(Input::all(), (array) $defaultSettings);
 
         $groupId = 0;
 
@@ -542,38 +548,83 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        $attributes = array_merge_recursive(Input::all(), [
-            'entity_type_id' => $typeId,
+        if ($order = Input::get('order'))
+        {
+            // get subfields for extra validation checks
+            $subfields = $combo->subfields->keyBy('id');
+
+            if ($order = explode(',', $order))
+            {
+                foreach ($order as $i => $subfieldId)
+                {
+                    // make sure $subfieldId is a valid subfield of this combo
+                    // don't want to accidentally update unrelated fields...
+                    if (!isset($subfields[$subfieldId]))
+                    {
+                        return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
+                            ->with('errors', "Field ID: {$subfieldId} is not a subfield of this combo field.");
+                    }
+
+                    $fieldRepository->update(['order'=>$i], $subfieldId);
+                }
+            }
+        }
+
+        // reject order since not related to combo itself
+        $attributes = array_merge_recursive(Input::except('order'), [
+            'entity_type_id' => $type->id,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
             'settings' => $settings,
         ]);
 
-        $field = $fieldRepository->update($attributes, $fieldId);
+        $combo = $fieldRepository->update($attributes, $comboId);
 
         // Don't redirect to cms:types:edit since if the field's type has changed
         // new properties will be displayed and likely to customise.
-        return Redirect::route('cms:types:combos:edit', [$typeId, $field->id])
+        return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
             ->with('message', Lang::get('argon-entities::combo.updated'));
     }
 
     public function deleteCombo(
         $typeId,
-        $fieldId,
+        $comboId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
     )
     {
         $type = $typeRepository->find($typeId);
-        $field = $fieldRepository->find($fieldId);
 
-        $deleted = $fieldRepository->delete($field->id);
+        $fields = $type->fields->keyBy('id');
+
+        // make sure combo belongs to type
+        if (!isset($fields[$comboId]))
+        {
+            return Redirect::route('cms:types:edit', [$type->id])
+                ->with('errors', "Combo ID: {$comboId} doesn't belong to this content type.");
+        }
+
+        $combo = $fieldRepository->find($comboId);
+        $subfields = $combo->subfields;
+
+        // delete combo
+        $deleted = $fieldRepository->delete($combo->id);
+
+        // delete all combo's subfields
+        if ($deleted)
+        {
+            foreach ($subfields as $subfield)
+            {
+                $fieldRepository->delete($subfield->id);
+            }
+        }
 
         return Redirect::route('cms:types:edit', [$type->id])
-            ->with('message', Lang::get('argon-entities::combo.deleted'));
+            ->with('message', Lang::get('argon-entities::combos.deleted'));
     }
 
 
+    // Combo sublieds
     public function addComboField($typeId, $comboId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository, EntityFieldRepository $fieldRepository)
     {
         $type = $this->typeRepository->find($typeId);
@@ -642,6 +693,90 @@ class EntityTypeController extends BaseController
                 'fieldTypes' => $fieldTypes,
             ]
         );
+    }
+
+    public function updateComboField(
+        $typeId,
+        $comboId,
+        $fieldId,
+        EntityFieldRepository $fieldRepository,
+        FieldTypesManager $fieldTypesManager,
+        EntityGroupRepository $groupRepository
+    ) {
+        $this->validate($this->request, [
+            'name' => 'required',
+            'field_type' => 'required',
+        ]);
+
+        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+
+        $combo = $fieldRepository->find($comboId);
+
+        $defaultSettings = $fieldType->getDefaultSettings();
+
+        $oldField = $fieldRepository->find($fieldId);
+
+        // if field type has changed use default settings
+        $settings = ($oldField->field_type != $fieldType->getKey())
+            ? $defaultSettings
+            : array_intersect_key(Input::all(), (array) $defaultSettings);
+
+
+        $groupId = 0;
+
+        $attributes = array_merge_recursive(Input::all(), [
+            'entity_type_id' => $typeId,
+            'entity_group_id' => $groupId,
+            'parent_field_id' => $combo->id,
+            'settings' => $settings,
+        ]);
+
+        $field = $fieldRepository->update($attributes, $fieldId);
+
+        // Don't redirect to cms:types:edit since if the field's type has changed
+        // new properties will be displayed and likely to customise.
+        return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
+            ->with('message', Lang::get('argon-entities::field.updated'));
+    }
+
+    public function deleteComboField(
+        $typeId,
+        $comboId,
+        $subfieldId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository,
+        FieldTypesManager $fieldTypesManager,
+        EntityGroupRepository $groupRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+
+        $fields = $type->fields->keyBy('id');
+
+        // make sure combo belongs to type
+        if (!isset($fields[$comboId]))
+        {
+            return Redirect::route('cms:types:edit', [$type->id])
+                ->with('errors', "Combo ID: {$comboId} doesn't belong to this content type.");
+        }
+
+        $combo = $fieldRepository->find($comboId);
+        $subfields = $combo->subfields->keyBy('id');
+
+        // make sure subfield belong to combo
+        if (!isset($subfields[$subfieldId]))
+        {
+            return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
+                ->with('errors', "Subfield ID: {$subfieldId} doesn't belong to this combo.");
+        }
+
+        $subfield = $fieldRepository->find($subfieldId);
+
+        // delete subfield
+        $deleted = $fieldRepository->delete($subfield->id);
+
+        return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
+            ->with('message', Lang::get('argon-entities::field.deleted'));
     }
 
 }

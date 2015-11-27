@@ -53,7 +53,7 @@
 
                                 @foreach ($group->fields as $field)
 
-                                    <div class="form-group">
+                                    <div class="form-group sortable">
                                         @include('argon::fields.field')
                                     </div>
 
@@ -63,7 +63,7 @@
 
                                 @foreach ($group->fields as $field)
 
-                                    <div class="form-group">
+                                    <div class="form-group sortable">
                                         @include('argon::fields.field')
                                     </div>
 

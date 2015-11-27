@@ -47,9 +47,6 @@
                         </select>
                     </div>
 
-                    <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add Subfield</a>
-                    <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>
-
                 </div>
 
             </div>

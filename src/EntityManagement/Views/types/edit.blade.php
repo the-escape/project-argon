@@ -31,40 +31,62 @@
             <div class="card">
                 <div class="card-header">Fields</div>
                 <div class="card-block">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Group</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        @foreach ($type->fields as $field)
-                            <tr>
-                                <td>
-                                    <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
-                                </td>
-                                <td>
-                                    {{ $field->field_type }}
-                                </td>
-                                <td>
-                                    {{ @$field->group->name }}
-                                </td>
-                                <td>
-                                    @if($field->field_type == $comboFieldType->getKey())
-                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
-                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
-                                    @else
-                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
-                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </table>
-                    <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-primary-outline">Add Field</a>
-                    <a href="{{ route('cms:types:combos:add', [$type->id]) }}" class="btn btn-primary-outline">Add Combo</a>
+
+                    @if(($fields = $type->fields) && (!$fields->isEmpty()))
+
+                        <input id="order-{{$type->id}}" type="hidden" name="order">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Group</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="sortable" data-sortable_field="order-{{$type->id}}">
+                                @foreach ($fields as $field)
+                                    <tr class="sortable-item" data-sortable_item="{{$field->id}}">
+                                        <td>
+                                            <span class="sortable-handle btn">&#8645;</span>
+                                        </td>
+                                        <td>
+                                            <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $field->field_type }}
+                                        </td>
+                                        <td>
+                                            {{ @$field->group->name }}
+                                        </td>
+                                        <td>
+                                            @if($field->field_type == $comboFieldType->getKey())
+                                                <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
+                                                <a class="btn btn-link btn-sm confirm" data-confirm="This will remove combo and all subfields.\nAre you sure you want to continue?" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
+                                            @else
+                                                <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
+                                                <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add Field
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-block">Field</a></li>
+                            <li><a href="{{ route('cms:types:combos:add', [$type->id]) }}" class="btn btn-block">Combo</a></li>
+                        </ul>
+                    </div>
+
                     <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>
                 </div>
             </div>

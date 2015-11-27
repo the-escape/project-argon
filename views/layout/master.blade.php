@@ -172,12 +172,27 @@
 
 
             <?php
-            // FIELDS SORTING: ?>
-            $('.form-group').sortable(
+            // SORTING: with custom classes for easier and more generic setup on various elements ?>
+            $('.sortable').sortable(
             {
-                handle: ".field-reorder",
-                items: "> .sortable",
-                axis: "y"
+                handle: ".sortable-handle",
+                items: ".sortable-item",
+                axis: "y",
+                update: function(event, ui){
+                    var orderFieldId = $(this).data('sortable_field');
+                    var $field = $('#'+orderFieldId);
+                    if ($field.length)
+                    {
+                        var data = [];
+
+                        $(this).find('.sortable-item').each(function(i, el){
+                            data.push($(el).data('sortable_item'));
+                        });
+
+                        // update hidden fields value with updated order
+                        $field.val(data.join(','));
+                    }
+                }
             }).disableSelection();
 
 
@@ -233,6 +248,7 @@
                 if(!text){
                     <?php // Get value of data-confirm attribute if present or use default confirm text. ?>
                     text = el.dataset.confirm || "Are you sure you want to continue?";
+                    text = text.replace(/\\n/g,"\n");// respect escaped newlines
                 }
                 return confirm(text);
             }

@@ -4528,17 +4528,42 @@ body.dashboard {
     margin-top: .5rem; }
   body.dashboard .form-control.error {
     border-color: #a94442; }
-  body.dashboard .field-reorder,
+  body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }
-  body.dashboard .field-reorder {
-    cursor: ns-resize; }
+  body.dashboard .sortable-handle {
+    cursor: ns-resize;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1;
+    color: #55595c;
+    text-align: center;
+    background-color: #eceeef;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem; }
+  body.dashboard .sortable-handle.input-group-addon:first-child {
+    border-right: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0; }
+  body.dashboard .ui-sortable-helper {
+    display: table;
+    /* sorts out width when sorting table rows */ }
   body.dashboard .help-block {
     font-size: 0.9rem;
     display: block;
     margin-top: 2px;
     margin-bottom: 0.75rem;
     color: #737373; }
+  body.dashboard .dropdown-menu {
+    padding: 0; }
+    body.dashboard .dropdown-menu li {
+      padding: 5px 0;
+      border-bottom: inherit; }
+      body.dashboard .dropdown-menu li:last-child {
+        border-bottom: none; }
+    body.dashboard .dropdown-menu .btn-block {
+      text-align: left; }
   body.dashboard .sidebar {
     display: none; }
   @media (min-width: 768px) {
