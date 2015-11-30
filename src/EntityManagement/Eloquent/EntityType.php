@@ -40,6 +40,7 @@ class EntityType extends Model
                 $fields->where($field,'=',$value);
             }
         }
+        //return $fields->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
         return $fields->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
     }
 
@@ -61,16 +62,9 @@ class EntityType extends Model
         return $this->fields([])->where('id', $id)->first();
     }
 
-
-    public function getGroupsAttribute()
+    public function groups()
     {
-        $groups = [];
-
-        foreach ($this->fields as $field) {
-            $groups[$field->entity_group_id][] = $field;
-        }
-
-        return $groups;
+        return $this->hasMany(EntityGroup::class)->orderBy('order')->orderBy('id');
     }
 
 }

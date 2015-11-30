@@ -16,10 +16,6 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
                     </div>
-                    <div class="form-group">
-                        <label for="order">Order</label>
-                        <input type="text" class="form-control" id="order" name="order" placeholder="0" value="{{ old('order') }}">
-                    </div>
                 </div>
             </div>
 

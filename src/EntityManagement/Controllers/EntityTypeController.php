@@ -86,7 +86,6 @@ class EntityTypeController extends BaseController
     public function edit($typeId, ComboFieldType $comboFieldType)
     {
         $type = $this->typeRepository->find($typeId);
-
         return View::make('argon::types.edit', ['type' => $type, 'comboFieldType' => $comboFieldType]);
     }
 
@@ -298,9 +297,41 @@ class EntityTypeController extends BaseController
     )
     {
         $type = $typeRepository->find($typeId);
-        $groups = $groupRepository->findByField('entity_type_id', $type->id);
+        return View::make('argon::groups.manage',['type' => $type]);
+    }
 
-        return View::make('argon::groups.manage',['type' => $type, 'groups' => $groups]);
+
+    public function saveGroups(
+        $typeId,
+        EntityTypeRepository $typeRepository,
+        EntityGroupRepository $groupRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+
+        if ($order = Input::get('order'))
+        {
+            // get type fields for extra validation checks
+            $groups = $type->groups->keyBy('id');
+
+            if ($order = explode(',', $order))
+            {
+                foreach ($order as $i => $groupId)
+                {
+                    // make sure $fieldId is a valid field of this content type
+                    // don't want to accidentally update unrelated fields...
+                    if (!isset($groups[$groupId]))
+                    {
+                        return Redirect::route('cms:types:groups', [$type->id])
+                            ->with('errors', "Groupd ID: {$groupId} doesn't belong to this content type.");
+                    }
+
+                    $groupRepository->update(['order'=>$i], $groupId);
+                }
+            }
+        }
+        return Redirect::route('cms:types:groups', [$type->id])
+            ->with('message', Lang::get('argon-entities::groups.updated'));
     }
 
     public function createGroup($typeId, EntityTypeRepository $typeRepository)
@@ -314,15 +345,13 @@ class EntityTypeController extends BaseController
     {
         $this->validate($this->request, [
             'name' => 'required',
-            'order' => 'numeric',
         ]);
 
         $groupName = Input::get('name');
-        $groupOrder = Input::get('order', 0);
 
         $group = $groupRepository->create([
             'name'=>$groupName,
-            'order'=>$groupOrder,
+            'order'=>0,
             'entity_type_id'=>$typeId,
         ]);
 
@@ -356,7 +385,6 @@ class EntityTypeController extends BaseController
 
         $this->validate($this->request, [
             'name' => 'required',
-            'order' => 'numeric',
         ]);
 
         $group = $groupRepository->update(Input::all(), $group->id);

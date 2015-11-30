@@ -12,7 +12,7 @@
             <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
         @endif
 
-
+        {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
         @if($submitted = old("fields.{$field->id}"))
 
             @foreach($submitted as $k => $v)
@@ -20,12 +20,7 @@
                 <?php
                 $idString = "fields-{$field->id}-{$k}"; // used by js too
                 $camelString = str_replace('-', '.', $idString);
-                $errorClass = '';
-
-                if (isset($errors) && is_object($errors) && $errors instanceof \Illuminate\Support\ViewErrorBag && $errors->has($camelString))
-                {
-                   $errorClass = 'error';
-                }
+                $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 
                 <div class="input-group sortable-item">
@@ -46,6 +41,7 @@
 
         @else
 
+            {{-- Attempt to build fields from stored values.--}}
             @if($page_fieldById)
 
                 @foreach($page_fieldById as $k => $v)
@@ -73,6 +69,7 @@
 
             @else
 
+                {{-- Build initial multiple type field..--}}
                 <?php
                 $idString = "fields-{$field->id}-0"; // used by js too
                 $camelString = str_replace('-', '.', $idString);
@@ -98,15 +95,11 @@
 
     @else
 
+        {{-- Build initial single type field..--}}
         <?php
         $idString = "fields-{$field->id}";
         $camelString = str_replace('-', '.', $idString);
-        $errorClass = '';
-
-        if (isset($errors) && is_object($errors) && $errors instanceof \Illuminate\Support\ViewErrorBag && $errors->has($camelString))
-        {
-            $errorClass = 'error';
-        }
+        $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
         ?>
 
         @if(@$field->settings->required)
