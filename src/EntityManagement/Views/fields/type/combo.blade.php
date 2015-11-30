@@ -2,9 +2,7 @@
 
     @foreach($field->subfields as $subfield)
 
-        <div class="form-group sortable">
-            @include('argon::fields.field', ['field'=>$subfield])
-        </div>
+        @include('argon::fields.field', ['field'=>$subfield])
 
     @endforeach
 

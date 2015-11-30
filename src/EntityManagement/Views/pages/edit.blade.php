@@ -49,13 +49,9 @@
 
                         <div class="card-block accordion-body">
 
-                            <?php // echo "\n\n<pre>" . print_r($group->fields, TRUE) . "</pre>\n\n";?>
-
                             @foreach ($group->fields as $field)
 
-                                <div class="form-group sortable">
-                                    @include('argon::fields.field')
-                                </div>
+                                @include('argon::fields.field', ['html_open'=>'<div class="form-group sortable">', 'html_close'=>'</div>'])
 
                             @endforeach
 

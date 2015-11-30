@@ -45,11 +45,7 @@
                         <div class="card-header accordion-header">{{ $group->name }}</div>
                         <div class="card-block accordion-body">
                             @foreach ($group->fields as $field)
-
-                                <div class="form-group">
-                                    @include('argon::fields.field', ['value'=>old("fields.{$field->id}")])
-                                </div>
-
+                                @include('argon::fields.field')
                             @endforeach
                         </div>
                     </div>

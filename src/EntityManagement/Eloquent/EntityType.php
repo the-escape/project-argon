@@ -25,11 +25,22 @@ class EntityType extends Model
      */
     protected $fillable = ['name'];
 
-    // get all fields except combo subfields
-    // combo field should be pulled here as a top level (standard) field, not its children
-    public function fields()
+    // Get all fields except combo subfields.
+    // Combo field should be pulled here as a top level (standard) field, not its children.
+    // However, when method chained via field() and fieldById() methods allow full lookup to get subfield's value etc.
+    public function fields(array $where=['parent_field_id' => 0])
     {
-        return $this->hasMany(EntityField::class)->where('parent_field_id', 0)->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
+        $fields = $this->hasMany(EntityField::class);
+
+        foreach ($where as $field => $value) {
+            if ( is_array($value) ) {
+                list($field, $condition, $val) = $value;
+                $fields->where($field,$condition,$val);
+            } else {
+                $fields->where($field,'=',$value);
+            }
+        }
+        return $fields->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
     }
 
     /**
@@ -38,7 +49,7 @@ class EntityType extends Model
      */
     public function field($name)
     {
-        return $this->fields()->where('name', $name)->first();
+        return $this->fields([])->where('name', $name)->first();
     }
 
     /**
@@ -47,7 +58,7 @@ class EntityType extends Model
      */
     public function fieldById($id)
     {
-        return $this->fields()->where('id', $id)->first();
+        return $this->fields([])->where('id', $id)->first();
     }
 
 

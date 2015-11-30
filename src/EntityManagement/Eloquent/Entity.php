@@ -64,7 +64,7 @@ class Entity extends Model
         return $this->hasMany(EntityRevision::class);
     }
 
-    public function getLatestAttribute($value)
+    public function getLatestAttribute()
     {
         return $this->latest();
     }

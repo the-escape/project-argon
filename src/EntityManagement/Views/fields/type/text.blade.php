@@ -1,5 +1,9 @@
 @if(@$field)
 
+    <?php
+    $page_fieldById = isset($page) ? $page->fieldById($field->id) : '';
+    ?>
+
     @if(@$field->settings->multiple)
 
         @if(@$field->settings->required)
@@ -42,9 +46,9 @@
 
         @else
 
-            @if($fieldById = $page->fieldById($field->id))
+            @if($page_fieldById)
 
-                @foreach($fieldById as $k => $v)
+                @foreach($page_fieldById as $k => $v)
 
                     <?php
                     $idString = "fields-{$field->id}-{$k}"; // used by js too
@@ -107,10 +111,10 @@
 
         @if(@$field->settings->required)
             <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
-            <input type="text" id="{{ $idString }}" class="form-control required {{ $errorClass }}" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page->fieldById($field->id)) }}">
+            <input type="text" id="{{ $idString }}" class="form-control required {{ $errorClass }}" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
         @else
             <label for="{{ $idString }}" class="required {{ $errorClass }}">{{ $field->name }}</label>
-            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page->fieldById($field->id)) }}">
+            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
         @endif
 
     @endif

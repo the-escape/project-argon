@@ -30,4 +30,5 @@ class EntityTypeRepository extends BaseRepository
     {
         return $this->findWhere(['system' => 1]);
     }
+
 }

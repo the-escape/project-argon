@@ -4558,7 +4558,7 @@ body.dashboard {
   body.dashboard .dropdown-menu {
     padding: 0; }
     body.dashboard .dropdown-menu li {
-      padding: 5px 0;
+      padding: 1px 0;
       border-bottom: inherit; }
       body.dashboard .dropdown-menu li:last-child {
         border-bottom: none; }

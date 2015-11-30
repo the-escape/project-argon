@@ -1,7 +1,7 @@
 <?php
 
 namespace Escape\Argon\EntityManagement\Controllers;
-use Escape\Argon\EntityManagement\Helpers\Validation as ValidationHelpers;
+use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
@@ -12,7 +12,8 @@ use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
-use Input;use Redirect;
+use Input;
+use Redirect;
 use View;
 use Lang;
 
@@ -82,8 +83,7 @@ class PagesController extends BaseController
             'slug' => "required|unique:entities,slug,NULL,id,parent,{$parentId}",
         ];
 
-        list($niceNames, $rules) = ValidationHelpers::validationFieldsSetup($fields, $niceNames, $rules);
-//        list($niceNames, $rules) = $this->preValidationSetup($fields, $niceNames, $rules);
+        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($fields, $niceNames, $rules);
 
         $this->validate($this->request, $rules, [], $niceNames);
 
@@ -102,32 +102,7 @@ class PagesController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
-        foreach ($fields as $field)
-        {
-            $settings = $field->settings;
-
-            if ($settings->multiple)
-            {
-                foreach (Input::get("fields.{$field->id}") as $k => $v)
-                {
-                    $fieldDataRepository->create([
-                        'field_id' => $field->id,
-                        'entity_revision_id' => $revision->id,
-                        'language' => 'en_GB',
-                        'value' => Input::get("fields.{$field->id}.{$k}")
-                    ]);
-                }
-            }
-            else
-            {
-                $fieldDataRepository->create([
-                    'field_id' => $field->id,
-                    'entity_revision_id' => $revision->id,
-                    'language' => 'en_GB',
-                    'value' => Input::get("fields.{$field->id}")
-                ]);
-            }
-        }
+        FieldsHelpers::saveFields($fields, $revision, $fieldDataRepository);
 
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])
             ->with('message', Lang::get('argon-entities::page.created'));
@@ -142,8 +117,6 @@ class PagesController extends BaseController
         return View::make('argon::pages.edit', ['page' => $page, 'groups' => $groups]);
     }
 
-    // TODO: add validation for combo subfields in ValidationHelpers::validationFieldsSetup
-    // TODO: rethink the EntityType->fields(), EntityGroup->fields() method. Perhaps safer with pulling all there and other method with exclude arg.
     public function update(
         $pageId,
         EntityRepository $entityRepository,
@@ -172,11 +145,9 @@ class PagesController extends BaseController
             'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
         ];
 
-        list($niceNames, $rules) = ValidationHelpers::validationFieldsSetup($fields, $niceNames, $rules);
-//        list($niceNames, $rules) = $this->preValidationSetup($fields, $niceNames, $rules);
+        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($fields, $niceNames, $rules);
 
         $this->validate($this->request, $rules, [], $niceNames);
-
 
         $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 
@@ -186,32 +157,7 @@ class PagesController extends BaseController
             'created_by' => $this->request->user()->id
         ]);
 
-        foreach ($fields as $field)
-        {
-            $settings = $field->settings;
-
-            if ($settings->multiple)
-            {
-                foreach (Input::get("fields.{$field->id}") as $k => $v)
-                {
-                    $fieldDataRepository->create([
-                        'field_id' => $field->id,
-                        'entity_revision_id' => $revision->id,
-                        'language' => 'en_GB',
-                        'value' => Input::get("fields.{$field->id}.{$k}")
-                    ]);
-                }
-            }
-            else
-            {
-                $fieldDataRepository->create([
-                    'field_id' => $field->id,
-                    'entity_revision_id' => $revision->id,
-                    'language' => 'en_GB',
-                    'value' => Input::get("fields.{$field->id}")
-                ]);
-            }
-        }
+        FieldsHelpers::saveFields($fields, $revision, $fieldDataRepository);
 
         return Redirect::route('cms:pages:edit', ['page' => $entity->id])
             ->with('message', Lang::get('argon-entities::page.updated'));

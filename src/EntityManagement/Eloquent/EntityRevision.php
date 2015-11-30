@@ -48,13 +48,11 @@ class EntityRevision extends Model
 
     private function fieldValue($field, EntityRevision $revision)
     {
+        $fieldData = null;
+
         $fieldDataCollection = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
 
-        if ($fieldDataCollection->isEmpty())
-        {
-            $fieldData = null;
-        }
-        else
+        if (!$fieldDataCollection->isEmpty())
         {
             $multiple = (bool) @$field->settings->multiple;
             $fieldData = $fieldDataCollection->first();
@@ -78,7 +76,6 @@ class EntityRevision extends Model
                 $fieldData = $flattenedDataCollection;
             }
         }
-
 
         /** @var FieldTypesManager $fieldTypeManager */
         $fieldTypeManager = app('fieldTypes');
