@@ -142,8 +142,6 @@
                     var $el = $parentFormGroup.children('.form-control, .input-group').first();
                     var selfData = $self.data();
 
-
-
                     var $cloned = $el.clone(true, true); // clone element
                     var isInputGroup = $el.hasClass('input-group');
 
