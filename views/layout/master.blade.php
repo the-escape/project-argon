@@ -49,8 +49,25 @@
         <script src="/argon/js/sortable.js"></script>
         <script src="/argon/js/tether.min.js"></script>
         <script src="/argon/js/bootstrap.min.js"></script>
+        <script src="/argon/js/ckeditor/ckeditor.js"></script>
 
         <script>
+
+            <?php
+            // CKEDITOR: Custom toolbar setup and initialization ?>
+            CKEDITOR.config.format_tags = 'p;h1;h2;h3;h4;h5;h6';
+            CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
+            CKEDITOR.config.height=150;
+            CKEDITOR.replaceClass = null; // disable auto initialization by class
+
+            CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
+
+            $('.ckeditor').each(function(i, el)
+            {
+                CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+            });
+
 
 
             <?php
@@ -139,19 +156,42 @@
 
                 if ($parentFormGroup && $parentFormGroup.length)
                 {
+
                     var $el = $parentFormGroup.children('.form-control, .input-group').first();
+                    var isInputGroup = $el.hasClass('input-group');
                     var selfData = $self.data();
 
+                    var $elInput = (isInputGroup) ? $el.find('.form-control') : $el // find input field within cloned html
+
+                    var isWysiwyg = $elInput.hasClass('ckeditor');
+
+                    if (isWysiwyg)
+                    {
+                        // force all wysiwyg fields to populate native equivalents and remove before cloning
+                        for (var i in CKEDITOR.instances)
+                        {
+                            //if(window.console) console.log(i);
+                            CKEDITOR.instances[i].updateElement();
+                            CKEDITOR.instances[i].destroy();
+                        }
+                    }
+
                     var $cloned = $el.clone(true, true); // clone element
-                    var isInputGroup = $el.hasClass('input-group');
-
                     var $clonedInput = (isInputGroup) ? $cloned.find('.form-control') : $cloned // find input field within cloned html
-
                     var matches = $clonedInput.attr('name').match(/fields\[(\d+)\]/); // get field value by running a regex match
                     $clonedInput.val('').removeAttr('value'); // clear cloned value
                     $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
-                    $clonedInput.removeAttr('id'); // update cloned id
                     $clonedInput.removeClass('error'); // remove error class if exists from cloned element
+
+                    if (isWysiwyg)
+                    {
+                        var ID = new Date().getTime();
+                        $clonedInput.attr('id', ID); // add generated ID, just to satisfy sortable on wysiwyg
+                    }
+                    else
+                    {
+                        $clonedInput.removeAttr('id');
+                    }
 
                     if (isInputGroup)
                     {
@@ -163,10 +203,36 @@
                         // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
                         $parentFormGroup.children('.form-control').last().after($cloned).next('.form-control').focus();
                     }
+
+                    if (isWysiwyg)
+                    {
+                        // rebuild all wysiwyg fields
+                        $('.ckeditor').each(function(i, el)
+                        {
+                            CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                            CKEDITOR.config.on = {
+                                'instanceReady': function(evt)
+                                {
+                                    if (el.id == ID) // set the focus to cloned editor
+                                    {
+                                        this.focus();
+                                    }
+                                }
+                            };
+                            CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+                        });
+                    }
                 }
 
                 $self.trigger('blur'); // unfocus the button
             });
+
+            function getWysiwygToolbarOptions(el)
+            {
+                return (typeof el.dataset.wysiwyg !== 'undefined')
+                        ? [el.dataset.wysiwyg.split(',')]
+                        : [CKEDITOR.config.default_toolbar];
+            }
 
 
             <?php
@@ -176,7 +242,9 @@
                 handle: ".sortable-handle",
                 items: ".sortable-item",
                 axis: "y",
-                update: function(event, ui){
+                update: function(event, ui)
+                {
+
                     var orderFieldId = $(this).data('sortable_field');
                     var $field = $('#'+orderFieldId);
                     if ($field.length)
@@ -190,6 +258,29 @@
                         // update hidden fields value with updated order
                         $field.val(data.join(','));
                     }
+                },
+                start: function(event, ui)
+                {
+                    // force all wysiwyg fields to populate native equivalents
+                    for (var i in CKEDITOR.instances)
+                    {
+                        CKEDITOR.instances[i].updateElement();
+                    }
+                },
+                stop: function(event, ui)
+                {
+                    // remove all wysiwyg instances
+                    for (var i in CKEDITOR.instances)
+                    {
+                        CKEDITOR.instances[i].destroy();
+                    }
+
+                    // rebuild all wysiwyg fields
+                    $('.ckeditor').each(function(idx, el)
+                    {
+                        CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                        CKEDITOR.replace(el, CKEDITOR.config);
+                    });
                 }
             }).disableSelection();
 

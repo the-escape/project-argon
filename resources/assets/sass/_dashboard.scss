@@ -1,5 +1,10 @@
 $error-color: #a94442;
 $standard-margin-bottom: 0.75rem;
+$standard-bgd-color: #f5f5f5;
+$standard-border-color: #e5e5e5;
+$standard-input-border-color: #ccc;
+$standard-border-radius: 0.25rem;
+$standard-color: #373a3c;
 
 body.dashboard {
     padding-top: 50px;
@@ -11,6 +16,25 @@ body.dashboard {
     .navbar-fixed-top {
         border: 0;
     }
+
+    .cke {
+        border-color: $standard-input-border-color;
+        box-shadow: none;
+        border-radius: $standard-border-radius;
+
+        .cke_top,
+        .cke_bottom {
+            background-image:none;
+            background-color: $standard-bgd-color;
+            border-color: $standard-input-border-color;
+            box-shadow:none;
+        }
+    }
+    .sortable-item .cke {
+        border-radius: 0;
+    }
+
+
 
 
     .accordion {
@@ -49,11 +73,11 @@ body.dashboard {
         font-size: 1rem;
         font-weight: normal;
         line-height: 1;
-        color: #55595c;
+        color: $standard-color;
         text-align: center;
-        background-color: #eceeef;
+        background-color: $standard-bgd-color;
         border: 1px solid #ccc;
-        border-radius: 0.25rem;
+        border-radius: $standard-border-radius;
     }
     .sortable-handle.input-group-addon:first-child {
         border-right:0;
@@ -106,7 +130,7 @@ body.dashboard {
             padding: 20px;
             overflow-x: hidden;
             overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-            background-color: #f5f5f5;
+            background-color: $standard-bgd-color;
             border-right: 1px solid #eee;
         }
     }

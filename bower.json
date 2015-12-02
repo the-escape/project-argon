@@ -20,6 +20,7 @@
     "bootstrap": ">=4.0.0-alpha",
     "tether": "~1.1.1",
     "jquery.ui":"~1.11.4",
-    "jstree": "~3.2.1"
+    "jstree": "~3.2.1",
+    "ckeditor": "#full/4.5.5"
   }
 }

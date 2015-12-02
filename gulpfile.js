@@ -30,5 +30,6 @@ elixir(function(mix) {
     mix.copy('bower_components/jstree/dist/jstree.min.js', 'public/js');
 
     mix.copy('bower_components/jstree/dist/themes/default', 'public/js/jstree');
+    mix.copy('bower_components/ckeditor', 'public/js/ckeditor');
 });
 
