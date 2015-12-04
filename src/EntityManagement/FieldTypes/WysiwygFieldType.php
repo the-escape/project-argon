@@ -21,7 +21,7 @@ class WysiwygFieldType extends AbstractFieldType
             'label' => 'Multiple',
             'type' => 'boolean',
             'default' => false,
-            'help' => "Allows multiple instances of a field.",
+            'help' => "Allow multiple instances of a field (cloning).",
         ],
         'minlength' => [
             'label' => 'Minimum Length',
@@ -48,6 +48,57 @@ class WysiwygFieldType extends AbstractFieldType
             'default' => true,
             'help' => "Enable 'Format' option.",
             'toolbar' => 'Format',
+            'children' => [
+                'p' => [
+                    'label' => "Enable '&lt;p&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => true,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'p',
+                ],
+                'h1' => [
+                    'label' => "Enable '&lt;h1&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => true,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h1',
+                ],
+                'h2' => [
+                    'label' => "Enable '&lt;h2&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => true,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h2',
+                ],
+                'h3' => [
+                    'label' => "Enable '&lt;h3&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => true,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h3',
+                ],
+                'h4' => [
+                    'label' => "Enable '&lt;h4&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => true,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h4',
+                ],
+                'h5' => [
+                    'label' => "Enable '&lt;h5&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => false,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h5',
+                ],
+                'h6' => [
+                    'label' => "Enable '&lt;h6&gt;' tag within format dropdown.",
+                    'type' => 'boolean',
+                    'default' => false,
+                    'help' => "Depends on 'Format' option - must be enabled.",
+                    'format_tags' => 'h6',
+                ],
+            ],
         ],
         'fontsize' => [
             'label' => 'Font Size',
@@ -120,6 +171,8 @@ class WysiwygFieldType extends AbstractFieldType
             'toolbar' => 'Unlink',
         ],
     ];
+
+    // TODO: finish options
 
     public function getValue(FieldData $data=null)
     {

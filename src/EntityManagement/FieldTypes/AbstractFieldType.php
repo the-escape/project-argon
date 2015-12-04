@@ -28,6 +28,12 @@ abstract class AbstractFieldType
     public function getProperties()
     {
         foreach ($this->properties as $name => $property) {
+            if (array_key_exists('children', $property)) {
+                foreach ($property['children'] as $child_name => &$child_property) {
+                    $child_property = (object)$child_property;
+                }
+            }
+
             yield $name => (object)$property;
         }
     }
@@ -37,7 +43,14 @@ abstract class AbstractFieldType
         $settings = new \stdClass();
         foreach ($this->getProperties() as $name => $property) {
             if (property_exists($property, 'default')) {
-                $settings->$name = $property->default;
+                $settings->{$name} = $property->default;
+            }
+            if (property_exists($property, 'children')) {
+                foreach ($property->children as $child_name => $child_property) {
+                    if (property_exists($child_property, 'default')) {
+                        $settings->{$child_name} = $child_property->default;
+                    }
+                }
             }
         }
         return $settings;

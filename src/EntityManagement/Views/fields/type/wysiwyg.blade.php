@@ -5,19 +5,32 @@
     $page_fieldById = isset($page) ? $page->fieldById($field->id) : '';
 
     // get wysiwyg toolbar options
-    $data = [];
+    $toolbar = $format_tags = [];
     foreach ($field->type->getProperties() as $name => $property)
     {
         if (@$field->settings->$name)
         {
-            if ($toolbar = @$property->toolbar)
+            if (@$property->toolbar)
             {
-                $data[] = $toolbar;
+                $toolbar[] = $property->toolbar;
+                if (($name == 'format') && @$property->children)
+                {
+                    foreach($property->children as $child_name => $child_propery)
+                    {
+                        if (@$field->settings->$child_name)
+                        {
+                            $format_tags[] = $child_name;
+                        }
+
+                    }
+                }
             }
         }
     }
 
-    $wysiwyg_config_toolbar = implode(',', $data);
+    $wysiwyg_config_toolbar = implode(',', $toolbar);
+
+    $wysiwyg_config_format_tags = implode(';', $format_tags);
 
     ?>
 
@@ -46,9 +59,9 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
@@ -74,9 +87,9 @@
                         <div class="input-group-addon sortable-handle">&#8645;</div>
 
                         @if(@$field->settings->required)
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString, $v) }}</textarea>
+                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                         @else
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString, $v) }}</textarea>
+                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                         @endif
 
                         <div class="input-group-addon field-remove">&#10005;</div>
@@ -98,9 +111,9 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString) }}</textarea>
+                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old($camelString) }}</textarea>
+                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
@@ -123,10 +136,10 @@
 
         @if(@$field->settings->required)
             <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
         @else
             <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg="{{$wysiwyg_config_toolbar}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
         @endif
 
     @endif

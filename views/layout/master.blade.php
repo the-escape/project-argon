@@ -55,16 +55,20 @@
 
             <?php
             // CKEDITOR: Custom toolbar setup and initialization ?>
-            CKEDITOR.config.format_tags = 'p;h1;h2;h3;h4;h5;h6';
+            //CKEDITOR.config.format_tags = 'p;h1;h2;h3;h4;h5;h6';
             CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
-            CKEDITOR.config.height=150;
+            //CKEDITOR.config.height=150;
             CKEDITOR.replaceClass = null; // disable auto initialization by class
 
+            CKEDITOR.config.default_height=150;
+            CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
             CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
 
             $('.ckeditor').each(function(i, el)
             {
                 CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                CKEDITOR.config.height = getWysiwygHeight(el);
+                CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
                 CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
             });
 
@@ -210,6 +214,8 @@
                         $('.ckeditor').each(function(i, el)
                         {
                             CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                            CKEDITOR.config.height = getWysiwygHeight(el);
+                            CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
                             CKEDITOR.config.on = {
                                 'instanceReady': function(evt)
                                 {
@@ -229,9 +235,24 @@
 
             function getWysiwygToolbarOptions(el)
             {
-                return (typeof el.dataset.wysiwyg !== 'undefined')
-                        ? [el.dataset.wysiwyg.split(',')]
+                return (typeof el.dataset.wysiwyg_toolbar !== 'undefined')
+                        ? [el.dataset.wysiwyg_toolbar.split(',')]
                         : [CKEDITOR.config.default_toolbar];
+            }
+
+            function getWysiwygFormatTagsOptions(el)
+            {
+                if(window.console) console.log(el.dataset.wysiwyg_format_tags);
+                return (typeof el.dataset.wysiwyg_format_tags !== 'undefined' && el.dataset.wysiwyg_format_tags)
+                        ? el.dataset.wysiwyg_format_tags
+                        : CKEDITOR.config.default_format_tags;
+            }
+
+            function getWysiwygHeight(el)
+            {
+                return (typeof el.dataset.wysiwyg_height !== 'undefined')
+                        ? parseInt(el.dataset.wysiwyg_height, 10)
+                        : CKEDITOR.config.wysiwyg_height;
             }
 
 
@@ -279,6 +300,8 @@
                     $('.ckeditor').each(function(idx, el)
                     {
                         CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                        CKEDITOR.config.height = getWysiwygHeight(el);
+                        CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
                         CKEDITOR.replace(el, CKEDITOR.config);
                     });
                 }
@@ -365,6 +388,41 @@
                 }
                 return null;
             }
+
+
+            $('.field-type-settings.parent').on('click', 'input.parent', (function()
+            {
+                updateFieldTypeSettings(this);
+            }));
+
+
+            function updateFieldTypeSettings(el)
+            {
+                if (typeof el === 'undefined')
+                {
+                    $('input.parent').each(function(i, elm)
+                    {
+                        updateFieldTypeSettings(elm);
+                    });
+                }
+                else
+                {
+                    var $inputParent = $(el);
+                    var $parentFieldTypeSettings = $inputParent.parents('.field-type-settings.parent');
+
+                    if (el.checked)
+                    {
+                        $parentFieldTypeSettings.find('.field-type-settings.child').removeClass('disabled').find('.child').removeAttr('disabled');
+                    }
+                    else
+                    {
+                        $parentFieldTypeSettings.find('.field-type-settings.child').addClass('disabled').find('.child').attr('disabled', 'disabled');
+                    }
+                }
+            }
+
+            updateFieldTypeSettings();
+
 
         </script>
         @section('footer')
