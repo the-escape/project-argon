@@ -62,6 +62,45 @@
                 @endif
             </div>
 
+        @elseif ($property->type == 'options')
+
+            @if(is_array(@$field->settings->$name))
+
+                <input id="order-{{$field->id}}" type="hidden" name="order">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody class="sortable" data-sortable_field="order-{{$field->id}}">
+                    @foreach($field->settings->$name as $opt_id => $opt_value)
+                        <tr class="sortable-item" data-sortable_item="{{ $opt_id }}">
+                            <td>
+                                <span class="sortable-handle btn">&#8645;</span>
+                            </td>
+                            <td>
+                                <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->id, $field->id, $opt_id]) }}">Edit</a>
+                                <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->id, $field->id, $opt_id]) }}">Remove</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+
+            @endif
+
+            <a href="{{ route('cms:types:fields:options:create',[$type->id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+
+
+
+
         @endif
 
     @endforeach

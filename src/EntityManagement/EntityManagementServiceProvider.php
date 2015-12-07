@@ -138,6 +138,46 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'deleteField'
         );
 
+
+        // Select field options
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/options/create',
+            'cms:types:fields:options:create',
+            EntityTypeController::class,
+            'createOption'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/options/save',
+            'cms:types:fields:options:save',
+            EntityTypeController::class,
+            'saveOption',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/options/{optionId}/edit',
+            'cms:types:fields:options:edit',
+            EntityTypeController::class,
+            'editOption'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/options/{optionId}/edit',
+            'cms:types:fields:options:update',
+            EntityTypeController::class,
+            'updateOption',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/fields/{fieldId}/options/{optionId}/delete',
+            'cms:types:fields:options:delete',
+            EntityTypeController::class,
+            'deleteOption'
+        );
+
+
         // Groups
         $this->addRoute(
             'types/{typeId}/groups',
@@ -310,6 +350,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
         $this->fieldTypesManager->registerFieldType(new LocationFieldType());
         $this->fieldTypesManager->registerFieldType(new UserFieldType());
+        $this->fieldTypesManager->registerFieldType(new SelectFieldType());
         $this->fieldTypesManager->registerFieldType(new ComboFieldType());
     }
 }

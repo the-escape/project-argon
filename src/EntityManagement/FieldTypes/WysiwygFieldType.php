@@ -56,14 +56,14 @@ class WysiwygFieldType extends AbstractFieldType
             'help' => "Enable 'Format' option to activate other html tags below. Note, '&lt;p&gt;' tag is enabled by default, even without Format option.",
             'toolbar' => 'Format',
             'children' => [
-// Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not enebled, but will allow within editor... Just don't show the option at all.
-//                'p' => [
-//                    'label' => "Enable '&lt;p&gt;' tag within format dropdown.",
-//                    'type' => 'boolean',
-//                    'default' => true,
-//                    'help' => "Depends on 'Format' option - must be enabled.",
-//                    'format_tags' => 'p',
-//                ],
+                // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not enebled, but will allow within editor... Just don't show the option at all.
+                // 'p' => [
+                //     'label' => "Enable '&lt;p&gt;' tag within format dropdown.",
+                //     'type' => 'boolean',
+                //     'default' => true,
+                //     'help' => "Depends on 'Format' option - must be enabled.",
+                //     'format_tags' => 'p',
+                // ],
                 'h1' => [
                     'label' => "Enable '&lt;h1&gt;' tag within format dropdown.",
                     'type' => 'boolean',
