@@ -233,29 +233,29 @@ class EntityTypeController extends BaseController
             : array_intersect_key(Input::all(), (array) $defaultSettings);
 
         // update order on options
-        if ($order = Input::get('order'))
-        {
-            if ($order = explode(',', $order))
-            {
-                if (property_exists($defaultSettings, 'options'))
-                {
-                    $fieldSettings = $field->settings;
-
-                    foreach ($order as $i => $optionId)
-                    {
-                        // make sure $optionId is a valid option
-                        if (!isset($fieldSettings->options[$optionId]))
-                        {
-                            return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
-                                ->with('errors', "Option ID: {$optionId} doesn't exist.");
-                        }
-
-                        $settings['options'][$i] = $fieldSettings->options[$optionId];
-                    }
-                }
-
-            }
-        }
+//        if ($order = Input::get('order'))
+//        {
+//            if ($order = explode(',', $order))
+//            {
+//                if (property_exists($defaultSettings, 'options'))
+//                {
+//                    $fieldSettings = $field->settings;
+//
+//                    foreach ($order as $i => $optionId)
+//                    {
+//                        // make sure $optionId is a valid option
+//                        if (!isset($fieldSettings->options[$optionId]))
+//                        {
+//                            return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
+//                                ->with('errors', "Option ID: {$optionId} doesn't exist.");
+//                        }
+//
+//                        $settings['options'][$i] = $fieldSettings->options[$optionId];
+//                    }
+//                }
+//
+//            }
+//        }
 
         $groupId = 0;
 

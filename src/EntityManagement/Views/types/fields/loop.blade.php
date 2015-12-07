@@ -86,6 +86,7 @@
                                 <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
                             </td>
                             <td>
+                                <input type="hidden" name="options[]" value="{{ $opt_value  }}"/>
                                 <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->id, $field->id, $opt_id]) }}">Edit</a>
                                 <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->id, $field->id, $opt_id]) }}">Remove</a>
                             </td>
