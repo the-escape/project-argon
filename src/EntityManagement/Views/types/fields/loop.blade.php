@@ -44,7 +44,7 @@
 
             <div class="form-group {{$classes}}">
                 <label for="{{$name}}">{{$property->label}}</label>
-                <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}">
+                <input id="{{$name}}" type="number" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}" placeholder="{{$property->default}}">
                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                 @if($parent)
                     @include('argon::types.fields.loop', ['items'=>$property->children, 'children' => true])
@@ -55,7 +55,7 @@
 
             <div class="form-group {{$classes}}">
                 <label for="{{$name}}">{{$property->label}}</label>
-                <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}">
+                <input id="{{$name}}" type="text" class="form-control" name="{{$name}}" value="{{ old($name, @$field->settings->$name) }}" placeholder="{{$property->default}}">
                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                 @if($parent)
                     @include('argon::types.fields.loop', ['items'=>$property->children, 'children' => true])
