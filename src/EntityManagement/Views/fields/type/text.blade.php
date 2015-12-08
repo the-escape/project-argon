@@ -106,8 +106,8 @@
             <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
             <input type="text" id="{{ $idString }}" class="form-control required {{ $errorClass }}" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
         @else
-            <label for="{{ $idString }}" class="required {{ $errorClass }}">{{ $field->name }}</label>
-            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
+            <label for="{{ $idString }}">{{ $field->name }}</label>
+            <input type="text" id="{{ $idString }}" class="form-control {{ $errorClass }}" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
         @endif
 
     @endif

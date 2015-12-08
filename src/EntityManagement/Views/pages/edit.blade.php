@@ -24,11 +24,11 @@
                 <div class="card-block">
                     <div class="form-group">
                         <label for="name" class="required">Name</label>
-                        <input type="text" id="name" class="form-control required" name="name" value="{{ old('name', $page->name) }}">
+                        <input type="text" id="name" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" name="name" value="{{ old('name', $page->name) }}">
                     </div>
                     <div class="form-group">
                         <label for="slug" class="required">URL Slug</label>
-                        <input type="text" id="slug" class="form-control required" name="slug" value="{{ old('slug', $page->slug) }}">
+                        <input type="text" id="slug" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug', $page->slug) }}">
                     </div>
                 </div>
             </div>

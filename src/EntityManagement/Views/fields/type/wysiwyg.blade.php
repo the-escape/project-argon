@@ -138,11 +138,11 @@
         ?>
 
         @if(@$field->settings->required)
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
+            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @else
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <label for="{{ $idString }}">{{ $field->name }}</label>
+            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @endif
 
     @endif

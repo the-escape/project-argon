@@ -191,6 +191,15 @@ class EntityTypeController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
+
+        // make sure we edit top level fields only here
+        // subfields should be handled within combo edit method
+        if ($field->parent_field_id)
+        {
+            return Redirect::route('cms:types:edit', [$type->id])
+                ->with('errors', "Field ID: {$fieldId} is a subfield.");
+        }
+
         $fieldTypes = $fieldTypesManager->getFieldTypes();
         $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
 
@@ -227,35 +236,42 @@ class EntityTypeController extends BaseController
 
         $defaultSettings = $fieldType->getDefaultSettings();
 
-        // if field type has changed use default settings
-        $settings = ($field->field_type != $fieldType->getKey())
-            ? $defaultSettings
-            : array_intersect_key(Input::all(), (array) $defaultSettings);
+        // if field type has changed, reset settings
+        if ($field->field_type != $fieldType->getKey())
+        {
+            $settings = $defaultSettings;
+        }
+        // otherwise update setting
+        else
+        {
+            $settings = $field->settings;
+            foreach ($settings as $k => &$v)
+            {
+                $v = Input::get($k, $v);
+            }
+        }
 
         // update order on options
-//        if ($order = Input::get('order'))
-//        {
-//            if ($order = explode(',', $order))
-//            {
-//                if (property_exists($defaultSettings, 'options'))
-//                {
-//                    $fieldSettings = $field->settings;
-//
-//                    foreach ($order as $i => $optionId)
-//                    {
-//                        // make sure $optionId is a valid option
-//                        if (!isset($fieldSettings->options[$optionId]))
-//                        {
-//                            return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
-//                                ->with('errors', "Option ID: {$optionId} doesn't exist.");
-//                        }
-//
-//                        $settings['options'][$i] = $fieldSettings->options[$optionId];
-//                    }
-//                }
-//
-//            }
-//        }
+        if ($order = Input::get('options_order'))
+        {
+            if ($order = explode(',', $order))
+            {
+                $fieldSettings = $field->settings;
+                $settings->options = [];
+
+                foreach ($order as $i => $optionId)
+                {
+                    // make sure $optionId is a valid option
+                    if (!array_key_exists($optionId, $fieldSettings->options))
+                    {
+                        return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
+                            ->with('errors', "Option ID: {$optionId} doesn't exist.");
+                    }
+
+                    $settings->options[$i] = $fieldSettings->options[$optionId];
+                }
+            }
+        }
 
         $groupId = 0;
 
@@ -754,6 +770,7 @@ class EntityTypeController extends BaseController
         $comboId,
         $fieldId,
         EntityFieldRepository $fieldRepository,
+        EntityTypeRepository $typeRepository,
         FieldTypesManager $fieldTypesManager,
         EntityGroupRepository $groupRepository
     ) {
@@ -762,19 +779,52 @@ class EntityTypeController extends BaseController
             'field_type' => 'required',
         ]);
 
+        $type = $typeRepository->find($typeId);
+
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
 
         $combo = $fieldRepository->find($comboId);
 
         $defaultSettings = $fieldType->getDefaultSettings();
 
-        $oldField = $fieldRepository->find($fieldId);
+        $field = $fieldRepository->find($fieldId);
 
-        // if field type has changed use default settings
-        $settings = ($oldField->field_type != $fieldType->getKey())
-            ? $defaultSettings
-            : array_intersect_key(Input::all(), (array) $defaultSettings);
+        // if field type has changed, reset settings
+        if ($field->field_type != $fieldType->getKey())
+        {
+            $settings = $defaultSettings;
+        }
+        // otherwise update setting
+        else
+        {
+            $settings = $field->settings;
+            foreach ($settings as $k => &$v)
+            {
+                $v = Input::get($k, $v);
+            }
+        }
 
+        // update order on options
+        if ($order = Input::get('options_order'))
+        {
+            if ($order = explode(',', $order))
+            {
+                $fieldSettings = $field->settings;
+                $settings->options = [];
+
+                foreach ($order as $i => $optionId)
+                {
+                    // make sure $optionId is a valid option
+                    if (!array_key_exists($optionId, $fieldSettings->options))
+                    {
+                        return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
+                            ->with('errors', "Option ID: {$optionId} doesn't exist.");
+                    }
+
+                    $settings->options[$i] = $fieldSettings->options[$optionId];
+                }
+            }
+        }
 
         $groupId = 0;
 
@@ -798,9 +848,7 @@ class EntityTypeController extends BaseController
         $comboId,
         $subfieldId,
         EntityTypeRepository $typeRepository,
-        EntityFieldRepository $fieldRepository,
-        FieldTypesManager $fieldTypesManager,
-        EntityGroupRepository $groupRepository
+        EntityFieldRepository $fieldRepository
     )
     {
         $type = $typeRepository->find($typeId);
@@ -971,5 +1019,153 @@ class EntityTypeController extends BaseController
         return Redirect::route('cms:types:fields:edit', [$typeId, $field->id])
             ->with('message', Lang::get('argon-entities::options.deleted'));
     }
+
+    public function createComboOption(
+        $typeId,
+        $comboId,
+        $fieldId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+
+        return View::make('argon::types.combos.suboptions.create', [
+            'type' => $type,
+            'combo' => $combo,
+            'field' => $field,
+        ]);
+    }
+
+    public function saveComboOption(
+        $typeId,
+        $comboId,
+        $fieldId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $this->validate($this->request, [
+            'name' => 'required',
+        ]);
+
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+
+        $settings = $field->settings;
+        $settings->options[] = Input::get('name');
+
+        $field = $fieldRepository->update(['settings' => $settings], $field->id);
+
+        return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
+            ->with('message', Lang::get('argon-entities::options.created'));
+    }
+
+    public function editComboOption(
+        $typeId,
+        $comboId,
+        $fieldId,
+        $optionId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+
+        $settings = $field->settings;
+        $option_name = @$settings->options[$optionId];
+
+        if (!$option_name)
+        {
+            return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
+                ->with('errors', "Option ID: {$optionId} doesn't exist.");
+        }
+
+        $option = new \stdClass();
+        $option->id = $optionId;
+        $option->name = $option_name;
+
+        return View::make('argon::types.combos.suboptions.edit', [
+            'type' => $type,
+            'combo' => $combo,
+            'field' => $field,
+            'option' => $option,
+        ]);
+    }
+
+    public function updateComboOption(
+        $typeId,
+        $comboId,
+        $fieldId,
+        $optionId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    ) {
+
+        $this->validate($this->request, [
+            'name' => 'required',
+        ]);
+
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+
+        $settings = $field->settings;
+        $option_name = @$settings->options[$optionId];
+
+        if (!$option_name)
+        {
+            return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
+                ->with('errors', "Option ID: {$optionId} doesn't exist.");
+        }
+
+        $option = new \stdClass();
+        $option->id = $optionId;
+        $option->name = Input::get('name');
+
+        $settings->options[$option->id] = $option->name;
+
+        $field = $fieldRepository->update(['settings' => $settings], $field->id);
+
+        return Redirect::route('cms:types:combos:fields:options:edit', [$typeId, $combo->id, $field->id, $option->id])
+            ->with('message', Lang::get('argon-entities::options.updated'));
+    }
+
+    public function deleteComboOption(
+        $typeId,
+        $comboId,
+        $fieldId,
+        $optionId,
+        EntityTypeRepository $typeRepository,
+        EntityFieldRepository $fieldRepository
+    )
+    {
+        $type = $typeRepository->find($typeId);
+        $combo = $fieldRepository->find($comboId);
+        $field = $fieldRepository->find($fieldId);
+
+        $settings = $field->settings;
+
+        $option_name = @$settings->options[$optionId];
+
+        if (!$option_name)
+        {
+            return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
+                ->with('errors', "Option ID: {$optionId} doesn't exist.");
+        }
+
+        unset($settings->options[$optionId]);
+
+        $field = $fieldRepository->update(['settings' => $settings], $field->id);
+
+        return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
+            ->with('message', Lang::get('argon-entities::options.deleted'));
+    }
+
 
 }

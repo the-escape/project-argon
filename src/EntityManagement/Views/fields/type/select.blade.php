@@ -27,10 +27,19 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <input type="text" id="{{ $idString }}" class="form-control required {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required {{ $errorClass }}">
                     @else
-                        <input type="text" id="{{ $idString }}" class="form-control {{$errorClass}}" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control {{ $errorClass }}">
                     @endif
+                            <option value="">Please select:</option>
+
+                            @if(@$field->settings->options)
+                                @foreach($field->settings->options as $opt_id => $opt_value)
+                                    <option value="{{ $opt_id }}" @if($v !== '' && $opt_id == $v) selected @endif>{{ $opt_value }}</option>
+                                @endforeach
+                            @endif
+
+                        </select>
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
@@ -55,10 +64,19 @@
                         <div class="input-group-addon sortable-handle">&#8645;</div>
 
                         @if(@$field->settings->required)
-                            <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                            <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required">
                         @else
-                            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString, $v) }}">
+                            <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control">
                         @endif
+                                <option value="">Please select:</option>
+
+                                @if(@$field->settings->options)
+                                    @foreach($field->settings->options as $opt_id => $opt_value)
+                                        <option value="{{ $opt_id }}" @if($v !== '' && $opt_id == $v)) selected @endif>{{ $opt_value }}</option>
+                                    @endforeach
+                                @endif
+
+                            </select>
 
                         <div class="input-group-addon field-remove">&#10005;</div>
                     </div>
@@ -79,10 +97,19 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <input type="text" id="{{ $idString }}" class="form-control required" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
+                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required">
                     @else
-                        <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}][]" value="{{ old($camelString) }}">
+                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control">
                     @endif
+                            <option value="">Please select:</option>
+
+                            @if(@$field->settings->options)
+                                @foreach($field->settings->options as $opt_id => $opt_value)
+                                    <option value="{{ $opt_id }}">{{ $opt_value }}</option>
+                                @endforeach
+                            @endif
+
+                        </select>
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
@@ -99,24 +126,26 @@
         <?php
         $idString = "fields-{$field->id}";
         $camelString = str_replace('-', '.', $idString);
+        $value = old($camelString, $page_fieldById);
         $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
         ?>
 
         @if(@$field->settings->required)
             <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
             <select name="fields[{{ $field->id }}]" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+        @else
+            <label for="{{ $idString }}">{{ $field->name }}</label>
+            <select name="fields[{{ $field->id }}]" id="{{$idString}}" class="form-control {{ $errorClass }}">
+        @endif
+                <option value="">Please select:</option>
 
                 @if(@$field->settings->options)
-                    @foreach($field->settings->options as $opt_name => $opt_value)
-                        <option value="{{ $opt_value }}">{{ $opt_name }}</option>
+                    @foreach($field->settings->options as $opt_id => $opt_value)
+                        <option value="{{ $opt_id }}" @if($value != '' && $opt_id == $value) selected @endif>{{ $opt_value }}</option>
                     @endforeach
                 @endif
 
             </select>
-        @else
-            <label for="{{ $idString }}" class="required {{ $errorClass }}">{{ $field->name }}</label>
-            <input type="text" id="{{ $idString }}" class="form-control" name="fields[{{ $field->id }}]" value="{{ old($camelString, $page_fieldById) }}">
-        @endif
 
     @endif
 

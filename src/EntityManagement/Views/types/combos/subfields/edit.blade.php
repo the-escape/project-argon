@@ -16,8 +16,8 @@
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $field->name) }}">
                     </div>
                     <div class="form-group">
-                        <label for="field_type">Type</label>
-                        <select class="form-control" name="field_type" id="field_type">
+                        <label for="field_type" class="required">Type</label>
+                        <select class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_type') }}" name="field_type" id="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
                                 <option value="{{$fieldType->getKey()}}" @if (old('field_type', $field->field_type) == $fieldType->getKey()) selected="selected" @endif >{{$fieldType->getName()}}</option>

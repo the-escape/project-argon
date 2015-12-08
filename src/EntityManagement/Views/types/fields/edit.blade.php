@@ -12,12 +12,12 @@
                 <div class="card-header">Details</div>
                 <div class="card-block">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $field->name) }}">
+                        <label for="name" class="required">Name</label>
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name', $field->name) }}">
                     </div>
                     <div class="form-group">
-                        <label for="field_type">Type</label>
-                        <select class="form-control" name="field_type" id="field_type">
+                        <label for="field_type" class="required">Type</label>
+                        <select class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_type') }}" name="field_type" id="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
                                 <option value="{{$fieldType->getKey()}}" @if (old('field_type', $field->field_type) == $fieldType->getKey()) selected="selected" @endif >{{$fieldType->getName()}}</option>
@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="group">Field Group</label>
-                        <select class="form-control groupCreate" name="group" id="group">
+                        <label for="group" class="required">Field Group</label>
+                        <select class="form-control groupCreate required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'group') }}" name="group" id="group">
                             <option value="">Choose one...</option>
 
                             <?php

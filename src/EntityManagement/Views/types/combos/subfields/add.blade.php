@@ -14,12 +14,12 @@
 
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Type</label>
-                        <select class="form-control" name="field_type">
+                        <label for="name" class="required">Type</label>
+                        <select class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_type') }}" name="field_type">
                             <option value="">Choose one...</option>
                             @foreach ($fieldTypes as $fieldType)
                                 <option value="{{$fieldType->getKey()}}" @if($fieldType->getKey() == old('field_type')) selected="selected" @endif>{{$fieldType->getName()}}</option>

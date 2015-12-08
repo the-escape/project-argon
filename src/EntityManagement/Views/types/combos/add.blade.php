@@ -17,13 +17,13 @@
                 <div class="card-block">
 
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
+                        <label for="name" class="required">Name</label>
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
                     </div>
 
                     <div class="form-group">
-                        <label for="group">Field Group</label>
-                        <select class="form-control groupCreate" name="group" id="group">
+                        <label for="group" class="required">Field Group</label>
+                        <select class="form-control groupCreate required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'group') }}" name="group" id="group">
                             <option value="">Choose one...</option>
 
                             <?php

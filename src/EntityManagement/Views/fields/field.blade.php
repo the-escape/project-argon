@@ -62,6 +62,10 @@
 
                 @include('argon::fields.type.location')
 
+            @elseif($field->field_type == 'select')
+
+                @include('argon::fields.type.select')
+
             @elseif($field->field_type == 'user')
 
                 @include('argon::fields.type.user')

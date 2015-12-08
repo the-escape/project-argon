@@ -66,7 +66,7 @@
 
             @if(is_array(@$field->settings->$name))
 
-                <input id="order-{{$field->id}}" type="hidden" name="order">
+                <input id="order-{{$field->id}}" type="hidden" name="options_order">
 
                 <table class="table">
                     <thead>
@@ -86,9 +86,13 @@
                                 <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
                             </td>
                             <td>
-                                <input type="hidden" name="options[]" value="{{ $opt_value  }}"/>
-                                <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->id, $field->id, $opt_id]) }}">Edit</a>
-                                <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->id, $field->id, $opt_id]) }}">Remove</a>
+                                @if($field->parent_field_id)
+                                    <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->id, $field->parent_field_id, $field->id, $opt_id]) }}">Edit</a>
+                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->id, $field->parent_field_id, $field->id, $opt_id]) }}">Remove</a>
+                                @else
+                                    <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->id, $field->id, $opt_id]) }}">Edit</a>
+                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->id, $field->id, $opt_id]) }}">Remove</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -97,7 +101,11 @@
 
             @endif
 
-            <a href="{{ route('cms:types:fields:options:create',[$type->id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+            @if($field->parent_field_id)
+                <a href="{{ route('cms:types:combos:fields:options:create',[$type->id, $field->parent_field_id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+            @else
+                <a href="{{ route('cms:types:fields:options:create',[$type->id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+            @endif
 
 
 

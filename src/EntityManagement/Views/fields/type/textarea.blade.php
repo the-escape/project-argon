@@ -103,11 +103,11 @@
         ?>
 
         @if(@$field->settings->required)
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control required {{$errorClass}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
+            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @else
-            <label for="field-{{ $field->id }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="field-{{ $field->id }}" class="form-control {{$errorClass}}">{{ old("fields.{$field->id}", $page_fieldById) }}</textarea>
+            <label for="{{ $idString }}">{{ $field->name }}</label>
+            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @endif
 
     @endif

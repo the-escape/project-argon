@@ -307,6 +307,44 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'deleteComboField'
         );
 
+        // Select field options
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/fields/{fieldId}/options/create',
+            'cms:types:combos:fields:options:create',
+            EntityTypeController::class,
+            'createComboOption'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/fields/{fieldId}/options/save',
+            'cms:types:combos:fields:options:save',
+            EntityTypeController::class,
+            'saveComboOption',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/fields/{fieldId}/options/{optionId}/edit',
+            'cms:types:combos:fields:options:edit',
+            EntityTypeController::class,
+            'editComboOption'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/fields/{fieldId}/options/{optionId}/edit',
+            'cms:types:combos:fields:options:update',
+            EntityTypeController::class,
+            'updateComboOption',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'types/{typeId}/combos/{comboId}/fields/{fieldId}/options/{optionId}/delete',
+            'cms:types:combos:fields:options:delete',
+            EntityTypeController::class,
+            'deleteComboOption'
+        );
+
     }
 
     public function boot()
