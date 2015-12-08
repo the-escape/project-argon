@@ -9,6 +9,22 @@ $standard-color: #373a3c;
 body.dashboard {
     padding-top: 50px;
 
+
+    .box {
+        padding: 20px;
+        margin: 20px 0;
+        border: 0.0625rem solid $standard-input-border-color;
+        border-left-width: 5px;
+        border-radius: $standard-border-radius;
+    }
+
+    .combo.card {
+        .card-header {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+    }
+
     /*
      * Top navigation
      * Hide default border to remove 1px line.

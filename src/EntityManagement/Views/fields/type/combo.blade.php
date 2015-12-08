@@ -1,9 +1,17 @@
 @if(@$field)
 
-    @foreach($field->subfields as $subfield)
+    <div class="card combo field-{{ $field->id }}">
+        <div class="card-header">{{ $field->name }}</div>
 
-        @include('argon::fields.field', ['field'=>$subfield])
+        <div class="card-block">
 
-    @endforeach
+            @foreach($field->subfields as $subfield)
+
+                @include('argon::fields.field', ['field'=>$subfield])
+
+            @endforeach
+
+        </div>
+    </div>
 
 @endif

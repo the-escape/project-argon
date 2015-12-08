@@ -4512,6 +4512,15 @@ body.dashboard {
   /*
      * Main content
      */ }
+  body.dashboard .box {
+    padding: 20px;
+    margin: 20px 0;
+    border: 0.0625rem solid #ccc;
+    border-left-width: 5px;
+    border-radius: 0.25rem; }
+  body.dashboard .combo.card .card-header {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem; }
   body.dashboard .navbar-fixed-top {
     border: 0; }
   body.dashboard .cke {

@@ -230,6 +230,7 @@
                 }
 
                 $self.trigger('blur'); // unfocus the button
+                return false;
             });
 
             function getWysiwygToolbarOptions(el)
