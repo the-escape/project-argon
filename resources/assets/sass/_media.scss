@@ -1,0 +1,37 @@
+.media-item {
+    display: inline-block;
+    margin: 10px 20px;
+    font-size: 12px;
+
+    .thumb {
+	display: block;
+	margin: 0 auto;
+    }
+
+    .filename {
+	display: block;
+    }
+
+    .filesize {
+	color: #666;
+	display: block;
+	font-size: 10px;
+    }
+
+    .dz-progress {
+
+    }
+
+    &.dz-error {
+	background: red;
+    }
+
+    .btn {
+	font-size: 12px;
+	padding: 3px;
+
+	&::after {
+	    display: none;
+	}
+    }
+}
