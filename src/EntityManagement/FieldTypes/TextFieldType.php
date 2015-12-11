@@ -30,7 +30,7 @@ class TextFieldType extends AbstractFieldType
             'label' => 'Multiple',
             'type' => 'boolean',
             'default' => false,
-            'help' => "Allows multiple values.",
+            'help' => "Allow multiple instances of a field (cloning).",
         ],
         'minlength' => [
             'label' => 'Minimum Length',

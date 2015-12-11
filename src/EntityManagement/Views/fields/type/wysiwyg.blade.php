@@ -1,8 +1,15 @@
 @if(@$field)
 
     <?php
+
     // get the value
-    $page_fieldById = isset($page) ? $page->fieldById($field->id) : '';
+    $page_fieldById = isset($page)
+            ? isset($fieldDataIds)
+                    ? $page->fieldById($field->id, $fieldDataIds)
+                    : $page->fieldById($field->id)
+            : '';
+
+    $isComboParent = $field->parent_field_id;
 
     // get wysiwyg toolbar options
     $toolbar = $format_tags = [];
@@ -38,7 +45,6 @@
     ?>
 
 
-
     @if(@$field->settings->multiple)
 
         @if(@$field->settings->required)
@@ -48,13 +54,16 @@
         @endif
 
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-        @if($submitted = old("fields.{$field->id}"))
+        @if($submitted = old("combo.{$field->id}"))
+
+            <?php $i = 0; ?>
 
             @foreach($submitted as $k => $v)
 
                 <?php
-                $idString = "fields-{$field->id}-{$k}"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
+                $idString = str_replace('.', '', microtime(true));
+                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
                 $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 
@@ -62,13 +71,15 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
+
+                <?php $i++; ?>
 
             @endforeach
 
@@ -79,24 +90,29 @@
             {{-- Attempt to build fields from stored values.--}}
             @if($page_fieldById)
 
+                <?php $i = 0; ?>
+
                 @foreach($page_fieldById as $k => $v)
 
                     <?php
-                    $idString = "fields-{$field->id}-{$k}"; // used by js too
-                    $camelString = str_replace('-', '.', $idString);
+                    $idString = str_replace('.', '', microtime(true));
+                    $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                    $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
                     ?>
 
                     <div class="input-group sortable-item">
                         <div class="input-group-addon sortable-handle">&#8645;</div>
 
                         @if(@$field->settings->required)
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                         @else
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
                         @endif
 
                         <div class="input-group-addon field-remove">&#10005;</div>
                     </div>
+
+                    <?php $i++; ?>
 
                 @endforeach
 
@@ -106,17 +122,18 @@
 
                 {{-- Build initial multiple type field..--}}
                 <?php
-                $idString = "fields-{$field->id}-0"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
+                $idString = str_replace('.', '', microtime(true));
+                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.0" : "fields.{$field->id}.0";
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
@@ -132,17 +149,18 @@
 
         {{-- Build initial single type field..--}}
         <?php
-        $idString = "fields-{$field->id}";
-        $camelString = str_replace('-', '.', $idString);
+        $idString = str_replace('.', '', microtime(true));
+        $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}]" : "fields[{$field->id}]";
+        $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}" : "fields.{$field->id}";
         $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
         ?>
 
         @if(@$field->settings->required)
             <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
+            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @else
             <label for="{{ $idString }}">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
+            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor {{$errorClass}}" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $page_fieldById) }}</textarea>
         @endif
 
     @endif

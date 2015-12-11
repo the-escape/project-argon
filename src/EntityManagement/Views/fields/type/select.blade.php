@@ -1,7 +1,14 @@
 @if(@$field)
 
     <?php
-    $page_fieldById = isset($page) ? $page->fieldById($field->id) : '';
+    // get the value
+    $page_fieldById = isset($page)
+            ? isset($fieldDataIds)
+                    ? $page->fieldById($field->id, $fieldDataIds)
+                    : $page->fieldById($field->id)
+            : '';
+
+    $isComboParent = $field->parent_field_id;
     ?>
 
     @if(@$field->settings->multiple)
@@ -15,11 +22,14 @@
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
         @if($submitted = old("fields.{$field->id}"))
 
+            <?php $i = 0; ?>
+
             @foreach($submitted as $k => $v)
 
                 <?php
                 $idString = "fields-{$field->id}-{$k}"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
+                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
                 $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 
@@ -27,9 +37,9 @@
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
                     @else
-                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control {{ $errorClass }}">
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
                     @endif
                             <option value="">Please select:</option>
 
@@ -44,6 +54,8 @@
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
 
+                <?php $i++; ?>
+
             @endforeach
 
             <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
@@ -53,20 +65,23 @@
             {{-- Attempt to build fields from stored values.--}}
             @if($page_fieldById)
 
+                <?php $i = 0; ?>
+
                 @foreach($page_fieldById as $k => $v)
 
                     <?php
                     $idString = "fields-{$field->id}-{$k}"; // used by js too
-                    $camelString = str_replace('-', '.', $idString);
+                    $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                    $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
                     ?>
 
                     <div class="input-group sortable-item">
                         <div class="input-group-addon sortable-handle">&#8645;</div>
 
                         @if(@$field->settings->required)
-                            <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required">
+                            <select name="{{ $name }}" id="{{$idString}}" class="form-control required">
                         @else
-                            <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control">
+                            <select name="{{ $name }}" id="{{$idString}}" class="form-control">
                         @endif
                                 <option value="">Please select:</option>
 
@@ -81,6 +96,8 @@
                         <div class="input-group-addon field-remove">&#10005;</div>
                     </div>
 
+                    <?php $i++; ?>
+
                 @endforeach
 
                 <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
@@ -90,16 +107,17 @@
                 {{-- Build initial multiple type field..--}}
                 <?php
                 $idString = "fields-{$field->id}-0"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
+                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
+                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.0" : "fields.{$field->id}.0";
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control required">
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control required">
                     @else
-                        <select name="fields[{{ $field->id }}][]" id="{{$idString}}" class="form-control">
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control">
                     @endif
                             <option value="">Please select:</option>
 
@@ -125,17 +143,18 @@
         {{-- Build initial single type field..--}}
         <?php
         $idString = "fields-{$field->id}";
-        $camelString = str_replace('-', '.', $idString);
+        $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}]" : "fields[{$field->id}]";
+        $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}" : "fields.{$field->id}";
         $value = old($camelString, $page_fieldById);
         $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
         ?>
 
         @if(@$field->settings->required)
             <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
-            <select name="fields[{{ $field->id }}]" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+            <select name="{{$name}}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
         @else
             <label for="{{ $idString }}">{{ $field->name }}</label>
-            <select name="fields[{{ $field->id }}]" id="{{$idString}}" class="form-control {{ $errorClass }}">
+            <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
         @endif
                 <option value="">Please select:</option>
 

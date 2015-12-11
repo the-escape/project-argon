@@ -149,6 +149,8 @@ class PagesController extends BaseController
 
         $this->validate($this->request, $rules, [], $niceNames);
 
+//        dd('stop');
+
         $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 
         $revision = $revisionsRepository->create([

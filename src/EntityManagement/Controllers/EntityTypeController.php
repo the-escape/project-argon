@@ -585,10 +585,12 @@ class EntityTypeController extends BaseController
         $type = $typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
 
-        $defaultSettings = $comboFieldType->getDefaultSettings();
-
-        // if field type has changed use default settings
-        $settings = array_intersect_key(Input::all(), (array) $defaultSettings);
+       // update settings
+        $settings = $combo->settings;
+        foreach ($settings as $k => &$v)
+        {
+            $v = Input::get($k, $v);
+        }
 
         $groupId = 0;
 
@@ -618,7 +620,7 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        if ($order = Input::get('order'))
+        if ($order = Input::get('subfields_order'))
         {
             // get subfields for extra validation checks
             $subfields = $combo->subfields->keyBy('id');
@@ -641,14 +643,14 @@ class EntityTypeController extends BaseController
         }
 
         // reject order since not related to combo itself
-        $attributes = array_merge_recursive(Input::except('order'), [
+        $attributes = array_merge_recursive(Input::all(), [
             'entity_type_id' => $type->id,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
             'settings' => $settings,
         ]);
 
-        $combo = $fieldRepository->update($attributes, $comboId);
+        $combo = $fieldRepository->update($attributes, $combo->id);
 
         // Don't redirect to cms:types:edit since if the field's type has changed
         // new properties will be displayed and likely to customise.
@@ -1166,6 +1168,16 @@ class EntityTypeController extends BaseController
         return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
             ->with('message', Lang::get('argon-entities::options.deleted'));
     }
+
+
+    public function cloneField($fieldId, EntityFieldRepository $fieldRepository)
+    {
+        $field = $fieldRepository->find($fieldId);
+        $defaults = ['clone'=>true, 'field'=>$field,'html_open'=>'<div class="form-group sortable">', 'html_close'=>'</div>'];
+        $properties = ($post = Input::get()) ? $post : [];
+        return view('argon::fields.field', array_merge($defaults, $properties));
+    }
+
 
 
 }

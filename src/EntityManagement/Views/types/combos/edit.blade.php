@@ -46,6 +46,8 @@
                         </select>
                     </div>
 
+                    @include('argon::types.fields.loop', ['field'=>$combo, 'items'=>$combo->type->getProperties()])
+
                 </div>
 
             </div>
@@ -57,7 +59,7 @@
 
                     @if(($subfields = $combo->subfields) && (!$subfields->isEmpty()))
 
-                        <input id="order-{{$combo->id}}" type="hidden" name="order">
+                        <input id="order-{{$combo->id}}" type="hidden" name="subfields_order">
 
                         <table class="table">
                             <thead>

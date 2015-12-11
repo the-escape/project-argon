@@ -45,11 +45,11 @@ class Entity extends Model
         return $revision;
     }
 
-    public function fieldById($id)
+    public function fieldById($id, $fieldDataIds=[])
     {
         if ($revision = $this->latest())
         {
-            return $revision->fieldById($id, $revision);
+            return $revision->fieldById($id, $revision, $fieldDataIds);
         }
         return $revision;
     }

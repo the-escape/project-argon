@@ -4547,6 +4547,7 @@ body.dashboard {
   body.dashboard .input-group + .input-group,
   body.dashboard .form-control + .form-control {
     margin-top: .5rem; }
+  body.dashboard .form-group.error .cke,
   body.dashboard .form-control.error {
     border-color: #a94442; }
   body.dashboard .sortable-handle,

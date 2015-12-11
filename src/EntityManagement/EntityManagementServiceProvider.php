@@ -345,6 +345,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'deleteComboOption'
         );
 
+        $this->addRoute(
+            'clone/{field}',
+            'cms:clone:field',
+            EntityTypeController::class,
+            'cloneField',
+            Request::METHOD_POST
+        );
+
     }
 
     public function boot()

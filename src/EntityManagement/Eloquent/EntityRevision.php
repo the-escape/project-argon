@@ -40,17 +40,30 @@ class EntityRevision extends Model
         return $this->fieldValue($field, $revision);
     }
 
-    public function fieldById($id, EntityRevision $revision)
+    public function fieldById($id, EntityRevision $revision, $fieldDataIds=[])
     {
         $field = $this->entity->type->fieldById($id);
-        return $this->fieldValue($field, $revision);
+        return $this->fieldValue($field, $revision, $fieldDataIds);
     }
 
-    private function fieldValue($field, EntityRevision $revision)
+    private function fieldValue($field, EntityRevision $revision, $fieldDataIds=[])
     {
         $fieldData = null;
 
-        $fieldDataCollection = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
+        if ($fieldDataIds)
+        {
+            $fieldDataCollection = $this->fields()
+                ->whereIn('id', $fieldDataIds)
+                ->where('field_id', $field->id)
+                ->where('entity_revision_id', $revision->id)
+                ->get();
+        }
+        else
+        {
+            $fieldDataCollection = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
+        }
+
+
 
         if (!$fieldDataCollection->isEmpty())
         {

@@ -74,7 +74,8 @@ body.dashboard {
     .form-control + .form-control {
         margin-top: .5rem;
     }
-    .form-control.error {
+    .form-group.error .cke,
+    .form-control.error,{
         border-color: $error-color;
     }
 

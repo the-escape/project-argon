@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" value="{{ csrf_token() }}">
         <title>Argon Admin Area</title>
         <link rel="stylesheet" href="/argon/css/app.css">
         @section('styles')
@@ -54,6 +55,14 @@
         <script>
 
             <?php
+            // enable ajax post requests as per http://laravel.com/docs/master/routing#csrf-x-csrf-token ?>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "<?=csrf_token();?>"
+                }
+            });
+
+            <?php
             // CKEDITOR: Custom toolbar setup and initialization ?>
             //CKEDITOR.config.format_tags = 'p;h1;h2;h3;h4;h5;h6';
             CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
@@ -70,8 +79,14 @@
                 CKEDITOR.config.height = getWysiwygHeight(el);
                 CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
                 CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-            });
 
+                // this way handle ckeditor error class highlighting
+                var $el = $(el);
+                if ($el.hasClass('error'))
+                {
+                    $el.parent().addClass('error');
+                }
+            });
 
 
             <?php
@@ -93,6 +108,7 @@
 
                 return false;
             });
+
 
             <?php
             // ACCORDIONS: Handle individial accordions ?>
@@ -144,6 +160,7 @@
                 }
             });
 
+
             <?php
             // ACCORDIONS: expand all instances on load after slight delay. ?>
             setTimeout(function(){
@@ -160,10 +177,62 @@
 
                 if ($parentFormGroup && $parentFormGroup.length)
                 {
-
                     var $el = $parentFormGroup.children('.form-control, .input-group').first();
                     var isInputGroup = $el.hasClass('input-group');
-                    var selfData = $self.data();
+
+                    if (typeof this.dataset.field !== 'undefined')
+                    {
+                        var field = parseInt(this.dataset.field, 10);
+
+                        if (!isNaN(field))
+                        {
+                            if(window.console) console.log("Firing ajax...");
+
+                            var postdata = {};
+
+                            if (typeof this.dataset.hash !== 'undefined')
+                            {
+                                postdata.hash = this.dataset.hash;
+                            }
+
+                            $.post("/admin/clone/" + field, postdata, function(){ if(window.console) console.log('POSTED...'); })
+                            .done(function(data) {
+                                if(window.console) console.log('Data returned:');
+                                if(window.console) console.log($(data));
+                                $self.before($(data));
+                                // force all wysiwyg fields to populate native equivalents and remove before cloning
+                                for (var i in CKEDITOR.instances)
+                                {
+                                    CKEDITOR.instances[i].updateElement();
+                                    CKEDITOR.instances[i].destroy();
+                                }
+                                $('.ckeditor').each(function(i, el)
+                                {
+                                    CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                                    CKEDITOR.config.height = getWysiwygHeight(el);
+                                    CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
+                                    CKEDITOR.config.on = {
+                                        'instanceReady': function(evt)
+                                        {
+                                            if (el.id == ID) // set the focus to cloned editor
+                                            {
+                                                this.focus();
+                                            }
+                                        }
+                                    };
+                                    CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+                                });
+                            })
+                            .fail(function() {
+                                if(window.console) console.log('Failed while getting data.');
+                            })
+                            .always(function() {
+                                if(window.console) console.log("Finished getting data.");
+                            });
+                        }
+
+                        return false;
+                    }
 
                     var $elInput = (isInputGroup) ? $el.find('.form-control') : $el // find input field within cloned html
 
