@@ -6,8 +6,22 @@
      * just pass $html_open, $html_close to the include view
      *
      */
-    $html_open = (isset($html_open)) ? $html_open : '<div class="form-group">';
-    $html_close = (isset($html_close)) ? $html_close : '</div>';
+    if (isset($clone) && $field->id == $clone)
+    {
+        $html_open ='';
+        $html_close = '';
+    }
+    elseif(isset($clone) )
+    {
+        unset($clone);
+        $html_open = '<div class="form-group sortable">';
+        $html_close = '</div>';
+    }
+    else
+    {
+        $html_open = (isset($html_open)) ? $html_open : '<div class="form-group">';
+        $html_close = (isset($html_close)) ? $html_close : '</div>';
+    }
     ?>
 
     {!! $html_open !!}

@@ -15,10 +15,12 @@
 
     @if(@$field->settings->multiple)
 
-        @if(@$field->settings->required)
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
-        @else
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
+        @if(!isset($clone))
+            @if(@$field->settings->required)
+                <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
+            @else
+                <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
+            @endif
         @endif
 
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
@@ -107,7 +109,9 @@
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
 
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->id}}" data-hash="{{$hash}}">Add Field</a>
+                @if(!isset($clone))
+                    <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->id}}" data-hash="{{$hash}}">Add Field</a>
+                @endif
 
             @endif
 
