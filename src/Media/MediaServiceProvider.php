@@ -31,25 +31,27 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 	    MediaController::class,
 	    'items'
 	);
-//        $this->addRoute(
-//            'locales/{localeId}/edit',
-//            'cms:locales:edit',
-//            LocalesController::class,
-//            'edit'
-//        );
-//        $this->addRoute(
-//            'locales/{localeId}/edit',
-//            'cms:locales:edit',
-//            LocalesController::class,
-//            'update',
-//            Request::METHOD_POST
-//        );
-//        $this->addRoute(
-//            'locales/{localeId}/delete',
-//            'cms:locales:delete',
-//            LocalesController::class,
-//            'delete'
-//        );
+	$this->addRoute(
+	    'media/items/{itemId}',
+	    'cms:media:items:delete',
+	    MediaController::class,
+	    'deleteItem',
+	    Request::METHOD_DELETE
+	);
+	$this->addRoute(
+	    'media/folders',
+	    'cms:media:folders:create',
+	    MediaController::class,
+	    'createFolder',
+	    Request::METHOD_POST
+	);
+	$this->addRoute(
+	    'media/folders/{folderId}',
+	    'cms:media:folders:delete',
+	    MediaController::class,
+	    'deleteFolder',
+	    Request::METHOD_DELETE
+	);
 //        $this->addRoute(
 //            'locales/set/{localeId}',
 //            'cms:locales:set',

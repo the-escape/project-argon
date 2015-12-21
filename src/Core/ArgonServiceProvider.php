@@ -39,11 +39,11 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(AuthenticationServiceProvider::class);
         $this->app->register(PluginServiceProvider::class);
-        $this->app->register(EntityManagementServiceProvider::class);
-        $this->app->register(UserManagementServiceProvider::class);
-        $this->app->register(LocalesServiceProvider::class);
-//        $this->app->register(ImageServiceProvider::class);
-//        class_alias(Image::class, 'Image');
+	$this->app->register(EntityManagementServiceProvider::class);
+	$this->app->register(UserManagementServiceProvider::class);
+	$this->app->register(LocalesServiceProvider::class);
+	$this->app->register(ImageServiceProvider::class);
+	class_alias(Image::class, 'Image');
 	$this->app->register(MediaServiceProvider::class);
     }
 }

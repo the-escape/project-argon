@@ -1,4 +1,4 @@
-<li id="folder-{{$folder->id}}">
+<li id="folder-{{$folder->id}}" data-id="{{$folder->id}}">
     {{ $folder->name }}
     @if ($folder->hasChildren())
 	<ul>

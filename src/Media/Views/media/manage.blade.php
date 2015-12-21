@@ -16,8 +16,12 @@
 	    <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
 		<div id="folders">
 		    <ul>
-			@each('argon::media.folder', $root->children, 'folder')
+			@each('argon::media.folder', [$root], 'folder')
 		    </ul>
+		</div>
+		<div class="buttons">
+		    <button class="btn btn-sm" id="add-folder">+</button>
+		    <button class="btn btn-sm" id="del-folder">-</button>
 		</div>
 	    </div>
 	    <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
@@ -42,8 +46,10 @@
 		    &hellip;
 		</button>
 		<div class="dropdown-menu">
-		    <a class="dropdown-item" href="#">Delete</a>
-		    <a class="dropdown-item" href="#">Edit</a>
+		    <a class="dropdown-item" data-dz-delete href="#">Delete</a>
+		    {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
+		    {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
+		    <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
 		</div>
 	    </div>
 	</div>
@@ -88,14 +94,40 @@
 	});
 
 	dropzone.on('addedfile', function(file) {
-	    console.log(file);
+//            console.log(file);
 	    sortItems();
 	});
     </script>
 
     <script src="/argon/js/jstree.min.js"></script>
     <script>
-	$('#folders').jstree({
+	var argon = {
+	    dialog: {
+		alert: function (message, callback) {
+		    alert(message);
+
+		    if (callback) {
+			callback();
+		    }
+		},
+
+		prompt: function (message, callback) {
+		    var result = prompt(message);
+
+		    callback(result);
+		}
+	    }
+	}
+    </script>
+    <script>
+	var folders = $('#folders');
+
+	folders
+	    .children()
+		.children()
+		    .attr('data-jstree', '{"opened":true,"selected":true}');
+
+	folders.jstree({
 	    plugins: [
 		'dnd',
 		'search'
@@ -107,12 +139,88 @@
 	    }
 	});
 
-	$('#folders').on("changed.jstree", function (e, data) {
-	    if (data.selected) {
+	folders.on("changed.jstree", function (e, data) {
+	    if (data.selected.length > 0) {
 		var id = data.selected[0].split('-')[1];
 
 		loadItems(id);
 	    }
+	});
+
+	$('#add-folder').click(function() {
+
+	    var currentFolder = $('#folders').jstree().get_selected(true)[0].data.id;
+
+	    var name = argon.dialog.prompt("Folder name:", function(name) {
+		if (name) {
+		    $.ajax({
+			    url: "media/folders",
+			    method: "POST",
+			    headers: {
+				"X-CSRF-TOKEN": "{{ csrf_token() }}"
+			    },
+			    data: {
+				"name": name,
+				"parent": currentFolder
+			    }
+			})
+		    .done(function(data) {
+			var id = $("#folders").jstree(true).create_node(
+			    $('[data-id=' + currentFolder + ']'),
+			    {
+				text: ' ' + name,
+				id: 'folder-' + data.id,
+				data: {
+				    id: data.id
+				}
+			    },
+			    "last",
+			    function() {},
+			    true
+			);
+
+			$('#folder-' + data.id).attr('data-id', currentFolder);
+		    })
+		    .fail(function(jqXHR, textStatus, errorThrown) {
+			switch (jqXHR.status) {
+			    case 409:
+				argon.dialog.alert('Folder already exists.');
+				break;
+			    default:
+				argon.dialog.alert('Unknown error');
+				break;
+			}
+		    });
+		}
+	    });
+	});
+
+	$('#del-folder').click(function() {
+	    var selected = $('#folders').jstree().get_selected(true)[0];
+	    var currentFolder = selected.data.id;
+
+	    $.ajax({
+		url: "media/folders/" + currentFolder,
+		method: "DELETE",
+		headers: {
+		    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+		}
+	    })
+	    .done(function(data) {
+		var tree = $('#folders').jstree(true);
+		tree.delete_node(selected);
+		tree.select_node(selected.parents[0]);
+	    })
+	    .fail(function(jqXHR) {
+		switch (jqXHR.status) {
+		    case 409:
+			argon.dialog.alert('Folder is not empty.');
+			break;
+		    default:
+			argon.dialog.alert('Unknown error');
+			break;
+		}
+	    });
 	});
 
 	function loadItems(id) {
@@ -126,17 +234,23 @@
 	    ).done(function(data) {
 		$('#current-folder').val(id);
 
-		$('form.dz .files').empty();
+		$('.dz .files').empty();
 
 		for (var i in data) {
 		    var file = data[i];
-		    console.log(file);
 
 		    var node = $('#preview-template .media-item').clone();
 
-		    node.find('img').attr('src', "http://placehold.it/100x100");
+		    node.attr('data-id', file.id);
+		    node.find('img').attr('src', file.thumbUrl);
 		    node.find('[data-dz-name]').text(file.filename);
 		    node.find('[data-dz-size]').html(filesize(file.filesize));
+		    node.find('[data-dz-delete]').on('click', function(id) {
+			return function() {
+			    deleteItem(id);
+			}
+		    }(file.id));
+		    node.find('[data-dz-original]').attr('href', file.url);
 		    node.find('progress').hide();
 
 		    $('form.dz .files').append(node);
@@ -147,6 +261,24 @@
 	}
 
 	loadItems(1);
+
+	function deleteItem(id) {
+	    if (confirm("Are you sure you want to delete this file?")) {
+		$.ajax(
+		    {
+			url: 'media/items/' + id,
+			method: 'DELETE',
+			headers: {
+			    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+			}
+		    }
+		).done(function(data) {
+		   $('[data-id='+ id + ']').remove();
+		});
+	    } else {
+//                console.log('keep');
+	    }
+	}
 
 	function sortItems() {
 	    var list = $('.files .media-item').get();

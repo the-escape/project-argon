@@ -7,7 +7,9 @@ use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Storage;
+use Symfony\Component\HttpFoundation\Response;
 use View;
+use Image;
 use Input;
 
 class MediaController extends BaseController
@@ -80,8 +82,40 @@ class MediaController extends BaseController
 	if (in_array($file->getMimeType(), $this->imageFormats)) {
 	    $thumb = Image::make($file)->fit(100, 100);
 	    Storage::disk('media')->put("{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}", $thumb->encode());
+
+	    $mediaItem->hasThumb = true;
+	    $mediaItem->save();
 	}
 
-//        return response()->setStatusCode(204);
+	return response()->json($mediaItem, Response::HTTP_CREATED);
+    }
+
+    public function deleteItem($id, MediaItemRepository $itemRepository)
+    {
+	$itemRepository->delete($id);
+
+	return response('', Response::HTTP_NO_CONTENT);
+    }
+
+    public function createFolder(Request $request, MediaFolderRepository $folderRepository)
+    {
+	if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
+	    $folder = $folderRepository->create($request->input());
+
+	    return response()->json($folder);
+	} else {
+	    return response()->json(['error' => 'folder exists'], 409);
+	}
+    }
+
+    public function deleteFolder($folderId, MediaFolderRepository $folderRepository, MediaItemRepository $itemRepository)
+    {
+	if ($itemRepository->getItemsInFolder($folderId)->count() > 0) {
+	    return response()->json(['error' => 'Folder not empty.'], 409);
+	} else {
+	    $folderRepository->delete($folderId);
+
+	    return response('', 204);
+	}
     }
 }

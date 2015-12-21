@@ -20,4 +20,9 @@ class MediaFolderRepository extends BaseRepository
     {
 	return $this->find(1);
     }
+
+    public function folderExists($name, $parent)
+    {
+	return $this->findWhere(['parent' => $parent, 'name' => $name])->count() > 0;
+    }
 }

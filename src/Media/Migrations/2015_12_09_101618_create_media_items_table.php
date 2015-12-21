@@ -20,6 +20,7 @@ class CreateMediaItemsTable extends Migration
 	    $table->integer('filesize');
 	    $table->string('mimetype');
 	    $table->text('meta');
+	    $table->boolean('hasThumb');
 	    $table->integer('uploaded_by');
 	    $table->timestamps();
 	    $table->softDeletes();
