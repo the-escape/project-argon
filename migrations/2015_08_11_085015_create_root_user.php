@@ -16,7 +16,7 @@ class CreateRootUser extends Migration
         $user = new User;
         $user->name = 'Root';
         $user->email = 'root@the-escape.co.uk';
-        $user->password = bcrypt('e5cape');
+        $user->password = 'e5cape';
         $user->save();
     }
 
