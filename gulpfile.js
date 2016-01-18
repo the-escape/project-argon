@@ -16,6 +16,17 @@ elixir(function(mix) {
         includePaths: ['bower_components/bootstrap/scss']
     });
 
+    mix.scripts(
+        [
+            'argon.js',
+            'fields.js',
+            'fields/boolean.js',
+            'fields/text.js',
+            'localisations.js',
+        ],
+        'public/js/argon.js'
+    )
+
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
     mix.copy('bower_components/jquery.ui/ui/core.js', 'public/js');

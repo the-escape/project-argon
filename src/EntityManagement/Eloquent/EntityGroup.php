@@ -25,9 +25,28 @@ class EntityGroup extends Model
      */
     protected $fillable = ['name', 'order', 'entity_type_id'];
 
+    protected $entity;
+
     public function fields()
     {
         return $this->hasMany(EntityField::class)->orderBy('entity_group_id')->orderBy('order')->orderBy('name');
+    }
+
+    public function getFields()
+    {
+        $fields = $this->fields->map(function (EntityField $f) { return $f->type; });
+
+        return $fields;
+    }
+
+    public function setEntity(Entity $entity)
+    {
+        $this->entity = $entity;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 
 }

@@ -22,7 +22,7 @@ class FieldTypesManager
      */
     public function getType($type)
     {
-        return $this->fieldTypes[$type];
+        return new $this->fieldTypes[$type];
     }
 
     public function registerFieldType(AbstractFieldType $fieldType)

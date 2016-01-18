@@ -3,6 +3,9 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
+use Illuminate\Database\Eloquent\Collection;
+
 //use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
 
 class ComboFieldType extends AbstractFieldType
@@ -22,9 +25,17 @@ class ComboFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data=null)
+    public function getSubfields()
     {
-        return @$data->value;
-//        return new TextFieldValue($data); // commented out since multiple field property will end up here with array... and __toString obviously will not like that.
+        /** @var Collection $subfields */
+        $subfields = $this->field->subfields;
+        $subfields = $subfields->map(function($f) { return $f->type; });
+
+        return $subfields;
+    }
+
+    public function parseData(FieldData $data)
+    {
+        return new ComboFieldValue($data->value);
     }
 }

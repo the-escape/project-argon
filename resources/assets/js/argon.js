@@ -1,0 +1,51 @@
+var argon = {
+    dialog: {
+        alert: function (message, callback) {
+            alert(message);
+
+            if (callback) {
+                callback();
+            }
+        },
+
+        prompt: function (message, callback) {
+            var result = prompt(message);
+
+            callback(result);
+        },
+        // Generic js confirm window wrapper.
+        // To show confirm window, just add confirm class to html elements that should trigger confirm window.
+        // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element.
+        confirm: function(el, text) {
+            if (!text) {
+                // Get value of data-confirm attribute if present or use default confirm text.
+                text = el.dataset.confirm || "Are you sure you want to continue?";
+                text = text.replace(/\\n/g,"\n");// respect escaped newlines
+            }
+            return confirm(text);
+        }
+    },
+
+    helpers: {
+        filesize: function(size) {
+            var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
+            selectedSize = 0;
+            selectedUnit = "b";
+            if (size > 0) {
+                units = ['TB', 'GB', 'MB', 'KB', 'b'];
+                for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
+                    unit = units[i];
+                    cutoff = Math.pow(1000, 4 - i) / 10;
+                    if (size >= cutoff) {
+                        selectedSize = size / Math.pow(1000, 4 - i);
+                        selectedUnit = unit;
+                        break;
+                    }
+                }
+                selectedSize = Math.round(10 * selectedSize) / 10;
+            }
+            return "<strong>" + selectedSize + "</strong>" + selectedUnit;
+        }
+    }
+}
+

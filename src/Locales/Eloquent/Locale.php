@@ -15,4 +15,15 @@ class Locale extends Model
      * @var array
      */
     protected $fillable = ['name', 'languageCode', 'region'];
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
 }

@@ -2,6 +2,30 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
-class TextFieldValue extends AbstractFieldValue
+class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
+    public function __toString()
+    {
+        if ($this->data) {
+            return $this->data;
+        } else {
+            return "";
+        }
+
+    }
+
+    public function getIterator()
+    {
+        if ($this->data == null) {
+            $data = [''];
+        } else {
+            $data = $this->data;
+        }
+
+        if (!is_array($data)) {
+            $data = [$data];
+        }
+
+        return new \ArrayIterator($data);
+    }
 }

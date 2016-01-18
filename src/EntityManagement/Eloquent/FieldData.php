@@ -17,4 +17,19 @@ class FieldData extends Model
      * @var array
      */
     protected $fillable = ['field_id', 'entity_revision_id', 'language', 'value'];
+
+    public function field()
+    {
+        return $this->belongsTo(EntityField::class);
+    }
+
+    public function getValueAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setValueAttribute($value)
+    {
+        $this->attributes['value'] = json_encode($value);
+    }
 }

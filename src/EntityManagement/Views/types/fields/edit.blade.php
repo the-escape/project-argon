@@ -31,8 +31,8 @@
                             <option value="">Choose one...</option>
 
                             <?php
-                            $submittedGroup = old('group', $field->entity_group_id);
-                            $selected = 0;
+                                $submittedGroup = old('group', $field->entity_group_id);
+                                $selected = 0;
                             ?>
                             @foreach ($fieldGroups as $fieldGroup)
                                 @if($fieldGroup->id == $submittedGroup)

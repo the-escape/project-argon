@@ -2,8 +2,10 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,7 +20,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent', 'entity_type_id', 'owner_id', 'locale'];
+    protected $fillable = ['name', 'slug', 'parent', 'entity_type_id', 'owner_id'];
 
     public function addChild(Entity $child)
     {
@@ -69,16 +71,43 @@ class Entity extends Model
         return $this->latest();
     }
 
-    /**
-     * @return EntityRevision
-     */
-    public function latest()
+    protected function localisations()
     {
-        return $this->revisions()->orderBy('created_at', 'desc')->first();
+        return $this->hasMany(Localisation::class);
     }
 
-    public function latestPublished()
+    public function getDefaultLocalisation()
     {
-        return $this->revisions()->where('status', RevisionStatus::PUBLISHED)->orderBy('created_at', 'desc')->first();
+        return $this->localisations()->orderBy('created_at', 'DESC')->first();
+    }
+
+    /**
+     * @param Locale $locale
+     * @return Localisation
+     */
+    public function getLocalisation(Locale $locale)
+    {
+        return $this->localisations()->where('locale_id', $locale->getId())->first();
+    }
+
+    /**
+     * @return LocalisationCollection
+     */
+    public function getLocalisations()
+    {
+        return $this->localisations;
+    }
+
+    public function getGroups()
+    {
+        /** @var EntityGroupRepository $repo */
+        $repo = app()->make(EntityGroupRepository::class);
+        return $repo->getUsedGroupsByEntityType($this->type->id)->each(function(EntityGroup $item) { $item->setEntity($this); } );
+    }
+
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

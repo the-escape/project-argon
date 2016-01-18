@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\BooleanFieldValue;
 
 class BooleanFieldType extends AbstractFieldType
 {
@@ -11,16 +12,10 @@ class BooleanFieldType extends AbstractFieldType
     protected $key = 'boolean';
 
     protected $properties = [
-        'required' => [
-            'label' => 'Required?',
-            'type' => 'boolean',
-            'default' => false,
-            'help' => null,
-        ],
     ];
 
-    public function getValue(FieldData $data=null)
+    public function parseData(FieldData $data)
     {
-        throw new \Exception('Not implemented');
+        return new BooleanFieldValue($data->value);
     }
 }

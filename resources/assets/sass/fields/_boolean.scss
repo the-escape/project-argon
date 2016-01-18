@@ -1,0 +1,13 @@
+.field-boolean {
+    input[type=radio] {
+        display: none;
+    }
+
+    .boolean-radio-on:checked ~ .boolean-on {
+        background: green;
+    }
+
+    .boolean-radio-off:checked ~ .boolean-off {
+        background: red;
+    }
+}

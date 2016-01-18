@@ -14,10 +14,9 @@
             </div>
         </div>
 
-
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:pages:update', [$page->id]) }}" method="POST">
+        <form action="{{ route('cms:pages:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">Details</div>
@@ -33,7 +32,24 @@
                 </div>
             </div>
 
-            @if(!$groups->isEmpty())
+
+            <ul class="nav nav-tabs">
+                @foreach ($page->getLocalisations() as $l)
+                    <li class="nav-item">
+                        <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
+                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                            {{$l->getLocale()->getName()}}
+                        </a>
+                    </li>
+                @endforeach
+                @if (!$locales->isEmpty())
+                    <li class="nav-item">
+                        <a class="nav-link add-localisation" href="">+ Add Localisation</a>
+                    </li>
+                @endif
+            </ul>
+
+            @if(!$page->getGroups()->isEmpty())
 
                 <div class="row subnav">
                     <div class="col-md-12">
@@ -41,7 +57,7 @@
                     </div>
                 </div>
 
-                @foreach($groups as $group)
+                @foreach($page->getGroups() as $group)
 
                     <div class="card accordion">
 
@@ -49,7 +65,7 @@
 
                         <div class="card-block accordion-body">
 
-                            @foreach ($group->fields as $field)
+                            @foreach ($group->getFields() as $field)
 
                                 @include('argon::fields.field', ['html_open'=>'<div class="form-group sortable">', 'html_close'=>'</div>'])
 
@@ -66,7 +82,82 @@
             <button type="submit" class="btn btn-primary">Save</button>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
-            
+
         </form>
     </div>
+
+    <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+        <input type="hidden" id="selectedMediaItem" value="">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="medialibraryLabel">Media Library</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="media-library" style="position: relative;">
+                        <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
+                            <div class="folders">
+                                <ul>
+                                    @each('argon::media.folder', [$root], 'folder')
+                                </ul>
+                            </div>
+                        </div>
+                        <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
+                            <input type="hidden" name="current-folder" id="current-folder" value="1">
+                            <div class="files">
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" disabled>Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" id="preview-template">
+        <div class="media-item">
+            <img class="thumb" data-dz-thumbnail>
+            <span class="filename" data-dz-name></span>
+            <span class="filesize" data-dz-size></span>
+
+            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+            <progress class="progress" value="25" max="100"></progress>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newLocalisationModal" tabindex="-1" role="dialog" aria-labelledby="newLocalisationLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="newLocalisationLabel">Add A New Localisation</h4>
+                </div>
+                <form action="{{ route('cms:pages:create_locale', [$page->getId()]) }}" method="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <div class="modal-body">
+                        <select name="locale">
+                            <option value="">Select a Locale</option>
+                            @foreach ($locales as $locale)
+                                <option value="{{$locale->getId()}}">{{$locale->getName()}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 @stop

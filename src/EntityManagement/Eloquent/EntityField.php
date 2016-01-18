@@ -33,7 +33,7 @@ class EntityField extends Model
      */
     public function getTypeAttribute()
     {
-        return app('fieldTypes')->getType($this->field_type);
+        return app('fieldTypes')->getType($this->field_type)->setField($this);
     }
 
     public function getSettingsAttribute($value)

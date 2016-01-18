@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
-use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\Eloquent\EntityField;
 
 abstract class AbstractFieldType
 {
@@ -15,9 +15,21 @@ abstract class AbstractFieldType
     /** @var array */
     protected $properties;
 
+    protected $field;
+
+    public function getId()
+    {
+        return $this->field->id;
+    }
+
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getFieldName()
+    {
+        return $this->field->name;
     }
 
     public function getKey()
@@ -44,6 +56,9 @@ abstract class AbstractFieldType
         foreach ($this->getProperties() as $name => $property) {
             if (property_exists($property, 'default')) {
                 $settings->{$name} = $property->default;
+            }
+            else {
+                $settings->{$name} = null;
             }
             if (property_exists($property, 'children')) {
                 foreach ($property->children as $child_name => $child_property) {
@@ -80,5 +95,47 @@ abstract class AbstractFieldType
         return $settings;
     }
 
-    abstract public function getValue(FieldData $data=null);
+    public function getSetting($settingName)
+    {
+        return ($this->getSettings()->$settingName);
+    }
+
+    public function getSettings()
+    {
+        $settings = $this->field->settings;
+
+        foreach ($this->properties as $prop => $config)
+        {
+            if ($config['type'] == 'boolean') {
+                $settings->$prop = (bool)$settings->$prop;
+            }
+            elseif ($config['type'] == 'integer') {
+                $settings->$prop = (integer)$settings->$prop;
+            }
+
+        }
+
+        return $settings;
+    }
+
+    public function allowMultiple()
+    {
+        return (bool)$this->getSetting('multiple');
+    }
+
+    public function isRequired()
+    {
+        return (bool)$this->getSetting('required');
+    }
+
+    public function setField(EntityField $field)
+    {
+        $this->field = $field;
+        return $this;
+    }
+
+    public function getParentId()
+    {
+        return $this->field->parent_field_id;
+    }
 }

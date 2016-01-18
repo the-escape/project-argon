@@ -1,15 +1,15 @@
 @extends('argon::layout.master')
 
 @section('content')
-    @if (count($locales) > 1)
-        <div class="locale-selector" style="height: 54px; padding: 10px 5px; background: #999; margin: 0 -0.9375rem">
-            <select id="locale-select" class="c-select">
-                @foreach ($locales as $locale)
-                    <option value="{{$locale->id}}" @if(Session::get('locale') == $locale->id) selected @endif >{{$locale->name}}</option>
-                @endforeach
-            </select>
-        </div>
-    @endif
+    {{--@if (count($locales) > 1)--}}
+        {{--<div class="locale-selector" style="height: 54px; padding: 10px 5px; background: #999; margin: 0 -0.9375rem">--}}
+            {{--<select id="locale-select" class="c-select">--}}
+                {{--@foreach ($locales as $locale)--}}
+                    {{--<option value="{{$locale->id}}" @if(Session::get('locale') == $locale->id) selected @endif >{{$locale->name}}</option>--}}
+                {{--@endforeach--}}
+            {{--</select>--}}
+        {{--</div>--}}
+    {{--@endif--}}
 
     <div class="main">
         <h1>Pages</h1>

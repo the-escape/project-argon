@@ -9,7 +9,7 @@ abstract class AbstractFieldValue
 {
     protected $data;
 
-    public function __construct(FieldData $data = null)
+    public function __construct($data = null)
     {
         $this->data = $data;
     }
@@ -17,7 +17,7 @@ abstract class AbstractFieldValue
     public function __toString()
     {
         if ($this->data) {
-            return $this->data->value;
+            return $this->data;
         } else {
             return '';
         }

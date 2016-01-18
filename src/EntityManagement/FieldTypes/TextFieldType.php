@@ -76,9 +76,13 @@ class TextFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data=null)
+    public function parseData(FieldData $data)
     {
-        return @$data->value;
-//        return new TextFieldValue($data); // commented out since multiple field property will end up here with array... and __toString obviously will not like that.
+        return new TextFieldValue($data->value);
+    }
+
+    public function isMultiline()
+    {
+        return (bool)$this->getSetting('multiline');
     }
 }

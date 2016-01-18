@@ -1,35 +1,69 @@
-@if(@$field)
+<?php
+    if (isset($latest)) {
+        $value = $latest->getField($field->getId());
+    } else {
+        $value = null;
+    }
 
-    <?php
-    $page_fieldById = isset($page) ? $page->fieldById($field->id) : '';
-    ?>
+    if ($value === null) {
+        $value = new \Escape\Argon\EntityManagement\FieldValues\TextFieldValue();
+    }
+?>
 
-    @if(@$field->settings->multiple)
+@if($field->allowMultiple())
 
-        @if(@$field->settings->required)
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
-        @else
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
-        @endif
+    @if($field->isRequired())
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getName() }}</label>
+    @else
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getName() }}</label>
+    @endif
 
-        {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-        @if($submitted = old("fields.{$field->id}"))
+    {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
+    @if($submitted = old("fields.{$field->getId()}"))
 
-            @foreach($submitted as $k => $v)
+        @foreach($submitted as $k => $v)
+
+            <?php
+            $idString = "fields-{$field->getId()}-{$k}"; // used by js too
+            $camelString = str_replace('-', '.', $idString);
+            $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
+            ?>
+
+            <div class="input-group sortable-item">
+                <div class="input-group-addon sortable-handle">&#8645;</div>
+
+                @if(@$field->settings->required)
+                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                @else
+                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                @endif
+
+                <div class="input-group-addon field-remove">&#10005;</div>
+            </div>
+
+        @endforeach
+
+        <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+
+    @else
+
+        {{-- Attempt to build fields from stored values.--}}
+        @if($value)
+
+            @foreach($value as $k => $v)
 
                 <?php
-                $idString = "fields-{$field->id}-{$k}"; // used by js too
+                $idString = "fields-{$field->getId()}-{$k}"; // used by js too
                 $camelString = str_replace('-', '.', $idString);
-                $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString, $v) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString, $v) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
@@ -41,75 +75,45 @@
 
         @else
 
-            {{-- Attempt to build fields from stored values.--}}
-            @if($page_fieldById)
+            {{-- Build initial multiple type field..--}}
+            <?php
+            $idString = "fields-{$field->getId()}-0"; // used by js too
+            $camelString = str_replace('-', '.', $idString);
+            ?>
 
-                @foreach($page_fieldById as $k => $v)
+            <div class="input-group sortable-item">
+                <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                    <?php
-                    $idString = "fields-{$field->id}-{$k}"; // used by js too
-                    $camelString = str_replace('-', '.', $idString);
-                    ?>
+                @if(@$field->settings->required)
+                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString) }}</textarea>
+                @else
+                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString) }}</textarea>
+                @endif
 
-                    <div class="input-group sortable-item">
-                        <div class="input-group-addon sortable-handle">&#8645;</div>
+                <div class="input-group-addon field-remove">&#10005;</div>
+            </div>
 
-                        @if(@$field->settings->required)
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString, $v) }}</textarea>
-                        @else
-                            <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString, $v) }}</textarea>
-                        @endif
-
-                        <div class="input-group-addon field-remove">&#10005;</div>
-                    </div>
-
-                @endforeach
-
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
-
-            @else
-
-                {{-- Build initial multiple type field..--}}
-                <?php
-                $idString = "fields-{$field->id}-0"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
-                ?>
-
-                <div class="input-group sortable-item">
-                    <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                    @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString) }}</textarea>
-                    @else
-                        <textarea name="fields[{{ $field->id }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString) }}</textarea>
-                    @endif
-
-                    <div class="input-group-addon field-remove">&#10005;</div>
-                </div>
-
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
-
-            @endif
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
 
         @endif
 
+    @endif
+
+@else
+
+    {{-- Build initial single type field..--}}
+    <?php
+    $idString = "fields-{$field->getId()}";
+    $camelString = str_replace('-', '.', $idString);
+    $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
+    ?>
+
+    @if($field->isRequired())
+        <label for="{{ $idString }}" class="required">{{ $field->getName() }}</label>
+        <textarea name="fields[{{ $field->getId() }}]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
     @else
-
-        {{-- Build initial single type field..--}}
-        <?php
-        $idString = "fields-{$field->id}";
-        $camelString = str_replace('-', '.', $idString);
-        $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
-        ?>
-
-        @if(@$field->settings->required)
-            <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $page_fieldById) }}</textarea>
-        @else
-            <label for="{{ $idString }}">{{ $field->name }}</label>
-            <textarea name="fields[{{ $field->id }}]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $page_fieldById) }}</textarea>
-        @endif
-
+        <label for="{{ $idString }}">{{ $field->getName() }}</label>
+        <textarea name="fields[{{ $field->getId() }}]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
     @endif
 
 @endif

@@ -27,15 +27,21 @@ class MediaItem extends Model implements Arrayable
 
     public function toArray()
     {
-	$item = parent::toArray();
-	if ($this->hasThumb) {
-	    $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
-	} else {
-	    $item['thumbUrl'] = 'http://placehold.it/100x100';
-	}
+        $item = parent::toArray();
+        if ($this->hasThumb) {
+            $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
+        } else {
+            $item['thumbUrl'] = 'http://placehold.it/100x100';
+        }
 
-	$item['url'] = "/media/{$this->id}/{$this->id}.original.{$this->extension}";
+        $item['url'] = "/media/{$this->id}/{$this->id}.original.{$this->extension}";
 
-	return $item;
+        return $item;
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
 }

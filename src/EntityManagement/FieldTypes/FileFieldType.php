@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\FileFieldValue;
 
 class FileFieldType extends AbstractFieldType
 {
@@ -47,4 +48,15 @@ class FileFieldType extends AbstractFieldType
     {
         throw new \Exception('Not implemented');
     }
+
+    public function getEmptyValue()
+    {
+        return new FileFieldValue();
+    }
+
+    public function parseData(FieldData $data)
+    {
+        return new FileFieldValue($data->value);
+    }
+
 }

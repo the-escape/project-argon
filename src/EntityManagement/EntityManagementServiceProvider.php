@@ -54,10 +54,23 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'edit'
         );
         $this->addRoute(
-            'pages/{id}/edit',
+            'pages/{id}/edit/{locale}',
+            'cms:pages:edit_locale',
+            PagesController::class,
+            'editLocale'
+        );
+        $this->addRoute(
+            'pages/{id}/edit/{locale}',
             'cms:pages:update',
             PagesController::class,
             'update',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'pages/{id}/create_locale',
+            'cms:pages:create_locale',
+            PagesController::class,
+            'createLocale',
             Request::METHOD_POST
         );
 
@@ -386,17 +399,17 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
 
         $this->fieldTypesManager->registerFieldType(new TextFieldType());
-        $this->fieldTypesManager->registerFieldType(new ImageFieldType());
         $this->fieldTypesManager->registerFieldType(new FileFieldType());
-        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
         $this->fieldTypesManager->registerFieldType(new BooleanFieldType());
-        $this->fieldTypesManager->registerFieldType(new ItemFieldType());
         $this->fieldTypesManager->registerFieldType(new WysiwygFieldType());
-        $this->fieldTypesManager->registerFieldType(new DatetimeFieldType());
-        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
-        $this->fieldTypesManager->registerFieldType(new LocationFieldType());
-        $this->fieldTypesManager->registerFieldType(new UserFieldType());
-        $this->fieldTypesManager->registerFieldType(new SelectFieldType());
         $this->fieldTypesManager->registerFieldType(new ComboFieldType());
+        $this->fieldTypesManager->registerFieldType(new SelectFieldType());
+//        $this->fieldTypesManager->registerFieldType(new ImageFieldType());
+//        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
+//        $this->fieldTypesManager->registerFieldType(new ItemFieldType());
+//        $this->fieldTypesManager->registerFieldType(new DatetimeFieldType());
+//        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
+//        $this->fieldTypesManager->registerFieldType(new LocationFieldType());
+//        $this->fieldTypesManager->registerFieldType(new UserFieldType());
     }
 }

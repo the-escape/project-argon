@@ -1,0 +1,19 @@
+<?php
+
+namespace Escape\Argon\EntityManagement\Eloquent;
+
+use Prettus\Repository\Eloquent\BaseRepository;
+
+class LocalisationRepository extends BaseRepository
+{
+
+    /**
+     * Specify Model class name
+     *
+     * @return string
+     */
+    public function model()
+    {
+        return Localisation::class;
+    }
+}

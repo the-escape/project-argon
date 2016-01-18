@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" value="{{ csrf_token() }}">
         <title>Argon Admin Area</title>
+        <link rel="stylesheet" href="/argon/js/jstree/style.min.css" />
         <link rel="stylesheet" href="/argon/css/app.css">
         @section('styles')
         @show
@@ -51,6 +52,8 @@
         <script src="/argon/js/tether.min.js"></script>
         <script src="/argon/js/bootstrap.min.js"></script>
         <script src="/argon/js/ckeditor/ckeditor.js"></script>
+        <script src="/argon/js/jstree.min.js"></script>
+        <script src="/argon/js/argon.js"></script>
 
         <script>
 
@@ -165,7 +168,7 @@
             // ACCORDIONS: expand all instances on load after slight delay. ?>
             setTimeout(function(){
                 $accordionExpandCollapse.trigger('click');
-            }, 300);
+            }, 0);
 
 
             <?php
@@ -173,7 +176,7 @@
             $(document).on('click', '.field-clone', function()
             {
                 var $self = $(this);
-                var $parentFormGroup = $self.parent('.form-group');
+                var $parentFormGroup = $self.closest('.form-group');
 
                 if ($parentFormGroup && $parentFormGroup.length)
                 {

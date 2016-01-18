@@ -16,7 +16,7 @@ class EntityRevision extends Model
      *
      * @var array
      */
-    protected $fillable = ['entity_id', 'status', 'created_by'];
+    protected $fillable = ['entity_localisation_id', 'status', 'created_by'];
 
     public function entity()
     {
@@ -99,4 +99,22 @@ class EntityRevision extends Model
 
         return $fieldValue;
     }
+
+    public function getFields()
+    {
+        return $this->fields->keyBy('field_id')->map(function($f) { return $f->field->type->parseData($f); });
+    }
+
+    public function getField($fieldId)
+    {
+        /** @var EntityField $f */
+        $f = $this->fields()->where('field_id', $fieldId)->first();
+        if ($f === null) {
+            // Latest revision doesn't contain this field - it's probably new.
+            return null;
+        } else {
+            return $f->field->type->parseData($f);
+        }
+    }
+
 }
