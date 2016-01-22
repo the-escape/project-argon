@@ -1,55 +1,105 @@
-@if(@$field)
+<?php
+    $isInCombo = $field->getParentId() !== 0;
 
-    <?php
-    // get the value
-    $page_fieldById = isset($page)
-            ? isset($fieldDataIds)
-                    ? $page->fieldById($field->id, $fieldDataIds)
-                    : $page->fieldById($field->id)
-            : '';
+    if ($isInCombo) {
+        if (!isset($value)) {
+            $value = null;
+        } else {
+            $value = new \Escape\Argon\EntityManagement\FieldValues\SelectFieldValue($value);
+        }
+    } else {
+        if (isset($latest)) {
+            $value = $latest->getField($field->getId());
+        } else {
+            $value = null;
+        }
+    }
 
-    $isComboParent = $field->parent_field_id;
-    ?>
+    if ($value === null) {
+        $value = new \Escape\Argon\EntityManagement\FieldValues\SelectFieldValue();
+    }
 
-    @if(@$field->settings->multiple)
+?>
 
-        @if(@$field->settings->required)
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
-        @else
-            <label for="fields-{{ $field->id }}-0" class="required">{{ $field->name }}</label>
-        @endif
+@if($field->allowMultiple())
 
-        {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-        @if($submitted = old("fields.{$field->id}"))
+    @if($field->isRequired())
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+    @else
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+    @endif
+
+    {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
+    @if($submitted = old("fields.{$field->getId()}"))
+
+        <?php $i = 0; ?>
+
+        @foreach($submitted as $k => $v)
+
+            <?php
+            $idString = "fields-{$field->getId()}-{$k}"; // used by js too
+            $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+            $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
+            $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
+            ?>
+
+            <div class="input-group sortable-item">
+                <div class="input-group-addon sortable-handle">&#8645;</div>
+
+                @if($field->isRequired())
+                    <select name="{{ $name }}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+                @else
+                    <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
+                @endif
+                        <option value="">Please select:</option>
+
+                        @if($field->getOptions())
+                            @foreach($field->getOptions() as $opt_id => $opt_value)
+                                <option value="{{ $opt_id }}" @if($v !== '' && $opt_id == $v) selected @endif>{{ $opt_value }}</option>
+                            @endforeach
+                        @endif
+
+                    </select>
+
+                <div class="input-group-addon field-remove">&#10005;</div>
+            </div>
+
+            <?php $i++; ?>
+
+        @endforeach
+
+        <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+
+    @else
+
+        {{-- Attempt to build fields from stored values.--}}
 
             <?php $i = 0; ?>
 
-            @foreach($submitted as $k => $v)
+            @foreach($value as $k => $v)
 
                 <?php
-                $idString = "fields-{$field->id}-{$k}"; // used by js too
-                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
-                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
-                $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
+                $idString = "fields-{$field->getId()}-{$k}"; // used by js too
+                $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+                $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                    @if(@$field->settings->required)
-                        <select name="{{ $name }}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+                    @if($field->isRequired())
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control required">
                     @else
-                        <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
+                        <select name="{{ $name }}" id="{{$idString}}" class="form-control">
                     @endif
-                            <option value="">Please select:</option>
 
-                            @if(@$field->settings->options)
-                                @foreach($field->settings->options as $opt_id => $opt_value)
-                                    <option value="{{ $opt_id }}" @if($v !== '' && $opt_id == $v) selected @endif>{{ $opt_value }}</option>
-                                @endforeach
-                            @endif
+                        <option value="">Please select:</option>
 
-                        </select>
+                        @foreach($field->getOptions() as $optionId => $optionValue)
+                            <option value="{{ $optionId }}" @if($optionId === $v)) selected @endif>{{ $optionValue }}</option>
+                        @endforeach
+
+                    </select>
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
@@ -60,112 +110,34 @@
 
             <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
 
-        @else
-
-            {{-- Attempt to build fields from stored values.--}}
-            @if($page_fieldById)
-
-                <?php $i = 0; ?>
-
-                @foreach($page_fieldById as $k => $v)
-
-                    <?php
-                    $idString = "fields-{$field->id}-{$k}"; // used by js too
-                    $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
-                    $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
-                    ?>
-
-                    <div class="input-group sortable-item">
-                        <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                        @if(@$field->settings->required)
-                            <select name="{{ $name }}" id="{{$idString}}" class="form-control required">
-                        @else
-                            <select name="{{ $name }}" id="{{$idString}}" class="form-control">
-                        @endif
-                                <option value="">Please select:</option>
-
-                                @if(@$field->settings->options)
-                                    @foreach($field->settings->options as $opt_id => $opt_value)
-                                        <option value="{{ $opt_id }}" @if($v !== '' && $opt_id == $v)) selected @endif>{{ $opt_value }}</option>
-                                    @endforeach
-                                @endif
-
-                            </select>
-
-                        <div class="input-group-addon field-remove">&#10005;</div>
-                    </div>
-
-                    <?php $i++; ?>
-
-                @endforeach
-
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
-
-            @else
-
-                {{-- Build initial multiple type field..--}}
-                <?php
-                $idString = "fields-{$field->id}-0"; // used by js too
-                $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
-                $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}.0" : "fields.{$field->id}.0";
-                ?>
-
-                <div class="input-group sortable-item">
-                    <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                    @if(@$field->settings->required)
-                        <select name="{{ $name }}" id="{{$idString}}" class="form-control required">
-                    @else
-                        <select name="{{ $name }}" id="{{$idString}}" class="form-control">
-                    @endif
-                            <option value="">Please select:</option>
-
-                            @if(@$field->settings->options)
-                                @foreach($field->settings->options as $opt_id => $opt_value)
-                                    <option value="{{ $opt_id }}">{{ $opt_value }}</option>
-                                @endforeach
-                            @endif
-
-                        </select>
-
-                    <div class="input-group-addon field-remove">&#10005;</div>
-                </div>
-
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
-
-            @endif
-
-        @endif
-
-    @else
-
-        {{-- Build initial single type field..--}}
-        <?php
-        $idString = "fields-{$field->id}";
-        $name = ($isComboParent) ? "combo[{$isComboParent}][$hash][fields][{$field->id}]" : "fields[{$field->id}]";
-        $camelString = ($isComboParent) ? "combo.{$isComboParent}.{$hash}.fields.{$field->id}" : "fields.{$field->id}";
-        $value = old($camelString, $page_fieldById);
-        $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
-        ?>
-
-        @if(@$field->settings->required)
-            <label for="{{ $idString }}" class="required">{{ $field->name }}</label>
-            <select name="{{$name}}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
-        @else
-            <label for="{{ $idString }}">{{ $field->name }}</label>
-            <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
-        @endif
-                <option value="">Please select:</option>
-
-                @if(@$field->settings->options)
-                    @foreach($field->settings->options as $opt_id => $opt_value)
-                        <option value="{{ $opt_id }}" @if($value != '' && $opt_id == $value) selected @endif>{{ $opt_value }}</option>
-                    @endforeach
-                @endif
-
-            </select>
-
     @endif
+
+@else
+
+    {{-- Build initial single type field..--}}
+    <?php
+    $idString = "fields-{$field->getId()}";
+    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+    $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.0" : "fields.{$field->getId()}.0";
+    $value = old($camelString, $value);
+    $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
+    ?>
+
+
+        @if($field->isRequired())
+        <label for="{{ $idString }}" class="required">{{ $field->getFieldName() }}</label>
+        <select name="{{$name}}" id="{{$idString}}" class="form-control required {{ $errorClass }}">
+    @else
+        <label for="{{ $idString }}">{{ $field->getFieldName() }}</label>
+        <select name="{{ $name }}" id="{{$idString}}" class="form-control {{ $errorClass }}">
+    @endif
+            <option value="">Please select:</option>
+
+            @foreach($field->getOptions() as $optionId => $optionValue)
+
+                <option value="{{ $optionId }}" @if($optionId === $value->getSelectedIndex()) selected @endif>{{ $optionValue }}</option>
+            @endforeach
+
+        </select>
 
 @endif

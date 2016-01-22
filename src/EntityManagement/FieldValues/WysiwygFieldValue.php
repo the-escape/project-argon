@@ -2,6 +2,6 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
-class WysiwygFieldValue extends AbstractFieldValue
+class WysiwygFieldValue extends TextFieldValue
 {
 }

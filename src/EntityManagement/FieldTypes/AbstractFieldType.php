@@ -50,6 +50,15 @@ abstract class AbstractFieldType
         }
     }
 
+    public function getProperty($name)
+    {
+        if (!array_key_exists($name, $this->properties)) {
+            return null;
+        } else {
+            return (object)$this->properties[$name];
+        }
+    }
+
     public function getDefaultSettings()
     {
         $settings = new \stdClass();
@@ -106,13 +115,15 @@ abstract class AbstractFieldType
 
         foreach ($this->properties as $prop => $config)
         {
-            if ($config['type'] == 'boolean') {
-                $settings->$prop = (bool)$settings->$prop;
+            if (isset($settings->$prop)) {
+                if ($config['type'] == 'boolean') {
+                    $settings->$prop = (bool)$settings->$prop;
+                } elseif ($config['type'] == 'integer') {
+                    $settings->$prop = (integer)$settings->$prop;
+                }
+            } else {
+                $settings->$prop = $config['default'];
             }
-            elseif ($config['type'] == 'integer') {
-                $settings->$prop = (integer)$settings->$prop;
-            }
-
         }
 
         return $settings;
@@ -138,4 +149,7 @@ abstract class AbstractFieldType
     {
         return $this->field->parent_field_id;
     }
+
+    abstract function parseData(FieldData $data = null);
+
 }

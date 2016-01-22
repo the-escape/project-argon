@@ -13,9 +13,9 @@
 @if($field->allowMultiple())
 
     @if($field->isRequired())
-        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getName() }}</label>
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
     @else
-        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getName() }}</label>
+        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
     @endif
 
     {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}

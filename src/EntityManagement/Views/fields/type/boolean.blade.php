@@ -43,7 +43,7 @@
 
     ?>
 <div class="field field-boolean">
-    <label>{{ $field->getName() }}</label>
+    <label>{{ $field->getFieldName() }}</label>
 
     <div>
         <input type="radio" class="boolean-radio-off" id="{{ $idString }}-off" name="{{ $name }}" value="0" @if(old($camelString, $value) == '0') checked @endif>

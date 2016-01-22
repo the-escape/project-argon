@@ -114,7 +114,7 @@
             <div class="input-group sortable-item">
                 <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                @if(@$field->settings->required)
+                @if($field->isRequired())
                     <input type="text" id="{{ $idString }}" class="form-control required" name="{{ $name }}" value="{{ old($camelString) }}">
                 @else
                     <input type="text" id="{{ $idString }}" class="form-control" name="{{ $name }}" value="{{ old($camelString) }}">

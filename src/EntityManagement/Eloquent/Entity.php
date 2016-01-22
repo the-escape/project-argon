@@ -78,7 +78,7 @@ class Entity extends Model
 
     public function getDefaultLocalisation()
     {
-        return $this->localisations()->orderBy('created_at', 'DESC')->first();
+        return $this->localisations()->orderBy('created_at', 'ASC')->first();
     }
 
     /**

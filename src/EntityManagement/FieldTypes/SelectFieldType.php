@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\SelectFieldValue;
 
 class SelectFieldType extends AbstractFieldType
 {
@@ -31,10 +32,13 @@ class SelectFieldType extends AbstractFieldType
         ],
     ];
 
-
-    public function getValue(FieldData $data=null)
+    public function getOptions()
     {
-        return @$data->value;
-//        return new SelectFieldValue($data); // commented out since multiple field property will end up here with array... and __toString obviously will not like that.
+        return (array)$this->getSetting('options');
+    }
+
+    public function parseData(FieldData $data)
+    {
+        return new SelectFieldValue($data->value);
     }
 }

@@ -64,9 +64,7 @@
 
         @elseif ($property->type == 'options')
 
-            @if(is_array(@$field->settings->$name))
-
-                <input id="order-{{$field->id}}" type="hidden" name="options_order">
+                <input id="order-{{$field->type->getId()}}" type="hidden" name="options_order">
 
                 <table class="table">
                     <thead>
@@ -76,35 +74,33 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody class="sortable" data-sortable_field="order-{{$field->id}}">
-                    @foreach($field->settings->$name as $opt_id => $opt_value)
-                        <tr class="sortable-item" data-sortable_item="{{ $opt_id }}">
-                            <td>
-                                <span class="sortable-handle btn">&#8645;</span>
-                            </td>
-                            <td>
-                                <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
-                            </td>
-                            <td>
-                                @if($field->parent_field_id)
-                                    <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->id, $field->parent_field_id, $field->id, $opt_id]) }}">Edit</a>
-                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->id, $field->parent_field_id, $field->id, $opt_id]) }}">Remove</a>
-                                @else
-                                    <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->id, $field->id, $opt_id]) }}">Edit</a>
-                                    <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->id, $field->id, $opt_id]) }}">Remove</a>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                    <tbody class="sortable" data-sortable_field="order-{{$field->type->getId()}}">
+                        @foreach($field->type->getOptions() as $opt_id => $opt_value)
+                            <tr class="sortable-item" data-sortable_item="{{ $opt_id }}">
+                                <td>
+                                    <span class="sortable-handle btn">&#8645;</span>
+                                </td>
+                                <td>
+                                    <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
+                                </td>
+                                <td>
+                                    @if($field->type->getParentId())
+                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Edit</a>
+                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Remove</a>
+                                    @else
+                                        <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:options:edit', [$type->getId(), $field->type->getId(), $opt_id]) }}">Edit</a>
+                                        <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:options:delete', [$type->getId(), $field->type->getId(), $opt_id]) }}">Remove</a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 
-            @endif
-
-            @if($field->parent_field_id)
-                <a href="{{ route('cms:types:combos:fields:options:create',[$type->id, $field->parent_field_id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+            @if($field->type->getParentId())
+                <a href="{{ route('cms:types:combos:fields:options:create',[$type->getId(), $field->type->getParentId(), $field->type->getId()]) }}" class="btn btn-primary-outline">Add Option</a>
             @else
-                <a href="{{ route('cms:types:fields:options:create',[$type->id, $field->id]) }}" class="btn btn-primary-outline">Add Option</a>
+                <a href="{{ route('cms:types:fields:options:create',[$type->getId(), $field->type->getId()]) }}" class="btn btn-primary-outline">Add Option</a>
             @endif
 
 

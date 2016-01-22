@@ -17,6 +17,12 @@ class ComboFieldType extends AbstractFieldType
     protected $group;
 
     protected $properties = [
+        'required' => [
+           'label' => 'Required?',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => null,
+        ],
         'multiple' => [
             'label' => 'Multiple',
             'type' => 'boolean',

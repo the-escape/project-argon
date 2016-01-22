@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue;
 
 class WysiwygFieldType extends AbstractFieldType
 {
@@ -180,12 +181,8 @@ class WysiwygFieldType extends AbstractFieldType
         ],
     ];
 
-    // TODO: finish options
-
-    public function getValue(FieldData $data=null)
+    public function parseData(FieldData $data = null)
     {
-        return @$data->value;
-//        return new TextFieldValue($data); // commented out since multiple field property will end up here with array... and __toString obviously will not like that.
-//        throw new \Exception('Not implemented');
+        return new WysiwygFieldValue($data->value);
     }
 }

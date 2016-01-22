@@ -21,7 +21,7 @@
 ?>
 
 <div class="field field-file" data-type="text" data-settings="{{json_encode($field->getSettings())}}" data-name="{{ $name }}">
-    <label>{{ $field->getName() }}</label>
+    <label>{{ $field->getFieldName() }}</label>
 
     <div class="files sortable">
         @foreach($value as $k => $v)

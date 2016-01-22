@@ -6,7 +6,9 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
     public function __toString()
     {
-        if ($this->data) {
+        if (is_array($this->data)) {
+            return implode(PHP_EOL, $this->data);
+        } elseif ($this->data) {
             return $this->data;
         } else {
             return "";

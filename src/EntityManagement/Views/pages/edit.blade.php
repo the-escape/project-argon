@@ -51,11 +51,7 @@
 
             @if(!$page->getGroups()->isEmpty())
 
-                <div class="row subnav">
-                    <div class="col-md-12">
-                        <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
-                    </div>
-                </div>
+                <br>
 
                 @foreach($page->getGroups() as $group)
 

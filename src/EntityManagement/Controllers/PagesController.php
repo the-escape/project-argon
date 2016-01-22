@@ -79,7 +79,6 @@ class PagesController extends BaseController
         LocalisationRepository $localisationRepository,
         Request $request
     ) {
-
         $type = $typeRepository->find($typeId);
 
         $fields = $type->fields;

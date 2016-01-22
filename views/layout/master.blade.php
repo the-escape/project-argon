@@ -66,102 +66,75 @@
             });
 
             <?php
-            // CKEDITOR: Custom toolbar setup and initialization ?>
-            //CKEDITOR.config.format_tags = 'p;h1;h2;h3;h4;h5;h6';
-            CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
-            //CKEDITOR.config.height=150;
-            CKEDITOR.replaceClass = null; // disable auto initialization by class
-
-            CKEDITOR.config.default_height = 150;
-            CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
-            CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
-
-            $('.ckeditor').each(function(i, el)
-            {
-                CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
-                CKEDITOR.config.height = getWysiwygHeight(el);
-                CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
-                CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-
-                // this way handle ckeditor error class highlighting
-                var $el = $(el);
-                if ($el.hasClass('error'))
-                {
-                    $el.parent().addClass('error');
-                }
-            });
-
-
-            <?php
             // ACCORDIONS: Handle all accordion instances on the page with .accordion-expand-collapse trigger ?>
-            var $accordionExpandCollapse = $('.accordion-expand-collapse');
-
-            $accordionExpandCollapse.click(function()
-            {
-                var isExpanded = this.getAttribute('data-expanded');
-
-                if (isExpanded)
-                {
-                    $('.accordion-header.ui-state-active').trigger('click');
-                }
-                else
-                {
-                    $('.accordion-header:not(.ui-state-active)').trigger('click');
-                }
-
-                return false;
-            });
+//            var $accordionExpandCollapse = $('.accordion-expand-collapse');
+//
+//            $accordionExpandCollapse.click(function()
+//            {
+//                var isExpanded = this.getAttribute('data-expanded');
+//
+//                if (isExpanded)
+//                {
+//                    $('.accordion-header.ui-state-active').trigger('click');
+//                }
+//                else
+//                {
+//                    $('.accordion-header:not(.ui-state-active)').trigger('click');
+//                }
+//
+//                return false;
+//            });
 
 
             <?php
             // ACCORDIONS: Handle individial accordions ?>
-            $('.accordion').accordion(
-            {
-                active: false,
-                header: ".accordion-header",
-                collapsible: true,
-                heightStyle: "content",
-                icons: {
-                    activeHeader: "accordion-header-open",
-                    header: "accordion-header-close"
-                },
-                animate: {
-                    duration: 400
-                },
-                activate: function()
-                {
-                    var isActive = $(this).accordion("option", "active");
-
-                    if (isActive === false)
-                    {
-                        $accordionExpandCollapse.each(function()
-                        {
-                            var $self = $(this);
-                            var expandAllText = $self.data('data-expand') || 'Expand all';
-
-                            if(!$('.accordion-header.ui-state-active').length)
-                            {
-                                $self.removeClass('expanded');
-                            }
-
-                            $self.text(expandAllText);
-                            $self.removeAttr('data-expanded');
-                        });
-                    }
-                    else
-                    {
-                        $accordionExpandCollapse.each(function()
-                        {
-                            var $self = $(this);
-                            var collapseAllText = $self.data('data-collapse') || 'Collapse all';
-
-                            $self.addClass('expanded');
-                            $self.text(collapseAllText);
-                            $self.attr('data-expanded', true);
-                        });
-                    }
-                }
-            });
+//            $('.accordion').accordion(
+//            {
+//                active: false,
+//                header: ".accordion-header",
+//                collapsible: true,
+//                heightStyle: "content",
+//                icons: {
+//                    activeHeader: "accordion-header-open",
+//                    header: "accordion-header-close"
+//                },
+//                animate: {
+//                    duration: 400
+//                },
+//                activate: function()
+//                {
+//                    var isActive = $(this).accordion("option", "active");
+//
+//                    if (isActive === false)
+//                    {
+//                        $accordionExpandCollapse.each(function()
+//                        {
+//                            var $self = $(this);
+//                            var expandAllText = $self.data('data-expand') || 'Expand all';
+//
+//                            if(!$('.accordion-header.ui-state-active').length)
+//                            {
+//                                $self.removeClass('expanded');
+//                            }
+//
+//                            $self.text(expandAllText);
+//                            $self.removeAttr('data-expanded');
+//                        });
+//                    }
+//                    else
+//                    {
+//                        $accordionExpandCollapse.each(function()
+//                        {
+//                            var $self = $(this);
+//                            var collapseAllText = $self.data('data-collapse') || 'Collapse all';
+//
+//                            $self.addClass('expanded');
+//                            $self.text(collapseAllText);
+//                            $self.attr('data-expanded', true);
+//                        });
+//                    }
+//                }
+//            });
 
 
             <?php
@@ -254,8 +227,13 @@
                     var $cloned = $el.clone(true, true); // clone element
                     var $clonedInput = (isInputGroup) ? $cloned.find('.form-control') : $cloned // find input field within cloned html
                     var matches = $clonedInput.attr('name').match(/fields\[(\d+)\]/); // get field value by running a regex match
+                    if (matches) {
+                        $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
+                    } else {
+                        var matches = $clonedInput.attr('name').match(/combo\[(\d+)\]\[(\d+)\]\[fields\]\[(\d+)\]/); // get field value by running a regex match
+                        $clonedInput.prop('name', 'combo[' + matches[1]+ '][' + matches[2]+ '][fields][' + matches[3]+ '][]'); // update cloned name
+                    }
                     $clonedInput.val('').removeAttr('value'); // clear cloned value
-                    $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
                     $clonedInput.removeClass('error'); // remove error class if exists from cloned element
 
                     if (isWysiwyg)
@@ -304,52 +282,6 @@
                 $self.trigger('blur'); // unfocus the button
                 return false;
             });
-
-            function getWysiwygToolbarOptions(el)
-            {
-                return (typeof el.dataset.wysiwyg_toolbar !== 'undefined')
-                        ? [el.dataset.wysiwyg_toolbar.split(',')]
-                        : [CKEDITOR.config.default_toolbar];
-            }
-
-            function getWysiwygFormatTagsOptions(el)
-            {
-                <?php
-                // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not explicitly enebled, but will allow within editor regardless...
-                // Just make it permanently enabled. Simples! ?>
-
-                if (typeof el.dataset.wysiwyg_format_tags !== 'undefined')
-                {
-                    if (el.dataset.wysiwyg_format_tags)
-                    {
-                        return 'p;' + el.dataset.wysiwyg_format_tags;
-                    }
-                    else
-                    {
-                        return 'p';
-                    }
-                }
-                else
-                {
-                    return CKEDITOR.config.default_format_tags;
-                }
-            }
-
-            function getWysiwygHeight(el)
-            {
-                if (typeof el.dataset.wysiwyg_height !== 'undefined')
-                {
-                    var wysiwyg_height = parseInt(el.dataset.wysiwyg_height, 10);
-
-                    if (!isNaN(wysiwyg_height))
-                    {
-                        return wysiwyg_height;
-                    }
-                }
-
-                return CKEDITOR.config.default_height;
-            }
-
 
             <?php
             // SORTING: with custom classes for easier and more generic setup on various elements ?>

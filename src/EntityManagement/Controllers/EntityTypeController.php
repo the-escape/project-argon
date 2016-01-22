@@ -1152,8 +1152,7 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->find($fieldId);
 
         $settings = $field->settings;
-
-        $option_name = @$settings->options[$optionId];
+        $option_name = $settings->options[$optionId];
 
         if (!$option_name)
         {

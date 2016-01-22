@@ -48,6 +48,14 @@ else
 
         @include('argon::fields.type.combo')
 
+    @elseif($field instanceof \Escape\Argon\EntityManagement\FieldTypes\SelectFieldType)
+
+        @include('argon::fields.type.select')
+
+    @elseif($field instanceof \Escape\Argon\EntityManagement\FieldTypes\WysiwygFieldType)
+
+        @include('argon::fields.type.wysiwyg')
+
     {{--@elseif($field->field_type == 'video')--}}
 
         {{--@include('argon::fields.type.video')--}}
@@ -55,10 +63,6 @@ else
     {{--@elseif($field->field_type == 'item')--}}
 
         {{--@include('argon::fields.type.item')--}}
-
-    {{--@elseif($field->field_type == 'wysiwyg')--}}
-
-        {{--@include('argon::fields.type.wysiwyg')--}}
 
     {{--@elseif($field->field_type == 'datetime')--}}
 
@@ -71,10 +75,6 @@ else
     {{--@elseif($field->field_type == 'location')--}}
 
         {{--@include('argon::fields.type.location')--}}
-
-    {{--@elseif($field->field_type == 'select')--}}
-
-        {{--@include('argon::fields.type.select')--}}
 
     {{--@elseif($field->field_type == 'user')--}}
 

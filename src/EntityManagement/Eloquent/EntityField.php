@@ -38,7 +38,25 @@ class EntityField extends Model
 
     public function getSettingsAttribute($value)
     {
-        return json_decode($value);
+        $decoded = json_decode($value);
+        foreach ($decoded as $name => $value) {
+            $property = $this->type->getProperty($name);
+            if ($property) {
+                switch ($property->type) {
+                    case "boolean":
+                        $decoded->$name = (boolean)$value;
+                        break;
+                    case "options":
+                        $arr = [];
+                        foreach ($value as $k => $v) {
+                            $arr[(int)$k] = $v;
+                        }
+                        $decoded->$name = $arr;
+                }
+            }
+        }
+
+        return $decoded;
     }
 
     public function setSettingsAttribute($value)

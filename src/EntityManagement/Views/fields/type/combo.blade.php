@@ -11,9 +11,11 @@
 
         @foreach($submitted as $hash => $subfields)
 
-            <div class="card combo field-{{ $field->getId() }}">
+            <div class="input-group sortable-item field-{{ $field->getId() }}">
 
-                <div class="card-block">
+                <div class="input-group-addon sortable-handle">&#8645;</div>
+
+                <div class="form-control">
 
                     @foreach($field->getSubfields() as $subfield)
 
@@ -22,6 +24,8 @@
                     @endforeach
 
                 </div>
+
+                <div class="input-group-addon field-remove">&#10005;</div>
 
             </div>
 

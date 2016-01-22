@@ -22,6 +22,7 @@ elixir(function(mix) {
             'fields.js',
             'fields/boolean.js',
             'fields/text.js',
+            'fields/wysiwyg.js',
             'localisations.js',
         ],
         'public/js/argon.js'

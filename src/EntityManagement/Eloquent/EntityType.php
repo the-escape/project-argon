@@ -67,4 +67,8 @@ class EntityType extends Model
         return $this->hasMany(EntityGroup::class)->orderBy('order')->orderBy('id');
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
 }
