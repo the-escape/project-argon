@@ -56,6 +56,10 @@ else
 
         @include('argon::fields.type.wysiwyg')
 
+    @elseif($field instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType)
+
+        @include('argon::fields.type.datetime')
+
     {{--@elseif($field->field_type == 'video')--}}
 
         {{--@include('argon::fields.type.video')--}}
@@ -63,10 +67,6 @@ else
     {{--@elseif($field->field_type == 'item')--}}
 
         {{--@include('argon::fields.type.item')--}}
-
-    {{--@elseif($field->field_type == 'datetime')--}}
-
-        {{--@include('argon::fields.type.datetime')--}}
 
     {{--@elseif($field->field_type == 'colourpicker')--}}
 

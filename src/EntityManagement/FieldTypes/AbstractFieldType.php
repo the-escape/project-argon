@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\EntityField;
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
 
 abstract class AbstractFieldType
 {
@@ -150,6 +151,6 @@ abstract class AbstractFieldType
         return $this->field->parent_field_id;
     }
 
-    abstract function parseData(FieldData $data = null);
+    abstract function parseData(FieldData $data);
 
 }

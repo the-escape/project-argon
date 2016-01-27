@@ -13,7 +13,9 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss', 'public/css', {
-        includePaths: ['bower_components/bootstrap/scss']
+        includePaths: [
+            'bower_components/bootstrap/scss',
+        ]
     });
 
     mix.scripts(
@@ -23,10 +25,11 @@ elixir(function(mix) {
             'fields/boolean.js',
             'fields/text.js',
             'fields/wysiwyg.js',
+            'fields/datetime.js',
             'localisations.js',
         ],
         'public/js/argon.js'
-    )
+    );
 
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
@@ -45,5 +48,6 @@ elixir(function(mix) {
     mix.copy('bower_components/ckeditor', 'public/js/ckeditor');
 
     mix.copy('bower_components/dropzone/dist/min/dropzone.min.js', 'public/js');
-});
 
+    mix.copy('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', 'public/js');
+});

@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue;
 
 class DatetimeFieldType extends AbstractFieldType
 {
@@ -17,10 +18,32 @@ class DatetimeFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'time' => [
+            'label' => 'Include Time',
+            'type' => 'boolean',
+            'default' => true,
+            'help' => "Allow the user to select a time.",
+        ],
+        'seconds' => [
+            'label' => 'Include Seconds in time field',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "",
+        ],
     ];
 
-    public function getValue(FieldData $data=null)
+    function parseData(FieldData $data)
     {
-        throw new \Exception('Not implemented');
+        return new DatetimeFieldValue($data->value);
+    }
+
+    public function timeEnabled()
+    {
+        return (boolean)$this->getSetting('time');
+    }
+
+    public function secondsEnabled()
+    {
+        return (boolean)$this->getSetting('seconds');
     }
 }
