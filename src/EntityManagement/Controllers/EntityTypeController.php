@@ -220,7 +220,8 @@ class EntityTypeController extends BaseController
         EntityFieldRepository $fieldRepository,
         EntityTypeRepository $typeRepository,
         FieldTypesManager $fieldTypesManager,
-        EntityGroupRepository $groupRepository
+        EntityGroupRepository $groupRepository,
+        Request $request
     ) {
 
         $this->validate($this->request, [
@@ -245,9 +246,9 @@ class EntityTypeController extends BaseController
         else
         {
             $settings = $field->settings;
-            foreach ($settings as $k => &$v)
+            foreach ($defaultSettings as $k => $v)
             {
-                $v = Input::get($k, $v);
+                $settings->{$k} = $request->input($k, $v);
             }
         }
 
