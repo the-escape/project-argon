@@ -15,7 +15,7 @@
     <body class="dashboard">
 
         <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-            <ul class="nav navbar-nav pull-right">
+            <ul class="nav navbar-nav pull-xs-right">
                 @if($currentUser->hasPermission('cms:settings'))
                     <li class="nav-item"><a class="nav-link" href="{{ route('settings') }}">Settings</a></li>
                 @endif
@@ -53,7 +53,7 @@
         <script src="/argon/js/bootstrap.min.js"></script>
         <script src="/argon/js/ckeditor/ckeditor.js"></script>
         <script src="/argon/js/jstree.min.js"></script>
-	<script src="/argon/js/bootstrap-datepicker.min.js"></script>
+        <script src="/argon/js/bootstrap-datepicker.min.js"></script>
         <script src="/argon/js/argon.js"></script>
 
         <script>
@@ -140,9 +140,9 @@
 
             <?php
             // ACCORDIONS: expand all instances on load after slight delay. ?>
-            setTimeout(function(){
-                $accordionExpandCollapse.trigger('click');
-            }, 0);
+//            setTimeout(function(){
+//                $accordionExpandCollapse.trigger('click');
+//            }, 0);
 
 
             <?php
