@@ -31,7 +31,7 @@
         @if($field->isRequired())
             <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
         @else
-            <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+            <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
         @endif
     @endif
 
