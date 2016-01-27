@@ -30,7 +30,6 @@ function getWysiwygToolbarOptions(el)
 
 function getWysiwygFormatTagsOptions(el)
 {
-<?php
     // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not explicitly enebled, but will allow within editor regardless...
     // Just make it permanently enabled. Simples! ?>
 
