@@ -32,7 +32,7 @@ class PagesController extends BaseController
 
         $locales = $localeRepository->all();
 
-        $entities = $entityRepository->forLocale($request->session()->get('locale'));
+        $entities = $entityRepository->all();
 
         $entities = $entities->keyBy('id');
 
@@ -114,7 +114,7 @@ class PagesController extends BaseController
 
         $localisation = $localisationRepository->create([
             'entity_id' => $entity->getId(),
-            'locale' => 1 // TODO: Wire up properly.
+            'locale_id' => 1 // TODO: Wire up properly.
         ]);
 
         $revision = $revisionRepository->create([
@@ -125,7 +125,7 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
+        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale' => $localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.created'));
     }
 
@@ -136,6 +136,58 @@ class PagesController extends BaseController
         $locale = $page->getDefaultLocalisation();
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+    }
+
+    public function update(
+        $pageId,
+        $localeId,
+        EntityRepository $entityRepository,
+        EntityRevisionRepository $revisionsRepository,
+        FieldDataRepository $fieldDataRepository,
+        EntityTypeRepository $typeRepository,
+        Request $request
+    ) {
+        $page = $entityRepository->find($pageId);
+
+        $currentLocale = Locale::find($localeId);
+
+        $localisation = $page->getLocalisation($currentLocale);
+
+        $type = $typeRepository->find($page->entity_type_id);
+
+        $fields = $type->fields;
+
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
+
+        $slug = str_slug( $request->input('slug') );
+
+        // update input slug value to reflect str_slug, then validate it
+        $request->merge(array('slug' => $slug));
+
+        $rules = [
+            'name' => "required",
+            'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
+        ];
+
+        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
+
+        $this->validate($this->request, $rules, [], $niceNames);
+
+        $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
+
+        $revision = $revisionsRepository->create([
+            'entity_localisation_id' => $localisation->id,
+            'status' => RevisionStatus::DRAFT,
+            'created_by' => $this->request->user()->id
+        ]);
+
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+
+        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
+            ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
     public function editLocale(
@@ -195,58 +247,6 @@ class PagesController extends BaseController
         ]);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
-    }
-
-    public function update(
-        $pageId,
-        $localeId,
-        EntityRepository $entityRepository,
-        EntityRevisionRepository $revisionsRepository,
-        FieldDataRepository $fieldDataRepository,
-        EntityTypeRepository $typeRepository,
-        Request $request
-    ) {
-        $page = $entityRepository->find($pageId);
-
-        $currentLocale = Locale::find($localeId);
-
-        $localisation = $page->getLocalisation($currentLocale);
-
-        $type = $typeRepository->find($page->entity_type_id);
-
-        $fields = $type->fields;
-
-        $niceNames = [
-            'name' => 'Name',
-            'slug' => 'URL Slug'
-        ];
-
-        $slug = str_slug( $request->input('slug') );
-
-        // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
-
-        $rules = [
-            'name' => "required",
-            'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
-        ];
-
-        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
-
-        $this->validate($this->request, $rules, [], $niceNames);
-
-        $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
-
-        $revision = $revisionsRepository->create([
-            'entity_localisation_id' => $localisation->id,
-            'status' => RevisionStatus::DRAFT,
-            'created_by' => $this->request->user()->id
-        ]);
-
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
-
-        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
-            ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
 }

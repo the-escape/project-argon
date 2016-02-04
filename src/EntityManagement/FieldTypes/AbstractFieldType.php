@@ -148,7 +148,7 @@ abstract class AbstractFieldType
 
     public function getParentId()
     {
-        return $this->field->parent_field_id;
+        return (int)$this->field->parent_field_id;
     }
 
     abstract function parseData(FieldData $data);

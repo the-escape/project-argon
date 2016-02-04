@@ -1,6 +1,7 @@
 <?php
 
     $isInCombo = $field->getParentId();
+    $submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -22,11 +23,15 @@
 
     // get wysiwyg toolbar options
     $toolbar = $format_tags = [];
+
     foreach ($field->getProperties() as $name => $property)
     {
         if (property_exists($field->getSettings(), $name) && property_exists($property, 'toolbar'))
         {
-            $toolbar[] = $property->toolbar;
+            if ($field->getSetting($name))
+            {
+                $toolbar[] = $property->toolbar;
+            }
 
             if (($name == 'format') && $property->children)
             {
@@ -36,7 +41,6 @@
                     {
                         $format_tags[] = $child_name;
                     }
-
                 }
             }
         }
@@ -46,9 +50,9 @@
 
     $wysiwyg_config_format_tags = implode(';', $format_tags);
 
-    $wysiwyg_config_height = isset($field->settings->height) ? (int)$field->settings->height : '';
+    $wysiwyg_config_height = $field->getSetting('height');
 
-    ?>
+?>
 
 
     @if($field->allowMultiple())
@@ -60,7 +64,8 @@
         @endif
 
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-        @if($submitted = old("combo.{$field->getId()}"))
+
+        @if($submitted)
 
             <?php $i = 0; ?>
 
@@ -68,8 +73,8 @@
 
                 <?php
                 $idString = str_replace('.', '', microtime(true));
-                $name = ($isInCombo) ? "combo[{$isInCombo}][$hash][fields][{$field->id}][]" : "fields[{$field->id}][]";
-                $camelString = ($isInCombo) ? "combo.{$isInCombo}.{$hash}.fields.{$field->id}.{$i}" : "fields.{$field->id}.{$i}";
+                $name = ($isInCombo) ? "combo[{$isInCombo}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+                $camelString = ($isInCombo) ? "combo.{$isInCombo}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
                 $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 

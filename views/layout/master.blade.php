@@ -68,81 +68,81 @@
 
             <?php
             // ACCORDIONS: Handle all accordion instances on the page with .accordion-expand-collapse trigger ?>
-//            var $accordionExpandCollapse = $('.accordion-expand-collapse');
-//
-//            $accordionExpandCollapse.click(function()
-//            {
-//                var isExpanded = this.getAttribute('data-expanded');
-//
-//                if (isExpanded)
-//                {
-//                    $('.accordion-header.ui-state-active').trigger('click');
-//                }
-//                else
-//                {
-//                    $('.accordion-header:not(.ui-state-active)').trigger('click');
-//                }
-//
-//                return false;
-//            });
+            var $accordionExpandCollapse = $('.accordion-expand-collapse');
+
+            $accordionExpandCollapse.click(function()
+            {
+                var isExpanded = this.getAttribute('data-expanded');
+
+                if (isExpanded)
+                {
+                    $('.accordion-header.ui-state-active').trigger('click');
+                }
+                else
+                {
+                    $('.accordion-header:not(.ui-state-active)').trigger('click');
+                }
+
+                return false;
+            });
 
 
             <?php
             // ACCORDIONS: Handle individial accordions ?>
-//            $('.accordion').accordion(
-//            {
-//                active: false,
-//                header: ".accordion-header",
-//                collapsible: true,
-//                heightStyle: "content",
-//                icons: {
-//                    activeHeader: "accordion-header-open",
-//                    header: "accordion-header-close"
-//                },
-//                animate: {
-//                    duration: 400
-//                },
-//                activate: function()
-//                {
-//                    var isActive = $(this).accordion("option", "active");
-//
-//                    if (isActive === false)
-//                    {
-//                        $accordionExpandCollapse.each(function()
-//                        {
-//                            var $self = $(this);
-//                            var expandAllText = $self.data('data-expand') || 'Expand all';
-//
-//                            if(!$('.accordion-header.ui-state-active').length)
-//                            {
-//                                $self.removeClass('expanded');
-//                            }
-//
-//                            $self.text(expandAllText);
-//                            $self.removeAttr('data-expanded');
-//                        });
-//                    }
-//                    else
-//                    {
-//                        $accordionExpandCollapse.each(function()
-//                        {
-//                            var $self = $(this);
-//                            var collapseAllText = $self.data('data-collapse') || 'Collapse all';
-//
-//                            $self.addClass('expanded');
-//                            $self.text(collapseAllText);
-//                            $self.attr('data-expanded', true);
-//                        });
-//                    }
-//                }
-//            });
+            $('.accordion').accordion(
+            {
+                active: false,
+                header: ".accordion-header",
+                collapsible: true,
+                heightStyle: "content",
+                icons: {
+                    activeHeader: "accordion-header-open",
+                    header: "accordion-header-close"
+                },
+                animate: {
+                    duration: 400
+                },
+                activate: function()
+                {
+                    var isActive = $(this).accordion("option", "active");
+
+                    if (isActive === false)
+                    {
+                        $accordionExpandCollapse.each(function()
+                        {
+                            var $self = $(this);
+                            var expandAllText = $self.data('data-expand') || 'Expand all';
+
+                            if(!$('.accordion-header.ui-state-active').length)
+                            {
+                                $self.removeClass('expanded');
+                            }
+
+                            $self.text(expandAllText);
+                            $self.removeAttr('data-expanded');
+                        });
+                    }
+                    else
+                    {
+                        $accordionExpandCollapse.each(function()
+                        {
+                            var $self = $(this);
+                            var collapseAllText = $self.data('data-collapse') || 'Collapse all';
+
+                            $self.addClass('expanded');
+                            $self.text(collapseAllText);
+                            $self.attr('data-expanded', true);
+                        });
+                    }
+                }
+            });
 
 
             <?php
             // ACCORDIONS: expand all instances on load after slight delay. ?>
-//            setTimeout(function(){
-//                $accordionExpandCollapse.trigger('click');
-//            }, 0);
+            setTimeout(function(){
+                $accordionExpandCollapse.trigger('click');
+            }, 0);
 
 
             <?php

@@ -48,8 +48,10 @@ class EntityField extends Model
                         break;
                     case "options":
                         $arr = [];
-                        foreach ($value as $k => $v) {
-                            $arr[(int)$k] = $v;
+                        if (!is_scalar($value)) {
+                            foreach ($value as $k => $v) {
+                                $arr[(int)$k] = $v;
+                            }
                         }
                         $decoded->$name = $arr;
                 }

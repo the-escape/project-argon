@@ -1,7 +1,7 @@
 <?php
 
     $isInCombo = $field->getParentId() !== 0;
-    $submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("field.{$field->getId()}");
+    $submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -52,7 +52,7 @@
             <div class="input-group sortable-item">
                 <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                @if(@$field->settings->required)
+                @if($field->isRequired())
                     <input type="text" id="{{ $idString }}" class="form-control required {{$errorClass}}" name="{{ $name }}" value="{{ old($camelString, $v) }}">
                 @else
                     <input type="text" id="{{ $idString }}" class="form-control {{$errorClass}}" name="{{ $name }}" value="{{ old($camelString, $v) }}">
