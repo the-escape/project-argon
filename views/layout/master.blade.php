@@ -177,6 +177,7 @@
                                 if(window.console) console.log('Data returned:');
                                 if(window.console) console.log($(data));
                                 $self.before($(data));
+
                                 // force all wysiwyg fields to populate native equivalents and remove before cloning
                                 for (var i in CKEDITOR.instances)
                                 {
@@ -191,10 +192,10 @@
                                     CKEDITOR.config.on = {
                                         'instanceReady': function(evt)
                                         {
-                                            if (el.id == ID) // set the focus to cloned editor
-                                            {
-                                                this.focus();
-                                            }
+//                                            if (el.id == field) // set the focus to cloned editor
+//                                            {
+//                                                this.focus();
+//                                            }
                                         }
                                     };
                                     CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
@@ -211,73 +212,73 @@
                         return false;
                     }
 
-                    var $elInput = (isInputGroup) ? $el.find('.form-control') : $el // find input field within cloned html
-
-                    var isWysiwyg = $elInput.hasClass('ckeditor');
-
-                    if (isWysiwyg)
-                    {
-                        // force all wysiwyg fields to populate native equivalents and remove before cloning
-                        for (var i in CKEDITOR.instances)
-                        {
-                            CKEDITOR.instances[i].updateElement();
-                            CKEDITOR.instances[i].destroy();
-                        }
-                    }
-
-                    var $cloned = $el.clone(true, true); // clone element
-                    var $clonedInput = (isInputGroup) ? $cloned.find('.form-control') : $cloned // find input field within cloned html
-                    var matches = $clonedInput.attr('name').match(/fields\[(\d+)\]/); // get field value by running a regex match
-                    if (matches) {
-                        $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
-                    } else {
-                        var matches = $clonedInput.attr('name').match(/combo\[(\d+)\]\[(\d+)\]\[fields\]\[(\d+)\]/); // get field value by running a regex match
-                        $clonedInput.prop('name', 'combo[' + matches[1]+ '][' + matches[2]+ '][fields][' + matches[3]+ '][]'); // update cloned name
-                    }
-                    $clonedInput.val('').removeAttr('value'); // clear cloned value
-                    $clonedInput.removeClass('error'); // remove error class if exists from cloned element
-
-                    if (isWysiwyg)
-                    {
-                        var ID = new Date().getTime();
-                        $clonedInput.attr('id', ID); // add generated ID, just to satisfy sortable on wysiwyg
-                    }
-                    else
-                    {
-                        $clonedInput.removeAttr('id');
-                    }
-
-                    if (isInputGroup)
-                    {
-                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
-                        $parentFormGroup.children('.input-group').last().after($cloned).next().find('.form-control').focus();
-                    }
-                    else
-                    {
-                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
-                        $parentFormGroup.children('.form-control').last().after($cloned).next('.form-control').focus();
-                    }
-
-                    if (isWysiwyg)
-                    {
-                        // rebuild all wysiwyg fields
-                        $('.ckeditor').each(function(i, el)
-                        {
-                            CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
-                            CKEDITOR.config.height = getWysiwygHeight(el);
-                            CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
-                            CKEDITOR.config.on = {
-                                'instanceReady': function(evt)
-                                {
-                                    if (el.id == ID) // set the focus to cloned editor
-                                    {
-                                        this.focus();
-                                    }
-                                }
-                            };
-                            CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-                        });
-                    }
+//                    var $elInput = (isInputGroup) ? $el.find('.form-control') : $el // find input field within cloned html
+//
+//                    var isWysiwyg = $elInput.hasClass('ckeditor');
+//
+//                    if (isWysiwyg)
+//                    {
+//                        // force all wysiwyg fields to populate native equivalents and remove before cloning
+//                        for (var i in CKEDITOR.instances)
+//                        {
+//                            CKEDITOR.instances[i].updateElement();
+//                            CKEDITOR.instances[i].destroy();
+//                        }
+//                    }
+//
+//                    var $cloned = $el.clone(true, true); // clone element
+//                    var $clonedInput = (isInputGroup) ? $cloned.find('.form-control') : $cloned // find input field within cloned html
+//                    var matches = $clonedInput.attr('name').match(/fields\[(\d+)\]/); // get field value by running a regex match
+//                    if (matches) {
+//                        $clonedInput.prop('name', 'fields[' + matches[1]+ '][]'); // update cloned name
+//                    } else {
+//                        var matches = $clonedInput.attr('name').match(/combo\[(\d+)\]\[(\d+)\]\[fields\]\[(\d+)\]/); // get field value by running a regex match
+//                        $clonedInput.prop('name', 'combo[' + matches[1]+ '][' + matches[2]+ '][fields][' + matches[3]+ '][]'); // update cloned name
+//                    }
+//                    $clonedInput.val('').removeAttr('value'); // clear cloned value
+//                    $clonedInput.removeClass('error'); // remove error class if exists from cloned element
+//
+//                    if (isWysiwyg)
+//                    {
+//                        var ID = new Date().getTime();
+//                        $clonedInput.attr('id', ID); // add generated ID, just to satisfy sortable on wysiwyg
+//                    }
+//                    else
+//                    {
+//                        $clonedInput.removeAttr('id');
+//                    }
+//
+//                    if (isInputGroup)
+//                    {
+//                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+//                        $parentFormGroup.children('.input-group').last().after($cloned).next().find('.form-control').focus();
+//                    }
+//                    else
+//                    {
+//                        // insert cloned element after last of the same type. Note, copied one may be moved with sortable, so can't just insert after
+//                        $parentFormGroup.children('.form-control').last().after($cloned).next('.form-control').focus();
+//                    }
+//
+//                    if (isWysiwyg)
+//                    {
+//                        // rebuild all wysiwyg fields
+//                        $('.ckeditor').each(function(i, el)
+//                        {
+//                            CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+//                            CKEDITOR.config.height = getWysiwygHeight(el);
+//                            CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
+//                            CKEDITOR.config.on = {
+//                                'instanceReady': function(evt)
+//                                {
+//                                    if (el.id == ID) // set the focus to cloned editor
+//                                    {
+//                                        this.focus();
+//                                    }
+//                                }
+//                            };
+//                            CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+//                        });
+//                    }
                 }
 
                 $self.trigger('blur'); // unfocus the button

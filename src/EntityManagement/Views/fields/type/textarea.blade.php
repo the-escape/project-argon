@@ -1,21 +1,37 @@
 <?php
-    if (isset($latest)) {
-        $value = $latest->getField($field->getId());
+
+    $isInCombo = $field->getParentId() !== 0;
+    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
+
+    if ($isInCombo) {
+        if (!isset($value)) {
+            $value = null;
+        }
     } else {
-        $value = null;
+        if (isset($latest)) {
+            $value = $latest->getField($field->getId());
+        } else {
+            $value = null;
+        }
     }
 
     if ($value === null) {
         $value = new \Escape\Argon\EntityManagement\FieldValues\TextFieldValue();
     }
+
+    if (!isset($hash)) {
+        $hash = '';
+    }
 ?>
 
 @if($field->allowMultiple())
 
-    @if($field->isRequired())
-        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
-    @else
-        <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+    @if(!isset($clone))
+        @if($field->isRequired())
+            <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+        @else
+            <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
+        @endif
     @endif
 
     {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
@@ -43,7 +59,7 @@
 
         @endforeach
 
-        <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+        <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
 
     @else
 
@@ -53,6 +69,7 @@
             @foreach($value as $k => $v)
 
                 <?php
+// TODO: clarify differences in the view for textarea and wysiwyg
                 $idString = "fields-{$field->getId()}-{$k}"; // used by js too
                 $camelString = str_replace('-', '.', $idString);
                 ?>
@@ -71,7 +88,9 @@
 
             @endforeach
 
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+            @if(!isset($clone))
+                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+            @endif
 
         @else
 
@@ -93,7 +112,9 @@
                 <div class="input-group-addon field-remove">&#10005;</div>
             </div>
 
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+            @if(!isset($clone))
+                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+            @endif
 
         @endif
 

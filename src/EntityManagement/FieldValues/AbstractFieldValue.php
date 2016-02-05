@@ -16,7 +16,7 @@ abstract class AbstractFieldValue
 
     public function __toString()
     {
-        if ($this->data) {
+        if ($this->data !== null) {
             return $this->data;
         } else {
             return '';

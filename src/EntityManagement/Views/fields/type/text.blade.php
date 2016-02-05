@@ -1,7 +1,7 @@
 <?php
 
     $isInCombo = $field->getParentId() !== 0;
-    $submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("fields.{$field->getId()}");
+    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {

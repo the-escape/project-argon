@@ -9,7 +9,7 @@ if (isset($clone) && $field->getId() == $clone)
     $html_open ='';
     $html_close = '';
 }
-elseif(isset($clone) )
+elseif(isset($clone))
 {
     unset($clone);
     $html_open = '<div class="form-group sortable">';

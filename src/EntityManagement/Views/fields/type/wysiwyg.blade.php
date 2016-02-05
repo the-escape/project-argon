@@ -1,7 +1,7 @@
 <?php
 
     $isInCombo = $field->getParentId();
-    $submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("fields.{$field->getId()}");
+    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -57,10 +57,12 @@
 
     @if($field->allowMultiple())
 
-        @if($field->isRequired())
-            <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
-        @else
-            <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+        @if(!isset($clone))
+            @if($field->isRequired())
+                <label for="fields-{{ $field->getId() }}-0" class="required">{{ $field->getFieldName() }}</label>
+            @else
+                <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
+            @endif
         @endif
 
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
@@ -94,7 +96,7 @@
 
             @endforeach
 
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
 
         @else
 
@@ -126,7 +128,9 @@
 
             @endforeach
 
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+            @if(!isset($clone))
+                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+            @endif
 
         @endif
 
@@ -135,8 +139,8 @@
         {{-- Build initial single type field..--}}
         <?php
         $idString = str_replace('.', '', microtime(true));
-        $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
-        $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.0" : "fields.{$field->getId()}.0";
+        $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
+        $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}" : "fields.{$field->getId()}";
         $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
         ?>
 
