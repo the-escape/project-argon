@@ -28,7 +28,7 @@ $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->g
 
 ?>
 
-<div class="field-{{ $field->getId() }} field-datetime @if ($field->isRequired()) required @endif"
+<div class="field-{{ $field->getId() }} field-datetime @if ($field->isRequired()) {{ $requiredClass }} @endif"
      data-time-enabled="{{ $field->timeEnabled() ? 'true' : 'false' }}"
      data-seconds-enabled="{{ $field->timeEnabled() && $field->secondsEnabled() ? 'true' : 'false' }}"
 >

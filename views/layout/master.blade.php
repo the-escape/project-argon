@@ -289,6 +289,7 @@
             // SORTING: with custom classes for easier and more generic setup on various elements ?>
             $('.sortable').sortable(
             {
+                containment: "parent",
                 handle: ".sortable-handle",
                 items: ".sortable-item",
                 axis: "y",

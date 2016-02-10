@@ -1,7 +1,6 @@
 <?php
 
     $isInCombo = $field->getParentId() !== 0;
-    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -35,27 +34,34 @@
     @endif
 
     {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-    @if($submitted = old("fields.{$field->getId()}"))
+    <?php $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}"); ?>
+
+    @if($submitted)
+
+        <?php $i = 0; ?>
 
         @foreach($submitted as $k => $v)
 
             <?php
-            $idString = "fields-{$field->getId()}-{$k}"; // used by js too
-            $camelString = str_replace('-', '.', $idString);
+            $idString = str_replace('.', '', microtime(true));
+            $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+            $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
             $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
             ?>
 
             <div class="input-group sortable-item">
                 <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                @if(@$field->settings->required)
-                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                @if($field->isRequired())
+                    <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
                 @else
-                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
+                    <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $v) }}</textarea>
                 @endif
 
                 <div class="input-group-addon field-remove">&#10005;</div>
             </div>
+
+            <?php $i++; ?>
 
         @endforeach
 
@@ -64,27 +70,37 @@
     @else
 
         {{-- Attempt to build fields from stored values.--}}
-        @if($value)
+
+        @if(!$value->isEmpty())
+
+            <?php
+            $i = 0;
+            if (is_scalar($value)) {
+                $value = (array)$value;
+            }
+            ?>
 
             @foreach($value as $k => $v)
 
                 <?php
-// TODO: clarify differences in the view for textarea and wysiwyg
-                $idString = "fields-{$field->getId()}-{$k}"; // used by js too
-                $camelString = str_replace('-', '.', $idString);
+                $idString = str_replace('.', '', microtime(true));
+                $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+                $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                    @if(@$field->settings->required)
-                        <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString, $v) }}</textarea>
+                    @if($field->isRequired())
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control required">{{ old($camelString, $v) }}</textarea>
                     @else
-                        <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control">{{ old($camelString, $v) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
+
+                <?php $i++; ?>
 
             @endforeach
 
@@ -96,17 +112,18 @@
 
             {{-- Build initial multiple type field..--}}
             <?php
-            $idString = "fields-{$field->getId()}-0"; // used by js too
-            $camelString = str_replace('-', '.', $idString);
+            $idString = str_replace('.', '', microtime(true));
+            $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+            $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
             ?>
 
             <div class="input-group sortable-item">
                 <div class="input-group-addon sortable-handle">&#8645;</div>
 
-                @if(@$field->settings->required)
-                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control required">{{ old($camelString) }}</textarea>
+                @if($field->isRequired())
+                    <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control required">{{ old($camelString) }}</textarea>
                 @else
-                    <textarea name="fields[{{ $field->getId() }}][]" id="{{ $idString }}" class="form-control">{{ old($camelString) }}</textarea>
+                    <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control">{{ old($camelString) }}</textarea>
                 @endif
 
                 <div class="input-group-addon field-remove">&#10005;</div>
@@ -124,17 +141,18 @@
 
     {{-- Build initial single type field..--}}
     <?php
-    $idString = "fields-{$field->getId()}";
-    $camelString = str_replace('-', '.', $idString);
+    $idString = str_replace('.', '', microtime(true));
+    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
+    $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}" : "fields.{$field->getId()}";
     $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
     ?>
 
     @if($field->isRequired())
-        <label for="{{ $idString }}" class="required">{{ $field->getName() }}</label>
-        <textarea name="fields[{{ $field->getId() }}]" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
+        <label for="{{ $idString }}" class="required">{{ $field->getFieldName() }}</label>
+        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control required {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
     @else
-        <label for="{{ $idString }}">{{ $field->getName() }}</label>
-        <textarea name="fields[{{ $field->getId() }}]" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
+        <label for="{{ $idString }}">{{ $field->getFieldName() }}</label>
+        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control {{$errorClass}}">{{ old($camelString, $value) }}</textarea>
     @endif
 
 @endif

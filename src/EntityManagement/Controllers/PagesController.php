@@ -186,7 +186,7 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        return Redirect::route('cms:pages:edit', ['page' => $entity->id])
+        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 

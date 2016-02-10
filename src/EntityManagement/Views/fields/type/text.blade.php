@@ -1,7 +1,6 @@
 <?php
 
     $isInCombo = $field->getParentId() !== 0;
-    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -36,6 +35,8 @@
     @endif
 
     {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
+    <?php $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}"); ?>
+
     @if($submitted)
 
         <?php $i = 0; ?>
@@ -70,7 +71,7 @@
     @else
 
         {{-- Attempt to build fields from stored values.--}}
-        @if(!empty($value))
+        @if(!$value->isEmpty())
 
             <?php $i = 0; ?>
 

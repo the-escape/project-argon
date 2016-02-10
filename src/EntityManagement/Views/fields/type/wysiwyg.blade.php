@@ -1,7 +1,6 @@
 <?php
 
-    $isInCombo = $field->getParentId();
-    $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}");
+    $isInCombo = $field->getParentId() !== 0;
 
     if ($isInCombo) {
         if (!isset($value)) {
@@ -19,6 +18,10 @@
 
     if ($value === null) {
         $value = new \Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue();
+    }
+
+    if (!isset($hash)) {
+        $hash = '';
     }
 
     // get wysiwyg toolbar options
@@ -66,6 +69,7 @@
         @endif
 
         {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
+        <?php $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}"); ?>
 
         @if($submitted)
 
@@ -75,8 +79,8 @@
 
                 <?php
                 $idString = str_replace('.', '', microtime(true));
-                $name = ($isInCombo) ? "combo[{$isInCombo}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
-                $camelString = ($isInCombo) ? "combo.{$isInCombo}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
+                $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+                $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
                 $errorClass = Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, $camelString);
                 ?>
 
@@ -102,34 +106,69 @@
 
             {{-- Attempt to build fields from stored values.--}}
 
-            <?php $i = 0; ?>
+            @if(!$value->isEmpty())
 
-            @foreach($value as $k => $v)
+                <?php
+                $i = 0;
+                if (is_scalar($value)) {
+                    $value = (array)$value;
+                }
+                ?>
+
+                @foreach($value as $k => $v)
+
+                    <?php
+                    $idString = str_replace('.', '', microtime(true));
+                    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+                    $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
+                    ?>
+
+                    <div class="input-group sortable-item">
+                        <div class="input-group-addon sortable-handle">&#8645;</div>
+
+                        @if($field->isRequired())
+                            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        @else
+                            <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        @endif
+
+                        <div class="input-group-addon field-remove">&#10005;</div>
+                    </div>
+
+                    <?php $i++; ?>
+
+                @endforeach
+
+                @if(!isset($clone))
+                    <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+                @endif
+
+            @else
+
+                {{-- Build initial multiple type field..--}}
 
                 <?php
                 $idString = str_replace('.', '', microtime(true));
                 $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
-                $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.{$i}" : "fields.{$field->getId()}.{$i}";
+                $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}.0" : "fields.{$field->getId()}.0";
                 ?>
 
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
 
                     @if($field->isRequired())
-                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor required" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control required">{{ old($camelString) }}</textarea>
                     @else
-                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control ckeditor" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ old($camelString, $v) }}</textarea>
+                        <textarea name="{{ $name }}" id="{{ $idString }}" class="form-control">{{ old($camelString) }}</textarea>
                     @endif
 
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
 
-                <?php $i++; ?>
+                @if(!isset($clone))
+                    <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+                @endif
 
-            @endforeach
-
-            @if(!isset($clone))
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
             @endif
 
         @endif

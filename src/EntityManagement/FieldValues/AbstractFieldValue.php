@@ -22,4 +22,18 @@ abstract class AbstractFieldValue
             return '';
         }
     }
+
+
+    public function isEmpty()
+    {
+        if (is_array($this->data) && (count($this->data) === 0)) {
+            return true;
+        }
+
+        if (($this->data === '') || ($this->data === null)) {
+            return true;
+        }
+
+        return false;
+    }
 }
