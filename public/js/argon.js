@@ -54,22 +54,32 @@ var expand = {
 
 };
 
-if ($('.field-boolean').length > 0) {
+//if ($('.field-boolean').length > 0) {
+//
+//
+//    $('.field-boolean .boolean-on').click(function() {
+//        var field = $(this).closest('.field-boolean');
+//
+//        field.find('.boolean-radio-on').click();
+//    });
+//
+//    $('.field-boolean .boolean-off').click(function() {
+//        var field = $(this).closest('.field-boolean');
+//
+//        field.find('.boolean-radio-off').click();
+//    })
+//
+//}
 
+$(document).on('click', '.boolean-on', function(){
+    if(window.console) console.log($(this).siblings('.boolean-radio-on'));
+    $(this).siblings('.boolean-radio-on').click();
+});
 
-    $('.field-boolean .boolean-on').click(function() {
-        var field = $(this).closest('.field-boolean');
-
-        field.find('.boolean-radio-on').click();
-    });
-
-    $('.field-boolean .boolean-off').click(function() {
-        var field = $(this).closest('.field-boolean');
-
-        field.find('.boolean-radio-off').click();
-    })
-
-}
+$(document).on('click', '.boolean-off', function(){
+    if(window.console) console.log($(this).siblings('.boolean-radio-off'));
+    $(this).siblings('.boolean-radio-off').click();
+});
 
 var folders = $('.media-library .folders');
 
@@ -247,7 +257,7 @@ $('.field-datetime').each(function() {
     if ($(field).attr('data-time-enabled') == 'true') {
         $('.hours, .minutes, .seconds', field).on('change', function() {
             updateValue(field);
-        })
+        });
     }
 });
 
@@ -272,13 +282,12 @@ function updateValue(field)
         }
 
         time = hours + ":" + minutes + ":" + seconds;
-
     }
     else {
         time = "00:00:00";
     }
 
-        $('.value', field).val(date + " " + time);
+    $('.value', field).val(date + " " + time);
 
 }
 

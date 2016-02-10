@@ -14,7 +14,7 @@ $('.field-datetime').each(function() {
     if ($(field).attr('data-time-enabled') == 'true') {
         $('.hours, .minutes, .seconds', field).on('change', function() {
             updateValue(field);
-        })
+        });
     }
 });
 
@@ -39,12 +39,11 @@ function updateValue(field)
         }
 
         time = hours + ":" + minutes + ":" + seconds;
-
     }
     else {
         time = "00:00:00";
     }
 
-        $('.value', field).val(date + " " + time);
+    $('.value', field).val(date + " " + time);
 
 }

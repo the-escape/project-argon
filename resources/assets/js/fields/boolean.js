@@ -1,16 +1,7 @@
-if ($('.field-boolean').length > 0) {
+$(document).on('click', '.boolean-on', function(){
+    $(this).siblings('.boolean-radio-on').trigger( "click" );
+});
 
-
-    $('.field-boolean .boolean-on').click(function() {
-        var field = $(this).closest('.field-boolean');
-
-        field.find('.boolean-radio-on').click();
-    });
-
-    $('.field-boolean .boolean-off').click(function() {
-        var field = $(this).closest('.field-boolean');
-
-        field.find('.boolean-radio-off').click();
-    })
-
-}
+$(document).on('click', '.boolean-off', function(){
+    $(this).siblings('.boolean-radio-off').trigger( "click" );
+});
