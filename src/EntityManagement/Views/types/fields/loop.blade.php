@@ -130,6 +130,32 @@
 
 
 
+        @elseif ($property->type == 'items')
+
+            <div class="form-group {{$classes}}">
+                <label for="{{$name}}">{{$property->label}}</label>
+
+
+                <?php
+
+                // TODO: Build options from content types
+                ?>
+
+                <select name="{{$name}}" id="{{$name}}" class="form-control inline">
+                    <option value="1">Content Type 1</option>
+                    <option value="2">Content Type 2</option>
+                    <option value="3">Content Type 3</option>
+                </select>
+
+                @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
+                @if($parent)
+                    @include('argon::types.fields.loop', ['items'=>$property->children, 'children' => true])
+                @endif
+            </div>
+
+
+
+
 
         @endif
 

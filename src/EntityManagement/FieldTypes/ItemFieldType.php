@@ -17,10 +17,26 @@ class ItemFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'items' => [
+            'label' => 'Items',
+            'type' => 'items',
+            'default' => '',
+            'help' => "",
+        ],
     ];
 
     public function getValue(FieldData $data=null)
     {
         throw new \Exception('Not implemented');
+    }
+
+    public function parseData(FieldData $data)
+    {
+        return new ItemFieldvalue($data->value);
+    }
+
+    public function getOptions()
+    {
+        return (array)$this->getSetting('options');
     }
 }

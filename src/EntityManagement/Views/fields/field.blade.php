@@ -64,9 +64,9 @@ else
 
         {{--@include('argon::fields.type.video')--}}
 
-    {{--@elseif($field->field_type == 'item')--}}
+    @elseif($field instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType)
 
-        {{--@include('argon::fields.type.item')--}}
+        @include('argon::fields.type.item')
 
     {{--@elseif($field->field_type == 'colourpicker')--}}
 
