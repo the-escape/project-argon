@@ -46,41 +46,50 @@ var argon = {
             }
             return "<strong>" + selectedSize + "</strong>" + selectedUnit;
         }
-    }
-}
+    },
+
+    // Observer pattern to allow event subscriptions
+    // Very useful for async requests
+    /* USAGE:
+
+    $.subscribe('field/clone', function (e, data) {
+        if(window.console) console.log(data);
+    });
+
+    $.publish('field/clone', {'id':field});
+
+    */
+    events: (function ($) {
+        var o = $({});
+        $.each({
+            trigger: 'publish',
+            on: 'subscribe',
+            off: 'unsubscribe'
+        }, function (key, val) {
+            jQuery[val] = function () {
+                o[key].apply(o, arguments);
+            };
+        });
+    }(jQuery))
+
+};
+
+
+
+
 
 
 var expand = {
 
 };
 
-//if ($('.field-boolean').length > 0) {
-//
-//
-//    $('.field-boolean .boolean-on').click(function() {
-//        var field = $(this).closest('.field-boolean');
-//
-//        field.find('.boolean-radio-on').click();
-//    });
-//
-//    $('.field-boolean .boolean-off').click(function() {
-//        var field = $(this).closest('.field-boolean');
-//
-//        field.find('.boolean-radio-off').click();
-//    })
-//
-//}
-
 $(document).on('click', '.boolean-on', function(){
-    if(window.console) console.log($(this).siblings('.boolean-radio-on'));
-    $(this).siblings('.boolean-radio-on').click();
+    $(this).siblings('.boolean-radio-on').trigger( "click" );
 });
 
 $(document).on('click', '.boolean-off', function(){
-    if(window.console) console.log($(this).siblings('.boolean-radio-off'));
-    $(this).siblings('.boolean-radio-off').click();
+    $(this).siblings('.boolean-radio-off').trigger( "click" );
 });
-
 var folders = $('.media-library .folders');
 
 folders.on("changed.jstree", function (e, data) {
@@ -241,55 +250,92 @@ $('.field-file').on('click', '.field-remove', function()
     }
 });
 
-$('.field-datetime').each(function() {
-    var field = this;
-    var date = $('.calendar', field).attr('data-datetime');
+/*
+Revealing Module Pattern
+*/
+var datetime = (function () {
 
-    $('.calendar', field).datepicker({
-        format: "yyyy-mm-dd",
-        clearBtn: true
-    });
-    $('.calendar', field).datepicker('setDates', date);
-    $('.calendar', field).on('changeDate', function() {
-        updateValue(field);
-    });
+    function init()
+    {
+        build();
+        subscribe();
+    }
 
-    if ($(field).attr('data-time-enabled') == 'true') {
-        $('.hours, .minutes, .seconds', field).on('change', function() {
-            updateValue(field);
+    function build($fieldDatetime)
+    {
+        var $collection = $fieldDatetime || $('.field-datetime');
+
+        if(window.console) console.log($collection);
+
+        $collection.each(function() {
+            var field = this;
+            var $calendar_field = $('.calendar', field);
+            var date = $calendar_field.attr('data-datetime');
+
+            $calendar_field.datepicker({
+                format: "yyyy-mm-dd",
+                clearBtn: true
+            });
+            $calendar_field.datepicker('setDates', date);
+            $calendar_field.on('changeDate', function() {
+                updateValue(field);
+            });
+
+            if ($(field).attr('data-time-enabled') == 'true') {
+                $('.hours, .minutes, .seconds', field).on('change', function() {
+                    updateValue(field);
+                });
+            }
         });
     }
-});
 
+    function updateValue(field)
+    {
+        var time, datetime = [];
+        var date = $('.calendar', field).datepicker('getFormattedDate');
 
-function updateValue(field)
-{
-    var time, datetime = [];
-    var date = $('.calendar', field).datepicker('getFormattedDate');
-
-    if (date == "") {
-        $('.value', field).val('');
-        return;
-    }
-
-    if ($(field).attr('data-time-enabled') == 'true') {
-        var hours = $('.hours', field).val();
-        var minutes = $('.minutes', field).val();
-        var seconds = "00";
-
-        if ($(field).attr('data-seconds-enabled') == 'true') {
-            seconds = $('.seconds', field).val();
+        if (date == "") {
+            $('.value', field).val('');
+            return;
         }
 
-        time = hours + ":" + minutes + ":" + seconds;
-    }
-    else {
-        time = "00:00:00";
+        if ($(field).attr('data-time-enabled') == 'true') {
+            var hours = $('.hours', field).val();
+            var minutes = $('.minutes', field).val();
+            var seconds = "00";
+
+            if ($(field).attr('data-seconds-enabled') == 'true') {
+                seconds = $('.seconds', field).val();
+            }
+
+            time = hours + ":" + minutes + ":" + seconds;
+        }
+        else {
+            time = "00:00:00";
+        }
+
+        $('.value', field).val(date + " " + time);
     }
 
-    $('.value', field).val(date + " " + time);
+    // subscribe for notifications, see argon.events - observer pattern
+    function subscribe()
+    {
+        $.subscribe('field/clone', function (e, data) {
+            build( $('.field-'+data.id).find('.field-datetime') );
+        });
+    }
 
-}
+    return {
+        init: init
+    };
+
+})();
+
+datetime.init();
+
+
+
+
 
 // CKEDITOR: Custom toolbar setup and initialization
 CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';

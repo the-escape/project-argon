@@ -46,6 +46,35 @@ var argon = {
             }
             return "<strong>" + selectedSize + "</strong>" + selectedUnit;
         }
-    }
-}
+    },
+
+    // Observer pattern to allow event subscriptions
+    // Very useful for async requests
+    /* USAGE:
+
+    $.subscribe('field/clone', function (e, data) {
+        if(window.console) console.log(data);
+    });
+
+    $.publish('field/clone', {'id':field});
+
+    */
+    events: (function ($) {
+        var o = $({});
+        $.each({
+            trigger: 'publish',
+            on: 'subscribe',
+            off: 'unsubscribe'
+        }, function (key, val) {
+            jQuery[val] = function () {
+                o[key].apply(o, arguments);
+            };
+        });
+    }(jQuery))
+
+};
+
+
+
+
 

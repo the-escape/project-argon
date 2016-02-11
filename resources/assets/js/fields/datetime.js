@@ -1,49 +1,86 @@
-$('.field-datetime').each(function() {
-    var field = this;
-    var date = $('.calendar', field).attr('data-datetime');
+/*
+Revealing Module Pattern
+*/
+var datetime = (function () {
 
-    $('.calendar', field).datepicker({
-        format: "yyyy-mm-dd",
-        clearBtn: true
-    });
-    $('.calendar', field).datepicker('setDates', date);
-    $('.calendar', field).on('changeDate', function() {
-        updateValue(field);
-    });
+    function init()
+    {
+        build();
+        subscribe();
+    }
 
-    if ($(field).attr('data-time-enabled') == 'true') {
-        $('.hours, .minutes, .seconds', field).on('change', function() {
-            updateValue(field);
+    function build($fieldDatetime)
+    {
+        var $collection = $fieldDatetime || $('.field-datetime');
+
+        if(window.console) console.log($collection);
+
+        $collection.each(function() {
+            var field = this;
+            var $calendar_field = $('.calendar', field);
+            var date = $calendar_field.attr('data-datetime');
+
+            $calendar_field.datepicker({
+                format: "yyyy-mm-dd",
+                clearBtn: true
+            });
+            $calendar_field.datepicker('setDates', date);
+            $calendar_field.on('changeDate', function() {
+                updateValue(field);
+            });
+
+            if ($(field).attr('data-time-enabled') == 'true') {
+                $('.hours, .minutes, .seconds', field).on('change', function() {
+                    updateValue(field);
+                });
+            }
         });
     }
-});
 
+    function updateValue(field)
+    {
+        var time, datetime = [];
+        var date = $('.calendar', field).datepicker('getFormattedDate');
 
-function updateValue(field)
-{
-    var time, datetime = [];
-    var date = $('.calendar', field).datepicker('getFormattedDate');
-
-    if (date == "") {
-        $('.value', field).val('');
-        return;
-    }
-
-    if ($(field).attr('data-time-enabled') == 'true') {
-        var hours = $('.hours', field).val();
-        var minutes = $('.minutes', field).val();
-        var seconds = "00";
-
-        if ($(field).attr('data-seconds-enabled') == 'true') {
-            seconds = $('.seconds', field).val();
+        if (date == "") {
+            $('.value', field).val('');
+            return;
         }
 
-        time = hours + ":" + minutes + ":" + seconds;
-    }
-    else {
-        time = "00:00:00";
+        if ($(field).attr('data-time-enabled') == 'true') {
+            var hours = $('.hours', field).val();
+            var minutes = $('.minutes', field).val();
+            var seconds = "00";
+
+            if ($(field).attr('data-seconds-enabled') == 'true') {
+                seconds = $('.seconds', field).val();
+            }
+
+            time = hours + ":" + minutes + ":" + seconds;
+        }
+        else {
+            time = "00:00:00";
+        }
+
+        $('.value', field).val(date + " " + time);
     }
 
-    $('.value', field).val(date + " " + time);
+    // subscribe for notifications, see argon.events - observer pattern
+    function subscribe()
+    {
+        $.subscribe('field/clone', function (e, data) {
+            build( $('.field-'+data.id).find('.field-datetime') );
+        });
+    }
 
-}
+    return {
+        init: init
+    };
+
+})();
+
+datetime.init();
+
+
+
+

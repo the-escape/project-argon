@@ -176,7 +176,11 @@
                             .done(function(data) {
                                 if(window.console) console.log('Data returned:');
                                 if(window.console) console.log($(data));
+
                                 $self.before($(data));
+
+                                // notify all observers
+                                $.publish('field/clone', {'id':field});
 
                                 // force all wysiwyg fields to populate native equivalents and remove before cloning
                                 for (var i in CKEDITOR.instances)
