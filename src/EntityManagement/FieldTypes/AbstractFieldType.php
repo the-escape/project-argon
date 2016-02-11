@@ -18,6 +18,8 @@ abstract class AbstractFieldType
 
     protected $field;
 
+    protected $isCloning = false;
+
     public function getId()
     {
         return $this->field->id;
@@ -36,6 +38,11 @@ abstract class AbstractFieldType
     public function getKey()
     {
         return $this->key;
+    }
+
+    public function setIsCloning($isCloning = true)
+    {
+	$this->isCloning = $isCloning;
     }
 
     public function getProperties()
@@ -151,6 +158,35 @@ abstract class AbstractFieldType
         return (int)$this->field->parent_field_id;
     }
 
+    public function isInCombo()
+    {
+	return $this->getParentId() != 0;
+    }
+
+    public function getFormFieldName($hash)
+    {
+	if ($this->isInCombo()) {
+	    return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}]";
+	} else {
+	    return "fields[{$this->getId()}]";
+	}
+    }
+
+    public function getCamelString($hash)
+    {
+	if ($this->isInCombo()) {
+	    return "combo.{$this->getParentId()}.{$hash}.fields.{$this->getId()}";
+	} else {
+	    return "fields.{$this->getId()}";
+	}
+    }
+
+    public function getInitialValue()
+    {
+	return null;
+    }
+
     abstract function parseData(FieldData $data);
 
+    abstract function render($value = null, $data = []);
 }

@@ -1,46 +1,8 @@
 <?php
-
-$isInCombo = $field->getParentId() !== 0;
-
-$name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
-$camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}" : "fields.{$field->getId()}";
-
-
-
-if ($isInCombo) {
-    if (!isset($value)) {
-        $value = null;
-    } else {
-        $value = new \Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue($value);
-    }
-
-} else {
-    if (isset($latest)) {
-        $value = $latest->getField($field->getId());
-    } else {
-        $value = null;
-    }
-}
-
-if ($value === null) {
-    $value = new \Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue();
-}
-
-// retain submitted value if validation fails on submission
-$value = old($camelString, $value);
-
-if (is_scalar($value)) {
-    $value = new \Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue($value);
-}
-
-
-$requiredClass = $field->isRequired() ? 'required' : '';
-
-
-
+    $requiredClass = $field->isRequired() ? 'required' : '';
 ?>
 
-<div class="field-{{ $field->getId() }} field-datetime @if ($field->isRequired()) {{ $requiredClass }} @endif"
+<div class="field-{{ $field->getId() }} field-datetime {{ $requiredClass }}"
      data-time-enabled="{{ $field->timeEnabled() ? 'true' : 'false' }}"
      data-seconds-enabled="{{ $field->timeEnabled() && $field->secondsEnabled() ? 'true' : 'false' }}"
 >
@@ -71,5 +33,5 @@ $requiredClass = $field->isRequired() ? 'required' : '';
         @endif
 
     @endif
-    <input type="text" class="value" id="field-{{ $field->getId() }}" name="{{ $name }}" value="{{$value->format('Y-m-d H:i:s')}}">
+    <input type="text" class="value" id="field-{{ $field->getId() }}" name="{{ $field->getFormFieldName($hash) }}" value="{{$value->format('Y-m-d H:i:s')}}">
 </div>

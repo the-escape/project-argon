@@ -2,25 +2,27 @@
 
     $isInCombo = $field->getParentId() !== 0;
 
-    if ($isInCombo) {
-        if (!isset($value)) {
-            $value = null;
-        }
-    } else {
-        if (isset($latest)) {
-            $value = $latest->getField($field->getId());
-        } else {
-            $value = null;
-        }
-    }
-
-    if ($value === null) {
-        $value = new \Escape\Argon\EntityManagement\FieldValues\TextFieldValue();
-    }
+//    if ($isInCombo) {
+//        if (!isset($value)) {
+//            $value = null;
+//        }
+//    } else {
+//        if (isset($latest)) {
+//            $value = $latest->getField($field->getId());
+//        } else {
+//            $value = null;
+//        }
+//    }
+//
+//    if ($value === null) {
+//        $value = new \Escape\Argon\EntityManagement\FieldValues\TextFieldValue();
+//    }
 
     if (!isset($hash)) {
         $hash = '';
     }
+
+    $i = 0;
 ?>
 
 @if($field->allowMultiple())
@@ -37,8 +39,6 @@
     <?php $submitted = ($isInCombo) ? old("combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}") : old("fields.{$field->getId()}"); ?>
 
     @if($submitted)
-
-        <?php $i = 0; ?>
 
         @foreach($submitted as $k => $v)
 
@@ -74,10 +74,9 @@
         @if(!$value->isEmpty())
 
             <?php
-            $i = 0;
-            if (is_scalar($value)) {
-                $value = (array)$value;
-            }
+		if (is_scalar($value)) {
+		    $value = (array)$value;
+		}
             ?>
 
             @foreach($value as $k => $v)

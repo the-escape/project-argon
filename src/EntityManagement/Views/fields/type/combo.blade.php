@@ -1,122 +1,40 @@
-@if(!isset($clone))
+@if(!$isCloning)
 
-    <div class="field-combo field-{{ $field->getId() }}">
+    <div class="field field-combo field-{{ $field->getId() }}"
+	 data-field="{{$field->getId()}}">
 
-    <label>{{ $field->getFieldName() }}</label>
+	<label>{{ $field->getFieldName() }}</label>
 
+	<div class="field-values">
 @endif
 
-    {{--Show subfields and clone buttons only if subfields exist--}}
-    @if(!$field->getSubfields()->isEmpty())
+    @foreach ($value as $hash => $v)
 
-        {{-- Attempt to build fields from submitted fields array first. Note variable fields number--}}
-        @if($submitted = old("combo.{$field->getId()}"))
+	<div class="input-group sortable-item">
 
-            @foreach($submitted as $hash => $subfields)
-
-                <div class="input-group sortable-item field-{{ $field->getId() }}">
-
-                    <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                    <div class="form-control">
-
-                        @foreach($field->getSubfields() as $subfield)
-
-                            @include('argon::fields.field', ['field'=>$subfield, 'hash'=>$hash])
-
-                        @endforeach
-
-                    </div>
-
-                    <div class="input-group-addon field-remove">&#10005;</div>
-
-                </div>
-
-            @endforeach
-
-        @else
-
-            <?php
-
-            // build multiple instances of combo when multiple from saved values....
-
-            // get the value
-            $page_fieldById = isset($page) ? $latest->getField($field->getId()) : '';
-
-            ?>
-
-            @if($page_fieldById)
-                <?php
-                    $combos = [];
-
-                    foreach ($page_fieldById as $hash => $v)
-                    {
-                        $combos[$hash] = $v;
-                    }
-                ?>
-
-                @foreach ($combos as $hash => $value)
-
-                    <div class="input-group sortable-item">
-
-                        <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                        <div class="form-control">
-                            @foreach($field->getSubfields() as $subfield)
-
-                                <?php
-                                    if (isset($value[$subfield->getId()])) {
-                                        $v = $value[$subfield->getId()];
-                                    } else {
-                                        $v = null;
-                                    }
-                                ?>
-
-                                @include('argon::fields.field', ['field'=>$subfield, 'hash'=>$hash, 'value'=>$v])
-
-                            @endforeach
-                        </div>
-
-                        <div class="input-group-addon field-remove">&#10005;</div>
-                    </div>
-
-                @endforeach
-
-            @else
-
-                <div class="input-group sortable-item">
-
-                    <div class="input-group-addon sortable-handle">&#8645;</div>
-
-                    <div class="form-control">
-                        <?php
-                            $hash = str_replace('.', '', microtime(true));
-                        ?>
-
-                        @foreach($field->getSubfields() as $subfield)
-
-                            @include('argon::fields.field', ['field'=>$subfield, 'hash'=>$hash])
-
-                        @endforeach
-                    </div>
-
-                    <div class="input-group-addon field-remove">&#10005;</div>
-                </div>
-
+	    @if($field->allowMultiple())
+		<div class="input-group-addon sortable-handle">&#8645;</div>
             @endif
 
-        @endif
+	    <div class="form-control">
+		@foreach($field->getSubFields() as $subField)
 
+		    {!! $subField->render($value->getValueForSubField($hash, $subField->getId()), ['hash' => $hash]) !!}
 
+		@endforeach
+	    </div>
 
-        @if(!isset($clone))
             @if($field->allowMultiple())
-                <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}">Add Field</a>
+		<div class="input-group-addon field-remove">&#10005;</div>
             @endif
-        @endif
+	</div>
 
-    @endif
+    @endforeach
 
-@if(!isset($clone))
+@if(!$isCloning)
+	</div>
+	@if($field->allowMultiple())
+		<a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}">Add Field</a>
+	@endif
     </div>
 @endif

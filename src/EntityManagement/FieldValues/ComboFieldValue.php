@@ -2,10 +2,31 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Illuminate\Support\Collection;
+use MyProject\Proxies\__CG__\stdClass;
 use Traversable;
 
 class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
+    /** @var  Collection */
+    protected $subfields;
+
+    public function __construct($data, $subfields)
+    {
+	$newData = [];
+	foreach ($data as $k => $v) {
+	    $newV = new \stdClass();
+	    $newV->fields = [];
+	    $v = (array)$v;
+	    foreach ($v['fields'] as $fk => $fv) {
+		$newV->fields[$fk] = $fv;
+	    }
+	    $newData[$k] = $newV;
+	}
+	parent::__construct($newData);
+	$this->subfields = $subfields;
+    }
 
     /**
      * Retrieve an external iterator
@@ -29,5 +50,20 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         }
 
         return new \ArrayIterator($data);
+    }
+
+    public function getValueForSubField($hash, $fieldId)
+    {
+	$field = $this->subfields->first(function($i, $f) use ($fieldId) { return $f->getId() == $fieldId; });
+
+	$instance = $this->data[$hash];
+	$fieldData = new FieldData();
+	if (array_key_exists($fieldId, $instance->fields)) {
+	    $fieldData->value = $instance->fields[$fieldId];
+	} else {
+	    $fieldData->value = $field->getInitialValue();
+	}
+	$data = $field->parseData($fieldData);
+	return $data;
     }
 }

@@ -27,7 +27,7 @@ class SelectFieldType extends AbstractFieldType
         'options' => [
             'label' => 'Option',
             'type' => 'options',
-            'default' => '',
+	    'default' => [],
             'help' => "Enter the option label",
         ],
     ];
@@ -37,8 +37,31 @@ class SelectFieldType extends AbstractFieldType
         return (array)$this->getSetting('options');
     }
 
+    public function getFormFieldName($hash)
+    {
+	return parent::getFormFieldName($hash) . '[]';
+    }
+
     public function parseData(FieldData $data)
     {
         return new SelectFieldValue($data->value);
+    }
+
+    public function render($value = null, $data = [])
+    {
+	if (!$this->isInCombo()) {
+	    $submitted = old('fields.' . $this->getId());
+	    if ($submitted !== null) {
+		$value = new SelectFieldValue($submitted);
+	    }
+	}
+
+	if ($value === null) {
+	    $value = new SelectFieldValue();
+	}
+
+	$data = array_merge(['hash' => ''], $data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+	return view('argon::fields.type.select', $data)->render();
     }
 }

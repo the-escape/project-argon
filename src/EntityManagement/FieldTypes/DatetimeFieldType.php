@@ -4,6 +4,7 @@ namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue;
+use Faker\Provider\cs_CZ\DateTime;
 
 class DatetimeFieldType extends AbstractFieldType
 {
@@ -45,5 +46,22 @@ class DatetimeFieldType extends AbstractFieldType
     public function secondsEnabled()
     {
         return (boolean)$this->getSetting('seconds');
+    }
+
+    public function render($value = null, $data = [])
+    {
+	if (!$this->isInCombo()) {
+	    $submitted = old('fields.' . $this->getId());
+	    if ($submitted !== null) {
+		$value = new DatetimeFieldValue($submitted);
+	    }
+	}
+
+	if ($value === null) {
+	    $value = new DatetimeFieldValue();
+	}
+
+	$data = array_merge(['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning, 'hash' => ''], $data);
+	return view('argon::fields.type.datetime', $data)->render();
     }
 }

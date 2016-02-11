@@ -63,7 +63,11 @@
 
                             @foreach ($group->getFields() as $field)
 
-                                @include('argon::fields.field', ['html_open'=>'<div class="form-group sortable">', 'html_close'=>'</div>'])
+				<div class="form-group sortable">
+
+				    {!! $field->render($latest->getField($field->getId())) !!}
+
+				</div>
 
                             @endforeach
 

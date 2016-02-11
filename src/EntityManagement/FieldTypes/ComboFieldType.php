@@ -29,17 +29,34 @@ class ComboFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getSubfields()
+    public function getSubFields()
     {
-        /** @var Collection $subfields */
-        $subfields = $this->field->subfields;
-        $subfields = $subfields->map(function($f) { return $f->type; });
+	/** @var Collection $subFields */
+	$subFields = $this->field->subfields;
+	$subFields = $subFields->map(function($f) { return $f->type; });
 
-        return $subfields;
+	return $subFields;
     }
 
     public function parseData(FieldData $data)
     {
-        return new ComboFieldValue($data->value);
+	    return new ComboFieldValue($data->value, $this->getSubfields());
+    }
+
+    public function render($value = null, $data = [])
+    {
+	if ($submitted = old('combo.' . $this->getId())) {
+	    $value = new ComboFieldValue($submitted, $this->getSubfields());
+	}
+
+	if ($value === null) {
+
+	    $hash = guid();
+	    $value = new ComboFieldValue([$hash => (object)['fields' => []]], $this->getSubfields());
+	}
+
+	$data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+	return view('argon::fields.type.combo', $data)->render();
     }
 }

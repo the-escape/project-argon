@@ -6,14 +6,14 @@ use Traversable;
 
 class SelectFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
-    public function __construct($data = [])
+    public function __construct($data = [0])
     {
         if (is_array($data)) {
-            $data = array_map(function($i) { return (int)$i; }, $data);
+//            $data = array_map(function($i) { return (int)$i; }, $data);
         } else if ($data != null) {
-            $data = [(int)$data];
+	    $data = [$data];
         } else {
-            $data = [];
+	    $data = [''];
         }
         parent::__construct($data);
     }

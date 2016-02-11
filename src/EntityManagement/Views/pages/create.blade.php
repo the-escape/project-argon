@@ -45,7 +45,9 @@
                         <div class="card-header accordion-header">{{ $group->getName() }}</div>
                         <div class="card-block accordion-body">
                             @foreach ($group->getFields() as $field)
-                                @include('argon::fields.field')
+
+				{!! $field->render() !!}
+
                             @endforeach
                         </div>
                     </div>

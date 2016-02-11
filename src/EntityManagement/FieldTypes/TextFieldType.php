@@ -85,4 +85,31 @@ class TextFieldType extends AbstractFieldType
     {
         return (bool)$this->getSetting('multiline');
     }
+
+    public function getFormFieldName($hash)
+    {
+	return parent::getFormFieldName($hash) . '[]';
+    }
+
+    public function render($value = null, $data = [])
+    {
+	if (!$this->isInCombo()) {
+	    $submitted = old('fields.' . $this->getId());
+	    if ($submitted !== null) {
+		$value = new TextFieldValue($submitted);
+	    }
+	}
+
+	if ($value === null) {
+	    $value = new TextFieldValue();
+	}
+
+	$data = array_merge(['hash' => ''], $data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+	if ($this->isMultiline()) {
+	    return view('argon::fields.type.textarea', $data)->render();
+	} else {
+	    return view('argon::fields.type.text', $data)->render();
+	}
+    }
 }

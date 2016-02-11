@@ -13,7 +13,6 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate
         } else {
             return "";
         }
-
     }
 
     public function getIterator()

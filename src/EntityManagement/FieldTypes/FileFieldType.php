@@ -59,4 +59,14 @@ class FileFieldType extends AbstractFieldType
         return new FileFieldValue($data->value);
     }
 
+    public function render($value = null, $data = [])
+    {
+	if ($value === null) {
+	    $value = new FileFieldValue();
+	}
+
+	$data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+	return view('argon::fields.type.file', $data)->render();
+    }
 }

@@ -185,4 +185,14 @@ class WysiwygFieldType extends AbstractFieldType
     {
         return new WysiwygFieldValue($data->value);
     }
+
+    public function render($value = null, $data = [])
+    {
+	if ($value === null) {
+	    $value = new WysiwygFieldValue();
+	}
+	$data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+	return view('argon::fields.type.wysiwyg', $data)->render();
+    }
 }

@@ -2,23 +2,23 @@
 
     $isInCombo = $field->getParentId() !== 0;
 
-    if ($isInCombo) {
-        if (!isset($value)) {
-            $value = null;
-        } else {
-            $value = new \Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue($value);
-        }
-    } else {
-        if (isset($latest)) {
-            $value = $latest->getField($field->getId());
-        } else {
-            $value = null;
-        }
-    }
-
-    if ($value === null) {
-        $value = new \Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue();
-    }
+//    if ($isInCombo) {
+//        if (!isset($value)) {
+//            $value = null;
+//        } else {
+//            $value = new \Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue($value);
+//        }
+//    } else {
+//        if (isset($latest)) {
+//            $value = $latest->getField($field->getId());
+//        } else {
+//            $value = null;
+//        }
+//    }
+//
+//    if ($value === null) {
+//        $value = new \Escape\Argon\EntityManagement\FieldValues\WysiwygFieldValue();
+//    }
 
     if (!isset($hash)) {
         $hash = '';

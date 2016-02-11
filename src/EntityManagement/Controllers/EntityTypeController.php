@@ -1190,12 +1190,12 @@ class EntityTypeController extends BaseController
     }
 
 
-    public function cloneField($fieldId, EntityFieldRepository $fieldRepository)
+    public function cloneField($fieldId, EntityFieldRepository $fieldRepository, Request $request)
     {
-        $field = $fieldRepository->find($fieldId);
-        $defaults = ['clone'=>$field->id, 'field'=>$field->type];
-        $properties = ($post = Input::get()) ? $post : [];
-        return view('argon::fields.field', array_merge($defaults, $properties));
+	$field = $fieldRepository->find($fieldId)->type;
+	$field->setIsCloning();
+	$hash = $request->input('hash');
+	return $field->render(null, ['hash' => $hash]);
     }
 
 

@@ -21,13 +21,16 @@ elixir(function(mix) {
             'argon.js',
             'fields.js',
             'fields/boolean.js',
-            'fields/text.js',
+	    'fields/combo.js',
             'fields/datetime.js',
+	    'fields/file.js',
+	    'fields/select.js',
+	    'fields/text.js',
             'fields/wysiwyg.js',
             'localisations.js'
         ],
         'public/js/argon.js'
-    )
+    );
 
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
