@@ -1,7 +1,11 @@
 <?php
 
 $isInCombo = $field->getParentId() !== 0;
-$submitted = ($isInCombo) ? old("combo.{$field->getId()}") : old("field.{$field->getId()}");
+
+$name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
+$camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}" : "fields.{$field->getId()}";
+
+
 
 if ($isInCombo) {
     if (!isset($value)) {
@@ -22,9 +26,17 @@ if ($value === null) {
     $value = new \Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue();
 }
 
+// retain submitted value if validation fails on submission
+$value = old($camelString, $value);
+
+if (is_scalar($value)) {
+    $value = new \Escape\Argon\EntityManagement\FieldValues\DatetimeFieldValue($value);
+}
+
+
 $requiredClass = $field->isRequired() ? 'required' : '';
 
-$name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
+
 
 ?>
 
