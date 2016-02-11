@@ -4667,6 +4667,8 @@ body.dashboard {
   body.dashboard .form-group .error .cke,
   body.dashboard .form-control.error {
     border-color: #a94442; }
+  body.dashboard .form-control.inline {
+    width: auto; }
   body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }

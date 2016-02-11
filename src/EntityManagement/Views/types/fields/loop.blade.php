@@ -62,6 +62,31 @@
                 @endif
             </div>
 
+        @elseif ($property->type == 'select')
+
+            <div class="form-group {{$classes}}">
+                <label for="{{$name}}">{{$property->label}}</label>
+
+                @if(is_array(@$property->options))
+                    <?php // try to get submitted value first, then saved, then initial
+                    $v = old($name, @$field->settings->$name);
+                    if ($v === null) {
+                        $v = $property->default;
+                    }
+                    ?>
+
+                    <select name="{{$name}}" id="{{$name}}" class="form-control inline">
+                        @foreach($property->options as $value => $label)
+                            <option value="{{ $value }}"@if((int)$value === (int)$v) selected @endif>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                @endif
+                @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
+                @if($parent)
+                    @include('argon::types.fields.loop', ['items'=>$property->children, 'children' => true])
+                @endif
+            </div>
+
         @elseif ($property->type == 'options')
 
                 <input id="order-{{$field->type->getId()}}" type="hidden" name="options_order">

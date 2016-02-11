@@ -88,6 +88,10 @@ body.dashboard {
         border-color: $error-color;
     }
 
+    .form-control.inline {
+        width: auto;
+    }
+
     .sortable-handle,
     .field-remove {
         cursor: pointer;

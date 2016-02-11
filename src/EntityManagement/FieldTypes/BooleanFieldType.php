@@ -12,6 +12,16 @@ class BooleanFieldType extends AbstractFieldType
     protected $key = 'boolean';
 
     protected $properties = [
+        'initial_value' => [
+            'label' => 'Select initial value',
+            'type' => 'select',
+            'options' => [
+                '0' => 'FALSE',
+                '1' => 'TRUE',
+            ],
+            'default' => '0',
+            'help' => null,
+        ]
     ];
 
     public function parseData(FieldData $data)
