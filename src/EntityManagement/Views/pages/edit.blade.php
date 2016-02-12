@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-3">
                 @if(!$groups->isEmpty())
-                    <a href="#" class="accordion-expand-collapse pull-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                    <a href="#" class="accordion-expand-collapse pull-md-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
                 @endif
             </div>
         </div>

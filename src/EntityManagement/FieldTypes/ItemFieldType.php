@@ -2,7 +2,9 @@
 
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\ItemFieldValue;
 
 class ItemFieldType extends AbstractFieldType
 {
@@ -25,18 +27,16 @@ class ItemFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data=null)
-    {
-        throw new \Exception('Not implemented');
-    }
-
     public function parseData(FieldData $data)
     {
-        return new ItemFieldvalue($data->value);
+        return new ItemFieldValue($data->value);
     }
 
     public function getOptions()
     {
-        return (array)$this->getSetting('options');
+        $contentTypeId = $this->getSetting('items');
+        $entityRepository = app()->make(EntityRepository::class);
+        $options = $entityRepository->findByField('entity_type_id', $contentTypeId);
+        return $options;
     }
 }

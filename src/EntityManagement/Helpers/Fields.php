@@ -29,7 +29,7 @@ class Fields
         {
             $niceName = "fields.{$field->id}";
 
-            if ($field->parent_field_id)
+            if ($field->parent_field_id && $combos[$field->parent_field_id])
             {
                 if (!isset($hash))
                 {
@@ -48,7 +48,7 @@ class Fields
                 if (@$settings->multiple)
                 {
                     $i = 1;
-                    foreach ($request->input("combo.{$field->id}") as $k => $v)
+                    foreach ($request->input("combo.{$field->id}",[]) as $k => $v)
                     {
                         $field->instance = $i;
                         list($niceNames, $rules, $combos) = self::validationFieldsSetup($request, $field->subfields, $niceNames, $rules, $combos, $field);

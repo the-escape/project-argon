@@ -7,11 +7,14 @@
 //                : $page->fieldById($field->getId())
 //        : '';
 
-
+    $options = $field->getOptions();
     $isInCombo = $field->getParentId() !== 0;
 
     $idString = str_replace('.', '', microtime(true));
-    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
+    /* multiple select so input name as array */
+    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+    /* name for hidden input as fallback to register field submission, since otherwise not present in $_POST */
+    $hdnName = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}]" : "fields[{$field->getId()}]";
     $camelString = ($isInCombo) ? "combo.{$field->getParentId()}.{$hash}.fields.{$field->getId()}" : "fields.{$field->getId()}";
 
     $value = old($camelString, @$value);
@@ -49,10 +52,17 @@
 <div class="field field-item">
     <label>{{ $field->getFieldName() }}</label>
 
-    <select name="{{ $name }}" id="{{ $idString }}" multiple>
-        <option value="1">Content Type 1</option>
-        <option value="2">Content Type 2</option>
-        <option value="3">Content Type 3</option>
+    @if(!$options->isEmpty())
+    <input type="hidden" name="{{ $hdnName }}">
+    <select name="{{ $name }}" id="{{ $idString }}" class="form-control" multiple>
+        {{--Allow to undo selection, only if field not required--}}
+        @if(!$field->isRequired())
+            <option value="">Please select:</option>
+        @endif
+        @foreach($options as $entity)
+            <option value="{{ $entity->id }}"@if(in_array($entity->id, $value->get()))) selected @endif>{{ $entity->name }}</option>
+        @endforeach
     </select>
+    @endif
 
 </div>

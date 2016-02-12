@@ -17,11 +17,14 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
     public function getIterator()
     {
         $data = [];
-        foreach ($this->data as $k => $v) {
-            $data[$k] = [];
 
-            foreach ($v->fields as $id => $d) {
-                $data[$k][$id] = $d;
+        if ($this->data !== null) {
+            foreach ($this->data as $k => $v) {
+                $data[$k] = [];
+
+                foreach ($v->fields as $id => $d) {
+                    $data[$k][$id] = $d;
+                }
             }
         }
 

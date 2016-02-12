@@ -135,17 +135,16 @@
             <div class="form-group {{$classes}}">
                 <label for="{{$name}}">{{$property->label}}</label>
 
-
-                <?php
-
-                // TODO: Build options from content types
-                ?>
-
-                <select name="{{$name}}" id="{{$name}}" class="form-control inline">
-                    <option value="1">Content Type 1</option>
-                    <option value="2">Content Type 2</option>
-                    <option value="3">Content Type 3</option>
-                </select>
+                @if(!$customTypes->isEmpty())
+                    <?php // try to get submitted value
+                    $v = old($name, @$field->settings->$name);
+                    ?>
+                    <select name="{{$name}}" id="{{$name}}" class="form-control inline">
+                        @foreach($customTypes->sortBy('name') as $customType)
+                            <option value="{{ $customType->id }}"@if($v == $customType->id) selected @endif>{{ $customType->name }}</option>
+                        @endforeach
+                    </select>
+                @endif
 
                 @if (!empty($property->help)) <p class="help-block">{{$property->help}}</p>@endif
                 @if($parent)

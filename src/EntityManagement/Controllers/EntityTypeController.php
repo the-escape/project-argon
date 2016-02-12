@@ -5,9 +5,11 @@ namespace Escape\Argon\EntityManagement\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\EntityManagement\Eloquent\EntityFieldRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
@@ -200,6 +202,14 @@ class EntityTypeController extends BaseController
                 ->with('errors', "Field ID: {$fieldId} is a subfield.");
         }
 
+        // get all custom content types form Item field to serve as options
+        $customTypes = null;
+        $field_type = $field->type;
+        if ($field_type instanceof ItemFieldType)
+        {
+            $customTypes = $typeRepository->custom();
+        }
+        
         $fieldTypes = $fieldTypesManager->getFieldTypes();
         $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
 
@@ -210,6 +220,7 @@ class EntityTypeController extends BaseController
                 'field' => $field,
                 'fieldTypes' => $fieldTypes,
                 'fieldGroups' => $fieldGroups,
+                'customTypes' => $customTypes,
             ]
         );
     }
@@ -757,6 +768,14 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->find($fieldId);
         $fieldTypes = $fieldTypesManager->getFieldTypes();
 
+        // get all custom content types form Item field to serve as options
+        $customTypes = null;
+        $field_type = $field->type;
+        if ($field_type instanceof ItemFieldType)
+        {
+            $customTypes = $typeRepository->custom();
+        }
+
         return View::make(
             'argon::types.combos.subfields.edit',
             [
@@ -764,6 +783,7 @@ class EntityTypeController extends BaseController
                 'combo' => $combo,
                 'field' => $field,
                 'fieldTypes' => $fieldTypes,
+                'customTypes' => $customTypes,
             ]
         );
     }
