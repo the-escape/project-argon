@@ -10,16 +10,16 @@ class MediaFolder extends Model
 
     public function parent()
     {
-	return $this->hasOne(MediaFolder::class, 'parent');
+        return $this->hasOne(MediaFolder::class, 'parent');
     }
 
     public function children()
     {
-	return $this->hasMany(MediaFolder::class, 'parent');
+        return $this->hasMany(MediaFolder::class, 'parent');
     }
 
     public function hasChildren()
     {
-	return count($this->children) > 0;
+        return count($this->children) > 0;
     }
 }

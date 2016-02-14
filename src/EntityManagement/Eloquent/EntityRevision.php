@@ -40,38 +40,32 @@ class EntityRevision extends Model
         return $this->fieldValue($field, $revision);
     }
 
-    public function fieldById($id, EntityRevision $revision, $fieldDataIds=[])
+    public function fieldById($id, EntityRevision $revision, $fieldDataIds = [])
     {
         $field = $this->entity->type->fieldById($id);
         return $this->fieldValue($field, $revision, $fieldDataIds);
     }
 
-    private function fieldValue($field, EntityRevision $revision, $fieldDataIds=[])
+    private function fieldValue($field, EntityRevision $revision, $fieldDataIds = [])
     {
         $fieldData = null;
 
-        if ($fieldDataIds)
-        {
+        if ($fieldDataIds) {
             $fieldDataCollection = $this->fields()
                 ->whereIn('id', $fieldDataIds)
                 ->where('field_id', $field->id)
                 ->where('entity_revision_id', $revision->id)
                 ->get();
+        } else {
+            $fieldDataCollection = $this->fields()->where('field_id', $field->id)
+                ->where('entity_revision_id', $revision->id)->get();
         }
-        else
-        {
-            $fieldDataCollection = $this->fields()->where('field_id', $field->id)->where('entity_revision_id', $revision->id)->get();
-        }
 
-
-
-        if (!$fieldDataCollection->isEmpty())
-        {
+        if (!$fieldDataCollection->isEmpty()) {
             $multiple = (bool) @$field->settings->multiple;
             $fieldData = $fieldDataCollection->first();
 
-            if ($multiple)
-            {
+            if ($multiple) {
                 $flattenedDataCollection = new FieldData;
                 $flattenedDataCollection->field_id = $fieldData->field_id;
                 $flattenedDataCollection->entity_revision_id = $fieldData->entity_revision_id;
@@ -79,8 +73,7 @@ class EntityRevision extends Model
 
                 $agregatedValue = [];
 
-                foreach ($fieldDataCollection as $data)
-                {
+                foreach ($fieldDataCollection as $data) {
                     $agregatedValue[] = $data->value;
                 }
 
@@ -102,7 +95,11 @@ class EntityRevision extends Model
 
     public function getFields()
     {
-        return $this->fields->keyBy('field_id')->map(function($f) { return $f->field->type->parseData($f); });
+        return $this->fields->keyBy('field_id')->map(
+            function ($f) {
+                return $f->field->type->parseData($f);
+            }
+        );
     }
 
     public function getField($fieldId)
@@ -116,5 +113,4 @@ class EntityRevision extends Model
             return $f->field->type->parseData($f);
         }
     }
-
 }

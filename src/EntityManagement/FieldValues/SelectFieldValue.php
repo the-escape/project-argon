@@ -10,10 +10,10 @@ class SelectFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (is_array($data)) {
 //            $data = array_map(function($i) { return (int)$i; }, $data);
-        } else if ($data != null) {
-	    $data = [$data];
+        } elseif ($data != null) {
+            $data = [$data];
         } else {
-	    $data = [''];
+            $data = [''];
         }
         parent::__construct($data);
     }

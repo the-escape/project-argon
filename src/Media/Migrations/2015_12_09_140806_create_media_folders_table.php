@@ -13,18 +13,18 @@ class CreateMediaFoldersTable extends Migration
      */
     public function up()
     {
-	Schema::create('media_folders', function (Blueprint $table) {
-	    $table->increments('id');
-	    $table->string('name');
-	    $table->integer('parent')->nullable();
-	    $table->timestamps();
-	    $table->softDeletes();
-	});
+        Schema::create('media_folders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->integer('parent')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
 
-	$root = new MediaFolder();
-	$root->name = "Library";
-	$root->parent = null;
-	$root->save();
+        $root = new MediaFolder();
+        $root->name = "Library";
+        $root->parent = null;
+        $root->save();
     }
 
     /**
@@ -34,6 +34,6 @@ class CreateMediaFoldersTable extends Migration
      */
     public function down()
     {
-	Schema::drop('media_folders');
+        Schema::drop('media_folders');
     }
 }

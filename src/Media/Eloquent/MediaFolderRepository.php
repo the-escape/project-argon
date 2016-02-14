@@ -13,16 +13,16 @@ class MediaFolderRepository extends BaseRepository
      */
     public function model()
     {
-	return MediaFolder::class;
+        return MediaFolder::class;
     }
 
     public function root()
     {
-	return $this->find(1);
+        return $this->find(1);
     }
 
     public function folderExists($name, $parent)
     {
-	return $this->findWhere(['parent' => $parent, 'name' => $name])->count() > 0;
+        return $this->findWhere(['parent' => $parent, 'name' => $name])->count() > 0;
     }
 }

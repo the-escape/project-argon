@@ -13,17 +13,17 @@ class MediaItemRepository extends BaseRepository
      */
     public function model()
     {
-	return MediaItem::class;
+        return MediaItem::class;
     }
 
     public function getItemsInFolder($folderId)
     {
-	return $this->findWhere(['folder' => $folderId]);
+        return $this->findWhere(['folder' => $folderId]);
     }
 
     public function itemExists($name, $folderId)
     {
-	$count = $this->findWhere(['folder' => $folderId, 'filename' => $name])->count();
-	return $count > 0;
+        $count = $this->findWhere(['folder' => $folderId, 'filename' => $name])->count();
+        return $count > 0;
     }
 }

@@ -42,7 +42,7 @@ abstract class AbstractFieldType
 
     public function setIsCloning($isCloning = true)
     {
-	$this->isCloning = $isCloning;
+        $this->isCloning = $isCloning;
     }
 
     public function getProperties()
@@ -73,8 +73,7 @@ abstract class AbstractFieldType
         foreach ($this->getProperties() as $name => $property) {
             if (property_exists($property, 'default')) {
                 $settings->{$name} = $property->default;
-            }
-            else {
+            } else {
                 $settings->{$name} = null;
             }
             if (property_exists($property, 'children')) {
@@ -121,8 +120,7 @@ abstract class AbstractFieldType
     {
         $settings = $this->field->settings;
 
-        foreach ($this->properties as $prop => $config)
-        {
+        foreach ($this->properties as $prop => $config) {
             if (isset($settings->$prop)) {
                 if ($config['type'] == 'boolean') {
                     $settings->$prop = (bool)$settings->$prop;
@@ -160,33 +158,33 @@ abstract class AbstractFieldType
 
     public function isInCombo()
     {
-	return $this->getParentId() != 0;
+        return $this->getParentId() != 0;
     }
 
     public function getFormFieldName($hash)
     {
-	if ($this->isInCombo()) {
-	    return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}]";
-	} else {
-	    return "fields[{$this->getId()}]";
-	}
+        if ($this->isInCombo()) {
+            return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}]";
+        } else {
+            return "fields[{$this->getId()}]";
+        }
     }
 
     public function getCamelString($hash)
     {
-	if ($this->isInCombo()) {
-	    return "combo.{$this->getParentId()}.{$hash}.fields.{$this->getId()}";
-	} else {
-	    return "fields.{$this->getId()}";
-	}
+        if ($this->isInCombo()) {
+            return "combo.{$this->getParentId()}.{$hash}.fields.{$this->getId()}";
+        } else {
+            return "fields.{$this->getId()}";
+        }
     }
 
     public function getInitialValue()
     {
-	return null;
+        return null;
     }
 
-    abstract function parseData(FieldData $data);
+    abstract public function parseData(FieldData $data);
 
-    abstract function render($value = null, $data = []);
+    abstract public function render($value = null, $data = []);
 }

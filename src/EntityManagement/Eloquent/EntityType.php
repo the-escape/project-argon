@@ -28,16 +28,16 @@ class EntityType extends Model
     // Get all fields except combo subfields.
     // Combo field should be pulled here as a top level (standard) field, not its children.
     // However, when method chained via field() and fieldById() methods allow full lookup to get subfield's value etc.
-    public function fields(array $where=['parent_field_id' => 0])
+    public function fields(array $where = ['parent_field_id' => 0])
     {
         $fields = $this->hasMany(EntityField::class);
 
         foreach ($where as $field => $value) {
-            if ( is_array($value) ) {
+            if (is_array($value)) {
                 list($field, $condition, $val) = $value;
-                $fields->where($field,$condition,$val);
+                $fields->where($field, $condition, $val);
             } else {
-                $fields->where($field,'=',$value);
+                $fields->where($field, '=', $value);
             }
         }
         //return $fields->orderBy('entity_group_id')->orderBy('order')->orderBy('name');

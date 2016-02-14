@@ -54,10 +54,12 @@ class WysiwygFieldType extends AbstractFieldType
             'label' => 'Format',
             'type' => 'boolean',
             'default' => true,
-            'help' => "Enable 'Format' option to activate other html tags below. Note, '&lt;p&gt;' tag is enabled by default, even without Format option.",
+            'help' => "Enable 'Format' option to activate other html tags below. Note, '&lt;p&gt;' " .
+                "tag is enabled by default, even without Format option.",
             'toolbar' => 'Format',
             'children' => [
-                // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not enebled, but will allow within editor... Just don't show the option at all.
+                // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not
+                // enabled, but will allow within editor... Just don't show the option at all.
                 // 'p' => [
                 //     'label' => "Enable '&lt;p&gt;' tag within format dropdown.",
                 //     'type' => 'boolean',
@@ -188,11 +190,11 @@ class WysiwygFieldType extends AbstractFieldType
 
     public function render($value = null, $data = [])
     {
-	if ($value === null) {
-	    $value = new WysiwygFieldValue();
-	}
-	$data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+        if ($value === null) {
+            $value = new WysiwygFieldValue();
+        }
+        $data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
 
-	return view('argon::fields.type.wysiwyg', $data)->render();
+        return view('argon::fields.type.wysiwyg', $data)->render();
     }
 }

@@ -8,10 +8,10 @@ class FieldTypesManager
 
 
     /**
-     * @param array $exclude field types to exclude, like 'combo', that is handled mostly as a separate type, still a field though :)
+     * @param array $exclude field types to exclude, like 'combo', that is handled mostly as a separate type.
      * @return array
      */
-    public function getFieldTypes(array $exclude=['combo'])
+    public function getFieldTypes(array $exclude = ['combo'])
     {
         return array_diff_key($this->fieldTypes, array_flip($exclude));
     }

@@ -31,7 +31,7 @@ class FileFieldValue extends AbstractFieldValue implements \IteratorAggregate, \
         $itemRepository = app()->make(MediaItemRepository::class);
         if (is_array($this->data)) {
             $data = array_map(
-                function($id) use ($itemRepository) {
+                function ($id) use ($itemRepository) {
                     return $itemRepository->find($id);
                 },
                 $this->data

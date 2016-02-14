@@ -28,7 +28,8 @@ class FileFieldType extends AbstractFieldType
             'label' => 'Allowed Formats',
             'type' => 'text',
             'default' => 'text/plain, text/csv, text/comma-separated-values',
-            'help' => "Comma separated list of mime types. Example for CSV uploads: text/plain, text/csv, text/comma-separated-values"
+            'help' => "Comma separated list of mime types. Example for CSV uploads: " .
+                "text/plain, text/csv, text/comma-separated-values"
         ],
         'max_size' => [
             'label' => 'Max File Size',
@@ -44,11 +45,6 @@ class FileFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data=null)
-    {
-        throw new \Exception('Not implemented');
-    }
-
     public function getEmptyValue()
     {
         return new FileFieldValue();
@@ -61,12 +57,16 @@ class FileFieldType extends AbstractFieldType
 
     public function render($value = null, $data = [])
     {
-	if ($value === null) {
-	    $value = new FileFieldValue();
-	}
+        if ($value === null) {
+            $value = new FileFieldValue();
+        }
 
-	$data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
 
-	return view('argon::fields.type.file', $data)->render();
+        return view('argon::fields.type.file', $data)->render();
     }
 }

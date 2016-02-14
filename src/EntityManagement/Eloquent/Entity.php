@@ -40,17 +40,15 @@ class Entity extends Model
 
     public function field($name)
     {
-        if ($revision = $this->latest())
-        {
+        if ($revision = $this->latest()) {
             return $revision->field($name, $revision);
         }
         return $revision;
     }
 
-    public function fieldById($id, $fieldDataIds=[])
+    public function fieldById($id, $fieldDataIds = [])
     {
-        if ($revision = $this->latest())
-        {
+        if ($revision = $this->latest()) {
             return $revision->fieldById($id, $revision, $fieldDataIds);
         }
         return $revision;
@@ -102,9 +100,12 @@ class Entity extends Model
     {
         /** @var EntityGroupRepository $repo */
         $repo = app()->make(EntityGroupRepository::class);
-        return $repo->getUsedGroupsByEntityType($this->type->id)->each(function(EntityGroup $item) { $item->setEntity($this); } );
+        return $repo->getUsedGroupsByEntityType($this->type->id)->each(
+            function (EntityGroup $item) {
+                $item->setEntity($this);
+            }
+        );
     }
-
 
     public function getId()
     {

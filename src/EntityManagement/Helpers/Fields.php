@@ -1,10 +1,11 @@
-<?php namespace Escape\Argon\EntityManagement\Helpers;
+<?php
+
+namespace Escape\Argon\EntityManagement\Helpers;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\Helpers\Validation as ValidationHelpers;
 use Illuminate\Http\Request;
 use Input;
-
 
 class Fields
 {
@@ -16,23 +17,25 @@ class Fields
      * @param array $rules optional
      * @return array [$niceNames, $rules] use list($niceNames, $rules) to easily capture returned values
      */
-    public static function validationFieldsSetup(Request $request, $fields, array $niceNames=[], array $rules=[], $combos=null, $parent=null)
-    {
-        if (!isset($combos))
-        {
+    public static function validationFieldsSetup(
+        Request $request,
+        $fields,
+        array $niceNames = [],
+        array $rules = [],
+        $combos = null,
+        $parent = null
+    ) {
+        if (!isset($combos)) {
             $combos = $request->input("combo");
         }
 
         $hash = null;
 
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             $niceName = "fields.{$field->id}";
 
-            if ($field->parent_field_id && $combos[$field->parent_field_id])
-            {
-                if (!isset($hash))
-                {
+            if ($field->parent_field_id && $combos[$field->parent_field_id]) {
+                if (!isset($hash)) {
                     reset($combos[$field->parent_field_id]);
                     $hash = key($combos[$field->parent_field_id]);
                     unset($combos[$field->parent_field_id][$hash]);
@@ -41,30 +44,40 @@ class Fields
                 $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
             }
 
-            if ($field->field_type == 'combo')
-            {
+            if ($field->field_type == 'combo') {
                 $settings = $field->settings;
 
-                if (@$settings->multiple)
-                {
+                if (@$settings->multiple) {
                     $i = 1;
-                    foreach ($request->input("combo.{$field->id}",[]) as $k => $v)
-                    {
+                    foreach ($request->input("combo.{$field->id}", []) as $k => $v) {
                         $field->instance = $i;
-                        list($niceNames, $rules, $combos) = self::validationFieldsSetup($request, $field->subfields, $niceNames, $rules, $combos, $field);
+                        list($niceNames, $rules, $combos) = self::validationFieldsSetup(
+                            $request,
+                            $field->subfields,
+                            $niceNames,
+                            $rules,
+                            $combos,
+                            $field
+                        );
                         $i++;
                     }
 
                     // remove top level field, since unnecessary
-                    if (@$rules[$niceName])
-                    {
+                    if (@$rules[$niceName]) {
                         unset($rules[$niceName]);
                     }
                     continue;
                 }
 
                 $field->instance = 1;
-                list($niceNames, $rules, $combos) = self::validationFieldsSetup($request, $field->subfields, $niceNames, $rules, $combos, $field);
+                list($niceNames, $rules, $combos) = self::validationFieldsSetup(
+                    $request,
+                    $field->subfields,
+                    $niceNames,
+                    $rules,
+                    $combos,
+                    $field
+                );
                 continue;
             }
 
@@ -74,67 +87,55 @@ class Fields
 
             $settings = $field->settings;
 
-            if (@$settings->required)
-            {
+            if (@$settings->required) {
                 $rules[$niceName][] = 'required';
             }
 
-            if (@$settings->minlength)
-            {
+            if (@$settings->minlength) {
                 $rules[$niceName][] = "min:{$settings->minlength}";
             }
 
-            if (@$settings->maxlength)
-            {
+            if (@$settings->maxlength) {
                 $rules[$niceName][] = "max:{$settings->maxlength}";
             }
 
-            if (@$settings->url)
-            {
+            if (@$settings->url) {
                 $rules[$niceName][] = "url";
             }
 
-            if (@$settings->integer)
-            {
+            if (@$settings->integer) {
                 $rules[$niceName][] = "integer";
             }
 
-            if (@$settings->float)
-            {
+            if (@$settings->float) {
                 $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_FLOAT;
             }
 
-            if (@$settings->email)
-            {
+            if (@$settings->email) {
                 $rules[$niceName][] = "email";
             }
 
-            if (@$settings->phone)
-            {
+            if (@$settings->phone) {
                 $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_PHONE;
             }
 
-            if (@$rules[$niceName])
-            {
+            if (@$rules[$niceName]) {
                 $rules[$niceName] = implode('|', $rules[$niceName]);
             }
 
             // validate each multiple field value individually
-            // copy fields validation rules to individual subfields, then remove top level field validation since not needed
-            if (@$settings->multiple)
-            {
-                foreach ($request->input($niceName) ?: [] as $k => $v)
-                {
+            // copy fields validation rules to individual subfields,
+            // then remove top level field validation since not needed
+            if (@$settings->multiple) {
+                foreach ($request->input($niceName) ?: [] as $k => $v) {
                     $niceNames["{$niceName}.{$k}"] = $field->name.' ['.($k+1).']';
 
-                    if (@$rules[$niceName])
-                    {
+                    if (@$rules[$niceName]) {
                         $rules["{$niceName}.{$k}"] = $rules[$niceName];
                     }
                 }
 
-                if (@$rules[$niceName])
-                {
+                if (@$rules[$niceName]) {
                     unset($rules[$niceName]);
                 }
             }
@@ -144,22 +145,24 @@ class Fields
     }
 
 
-    public static function saveFields(Request $request, $fields, $revision, FieldDataRepository $fieldDataRepository, $combos=null)
-    {
-        if (!isset($combos))
-        {
+    public static function saveFields(
+        Request $request,
+        $fields,
+        $revision,
+        FieldDataRepository $fieldDataRepository,
+        $combos = null
+    ) {
+        if (!isset($combos)) {
             $combos = $request->input("combo");
         }
         $hash = null;
 
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             /*
              * Handle combos.
              * Break them into individual fields.
              * */
-            if ($field->field_type == 'combo')
-            {
+            if ($field->field_type == 'combo') {
                 self::saveCombo($field, $revision, $request);
                 continue;
             }
@@ -172,10 +175,8 @@ class Fields
             $niceName = "fields.{$field->id}";
 
             // adjust nicename for subfield
-            if ($field->parent_field_id)
-            {
-                if (!isset($hash))
-                {
+            if ($field->parent_field_id) {
+                if (!isset($hash)) {
                     reset($combos[$field->parent_field_id]);
                     $hash = key($combos[$field->parent_field_id]);
                     unset($combos[$field->parent_field_id][$hash]);
@@ -192,9 +193,10 @@ class Fields
                 'language' => 'en_GB',
                 'value' => $request->input($niceName),
             ]);
-            // when combo subfield, save $FieldData->id reference as combo value to enable combo rebuild from (multiple) saved values
-            if ($field->parent_field_id)
-            {
+
+            // when combo subfield, save $FieldData->id reference as combo value to enable combo rebuild
+            // from (multiple) saved values
+            if ($field->parent_field_id) {
                 $fieldDataRepository->create([
                     'field_id' => $field->parent_field_id,
                     'entity_revision_id' => $revision->id,
@@ -217,5 +219,4 @@ class Fields
             'value' => $request->input("combo.{$field->id}")
         ]);
     }
-
 }

@@ -31,25 +31,28 @@ class BooleanFieldType extends AbstractFieldType
 
     public function getInitialValue()
     {
-	return $this->getSetting('initial_value');
+        return $this->getSetting('initial_value');
     }
 
     public function render($value = null, $data = [])
     {
-	if (!$this->isInCombo()) {
-	    $submitted = old('fields.' . $this->getId());
-	    if ($submitted !== null) {
-		$value = new BooleanFieldValue($submitted);
-	    }
-	}
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new BooleanFieldValue($submitted);
+            }
+        }
 
-	if ($value === null) {
-	    $value = new BooleanFieldValue($this->getInitialValue());
-	}
+        if ($value === null) {
+            $value = new BooleanFieldValue($this->getInitialValue());
+        }
 
-	    $data = array_merge(['hash' => ''], $data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
 
-	    return view('argon::fields.type.boolean', $data)->render();
+        return view('argon::fields.type.boolean', $data)->render();
     }
-
 }

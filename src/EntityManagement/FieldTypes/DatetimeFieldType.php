@@ -33,7 +33,7 @@ class DatetimeFieldType extends AbstractFieldType
         ],
     ];
 
-    function parseData(FieldData $data)
+    public function parseData(FieldData $data)
     {
         return new DatetimeFieldValue($data->value);
     }
@@ -50,18 +50,22 @@ class DatetimeFieldType extends AbstractFieldType
 
     public function render($value = null, $data = [])
     {
-	if (!$this->isInCombo()) {
-	    $submitted = old('fields.' . $this->getId());
-	    if ($submitted !== null) {
-		$value = new DatetimeFieldValue($submitted);
-	    }
-	}
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new DatetimeFieldValue($submitted);
+            }
+        }
 
-	if ($value === null) {
-	    $value = new DatetimeFieldValue();
-	}
+        if ($value === null) {
+            $value = new DatetimeFieldValue();
+        }
 
-	$data = array_merge(['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning, 'hash' => ''], $data);
-	return view('argon::fields.type.datetime', $data)->render();
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
+        return view('argon::fields.type.datetime', $data)->render();
     }
 }

@@ -34,7 +34,11 @@ class EntityGroup extends Model
 
     public function getFields()
     {
-        $fields = $this->fields->map(function (EntityField $f) { return $f->type; });
+        $fields = $this->fields->map(
+            function (EntityField $f) {
+                return $f->type;
+            }
+        );
 
         return $fields;
     }
@@ -48,5 +52,4 @@ class EntityGroup extends Model
     {
         return $this->name;
     }
-
 }

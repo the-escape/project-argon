@@ -18,10 +18,11 @@ class EntityGroupRepository extends BaseRepository
 
     /**
      * Get all groups in use for given entity (content) type
-     * @param int|string $type - if positive number given, $type be treated as entity_types.id, otherwise $type will be assumed as entity_types.name
+     * @param int|string $type - if positive number given, $type be treated as entity_types.id, otherwise
+     * $type will be assumed as entity_types.name
      * @return mixed collection result
      */
-    public function getUsedGroupsByEntityType($type, array $order=['id'])
+    public function getUsedGroupsByEntityType($type, array $order = ['id'])
     {
         $groups = $this->model
             ->distinct()
@@ -31,17 +32,13 @@ class EntityGroupRepository extends BaseRepository
             ->whereNull('entity_fields.deleted_at');
 
         // check if $type is ID
-        if (preg_match('/^[1-9][0-9]*$/', $type))
-        {
+        if (preg_match('/^[1-9][0-9]*$/', $type)) {
             $groups->where('entity_types.id', $type);
-        }
-        else
-        {
+        } else {
             $groups->where('entity_types.name', $type);
         }
 
-        foreach ($order as $column)
-        {
+        foreach ($order as $column) {
             $groups->orderBy("entity_groups.{$column}");
         }
 
@@ -55,12 +52,12 @@ class EntityGroupRepository extends BaseRepository
      * @param array $columns
      * @return mixed
      */
-    public function all($columns = array('*'), $orderBy='id')
+    public function all($columns = array('*'), $orderBy = 'id')
     {
         $this->applyCriteria();
         $this->applyScope();
 
-        if ( $this->model instanceof \Illuminate\Database\Eloquent\Builder ){
+        if ($this->model instanceof \Illuminate\Database\Eloquent\Builder) {
             $results = $this->model->orderBy($orderBy, 'asc')->get($columns);
         } else {
             $results = $this->model->select($columns)->orderBy($orderBy)->get();

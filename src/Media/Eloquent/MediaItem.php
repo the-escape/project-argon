@@ -23,7 +23,16 @@ class MediaItem extends Model implements Arrayable
 {
     use SoftDeletes;
 
-    protected $fillable = ['filename', 'filesize', 'extension', 'folder', 'mimetype', 'meta', 'uploaded_by', 'hasThumb'];
+    protected $fillable = [
+        'filename',
+        'filesize',
+        'extension',
+        'folder',
+        'mimetype',
+        'meta',
+        'uploaded_by',
+        'hasThumb'
+    ];
 
     public function toArray()
     {
@@ -43,5 +52,4 @@ class MediaItem extends Model implements Arrayable
     {
         return $this->id;
     }
-
 }

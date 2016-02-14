@@ -14,18 +14,18 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
 
     public function __construct($data, $subfields)
     {
-	$newData = [];
-	foreach ($data as $k => $v) {
-	    $newV = new \stdClass();
-	    $newV->fields = [];
-	    $v = (array)$v;
-	    foreach ($v['fields'] as $fk => $fv) {
-		$newV->fields[$fk] = $fv;
-	    }
-	    $newData[$k] = $newV;
-	}
-	parent::__construct($newData);
-	$this->subfields = $subfields;
+        $newData = [];
+        foreach ($data as $k => $v) {
+            $newV = new \stdClass();
+            $newV->fields = [];
+            $v = (array)$v;
+            foreach ($v['fields'] as $fk => $fv) {
+                $newV->fields[$fk] = $fv;
+            }
+            $newData[$k] = $newV;
+        }
+        parent::__construct($newData);
+        $this->subfields = $subfields;
     }
 
     /**
@@ -54,16 +54,20 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
 
     public function getValueForSubField($hash, $fieldId)
     {
-	$field = $this->subfields->first(function($i, $f) use ($fieldId) { return $f->getId() == $fieldId; });
+        $field = $this->subfields->first(
+            function ($i, $f) use ($fieldId) {
+                return $f->getId() == $fieldId;
+            }
+        );
 
-	$instance = $this->data[$hash];
-	$fieldData = new FieldData();
-	if (array_key_exists($fieldId, $instance->fields)) {
-	    $fieldData->value = $instance->fields[$fieldId];
-	} else {
-	    $fieldData->value = $field->getInitialValue();
-	}
-	$data = $field->parseData($fieldData);
-	return $data;
+        $instance = $this->data[$hash];
+        $fieldData = new FieldData();
+        if (array_key_exists($fieldId, $instance->fields)) {
+            $fieldData->value = $instance->fields[$fieldId];
+        } else {
+            $fieldData->value = $field->getInitialValue();
+        }
+        $data = $field->parseData($fieldData);
+        return $data;
     }
 }

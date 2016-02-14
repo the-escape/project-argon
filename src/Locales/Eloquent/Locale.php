@@ -25,5 +25,4 @@ class Locale extends Model
     {
         return $this->name;
     }
-
 }

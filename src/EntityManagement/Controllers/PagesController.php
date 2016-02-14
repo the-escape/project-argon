@@ -1,6 +1,7 @@
 <?php
 
 namespace Escape\Argon\EntityManagement\Controllers;
+
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
 use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
@@ -89,7 +90,7 @@ class PagesController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug( ($input_slug = $request->input('slug')) ? $input_slug : $request->input('name') );
+        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -125,8 +126,10 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale' => $localisation->getLocaleId()])
-            ->with('message', Lang::get('argon-entities::page.created'));
+        return Redirect::route(
+            'cms:pages:edit_locale',
+            ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
+        )->with('message', Lang::get('argon-entities::page.created'));
     }
 
     public function edit($pageId, EntityRepository $entityRepository)
@@ -162,7 +165,7 @@ class PagesController extends BaseController
             'slug' => 'URL Slug'
         ];
 
-        $slug = str_slug( $request->input('slug') );
+        $slug = str_slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -248,5 +251,4 @@ class PagesController extends BaseController
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }
-
 }

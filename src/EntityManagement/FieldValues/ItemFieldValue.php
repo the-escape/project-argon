@@ -9,8 +9,13 @@ class ItemFieldValue extends AbstractFieldValue implements \IteratorAggregate
     public function __construct($data = [])
     {
         if (is_array($data)) {
-            $data = array_map(function($i) { return (int)$i; }, $data);
-        } else if ($data != null) {
+            $data = array_map(
+                function ($i) {
+                    return (int)$i;
+                },
+                $data
+            );
+        } elseif ($data != null) {
             $data = [(int)$data];
         } else {
             $data = [];
@@ -34,5 +39,4 @@ class ItemFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         return new \ArrayIterator($this->data);
     }
-
 }

@@ -12,19 +12,19 @@ class CreateMediaItemsTable extends Migration
      */
     public function up()
     {
-	Schema::create('media_items', function (Blueprint $table) {
-	    $table->increments('id');
-	    $table->string('filename');
-	    $table->string('extension');
-	    $table->integer('folder');
-	    $table->integer('filesize');
-	    $table->string('mimetype');
-	    $table->text('meta');
-	    $table->boolean('hasThumb');
-	    $table->integer('uploaded_by');
-	    $table->timestamps();
-	    $table->softDeletes();
-	});
+        Schema::create('media_items', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('filename');
+            $table->string('extension');
+            $table->integer('folder');
+            $table->integer('filesize');
+            $table->string('mimetype');
+            $table->text('meta');
+            $table->boolean('hasThumb');
+            $table->integer('uploaded_by');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -34,6 +34,6 @@ class CreateMediaItemsTable extends Migration
      */
     public function down()
     {
-	Schema::drop('media_items');
+        Schema::drop('media_items');
     }
 }

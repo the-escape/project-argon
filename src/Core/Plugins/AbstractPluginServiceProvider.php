@@ -49,12 +49,11 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
                 case Request::METHOD_POST:
                     return Route::post($prefix . $path, $definition);
                     break;
-		case Request::METHOD_DELETE:
-		    return Route::delete($prefix . $path, $definition);
-		    break;
-		default:
-		    throw new \Exception('Method not implemented');
-
+                case Request::METHOD_DELETE:
+                    return Route::delete($prefix . $path, $definition);
+                    break;
+                default:
+                    throw new \Exception('Method not implemented');
             }
         }
     }

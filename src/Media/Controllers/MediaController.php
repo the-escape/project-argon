@@ -15,9 +15,9 @@ use Input;
 class MediaController extends BaseController
 {
     protected $imageFormats = [
-	"image/jpg",
-	"image/png",
-	"image/gif"
+        "image/jpg",
+        "image/png",
+        "image/gif"
     ];
 
     public function manage(MediaFolderRepository $folderRepository)
@@ -45,14 +45,11 @@ class MediaController extends BaseController
         $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
         while ($mediaRepository->itemExists($name, $folderId)) {
-
             if (preg_match('/(.*) \((\d+)\)/', $name, $matches)) {
-            $name = $matches[1];
-            $count = $matches[2];
-            }
-            else
-            {
-            $count = 1;
+                $name = $matches[1];
+                $count = $matches[2];
+            } else {
+                $count = 1;
             }
 
             $count++;
@@ -74,14 +71,20 @@ class MediaController extends BaseController
 
         $disk->makeDirectory($mediaItem->id);
         $fileHandle = fopen($request->file('file')->getRealPath(), 'r+');
-        Storage::disk('media')->put("{$mediaItem->id}/{$mediaItem->id}.original.{$file->getClientOriginalExtension()}", $fileHandle);
+        Storage::disk('media')->put(
+            "{$mediaItem->id}/{$mediaItem->id}.original.{$file->getClientOriginalExtension()}",
+            $fileHandle
+        );
         fclose($fileHandle);
 
         // Thumbnail images
 
         if (in_array($file->getMimeType(), $this->imageFormats)) {
             $thumb = Image::make($file)->fit(100, 100);
-            Storage::disk('media')->put("{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}", $thumb->encode());
+            Storage::disk('media')->put(
+                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                $thumb->encode()
+            );
 
             $mediaItem->hasThumb = true;
             $mediaItem->save();
@@ -108,8 +111,11 @@ class MediaController extends BaseController
         }
     }
 
-    public function deleteFolder($folderId, MediaFolderRepository $folderRepository, MediaItemRepository $itemRepository)
-    {
+    public function deleteFolder(
+        $folderId,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository
+    ) {
         if ($itemRepository->getItemsInFolder($folderId)->count() > 0) {
             return response()->json(['error' => 'Folder not empty.'], 409);
         } else {
@@ -125,5 +131,4 @@ class MediaController extends BaseController
 
         return response()->json($item);
     }
-
 }

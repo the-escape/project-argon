@@ -59,19 +59,15 @@ class EntityTypeController extends BaseController
 
         $type = $this->typeRepository->update(Input::all(), $typeId);
 
-        if ($order = Input::get('order'))
-        {
+        if ($order = Input::get('order')) {
             // get type fields for extra validation checks
             $fields = $type->fields->keyBy('id');
 
-            if ($order = explode(',', $order))
-            {
-                foreach ($order as $i => $fieldId)
-                {
+            if ($order = explode(',', $order)) {
+                foreach ($order as $i => $fieldId) {
                     // make sure $fieldId is a valid field of this content type
                     // don't want to accidentally update unrelated fields...
-                    if (!isset($fields[$fieldId]))
-                    {
+                    if (!isset($fields[$fieldId])) {
                         return Redirect::route('cms:types:combos:edit', [$type->id])
                             ->with('errors', "Field ID: {$fieldId} doesn't belong to this content type.");
                     }
@@ -102,11 +98,15 @@ class EntityTypeController extends BaseController
 
         // Delete content type groups.
         $groups = $groupRepository->findByField('entity_type_id', $type->id);
-        foreach ($groups as $group) $groupRepository->delete($group->id);
+        foreach ($groups as $group) {
+            $groupRepository->delete($group->id);
+        }
 
         // Delete content type fields.
         $fields = $fieldRepository->findByField('entity_type_id', $type->id);
-        foreach ($fields as $field) $fieldRepository->delete($field->id);
+        foreach ($fields as $field) {
+            $fieldRepository->delete($field->id);
+        }
 
         return Redirect::route('cms:types:manage')
             ->with('message', Lang::get('argon-entities::type.deleted'));
@@ -144,23 +144,19 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group'))
-        {
+        if ($groupName = Input::get('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
 
-            foreach ($groups as $group)
-            {
-                if ($group->id == $groupName)
-                {
+            foreach ($groups as $group) {
+                if ($group->id == $groupName) {
                     $found = $group;
                     break;
                 }
             }
 
-            if (!$found)
-            {
+            if (!$found) {
                 $found = $groupRepository->create([
                     'name'=>$groupName,
                     'entity_type_id'=>$typeId,
@@ -196,8 +192,7 @@ class EntityTypeController extends BaseController
 
         // make sure we edit top level fields only here
         // subfields should be handled within combo edit method
-        if ($field->parent_field_id)
-        {
+        if ($field->parent_field_id) {
             return Redirect::route('cms:types:edit', [$type->id])
                 ->with('errors', "Field ID: {$fieldId} is a subfield.");
         }
@@ -205,11 +200,10 @@ class EntityTypeController extends BaseController
         // get all custom content types form Item field to serve as options
         $customTypes = null;
         $field_type = $field->type;
-        if ($field_type instanceof ItemFieldType)
-        {
+        if ($field_type instanceof ItemFieldType) {
             $customTypes = $typeRepository->custom();
         }
-        
+
         $fieldTypes = $fieldTypesManager->getFieldTypes();
         $fieldGroups = $groupRepository->findByField('entity_type_id', $type->id);
 
@@ -249,33 +243,25 @@ class EntityTypeController extends BaseController
         $defaultSettings = $fieldType->getDefaultSettings();
 
         // if field type has changed, reset settings
-        if ($field->field_type != $fieldType->getKey())
-        {
+        if ($field->field_type != $fieldType->getKey()) {
             $settings = $defaultSettings;
-        }
-        // otherwise update setting
-        else
-        {
+        } else {
+            // otherwise update setting
             $settings = $field->settings;
-            foreach ($defaultSettings as $k => $v)
-            {
+            foreach ($defaultSettings as $k => $v) {
                 $settings->{$k} = $request->input($k, $v);
             }
         }
 
         // update order on options
-        if ($order = Input::get('options_order'))
-        {
-            if ($order = explode(',', $order))
-            {
+        if ($order = Input::get('options_order')) {
+            if ($order = explode(',', $order)) {
                 $fieldSettings = $field->settings;
                 $settings->options = [];
 
-                foreach ($order as $i => $optionId)
-                {
+                foreach ($order as $i => $optionId) {
                     // make sure $optionId is a valid option
-                    if (!array_key_exists($optionId, $fieldSettings->options))
-                    {
+                    if (!array_key_exists($optionId, $fieldSettings->options)) {
                         return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                             ->with('errors', "Option ID: {$optionId} doesn't exist.");
                     }
@@ -287,23 +273,19 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group'))
-        {
+        if ($groupName = Input::get('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
 
-            foreach ($groups as $group)
-            {
-                if ($group->id == $groupName)
-                {
+            foreach ($groups as $group) {
+                if ($group->id == $groupName) {
                     $found = $group;
                     break;
                 }
             }
 
-            if (!$found)
-            {
+            if (!$found) {
                 $found = $groupRepository->create([
                     'name'=>$groupName,
                     'entity_type_id'=>$typeId,
@@ -333,8 +315,7 @@ class EntityTypeController extends BaseController
         $fieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
 
@@ -348,10 +329,9 @@ class EntityTypeController extends BaseController
         $typeId,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
-        return View::make('argon::groups.manage',['type' => $type]);
+        return View::make('argon::groups.manage', ['type' => $type]);
     }
 
 
@@ -359,23 +339,18 @@ class EntityTypeController extends BaseController
         $typeId,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
 
-        if ($order = Input::get('order'))
-        {
+        if ($order = Input::get('order')) {
             // get type fields for extra validation checks
             $groups = $type->groups->keyBy('id');
 
-            if ($order = explode(',', $order))
-            {
-                foreach ($order as $i => $groupId)
-                {
+            if ($order = explode(',', $order)) {
+                foreach ($order as $i => $groupId) {
                     // make sure $fieldId is a valid field of this content type
                     // don't want to accidentally update unrelated fields...
-                    if (!isset($groups[$groupId]))
-                    {
+                    if (!isset($groups[$groupId])) {
                         return Redirect::route('cms:types:groups', [$type->id])
                             ->with('errors', "Groupd ID: {$groupId} doesn't belong to this content type.");
                     }
@@ -418,8 +393,7 @@ class EntityTypeController extends BaseController
         $groupId,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $group = $groupRepository->find($groupId);
 
@@ -432,8 +406,7 @@ class EntityTypeController extends BaseController
         FieldTypesManager $fieldTypesManager,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $group = $groupRepository->find($groupId);
 
@@ -453,28 +426,23 @@ class EntityTypeController extends BaseController
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $group = $groupRepository->find($groupId);
 
         $usedGroups = $groupRepository->getUsedGroupsByEntityType($type->id);
 
         $inUse = false;
-        foreach ($usedGroups as $usedGroup)
-        {
-            if ($usedGroup->id == $group->id)
-            {
+        foreach ($usedGroups as $usedGroup) {
+            if ($usedGroup->id == $group->id) {
                 $inUse = true;
             }
         }
-        if ($inUse)
-        {
+        if ($inUse) {
             $fields = $fieldRepository->findByField('entity_group_id', $group->id);
 
             $inUse = [];
-            foreach ($fields as $field)
-            {
+            foreach ($fields as $field) {
                 $inUse[] = 'ID:'.$field->id;
             }
 
@@ -519,23 +487,19 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group'))
-        {
+        if ($groupName = Input::get('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
 
-            foreach ($groups as $group)
-            {
-                if ($group->id == $groupName)
-                {
+            foreach ($groups as $group) {
+                if ($group->id == $groupName) {
                     $found = $group;
                     break;
                 }
             }
 
-            if (!$found)
-            {
+            if (!$found) {
                 $found = $groupRepository->create([
                     'name'=>$groupName,
                     'entity_type_id'=>$typeId,
@@ -599,30 +563,25 @@ class EntityTypeController extends BaseController
 
        // update settings
         $settings = $combo->settings;
-        foreach ($settings as $k => &$v)
-        {
+        foreach ($settings as $k => &$v) {
             $v = Input::get($k, $v);
         }
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group'))
-        {
+        if ($groupName = Input::get('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
 
-            foreach ($groups as $group)
-            {
-                if ($group->id == $groupName)
-                {
+            foreach ($groups as $group) {
+                if ($group->id == $groupName) {
                     $found = $group;
                     break;
                 }
             }
 
-            if (!$found)
-            {
+            if (!$found) {
                 $found = $groupRepository->create([
                     'name'=>$groupName,
                     'entity_type_id'=>$typeId,
@@ -632,19 +591,15 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        if ($order = Input::get('subfields_order'))
-        {
+        if ($order = Input::get('subfields_order')) {
             // get subfields for extra validation checks
             $subfields = $combo->subfields->keyBy('id');
 
-            if ($order = explode(',', $order))
-            {
-                foreach ($order as $i => $subfieldId)
-                {
+            if ($order = explode(',', $order)) {
+                foreach ($order as $i => $subfieldId) {
                     // make sure $subfieldId is a valid subfield of this combo
                     // don't want to accidentally update unrelated fields...
-                    if (!isset($subfields[$subfieldId]))
-                    {
+                    if (!isset($subfields[$subfieldId])) {
                         return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
                             ->with('errors', "Field ID: {$subfieldId} is not a subfield of this combo field.");
                     }
@@ -675,15 +630,13 @@ class EntityTypeController extends BaseController
         $comboId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
 
         $fields = $type->fields->keyBy('id');
 
         // make sure combo belongs to type
-        if (!isset($fields[$comboId]))
-        {
+        if (!isset($fields[$comboId])) {
             return Redirect::route('cms:types:edit', [$type->id])
                 ->with('errors', "Combo ID: {$comboId} doesn't belong to this content type.");
         }
@@ -695,10 +648,8 @@ class EntityTypeController extends BaseController
         $deleted = $fieldRepository->delete($combo->id);
 
         // delete all combo's subfields
-        if ($deleted)
-        {
-            foreach ($subfields as $subfield)
-            {
+        if ($deleted) {
+            foreach ($subfields as $subfield) {
                 $fieldRepository->delete($subfield->id);
             }
         }
@@ -709,8 +660,13 @@ class EntityTypeController extends BaseController
 
 
     // Combo sublieds
-    public function addComboField($typeId, $comboId, FieldTypesManager $fieldTypesManager, EntityGroupRepository $groupRepository, EntityFieldRepository $fieldRepository)
-    {
+    public function addComboField(
+        $typeId,
+        $comboId,
+        FieldTypesManager $fieldTypesManager,
+        EntityGroupRepository $groupRepository,
+        EntityFieldRepository $fieldRepository
+    ) {
         $type = $this->typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
         $fieldTypes = $fieldTypesManager->getFieldTypes();
@@ -771,8 +727,7 @@ class EntityTypeController extends BaseController
         // get all custom content types form Item field to serve as options
         $customTypes = null;
         $field_type = $field->type;
-        if ($field_type instanceof ItemFieldType)
-        {
+        if ($field_type instanceof ItemFieldType) {
             $customTypes = $typeRepository->custom();
         }
 
@@ -813,33 +768,24 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->find($fieldId);
 
         // if field type has changed, reset settings
-        if ($field->field_type != $fieldType->getKey())
-        {
+        if ($field->field_type != $fieldType->getKey()) {
             $settings = $defaultSettings;
-        }
-        // otherwise update setting
-        else
-        {
+        } else { // otherwise update setting
             $settings = $field->settings;
-            foreach ($settings as $k => &$v)
-            {
+            foreach ($settings as $k => &$v) {
                 $v = Input::get($k, $v);
             }
         }
 
         // update order on options
-        if ($order = Input::get('options_order'))
-        {
-            if ($order = explode(',', $order))
-            {
+        if ($order = Input::get('options_order')) {
+            if ($order = explode(',', $order)) {
                 $fieldSettings = $field->settings;
                 $settings->options = [];
 
-                foreach ($order as $i => $optionId)
-                {
+                foreach ($order as $i => $optionId) {
                     // make sure $optionId is a valid option
-                    if (!array_key_exists($optionId, $fieldSettings->options))
-                    {
+                    if (!array_key_exists($optionId, $fieldSettings->options)) {
                         return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                             ->with('errors', "Option ID: {$optionId} doesn't exist.");
                     }
@@ -872,15 +818,13 @@ class EntityTypeController extends BaseController
         $subfieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
 
         $fields = $type->fields->keyBy('id');
 
         // make sure combo belongs to type
-        if (!isset($fields[$comboId]))
-        {
+        if (!isset($fields[$comboId])) {
             return Redirect::route('cms:types:edit', [$type->id])
                 ->with('errors', "Combo ID: {$comboId} doesn't belong to this content type.");
         }
@@ -889,8 +833,7 @@ class EntityTypeController extends BaseController
         $subfields = $combo->subfields->keyBy('id');
 
         // make sure subfield belong to combo
-        if (!isset($subfields[$subfieldId]))
-        {
+        if (!isset($subfields[$subfieldId])) {
             return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
                 ->with('errors', "Subfield ID: {$subfieldId} doesn't belong to this combo.");
         }
@@ -909,8 +852,7 @@ class EntityTypeController extends BaseController
         $fieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
 
@@ -925,8 +867,7 @@ class EntityTypeController extends BaseController
         $fieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $this->validate($this->request, [
             'name' => 'required',
         ]);
@@ -951,8 +892,7 @@ class EntityTypeController extends BaseController
         $optionId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
 
@@ -960,8 +900,7 @@ class EntityTypeController extends BaseController
 
         $option_name = @$settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -996,8 +935,7 @@ class EntityTypeController extends BaseController
 
         $option_name = @$settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -1020,8 +958,7 @@ class EntityTypeController extends BaseController
         $optionId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
 
@@ -1029,8 +966,7 @@ class EntityTypeController extends BaseController
 
         $option_name = @$settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -1049,8 +985,7 @@ class EntityTypeController extends BaseController
         $fieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
         $field = $fieldRepository->find($fieldId);
@@ -1068,8 +1003,7 @@ class EntityTypeController extends BaseController
         $fieldId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $this->validate($this->request, [
             'name' => 'required',
         ]);
@@ -1094,8 +1028,7 @@ class EntityTypeController extends BaseController
         $optionId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
         $field = $fieldRepository->find($fieldId);
@@ -1103,8 +1036,7 @@ class EntityTypeController extends BaseController
         $settings = $field->settings;
         $option_name = @$settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -1141,8 +1073,7 @@ class EntityTypeController extends BaseController
         $settings = $field->settings;
         $option_name = @$settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -1166,8 +1097,7 @@ class EntityTypeController extends BaseController
         $optionId,
         EntityTypeRepository $typeRepository,
         EntityFieldRepository $fieldRepository
-    )
-    {
+    ) {
         $type = $typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
         $field = $fieldRepository->find($fieldId);
@@ -1175,8 +1105,7 @@ class EntityTypeController extends BaseController
         $settings = $field->settings;
         $option_name = $settings->options[$optionId];
 
-        if (!$option_name)
-        {
+        if (!$option_name) {
             return Redirect::route('cms:types:combos:fields:edit', [$type->id, $combo->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
@@ -1192,12 +1121,9 @@ class EntityTypeController extends BaseController
 
     public function cloneField($fieldId, EntityFieldRepository $fieldRepository, Request $request)
     {
-	$field = $fieldRepository->find($fieldId)->type;
-	$field->setIsCloning();
-	$hash = $request->input('hash');
-	return $field->render(null, ['hash' => $hash]);
+        $field = $fieldRepository->find($fieldId)->type;
+        $field->setIsCloning();
+        $hash = $request->input('hash');
+        return $field->render(null, ['hash' => $hash]);
     }
-
-
-
 }
