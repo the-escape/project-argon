@@ -19,6 +19,12 @@ class ItemFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'multiple' => [
+            'label' => 'Multiple',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Allow selecting multiple items.",
+        ],
         'items' => [
             'label' => 'Items',
             'type' => 'items',
@@ -38,5 +44,31 @@ class ItemFieldType extends AbstractFieldType
         $entityRepository = app()->make(EntityRepository::class);
         $options = $entityRepository->findByField('entity_type_id', $contentTypeId);
         return $options;
+    }
+
+    public function getFormFieldName($hash)
+    {
+        return parent::getFormFieldName($hash) . '[]';
+    }
+
+    public function render($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new ItemFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new ItemFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
+        return view('argon::fields.type.item', $data)->render();
     }
 }
