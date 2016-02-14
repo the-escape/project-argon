@@ -57,6 +57,10 @@
         <script src="/argon/js/bootstrap-datepicker.min.js"></script>
         <script src="/argon/js/argon.js"></script>
 
+        @foreach($javascriptManager->outputScripts() as $script)
+            <script src="{{$script}}"></script>
+        @endforeach
+
         <script>
 
             <?php

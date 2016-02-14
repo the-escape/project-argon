@@ -21,6 +21,9 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
     /** @var PermissionManger */
     protected $permissionsManager;
 
+    /** @var JavascriptManager */
+    protected $javascriptManager;
+
     public function addRoute($path, $name, $controller, $methodName, $verbs = 'GET')
     {
         if (is_string($verbs)) {
@@ -88,6 +91,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
         /** @var PermissionManager $permissions */
         $this->permissionsManager = $this->app['permissions'];
 
+        $this->javascriptManager = $this->app['javascriptManager'];
 
         $this->startup();
     }
