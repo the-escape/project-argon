@@ -8,6 +8,7 @@
         <title>Argon Admin Area</title>
         <link rel="stylesheet" href="/argon/js/jstree/style.min.css" />
         <link rel="stylesheet" href="/argon/css/app.css">
+        <link rel="adminroot" href="/admin">
         @section('styles')
         @show
     </head>

@@ -70,7 +70,11 @@ var argon = {
                 o[key].apply(o, arguments);
             };
         });
-    }(jQuery))
+    }(jQuery)),
+
+    root: function() {
+        return $('link[rel=adminroot]').attr('href');
+    }
 
 };
 
@@ -145,76 +149,76 @@ var datetime = (function () {
 
     function init()
     {
-	build();
-	subscribe();
+        build();
+        subscribe();
     }
 
     function build($fieldDatetime)
     {
-	var $collection = $fieldDatetime || $('.field-datetime');
+        var $collection = $fieldDatetime || $('.field-datetime');
 
-	if(window.console) console.log($collection);
+        if(window.console) console.log($collection);
 
-	$collection.each(function() {
-	    var field = this;
-	    var $calendar_field = $('.calendar', field);
-	    var date = $calendar_field.attr('data-datetime');
+        $collection.each(function() {
+            var field = this;
+            var $calendar_field = $('.calendar', field);
+            var date = $calendar_field.attr('data-datetime');
 
-	    $calendar_field.datepicker({
-		format: "yyyy-mm-dd",
-		clearBtn: true
-	    });
-	    $calendar_field.datepicker('setDates', date);
-	    $calendar_field.on('changeDate', function() {
-		updateValue(field);
-	    });
+            $calendar_field.datepicker({
+                format: "yyyy-mm-dd",
+                clearBtn: true
+            });
+            $calendar_field.datepicker('setDates', date);
+            $calendar_field.on('changeDate', function() {
+                updateValue(field);
+            });
 
-	    if ($(field).attr('data-time-enabled') == 'true') {
-		$('.hours, .minutes, .seconds', field).on('change', function() {
-		    updateValue(field);
-		});
-	    }
-	});
+            if ($(field).attr('data-time-enabled') == 'true') {
+                $('.hours, .minutes, .seconds', field).on('change', function() {
+                    updateValue(field);
+                });
+            }
+        });
     }
 
     function updateValue(field)
     {
-	var time, datetime = [];
-	var date = $('.calendar', field).datepicker('getFormattedDate');
+        var time, datetime = [];
+        var date = $('.calendar', field).datepicker('getFormattedDate');
 
-	if (date == "") {
-	    $('.value', field).val('');
-	    return;
-	}
+        if (date == "") {
+            $('.value', field).val('');
+            return;
+        }
 
-	if ($(field).attr('data-time-enabled') == 'true') {
-	    var hours = $('.hours', field).val();
-	    var minutes = $('.minutes', field).val();
-	    var seconds = "00";
+        if ($(field).attr('data-time-enabled') == 'true') {
+            var hours = $('.hours', field).val();
+            var minutes = $('.minutes', field).val();
+            var seconds = "00";
 
-	    if ($(field).attr('data-seconds-enabled') == 'true') {
-		seconds = $('.seconds', field).val();
-	    }
+            if ($(field).attr('data-seconds-enabled') == 'true') {
+                seconds = $('.seconds', field).val();
+            }
 
-	    time = hours + ":" + minutes + ":" + seconds;
-	}
-	else {
-	    time = "00:00:00";
-	}
+            time = hours + ":" + minutes + ":" + seconds;
+        }
+        else {
+            time = "00:00:00";
+        }
 
-	$('.value', field).val(date + " " + time);
+        $('.value', field).val(date + " " + time);
     }
 
     // subscribe for notifications, see argon.events - observer pattern
     function subscribe()
     {
-	$.subscribe('field/clone', function (e, data) {
-	    build( $('.field-'+data.id).find('.field-datetime') );
-	});
+        $.subscribe('field/clone', function (e, data) {
+            build( $('.field-'+data.id).find('.field-datetime') );
+        });
     }
 
     return {
-	init: init
+        init: init
     };
 
 })();
@@ -273,7 +277,7 @@ argon.dialog.medialibrary = function (settings, callback) {
 
 function loadItems(id) {
     $.ajax(
-        '../../../media/items',
+        argon.root() + '/media/items',
         {
             data: {
                 folderId: id
@@ -348,7 +352,7 @@ $('.field-file').on('click', '.field-add-file', function(e) {
             var files = field.find('.files');
 
             if (!settings.multiple) {
-                files.empty();
+               files.empty();
             }
 
             var container = $('<div/>').addClass('input-group sortable-item');

@@ -70,7 +70,11 @@ var argon = {
                 o[key].apply(o, arguments);
             };
         });
-    }(jQuery))
+    }(jQuery)),
+
+    root: function() {
+        return $('link[rel=adminroot]').attr('href');
+    }
 
 };
 
