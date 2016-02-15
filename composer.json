@@ -22,7 +22,7 @@
             "Escape\\Argon\\": "src"
         },
         "files": [
-            "vendor/escape/argon/src/helpers/guid.php"
+            "src/helpers/guid.php"
         ]
     },
     "autoload-dev": {
