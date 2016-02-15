@@ -20,7 +20,10 @@
         "psr-4": {
             "Escape\\Argon\\Tests\\": "Tests",
             "Escape\\Argon\\": "src"
-        }
+        },
+        "files": [
+            "vendor/escape/argon/src/helpers/guid.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [
