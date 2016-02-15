@@ -74,9 +74,9 @@
         @if(!$value->isEmpty())
 
             <?php
-		if (is_scalar($value)) {
-		    $value = (array)$value;
-		}
+                if (is_scalar($value)) {
+                    $value = (array)$value;
+                }
             ?>
 
             @foreach($value as $k => $v)

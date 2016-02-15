@@ -2,57 +2,57 @@
 
 @section('content')
     <div class="main">
-	<h1 class="page-header">Media</h1>
+        <h1 class="page-header">Media</h1>
 
-	@if (session('message'))
-	    <div class="alert alert-success" role="alert">
-		{{ session('message') }}
-	    </div>
-	@endif
+        @if (session('message'))
+            <div class="alert alert-success" role="alert">
+                {{ session('message') }}
+            </div>
+        @endif
 
-	<button type="button" class="btn btn-primary btn-upload">Upload</button>
+        <button type="button" class="btn btn-primary btn-upload">Upload</button>
 
-	<div class="media-library" style="position: relative;">
-	    <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
-		<div id="folders">
-		    <ul>
-			@each('argon::media.folder', [$root], 'folder')
-		    </ul>
-		</div>
-		<div class="buttons">
-		    <button class="btn btn-sm" id="add-folder">+</button>
-		    <button class="btn btn-sm" id="del-folder">-</button>
-		</div>
-	    </div>
-	    <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
-		<input type="hidden" name="current-folder" id="current-folder" value="1">
-		<div class="files">
+        <div class="media-library" style="position: relative;">
+            <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
+                <div id="folders">
+                    <ul>
+                        @each('argon::media.folder', [$root], 'folder')
+                    </ul>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-sm" id="add-folder">+</button>
+                    <button class="btn btn-sm" id="del-folder">-</button>
+                </div>
+            </div>
+            <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
+                <input type="hidden" name="current-folder" id="current-folder" value="1">
+                <div class="files">
 
-		</div>
-	    </form>
-	</div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div style="display: none;" id="preview-template">
-	<div class="media-item">
-	    <img class="thumb" data-dz-thumbnail>
-	    <span class="filename" data-dz-name></span>
-	    <span class="filesize" data-dz-size></span>
+        <div class="media-item">
+            <img class="thumb" data-dz-thumbnail>
+            <span class="filename" data-dz-name></span>
+            <span class="filesize" data-dz-size></span>
 
-	    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-	    <progress class="progress" value="25" max="100"></progress>
-	    <div class="btn-group">
-		<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    &hellip;
-		</button>
-		<div class="dropdown-menu">
-		    <a class="dropdown-item" data-dz-delete href="#">Delete</a>
-		    {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
-		    {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
-		    <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
-		</div>
-	    </div>
-	</div>
+            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+            <progress class="progress" value="25" max="100"></progress>
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    &hellip;
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" data-dz-delete href="#">Delete</a>
+                    {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
+                    {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
+                    <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
+                </div>
+            </div>
+        </div>
     </div>
 @stop
 
@@ -63,255 +63,255 @@
 @section('footer')
     <script src="/argon/js/dropzone.min.js"></script>
     <script>
-	var dropzone = new Dropzone(
-	    'form.dz',
-	    {
-		url: '/admin/media/upload',
-		clickable: '.btn-upload',
-		headers: {
-		    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-		},
-		thumbnailWidth: 100,
-		thumbnailHeight: 100,
-		previewTemplate: $('#preview-template').html(),
-		previewsContainer: '.media-library .files',
-	    }
-	);
-	dropzone.on('success', function(e, response) {
-	    loadItems($('#current-folder').val());
-	});
+        var dropzone = new Dropzone(
+            'form.dz',
+            {
+                url: '/admin/media/upload',
+                clickable: '.btn-upload',
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                thumbnailWidth: 100,
+                thumbnailHeight: 100,
+                previewTemplate: $('#preview-template').html(),
+                previewsContainer: '.media-library .files',
+            }
+        );
+        dropzone.on('success', function(e, response) {
+            loadItems($('#current-folder').val());
+        });
 
-	dropzone.on('error', function(file, errorMessage, xhr) {
-	    console.log(errorMessage);
-	});
+        dropzone.on('error', function(file, errorMessage, xhr) {
+            console.log(errorMessage);
+        });
 
-	dropzone.on('uploadprogress', function(file, progress, bytesSent) {
-	    $('progress', file.previewElement).val(progress);
+        dropzone.on('uploadprogress', function(file, progress, bytesSent) {
+            $('progress', file.previewElement).val(progress);
 
-	    if (progress == 100) {
-		$('progress', file.previewElement).hide();
-	    }
-	});
+            if (progress == 100) {
+                $('progress', file.previewElement).hide();
+            }
+        });
 
-	dropzone.on('addedfile', function(file) {
+        dropzone.on('addedfile', function(file) {
 //            console.log(file);
-	    sortItems();
-	});
+            sortItems();
+        });
     </script>
 
     <script src="/argon/js/jstree.min.js"></script>
     <script>
-	var argon = {
-	    dialog: {
-		alert: function (message, callback) {
-		    alert(message);
+        var argon = {
+            dialog: {
+                alert: function (message, callback) {
+                    alert(message);
 
-		    if (callback) {
-			callback();
-		    }
-		},
+                    if (callback) {
+                        callback();
+                    }
+                },
 
-		prompt: function (message, callback) {
-		    var result = prompt(message);
+                prompt: function (message, callback) {
+                    var result = prompt(message);
 
-		    callback(result);
-		}
-	    }
-	}
+                    callback(result);
+                }
+            }
+        }
     </script>
     <script>
-	var folders = $('#folders');
+        var folders = $('#folders');
 
-	folders
-	    .children()
-		.children()
-		    .attr('data-jstree', '{"opened":true,"selected":true}');
+        folders
+            .children()
+                .children()
+                    .attr('data-jstree', '{"opened":true,"selected":true}');
 
-	folders.jstree({
-	    plugins: [
-		'dnd',
-		'search'
-	    ],
-	    "core" : {
-		// so that create works
-		"check_callback" : true,
-		"multiple": false
-	    }
-	});
+        folders.jstree({
+            plugins: [
+                'dnd',
+                'search'
+            ],
+            "core" : {
+                // so that create works
+                "check_callback" : true,
+                "multiple": false
+            }
+        });
 
-	folders.on("changed.jstree", function (e, data) {
-	    if (data.selected.length > 0) {
-		var id = data.selected[0].split('-')[1];
+        folders.on("changed.jstree", function (e, data) {
+            if (data.selected.length > 0) {
+                var id = data.selected[0].split('-')[1];
 
-		loadItems(id);
-	    }
-	});
+                loadItems(id);
+            }
+        });
 
-	$('#add-folder').click(function() {
+        $('#add-folder').click(function() {
 
-	    var currentFolder = $('#folders').jstree().get_selected(true)[0].data.id;
+            var currentFolder = $('#folders').jstree().get_selected(true)[0].data.id;
 
-	    var name = argon.dialog.prompt("Folder name:", function(name) {
-		if (name) {
-		    $.ajax({
-			    url: "media/folders",
-			    method: "POST",
-			    headers: {
-				"X-CSRF-TOKEN": "{{ csrf_token() }}"
-			    },
-			    data: {
-				"name": name,
-				"parent": currentFolder
-			    }
-			})
-		    .done(function(data) {
-			var id = $("#folders").jstree(true).create_node(
-			    $('[data-id=' + currentFolder + ']'),
-			    {
-				text: ' ' + name,
-				id: 'folder-' + data.id,
-				data: {
-				    id: data.id
-				}
-			    },
-			    "last",
-			    function() {},
-			    true
-			);
+            var name = argon.dialog.prompt("Folder name:", function(name) {
+                if (name) {
+                    $.ajax({
+                            url: "media/folders",
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            data: {
+                                "name": name,
+                                "parent": currentFolder
+                            }
+                        })
+                    .done(function(data) {
+                        var id = $("#folders").jstree(true).create_node(
+                            $('[data-id=' + currentFolder + ']'),
+                            {
+                                text: ' ' + name,
+                                id: 'folder-' + data.id,
+                                data: {
+                                    id: data.id
+                                }
+                            },
+                            "last",
+                            function() {},
+                            true
+                        );
 
-			$('#folder-' + data.id).attr('data-id', currentFolder);
-		    })
-		    .fail(function(jqXHR, textStatus, errorThrown) {
-			switch (jqXHR.status) {
-			    case 409:
-				argon.dialog.alert('Folder already exists.');
-				break;
-			    default:
-				argon.dialog.alert('Unknown error');
-				break;
-			}
-		    });
-		}
-	    });
-	});
+                        $('#folder-' + data.id).attr('data-id', currentFolder);
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown) {
+                        switch (jqXHR.status) {
+                            case 409:
+                                argon.dialog.alert('Folder already exists.');
+                                break;
+                            default:
+                                argon.dialog.alert('Unknown error');
+                                break;
+                        }
+                    });
+                }
+            });
+        });
 
-	$('#del-folder').click(function() {
-	    var selected = $('#folders').jstree().get_selected(true)[0];
-	    var currentFolder = selected.data.id;
+        $('#del-folder').click(function() {
+            var selected = $('#folders').jstree().get_selected(true)[0];
+            var currentFolder = selected.data.id;
 
-	    $.ajax({
-		url: "media/folders/" + currentFolder,
-		method: "DELETE",
-		headers: {
-		    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-		}
-	    })
-	    .done(function(data) {
-		var tree = $('#folders').jstree(true);
-		tree.delete_node(selected);
-		tree.select_node(selected.parents[0]);
-	    })
-	    .fail(function(jqXHR) {
-		switch (jqXHR.status) {
-		    case 409:
-			argon.dialog.alert('Folder is not empty.');
-			break;
-		    default:
-			argon.dialog.alert('Unknown error');
-			break;
-		}
-	    });
-	});
+            $.ajax({
+                url: "media/folders/" + currentFolder,
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                }
+            })
+            .done(function(data) {
+                var tree = $('#folders').jstree(true);
+                tree.delete_node(selected);
+                tree.select_node(selected.parents[0]);
+            })
+            .fail(function(jqXHR) {
+                switch (jqXHR.status) {
+                    case 409:
+                        argon.dialog.alert('Folder is not empty.');
+                        break;
+                    default:
+                        argon.dialog.alert('Unknown error');
+                        break;
+                }
+            });
+        });
 
-	function loadItems(id) {
-	    $.ajax(
-		'media/items',
-		{
-		    data: {
-			folderId: id
-		    }
-		}
-	    ).done(function(data) {
-		$('#current-folder').val(id);
+        function loadItems(id) {
+            $.ajax(
+                'media/items',
+                {
+                    data: {
+                        folderId: id
+                    }
+                }
+            ).done(function(data) {
+                $('#current-folder').val(id);
 
-		$('.dz .files').empty();
+                $('.dz .files').empty();
 
-		for (var i in data) {
-		    var file = data[i];
+                for (var i in data) {
+                    var file = data[i];
 
-		    var node = $('#preview-template .media-item').clone();
+                    var node = $('#preview-template .media-item').clone();
 
-		    node.attr('data-id', file.id);
-		    node.find('img').attr('src', file.thumbUrl);
-		    node.find('[data-dz-name]').text(file.filename);
-		    node.find('[data-dz-size]').html(filesize(file.filesize));
-		    node.find('[data-dz-delete]').on('click', function(id) {
-			return function() {
-			    deleteItem(id);
-			}
-		    }(file.id));
-		    node.find('[data-dz-original]').attr('href', file.url);
-		    node.find('progress').hide();
+                    node.attr('data-id', file.id);
+                    node.find('img').attr('src', file.thumbUrl);
+                    node.find('[data-dz-name]').text(file.filename);
+                    node.find('[data-dz-size]').html(filesize(file.filesize));
+                    node.find('[data-dz-delete]').on('click', function(id) {
+                        return function() {
+                            deleteItem(id);
+                        }
+                    }(file.id));
+                    node.find('[data-dz-original]').attr('href', file.url);
+                    node.find('progress').hide();
 
-		    $('form.dz .files').append(node);
-		}
+                    $('form.dz .files').append(node);
+                }
 
-		sortItems();
-	    });
-	}
+                sortItems();
+            });
+        }
 
-	loadItems(1);
+        loadItems(1);
 
-	function deleteItem(id) {
-	    if (confirm("Are you sure you want to delete this file?")) {
-		$.ajax(
-		    {
-			url: 'media/items/' + id,
-			method: 'DELETE',
-			headers: {
-			    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-			}
-		    }
-		).done(function(data) {
-		   $('[data-id='+ id + ']').remove();
-		});
-	    } else {
+        function deleteItem(id) {
+            if (confirm("Are you sure you want to delete this file?")) {
+                $.ajax(
+                    {
+                        url: 'media/items/' + id,
+                        method: 'DELETE',
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        }
+                    }
+                ).done(function(data) {
+                   $('[data-id='+ id + ']').remove();
+                });
+            } else {
 //                console.log('keep');
-	    }
-	}
+            }
+        }
 
-	function sortItems() {
-	    var list = $('.files .media-item').get();
-	    list.sort(compareItems);
-	    for (var i = 0; i < list.length; i++) {
-		list[i].parentNode.appendChild(list[i]);
-	    }
-	}
+        function sortItems() {
+            var list = $('.files .media-item').get();
+            list.sort(compareItems);
+            for (var i = 0; i < list.length; i++) {
+                list[i].parentNode.appendChild(list[i]);
+            }
+        }
 
-	function compareItems(a, b) {
-	    var nameA = $(a).find('.filename').text(),
-		nameB = $(b).find('.filename').text();
-	    return nameA.localeCompare(nameB);
-	}
+        function compareItems(a, b) {
+            var nameA = $(a).find('.filename').text(),
+                nameB = $(b).find('.filename').text();
+            return nameA.localeCompare(nameB);
+        }
 
-	function filesize(size) {
-	    var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
-	    selectedSize = 0;
-	    selectedUnit = "b";
-	    if (size > 0) {
-		units = ['TB', 'GB', 'MB', 'KB', 'b'];
-		for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
-		    unit = units[i];
-		    cutoff = Math.pow(1000, 4 - i) / 10;
-		    if (size >= cutoff) {
-			selectedSize = size / Math.pow(1000, 4 - i);
-			selectedUnit = unit;
-			break;
-		    }
-		}
-		selectedSize = Math.round(10 * selectedSize) / 10;
-	    }
-	    return "<strong>" + selectedSize + "</strong>" + selectedUnit;
-	};
+        function filesize(size) {
+            var cutoff, i, selectedSize, selectedUnit, unit, units, _i, _len;
+            selectedSize = 0;
+            selectedUnit = "b";
+            if (size > 0) {
+                units = ['TB', 'GB', 'MB', 'KB', 'b'];
+                for (i = _i = 0, _len = units.length; _i < _len; i = ++_i) {
+                    unit = units[i];
+                    cutoff = Math.pow(1000, 4 - i) / 10;
+                    if (size >= cutoff) {
+                        selectedSize = size / Math.pow(1000, 4 - i);
+                        selectedUnit = unit;
+                        break;
+                    }
+                }
+                selectedSize = Math.round(10 * selectedSize) / 10;
+            }
+            return "<strong>" + selectedSize + "</strong>" + selectedUnit;
+        };
     </script>
 @stop

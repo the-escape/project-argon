@@ -109,7 +109,7 @@
                                     <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
                                 </td>
                                 <td>
-				    <input type="hidden" name="options[]" value="{{$opt_value}}">
+                                    <input type="hidden" name="options[]" value="{{$opt_value}}">
                                     @if($field->type->getParentId())
                                         <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Edit</a>
                                         <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Remove</a>

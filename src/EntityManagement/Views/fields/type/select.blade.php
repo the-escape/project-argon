@@ -8,38 +8,38 @@
 
 @if (!$isCloning)
     <div class="field field-select field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
-	 data-field="{{$field->getId()}}"
-	 data-hash="{{$hash}}">
+        data-field="{{$field->getId()}}"
+        data-hash="{{$hash}}">
 
-	<label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
+        <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
 
-	<div class="field-values">
+        <div class="field-values">
 @endif
 
     @foreach($value as $k => $v)
 
-	<div class="input-group sortable-item">
-	    <div class="input-group-addon sortable-handle">&#8645;</div>
+        <div class="input-group sortable-item">
+            <div class="input-group-addon sortable-handle">&#8645;</div>
 
-	    <select name="{{ $field->getFormFieldName($hash) }}" class="form-control">
+            <select name="{{ $field->getFormFieldName($hash) }}" class="form-control">
 
-		<option value="">Please select:</option>
+                <option value="">Please select:</option>
 
-		@foreach($field->getOptions() as $optionId => $optionValue)
-		    <option value="{{ $optionValue }}" @if($optionValue === $v) selected @endif>{{ $optionValue }}</option>
-		@endforeach
+                @foreach($field->getOptions() as $optionId => $optionValue)
+                    <option value="{{ $optionValue }}" @if($optionValue === $v) selected @endif>{{ $optionValue }}</option>
+                @endforeach
 
-	    </select>
+            </select>
 
-	    <div class="input-group-addon field-remove">&#10005;</div>
-	</div>
+            <div class="input-group-addon field-remove">&#10005;</div>
+        </div>
 
     @endforeach
 
 @if(!$isCloning)
-	</div>
-	@if ($field->allowMultiple())
-	    <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+        </div>
+        @if ($field->allowMultiple())
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
         @endif
     </div>
 @endif

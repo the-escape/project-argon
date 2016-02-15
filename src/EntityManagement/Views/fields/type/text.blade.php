@@ -6,35 +6,35 @@
 
 @if(!$isCloning)
     <div class="field field-text field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
-	 data-field="{{$field->getId()}}"
-	 data-hash="{{$hash}}">
+        data-field="{{$field->getId()}}"
+        data-hash="{{$hash}}">
 
-	<label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
+        <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
 
-	<div class="field-values">
+        <div class="field-values">
 @endif
 
-	@foreach($value as $k => $v)
+        @foreach($value as $k => $v)
 
-	    @if($field->allowMultiple())
+            @if($field->allowMultiple())
                 <div class="input-group sortable-item">
                     <div class="input-group-addon sortable-handle">&#8645;</div>
-	    @endif
+            @endif
 
-		<input type="text" class="form-control" name="{{ $field->getFormFieldName($hash) }}" value="{{$v}}">
+                <input type="text" class="form-control" name="{{ $field->getFormFieldName($hash) }}" value="{{$v}}">
 
-	    @if($field->allowMultiple())
+            @if($field->allowMultiple())
                     <div class="input-group-addon field-remove">&#10005;</div>
                 </div>
             @endif
 
-	@endforeach
+        @endforeach
 
 
 @if(!$isCloning)
-	</div>
-	@if ($field->allowMultiple())
-	    <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+        </div>
+        @if ($field->allowMultiple())
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
         @endif
     </div>
 @endif

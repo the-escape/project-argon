@@ -157,9 +157,9 @@
             // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
             $(document).on('click', '.field-clone', function()
             {
-		// Disabled prior to removal.
-		// No longer used for cloning text, select or combo fields. Wysiwyg still outstanding.
-		return;
+                // Disabled prior to removal.
+                // No longer used for cloning text, select or combo fields. Wysiwyg still outstanding.
+                return;
                 var $self = $(this);
                 var $parentFormGroup = $self.closest('.form-group');
 

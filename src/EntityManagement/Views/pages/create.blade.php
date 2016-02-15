@@ -46,7 +46,7 @@
                         <div class="card-block accordion-body">
                             @foreach ($group->getFields() as $field)
 
-				{!! $field->render() !!}
+                                {!! $field->render() !!}
 
                             @endforeach
                         </div>
