@@ -58,6 +58,7 @@
         <script src="/argon/js/ckeditor/ckeditor.js"></script>
         <script src="/argon/js/jstree.min.js"></script>
         <script src="/argon/js/bootstrap-datepicker.min.js"></script>
+        <script src="/argon/js/handlebars.min.js"></script>
         <script src="/argon/js/argon.js"></script>
 
         @foreach($assetsManager->outputScripts() as $script)
