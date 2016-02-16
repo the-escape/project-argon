@@ -6,9 +6,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" value="{{ csrf_token() }}">
         <title>Argon Admin Area</title>
-        <link rel="stylesheet" href="/argon/js/jstree/style.min.css" />
+        <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
         <link rel="stylesheet" href="/argon/css/app.css">
         <link rel="adminroot" href="/admin">
+        @foreach ($assetsManager->outputStyles() as $styles)
+            <link rel="stylesheet" href="{{$styles}}">
+        @endforeach
         @section('styles')
         @show
     </head>
@@ -57,7 +60,7 @@
         <script src="/argon/js/bootstrap-datepicker.min.js"></script>
         <script src="/argon/js/argon.js"></script>
 
-        @foreach($javascriptManager->outputScripts() as $script)
+        @foreach($assetsManager->outputScripts() as $script)
             <script src="{{$script}}"></script>
         @endforeach
 
@@ -154,9 +157,9 @@
             // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
             $(document).on('click', '.field-clone', function()
             {
-		// Disabled prior to removal.
-		// No longer used for cloning text, select or combo fields. Wysiwyg still outstanding.
-		return;
+                // Disabled prior to removal.
+                // No longer used for cloning text, select or combo fields. Wysiwyg still outstanding.
+                return;
                 var $self = $(this);
                 var $parentFormGroup = $self.closest('.form-group');
 

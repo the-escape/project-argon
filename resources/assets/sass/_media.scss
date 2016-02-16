@@ -4,18 +4,18 @@
     font-size: 12px;
 
     .thumb {
-	display: block;
-	margin: 0 auto;
+        display: block;
+        margin: 0 auto;
     }
 
     .filename {
-	display: block;
+        display: block;
     }
 
     .filesize {
-	color: #666;
-	display: block;
-	font-size: 10px;
+        color: #666;
+        display: block;
+            font-size: 10px;
     }
 
     .dz-progress {
@@ -23,36 +23,36 @@
     }
 
     &.dz-error {
-	background: red;
+        background: red;
     }
 
     .btn {
-	font-size: 12px;
-	padding: 3px;
+        font-size: 12px;
+        padding: 3px;
 
-	&::after {
-	    display: none;
-	}
+        &::after {
+            display: none;
+        }
     }
 }
 
 
 .media-library-sidebar {
     .buttons {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	left: 0;
-	background: red;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        background: red;
 
-	button {
-	    width: 50%;
-	    float: left;
-	    border-radius: 0;
+        button {
+            width: 50%;
+            float: left;
+            border-radius: 0;
 
-	    &:first-child {
-		border-right: 1px solid #000;
-	    }
-	}
+            &:first-child {
+                border-right: 1px solid #000;
+            }
+        }
     }
 }

@@ -19,10 +19,10 @@ class PluginServiceProvider extends ServiceProvider
             return new PluginManager();
         });
 
-        $this->app->singleton('javascriptManager', function () {
-            return new JavascriptManager($this->app[Request::class]);
+        $this->app->singleton('assetsManager', function () {
+            return new AssetsManager($this->app[Request::class]);
         });
 
-        view()->share('javascriptManager', $this->app['javascriptManager']);
+        view()->share('assetsManager', $this->app['assetsManager']);
     }
 }

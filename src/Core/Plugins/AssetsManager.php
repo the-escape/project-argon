@@ -5,10 +5,13 @@ namespace Escape\Argon\Core\Plugins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class JavascriptManager
+class AssetsManager
 {
     /** @var Collection */
     protected $scripts;
+
+    /** @var Collection */
+    protected $styles;
 
     /** @var Request */
     protected $request;
@@ -17,6 +20,7 @@ class JavascriptManager
     {
         $this->request = $request;
         $this->scripts = new Collection();
+        $this->styles = new Collection();
     }
 
     public function addScript($url, array $paths = ['*'])
@@ -37,6 +41,27 @@ class JavascriptManager
             return false;
         })->map(function ($script) {
             return $script['url'];
+        });
+    }
+
+    public function addStyles($url, array $paths = ['*'])
+    {
+        $this->styles->push(['url' => $url, 'paths' => $paths]);
+    }
+
+    public function outputStyles()
+    {
+        $path = $this->request->path();
+
+        return $this->styles->filter(function ($styles) use ($path) {
+            foreach ($styles['paths'] as $path) {
+                if ($this->request->is($path)) {
+                    return true;
+                }
+            }
+            return false;
+        })->map(function ($styles) {
+            return $styles['url'];
         });
     }
 }

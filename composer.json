@@ -6,7 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "^5.1.11",
+        "laravel/framework": "~5.1.11",
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5"
@@ -20,7 +20,10 @@
         "psr-4": {
             "Escape\\Argon\\Tests\\": "Tests",
             "Escape\\Argon\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers/guid.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [
