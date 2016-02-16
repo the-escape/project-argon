@@ -63,11 +63,11 @@
 
                             @foreach ($group->getFields() as $field)
 
-				<div class="form-group sortable">
+                                <div class="form-group sortable">
 
-				    {!! $field->render($latest->getField($field->getId())) !!}
+                                    {!! $field->render($latest->getField($field->getId())) !!}
 
-				</div>
+                                </div>
 
                             @endforeach
 

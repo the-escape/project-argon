@@ -58,6 +58,12 @@ class ComboFieldType extends AbstractFieldType
             $value = new ComboFieldValue([$hash => (object)['fields' => []]], $this->getSubfields());
         }
 
+        // if field is not multiple, get first combo only
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
+        }
+
         $data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
         return view('argon::fields.type.combo', $data)->render();
     }

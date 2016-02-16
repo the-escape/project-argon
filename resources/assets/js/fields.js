@@ -39,7 +39,7 @@ argon.fields.clone = function(field) {
 
 	    })
 	    .fail(function() {
-		console.error('Clone request failed.');
+			console.error('Clone request failed.');
 	    });
     }
 }
