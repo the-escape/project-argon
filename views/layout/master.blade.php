@@ -14,6 +14,14 @@
         @endforeach
         @section('styles')
         @show
+        <style>
+            a.nav-link {
+                color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+            .navbar.bg-inverse {
+                background-color: {{config('argon.neutral_color', '#373a3c')}};
+            }
+        </style>
     </head>
 
     <body class="dashboard">
@@ -26,7 +34,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
             </ul>
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Argon</a>
+            <a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
         </nav>
 
         <div class="container-fluid">
