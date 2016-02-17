@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Carbon\Carbon;
 use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\RevisionStatus;
@@ -9,6 +10,19 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Entity
+ *
+ * @property-get int id
+ * @property string name
+ * @property string slug
+ * @property int|null parent
+ * @property int entity_type_id
+ * @property int owner_id
+ * @property Carbon created_at
+ * @property Carbon updated_at
+ * @property Carbon deleted_at
+ */
 class Entity extends Model
 {
     protected $children = [];
