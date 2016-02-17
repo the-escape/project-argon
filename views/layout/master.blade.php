@@ -15,9 +15,16 @@
         @section('styles')
         @show
         <style>
-            a.nav-link {
+            a,
+            .nav-link,
+            .btn-link {
                 color: {{config('argon.highlight_color', '#0275d8')}};
             }
+            .btn-primary {
+                background-color: {{config('argon.highlight_color', '#0275d8')}};
+                border-color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
             .navbar.bg-inverse {
                 background-color: {{config('argon.neutral_color', '#373a3c')}};
             }

@@ -30,6 +30,10 @@ class ArgonServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../../migrations' => database_path('migrations'),
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../../config/argon.php' => config_path('argon.php'),
+        ], 'config');
     }
 
     public function register()
