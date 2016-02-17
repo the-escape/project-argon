@@ -36,10 +36,10 @@ argon.fields.clone = function(field) {
 
                 // notify all observers
                 $.publish('field/clone', {'id': fieldId});
+	    })
+	    .fail(function() {
+			console.error('Clone request failed.');
+	    });
 
-            })
-            .fail(function() {
-                console.error('Clone request failed.');
-            });
     }
 };

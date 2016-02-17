@@ -121,11 +121,11 @@ argon.fields.clone = function(field) {
 
                 // notify all observers
                 $.publish('field/clone', {'id': fieldId});
+	    })
+	    .fail(function() {
+			console.error('Clone request failed.');
+	    });
 
-            })
-            .fail(function() {
-                console.error('Clone request failed.');
-            });
     }
 };
 
@@ -138,7 +138,7 @@ $(document).on('click', '.boolean-off', function(){
 });
 $(document).on('clone', '.field-combo', function(e) {
     if (e.target == this) {
-        argon.fields.clone(this);
+	    argon.fields.clone(this);
     }
 });
 
@@ -392,13 +392,14 @@ $('.field-file').on('click', '.field-remove', function()
 $(document).on('clone', '.field-select', function(e) {
     console.log("select clone");
     if (e.target == this) {
-        argon.fields.clone(this);
+	    argon.fields.clone(this);
+
     }
 });
 
 $(document).on('clone', '.field-text', function(e) {
     if (e.target == this) {
-        argon.fields.clone(this);
+	    argon.fields.clone(this);
     }
 });
 

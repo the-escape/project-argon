@@ -4621,6 +4621,8 @@ body.dashboard {
   /*
      * Main content
      */ }
+  body.dashboard .navbar-fixed-top {
+    border: 0; }
   body.dashboard .box {
     padding: 20px;
     margin: 20px 0;
@@ -4630,14 +4632,17 @@ body.dashboard {
   body.dashboard .combo.card .card-header {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; }
+  body.dashboard .field-values,
+  body.dashboard .field {
+    margin-bottom: 0.75rem; }
+  body.dashboard .field:after,
+  body.dashboard .fields-group:after,
   body.dashboard .form-group:after {
     content: "\0020";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden; }
-  body.dashboard .navbar-fixed-top {
-    border: 0; }
   body.dashboard .cke {
     border-color: #ccc;
     box-shadow: none;
@@ -4656,12 +4661,16 @@ body.dashboard {
     outline: none; }
   body.dashboard .subnav {
     margin-bottom: 0.75rem; }
+  body.dashboard .input-group {
+    width: 100%; }
+  body.dashboard .input-group .form-control:last-child {
+    border-radius: 0.25rem; }
   body.dashboard .form-control + .field-clone,
   body.dashboard .input-group + .field-clone,
   body.dashboard .form-control + .input-group,
   body.dashboard .input-group + .input-group,
   body.dashboard .form-control + .form-control {
-    margin-top: .5rem; }
+    margin-top: 0.75rem; }
   body.dashboard .form-group.error .cke,
   body.dashboard .form-group .error .cke,
   body.dashboard .form-control.error {

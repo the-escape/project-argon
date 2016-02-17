@@ -9,6 +9,7 @@ use Input;
 
 class Fields
 {
+    const DIVIDER = ' &#10141; ';
 
     /**
      * Builds $niceNames and $rules arrays for validation based on supplied $fields collection
@@ -32,20 +33,31 @@ class Fields
         $hash = null;
 
         foreach ($fields as $field) {
-            $niceName = "fields.{$field->id}";
+            $settings = $field->settings;
 
-            if ($field->parent_field_id && $combos[$field->parent_field_id]) {
+            if (@$settings->multiple) {
+                $niceName = "fields.{$field->id}";
+            } else  {
+                $niceName = "fields.{$field->id}.0";
+            }
+
+            if ($field->parent_field_id && isset($combos[$field->parent_field_id])) {
                 if (!isset($hash)) {
                     reset($combos[$field->parent_field_id]);
                     $hash = key($combos[$field->parent_field_id]);
                     unset($combos[$field->parent_field_id][$hash]);
                 }
 
-                $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
+                if (@$settings->multiple) {
+                    $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
+                } else {
+                    $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}.0";
+                }
+
+
             }
 
             if ($field->field_type == 'combo') {
-                $settings = $field->settings;
 
                 if (@$settings->multiple) {
                     $i = 1;
@@ -81,54 +93,39 @@ class Fields
                 continue;
             }
 
-            $niceNames[$niceName] = ($field->parent_field_id)
-                ? $parent->name.' '.$parent->instance.' &#10141; '.$field->name
+            // location field setup
+            if ($field->field_type == 'location') {
+                // longitude
+                $longitude = $niceName.'.longitude';
+
+                $niceNames[$longitude] = ($field->parent_field_id)
+                    ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.'Longitude'
+                    : $field->name.self::DIVIDER.'Longitude';
+
+                $rules = self::rules($rules, $settings, $longitude);
+
+                // latitude
+                $latitude = $niceName.'.latitude';
+                $niceNames[$latitude] = ($field->parent_field_id)
+                    ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.'Latitude'
+                    : $field->name.self::DIVIDER.'Latitude';
+                $rules = self::rules($rules, $settings, $latitude);
+                continue;
+            }
+
+            // generic single field setup
+            $niceNames[$niceName] = ($field->parent_field_id && isset($combos[$field->parent_field_id]))
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name
                 : $field->name;
 
-            $settings = $field->settings;
-
-            if (@$settings->required) {
-                $rules[$niceName][] = 'required';
-            }
-
-            if (@$settings->minlength) {
-                $rules[$niceName][] = "min:{$settings->minlength}";
-            }
-
-            if (@$settings->maxlength) {
-                $rules[$niceName][] = "max:{$settings->maxlength}";
-            }
-
-            if (@$settings->url) {
-                $rules[$niceName][] = "url";
-            }
-
-            if (@$settings->integer) {
-                $rules[$niceName][] = "integer";
-            }
-
-            if (@$settings->float) {
-                $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_FLOAT;
-            }
-
-            if (@$settings->email) {
-                $rules[$niceName][] = "email";
-            }
-
-            if (@$settings->phone) {
-                $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_PHONE;
-            }
-
-            if (@$rules[$niceName]) {
-                $rules[$niceName] = implode('|', $rules[$niceName]);
-            }
+            $rules = self::rules($rules, $settings, $niceName);
 
             // validate each multiple field value individually
             // copy fields validation rules to individual subfields,
-            // then remove top level field validation since not needed
+            // then remove top level field nice name and validation since not needed
             if (@$settings->multiple) {
-                foreach ($request->input($niceName) ?: [] as $k => $v) {
-                    $niceNames["{$niceName}.{$k}"] = $field->name.' ['.($k+1).']';
+                foreach ($request->input($niceName,[]) as $k => $v) {
+                    $niceNames["{$niceName}.{$k}"] = $niceNames[$niceName].self::DIVIDER.($k+1);
 
                     if (@$rules[$niceName]) {
                         $rules["{$niceName}.{$k}"] = $rules[$niceName];
@@ -136,12 +133,55 @@ class Fields
                 }
 
                 if (@$rules[$niceName]) {
+                    unset($niceNames[$niceName]);
                     unset($rules[$niceName]);
                 }
             }
         }
 
         return [$niceNames, $rules, $combos];
+    }
+
+
+    private static function rules(array $rules, $settings, $niceName)
+    {
+        if (@$settings->required) {
+            $rules[$niceName][] = 'required';
+        }
+
+        if (@$settings->minlength) {
+            $rules[$niceName][] = "min:{$settings->minlength}";
+        }
+
+        if (@$settings->maxlength) {
+            $rules[$niceName][] = "max:{$settings->maxlength}";
+        }
+
+        if (@$settings->url) {
+            $rules[$niceName][] = "url";
+        }
+
+        if (@$settings->integer) {
+            $rules[$niceName][] = "integer";
+        }
+
+        if (@$settings->float) {
+            $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_FLOAT;
+        }
+
+        if (@$settings->email) {
+            $rules[$niceName][] = "email";
+        }
+
+        if (@$settings->phone) {
+            $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_PHONE;
+        }
+
+        if (@$rules[$niceName]) {
+            $rules[$niceName] = implode('|', $rules[$niceName]);
+        }
+
+        return $rules;
     }
 
 

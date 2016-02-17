@@ -3,6 +3,8 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\LocationFieldValue;
+
 
 class LocationFieldType extends AbstractFieldType
 {
@@ -17,10 +19,53 @@ class LocationFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'float' => [
+            'label' => 'Validate as floating point number?',
+            'type' => 'boolean',
+            'default' => null,
+            'help' => null,
+        ],
+//        'multiple' => [
+//            'label' => 'Multiple',
+//            'type' => 'boolean',
+//            'default' => false,
+//            'help' => "Allow multiple instances of a field (cloning).",
+//        ],
     ];
 
-    public function getValue(FieldData $data = null)
+    public function parseData(FieldData $data)
     {
-        throw new \Exception('Not implemented');
+        return new LocationFieldValue($data->value);
+    }
+
+    public function getFormFieldName($hash)
+    {
+        if ($this->isInCombo()) {
+            return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}][0]";
+        } else {
+            return "fields[{$this->getId()}][0]";
+        }
+    }
+
+    public function render($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new LocationFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new LocationFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
+
+        return view('argon::fields.type.location', $data)->render();
     }
 }

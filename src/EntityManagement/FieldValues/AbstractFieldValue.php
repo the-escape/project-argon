@@ -36,4 +36,19 @@ abstract class AbstractFieldValue
 
         return false;
     }
+
+
+    /**
+     * Field may have been saved initialy as multiple.
+     * If later it changes to single, reduce saved values accordingly.
+     * @return array|null
+     */
+    public function first()
+    {
+        if (is_array($this->data) && (count($this->data) > 1)) {
+            return array_slice($this->data, 0, 1);
+        }
+
+        return $this->data;
+    }
 }

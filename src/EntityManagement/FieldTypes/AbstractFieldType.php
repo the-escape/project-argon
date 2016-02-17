@@ -113,7 +113,7 @@ abstract class AbstractFieldType
 
     public function getSetting($settingName)
     {
-        return ($this->getSettings()->$settingName);
+        return (@$this->getSettings()->$settingName);
     }
 
     public function getSettings()

@@ -70,4 +70,14 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         $data = $field->parseData($fieldData);
         return $data;
     }
+
+    public function first()
+    {
+        if (is_array($this->data) && (count($this->data) > 1)) {
+            $this->data = array_slice($this->data, 0, 1);
+            return $this;
+        }
+
+        return $this;
+    }
 }

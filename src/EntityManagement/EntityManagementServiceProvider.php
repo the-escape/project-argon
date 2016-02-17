@@ -409,7 +409,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 //        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
         $this->fieldTypesManager->registerFieldType(new ItemFieldType());
 //        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
-//        $this->fieldTypesManager->registerFieldType(new LocationFieldType());
+        $this->fieldTypesManager->registerFieldType(new LocationFieldType());
 //        $this->fieldTypesManager->registerFieldType(new UserFieldType());
     }
 }
