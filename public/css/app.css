@@ -243,9 +243,6 @@ html {
 @-ms-viewport {
   width: device-width; }
 
-@-o-viewport {
-  width: device-width; }
-
 @-webkit-viewport {
   width: device-width; }
 
@@ -3297,6 +3294,8 @@ a.label:focus, a.label:hover {
 .progress[value] {
   color: #0074d9;
   border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none; }
 
 .progress[value]::-webkit-progress-bar {
