@@ -25,12 +25,12 @@ class LocationFieldType extends AbstractFieldType
             'default' => null,
             'help' => null,
         ],
-//        'multiple' => [
-//            'label' => 'Multiple',
-//            'type' => 'boolean',
-//            'default' => false,
-//            'help' => "Allow multiple instances of a field (cloning).",
-//        ],
+        'multiple' => [
+            'label' => 'Multiple',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Allow multiple instances of a field (cloning).",
+        ],
     ];
 
     public function parseData(FieldData $data)
@@ -41,9 +41,9 @@ class LocationFieldType extends AbstractFieldType
     public function getFormFieldName($hash)
     {
         if ($this->isInCombo()) {
-            return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}][0]";
+            return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}]";
         } else {
-            return "fields[{$this->getId()}][0]";
+            return "fields[{$this->getId()}][$hash]";
         }
     }
 
@@ -58,6 +58,12 @@ class LocationFieldType extends AbstractFieldType
 
         if ($value === null) {
             $value = new LocationFieldValue();
+        }
+
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
         }
 
         $data = array_merge(

@@ -17,9 +17,13 @@
 
 
 	    @endif
-
-                        <input type="text" class="form-control" name="{{ $field->getFormFieldName($hash) }}[longitude]" placeholder="Longitude" value="{{@$v->longitude}}">
-                        <input type="text" class="form-control" name="{{ $field->getFormFieldName($hash) }}[latitude]" placeholder="Latitude" value="{{@$v->latitude}}">
+						<?php
+                        if (!$field->isInCombo()) $hash = guid();
+                        $name = $field->getFormFieldName($hash);
+                        if ($field->isInCombo()) $name = $name.'['.guid().']';
+                        ?>
+                        <input type="text" class="form-control" name="{{ $name }}[longitude]" placeholder="Longitude" value="{{@$v->longitude}}">
+                        <input type="text" class="form-control" name="{{ $name }}[latitude]" placeholder="Latitude" value="{{@$v->latitude}}">
 
 	    @if($field->allowMultiple())
                     </div>

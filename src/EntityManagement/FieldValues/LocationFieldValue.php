@@ -8,6 +8,9 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
     {
         // make data consistently object
         if ($data) {
+            if (is_object($data)) {
+                $data = (array)$data;
+            }
             foreach ($data as $k => &$v) {
                 if (is_array($v)) {
                     $v = (object)$v;

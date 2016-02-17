@@ -35,7 +35,7 @@ class Fields
         foreach ($fields as $field) {
             $settings = $field->settings;
 
-            if (@$settings->multiple) {
+            if (@$settings->multiple || ($field->field_type == 'location' && !$field->parent_field_id)) {
                 $niceName = "fields.{$field->id}";
             } else  {
                 $niceName = "fields.{$field->id}.0";
@@ -48,7 +48,7 @@ class Fields
                     unset($combos[$field->parent_field_id][$hash]);
                 }
 
-                if (@$settings->multiple) {
+                if (@$settings->multiple || ($field->field_type == 'location')) {
                     $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
                 } else {
                     $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}.0";
@@ -95,21 +95,7 @@ class Fields
 
             // location field setup
             if ($field->field_type == 'location') {
-                // longitude
-                $longitude = $niceName.'.longitude';
-
-                $niceNames[$longitude] = ($field->parent_field_id)
-                    ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.'Longitude'
-                    : $field->name.self::DIVIDER.'Longitude';
-
-                $rules = self::rules($rules, $settings, $longitude);
-
-                // latitude
-                $latitude = $niceName.'.latitude';
-                $niceNames[$latitude] = ($field->parent_field_id)
-                    ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.'Latitude'
-                    : $field->name.self::DIVIDER.'Latitude';
-                $rules = self::rules($rules, $settings, $latitude);
+                list($rules, $niceNames) = self::location($request, $field, $parent, $settings, $rules, $niceNames, $niceName);
                 continue;
             }
 
@@ -140,6 +126,36 @@ class Fields
         }
 
         return [$niceNames, $rules, $combos];
+    }
+
+
+    private static function location(Request $request, $field, $parent, $settings, $rules, $niceNames, $niceName)
+    {
+        $i = 0;
+        foreach ($request->input($niceName,[]) as $k => $v) {
+
+            $i++;
+
+            // longitude
+            $longitude = "{$niceName}.{$k}.longitude";
+
+            $niceNames[$longitude] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Longitude'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'Longitude';
+
+            $rules = self::rules($rules, $settings, $longitude);
+
+            // latitude
+            $latitude = "{$niceName}.{$k}.latitude";
+
+            $niceNames[$latitude] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Latitude'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'Latitude';
+
+            $rules = self::rules($rules, $settings, $latitude);
+        }
+
+        return [$rules, $niceNames];
     }
 
 

@@ -101,33 +101,33 @@ argon.fields.clone = function(field) {
 
     if (typeof field.dataset.field !== 'undefined')
     {
-	var fieldId = parseInt(field.dataset.field, 10);
+        var fieldId = parseInt(field.dataset.field, 10);
 
-	if (isNaN(fieldId)) {
-	    console.error('Field ID missing');
-	}
+        if (isNaN(fieldId)) {
+            console.error('Field ID missing');
+        }
 
-	var postdata = {};
+        var postdata = {};
 
-	if (typeof field.dataset.hash !== 'undefined')
-	{
-	    postdata.hash = field.dataset.hash;
-	}
+        if (typeof field.dataset.hash !== 'undefined')
+        {
+            postdata.hash = field.dataset.hash;
+        }
 
-	$.post("/admin/clone/" + fieldId, postdata)
-	    .done(function(data) {
+        $.post("/admin/clone/" + fieldId, postdata)
+            .done(function(data) {
 
-		$values.append($(data));
+                $values.append($(data));
 
-		// notify all observers
-		$.publish('field/clone', {'id': fieldId});
-
+                // notify all observers
+                $.publish('field/clone', {'id': fieldId});
 	    })
 	    .fail(function() {
 			console.error('Clone request failed.');
 	    });
+
     }
-}
+};
 
 $(document).on('click', '.boolean-on', function(){
     $(this).siblings('.boolean-radio-on').trigger( "click" );
@@ -393,6 +393,7 @@ $(document).on('clone', '.field-select', function(e) {
     console.log("select clone");
     if (e.target == this) {
 	    argon.fields.clone(this);
+
     }
 });
 
@@ -468,6 +469,13 @@ function getWysiwygHeight(el)
 
     return CKEDITOR.config.default_height;
 }
+
+$(document).on('clone', '.field-location', function(e) {
+    console.log("location clone");
+    if (e.target == this) {
+	    argon.fields.clone(this);
+    }
+});
 
 $('.add-localisation').click(function(e) {
     e.preventDefault();
