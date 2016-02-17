@@ -34,7 +34,6 @@
 @stop
 
 @section('styles')
-    <link rel="stylesheet" href="/argon/js/jstree/style.min.css" />
 @stop
 
 @section('footer')
