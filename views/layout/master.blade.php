@@ -15,19 +15,53 @@
         @section('styles')
         @show
         <style>
-            a,
-            .nav-link,
-            .btn-link {
-                color: {{config('argon.highlight_color', '#0275d8')}};
-            }
-            .btn-primary {
-                background-color: {{config('argon.highlight_color', '#0275d8')}};
-                border-color: {{config('argon.highlight_color', '#0275d8')}};
-            }
-
             .navbar.bg-inverse {
                 background-color: {{config('argon.neutral_color', '#373a3c')}};
             }
+
+            a,
+            .nav-link,
+            .btn-link,
+            .btn-primary-outline {
+                color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary {
+                background-color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary,
+            .btn-primary-outline {
+                border-color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary-outline:hover,
+            .btn-primary-outline:focus,
+            .btn-primary-outline:active,
+            .btn-primary:hover,
+            .btn-primary:focus,
+            .btn-primary:active,
+            .open .btn-primary-outline.dropdown-toggle {
+                background-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
+            .btn-primary-outline:hover,
+            .btn-primary-outline:focus,
+            .btn-primary-outline:active,
+            .btn-primary:hover,
+            .btn-primary:focus,
+            .btn-primary:active,
+            .open .btn-primary-outline.dropdown-toggle {
+                border-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
+            a:hover,
+            .btn-link:hover,
+            .btn-link:active,
+            .btn-link:focus {
+                color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
         </style>
     </head>
 
