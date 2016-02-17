@@ -23,6 +23,7 @@
     "jstree": "~3.2.1",
     "ckeditor": "#full/4.5.5",
     "dropzone": "~4.2.0",
-    "bootstrap-datepicker": "~1.5.1"
+    "bootstrap-datepicker": "~1.5.1",
+    "handlebars": "~4.0.5"
   }
 }

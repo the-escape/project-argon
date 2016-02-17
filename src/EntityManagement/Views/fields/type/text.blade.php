@@ -1,9 +1,3 @@
-<?php
-    if (!isset($hash)) {
-        $hash = '';
-    }
-?>
-
 @if(!$isCloning)
     <div class="field field-text field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
         data-field="{{$field->getId()}}"

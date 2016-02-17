@@ -15,7 +15,7 @@
 
             <div style="padding: 20px 0 10px;">
                 <h1>
-                    Argon
+                    <img src="{{config('argon.client_logo_dark', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
                 </h1>
 
                 <h4>Login</h4>

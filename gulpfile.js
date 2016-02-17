@@ -50,5 +50,7 @@ elixir(function(mix) {
     mix.copy('bower_components/ckeditor', 'public/js/ckeditor');
 
     mix.copy('bower_components/dropzone/dist/min/dropzone.min.js', 'public/js');
+
+    mix.copy('bower_components/handlebars/handlebars.min.js', 'public/js');
 });
 

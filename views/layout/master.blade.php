@@ -14,6 +14,55 @@
         @endforeach
         @section('styles')
         @show
+        <style>
+            .navbar.bg-inverse {
+                background-color: {{config('argon.neutral_color', '#373a3c')}};
+            }
+
+            a,
+            .nav-link,
+            .btn-link,
+            .btn-primary-outline {
+                color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary {
+                background-color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary,
+            .btn-primary-outline {
+                border-color: {{config('argon.highlight_color', '#0275d8')}};
+            }
+
+            .btn-primary-outline:hover,
+            .btn-primary-outline:focus,
+            .btn-primary-outline:active,
+            .btn-primary:hover,
+            .btn-primary:focus,
+            .btn-primary:active,
+            .open .btn-primary-outline.dropdown-toggle {
+                background-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
+            .btn-primary-outline:hover,
+            .btn-primary-outline:focus,
+            .btn-primary-outline:active,
+            .btn-primary:hover,
+            .btn-primary:focus,
+            .btn-primary:active,
+            .open .btn-primary-outline.dropdown-toggle {
+                border-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
+            a:hover,
+            .btn-link:hover,
+            .btn-link:active,
+            .btn-link:focus {
+                color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+            }
+
+        </style>
     </head>
 
     <body class="dashboard">
@@ -26,7 +75,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
             </ul>
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Argon</a>
+            <a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
         </nav>
 
         <div class="container-fluid">
@@ -47,6 +96,8 @@
             </div>
         </div>
 
+        <div class="modals"></div>
+
         <script src="/argon/js/jquery.min.js"></script>
         <script src="/argon/js/core.js"></script>
         <script src="/argon/js/widget.js"></script>
@@ -58,6 +109,7 @@
         <script src="/argon/js/ckeditor/ckeditor.js"></script>
         <script src="/argon/js/jstree.min.js"></script>
         <script src="/argon/js/bootstrap-datepicker.min.js"></script>
+        <script src="/argon/js/handlebars.min.js"></script>
         <script src="/argon/js/argon.js"></script>
 
         @foreach($assetsManager->outputScripts() as $script)
