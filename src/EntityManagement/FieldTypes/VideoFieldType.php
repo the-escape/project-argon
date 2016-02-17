@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\VideoFieldValue;
 
 class VideoFieldType extends AbstractFieldType
 {
@@ -43,8 +44,37 @@ class VideoFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data = null)
+    public function parseData(FieldData $data)
     {
-        throw new \Exception('Not implemented');
+        return new VideoFieldValue($data->value);
+    }
+
+
+    public function render($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new VideoFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new VideoFieldValue();
+        }
+
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
+
+        return view('argon::fields.type.text', $data)->render();
     }
 }

@@ -13,8 +13,6 @@ var datetime = (function () {
     {
         var $collection = $fieldDatetime || $('.field-datetime');
 
-        if(window.console) console.log($collection);
-
         $collection.each(function() {
             var field = this;
             var $calendar_field = $('.calendar', field);

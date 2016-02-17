@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\ImageFieldValue;
 
 class ImageFieldType extends AbstractFieldType
 {
@@ -43,8 +44,23 @@ class ImageFieldType extends AbstractFieldType
         ],
     ];
 
-    public function getValue(FieldData $data = null)
+    public function parseData(FieldData $data)
     {
-        throw new Exception('Not implemented');
+        return new ImageFieldValue($data->value);
+    }
+
+    public function render($value = null, $data = [])
+    {
+        if ($value === null) {
+            $value = new ImageFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
+
+        return view('argon::fields.type.image', $data)->render();
     }
 }

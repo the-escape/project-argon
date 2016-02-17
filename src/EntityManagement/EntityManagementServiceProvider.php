@@ -405,7 +405,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->fieldTypesManager->registerFieldType(new ComboFieldType());
         $this->fieldTypesManager->registerFieldType(new SelectFieldType());
         $this->fieldTypesManager->registerFieldType(new DatetimeFieldType());
-//        $this->fieldTypesManager->registerFieldType(new ImageFieldType());
+        $this->fieldTypesManager->registerFieldType(new ImageFieldType());
 //        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
         $this->fieldTypesManager->registerFieldType(new ItemFieldType());
 //        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
