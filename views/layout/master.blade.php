@@ -62,6 +62,8 @@
             </div>
         </div>
 
+        <div class="modals"></div>
+
         <script src="/argon/js/jquery.min.js"></script>
         <script src="/argon/js/core.js"></script>
         <script src="/argon/js/widget.js"></script>
