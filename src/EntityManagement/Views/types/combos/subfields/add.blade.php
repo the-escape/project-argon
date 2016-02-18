@@ -16,6 +16,10 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
                     </div>
+                    <div class="form-group">
+                        <label for="field_slug" class="required">Slug</label>
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_slug') }}" id="field_slug" name="field_slug" placeholder="Slug" value="{{ old('field_slug') }}">
+                    </div>
 
                     <div class="form-group">
                         <label for="name" class="required">Type</label>

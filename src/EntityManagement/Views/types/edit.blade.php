@@ -41,6 +41,7 @@
                         <tr>
                             <th></th>
                             <th>Name</th>
+                            <th>Slug</th>
                             <th>Type</th>
                             <th>Group</th>
                             <th></th>
@@ -55,6 +56,9 @@
                                     </td>
                                     <td>
                                         <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                    </td>
+                                    <td>
+                                        {{ $field->field_slug }}
                                     </td>
                                     <td>
                                         {{ $field->field_type }}

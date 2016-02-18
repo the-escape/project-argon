@@ -136,6 +136,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
             'field_type' => 'required',
             'group' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId}",
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -233,6 +234,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
             'field_type' => 'required',
             'group' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,{$fieldId},id,entity_type_id,{$typeId}",
         ]);
 
         $type = $typeRepository->find($typeId);
@@ -481,6 +483,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'group' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId}",
         ]);
 
         $settings = $comboFieldType->getDefaultSettings();
@@ -556,6 +559,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'group' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,$comboId,id,entity_type_id,{$typeId}",
         ]);
 
         $type = $typeRepository->find($typeId);
@@ -689,6 +693,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,{$comboId}",
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -755,6 +760,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
+            'field_slug' => "required|unique:entity_fields,field_slug,{$fieldId},id,entity_type_id,{$typeId},parent_field_id,{$comboId}",
         ]);
 
         $type = $typeRepository->find($typeId);
