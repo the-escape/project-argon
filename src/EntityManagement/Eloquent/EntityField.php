@@ -23,6 +23,7 @@ class EntityField extends Model
      */
     protected $fillable = [
         'name',
+        'field_slug',
         'field_type',
         'entity_type_id',
         'settings',

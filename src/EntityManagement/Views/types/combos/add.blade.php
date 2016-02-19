@@ -22,6 +22,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="field_slug" class="required">Slug</label>
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_slug') }}" id="field_slug" name="field_slug" placeholder="Slug" value="{{ old('field_slug') }}">
+                    </div>
+
+                    <div class="form-group">
                         <label for="group" class="required">Field Group</label>
                         <select class="form-control groupCreate required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'group') }}" name="group" id="group">
                             <option value="">Choose one...</option>
