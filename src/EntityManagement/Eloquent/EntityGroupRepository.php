@@ -29,6 +29,7 @@ class EntityGroupRepository extends BaseRepository
             ->select('entity_groups.*')
             ->join('entity_fields', 'entity_fields.entity_group_id', '=', 'entity_groups.id')
             ->join('entity_types', 'entity_types.id', '=', 'entity_fields.entity_type_id')
+            ->orderBy('entity_groups.order', 'ASC')
             ->whereNull('entity_fields.deleted_at');
 
         // check if $type is ID
