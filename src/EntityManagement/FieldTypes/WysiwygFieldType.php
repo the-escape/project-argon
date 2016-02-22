@@ -189,10 +189,28 @@ class WysiwygFieldType extends AbstractFieldType
 
     public function render($value = null, $data = [])
     {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new WysiwygFieldValue($submitted);
+            }
+        }
+
         if ($value === null) {
             $value = new WysiwygFieldValue();
         }
-        $data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
+        );
 
         return view('argon::fields.type.wysiwyg', $data)->render();
     }
