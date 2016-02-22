@@ -136,7 +136,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
             'field_type' => 'required',
             'group' => 'required',
-            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId}",
+            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,0",
         ]);
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
@@ -234,7 +234,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
             'field_type' => 'required',
             'group' => 'required',
-            'field_slug' => "required|unique:entity_fields,field_slug,{$fieldId},id,entity_type_id,{$typeId}",
+            'field_slug' => "required|unique:entity_fields,field_slug,{$fieldId},id,entity_type_id,{$typeId},parent_field_id,0",
         ]);
 
         $type = $typeRepository->find($typeId);
