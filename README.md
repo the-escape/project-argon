@@ -56,6 +56,14 @@ Add the ArgonServiceProvider to the providers array in `config/app.php`
 ],
 ```
 
+Change the Request class in index.php to Escape\Argon\Core\Http\Request
+```
+$response = $kernel->handle(
+    $request = \Escape\Argon\Core\Http\Request::capture()
+);
+
+```
+
 Set your database settings in the .env file.
 
 ### Database
@@ -66,8 +74,6 @@ Publish the migrations for Argon.
 php artisan vendor:publish --tag=migrations --force
 php artisan migrate
 ```
-
-
 
 
 ### Assets

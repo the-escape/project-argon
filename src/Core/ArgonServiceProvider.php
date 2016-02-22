@@ -3,6 +3,7 @@
 namespace Escape\Argon\Core;
 
 use Escape\Argon\Authentication\AuthenticationServiceProvider;
+use Escape\Argon\Core\Http\Request;
 use Escape\Argon\Core\Plugins\PluginServiceProvider;
 use Escape\Argon\EntityManagement\EntityManagementServiceProvider;
 use Escape\Argon\Locales\LocalesServiceProvider;
@@ -39,6 +40,8 @@ class ArgonServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/argon.php', 'argon');
+
+        $this->app->alias('request', Request::class);
 
         $this->app->register(RepositoryServiceProvider::class);
         $this->app->register(AuthenticationServiceProvider::class);
