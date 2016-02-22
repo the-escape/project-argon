@@ -46,9 +46,9 @@ abstract class AbstractFieldValue
     public function first()
     {
         if (is_array($this->data) && (count($this->data) > 1)) {
-            return array_slice($this->data, 0, 1);
+            return new static(array_slice($this->data, 0, 1));
         }
 
-        return $this->data;
+        return $this;
     }
 }
