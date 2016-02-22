@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Frontend;
 
+use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 
 class Page
@@ -9,12 +10,28 @@ class Page
     /** @var Entity */
     protected $entity;
 
-    public function construct(Entity $entity)
+    /** @var Request */
+    protected $request;
+
+    public function __construct(Entity $entity, Request $request)
     {
         $this->entity = $entity;
+        $this->request = $request;
     }
 
-    public function get($fieldName)
+    public function getCurrentLocalisation()
     {
+        $locale = $this->request->getArgonLocale();
+        return $this->entity->getLocalisation($locale);
+    }
+
+    public function field($fieldName)
+    {
+        return $this->getCurrentLocalisation()->publishedRevision()->field($fieldName);
+    }
+
+    public function combo($fieldName)
+    {
+        return $this->field($fieldName);
     }
 }

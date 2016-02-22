@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldValues;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldTypes\AbstractFieldType;
 use Illuminate\Support\Collection;
 use MyProject\Proxies\__CG__\stdClass;
 use Traversable;
@@ -79,5 +80,27 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         }
 
         return $this;
+    }
+
+    public function field($fieldName)
+    {
+        /** @var AbstractFieldType $field */
+        $field = $this->subfields->first(
+            function ($i, AbstractFieldType $f) use ($fieldName) {
+                return $f->getFieldSlug() == $fieldName;
+            }
+        );
+
+        $currentIteration = current($this->data);
+
+        if (array_key_exists($field->getId(), $currentIteration->fields)) {
+            $value = $currentIteration->fields[$field->getId()];
+        } else {
+            $value = $field->getInitialValue();
+        }
+
+        $fieldData = new FieldData();
+        $fieldData->value = $value;
+        return $field->parseData($fieldData);
     }
 }
