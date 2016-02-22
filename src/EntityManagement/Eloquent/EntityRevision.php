@@ -18,9 +18,9 @@ class EntityRevision extends Model
      */
     protected $fillable = ['entity_localisation_id', 'status', 'created_by'];
 
-    public function entity()
+    public function localisation()
     {
-        return $this->belongsTo(Entity::class);
+        return $this->belongsTo(Localisation::class, 'entity_localisation_id');
     }
 
     public function fields()
@@ -34,19 +34,19 @@ class EntityRevision extends Model
     }
 
     // TODO: $name seems ambiguous
-    public function field($name, EntityRevision $revision)
+    public function field($name)
     {
-        $field = $this->entity->type->field($name);
-        return $this->fieldValue($field, $revision);
+        $field = $this->localisation->entity->type->field($name);
+        return $this->fieldValue($field);
     }
 
-    public function fieldById($id, EntityRevision $revision, $fieldDataIds = [])
+    public function fieldById($id, $fieldDataIds = [])
     {
         $field = $this->entity->type->fieldById($id);
-        return $this->fieldValue($field, $revision, $fieldDataIds);
+        return $this->fieldValue($field, $fieldDataIds);
     }
 
-    private function fieldValue($field, EntityRevision $revision, $fieldDataIds = [])
+    private function fieldValue($field, $fieldDataIds = [])
     {
         $fieldData = null;
 
@@ -54,41 +54,21 @@ class EntityRevision extends Model
             $fieldDataCollection = $this->fields()
                 ->whereIn('id', $fieldDataIds)
                 ->where('field_id', $field->id)
-                ->where('entity_revision_id', $revision->id)
+                ->where('entity_revision_id', $this->id)
                 ->get();
         } else {
             $fieldDataCollection = $this->fields()->where('field_id', $field->id)
-                ->where('entity_revision_id', $revision->id)->get();
+                ->where('entity_revision_id', $this->id)->get();
         }
 
-        if (!$fieldDataCollection->isEmpty()) {
-            $multiple = (bool) @$field->settings->multiple;
-            $fieldData = $fieldDataCollection->first();
-
-            if ($multiple) {
-                $flattenedDataCollection = new FieldData;
-                $flattenedDataCollection->field_id = $fieldData->field_id;
-                $flattenedDataCollection->entity_revision_id = $fieldData->entity_revision_id;
-                $flattenedDataCollection->language = $fieldData->language;
-
-                $agregatedValue = [];
-
-                foreach ($fieldDataCollection as $data) {
-                    $agregatedValue[] = $data->value;
-                }
-
-                $flattenedDataCollection->value = $agregatedValue;
-
-                $fieldData = $flattenedDataCollection;
-            }
-        }
+        $fieldData = $fieldDataCollection->first();
 
         /** @var FieldTypesManager $fieldTypeManager */
         $fieldTypeManager = app('fieldTypes');
 
-        $fieldType = $fieldTypeManager->getType($field->field_type);
+        $fieldType = $fieldTypeManager->getType($field->field_type)->setField($field);
 
-        $fieldValue = $fieldType->getValue($fieldData);
+        $fieldValue = $fieldType->parseData($fieldData);
 
         return $fieldValue;
     }

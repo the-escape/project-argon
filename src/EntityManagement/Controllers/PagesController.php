@@ -183,9 +183,11 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
-            'status' => RevisionStatus::DRAFT,
+            'status' => RevisionStatus::PUBLISHED,
             'created_by' => $this->request->user()->id
         ]);
+
+        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 

@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Escape\Argon\EntityManagement\RevisionStatus;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class EntityRevisionRepository extends BaseRepository
@@ -14,5 +15,13 @@ class EntityRevisionRepository extends BaseRepository
     public function model()
     {
         return EntityRevision::class;
+    }
+
+    public function archiveRevisions($localisationId, $except)
+    {
+        $this->makeModel()
+            ->where('entity_localisation_id', $localisationId)
+            ->where('id', '<>', $except)
+            ->update(['status' => RevisionStatus::PREVIOUSLY_PUBLISHED]);
     }
 }

@@ -50,7 +50,7 @@ class EntityType extends Model
      */
     public function field($name)
     {
-        return $this->fields([])->where('name', $name)->first();
+        return $this->fields([])->where('field_slug', $name)->where('parent_field_id', 0)->first();
     }
 
     /**

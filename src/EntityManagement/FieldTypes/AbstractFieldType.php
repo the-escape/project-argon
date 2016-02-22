@@ -35,6 +35,11 @@ abstract class AbstractFieldType
         return $this->field->name;
     }
 
+    public function getFieldSlug()
+    {
+        return $this->field->field_slug;
+    }
+
     public function getKey()
     {
         return $this->key;

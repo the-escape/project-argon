@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Eloquent;
 
 use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
+use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
