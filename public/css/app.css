@@ -4678,6 +4678,16 @@ body.dashboard {
     border-color: #a94442; }
   body.dashboard .form-control.inline {
     width: auto; }
+  body.dashboard .field-media .media-preview {
+    width: 130px;
+    float: left;
+    margin-right: 20px; }
+  body.dashboard .field-media .media-preview > img {
+    max-width: 130px; }
+  body.dashboard .field-media .media-preview ~ .file-name {
+    margin-bottom: 0.45rem; }
+  body.dashboard .files + .field-add-file {
+    margin-top: 0.75rem; }
   body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }

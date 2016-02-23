@@ -175,9 +175,11 @@ class PagesController extends BaseController
             'slug' => "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id}",
         ];
 
-        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
+        $messages = [];
 
-        $this->validate($this->request, $rules, [], $niceNames);
+        list($niceNames, $rules, $messages) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules, $messages);
+
+        $this->validate($this->request, $rules, $messages, $niceNames);
 
         $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
 

@@ -1,5 +1,7 @@
 $error-color: #a94442;
+$media-preview: 130px;
 $standard-margin: 0.75rem;
+$small-margin: 0.45rem;
 $standard-bgd-color: #f5f5f5;
 $standard-border-color: #e5e5e5;
 $standard-input-border-color: #ccc;
@@ -101,6 +103,25 @@ body.dashboard {
     .form-control.inline {
         width: auto;
     }
+
+
+    .field-media .media-preview {
+        width: $media-preview;
+        float: left;
+        margin-right: 20px;
+    }
+
+    .field-media .media-preview > img {
+        max-width: $media-preview;
+    }
+    .field-media .media-preview ~ .file-name {
+        margin-bottom: $small-margin;
+    }
+
+    .files + .field-add-file {
+        margin-top: $standard-margin;
+    }
+
 
     .sortable-handle,
     .field-remove {

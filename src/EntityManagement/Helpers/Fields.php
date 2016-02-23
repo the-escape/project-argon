@@ -12,17 +12,19 @@ class Fields
     const DIVIDER = ' &#10141; ';
 
     /**
-     * Builds $niceNames and $rules arrays for validation based on supplied $fields collection
+     * Builds $niceNames and $rules and $messages arrays for validation based on supplied $fields collection
      * @param $fields Illuminate\Database\Eloquent\Collection
      * @param array $niceNames optional
      * @param array $rules optional
-     * @return array [$niceNames, $rules] use list($niceNames, $rules) to easily capture returned values
+     * @param array $messages optional
+     * @return array [$niceNames, $rules, $messages] use list($niceNames, $rules, $messages) to easily capture returned values
      */
     public static function validationFieldsSetup(
         Request $request,
         $fields,
         array $niceNames = [],
         array $rules = [],
+        $messages = [],
         $combos = null,
         $parent = null
     ) {
@@ -35,7 +37,7 @@ class Fields
         foreach ($fields as $field) {
             $settings = $field->settings;
 
-            if (@$settings->multiple || ($field->field_type == 'location' && !$field->parent_field_id)) {
+            if (@$settings->multiple || ($field->field_type == 'location' && !$field->parent_field_id) || ($field->field_type == 'image' && !$field->parent_field_id)) {
                 $niceName = "fields.{$field->id}";
             } else  {
                 $niceName = "fields.{$field->id}.0";
@@ -48,13 +50,11 @@ class Fields
                     unset($combos[$field->parent_field_id][$hash]);
                 }
 
-                if (@$settings->multiple || ($field->field_type == 'location')) {
+                if (@$settings->multiple || ($field->field_type == 'location') || ($field->field_type == 'image')) {
                     $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
                 } else {
                     $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}.0";
                 }
-
-
             }
 
             if ($field->field_type == 'combo') {
@@ -63,11 +63,12 @@ class Fields
                     $i = 1;
                     foreach ($request->input("combo.{$field->id}", []) as $k => $v) {
                         $field->instance = $i;
-                        list($niceNames, $rules, $combos) = self::validationFieldsSetup(
+                        list($niceNames, $rules, $messages, $combos) = self::validationFieldsSetup(
                             $request,
                             $field->subfields,
                             $niceNames,
                             $rules,
+                            $messages,
                             $combos,
                             $field
                         );
@@ -82,11 +83,12 @@ class Fields
                 }
 
                 $field->instance = 1;
-                list($niceNames, $rules, $combos) = self::validationFieldsSetup(
+                list($niceNames, $rules, $messages, $combos) = self::validationFieldsSetup(
                     $request,
                     $field->subfields,
                     $niceNames,
                     $rules,
+                    $messages,
                     $combos,
                     $field
                 );
@@ -95,7 +97,13 @@ class Fields
 
             // location field setup
             if ($field->field_type == 'location') {
-                list($rules, $niceNames) = self::location($request, $field, $parent, $settings, $rules, $niceNames, $niceName);
+                list($rules, $niceNames, $messages) = self::location($request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName);
+                continue;
+            }
+
+            // image field setup
+            if ($field->field_type == 'image') {
+                list($rules, $niceNames, $messages) = self::image($request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName);
                 continue;
             }
 
@@ -125,11 +133,67 @@ class Fields
             }
         }
 
-        return [$niceNames, $rules, $combos];
+        return [$niceNames, $rules, $messages, $combos];
     }
 
 
-    private static function location(Request $request, $field, $parent, $settings, $rules, $niceNames, $niceName)
+    private static function image(Request $request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName)
+    {
+        $i = 0;
+        foreach ($request->input($niceName,[]) as $k => $v) {
+
+            $i++;
+
+
+            // id
+            $id = "{$niceName}.{$k}.id";
+
+            $str = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER
+                : $field->name.self::DIVIDER.($i).self::DIVIDER;
+
+
+            $messages["{$id}.required"] = "The {$str}Image is required.";
+
+            $niceNames[$id] = $str.'Image';
+
+            $settings_id = clone $settings;
+            unset($settings_id->width, $settings_id->height);
+            $rules = self::rules($rules, $settings_id, $id);
+
+
+            // width
+            $width = "{$niceName}.{$k}.width";
+
+            $messages["{$width}.in"] = "The :attribute should be {$settings->width} pixels.";
+
+            $niceNames[$width] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Width'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'Width';
+
+            $settings_width = clone $settings;
+            unset($settings_width->height, $settings_width->required);
+            $rules = self::rules($rules, $settings_width, $width);
+
+            // height
+            $height = "{$niceName}.{$k}.height";
+
+            $messages["{$height}.in"] = "The :attribute should be {$settings->height}  pixels.";
+
+            $niceNames[$height] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Height'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'Height';
+
+            $settings_height = clone $settings;
+            unset($settings_height->width, $settings_height->required);
+            $rules = self::rules($rules, $settings_height, $height);
+        }
+
+        return [$rules, $niceNames, $messages];
+    }
+
+
+    private static function location(Request $request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName)
     {
         $i = 0;
         foreach ($request->input($niceName,[]) as $k => $v) {
@@ -155,7 +219,7 @@ class Fields
             $rules = self::rules($rules, $settings, $latitude);
         }
 
-        return [$rules, $niceNames];
+        return [$rules, $niceNames, $messages];
     }
 
 
@@ -193,6 +257,14 @@ class Fields
             $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_PHONE;
         }
 
+        if (@$settings->width) {
+            $rules[$niceName][] = "in:{$settings->width}";
+        }
+
+        if (@$settings->height) {
+            $rules[$niceName][] = "in:{$settings->height}";
+        }
+
         if (@$rules[$niceName]) {
             $rules[$niceName] = implode('|', $rules[$niceName]);
         }
@@ -214,34 +286,25 @@ class Fields
         $hash = null;
 
         foreach ($fields as $field) {
-            /*
-             * Handle combos.
-             * Break them into individual fields.
-             * */
+
             if ($field->field_type == 'combo') {
                 self::saveCombo($field, $revision, $request);
                 continue;
             }
 
-            /*
-             * Handle individual fields below.
-             */
-
             // default nicename
             $niceName = "fields.{$field->id}";
 
-            // adjust nicename for subfield
-            if ($field->parent_field_id) {
-                if (!isset($hash)) {
-                    reset($combos[$field->parent_field_id]);
-                    $hash = key($combos[$field->parent_field_id]);
-                    unset($combos[$field->parent_field_id][$hash]);
-                }
-
-                $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
-            }
-
-            $settings = $field->settings;
+//            // adjust nicename for subfield
+//            if ($field->parent_field_id) {
+//                if (!isset($hash)) {
+//                    reset($combos[$field->parent_field_id]);
+//                    $hash = key($combos[$field->parent_field_id]);
+//                    unset($combos[$field->parent_field_id][$hash]);
+//                }
+//
+//                $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
+//            }
 
             $FieldData = $fieldDataRepository->create([
                 'field_id' => $field->id,
@@ -250,16 +313,16 @@ class Fields
                 'value' => $request->input($niceName),
             ]);
 
-            // when combo subfield, save $FieldData->id reference as combo value to enable combo rebuild
-            // from (multiple) saved values
-            if ($field->parent_field_id) {
-                $fieldDataRepository->create([
-                    'field_id' => $field->parent_field_id,
-                    'entity_revision_id' => $revision->id,
-                    'language' => 'en_GB',
-                    'value' => json_encode([$hash => $FieldData->id]),
-                ]);
-            }
+//            // when combo subfield, save $FieldData->id reference as combo value to enable combo rebuild
+//            // from (multiple) saved values
+//            if ($field->parent_field_id) {
+//                $fieldDataRepository->create([
+//                    'field_id' => $field->parent_field_id,
+//                    'entity_revision_id' => $revision->id,
+//                    'language' => 'en_GB',
+//                    'value' => json_encode([$hash => $FieldData->id]),
+//                ]);
+//            }
         }
 
         return [$combos];

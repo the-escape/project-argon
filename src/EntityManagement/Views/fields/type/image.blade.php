@@ -1,24 +1,57 @@
 <?php
-    $isInCombo = $field->getParentId() != 0;
-    $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
+$name = $field->getFormFieldName($hash);
 ?>
 
-<div class="field field-file" data-type="text" data-settings="{{json_encode($field->getSettings())}}" data-name="{{ $name }}">
+<div class="field field-media field-image" data-type="text" data-settings="{{json_encode($field->getSettings())}}" data-name="{{ $name }}">
     <label>{{ $field->getFieldName() }}</label>
 
     <div class="files sortable">
-        @foreach($value as $k => $v)
-            <div class="input-group sortable-item">
-                <input type="hidden" name="{{ $name }}" value="{{ $v->getId() }}">
-            @if ($field->allowMultiple())
+        @if($value->isEmpty() || $isCloning)
 
-                    <div class="input-group-addon sortable-handle">&#8645;</div>
-            @endif
-                        <div class="file-name form-control"> {{$v->filename}}.{{$v->extension}} </div>
+            <input class="hdnImageId" type="hidden" name="<?=$name.'['.guid().'][id]'?>">
+
+        @else
+
+            @foreach($value as $k => $v)
+
+                @if(!$v)
+                    <input class="hdnImageId" type="hidden" name="<?=$name.'['.guid().'][id]'?>">
+                @else
+                    <?php
+                    if (!$field->isInCombo()) $hash = guid();
+                    $name = $field->getFormFieldName($hash);
+                    $name = $name.'['.guid().']';
+                    ?>
+
+                    <div class="input-group sortable-item">
+                        @if ($field->allowMultiple())
+
+                            <div class="input-group-addon sortable-handle">&#8645;</div>
+                        @endif
+                        <div class="form-control">
+                            <input type="hidden" name="{{ $name }}[id]" value="{{ $v->getId() }}">
+                            <input type="hidden" name="{{ $name }}[width]" value="{{ $v->getWidth()}}">
+                            <input type="hidden" name="{{ $name }}[height]" value="{{ $v->getHeight()}}">
+
+                            <div class="media-preview">
+                                <img src="{{ $v->getUrl() }}" alt="">
+                            </div>
+
+                            <div class="file-name"> Name: {{ $v->getFullName() }} </div>
+                            <div class="file-name"> Size: {{ $v->getFriendlyFilesize() }} </div>
+                            <div class="file-name"> Dimensions: {{ $v->getWidth() }} x {{ $v->getHeight() }} pixels </div>
+                            <input type="text" name="{{$name}}[alt]" value="{{ $v->getAlt() }}" placeholder="Alt text" class="form-control inline">
+                        </div>
+
                         <div class="input-group-addon field-remove">&#10005;</div>
-                </div>
-        @endforeach
+                    </div>
+
+                @endif
+
+            @endforeach
+        @endif
     </div>
+
 
     <a href="#addField" class="btn btn-secondary-outline btn-sm field-add-file" data-field="{{$field->getId()}}">Add File</a>
 </div>

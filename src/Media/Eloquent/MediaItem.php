@@ -5,6 +5,7 @@ namespace Escape\Argon\Media\Eloquent;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
 
 /**
  * Class MediaItem
@@ -43,7 +44,7 @@ class MediaItem extends Model implements Arrayable
             $item['thumbUrl'] = 'http://placehold.it/100x100';
         }
 
-        $item['url'] = "/media/{$this->id}/{$this->id}.original.{$this->extension}";
+        $item['url'] = $this->getUrl();
 
         return $item;
     }
@@ -52,4 +53,60 @@ class MediaItem extends Model implements Arrayable
     {
         return $this->id;
     }
+
+    public function getPath()
+    {
+        $folder_path = config('filesystems.disks.media.root');
+        return "{$folder_path}/{$this->id}/{$this->id}.original.{$this->extension}";
+    }
+
+    public function getUrl()
+    {
+        return "/media/{$this->id}/{$this->id}.original.{$this->extension}";
+    }
+
+    public function getDimentions()
+    {
+        $dimentions = new \stdClass();
+
+        if (@$this->meta->width && @$this->meta->height) {
+            $dimentions->width = $this->meta->width;
+            $dimentions->height = $this->meta->height;
+        } else {
+            list($width, $height) = @getimagesize($this->getPath());
+            $dimentions->width = @$width;
+            $dimentions->height = @$height;
+        }
+
+        return $dimentions;
+    }
+
+    public function getWidth($px='')
+    {
+        return $this->getDimentions()->width.$px;
+    }
+
+    public function getHeight($px='')
+    {
+        return $this->getDimentions()->height.$px;
+    }
+
+    public function getAlt($default='')
+    {
+        return isset($this->data->alt) ? $this->data->alt : $default;
+    }
+
+    public function getFriendlyFilesize()
+    {
+        return isset($this->filesize_formatted)
+            ? $this->filesize_formatted
+            : MediaHelpers::size_format($this->filesize);
+    }
+
+    public function getFullName()
+    {
+        return $this->filename.'.'.$this->extension;
+    }
+
+
 }
