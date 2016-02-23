@@ -26,7 +26,7 @@ class EntityRepository extends BaseRepository
         $node = null;
 
         if ($path == '/') {
-            $node = $this->findWhere(['parent' => null])->first();
+            $node = $this->findWhere(['parent_id' => null])->first();
         } else {
             $segments = explode('/', $path);
 
@@ -43,17 +43,17 @@ class EntityRepository extends BaseRepository
 
             foreach ($leafs as $leaf) {
                 $n = $leaf;
-                while ($n->parent != null) {
+                while ($n->parent_id != null) {
                     $currentSegment = array_pop($segmentsToCheck);
 
                     if ($n->slug != $currentSegment) {
                         break;
                     }
 
-                    $n = $nodes[$n->parent];
+                    $n = $nodes[$n->parent_id];
                 }
 
-                if ($n->parent == null) {
+                if ($n->parent_id == null) {
                     // Found the leaf.
                     $node = $leaf;
                 }

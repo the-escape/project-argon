@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-get int id
  * @property string name
  * @property string slug
- * @property int|null parent
+ * @property int|null parent_id
  * @property int entity_type_id
  * @property int owner_id
  * @property Carbon created_at
@@ -34,7 +34,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent', 'entity_type_id', 'owner_id'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id'];
 
     public function addChild(Entity $child)
     {
@@ -52,20 +52,9 @@ class Entity extends Model
         return $this->children;
     }
 
-    public function field($name)
+    public function parent()
     {
-        if ($revision = $this->latest()) {
-            return $revision->field($name, $revision);
-        }
-        return $revision;
-    }
-
-    public function fieldById($id, $fieldDataIds = [])
-    {
-        if ($revision = $this->latest()) {
-            return $revision->fieldById($id, $revision, $fieldDataIds);
-        }
-        return $revision;
+        return $this->belongsTo(Entity::class, 'parent_id');
     }
 
     public function type()
@@ -76,11 +65,6 @@ class Entity extends Model
     public function revisions()
     {
         return $this->hasMany(EntityRevision::class);
-    }
-
-    public function getLatestAttribute()
-    {
-        return $this->latest();
     }
 
     protected function localisations()

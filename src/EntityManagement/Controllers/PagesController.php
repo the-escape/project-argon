@@ -38,13 +38,13 @@ class PagesController extends BaseController
         $entities = $entities->keyBy('id');
 
         foreach ($entities as $id => $entity) {
-            if ($entity->parent) {
-                $entities[$entity->parent]->addChild($entity);
+            if ($entity->parent_id) {
+                $entities[$entity->parent_id]->addChild($entity);
             }
         }
 
         $entities = $entities->filter(function ($entity) {
-            return $entity->parent == null;
+            return $entity->parent_id == null;
         });
 
         return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
@@ -97,7 +97,7 @@ class PagesController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,NULL,id,parent,{$parentId}",
+            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId}",
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
@@ -108,7 +108,7 @@ class PagesController extends BaseController
             'name' => $request->input('name'),
             'entity_type_id' => $type->id,
             'owner_id' => $request->user()->id,
-            'parent' => $parentId,
+            'parent_id' => $parentId,
             'locale' => $request->session()->get('locale'),
             'slug' => $slug,
         ]);
@@ -120,7 +120,7 @@ class PagesController extends BaseController
 
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
-            'status' => RevisionStatus::DRAFT,
+            'status' => RevisionStatus::PUBLISHED,
             'created_by' => $request->user()->id
         ]);
 
@@ -172,7 +172,7 @@ class PagesController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,{$page->id},id,parent,{$page->parent}",
+            'slug' => "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id}",
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
