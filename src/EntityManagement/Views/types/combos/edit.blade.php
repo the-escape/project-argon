@@ -21,6 +21,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="field_slug" class="required">Slug</label>
+                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'field_slug') }}" id="field_slug" name="field_slug" placeholder="Slug" value="{{ old('field_slug', $combo->field_slug) }}">
+                    </div>
+
+                    <div class="form-group">
                         <label for="group" class="required">Field Group</label>
                         <select class="form-control groupCreate required  {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'group') }}" name="group" id="group">
                             <option value="">Choose one...</option>
@@ -66,6 +71,7 @@
                                 <tr>
                                     <th></th>
                                     <th>Name</th>
+                                    <th>Slug</th>
                                     <th>Type</th>
                                     <th></th>
                                 </tr>
@@ -78,6 +84,9 @@
                                         </td>
                                         <td>
                                             <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $field->field_slug }}
                                         </td>
                                         <td>
                                             {{ $field->field_type }}
