@@ -6,7 +6,7 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -57,20 +57,30 @@ class MediaController extends BaseController
             $name = sprintf('%s (%d)', $name, $count);
         }
 
+        $isImage =  in_array($file->getMimeType(), $this->imageFormats);
+
+        $tmpPath = $request->file('file')->getRealPath();
+
+        $meta = new \stdClass();
+
+        if ($isImage)
+        {
+            list($meta->width, $meta->height) = @getimagesize($tmpPath);
+        }
+
         $mediaItem = $mediaRepository->create([
             'folder' => $folderId,
             'filename' => $name,
             'extension' => $file->getClientOriginalExtension(),
             'filesize' => $file->getSize(),
             'mimetype' => $file->getMimeType(),
-            'meta' => json_encode(new \stdClass()),
+            'meta' => json_encode($meta),
             'uploaded_by' => $request->user()->id,
         ]);
 
         $disk = Storage::disk('media');
-
         $disk->makeDirectory($mediaItem->id);
-        $fileHandle = fopen($request->file('file')->getRealPath(), 'r+');
+        $fileHandle = fopen($tmpPath, 'r+');
         Storage::disk('media')->put(
             "{$mediaItem->id}/{$mediaItem->id}.original.{$file->getClientOriginalExtension()}",
             $fileHandle
@@ -78,8 +88,7 @@ class MediaController extends BaseController
         fclose($fileHandle);
 
         // Thumbnail images
-
-        if (in_array($file->getMimeType(), $this->imageFormats)) {
+        if ($isImage) {
             $thumb = Image::make($file)->fit(100, 100);
             Storage::disk('media')->put(
                 "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
@@ -128,7 +137,8 @@ class MediaController extends BaseController
     public function itemDetails($itemId, MediaItemRepository $itemRepository)
     {
         $item = $itemRepository->find($itemId);
-
+        $item->meta = json_decode($item->meta);
+        $item->filesize_formatted = $item->getFriendlyFilesize();
         return response()->json($item);
     }
 }

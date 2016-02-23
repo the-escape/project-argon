@@ -101,13 +101,13 @@ $('.files').on('click', '.media-item', function() {
     $('#selectedMediaItem').val(id);
 
     $('#medialibrary .btn-primary').prop('disabled', false);
-})
+});
 
 $('#medialibrary .btn-primary').on('click', function() {
     $('#medialibrary').modal('hide');
 });
 
-$('.field-file').on('click', '.field-add-file', function(e) {
+$(document).on('click', '.field-file .field-add-file', function(e) {
     argon.dialog.medialibrary({}, function(selected) {
 
         var field = $(e.target).closest('.field');
@@ -128,8 +128,7 @@ $('.field-file').on('click', '.field-add-file', function(e) {
 
             $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
 
-            if (settings.multiple)
-            {
+            if (settings.multiple) {
                 $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
             }
 
@@ -138,22 +137,62 @@ $('.field-file').on('click', '.field-add-file', function(e) {
             $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
 
             files.append(container);
-
-
         });
     });
 });
 
-$('.field-file').on('click', '.field-remove', function()
-{
-    console.log('remove');
+$(document).on('click', '.field-image .field-add-file', function(e) {
+    argon.dialog.medialibrary({}, function(selected) {
 
-    var $self = $(this);
-    var $inputGroup = $self.parent('.input-group');
+        var field = $(e.target).closest('.field');
 
+        $.ajax(
+            '../../../media/items/' +selected
+        ).done(function(data) {
+            var guid = new Date().valueOf();
+            var settings = JSON.parse(field.attr('data-settings'));
+            var fieldName = field.attr('data-name')+'['+guid+']';
+            var files = field.find('.files');
 
-    if(argon.dialog.confirm(this))
-    {
-        $inputGroup.remove();
-    }
+            if (!settings.multiple) {
+               files.empty();
+            }
+
+            var container = $('<div/>').addClass('input-group sortable-item');
+
+            if (settings.multiple) {
+                $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
+            }
+
+            var $content = $('<div/>').addClass('form-control').appendTo(container);
+
+            $('<input type="hidden" />').attr('name', fieldName+'[id]').val(data.id).appendTo($content);
+            $('<input type="hidden" />').attr('name', fieldName+'[width]').val(data.meta.width).appendTo($content);
+            $('<input type="hidden" />').attr('name', fieldName+'[height]').val(data.meta.height).appendTo($content);
+
+            var $preview = $('<div/>').addClass('media-preview').appendTo($content);
+            $('<img/>').attr('src', data.url).appendTo($preview);
+
+            $('<div/>').addClass('file-name').text('Name: ' + data.filename + '.' + data.extension).appendTo($content);
+            $('<div/>').addClass('file-name').text('Size: ' + data.filesize_formatted).appendTo($content);
+            $('<div/>').addClass('file-name').text('Dimensions: ' + data.meta.width + ' x ' + data.meta.height + ' pixels').appendTo($content);
+
+            $('<input type="text"/>').addClass('form-control inline').attr({'name': fieldName+'[alt]', 'placeholder': "Alt text"}).appendTo($content);
+
+            $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+
+            files.append(container);
+            files.find('.hdnImageId').remove();
+        });
+    });
 });
+
+// Used master blade version, as it doesn't allow last item to be deleted. This one does.
+//$(document).on('click', '.field-media .field-remove', function(e) {
+//    var $self = $(this);
+//    var $inputGroup = $self.parent('.input-group');
+//
+//    if (argon.dialog.confirm(this)) {
+//        $inputGroup.remove();
+//    }
+//});

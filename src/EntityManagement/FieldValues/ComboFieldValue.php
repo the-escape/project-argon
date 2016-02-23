@@ -15,15 +15,18 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
     public function __construct($data, $subfields)
     {
         $newData = [];
-        foreach ($data as $k => $v) {
-            $newV = new \stdClass();
-            $newV->fields = [];
-            $v = (array)$v;
-            foreach ($v['fields'] as $fk => $fv) {
-                $newV->fields[$fk] = $fv;
+        if ($data) {
+            foreach ($data as $k => $v) {
+                $newV = new \stdClass();
+                $newV->fields = [];
+                $v = (array)$v;
+                foreach ($v['fields'] as $fk => $fv) {
+                    $newV->fields[$fk] = $fv;
+                }
+                $newData[$k] = $newV;
             }
-            $newData[$k] = $newV;
         }
+
         parent::__construct($newData);
         $this->subfields = $subfields;
     }

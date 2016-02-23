@@ -3,7 +3,7 @@
     $name = ($isInCombo) ? "combo[{$field->getParentId()}][$hash][fields][{$field->getId()}][]" : "fields[{$field->getId()}][]";
 ?>
 
-<div class="field field-file" data-type="text" data-settings="{{json_encode($field->getSettings())}}" data-name="{{ $name }}">
+<div class="field field-media field-file" data-type="text" data-settings="{{json_encode($field->getSettings())}}" data-name="{{ $name }}">
     <label>{{ $field->getFieldName() }}</label>
 
     <div class="files sortable">
