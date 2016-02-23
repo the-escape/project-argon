@@ -5,6 +5,7 @@ namespace Escape\Argon\EntityManagement\Eloquent;
 use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Locales\Eloquent\Locale;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -39,7 +40,13 @@ class Localisation extends Model
      */
     public function publishedRevision()
     {
-        return $this->revisions()->where('status', RevisionStatus::PUBLISHED)->orderBy('created_at', 'desc')->first();
+        $revision = $this->revisions()->where('status', RevisionStatus::PUBLISHED)->orderBy('created_at', 'desc')->first();
+
+        if ($revision === null) {
+            throw new Exception('Entity has no published revisions.');
+        }
+
+        return $revision;
     }
 
     public function locale()
