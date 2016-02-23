@@ -34,4 +34,20 @@ class Page
     {
         return $this->field($fieldName);
     }
+
+    public function getUrl()
+    {
+        $segments = [];
+        $parent = $this->entity;
+        while ($parent->parent) {
+            $segments[] = $parent->slug;
+            $parent = $parent->parent;
+        }
+
+        $segments = array_reverse($segments);
+
+        $url = '/' . implode('/', $segments);
+
+        return $url;
+    }
 }
