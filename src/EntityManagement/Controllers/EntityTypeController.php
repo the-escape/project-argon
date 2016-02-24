@@ -29,7 +29,7 @@ class EntityTypeController extends BaseController
 
     public function manage(EntityTypeRepository $typeRepository)
     {
-        $types = $typeRepository->all();
+        $types = $typeRepository->getOrdered();
 
         return View::make('argon::types.manage', ['types' => $types]);
     }

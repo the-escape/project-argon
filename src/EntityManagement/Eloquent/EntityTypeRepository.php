@@ -30,4 +30,9 @@ class EntityTypeRepository extends BaseRepository
     {
         return $this->findWhere(['system' => 1]);
     }
+
+    public function getOrdered()
+    {
+        return $this->makeModel()->orderBy('name')->get();
+    }
 }
