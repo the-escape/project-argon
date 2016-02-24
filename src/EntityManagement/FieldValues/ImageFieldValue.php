@@ -3,27 +3,20 @@
 namespace Escape\Argon\EntityManagement\FieldValues;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
 
-class ImageFieldValue extends AbstractFieldValue implements \IteratorAggregate, \Countable
+class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countable
 {
-//    public function __construct($data = null)
-//    {
-//        if ($data == null) {
-//            $d = [];
-//        } else {
-//            $d = $data;
-//        }
-//
-//        parent::__construct($d);
-//    }
+    private $position;
+
     public function __construct($data = null)
     {
         // make data consistently object
         if ($data) {
             if (is_object($data)) {
-                $data = (array)$data;
+                $data = toArray($data);
             }
             foreach ($data as $k => &$v) {
                 if (is_array($v)) {
@@ -32,7 +25,8 @@ class ImageFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
             }
         }
 
-        $this->data = $data;
+        parent::__construct($data);
+        $this->position = 0;
     }
 
     public function first()
@@ -45,41 +39,88 @@ class ImageFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         return $this;
     }
 
-
-    /**
-     * Retrieve an external iterator
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
-     * @since 5.0.0
-     */
-    public function getIterator()
-    {
-        /** @var MediaItemRepository $itemRepository */
-        $itemRepository = app()->make(MediaItemRepository::class);
-        if (is_array($this->data)) {
-            $data = array_map(
-                function ($obj) use ($itemRepository) {
-                    if ($obj->id) {
-                        $media_item = $itemRepository->find($obj->id);
-                        $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
-                        $media_item->meta = json_decode($media_item->meta);
-                        $media_item->data = new \stdClass();
-                        $media_item->data->alt = @$obj->alt;
-                        return $media_item;
-                    }
-                    return null;
-                },
-                $this->data
-            );
-        } else {
-            $data = [];
-        }
-        return new \ArrayIterator($data);
-    }
-
     public function count()
     {
         return count($this->data);
     }
+
+    /**
+     * Return the current element
+     * @link http://php.net/manual/en/iterator.current.php
+     * @return MediaItem
+     * @since 5.0.0
+     */
+    public function current()
+    {
+        $key = array_keys($this->data)[$this->position];
+
+//        var_dump($key, $this->data);
+//        var_dump($this->data[$key]);
+//        die();
+
+        $obj = $this->data[$key];
+
+        if ($obj->id) {
+            /** @var MediaItemRepository $itemRepository */
+            $itemRepository = app()->make(MediaItemRepository::class);
+            $media_item = $itemRepository->find($obj->id);
+            $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
+            $media_item->meta = json_decode($media_item->meta);
+            $media_item->data = new \stdClass();
+            $media_item->data->alt = @$obj->alt;
+            return $media_item;
+        }
+        return null;
+    }
+
+    /**
+     * Move forward to next element
+     * @link http://php.net/manual/en/iterator.next.php
+     * @return void Any returned value is ignored.
+     * @since 5.0.0
+     */
+    public function next()
+    {
+        ++$this->position;
+    }
+
+    /**
+     * Return the key of the current element
+     * @link http://php.net/manual/en/iterator.key.php
+     * @return mixed scalar on success, or null on failure.
+     * @since 5.0.0
+     */
+    public function key()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Checks if current position is valid
+     * @link http://php.net/manual/en/iterator.valid.php
+     * @return boolean The return value will be casted to boolean and then evaluated.
+     * Returns true on success or false on failure.
+     * @since 5.0.0
+     */
+    public function valid()
+    {
+        return array_key_exists($this->position, array_keys($this->data));
+    }
+
+    /**
+     * Rewind the Iterator to the first element
+     * @link http://php.net/manual/en/iterator.rewind.php
+     * @return void Any returned value is ignored.
+     * @since 5.0.0
+     */
+    public function rewind()
+    {
+        $this->position = 0;
+    }
+
+    public function getImageSrc()
+    {
+        return $this->current()->getUrl();
+    }
+
 }
