@@ -73,6 +73,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'createLocale',
             Request::METHOD_POST
         );
+        $this->addRoute(
+            'pages/{id}',
+            'cms:pages:delete',
+            PagesController::class,
+            'delete',
+            Request::METHOD_DELETE
+        );
 
         // Types
         $this->addRoute(

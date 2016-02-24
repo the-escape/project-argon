@@ -30,6 +30,11 @@
                 @endforeach
             </div>
         </div>
+        <form id="delete-form" style="display: inline" method="POST" action="">
+            {{csrf_field()}}
+            {{method_field('DELETE')}}
+            <button type="submit" class="btn btn-danger btn-sm" disabled>Delete</button>
+        </form>
     </div>
 @stop
 
@@ -58,6 +63,10 @@
                 $('#edit-button')
                     .prop('disabled', false)
                     .attr('href', 'pages/' + id + '/edit');
+                $('#delete-form')
+                    .attr('action', argon.root() + '/pages/' + id);
+                $('#delete-form button')
+                    .prop('disabled', false)
 //                $('#create-button').attr('href', 'content/' + id + '/addchild');
                 $('.add-child-dropdown a').each(function (index, element) {
                     var type = $(element).attr('data-type');

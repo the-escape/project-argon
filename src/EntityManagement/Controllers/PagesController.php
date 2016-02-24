@@ -50,6 +50,13 @@ class PagesController extends BaseController
         return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
     }
 
+    public function delete($pageId, EntityRepository $entityRepository)
+    {
+        $entityRepository->delete($pageId);
+
+        return Redirect::route('cms:pages:manage');
+    }
+
     public function create(
         $parentId,
         $typeId,
