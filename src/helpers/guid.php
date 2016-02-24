@@ -22,3 +22,13 @@ function guid()
         mt_rand(0, 0xffff)
     );
 }
+
+function toArray($var)
+{
+    $newVar = [];
+    foreach ($var as $key => $value) {
+        $newVar[$key] = $value;
+    }
+
+    return $newVar;
+}
