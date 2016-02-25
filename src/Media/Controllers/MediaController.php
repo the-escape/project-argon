@@ -16,6 +16,7 @@ class MediaController extends BaseController
 {
     protected $imageFormats = [
         "image/jpg",
+        "image/jpeg",
         "image/png",
         "image/gif"
     ];
