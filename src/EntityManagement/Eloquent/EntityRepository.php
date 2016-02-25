@@ -56,6 +56,7 @@ class EntityRepository extends BaseRepository
                 if ($n->parent_id == null) {
                     // Found the leaf.
                     $node = $leaf;
+                    break;
                 }
             }
 
