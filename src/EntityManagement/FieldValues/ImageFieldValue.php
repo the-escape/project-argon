@@ -54,10 +54,6 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     {
         $key = array_keys($this->data)[$this->position];
 
-//        var_dump($key, $this->data);
-//        var_dump($this->data[$key]);
-//        die();
-
         $obj = $this->data[$key];
 
         if ($obj->id) {
