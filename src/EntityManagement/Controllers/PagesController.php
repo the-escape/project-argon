@@ -179,8 +179,13 @@ class PagesController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id}",
         ];
+
+        if ($page->parent_id != null) {
+            $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id}";
+        } else {
+            $request->merge(['slug' => '/']);
+        }
 
         $messages = [];
 
