@@ -7,7 +7,7 @@
                 <option value="">Please select:</option>
             @endif
             @foreach($field->getOptions() as $entity)
-                <option value="{{ $entity->id }}"@if(in_array($entity->id, $value->get()))) selected @endif>{{ $entity->name }}</option>
+                <option value="{{ $entity->id }}"@if($value->containsId($entity->id)) selected @endif>{{ $entity->name }}</option>
             @endforeach
         </select>
     </div>
