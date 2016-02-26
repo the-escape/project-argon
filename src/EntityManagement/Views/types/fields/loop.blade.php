@@ -140,9 +140,9 @@
                     <?php // try to get submitted value
                     $v = old($name, @$field->settings->$name);
                     ?>
-                    <select name="{{$name}}" id="{{$name}}" class="form-control inline">
+                    <select name="{{$name}}[]" id="{{$name}}" class="form-control inline" multiple>
                         @foreach($customTypes->sortBy('name') as $customType)
-                            <option value="{{ $customType->id }}"@if($v == $customType->id) selected @endif>{{ $customType->name }}</option>
+                            <option value="{{ $customType->id }}"@if(in_array($customType->id, $v)) selected @endif>{{ $customType->name }}</option>
                         @endforeach
                     </select>
                 @endif
