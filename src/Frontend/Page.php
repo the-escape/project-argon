@@ -22,7 +22,13 @@ class Page
     public function getCurrentLocalisation()
     {
         $locale = $this->request->getArgonLocale();
-        return $this->entity->getLocalisation($locale);
+        $localisation = $this->entity->getLocalisation($locale);
+
+        if ($localisation) {
+            return $localisation;
+        } else {
+            return $this->entity->getDefaultLocalisation();
+        }
     }
 
     public function field($fieldName)

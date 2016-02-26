@@ -21,6 +21,10 @@
                         <label for="region">Region</label>
                         <input type="text" class="form-control" id="region" name="region" placeholder="Region" value="{{ old('region', $locale->region) }}">
                     </div>
+                    <div class="form-group">
+                        <label for="region">Slug</label>
+                        <input type="text" class="form-control" id="slug" name="locale_slug" placeholder="Slug" value="{{ old('locale_slug', $locale->locale_slug) }}">
+                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>

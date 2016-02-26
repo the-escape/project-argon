@@ -24,4 +24,18 @@ class LocaleRepository extends BaseRepository
 
         return $first;
     }
+
+    /**
+     * @param string $slug
+     * @return Locale
+     */
+    public function getBySlug($slug)
+    {
+        return $this->findWhere(['locale_slug' => $slug])->first();
+    }
+
+    public function getDefault()
+    {
+        return $this->makeModel()->orderBy('created_at')->limit(1)->get()->first();
+    }
 }

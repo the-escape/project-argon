@@ -14,7 +14,7 @@ class Locale extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'languageCode', 'region'];
+    protected $fillable = ['name', 'languageCode', 'region', 'locale_slug'];
 
     public function getId()
     {
@@ -24,5 +24,10 @@ class Locale extends Model
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getSlug()
+    {
+        return $this->locale_slug;
     }
 }
