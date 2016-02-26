@@ -13,7 +13,11 @@ class FieldTypesManager
      */
     public function getFieldTypes(array $exclude = ['combo'])
     {
-        return array_diff_key($this->fieldTypes, array_flip($exclude));
+        $fields = array_diff_key($this->fieldTypes, array_flip($exclude));
+        usort($fields, function(AbstractFieldType $a, AbstractFieldType $b) {
+            return strcmp($a->getName(), $b->getName());
+        });
+        return $fields;
     }
 
     /**
