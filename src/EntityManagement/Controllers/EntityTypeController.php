@@ -810,11 +810,11 @@ class EntityTypeController extends BaseController
             'settings' => $settings,
         ]);
 
-        $field = $fieldRepository->update($attributes, $fieldId);
+        $fieldRepository->update($attributes, $fieldId);
 
         // Don't redirect to cms:types:edit since if the field's type has changed
         // new properties will be displayed and likely to customise.
-        return Redirect::route('cms:types:combos:fields:edit', [$typeId, $combo->id, $field->id])
+        return Redirect::route('cms:types:combos:edit', [$type->id, $combo->id])
             ->with('message', Lang::get('argon-entities::field.updated'));
     }
 
