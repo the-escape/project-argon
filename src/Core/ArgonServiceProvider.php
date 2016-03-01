@@ -40,6 +40,7 @@ class ArgonServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/argon.php', 'argon');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/solr.php', 'solr');
 
         $this->app->alias('request', Request::class);
 

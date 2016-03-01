@@ -12,6 +12,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
@@ -155,7 +156,8 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionsRepository,
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
-        Request $request
+        Request $request,
+        Solr $solr
     ) {
         $page = $entityRepository->find($pageId);
 
@@ -204,6 +206,8 @@ class PagesController extends BaseController
         $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+
+        $r = $solr->addEntity($entity, $revision);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
