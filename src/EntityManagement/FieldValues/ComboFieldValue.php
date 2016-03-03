@@ -49,6 +49,14 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
 
                 foreach ($v->fields as $id => $d) {
                     $data[$k][$id] = $d;
+
+                    // added to allow easy access while looping through multiple combos
+                    $field = $this->subfields->first(
+                        function ($i, $f) use ($id) {
+                            return $f->getId() == $id;
+                        }
+                    );
+                    $data[$k][$field->getFieldSlug()] = $this->field($field->getFieldSlug(), $k);
                 }
             }
         }
@@ -85,7 +93,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         return $this;
     }
 
-    public function field($fieldName)
+    public function field($fieldName, $k = null)
     {
         /** @var AbstractFieldType $field */
         $field = $this->subfields->first(
@@ -94,7 +102,11 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
             }
         );
 
-        $currentIteration = current($this->data);
+        if ($k) {
+            $currentIteration = $this->data[$k];
+        } else {
+            $currentIteration = current($this->data);
+        }
 
         if (array_key_exists($field->getId(), $currentIteration->fields)) {
             $value = $currentIteration->fields[$field->getId()];
