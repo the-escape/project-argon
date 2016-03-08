@@ -64,4 +64,10 @@ class EntityRepository extends BaseRepository
 
         return $node;
     }
+
+
+    public function findByType(array $typeIds)
+    {
+        return $this->findWhereIn('entity_type_id', $typeIds);
+    }
 }
