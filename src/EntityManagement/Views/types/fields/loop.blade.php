@@ -139,6 +139,7 @@
                 @if(!$customTypes->isEmpty())
                     <?php // try to get submitted value
                     $v = old($name, @$field->settings->$name);
+                    if (!$v) $v = [];
                     ?>
                     <select name="{{$name}}[]" id="{{$name}}" class="form-control inline" multiple>
                         @foreach($customTypes->sortBy('name') as $customType)

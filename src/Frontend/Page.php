@@ -56,4 +56,59 @@ class Page
 
         return $url;
     }
+
+    public function getName()
+    {
+        return $this->entity->name;
+    }
+
+    public function getSlug()
+    {
+        return $this->entity->slug;
+    }
+
+    public function getBreadcrumbs($glue='/')
+    {
+        $segments = [];
+        $breadcrumbs = [];
+
+        $parent = $this->entity;
+        while ($parent->parent) {
+            $page = new self($parent, $this->request);
+            $formatted = '<a href="'.$page->getUrl().'">'.$parent->name.'</a>';
+            $segments[] = [
+                'formatted' => $formatted,
+                'raw' => $parent,
+            ];
+            $breadcrumbs[] = $formatted;
+            $parent = $parent->parent;
+        }
+
+        $page = new self($parent, $this->request);
+        $formatted = '<a href="'.$page->getUrl().'">'.$parent->name.'</a>';
+        $segments[] = [
+            'formatted' => $formatted,
+            'raw' => $parent,
+        ];
+        $breadcrumbs[] = $formatted;
+
+        $segments = array_reverse($segments);
+        $breadcrumbs = implode($glue, array_reverse($breadcrumbs));
+
+        return [$breadcrumbs, $segments];
+    }
+
+
+
+    public function getEntityFieldValue($entity, $fieldName)
+    {
+        $page = new self($entity, $this->request);
+        return $page->field($fieldName);
+    }
+
+    public function getByType(array $typeIds)
+    {
+        $entityRepository = app()->make(EntityRepository::class);
+        return $entityRepository->findByType($typeIds);
+    }
 }
