@@ -124,7 +124,7 @@ class Solr
                 $doc = $update->createDocument();
 
                 // Add default entity fields
-                $doc->id = $entity->id;
+                $doc->id = "e={$entity->id}&l={$revision->entity_localisation_id}";
                 $doc->name = $entity->name;
                 $doc->slug = $entity->slug;
                 $doc->type_id = $entity->entity_type_id;
@@ -137,76 +137,33 @@ class Solr
                     $type = $field->field->type;
                     $slug = $type->getFieldSlug();
 
+                    // recursively run through $value since it contains subfields and build dynamic multivalued _txt field for solr
                     if ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ComboFieldType) {
 
-//                        $value = $type->parseData($field);
-//                        // TODO: recursively run through $value since it contains subfields and data to build multivalued _txt field for solr
-//
-//                        $doc->{$slug."_txt"} = $value;
+                        $slug = $slug."_txt";
+                        $value = $type->parseData($field);
+
+                        foreach ($value as $hash => $v) {
+                            foreach ($type->getSubFields() as $subField) {
+                                $vals = $value->getValueForSubField($hash, $subField->getId());
+                                foreach ($vals as $val) {
+                                    $val = (string) $val;
+                                    $doc->addField($slug, $val);
+                                }
+                            }
+                        }
 
                     } else {
-                        $value = (string) $type->parseData($field);
-                        $doc->{$slug."_t"} = $value;
+                        $slug = $slug."_txt";
+                        $values = $type->parseData($field);
+
+                        foreach ($values as $v) {
+                            $val = (string) $v;
+                            $doc->addField($slug, $val);
+                        }
                     }
 
 				}
-
-
-
-
-
-
-//                $entity->getLocalisation($something)->publishedRevision()->field('title');
-//                $revision->field('foo')
-
-                // Loop through data fields to map
-//            foreach($fields as $field_name => $solr_name) {
-//
-//                if(isset($node->node_data->{$field_name}) && !empty($node->node_data->{$field_name})) {
-//
-//                    if(is_numeric($node->node_data->{$field_name})) {
-//
-//                        $doc->{$solr_name} = (int) $node->node_data->{$field_name};
-//
-//                    } else if(is_array($node->node_data->{$field_name})) {
-//
-//                        $doc->{$solr_name} = $node->node_data->{$field_name};
-//
-//                    } else {
-//
-//                        $doc->{$solr_name} = strip_tags($node->node_data->{$field_name});
-//
-//                    }
-//
-//                }
-//
-//            }
-
-//            if(!empty($parent) && !empty($parent_fields)) {
-//
-//                foreach($parent_fields as $field_name => $solr_name) {
-//
-//                    if(isset($parent->node_data->{$field_name}) && !empty($parent->node_data->{$field_name})) {
-//
-//                        if(is_numeric($parent->node_data->{$field_name})) {
-//
-//                            $doc->{$solr_name} = (int) $parent->node_data->{$field_name};
-//
-//                        } else if(is_array($parent->node_data->{$field_name})) {
-//
-//                            $doc->{$solr_name} = $parent->node_data->{$field_name};
-//
-//                        } else {
-//
-//                            $doc->{$solr_name} = strip_tags($parent->node_data->{$field_name});
-//
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
 
                 // add the documents and a commit command to the update query
                 $update->addDocuments([$doc]);
