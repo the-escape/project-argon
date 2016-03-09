@@ -98,17 +98,14 @@ class Page
         return [$breadcrumbs, $segments];
     }
 
-
-
-    public function getEntityFieldValue($entity, $fieldName)
+    public function toPage($entity)
     {
-        $page = new self($entity, $this->request);
-        return $page->field($fieldName);
+        return new self($entity, $this->request);
     }
 
-    public function getByType(array $typeIds)
+    public function getByType(array $typeIds, array $order=[], $paginate=null)
     {
         $entityRepository = app()->make(EntityRepository::class);
-        return $entityRepository->findByType($typeIds);
+        return $entityRepository->findByType($typeIds, $order, $paginate);
     }
 }
