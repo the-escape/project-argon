@@ -145,13 +145,40 @@ class Solr
 
                         foreach ($value as $hash => $v) {
                             foreach ($type->getSubFields() as $subField) {
-                                $vals = $value->getValueForSubField($hash, $subField->getId());
-                                foreach ($vals as $val) {
-                                    $val = (string) $val;
-                                    $doc->addField($slug, $val);
+
+                                if ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
+                                    continue;
+
+                                } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\FileFieldType) {
+                                    continue;
+
+                                } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\VideoFieldType) {
+                                    continue;
+
+                                } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
+                                    continue;
+
+                                } else {
+                                    $vals = $value->getValueForSubField($hash, $subField->getId());
+                                    foreach ($vals as $val) {
+                                        $val = (string)$val;
+                                        $doc->addField($slug, $val);
+                                    }
                                 }
                             }
                         }
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
+                        continue;
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\FileFieldType) {
+                        continue;
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\VideoFieldType) {
+                        continue;
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
+                        continue;
 
                     } else {
                         $slug = $slug."_txt";
