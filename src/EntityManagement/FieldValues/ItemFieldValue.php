@@ -51,7 +51,7 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
 
         $entity = $repository->find($id);
 
-        return new Page($entity, app()->make('request'));
+        return new Page($entity);
     }
 
     /**

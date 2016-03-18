@@ -207,7 +207,7 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        $r = $solr->addEntity($entity, $revision);
+        $r = $solr->indexEntity($entity, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));

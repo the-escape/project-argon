@@ -1,149 +1,158 @@
 <?php namespace Escape\Argon\Helpers;
 
 use Escape\Argon\EntityManagement\Eloquent\Entity;
-use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Solarium;
 
 class Solr
 {
-	protected $client;
-	protected $enabled;
+    public $client;
+    protected $enabled;
 
-	public function __construct()
+    public function __construct()
     {
-		$this->enabled = config('solr.enable');
+        $this->enabled = (bool) config('solr.enable');
 
-        if ($this->enabled) {
-            $solr = array('endpoint' => config('solr.endpoint'));
-            $this->solr = new Solarium\Client($solr);
+        if ($this->isEnabled()) {
+            $client = array('endpoint' => config('solr.endpoint'));
+            $this->client = new Solarium\Client($client);
         }
     }
 
-	public static function addUser($id) {
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
 
-		$solr = new Solr();
 
-		$config = Config::get('cms::solr.settings');
+//	public static function addUser($id) {
+//
+//		$solr = new Solr();
+//
+//		$config = Config::get('cms::solr.settings');
+//
+//		if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
+//
+//			$user = \Cms\Models\User::bindProfileData(\Cms\Models\User::find($id));
+//
+//			$roles = $user->roles->lists('name', 'id');
+//
+//			if(!array_key_exists($config['role_to_index'], $roles)) {
+//
+//				return;
+//
+//			}
+//
+//			$fields = $config['user_fields'];
+//
+//			$client = $solr->client;
+//
+//			$update = $client->createUpdate();
+//
+//			$doc = $update->createDocument();
+//
+//			$doc->id = $user->id;
+//			$doc->username = $user->username;
+//			$doc->email = $user->email;
+//
+//			foreach($fields as $key => $value) {
+//
+//				if(isset($user->uservar->{$key}) && !empty($user->uservar->{$key}->value) && $user->uservar->{$key}->value != "null") {
+//
+//					if(is_numeric($user->uservar->{$key}->value)) {
+//
+//						$doc->{$value} = (int) $user->uservar->{$key}->value;
+//
+//					} else if(is_array($user->uservar->{$key}->value)) {
+//
+//						$doc->{$value} = $user->uservar->{$key}->value;
+//
+//					} else {
+//
+//						$doc->{$value} = strip_tags($user->uservar->{$key}->value);
+//
+//					}
+//
+//				}
+//
+//			}
+//
+//			$update->addDocuments(array($doc));
+//
+//			$update->addCommit();
+//
+//			$result = $client->update($update);
+//
+//		}
+//
+//	}
+//
+//	static public function removeUser($id)
+//	{
+//
+//		$solr = new Solr();
+//
+//		// Get the node just saved
+//    	$user = \Cms\Models\User::find($id);
+//
+//		$config = Config::get('cms::solr.settings');
+//
+//        // If solr is enabled
+//        if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
+//
+//            $client = $solr->client;
+//
+//            $update = $client->createUpdate();
+//
+//            // Create solr document
+//            $update->addDeleteQuery("id:".$id);
+//
+//            $update->addCommit();
+//
+//			$result = $client->update($update);
+//
+//        }
+//
+//	}
 
-		if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
+    public function indexEntity(Entity $entity, Localisation $localisation)
+    {
+        if ($this->isEnabled()) {
 
-			$user = \Cms\Models\User::bindProfileData(\Cms\Models\User::find($id));
-
-			$roles = $user->roles->lists('name', 'id');
-
-			if(!array_key_exists($config['role_to_index'], $roles)) {
-
-				return;
-
-			}
-
-			$fields = $config['user_fields'];
-
-			$client = $solr->client;
-
-			$update = $client->createUpdate();
-
-			$doc = $update->createDocument();
-
-			$doc->id = $user->id;
-			$doc->username = $user->username;
-			$doc->email = $user->email;
-
-			foreach($fields as $key => $value) {
-
-				if(isset($user->uservar->{$key}) && !empty($user->uservar->{$key}->value) && $user->uservar->{$key}->value != "null") {
-
-					if(is_numeric($user->uservar->{$key}->value)) {
-
-						$doc->{$value} = (int) $user->uservar->{$key}->value;
-
-					} else if(is_array($user->uservar->{$key}->value)) {
-
-						$doc->{$value} = $user->uservar->{$key}->value;
-
-					} else {
-
-						$doc->{$value} = strip_tags($user->uservar->{$key}->value);
-
-					}
-
-				}
-
-			}
-
-			$update->addDocuments(array($doc));
-
-			$update->addCommit();
-
-			$result = $client->update($update);
-
-		}
-
-	}
-
-	static public function removeUser($id)
-	{
-
-		$solr = new Solr();
-
-		// Get the node just saved
-    	$user = \Cms\Models\User::find($id);
-
-		$config = Config::get('cms::solr.settings');
-
-        // If solr is enabled
-        if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
-
-            $client = $solr->client;
-
-            $update = $client->createUpdate();
-
-            // Create solr document
-            $update->addDeleteQuery("id:".$id);
-
-            $update->addCommit();
-
-			$result = $client->update($update);
-
-        }
-
-	}
-
-	public function addEntity(Entity $entity, EntityRevision $revision)
-	{
-        if ($this->enabled) {
             $entities_to_index = config('solr.entity.types');
 
             if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index)) {
 
-                $fields = config('solr.entity.fields');
+                $latestRevision = $localisation->latestRevision();
 
-                $update = $this->solr->createUpdate();
+                $update = $this->client->createUpdate();
 
-                // Create solr document
                 $doc = $update->createDocument();
 
-                // Add default entity fields
-                $doc->id = "e={$entity->id}&l={$revision->entity_localisation_id}";
-                $doc->name = $entity->name;
-                $doc->slug = $entity->slug;
-                $doc->type_id = $entity->entity_type_id;
-                $doc->parent_id = $entity->parent_id;
-                $doc->created_at = $entity->created_at->format('Y-m-d\TH:i:s\Z');
+                $doc->id = "e={$entity->id}&l={$latestRevision->entity_localisation_id}";
+                $doc->entity_id = $entity->id;
+                $doc->entity_localisation_id = $latestRevision->entity_localisation_id;
+                $doc->entity_locale_id = $localisation->locale_id;
+                $doc->entity_name = $entity->name;
+                $doc->entity_slug = $entity->slug;
+                $doc->entity_type_id = $entity->entity_type_id;
+                $doc->entity_parent_id = $entity->parent_id;
+                $doc->entity_created_at = $entity->created_at->format('Y-m-d H:i:s');
+                $doc->entity_created_at_dts = $entity->created_at->format('Y-m-d\TH:i:s\Z');
 
-                $fields = $revision->fields;
+                $fields = $latestRevision->fields;
 
-				foreach ($fields as $field) {
+                foreach ($fields as $field) {
                     $type = $field->field->type;
                     $slug = $type->getFieldSlug();
+                    $values = $type->parseData($field);
 
-                    // recursively run through $value since it contains subfields and build dynamic multivalued _txt field for solr
+                    // run through $value since it contains subfields and build dynamic multivalued _txt field for solr
                     if ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ComboFieldType) {
 
-                        $slug = $slug."_txt";
-                        $value = $type->parseData($field);
+                        foreach ($values as $hash => $val) {
 
-                        foreach ($value as $hash => $v) {
                             foreach ($type->getSubFields() as $subField) {
 
                                 if ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
@@ -159,13 +168,26 @@ class Solr
                                     continue;
 
                                 } else {
-                                    $vals = $value->getValueForSubField($hash, $subField->getId());
+                                    $vals = $values->getValueForSubField($hash, $subField->getId());
+
                                     foreach ($vals as $val) {
-                                        $val = (string)$val;
-                                        $doc->addField($slug, $val);
+                                        if (is_object($val) && !method_exists($val, '__toString')) {
+                                            continue;
+                                        }
+
+                                        $v = (string) $val;
+
+                                        if ($v != '') {
+                                            $doc->addField($slug."_txt", $v);
+
+                                            if ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
+                                                $doc->addField($slug."_dts", $val->format('Y-m-d\TH:i:s\Z'));
+                                            }
+                                        }
                                     }
                                 }
                             }
+
                         }
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
@@ -181,65 +203,97 @@ class Solr
                         continue;
 
                     } else {
-                        $slug = $slug."_txt";
-                        $values = $type->parseData($field);
 
-                        foreach ($values as $v) {
-                            $val = (string) $v;
-                            $doc->addField($slug, $val);
+                        foreach ($values as $val) {
+                            if (is_object($val) && !method_exists($val, '__toString')) {
+                                continue;
+                            }
+
+                            $v = (string) $val;
+
+                            if ($v != '') {
+                                $doc->addField($slug."_txt", $v);
+
+                                if ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
+                                    $doc->addField($slug."_dts", $val->format('Y-m-d\TH:i:s\Z'));
+                                }
+                            }
                         }
+
                     }
 
-				}
+                }
 
-                // add the documents and a commit command to the update query
                 $update->addDocuments([$doc]);
                 $update->addCommit();
 
-                // this executes the query and returns the result
-                return $this->solr->update($update);
+                $response = $this->client->update($update);
 
+                return [
+                    'action'      => 'indexing',
+                    'entity_id'   => $entity->id,
+                    'solr_status' => $response->getResponse()->getStatusMessage(),
+                ];
             }
         }
-	}
+    }
 
-	static public function removeNode($node_id)
-	{
 
-		$solr = new Solr();
 
-		// Get the node just saved
-    	$node = Node::getById($node_id);
+    public function unindexEntity($entity)
+    {
+        if ($this->isEnabled()) {
 
-    	// Get type of node
-    	$type = $node->node_type_id;
+            $update = $this->client->createUpdate();
+            $update->addDeleteQuery("entity_id:".$entity->id);
+            $update->addCommit();
 
-        // If solr is enabled
-        if($solr->enabled) {
+            $response = $this->client->update($update);
 
-            // Get the node types configured to be indexed
-            $nodes_to_index = Config::get('cms::solr.settings.nodes_to_index');
+            return [
+                'action'      => 'unindexing',
+                'entity_id'   => $entity->id,
+                'solr_status' => $response->getResponse()->getStatusMessage(),
+            ];
+        }
+    }
 
-            // Check if the node we're saving is a type we want to index or we want to index all nodes
-            if(in_array($type, $nodes_to_index) || $nodes_to_index[0] == "all") {
 
-            	$fields = Config::get('cms::solr.settings.fields');
 
-                $client = $solr->client;
+    public function reindex()
+    {
+        if ($this->isEnabled()) {
 
-                $update = $client->createUpdate();
+            $entityRepository = app()->make(EntityRepository::class);
+            $entities = $entityRepository->all();
+            $entities_to_index = config('solr.entity.types');
+            $results = [];
 
-                // Create solr document
-                $update->addDeleteQuery("id:".$node_id);
+            foreach ($entities as $entity) {
 
-	            $update->addCommit();
+                if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index)) {
 
-				$result = $client->update($update);
+                    $localisations = $entity->localisations;
+                    foreach ($localisations as $localisation) {
+                        $latestRevision = $localisation->latestRevision();
+                        $response = $this->indexEntity($entity, $localisation);
+
+                        $results[] = [
+                            'action'      => 'reindexing',
+                            'entity_id'   => $entity->id,
+                            'revision_id' => $latestRevision->id,
+                            'solr_status' => $response['solr_status'],
+                        ];
+                    }
+
+                }
 
             }
 
-        }
+            return $results;
 
-	}
+        }
+    }
+
 
 }

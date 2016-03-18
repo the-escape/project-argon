@@ -401,6 +401,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Migrations' => database_path('migrations'),
         ], 'migrations');
 
+        $this->publishes([
+            __DIR__ . '/Commands' => app_path('Console/Commands'),
+        ], 'commands');
+
         $this->pluginManager->registerNavLink('Content', route('cms:pages:manage'), 'cms:content:manage');
 //        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');

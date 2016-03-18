@@ -32,7 +32,7 @@ use Carbon\Carbon;
  * @property-read string  $timezoneName
  * @property-read string  $tzName
  */
-class DatetimeFieldValue extends AbstractFieldValue
+class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
     /**
      * @return Carbon
@@ -44,6 +44,21 @@ class DatetimeFieldValue extends AbstractFieldValue
         }
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $this->data);
         return $date;
+    }
+
+    public function getIterator()
+    {
+        if ($this->isUnset()) {
+            $data = [''];
+        } else {
+            $data = $this->getValue();
+        }
+
+        if (!is_array($data)) {
+            $data = [$data];
+        }
+
+        return new \ArrayIterator($data);
     }
 
     public function isUnset()
