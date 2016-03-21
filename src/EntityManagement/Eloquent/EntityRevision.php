@@ -37,6 +37,11 @@ class EntityRevision extends Model
     public function field($name)
     {
         $field = $this->localisation->entity->type->field($name);
+
+        if (!$field) {
+            throw new \RuntimeException("Undefined field '{$name}'.");
+        }
+
         return $this->fieldValue($field);
     }
 

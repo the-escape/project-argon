@@ -144,6 +144,7 @@ class Solr
                 $fields = $latestRevision->fields;
 
                 foreach ($fields as $field) {
+
                     $type = $field->field->type;
                     $slug = $type->getFieldSlug();
                     $values = $type->parseData($field);
@@ -166,6 +167,16 @@ class Solr
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
                                     continue;
+
+                                } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
+                                    $vals = $values->getValueForSubField($hash, $subField->getId());
+                                    $values = $vals->getIds();
+
+                                    if (is_array($values)) {
+                                        foreach ($values as $value) {
+                                            $doc->addField($slug."_txt", $value);
+                                        }
+                                    }
 
                                 } else {
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
@@ -201,6 +212,16 @@ class Solr
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
                         continue;
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
+
+                        $values = $values->getIds();
+
+                        if (is_array($values)) {
+                            foreach ($values as $value) {
+                                $doc->addField($slug."_txt", $value);
+                            }
+                        }
 
                     } else {
 

@@ -41,6 +41,9 @@ class ItemFieldType extends AbstractFieldType
     public function getOptions()
     {
         $contentTypeIds = $this->getSetting('items');
+        if (!is_array($contentTypeIds)) {
+            $contentTypeIds = [$contentTypeIds];
+        }
         /** @var EntityRepository $entityRepository */
         $entityRepository = app()->make(EntityRepository::class);
         $options = $entityRepository->findWhereIn('entity_type_id', $contentTypeIds);
