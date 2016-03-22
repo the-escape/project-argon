@@ -13,10 +13,10 @@ class Page
     /** @var Request */
     protected $request;
 
-    public function __construct(Entity $entity, Request $request)
+    public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
-        $this->request = $request;
+        $this->request = isset($request) ? $request : app()->make(Request::class);
     }
 
     public function getCurrentLocalisation()
@@ -53,6 +53,25 @@ class Page
         $segments = array_reverse($segments);
 
         $url = '/' . implode('/', $segments);
+
+        return $url;
+    }
+
+    public function getUrlWithQueryString(array $set=[], array $unset=[])
+    {
+        $url = $this->getUrl();
+
+        $this->request->merge($set);
+
+        $qs = $this->request->all();
+
+        foreach ($unset as $key) {
+            unset($qs[$key]);
+        }
+
+        if ($qs) {
+            $url .= $queryString = '?'.http_build_query($qs);
+        }
 
         return $url;
     }
