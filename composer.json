@@ -23,7 +23,8 @@
             "Escape\\Argon\\": "src"
         },
         "files": [
-            "src/helpers/guid.php"
+            "src/helpers/guid.php",
+            "src/helpers/Solr.php"
         ]
     },
     "autoload-dev": {
