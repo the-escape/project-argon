@@ -102,6 +102,10 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
             }
         );
 
+        if (!$field) {
+            throw new \RuntimeException("Undefined field '{$fieldName}'.");
+        }
+
         if ($k) {
             $currentIteration = $this->data[$k];
         } else {
