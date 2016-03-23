@@ -168,6 +168,21 @@ class Solr
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
                                     continue;
 
+                                } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
+                                    $vals = $values->getValueForSubField($hash, $subField->getId());
+                                    foreach ($vals as $val) {
+                                        $v = (string) $val;
+
+                                        if ($v != '') {
+                                            $doc->addField($slug . "_dts", $val->format('Y-m-d\TH:i:s\Z'));
+                                        } else {
+                                            $doc->addField($slug . "_dts", $entity->created_at->format('Y-m-d\TH:i:s\Z'));
+                                            $v = $entity->created_at->format('Y-m-d H:i:s');
+                                        }
+
+                                        $doc->addField($slug . "_txt", $v);
+                                    }
+
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
                                     $values = $vals->getIds();
@@ -190,10 +205,6 @@ class Solr
 
                                         if ($v != '') {
                                             $doc->addField($slug."_txt", $v);
-
-                                            if ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
-                                                $doc->addField($slug."_dts", $val->format('Y-m-d\TH:i:s\Z'));
-                                            }
                                         }
                                     }
                                 }
@@ -212,6 +223,20 @@ class Solr
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
                         continue;
+
+                    } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
+                        foreach ($values as $val) {
+                            $v = (string) $val;
+
+                            if ($v != '') {
+                                $doc->addField($slug . "_dts", $val->format('Y-m-d\TH:i:s\Z'));
+                            } else {
+                                $doc->addField($slug . "_dts", $entity->created_at->format('Y-m-d\TH:i:s\Z'));
+                                $v = $entity->created_at->format('Y-m-d H:i:s');
+                            }
+
+                            $doc->addField($slug . "_txt", $v);
+                        }
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
 
@@ -234,10 +259,6 @@ class Solr
 
                             if ($v != '') {
                                 $doc->addField($slug."_txt", $v);
-
-                                if ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
-                                    $doc->addField($slug."_dts", $val->format('Y-m-d\TH:i:s\Z'));
-                                }
                             }
                         }
 

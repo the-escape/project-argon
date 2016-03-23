@@ -31,6 +31,24 @@ class Page
         }
     }
 
+    public function fields()
+    {
+        return $this->entity->type->fields;
+    }
+
+    public function fieldExists($field_slug)
+    {
+        $fields = $this->fields();
+        foreach ($fields as $field) {
+            if ($field_slug == $field->field_slug)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public function field($fieldName)
     {
         return $this->getCurrentLocalisation()->publishedRevision()->field($fieldName);
