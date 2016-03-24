@@ -35,6 +35,10 @@ class ArgonServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../../config/argon.php' => config_path('argon.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../../config/solr.php' => config_path('solr.php'),
+        ], 'config');
     }
 
     public function register()

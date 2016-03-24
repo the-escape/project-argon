@@ -1,22 +1,20 @@
 <?php
 
 /**
-* Solr Settings - Config can be overriden on a per project basis
-*/
+ * Solr Settings - Config can be overridden on a per project basis
+ */
 return [
 
-//    'enable' => false,
-    'enable' => true,
+    'enable' => false,
 
     'endpoint' => [
         'localhost' => [
-            'scheme'  => 'http',
-            'host'    => '127.0.0.1',
-            'port'    => 8983,
-            'path'    => '/solr',
-//            'core'    => null,
-            'core'    => 'test',
-            'timeout' => 15,
+            'scheme'  => env('SOLR_SCHEME', 'http'),
+            'host'    => env('SOLR_HOST', '127.0.0.1'),
+            'port'    => env('SOLR_PORT', 8983),
+            'path'    => env('SOLR_PATH', '/solr'),
+            'core'    => env('SOLR_CORE', 'test'),
+            'timeout' => env('SOLR_TIMEOUT', 15),
         ],
     ],
 
