@@ -10,6 +10,7 @@ class Solr
     public $client;
     protected $enabled;
 
+
     public function __construct()
     {
         $this->enabled = (bool) config('solr.enable');
@@ -20,101 +21,12 @@ class Solr
         }
     }
 
+
     public function isEnabled()
     {
         return $this->enabled;
     }
 
-
-//	public static function addUser($id) {
-//
-//		$solr = new Solr();
-//
-//		$config = Config::get('cms::solr.settings');
-//
-//		if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
-//
-//			$user = \Cms\Models\User::bindProfileData(\Cms\Models\User::find($id));
-//
-//			$roles = $user->roles->lists('name', 'id');
-//
-//			if(!array_key_exists($config['role_to_index'], $roles)) {
-//
-//				return;
-//
-//			}
-//
-//			$fields = $config['user_fields'];
-//
-//			$client = $solr->client;
-//
-//			$update = $client->createUpdate();
-//
-//			$doc = $update->createDocument();
-//
-//			$doc->id = $user->id;
-//			$doc->username = $user->username;
-//			$doc->email = $user->email;
-//
-//			foreach($fields as $key => $value) {
-//
-//				if(isset($user->uservar->{$key}) && !empty($user->uservar->{$key}->value) && $user->uservar->{$key}->value != "null") {
-//
-//					if(is_numeric($user->uservar->{$key}->value)) {
-//
-//						$doc->{$value} = (int) $user->uservar->{$key}->value;
-//
-//					} else if(is_array($user->uservar->{$key}->value)) {
-//
-//						$doc->{$value} = $user->uservar->{$key}->value;
-//
-//					} else {
-//
-//						$doc->{$value} = strip_tags($user->uservar->{$key}->value);
-//
-//					}
-//
-//				}
-//
-//			}
-//
-//			$update->addDocuments(array($doc));
-//
-//			$update->addCommit();
-//
-//			$result = $client->update($update);
-//
-//		}
-//
-//	}
-//
-//	static public function removeUser($id)
-//	{
-//
-//		$solr = new Solr();
-//
-//		// Get the node just saved
-//    	$user = \Cms\Models\User::find($id);
-//
-//		$config = Config::get('cms::solr.settings');
-//
-//        // If solr is enabled
-//        if(isset($config['enable_solr_user']) && $config['enable_solr_user']) {
-//
-//            $client = $solr->client;
-//
-//            $update = $client->createUpdate();
-//
-//            // Create solr document
-//            $update->addDeleteQuery("id:".$id);
-//
-//            $update->addCommit();
-//
-//			$result = $client->update($update);
-//
-//        }
-//
-//	}
 
     public function indexEntity(Entity $entity, Localisation $localisation)
     {
@@ -144,6 +56,11 @@ class Solr
                 $fields = $latestRevision->fields;
 
                 foreach ($fields as $field) {
+
+                    if (!$field->field) {
+                        // skip deleted field
+                        continue;
+                    }
 
                     $type = $field->field->type;
                     $slug = $type->getFieldSlug();
@@ -281,7 +198,6 @@ class Solr
     }
 
 
-
     public function unindexEntity($entity)
     {
         if ($this->isEnabled()) {
@@ -299,7 +215,6 @@ class Solr
             ];
         }
     }
-
 
 
     public function reindex()
