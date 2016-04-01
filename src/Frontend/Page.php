@@ -40,8 +40,7 @@ class Page
     {
         $fields = $this->fields();
         foreach ($fields as $field) {
-            if ($field_slug == $field->field_slug)
-            {
+            if ($field_slug == $field->field_slug) {
                 return true;
             }
         }
@@ -104,35 +103,52 @@ class Page
         return $this->entity->slug;
     }
 
-    public function getBreadcrumbs($glue='/')
+    public function getBreadcrumbs($formatItems=true, $glue='/')
     {
-        $segments = [];
         $breadcrumbs = [];
+        $segments = [];
+        $output = [];
 
         $parent = $this->entity;
+        $request_url = $this->request->url();
+
         while ($parent->parent) {
-            $page = new self($parent, $this->request);
-            $formatted = '<a href="'.$page->getUrl().'">'.$parent->name.'</a>';
-            $segments[] = [
-                'formatted' => $formatted,
-                'raw' => $parent,
-            ];
-            $breadcrumbs[] = $formatted;
+
+            if ($formatItems) {
+
+                $page = new self($parent, $this->request);
+                $page_url = url($page->getUrl());
+
+                if ($page_url == $request_url) {
+                    $formatted = '<li class="breadcrumb current"><span>'.$parent->name.'</span></li>';
+                } else {
+                    $formatted = '<li class="breadcrumb"><a href="'.$page_url.'">'.$parent->name.'</a></li>';
+                }
+
+                $breadcrumbs[] = $formatted;
+
+            } else {
+
+                $segments[] = $parent;
+
+            }
+
             $parent = $parent->parent;
         }
 
-        $page = new self($parent, $this->request);
-        $formatted = '<a href="'.$page->getUrl().'">'.$parent->name.'</a>';
-        $segments[] = [
-            'formatted' => $formatted,
-            'raw' => $parent,
-        ];
-        $breadcrumbs[] = $formatted;
+        if ($formatItems) {
+            $page = new self($parent, $this->request);
+            $formatted = '<li class="breadcrumb"><a href="'.$page->getUrl().'">'.$parent->name.'</a></li>';
+            $breadcrumbs[] = $formatted;
+            $breadcrumbs = '<ul class="breadcrumbs">'.implode("<li class='divider'>$glue</li>", array_reverse($breadcrumbs)).'</ul>';
+            $output = $breadcrumbs;
+        } else {
+            $segments[] = $parent;
+            $segments = array_reverse($segments);
+            $output = $segments;
+        }
 
-        $segments = array_reverse($segments);
-        $breadcrumbs = implode($glue, array_reverse($breadcrumbs));
-
-        return [$breadcrumbs, $segments];
+        return $output;
     }
 
     public function toPage($entity)
