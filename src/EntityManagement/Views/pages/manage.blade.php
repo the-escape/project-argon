@@ -54,7 +54,7 @@
                 "check_callback" : true,
                 "multiple": false
             }
-        });
+        }).jstree("open_all");
         // 7 bind to events triggered on the tree
         $('#site-structure').on("changed.jstree", function (e, data) {
             if (data.selected) {
