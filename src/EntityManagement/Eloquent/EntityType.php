@@ -23,7 +23,7 @@ class EntityType extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'type'];
 
     // Get all fields except combo subfields.
     // Combo field should be pulled here as a top level (standard) field, not its children.

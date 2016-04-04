@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
+use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
@@ -80,6 +81,61 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'delete',
             Request::METHOD_DELETE
         );
+
+
+        // Blocks
+        $this->addRoute(
+            'blocks',
+            'cms:blocks:manage',
+            BlocksController::class,
+            'manage'
+        );
+        $this->addRoute(
+            'blocks/{typeId}',
+            'cms:blocks:create',
+            BlocksController::class,
+            'create'
+        );
+        $this->addRoute(
+            'typeId/{id}',
+            'cms:blocks:save',
+            BlocksController::class,
+            'save',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'blocks/{id}/edit',
+            'cms:blocks:edit',
+            BlocksController::class,
+            'edit'
+        );
+        $this->addRoute(
+            'blocks/{id}/edit/{locale}',
+            'cms:blocks:edit_locale',
+            BlocksController::class,
+            'editLocale'
+        );
+        $this->addRoute(
+            'blocks/{id}/edit/{locale}',
+            'cms:blocks:update',
+            BlocksController::class,
+            'update',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'blocks/{id}/create_locale',
+            'cms:blocks:create_locale',
+            BlocksController::class,
+            'createLocale',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'blocks/{id}/delete',
+            'cms:blocks:delete',
+            BlocksController::class,
+            'delete'
+        );
+
 
         // Types
         $this->addRoute(
@@ -406,6 +462,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         ], 'commands');
 
         $this->pluginManager->registerNavLink('Content', route('cms:pages:manage'), 'cms:content:manage');
+        $this->pluginManager->registerNavLink('Blocks', route('cms:blocks:manage'), 'cms:content:manage');
 //        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
 

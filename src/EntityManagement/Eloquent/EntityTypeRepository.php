@@ -26,6 +26,21 @@ class EntityTypeRepository extends BaseRepository
         return $this->findWhere(['system' => 0]);
     }
 
+    public function page()
+    {
+        return $this->findWhere(['system' => 0, 'type' => 'page']);
+    }
+
+    public function block()
+    {
+        return $this->findWhere(['system' => 0, 'type' => 'block']);
+    }
+
+    public function email()
+    {
+        return $this->findWhere(['system' => 0, 'type' => 'email']);
+    }
+
     public function system()
     {
         return $this->findWhere(['system' => 1]);
