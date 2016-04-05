@@ -33,10 +33,18 @@ class EntityRepository extends BaseRepository
             array_unshift($segments, '/');
 
             /** @var Collection $nodes */
-            $nodes = $this->findWhereIn('slug', $segments)->keyBy('id');
+            $nodes = $this->model->whereIn('slug', $segments)->with('type')->get();
+
+            foreach ($nodes as $idx => $entity) {
+                if ($entity->type->type != 'page'){
+                    $nodes->forget($idx);
+                }
+            }
+
+            $nodes = $nodes->keyBy('id');
 
             $leafs = $nodes->filter(function ($n) use ($segments) {
-               return $n->slug == last($segments);
+                return $n->slug == last($segments);
             });
 
             $segmentsToCheck = $segments;
@@ -85,4 +93,25 @@ class EntityRepository extends BaseRepository
             ? $r->paginate($paginate)
             : $r->get();
     }
+
+
+    public function blocks(array $slugs)
+    {
+        $entities = $this->model->whereIn('slug', $slugs)->with('type')->get();
+
+        foreach ($entities as $idx => $entity) {
+            if ($entity->type->type != 'block') {
+                $entities->forget($idx);
+            }
+        }
+
+        return $entities;
+    }
+
+
+    public function block($slug)
+    {
+        return $this->blocks([$slug])->first();
+    }
+
 }
