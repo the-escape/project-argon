@@ -4,6 +4,7 @@ namespace Escape\Argon\Frontend;
 
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 
 class Page
 {
@@ -151,10 +152,22 @@ class Page
         return $output;
     }
 
-    public function toPage($entity)
+    public function toPage(Entity $entity)
     {
         return new self($entity, $this->request);
     }
+
+
+    public function block($name)
+    {
+        $entityRepository = app()->make(EntityRepository::class);
+        $block = $entityRepository->block($name);
+        if ($block === null) {
+            throw new \RuntimeException("Undefined block '{$name}'.");
+        }
+        return $this->toPage($block);
+    }
+
 
     public function getByType(array $typeIds, array $order=[], $paginate=null)
     {
