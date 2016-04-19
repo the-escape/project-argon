@@ -68,6 +68,14 @@ class Page
             $parent = $parent->parent;
         }
 
+        $locale = $this->request->getArgonLocale();
+        $localisation = $this->entity->getLocalisation($locale);
+
+        // make sure entity has locale revision
+        if ($localisation && $locale_slug = $locale->getSlug()) {
+            $segments[] = $locale_slug;
+        }
+
         $segments = array_reverse($segments);
 
         $url = '/' . implode('/', $segments);
