@@ -52,6 +52,11 @@ class EntityRepository extends BaseRepository
             foreach ($leafs as $leaf) {
                 $n = $leaf;
                 while ($n->parent_id != null) {
+
+                    if (!isset($nodes[$n->parent_id])) {
+                        continue 2;
+                    }
+
                     $currentSegment = array_pop($segmentsToCheck);
 
                     if ($n->slug != $currentSegment) {

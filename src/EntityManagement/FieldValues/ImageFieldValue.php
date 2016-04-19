@@ -116,7 +116,11 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
 
     public function getImageSrc()
     {
-        return $this->current()->getUrl();
+        if ($this->current()) {
+            return $this->current()->getUrl();
+        }
+
+        return null;
     }
 
 }
