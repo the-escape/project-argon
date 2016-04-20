@@ -102,22 +102,21 @@ class EntityRepository extends BaseRepository
 
     protected function type($type, array $slugs=[])
     {
-        $entities = $this->model;
+        $entities = $this->model->with('type');
 
         if ($slugs) {
-            $entities->whereIn('slug', $slugs);
+            $entities = $entities->whereIn('slug', $slugs);
         }
 
-        $entities = $entities->with('type')->get();
+        $entities = $entities->get();
 
-        foreach ($entities as $idx => $entity) {
-            if ($entity->type->type != $type) {
-                $entities->forget($idx);
-            }
-        }
+        $entities = $entities->filter(function ($entity) use ($type) {
+            return $entity->type->type == $type;
+        });
 
         return $entities;
     }
+
 
     public function pages(array $slugs=[])
     {
