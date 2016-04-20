@@ -141,4 +141,16 @@ class EntityRepository extends BaseRepository
         return $this->blocks([$slug])->first();
     }
 
+
+    public function emails(array $slugs=[])
+    {
+        return $this->type('email', $slugs);
+    }
+
+
+    public function email($slug)
+    {
+        return $this->emails([$slug])->first();
+    }
+
 }

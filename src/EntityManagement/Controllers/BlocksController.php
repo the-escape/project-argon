@@ -31,13 +31,8 @@ class BlocksController extends BaseController
         Request $request
     ) {
         $types = $typeRepository->block();
-
-        $keys = $types->pluck('id')->toArray();
-
         $locales = $localeRepository->all();
-
-        $blocks = $entityRepository->findByType($keys);
-
+        $blocks = $entityRepository->blocks();
         return View::make('argon::blocks.manage', ['types' => $types, 'blocks' => $blocks, 'locales' => $locales]);
     }
 
