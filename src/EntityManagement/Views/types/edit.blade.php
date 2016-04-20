@@ -20,9 +20,9 @@
                     <div class="form-group">
                         <label>Type</label>
                         <div>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page"> Page</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="block"> Block</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="email"> Email</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page" @if($type->type == 'page') checked @endif> Page</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="block" @if($type->type == 'block') checked @endif> Block</label>
+                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="email" @if($type->type == 'email') checked @endif> Email</label>
                         </div>
                     </div>
                 </div>

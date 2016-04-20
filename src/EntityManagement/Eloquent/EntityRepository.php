@@ -100,17 +100,40 @@ class EntityRepository extends BaseRepository
     }
 
 
-    public function blocks(array $slugs)
+    protected function type($type, array $slugs=[])
     {
-        $entities = $this->model->whereIn('slug', $slugs)->with('type')->get();
+        $entities = $this->model;
+
+        if ($slugs) {
+            $entities->whereIn('slug', $slugs);
+        }
+
+        $entities = $entities->with('type')->get();
 
         foreach ($entities as $idx => $entity) {
-            if ($entity->type->type != 'block') {
+            if ($entity->type->type != $type) {
                 $entities->forget($idx);
             }
         }
 
         return $entities;
+    }
+
+    public function pages(array $slugs=[])
+    {
+        return $this->type('page', $slugs);
+    }
+
+
+    public function page($slug)
+    {
+        return $this->pages([$slug])->first();
+    }
+
+
+    public function blocks(array $slugs=[])
+    {
+        return $this->type('block', $slugs);
     }
 
 

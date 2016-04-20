@@ -77,7 +77,7 @@ class BlocksController extends BaseController
         Request $request
     ) {
 
-        $parentId = 0;
+        $parentId = null;
 
         $type = $typeRepository->find($typeId);
 

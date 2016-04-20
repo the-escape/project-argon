@@ -34,7 +34,7 @@ class PagesController extends BaseController
 
         $locales = $localeRepository->all();
 
-        $entities = $entityRepository->all();
+        $entities = $entityRepository->pages();
 
         $entities = $entities->keyBy('id');
 
