@@ -8,6 +8,10 @@ $standard-input-border-color: #ccc;
 $standard-border-radius: 0.25rem;
 $standard-color: #373a3c;
 
+select[multiple] {
+    min-height: 180px;
+}
+
 body.dashboard {
     padding-top: 50px;
 

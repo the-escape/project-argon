@@ -402,7 +402,7 @@
                         CKEDITOR.replace(el, CKEDITOR.config);
                     });
                 }
-            }).disableSelection();
+            });
 
 
             <?php

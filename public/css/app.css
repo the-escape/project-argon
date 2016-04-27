@@ -4608,6 +4608,9 @@ a.bg-danger:focus, a.bg-danger:hover {
 .argon-login .btn-submit {
   float: right; }
 
+select[multiple] {
+  min-height: 180px; }
+
 body.dashboard {
   padding-top: 50px;
   /*
