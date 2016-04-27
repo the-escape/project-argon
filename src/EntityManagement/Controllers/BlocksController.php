@@ -169,11 +169,11 @@ class BlocksController extends BaseController
             'name' => "required",
         ];
 
-        if ($page->parent_id != null) {
+//        if ($page->parent_id != null) {
             $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id},deleted_at,NULL";
-        } else {
-            $request->merge(['slug' => '/']);
-        }
+//        } else {
+//            $request->merge(['slug' => '/']);
+//        }
 
         $messages = [];
 
