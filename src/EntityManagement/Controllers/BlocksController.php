@@ -84,14 +84,14 @@ class BlocksController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = str_slug($request->input('slug', $request->input('name')));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId},deleted_at,NULL",
+            'slug' => "required|unique:entities,slug,NULL,id,parent_id,NULL,deleted_at,NULL",
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
@@ -169,11 +169,7 @@ class BlocksController extends BaseController
             'name' => "required",
         ];
 
-//        if ($page->parent_id != null) {
-            $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id},deleted_at,NULL";
-//        } else {
-//            $request->merge(['slug' => '/']);
-//        }
+        $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,NULL,deleted_at,NULL";
 
         $messages = [];
 
@@ -245,7 +241,7 @@ class BlocksController extends BaseController
         $localeId = (int)$request->input('locale');
 
         $localisation = $localisationRepository->create([
-           'locale_id' => $localeId,
+            'locale_id' => $localeId,
             'entity_id' => $pageId
         ]);
 
