@@ -79,5 +79,10 @@
         $('#site-structure').on("move_node.jstree", function (e, data, foo) {
             console.log(e, data, foo);
         });
+        $('#site-structure').on("dblclick.jstree", function (e) {
+            var node = $(e.target).closest("li");
+            var id = node[0].id.split('-')[1];
+            location.href = 'pages/' + id + '/edit';
+        });
     </script>
 @stop

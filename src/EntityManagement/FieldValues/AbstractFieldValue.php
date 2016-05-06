@@ -26,8 +26,23 @@ abstract class AbstractFieldValue
 
     public function isEmpty()
     {
-        if (is_array($this->data) && (count($this->data) === 0)) {
-            return true;
+        if (is_array($this->data)) {
+            $count = count($this->data);
+
+            if ($count === 0) {
+                return true;
+            }
+
+            $c = 0;
+            foreach ($this->data as $k => $v) {
+                if ($v == '') {
+                    $c++;
+                }
+            }
+
+            if ($count == $c) {
+                return true;
+            }
         }
 
         if (($this->data === '') || ($this->data === null)) {

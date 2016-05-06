@@ -112,6 +112,11 @@ class Page
         return $this->entity->slug;
     }
 
+    public function getId()
+    {
+        return $this->entity->id;
+    }
+
     public function getBreadcrumbs($formatItems=true, $glue='/')
     {
         $breadcrumbs = [];

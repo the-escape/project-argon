@@ -201,7 +201,7 @@
             <?php
             // ACCORDIONS: expand all instances on load after slight delay. ?>
             setTimeout(function(){
-                $accordionExpandCollapse.trigger('click');
+                //$accordionExpandCollapse.trigger('click');
             }, 0);
 
 
