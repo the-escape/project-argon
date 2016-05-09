@@ -1,126 +1,126 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" value="{{ csrf_token() }}">
-        <title>Argon Admin Area</title>
-        <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
-        <link rel="stylesheet" href="/argon/css/app.css">
-        <link rel="adminroot" href="/admin">
-        @foreach ($assetsManager->outputStyles() as $styles)
-            <link rel="stylesheet" href="{{$styles}}">
-        @endforeach
-        @section('styles')
-        @show
-        <style>
-            .navbar.bg-inverse {
-                background-color: {{config('argon.neutral_color', '#373a3c')}};
-            }
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" value="{{ csrf_token() }}">
+    <title>Argon Admin Area</title>
+    <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
+    <link rel="stylesheet" href="/argon/css/app.css">
+    <link rel="adminroot" href="/admin">
+    @foreach ($assetsManager->outputStyles() as $styles)
+        <link rel="stylesheet" href="{{$styles}}">
+    @endforeach
+    @section('styles')
+    @show
+    <style>
+        .navbar.bg-inverse {
+            background-color: {{config('argon.neutral_color', '#373a3c')}};
+        }
 
-            a,
-            .nav-link,
-            .btn-link,
-            .btn-primary-outline {
-                color: {{config('argon.highlight_color', '#0275d8')}};
-            }
+        a,
+        .nav-link,
+        .btn-link,
+        .btn-primary-outline {
+            color: {{config('argon.highlight_color', '#0275d8')}};
+        }
 
-            .btn-primary {
-                background-color: {{config('argon.highlight_color', '#0275d8')}};
-            }
+        .btn-primary {
+            background-color: {{config('argon.highlight_color', '#0275d8')}};
+        }
 
-            .btn-primary,
-            .btn-primary-outline {
-                border-color: {{config('argon.highlight_color', '#0275d8')}};
-            }
+        .btn-primary,
+        .btn-primary-outline {
+            border-color: {{config('argon.highlight_color', '#0275d8')}};
+        }
 
-            .btn-primary-outline:hover,
-            .btn-primary-outline:focus,
-            .btn-primary-outline:active,
-            .btn-primary:hover,
-            .btn-primary:focus,
-            .btn-primary:active,
-            .open .btn-primary-outline.dropdown-toggle {
-                background-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
-            }
+        .btn-primary-outline:hover,
+        .btn-primary-outline:focus,
+        .btn-primary-outline:active,
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active,
+        .open .btn-primary-outline.dropdown-toggle {
+            background-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+        }
 
-            .btn-primary-outline:hover,
-            .btn-primary-outline:focus,
-            .btn-primary-outline:active,
-            .btn-primary:hover,
-            .btn-primary:focus,
-            .btn-primary:active,
-            .open .btn-primary-outline.dropdown-toggle {
-                border-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
-            }
+        .btn-primary-outline:hover,
+        .btn-primary-outline:focus,
+        .btn-primary-outline:active,
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active,
+        .open .btn-primary-outline.dropdown-toggle {
+            border-color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+        }
 
-            a:hover,
-            .btn-link:hover,
-            .btn-link:active,
-            .btn-link:focus {
-                color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
-            }
+        a:hover,
+        .btn-link:hover,
+        .btn-link:active,
+        .btn-link:focus {
+            color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
+        }
 
-        </style>
-    </head>
+    </style>
+</head>
 
-    <body class="dashboard">
+<body class="dashboard">
 
-        <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-            <ul class="nav navbar-nav pull-xs-right">
-                @if($currentUser->hasPermission('cms:settings'))
-                    <li class="nav-item"><a class="nav-link" href="{{ route('settings') }}">Settings</a></li>
-                @endif
-                <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
-            </ul>
-            <a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
-        </nav>
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+    <ul class="nav navbar-nav pull-xs-right">
+        @if($currentUser->hasPermission('cms:settings'))
+            <li class="nav-item"><a class="nav-link" href="{{ route('settings') }}">Settings</a></li>
+        @endif
+        <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
+    </ul>
+    <a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
+</nav>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    @foreach ($plugins->getNavLinksForUser($currentUser) as $group)
-                        <ul class="nav nav-pills nav-stacked">
-                            @foreach ($group as $plugin)
-                                <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
-                            @endforeach
-                        </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            @foreach ($plugins->getNavLinksForUser($currentUser) as $group)
+                <ul class="nav nav-pills nav-stacked">
+                    @foreach ($group as $plugin)
+                        <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
                     @endforeach
-                </div>
-
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
-                    @yield('content')
-                </div>
-            </div>
+                </ul>
+            @endforeach
         </div>
 
-        <div class="modals"></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+            @yield('content')
+        </div>
+    </div>
+</div>
 
-        <script src="/argon/js/jquery.min.js"></script>
-        <script src="/argon/js/core.js"></script>
-        <script src="/argon/js/widget.js"></script>
-        <script src="/argon/js/mouse.js"></script>
-        <script src="/argon/js/accordion.js"></script>
-        <script src="/argon/js/sortable.js"></script>
-        <script src="/argon/js/tether.min.js"></script>
-        <script src="/argon/js/bootstrap.min.js"></script>
-        <script src="/argon/js/ckeditor/ckeditor.js"></script>
-        <script src="/argon/js/jstree.min.js"></script>
-        <script src="/argon/js/bootstrap-datepicker.min.js"></script>
-        <script src="/argon/js/handlebars.min.js"></script>
-        <script src="/argon/js/argon.js"></script>
+<div class="modals"></div>
 
-        @foreach($assetsManager->outputScripts() as $script)
-            <script src="{{$script}}"></script>
-        @endforeach
+<script src="/argon/js/jquery.min.js"></script>
+<script src="/argon/js/core.js"></script>
+<script src="/argon/js/widget.js"></script>
+<script src="/argon/js/mouse.js"></script>
+<script src="/argon/js/accordion.js"></script>
+<script src="/argon/js/sortable.js"></script>
+<script src="/argon/js/tether.min.js"></script>
+<script src="/argon/js/bootstrap.min.js"></script>
+<script src="/argon/js/ckeditor/ckeditor.js"></script>
+<script src="/argon/js/jstree.min.js"></script>
+<script src="/argon/js/bootstrap-datepicker.min.js"></script>
+<script src="/argon/js/handlebars.min.js"></script>
+<script src="/argon/js/argon.js"></script>
 
-        <script>
+@foreach($assetsManager->outputScripts() as $script)
+    <script src="{{$script}}"></script>
+@endforeach
 
-            <?php
-            // enable ajax post requests as per http://laravel.com/docs/master/routing#csrf-x-csrf-token ?>
-            $.ajaxSetup({
+<script>
+
+    <?php
+    // enable ajax post requests as per http://laravel.com/docs/master/routing#csrf-x-csrf-token ?>
+    $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': "<?=csrf_token();?>"
                 }
@@ -130,26 +130,26 @@
             // ACCORDIONS: Handle all accordion instances on the page with .accordion-expand-collapse trigger ?>
             var $accordionExpandCollapse = $('.accordion-expand-collapse');
 
-            $accordionExpandCollapse.click(function()
-            {
-                var isExpanded = this.getAttribute('data-expanded');
+    $accordionExpandCollapse.click(function()
+    {
+        var isExpanded = this.getAttribute('data-expanded');
 
-                if (isExpanded)
-                {
-                    $('.accordion-header.ui-state-active').trigger('click');
-                }
-                else
-                {
-                    $('.accordion-header:not(.ui-state-active)').trigger('click');
-                }
+        if (isExpanded)
+        {
+            $('.accordion-header.ui-state-active').trigger('click');
+        }
+        else
+        {
+            $('.accordion-header:not(.ui-state-active)').trigger('click');
+        }
 
-                return false;
-            });
+        return false;
+    });
 
 
-            <?php
-            // ACCORDIONS: Handle individial accordions ?>
-            $('.accordion').accordion(
+    <?php
+    // ACCORDIONS: Handle individial accordions ?>
+    $('.accordion').accordion(
             {
                 active: false,
                 header: ".accordion-header",
@@ -198,16 +198,16 @@
             });
 
 
-            <?php
-            // ACCORDIONS: expand all instances on load after slight delay. ?>
-            setTimeout(function(){
+    <?php
+    // ACCORDIONS: expand all instances on load after slight delay. ?>
+    setTimeout(function(){
                 //$accordionExpandCollapse.trigger('click');
             }, 0);
 
 
-            <?php
-            // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
-            $(document).on('click', '.field-clone', function()
+    <?php
+    // FIELDS CLONING: based on data attr, allows to move around the 'clone' button, since data-clone attr reference. ?>
+    $(document).on('click', '.field-clone', function()
             {
                 // Disabled prior to removal.
                 // No longer used for cloning text, select or combo fields. Wysiwyg still outstanding.
@@ -236,44 +236,44 @@
                             }
 
                             $.post("/admin/clone/" + field, postdata, function(){ if(window.console) console.log('POSTED...'); })
-                            .done(function(data) {
-                                if(window.console) console.log('Data returned:');
-                                if(window.console) console.log($(data));
+                                    .done(function(data) {
+                                        if(window.console) console.log('Data returned:');
+                                        if(window.console) console.log($(data));
 
-                                $self.before($(data));
+                                        $self.before($(data));
 
-                                // notify all observers
-                                $.publish('field/clone', {'id':field});
+                                        // notify all observers
+                                        $.publish('field/clone', {'id':field});
 
-                                // force all wysiwyg fields to populate native equivalents and remove before cloning
-                                for (var i in CKEDITOR.instances)
-                                {
-                                    CKEDITOR.instances[i].updateElement();
-                                    CKEDITOR.instances[i].destroy();
-                                }
-                                $('.ckeditor').each(function(i, el)
-                                {
-                                    CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
-                                    CKEDITOR.config.height = getWysiwygHeight(el);
-                                    CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
-                                    CKEDITOR.config.on = {
-                                        'instanceReady': function(evt)
+                                        // force all wysiwyg fields to populate native equivalents and remove before cloning
+                                        for (var i in CKEDITOR.instances)
                                         {
+                                            CKEDITOR.instances[i].updateElement();
+                                            CKEDITOR.instances[i].destroy();
+                                        }
+                                        $('.ckeditor').each(function(i, el)
+                                        {
+                                            CKEDITOR.config.toolbar = getWysiwygToolbarOptions(el);
+                                            CKEDITOR.config.height = getWysiwygHeight(el);
+                                            CKEDITOR.config.format_tags = getWysiwygFormatTagsOptions(el);
+                                            CKEDITOR.config.on = {
+                                                'instanceReady': function(evt)
+                                                {
 //                                            if (el.id == field) // set the focus to cloned editor
 //                                            {
 //                                                this.focus();
 //                                            }
-                                        }
-                                    };
-                                    CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-                                });
-                            })
-                            .fail(function() {
-                                if(window.console) console.log('Failed while getting data.');
-                            })
-                            .always(function() {
-                                if(window.console) console.log("Finished getting data.");
-                            });
+                                                }
+                                            };
+                                            CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+                                        });
+                                    })
+                                    .fail(function() {
+                                        if(window.console) console.log('Failed while getting data.');
+                                    })
+                                    .always(function() {
+                                        if(window.console) console.log("Finished getting data.");
+                                    });
                         }
 
                         return false;
@@ -352,9 +352,9 @@
                 return false;
             });
 
-            <?php
-            // SORTING: with custom classes for easier and more generic setup on various elements ?>
-            $('.sortable').sortable(
+    <?php
+    // SORTING: with custom classes for easier and more generic setup on various elements ?>
+    $('.sortable').sortable(
             {
                 containment: "parent",
                 handle: ".sortable-handle",
@@ -405,9 +405,9 @@
             });
 
 
-            <?php
-            // FIELD REMOVING: except last one ?>
-            $(document).on('click', '.field-remove', function()
+    <?php
+    // FIELD REMOVING: except last one ?>
+    $(document).on('click', '.field-remove', function()
             {
                 var $field;
 
@@ -430,100 +430,100 @@
             });
 
 
-            $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
 
 
-            $('#locale-select').change(function () {
-                var val = $(this).val();
-                var url = "{!! route('cms:locales:set', ['_ID_']) !!}";
-                url = url.replace('_ID_', val);
-                document.location = url + '?return=' + encodeURI(document.location);
-            });
+    $('#locale-select').change(function () {
+        var val = $(this).val();
+        var url = "{!! route('cms:locales:set', ['_ID_']) !!}";
+        url = url.replace('_ID_', val);
+        document.location = url + '?return=' + encodeURI(document.location);
+    });
 
 
-            <?php
-            // Add confirm class to elements that should trigger confirm window
-            // To show custom text, add data-confirm attribute on html element ?>
-            $('.confirm').on('click', function(){
+    <?php
+    // Add confirm class to elements that should trigger confirm window
+    // To show custom text, add data-confirm attribute on html element ?>
+    $('.confirm').on('click', function(){
                 return doubleCheck(this);
             });
 
-            <?php
-            // Generic js confirm window wrapper.
-            // To show confirm window, just add confirm class to html elements that should trigger confirm window.
-            // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element. ?>
-            function doubleCheck(el, text)
-            {
-                if(!text){
-                    <?php // Get value of data-confirm attribute if present or use default confirm text. ?>
-                    text = el.dataset.confirm || "Are you sure you want to continue?";
-                    text = text.replace(/\\n/g,"\n");// respect escaped newlines
-                }
-                return confirm(text);
-            }
+    <?php
+    // Generic js confirm window wrapper.
+    // To show confirm window, just add confirm class to html elements that should trigger confirm window.
+    // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element. ?>
+    function doubleCheck(el, text)
+    {
+        if(!text){
+            <?php // Get value of data-confirm attribute if present or use default confirm text. ?>
+            text = el.dataset.confirm || "Are you sure you want to continue?";
+            text = text.replace(/\\n/g,"\n");// respect escaped newlines
+        }
+        return confirm(text);
+    }
 
-            $('.groupCreate').on('change', function(){
-                return groupCreate(this);
+    $('.groupCreate').on('change', function(){
+        return groupCreate(this);
+    });
+
+    function groupCreate(el)
+    {
+        if(el.options[el.selectedIndex].text == 'Create new')
+        {
+            var g = prompt('Please enter group name');
+            if (g != null && (g.replace(/\s*/g, '') !== ''))
+            {
+                el.appendChild(new Option(g, g));
+                el.value = g;
+                return el;
+            }
+            else
+            {
+                el.options[0].selected = 'selected';
+                return el;
+            }
+        }
+        return null;
+    }
+
+
+    $('.field-type-settings.parent').on('click', 'input.parent', (function()
+    {
+        updateFieldTypeSettings(this);
+    }));
+
+
+    function updateFieldTypeSettings(el)
+    {
+        if (typeof el === 'undefined')
+        {
+            $('input.parent').each(function(i, elm)
+            {
+                updateFieldTypeSettings(elm);
             });
+        }
+        else
+        {
+            var $inputParent = $(el);
+            var $parentFieldTypeSettings = $inputParent.parents('.field-type-settings.parent');
 
-            function groupCreate(el)
+            if (el.checked)
             {
-                if(el.options[el.selectedIndex].text == 'Create new')
-                {
-                    var g = prompt('Please enter group name');
-                    if (g != null && (g.replace(/\s*/g, '') !== ''))
-                    {
-                        el.appendChild(new Option(g, g));
-                        el.value = g;
-                        return el;
-                    }
-                    else
-                    {
-                        el.options[0].selected = 'selected';
-                        return el;
-                    }
-                }
-                return null;
+                $parentFieldTypeSettings.find('.field-type-settings.child').removeClass('disabled').find('.child').removeAttr('disabled');
             }
-
-
-            $('.field-type-settings.parent').on('click', 'input.parent', (function()
+            else
             {
-                updateFieldTypeSettings(this);
-            }));
-
-
-            function updateFieldTypeSettings(el)
-            {
-                if (typeof el === 'undefined')
-                {
-                    $('input.parent').each(function(i, elm)
-                    {
-                        updateFieldTypeSettings(elm);
-                    });
-                }
-                else
-                {
-                    var $inputParent = $(el);
-                    var $parentFieldTypeSettings = $inputParent.parents('.field-type-settings.parent');
-
-                    if (el.checked)
-                    {
-                        $parentFieldTypeSettings.find('.field-type-settings.child').removeClass('disabled').find('.child').removeAttr('disabled');
-                    }
-                    else
-                    {
-                        $parentFieldTypeSettings.find('.field-type-settings.child').addClass('disabled').find('.child').attr('disabled', 'disabled');
-                    }
-                }
+                $parentFieldTypeSettings.find('.field-type-settings.child').addClass('disabled').find('.child').attr('disabled', 'disabled');
             }
+        }
+    }
 
-            updateFieldTypeSettings();
+    updateFieldTypeSettings();
 
 
-        </script>
-        @section('footer')
-        @show
+</script>
+@section('footer')
+@show
 
-    </body>
+</body>
 </html>

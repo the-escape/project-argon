@@ -2,13 +2,13 @@
 
 @section('content')
     {{--@if (count($locales) > 1)--}}
-        {{--<div class="locale-selector" style="height: 54px; padding: 10px 5px; background: #999; margin: 0 -0.9375rem">--}}
-            {{--<select id="locale-select" class="c-select">--}}
-                {{--@foreach ($locales as $locale)--}}
-                    {{--<option value="{{$locale->id}}" @if(Session::get('locale') == $locale->id) selected @endif >{{$locale->name}}</option>--}}
-                {{--@endforeach--}}
-            {{--</select>--}}
-        {{--</div>--}}
+    {{--<div class="locale-selector" style="height: 54px; padding: 10px 5px; background: #999; margin: 0 -0.9375rem">--}}
+    {{--<select id="locale-select" class="c-select">--}}
+    {{--@foreach ($locales as $locale)--}}
+    {{--<option value="{{$locale->id}}" @if(Session::get('locale') == $locale->id) selected @endif >{{$locale->name}}</option>--}}
+    {{--@endforeach--}}
+    {{--</select>--}}
+    {{--</div>--}}
     {{--@endif--}}
 
     <div class="main">
@@ -79,6 +79,7 @@
         $('#site-structure').on("move_node.jstree", function (e, data, foo) {
             console.log(e, data, foo);
         });
+
         $('#site-structure').on("dblclick.jstree", function (e) {
             var node = $(e.target).closest("li");
             var id = node[0].id.split('-')[1];
