@@ -107,7 +107,12 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         }
 
         if ($k) {
-            $currentIteration = $this->data[$k];
+            if (array_key_exists($k, $this->data)) {
+                $currentIteration = $this->data[$k];
+            } else {
+                throw new \RuntimeException("Requested field '{$fieldName}' doesn't have offset '{$k}'.");
+            }
+
         } else {
             $currentIteration = current($this->data);
         }
