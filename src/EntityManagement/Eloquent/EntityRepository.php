@@ -111,6 +111,9 @@ class EntityRepository extends BaseRepository
         $entities = $entities->get();
 
         $entities = $entities->filter(function ($entity) use ($type) {
+            if ($entity->type === null) {
+                throw new \RuntimeException("Trying to load a {$type} of undefined type for entity id: '{$entity->id}'. Content type was probably soft deleted.");
+            }
             return $entity->type->type == $type;
         });
 
