@@ -18,6 +18,13 @@ Add a repositories section to the composer.json:
 }]
 ```
 
+If the composer.json does not already have a minimum stability and prefer stable set, add the following as well:
+
+```
+"minimum-stability": "dev",
+"prefer-stable": true
+```
+
 Run the following to install the base CMS:
 
 ```
