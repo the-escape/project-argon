@@ -52,11 +52,11 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      */
     public function current()
     {
-        $key = array_keys($this->data)[$this->position];
+        $key = @array_keys($this->data)[$this->position];
 
         $obj = $this->data[$key];
 
-        if ($obj->id) {
+        if (@$obj->id) {
             /** @var MediaItemRepository $itemRepository */
             $itemRepository = app()->make(MediaItemRepository::class);
             $media_item = $itemRepository->find($obj->id);
