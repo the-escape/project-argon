@@ -132,4 +132,13 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return null;
     }
 
+    public function isEmpty()
+    {
+        if ($this->current()) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
