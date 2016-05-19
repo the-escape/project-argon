@@ -36,7 +36,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
     {
         $key = @array_keys($this->data)[$this->position];
 
-        $id = $this->data[$key];
+        $id = array_key_exists($key, $this->data) ? $this->data[$key] : null;
 
         if ($id) {
             /** @var MediaItemRepository $itemRepository */

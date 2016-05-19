@@ -102,10 +102,10 @@ class Solr
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
-                                    $values = $vals->getIds();
+                                    $vals = $vals->getIds();
 
-                                    if (is_array($values)) {
-                                        foreach ($values as $value) {
+                                    if (is_array($vals)) {
+                                        foreach ($vals as $value) {
                                             $doc->addField($slug."_txt", $value);
                                         }
                                     }
