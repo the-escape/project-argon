@@ -30,6 +30,15 @@ class MediaController extends BaseController
         return View::make('argon::media.manage', ['media' => $media, 'root' => $root]);
     }
 
+    public function browser(MediaFolderRepository $folderRepository)
+    {
+        $media = [];
+
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.browser', ['media' => $media, 'root' => $root]);
+    }
+
     public function items(MediaItemRepository $mediaRepository)
     {
         $folderId = Input::get('folderId');

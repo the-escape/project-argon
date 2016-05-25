@@ -45,6 +45,12 @@ var argon = {
                 selectedSize = Math.round(10 * selectedSize) / 10;
             }
             return "<strong>" + selectedSize + "</strong>" + selectedUnit;
+        },
+
+        getUrlParam: function(paramName) {
+            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
+            var match = window.location.search.match(reParam) ;
+            return (match && match.length > 1) ? match[1] : '' ;
         }
     },
 

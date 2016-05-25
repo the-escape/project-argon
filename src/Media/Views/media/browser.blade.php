@@ -1,16 +1,8 @@
-@extends('argon::layout.master')
+@extends('argon::layout.browser')
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Media</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        <button type="button" class="btn btn-primary btn-upload">Upload</button>
 
         <div class="media-library" style="position: relative;">
             <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
@@ -59,6 +51,11 @@
 @stop
 
 @section('styles')
+    <style>
+        body.dashboard {
+            padding-top: 0;
+        }
+    </style>
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css" />
 @stop
 
@@ -73,18 +70,18 @@
         });
 
         var dropzone = new Dropzone(
-            'form.dz',
-            {
-                url: '/admin/media/upload',
-                clickable: '.btn-upload',
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                thumbnailWidth: 100,
-                thumbnailHeight: 100,
-                previewTemplate: $('#preview-template').html(),
-                previewsContainer: '.media-library .files',
-            }
+                'form.dz',
+                {
+                    url: '/admin/media/upload',
+                    clickable: '.btn-upload',
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    previewTemplate: $('#preview-template').html(),
+                    previewsContainer: '.media-library .files',
+                }
         );
         dropzone.on('success', function(e, response) {
             loadItems($('#current-folder').val());
@@ -113,9 +110,9 @@
         var folders = $('#folders');
 
         folders
-            .children()
                 .children()
-                    .attr('data-jstree', '{"opened":true,"selected":true}');
+                .children()
+                .attr('data-jstree', '{"opened":true,"selected":true}');
 
         folders.jstree({
             plugins: [
@@ -144,43 +141,43 @@
             var name = argon.dialog.prompt("Folder name:", function(name) {
                 if (name) {
                     $.ajax({
-                            url: "media/folders",
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                            },
-                            data: {
-                                "name": name,
-                                "parent": currentFolder
-                            }
-                        })
-                    .done(function(data) {
-                        var id = $("#folders").jstree(true).create_node(
-                            $('[data-id=' + currentFolder + ']'),
-                            {
-                                text: ' ' + name,
-                                id: 'folder-' + data.id,
-                                data: {
-                                    id: data.id
-                                }
-                            },
-                            "last",
-                            function() {},
-                            true
-                        );
-
-                        $('#folder-' + data.id).attr('data-id', currentFolder);
-                    })
-                    .fail(function(jqXHR, textStatus, errorThrown) {
-                        switch (jqXHR.status) {
-                            case 409:
-                                argon.dialog.alert('Folder already exists.');
-                                break;
-                            default:
-                                argon.dialog.alert('Unknown error');
-                                break;
+                        url: "media/folders",
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        data: {
+                            "name": name,
+                            "parent": currentFolder
                         }
-                    });
+                    })
+                            .done(function(data) {
+                                var id = $("#folders").jstree(true).create_node(
+                                        $('[data-id=' + currentFolder + ']'),
+                                        {
+                                            text: ' ' + name,
+                                            id: 'folder-' + data.id,
+                                            data: {
+                                                id: data.id
+                                            }
+                                        },
+                                        "last",
+                                        function() {},
+                                        true
+                                );
+
+                                $('#folder-' + data.id).attr('data-id', currentFolder);
+                            })
+                            .fail(function(jqXHR, textStatus, errorThrown) {
+                                switch (jqXHR.status) {
+                                    case 409:
+                                        argon.dialog.alert('Folder already exists.');
+                                        break;
+                                    default:
+                                        argon.dialog.alert('Unknown error');
+                                        break;
+                                }
+                            });
                 }
             });
         });
@@ -196,60 +193,60 @@
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
                 }
             })
-            .done(function(data) {
-                var tree = $('#folders').jstree(true);
-                tree.delete_node(selected);
-                tree.select_node(selected.parents[0]);
-            })
-            .fail(function(jqXHR) {
-                switch (jqXHR.status) {
-                    case 409:
-                        argon.dialog.alert('Folder is not empty.');
-                        break;
-                    default:
-                        argon.dialog.alert('Unknown error');
-                        break;
-                }
-            });
+                    .done(function(data) {
+                        var tree = $('#folders').jstree(true);
+                        tree.delete_node(selected);
+                        tree.select_node(selected.parents[0]);
+                    })
+                    .fail(function(jqXHR) {
+                        switch (jqXHR.status) {
+                            case 409:
+                                argon.dialog.alert('Folder is not empty.');
+                                break;
+                            default:
+                                argon.dialog.alert('Unknown error');
+                                break;
+                        }
+                    });
         });
 
         function loadItems(id) {
             $.ajax(
-                'media/items',
-                {
-                    data: {
-                        folderId: id
-                    }
-                }
-            ).done(function(data) {
-                $('#current-folder').val(id);
-
-                $('.dz .files').empty();
-
-                for (var i in data) {
-                    var file = data[i];
-
-                    var node = $('#preview-template .media-item').clone();
-
-                    node.attr('data-id', file.id);
-                    node.find('img').attr('src', file.thumbUrl);
-                    node.find('[data-dz-name]').text(file.filename);
-                    node.find('[data-dz-size]').html(argon.helpers.filesize(file.filesize));
-                    node.find('[data-dz-delete]').on('click', function(id) {
-                        return function() {
-                            deleteItem(id);
+                    'media/items',
+                    {
+                        data: {
+                            folderId: id
                         }
-                    }(file.id));
-                    node.find('[data-dz-original]').attr('href', file.url);
-                    node.find('progress').hide();
+                    }
+            ).done(function(data) {
+                        $('#current-folder').val(id);
 
-                    node.find('[data-dz-path]').attr('data-path', file.url);
+                        $('.dz .files').empty();
 
-                    $('form.dz .files').append(node);
-                }
+                        for (var i in data) {
+                            var file = data[i];
 
-                sortItems();
-            });
+                            var node = $('#preview-template .media-item').clone();
+
+                            node.attr('data-id', file.id);
+                            node.find('img').attr('src', file.thumbUrl);
+                            node.find('[data-dz-name]').text(file.filename);
+                            node.find('[data-dz-size]').html(argon.helpers.filesize(file.filesize));
+                            node.find('[data-dz-delete]').on('click', function(id) {
+                                return function() {
+                                    deleteItem(id);
+                                }
+                            }(file.id));
+                            node.find('[data-dz-original]').attr('href', file.url);
+                            node.find('progress').hide();
+
+                            node.find('[data-dz-path]').attr('data-path', file.url);
+
+                            $('form.dz .files').append(node);
+                        }
+
+                        sortItems();
+                    });
         }
 
         loadItems(1);
@@ -257,16 +254,16 @@
         function deleteItem(id) {
             if (confirm("Are you sure you want to delete this file?")) {
                 $.ajax(
-                    {
-                        url: 'media/items/' + id,
-                        method: 'DELETE',
-                        headers: {
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        {
+                            url: 'media/items/' + id,
+                            method: 'DELETE',
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            }
                         }
-                    }
                 ).done(function(data) {
-                   $('[data-id='+ id + ']').remove();
-                });
+                            $('[data-id='+ id + ']').remove();
+                        });
             } else {
 //                console.log('keep');
             }
@@ -282,7 +279,7 @@
 
         function compareItems(a, b) {
             var nameA = $(a).find('.filename').text(),
-                nameB = $(b).find('.filename').text();
+                    nameB = $(b).find('.filename').text();
             return nameA.localeCompare(nameB);
         }
 

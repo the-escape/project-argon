@@ -45,6 +45,12 @@ var argon = {
                 selectedSize = Math.round(10 * selectedSize) / 10;
             }
             return "<strong>" + selectedSize + "</strong>" + selectedUnit;
+        },
+
+        getUrlParam: function(paramName) {
+            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
+            var match = window.location.search.match(reParam) ;
+            return (match && match.length > 1) ? match[1] : '' ;
         }
     },
 
@@ -508,7 +514,7 @@ var WYSIWYG = {
     },
 
     init: function(el) {
-
+        CKEDITOR.config.filebrowserBrowseUrl = '/admin/media';
         // CKEDITOR: Custom toolbar setup and initialization
         CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
         CKEDITOR.replaceClass = null; // disable auto initialization by class

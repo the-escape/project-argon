@@ -64,6 +64,12 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 //            LocalesController::class,
 //            'set'
 //        );
+        $this->addRoute(
+            'media/browser',
+            'cms:media:manage',
+            MediaController::class,
+            'browser'
+        );
     }
 
     public function startup()
