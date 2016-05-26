@@ -21,19 +21,19 @@ class EntityRepository extends BaseRepository
      * @param string $path
      * @return Entity|null
      */
-    public function findForPath($path)
+    public function findForPath($path, $status=1)
     {
         $node = null;
 
         if ($path == '/') {
-            $node = $this->findWhere(['parent_id' => null])->first();
+            $node = $this->findWhere(['parent_id' => null, 'status' => $status])->first();
         } else {
             $segments = explode('/', $path);
 
             array_unshift($segments, '/');
 
             /** @var Collection $nodes */
-            $nodes = $this->model->whereIn('slug', $segments)->with('type')->get();
+            $nodes = $this->model->whereIn('slug', $segments)->where('status','=', $status)->with('type')->get();
 
             foreach ($nodes as $idx => $entity) {
                 if ($entity->type->type != 'page'){

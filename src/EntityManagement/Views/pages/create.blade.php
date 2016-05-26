@@ -29,6 +29,17 @@
                         <label for="slug" class="required">URL Slug</label>
                         <input type="text" id="slug" class="form-control required slug {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug') }}">
                     </div>
+                    <div class="form-group">
+                        <label>Published</label>
+                        <div>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="status" value="1"> Yes
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="status" value="0" checked> No
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -29,6 +29,17 @@
                         <label for="slug" class="required">URL Slug</label>
                         <input type="text" id="slug" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug', $page->slug) }}">
                     </div>
+                    <div class="form-group">
+                        <label>Published</label>
+                        <div>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="status" value="1" @if($page->status == '1') checked @endif> Yes
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" name="status" value="0" @if($page->status == '0') checked @endif> No
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -37,7 +48,7 @@
                 @foreach ($page->getLocalisations() as $l)
                     <li class="nav-item">
                         <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage($page)->getUrl() }} @else {{ $page->toPage($page)->getUrl() }} @endif">
                             {{$l->getLocale()->getName()}}
                         </a>
                     </li>

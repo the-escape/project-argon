@@ -17,7 +17,7 @@ class Page
     public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
-        $this->request = isset($request) ? $request : app()->make(Request::class);
+        $this->request = isset($request) ? $request : app()->make('\Escape\Argon\Core\Http\Request');
     }
 
     public function getCurrentLocalisation()
@@ -165,9 +165,10 @@ class Page
         return $output;
     }
 
+
     public function toPage(Entity $entity)
     {
-        return new self($entity, $this->request);
+        return $entity->toPage($entity, $this->request);
     }
 
 

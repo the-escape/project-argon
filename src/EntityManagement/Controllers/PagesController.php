@@ -195,7 +195,7 @@ class PagesController extends BaseController
 
         $this->validate($this->request, $rules, $messages, $niceNames);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug']), $pageId);
+        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
@@ -259,7 +259,7 @@ class PagesController extends BaseController
         $localeId = (int)$request->input('locale');
 
         $localisation = $localisationRepository->create([
-           'locale_id' => $localeId,
+            'locale_id' => $localeId,
             'entity_id' => $pageId
         ]);
 

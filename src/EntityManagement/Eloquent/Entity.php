@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Frontend\Page;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Escape\Argon\Core\Http\Request;
 
 /**
  * Class Entity
@@ -34,7 +36,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status'];
 
     public function addChild(Entity $child)
     {
@@ -108,5 +110,10 @@ class Entity extends Model
     public function getId()
     {
         return $this->id;
+    }
+
+    public function toPage(Entity $entity, Request $request=null)
+    {
+        return new Page($entity, $request);
     }
 }
