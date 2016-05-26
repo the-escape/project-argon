@@ -1,3 +1,22 @@
+body.dashboard.media-browser {
+    padding-top: 0;
+}
+
+body.dashboard {
+    .dropdown-toggle::after {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-right: .25rem;
+        margin-left: .25rem;
+        vertical-align: middle;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-left: 0.3em solid transparent;
+    }
+}
+
 .media-item {
     display: inline-block;
     margin: 10px 20px;

@@ -43,15 +43,13 @@
             <progress class="progress" value="25" max="100"></progress>
             <div class="btn-group">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    &hellip;
+                    Options
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" data-dz-delete href="#">Delete</a>
                     {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
                     {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
                     <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
-                    {{--<a href="javascript:select_image('/3.jpg');">Insert this image</a>--}}
-                    <a class="insert-path" href="#" data-dz-path>Insert this image</a>
                 </div>
             </div>
         </div>
@@ -65,13 +63,6 @@
 @section('footer')
     <script src="/argon/js/dropzone.min.js"></script>
     <script>
-
-        $('.media-library .files').on('click', '.insert-path', function(e){
-            e.preventDefault();
-            window.opener.CKEDITOR.tools.callFunction(argon.helpers.getUrlParam('CKEditorFuncNum'), this.getAttribute('data-path'), '');
-            window.close();
-        });
-
         var dropzone = new Dropzone(
             'form.dz',
             {
@@ -144,7 +135,7 @@
             var name = argon.dialog.prompt("Folder name:", function(name) {
                 if (name) {
                     $.ajax({
-                            url: "media/folders",
+                            url: "/admin/media/folders",
                             method: "POST",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
@@ -190,7 +181,7 @@
             var currentFolder = selected.data.id;
 
             $.ajax({
-                url: "media/folders/" + currentFolder,
+                url: "/admin/media/folders/" + currentFolder,
                 method: "DELETE",
                 headers: {
                     "X-CSRF-TOKEN": "{{ csrf_token() }}"
@@ -215,7 +206,7 @@
 
         function loadItems(id) {
             $.ajax(
-                'media/items',
+                '/admin/media/items',
                 {
                     data: {
                         folderId: id
@@ -258,7 +249,7 @@
             if (confirm("Are you sure you want to delete this file?")) {
                 $.ajax(
                     {
-                        url: 'media/items/' + id,
+                        url: '/admin/media/items/' + id,
                         method: 'DELETE',
                         headers: {
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
