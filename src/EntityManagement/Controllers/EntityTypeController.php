@@ -23,6 +23,12 @@ class EntityTypeController extends BaseController
     public function __construct(Request $request, EntityTypeRepository $typeRepository)
     {
         $this->typeRepository = $typeRepository;
+        $this->middleware('auth');
+        $this->middleware('perm:cms:login');
+        $this->middleware('perm:cms:content:manage');
+        $this->middleware('perm:cms:entity:type:manage');
+        $this->middleware('perm:cms:entity:type:create');
+        $this->middleware('perm:cms:entity:type:edit');
 
         parent::__construct($request);
     }

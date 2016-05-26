@@ -62,7 +62,9 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
 
-        $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:content:manage');
+        $this->permissionsManager->register('cms:locale:manage');
+
+        $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:locale:manage');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

@@ -84,7 +84,9 @@
             @foreach ($plugins->getNavLinksForUser($currentUser) as $group)
                 <ul class="nav nav-pills nav-stacked">
                     @foreach ($group as $plugin)
-                        <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
+                        @if($currentUser->hasPermission($plugin->access))
+                            <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
+                        @endif
                     @endforeach
                 </ul>
             @endforeach

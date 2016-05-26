@@ -12,6 +12,15 @@ use View;
 
 class LocalesController extends BaseController
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('auth');
+        $this->middleware('perm:cms:login');
+        $this->middleware('perm:cms:locale:manage');
+
+        parent::__construct($request);
+    }
+
     public function manage(LocaleRepository $localeRepository)
     {
         $locales = $localeRepository->all();
