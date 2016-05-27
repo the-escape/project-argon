@@ -4625,6 +4625,9 @@ body.dashboard {
   /*
      * Main content
      */ }
+  body.dashboard #site-structure {
+    margin: 20px 0;
+    border-top: 1px dotted #000; }
   body.dashboard .navbar-fixed-top {
     border: 0; }
   body.dashboard .box {

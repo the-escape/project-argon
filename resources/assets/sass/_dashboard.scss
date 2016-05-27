@@ -15,6 +15,12 @@ select[multiple] {
 body.dashboard {
     padding-top: 50px;
 
+
+    #site-structure {
+        margin: 20px 0;
+        border-top: 1px dotted #000;
+    }
+    
     /*
      * Top navigation
      * Hide default border to remove 1px line.
