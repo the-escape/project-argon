@@ -32,6 +32,12 @@ class Page
         }
     }
 
+    public function getLocalisations()
+    {
+        return $this->entity->getLocalisations();
+    }
+
+
     public function fields()
     {
         return $this->entity->type->fields;
