@@ -4814,7 +4814,9 @@ body.dashboard .dropdown-toggle::after {
   .media-library > * {
     display: table-cell;
     vertical-align: top;
-    text-align: left; }
+    text-align: left;
+    margin: 0 !important;
+    padding: 0 !important; }
 
 .media-library-sidebar {
   position: static !important; }
