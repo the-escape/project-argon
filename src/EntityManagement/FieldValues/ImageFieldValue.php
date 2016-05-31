@@ -59,7 +59,10 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         if (@$obj->id) {
             /** @var MediaItemRepository $itemRepository */
             $itemRepository = app()->make(MediaItemRepository::class);
-            $media_item = $itemRepository->find($obj->id);
+            $media_item = $itemRepository->findWhere(['id' => $obj->id])->first();
+            if (!$media_item) {
+                throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
+            }
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
             $media_item->meta = json_decode($media_item->meta);
             $media_item->data = new \stdClass();
