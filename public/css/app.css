@@ -4806,18 +4806,18 @@ body.dashboard .dropdown-toggle::after {
     .media-item .btn::after {
       display: none; }
 
-.media-library-sidebar .buttons {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  left: 0;
-  background: red; }
-  .media-library-sidebar .buttons button {
-    width: 50%;
-    float: left;
-    border-radius: 0; }
-    .media-library-sidebar .buttons button:first-child {
-      border-right: 1px solid #000; }
+.media-library-sidebar {
+  float: left !important;
+  position: static !important; }
+  .media-library-sidebar .buttons {
+    width: 100%;
+    background: red; }
+    .media-library-sidebar .buttons button {
+      width: 50%;
+      float: left;
+      border-radius: 0; }
+      .media-library-sidebar .buttons button:first-child {
+        border-right: 1px solid #000; }
 
 .field-boolean input[type=radio] {
   display: none; }
