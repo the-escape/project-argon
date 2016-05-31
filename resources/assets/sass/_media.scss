@@ -55,9 +55,20 @@ body.dashboard {
     }
 }
 
+.media-library {
+    display: table;
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+
+    > * {
+        display: table-cell;
+        vertical-align: top;
+        text-align: left;
+    }
+}
 
 .media-library-sidebar {
-    float: left !important;
     position: static !important;
 
     .buttons {

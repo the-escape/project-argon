@@ -4806,8 +4806,17 @@ body.dashboard .dropdown-toggle::after {
     .media-item .btn::after {
       display: none; }
 
+.media-library {
+  display: table;
+  width: 100%;
+  border: none;
+  border-collapse: collapse; }
+  .media-library > * {
+    display: table-cell;
+    vertical-align: top;
+    text-align: left; }
+
 .media-library-sidebar {
-  float: left !important;
   position: static !important; }
   .media-library-sidebar .buttons {
     width: 100%;
