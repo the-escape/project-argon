@@ -48,7 +48,7 @@
                 @foreach ($page->getLocalisations() as $l)
                     <li class="nav-item">
                         <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage($page)->getUrl() }} @else {{ $page->toPage($page)->getUrl() }} @endif">
+                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
                             {{$l->getLocale()->getName()}}
                         </a>
                     </li>

@@ -171,13 +171,6 @@ class Page
         return $output;
     }
 
-
-    public function toPage(Entity $entity)
-    {
-        return $entity->toPage($entity, $this->request);
-    }
-
-
     public function block($name)
     {
         $entityRepository = app()->make(EntityRepository::class);
@@ -185,7 +178,7 @@ class Page
         if ($block === null) {
             throw new \RuntimeException("Undefined block '{$name}'.");
         }
-        return $this->toPage($block);
+        return $block->toPage();
     }
 
 

@@ -112,8 +112,8 @@ class Entity extends Model
         return $this->id;
     }
 
-    public function toPage(Entity $entity, Request $request=null)
+    public function toPage(Request $request=null)
     {
-        return new Page($entity, $request);
+        return new Page($this, $request);
     }
 }
