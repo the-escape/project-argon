@@ -81,6 +81,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'delete',
             Request::METHOD_DELETE
         );
+        $this->addRoute(
+            'pages/{id}/update_parent/{parentId}',
+            'cms:pages:update_parent',
+            PagesController::class,
+            'updateParent',
+            Request::METHOD_POST
+        );
 
 
         // Blocks

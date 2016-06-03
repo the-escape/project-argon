@@ -271,4 +271,20 @@ class PagesController extends BaseController
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }
+
+
+
+
+    public function updateParent($pageId, $parentId, EntityRepository $entityRepository)
+    {
+        /** @var Entity $page */
+        $page = $entityRepository->find($pageId);
+        $parent = $entityRepository->find($parentId);
+
+        $page->parent_id = $parent->id;
+        $page->save();
+
+        return json_encode(['success'=>true]);
+    }
+
 }

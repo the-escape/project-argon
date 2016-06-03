@@ -79,7 +79,21 @@
         });
 
         $('#site-structure').on("move_node.jstree", function (e, data, foo) {
-            console.log(e, data, foo);
+//            console.log(e, data);
+            var nodeId = data.node.id.split('-')[1];
+            var parentId = data.parent.split('-')[1];
+            if(window.console) console.log(nodeId);
+            if(window.console) console.log(parentId);
+
+
+            $.post("pages/"+nodeId+"update_parent/"+parentId, function() {
+                if(window.console) console.log('Posted...');
+            })
+            .done(function(data) {
+                if(window.console) console.log('Data:');
+                if(window.console) console.log(data);
+            });
+
         });
 
         $('#site-structure').on("dblclick.jstree", function (e) {
