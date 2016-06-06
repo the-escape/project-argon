@@ -21,6 +21,7 @@ use Escape\Argon\Core\Http\Request;
  * @property int|null parent_id
  * @property int entity_type_id
  * @property int owner_id
+ * @property int status
  * @property Carbon created_at
  * @property Carbon updated_at
  * @property Carbon deleted_at

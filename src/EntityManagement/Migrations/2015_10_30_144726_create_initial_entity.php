@@ -17,7 +17,6 @@ class CreateInitialEntity extends Migration
         $entity->name = 'Site';
         $entity->entity_type_id = 1;
         $entity->owner_id = 1;
-        $entity->locale = 1;
         $entity->save();
     }
 

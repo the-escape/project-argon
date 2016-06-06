@@ -252,10 +252,6 @@
             $('.ckeditor').each(function(idx, el)
             {
                 WYSIWYG.init(el);
-//                CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
-//                CKEDITOR.config.height = WYSIWYG.getHeight(el);
-//                CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
-//                CKEDITOR.replace(el, CKEDITOR.config);
             });
         }
     });
@@ -263,27 +259,27 @@
 
     <?php
     // FIELD REMOVING: except last one ?>
-    $(document).on('click', '.field-remove', function()
-    {
-        var $field;
-
-        var $self = $(this);
-        var $inputGroup = $self.parent('.input-group');
-
-        $field = ($inputGroup.length) ? $inputGroup :$self.siblings('.form-control');
-
-        if (!$field.siblings('.form-control, .input-group').length)
-        {
-            alert("Can't remove.\nAt least one field instance must be present.");
-            return false;
-        }
-
-        if(doubleCheck(this))
-        {
-            $field.remove();
-            return;
-        }
-    });
+//    $(document).on('click', '.field-remove', function()
+//    {
+//        var $field;
+//
+//        var $self = $(this);
+//        var $inputGroup = $self.parent('.input-group');
+//
+//        $field = ($inputGroup.length) ? $inputGroup :$self.siblings('.form-control');
+//
+//        if (!$field.siblings('.form-control, .input-group').length)
+//        {
+//            alert("Can't remove.\nAt least one field instance must be present.");
+//            return false;
+//        }
+//
+//        if(doubleCheck(this))
+//        {
+//            $field.remove();
+//            return;
+//        }
+//    });
 
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -301,22 +297,22 @@
     // Add confirm class to elements that should trigger confirm window
     // To show custom text, add data-confirm attribute on html element ?>
     $('.confirm').on('click', function(){
-                return doubleCheck(this);
-            });
+        return argon.dialog.confirm(this);
+    });
 
     <?php
     // Generic js confirm window wrapper.
     // To show confirm window, just add confirm class to html elements that should trigger confirm window.
     // To show custom text either pass it as a second parameter (text) or add data-confirm attribute on html element. ?>
-    function doubleCheck(el, text)
-    {
-        if(!text){
-            <?php // Get value of data-confirm attribute if present or use default confirm text. ?>
-            text = el.dataset.confirm || "Are you sure you want to continue?";
-            text = text.replace(/\\n/g,"\n");// respect escaped newlines
-        }
-        return confirm(text);
-    }
+    //function doubleCheck(el, text)
+    //{
+    //    if(!text){
+    //        <?php // Get value of data-confirm attribute if present or use default confirm text. ?>
+    //        text = el.dataset.confirm || "Are you sure you want to continue?";
+    //        text = text.replace(/\\n/g,"\n");// respect escaped newlines
+    //    }
+    //    return confirm(text);
+    //}
 
     $('.groupCreate').on('change', function(){
         return groupCreate(this);

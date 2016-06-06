@@ -18,7 +18,7 @@ class CreateEntitiesTable extends Migration
             $table->string('name');
             $table->integer('parent')->nullable();
             $table->integer('owner_id')->unsigned();
-            $table->integer('locale')->unsigned();
+            //$table->integer('locale')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -26,11 +26,6 @@ class CreateEntityTypesTable extends Migration
         $site->system = true;
         $site->save();
 
-        $collection = new EntityType();
-        $collection->name = 'collection';
-        $collection->system = true;
-        $collection->save();
-
         $page = new EntityType();
         $page->name = 'page';
         $page->system = false;
