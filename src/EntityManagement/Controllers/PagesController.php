@@ -273,8 +273,7 @@ class PagesController extends BaseController
     }
 
 
-
-
+    // Handles JSTree ajax reorder requests
     public function updateParent($pageId, $parentId, EntityRepository $entityRepository)
     {
         /** @var Entity $page */
@@ -282,9 +281,9 @@ class PagesController extends BaseController
         $parent = $entityRepository->find($parentId);
 
         $page->parent_id = $parent->id;
-        $page->save();
+        $result = $page->save();
 
-        return json_encode(['success'=>true]);
+        return json_encode(['success' => $result]);
     }
 
 }

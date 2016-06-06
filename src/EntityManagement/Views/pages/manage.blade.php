@@ -60,7 +60,7 @@
         // 7 bind to events triggered on the tree
         $('#site-structure').on("changed.jstree", function (e, data) {
             if (data.selected) {
-                var id = data.selected[0].split('-')[1];
+                var id = argon.helpers.getIdFromNodeIdString(data.selected[0]);
 
                 $('#edit-button')
                     .prop('disabled', false)
@@ -79,27 +79,24 @@
         });
 
         $('#site-structure').on("move_node.jstree", function (e, data, foo) {
-//            console.log(e, data);
-            var nodeId = data.node.id.split('-')[1];
-            var parentId = data.parent.split('-')[1];
-            if(window.console) console.log(nodeId);
-            if(window.console) console.log(parentId);
+            var nodeId = argon.helpers.getIdFromNodeIdString(data.node.id);
+            var parentId = argon.helpers.getIdFromNodeIdString(data.parent);
 
-
-            $.post("pages/"+nodeId+"update_parent/"+parentId, function() {
-                if(window.console) console.log('Posted...');
-            })
+            $.post("pages/"+nodeId+"/update_parent/"+parentId, function() {
+                // if(window.console) console.log('Posted...');
+            }, 'json')
             .done(function(data) {
-                if(window.console) console.log('Data:');
-                if(window.console) console.log(data);
+                // TODO: implement visual feedback
+                // if(window.console) console.log(data);
             });
 
         });
 
         $('#site-structure').on("dblclick.jstree", function (e) {
             var node = $(e.target).closest("li");
-            var id = node[0].id.split('-')[1];
+            var id = argon.helpers.getIdFromNodeIdString(node[0].id);
             location.href = 'pages/' + id + '/edit';
         });
+
     </script>
 @stop

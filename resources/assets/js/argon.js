@@ -51,6 +51,11 @@ var argon = {
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i');
             var match = window.location.search.match(reParam) ;
             return (match && match.length > 1) ? match[1] : '' ;
+        },
+
+        // JSTree helper
+        getIdFromNodeIdString: function(nodeIdString) {
+            return nodeIdString.split('-')[1];
         }
     },
 
