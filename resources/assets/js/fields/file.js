@@ -187,12 +187,11 @@ $(document).on('click', '.field-image .field-add-file', function(e) {
     });
 });
 
-// Used master blade version, as it doesn't allow last item to be deleted. This one does.
-//$(document).on('click', '.field-media .field-remove', function(e) {
-//    var $self = $(this);
-//    var $inputGroup = $self.parent('.input-group');
-//
-//    if (argon.dialog.confirm(this)) {
-//        $inputGroup.remove();
-//    }
-//});
+$(document).on('click', '.field-media .field-remove', function(e) {
+    var $self = $(this);
+    var $inputGroup = $self.parent('.input-group');
+
+    if (argon.dialog.confirm(this)) {
+        $inputGroup.remove();
+    }
+});
