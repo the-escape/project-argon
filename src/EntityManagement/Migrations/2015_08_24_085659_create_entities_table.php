@@ -16,7 +16,8 @@ class CreateEntitiesTable extends Migration
             $table->increments('id');
             $table->integer('entity_type_id')->unsigned();
             $table->string('name');
-            $table->integer('parent')->nullable();
+            $table->string('slug');
+            $table->integer('parent_id')->nullable();
             $table->integer('owner_id')->unsigned();
             //$table->integer('locale')->unsigned();
             $table->timestamps();

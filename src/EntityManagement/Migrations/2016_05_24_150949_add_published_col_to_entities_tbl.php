@@ -13,7 +13,7 @@ class AddPublishedColToEntitiesTbl extends Migration
     public function up()
     {
         Schema::table('entities', function (Blueprint $table) {
-            $table->enum('status', ['0', '1'])->after('locale');
+            $table->enum('status', ['0', '1'])->after('owner_id');
         });
     }
 
