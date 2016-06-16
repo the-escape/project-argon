@@ -87,7 +87,7 @@
                     @endif
                     <div class="form-group">
                         <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
-                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $page->toPage()->getRedirect()) }}">
+                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $page->toPage()->getRedirect($localisation->getLocale()->getId())) }}">
                     </div>
 
                 </div>

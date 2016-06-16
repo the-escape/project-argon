@@ -188,12 +188,15 @@ class Page
         return $entityRepository->findByType($typeIds, $order, $paginate);
     }
 
-    public function getRedirect()
+    public function getRedirect($localeId=null)
     {
         $redirects = $this->entity->redirect_url;
-        $locale = $this->request->getArgonLocale();
-        if (isset($redirects->{$locale->getId()})) {
-            return $redirects->{$locale->getId()};
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        if (isset($redirects->{$localeId})) {
+            return $redirects->{$localeId};
         }
         return null;
 
