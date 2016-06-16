@@ -187,4 +187,15 @@ class Page
         $entityRepository = app()->make(EntityRepository::class);
         return $entityRepository->findByType($typeIds, $order, $paginate);
     }
+
+    public function getRedirect()
+    {
+        $redirects = $this->entity->redirect_url;
+        $locale = $this->request->getArgonLocale();
+        if (isset($redirects->{$locale->getId()})) {
+            return $redirects->{$locale->getId()};
+        }
+        return null;
+
+    }
 }

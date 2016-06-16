@@ -60,9 +60,41 @@
                 @endif
             </ul>
 
-            @if(!$page->getGroups()->isEmpty())
+            <br>
 
-                <br>
+            <div class="card accordion">
+
+                <div class="card-header accordion-header">301 Redirect</div>
+
+                <div class="card-block accordion-body">
+
+                    @if($page->getLocalisations()->count() > 1)
+                        <div class="form-group">
+
+                            <label for="locale-redirect">Choose a locale redirect</label>
+                            <select id="locale-redirect" class="form-control inline field-poputale" data-target="#redirect-url">
+                                <option value="">Please select:</option>
+
+                                @foreach ($page->getLocalisations() as $l)
+                                    @if ($l->getId() != $localisation->getId())
+                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$page->toPage()->getUrl()}}@else{{$page->toPage()->getUrl()}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif</option>
+                                    @endif
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                    @endif
+                    <div class="form-group">
+                        <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
+                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $page->toPage()->getRedirect()) }}">
+                    </div>
+
+                </div>
+
+            </div>
+
+            @if(!$page->getGroups()->isEmpty())
 
                 @foreach($page->getGroups() as $group)
 

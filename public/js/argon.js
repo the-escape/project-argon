@@ -98,6 +98,17 @@ $(document).on('click', '.field-remove', function(e) {
     }
 });
 
+$(document).on('change', '.field-poputale', function(e) {
+    var $this = $(this);
+    var value = $this.val();
+    if (value.replace(/\s*/g, '') != '') {
+        var $target = $($this.data('target'));
+        if ($target.length) {
+            $target.val(value);
+        }
+    }
+});
+
 
 
 

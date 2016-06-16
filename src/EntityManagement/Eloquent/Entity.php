@@ -37,7 +37,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url'];
 
     public function addChild(Entity $child)
     {
@@ -117,4 +117,15 @@ class Entity extends Model
     {
         return new Page($this, $request);
     }
+
+    public function setRedirectUrlAttribute($value)
+    {
+        $this->attributes['redirect_url'] = json_encode($value);
+    }
+
+    public function getRedirectUrlAttribute($value)
+    {
+        return json_decode($value);
+    }
+
 }

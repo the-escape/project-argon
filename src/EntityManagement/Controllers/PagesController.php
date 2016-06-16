@@ -134,6 +134,12 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
+        $redirect_url = new \stdClass();
+        $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
+
+        $entity = $entityRepository->update(Input::only(['redirect_url']), $entity->id);
+
         return Redirect::route(
             'cms:pages:edit_locale',
             ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
@@ -189,13 +195,17 @@ class PagesController extends BaseController
             $request->merge(['slug' => '/']);
         }
 
+        $redirect_url = ($page->redirect_url instanceof \stdClass) ? $page->redirect_url : new \stdClass();
+        $redirect_url->{$localeId} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
+
         $messages = [];
 
         list($niceNames, $rules, $messages) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules, $messages);
 
         $this->validate($this->request, $rules, $messages, $niceNames);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status']), $pageId);
+        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
