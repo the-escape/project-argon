@@ -185,7 +185,7 @@ class Page
     public function getByType(array $typeIds, array $order=[], $paginate=null)
     {
         $entityRepository = app()->make(EntityRepository::class);
-        return $entityRepository->findByType($typeIds, $order, $paginate);
+        return $entityRepository->findByTypeId($typeIds, $order, $paginate);
     }
 
     public function getRedirect($localeId=null)
