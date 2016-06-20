@@ -80,13 +80,13 @@ class EntityRepository extends BaseRepository
 
 
     /**
-     * Returns entities specified by type(s).
+     * Returns entities specified by type id(s).
      * @param array $typeIds - array of entity_type_id
      * @param array $order - array of column names from entities table
      * @param int $paginate - number of items per page
      * @return mixed Collection|LengthAwarePaginator - depending on paginate parameter
      */
-    public function findByType(array $typeIds, array $order=[], $paginate=null)
+    public function findByTypeId(array $typeIds, array $order=[], $paginate=null)
     {
         $r = $this->model->whereIn('entity_type_id', $typeIds);
 
