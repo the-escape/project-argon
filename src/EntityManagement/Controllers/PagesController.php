@@ -195,15 +195,15 @@ class PagesController extends BaseController
             $request->merge(['slug' => '/']);
         }
 
-        $redirect_url = ($page->redirect_url instanceof \stdClass) ? $page->redirect_url : new \stdClass();
-        $redirect_url->{$localeId} = $request->input('redirect_url');
-        $request->merge(['redirect_url' => $redirect_url]);
-
         $messages = [];
 
         list($niceNames, $rules, $messages) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules, $messages);
 
         $this->validate($this->request, $rules, $messages, $niceNames);
+
+        $redirect_url = ($page->redirect_url instanceof \stdClass) ? $page->redirect_url : new \stdClass();
+        $redirect_url->{$localeId} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
 
         $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url']), $pageId);
 
