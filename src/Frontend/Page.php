@@ -178,7 +178,7 @@ class Page
         if ($block === null) {
             throw new \RuntimeException("Undefined block '{$name}'.");
         }
-        return $block->toPage();
+        return $block->toPage($this->request);
     }
 
 
@@ -200,5 +200,10 @@ class Page
         }
         return null;
 
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
     }
 }
