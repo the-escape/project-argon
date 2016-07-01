@@ -117,7 +117,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
             $currentIteration = current($this->data);
         }
 
-        if (array_key_exists($field->getId(), $currentIteration->fields)) {
+        if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($field->getId(), $currentIteration->fields)) {
             $value = $currentIteration->fields[$field->getId()];
         } else {
             $value = $field->getInitialValue();
@@ -126,5 +126,18 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         $fieldData = new FieldData();
         $fieldData->value = $value;
         return $field->parseData($fieldData);
+    }
+
+
+    public function fieldExists($field_slug)
+    {
+        $fields = $field = $this->subfields;
+        foreach ($fields as $field) {
+            $fs = $field->getField()->field_slug;
+            if ($field_slug == $fs) {
+                return true;
+            }
+        }
+        return false;
     }
 }

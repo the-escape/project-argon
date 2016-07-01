@@ -189,6 +189,11 @@ abstract class AbstractFieldType
         return null;
     }
 
+    public function getField()
+    {
+        return $this->field;
+    }
+
     abstract public function parseData(FieldData $data);
 
     abstract public function render($value = null, $data = []);
