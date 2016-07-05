@@ -5,6 +5,7 @@ namespace Escape\Argon\Frontend;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Illuminate\Support\Collection;
 
 class Page
 {
@@ -182,7 +183,7 @@ class Page
     }
 
 
-    public function getByType(array $typeIds, array $order=[], $paginate=null)
+    public function findByTypeId(array $typeIds, array $order=[], $paginate=null)
     {
         $entityRepository = app()->make(EntityRepository::class);
         return $entityRepository->findByTypeId($typeIds, $order, $paginate);
@@ -206,4 +207,16 @@ class Page
     {
         return $this->request;
     }
+
+    public function findWhere(array $where , $columns = array('*'))
+    {
+        $entityRepository = app()->make(EntityRepository::class);
+        $results = $entityRepository->findWhere($where, $columns);
+        $r = new Collection();
+        foreach ($results as $result) {
+            $r->push($result->toPage($this->request));
+        }
+        return $r;
+    }
+
 }
