@@ -33,6 +33,8 @@
 
     $wysiwyg_config_height = $field->getSetting('height');
 
+    $wysiwyg_config_extraAllowedContent = $field->getSetting('iframe');
+
 ?>
 
 @if(!$isCloning)
@@ -50,7 +52,7 @@
                 <div class="input-group-addon sortable-handle">&#8645;</div>
         @endif
 
-            <textarea name="{{ $field->getFormFieldName($hash) }}" class="form-control ckeditor @if($field->isRequired()) required @endif" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}">{{ $v }}</textarea>
+            <textarea name="{{ $field->getFormFieldName($hash) }}" class="form-control ckeditor @if($field->isRequired()) required @endif" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}" data-wysiwyg_extraAllowedContent="{{$wysiwyg_config_extraAllowedContent}}">{{ $v }}</textarea>
 
         @if($field->allowMultiple())
                 <div class="input-group-addon field-remove">&#10005;</div>

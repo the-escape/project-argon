@@ -477,6 +477,12 @@ var WYSIWYG = {
             : [CKEDITOR.config.default_toolbar];
     },
 
+    getExtraAllowedContent: function(el) {
+        return (typeof el.dataset.wysiwyg_extraAllowedContent !== 'undefined')
+            ? [el.dataset.wysiwyg_extraAllowedContent.split(',')]
+            : [CKEDITOR.config.default_extraAllowedContent];
+    },
+
     getFormatTagsOptions: function(el) {
         // Wysiwyg enabless 'p' tag regardless of settings, It will not show it in a Format dropdown when not explicitly enebled, but will allow within editor regardless...
         // Just make it permanently enabled. Simples! ?>
@@ -526,6 +532,7 @@ var WYSIWYG = {
             $('.ckeditor').each(function(i, el)
             {
                 CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
+                CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
                 CKEDITOR.config.height = WYSIWYG.getHeight(el);
                 CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
                 CKEDITOR.config.on = {
@@ -545,8 +552,10 @@ var WYSIWYG = {
         CKEDITOR.config.default_height = 150;
         CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
         CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
+        CKEDITOR.config.default_extraAllowedContent = 'iframe[*]';
 
         CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
+        CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
         CKEDITOR.config.height = WYSIWYG.getHeight(el);
         CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
         CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config

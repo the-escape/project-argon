@@ -180,6 +180,13 @@ class WysiwygFieldType extends AbstractFieldType
             'help' => "Enable 'Unlink' option.",
             'toolbar' => 'Unlink',
         ],
+        'iframe' => [
+            'label' => 'Iframe',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Enable 'Iframe' option.",
+            'toolbar' => 'Iframe',
+        ],
     ];
 
     public function parseData(FieldData $data = null)
