@@ -61,45 +61,8 @@
 @stop
 
 @section('footer')
-    <script src="/argon/js/dropzone.min.js"></script>
-    <script>
-        var dropzone = new Dropzone(
-            'form.dz',
-            {
-                url: '/admin/media/upload',
-                clickable: '.btn-upload',
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                thumbnailWidth: 100,
-                thumbnailHeight: 100,
-                previewTemplate: $('#preview-template').html(),
-                previewsContainer: '.media-library .files',
-            }
-        );
-        dropzone.on('success', function(e, response) {
-            loadItems($('#current-folder').val());
-        });
 
-        dropzone.on('error', function(file, errorMessage, xhr) {
-            console.log(errorMessage);
-        });
 
-        dropzone.on('uploadprogress', function(file, progress, bytesSent) {
-            $('progress', file.previewElement).val(progress);
-
-            if (progress == 100) {
-                $('progress', file.previewElement).hide();
-            }
-        });
-
-        dropzone.on('addedfile', function(file) {
-//            console.log(file);
-            sortItems();
-        });
-    </script>
-
-    <script src="/argon/js/jstree.min.js"></script>
     <script>
         var folders = $('#folders');
 
@@ -263,19 +226,19 @@
             }
         }
 
-        function sortItems() {
-            var list = $('.files .media-item').get();
-            list.sort(compareItems);
-            for (var i = 0; i < list.length; i++) {
-                list[i].parentNode.appendChild(list[i]);
-            }
-        }
+//        function sortItems() {
+//            var list = $('.files .media-item').get();
+//            list.sort(compareItems);
+//            for (var i = 0; i < list.length; i++) {
+//                list[i].parentNode.appendChild(list[i]);
+//            }
+//        }
 
-        function compareItems(a, b) {
-            var nameA = $(a).find('.filename').text(),
-                nameB = $(b).find('.filename').text();
-            return nameA.localeCompare(nameB);
-        }
+//        function compareItems(a, b) {
+//            var nameA = $(a).find('.filename').text(),
+//                nameB = $(b).find('.filename').text();
+//            return nameA.localeCompare(nameB);
+//        }
 
     </script>
 @stop

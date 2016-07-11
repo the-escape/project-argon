@@ -5,7 +5,7 @@ folders.on("changed.jstree", function (e, data) {
         var id = data.selected[0].split('-')[1];
 
         $('#selectedMediaItem').val('');
-        $('#medialibrary .btn-primary').prop('disabled', true);
+        $('#medialibrary .btn-submit').prop('disabled', true);
         loadItems(id);
     }
 });
@@ -31,7 +31,7 @@ argon.dialog.medialibrary = function (settings, callback) {
     folders.jstree().deselect_all();
     folders.jstree().select_node(['[data-id=1]']);
     $('#selectedMediaItem').val('');
-    $('#medialibrary .btn-primary').prop('disabled', true);
+    $('#medialibrary .btn-submit').prop('disabled', true);
     $('#medialibrary .media-item').removeClass('selected');
 
     $('#medialibrary').off('hidden.bs.modal');
@@ -100,10 +100,10 @@ $('.files').on('click', '.media-item', function() {
 
     $('#selectedMediaItem').val(id);
 
-    $('#medialibrary .btn-primary').prop('disabled', false);
+    $('#medialibrary .btn-submit').prop('disabled', false);
 });
 
-$('#medialibrary .btn-primary').on('click', function() {
+$('#medialibrary .btn-submit').on('click', function() {
     $('#medialibrary').modal('hide');
 });
 
