@@ -84,6 +84,9 @@
                     <h4 class="modal-title" id="medialibraryLabel">Media Library</h4>
                 </div>
                 <div class="modal-body">
+
+                    <button type="button" class="btn btn-primary btn-upload">Upload</button>
+
                     <div class="media-library" style="position: relative;">
                         <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
                             <div class="folders">
@@ -102,7 +105,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" disabled>Select</button>
+                    <button type="button" class="btn btn-primary btn-submit" disabled>Select</button>
                 </div>
             </div>
         </div>
