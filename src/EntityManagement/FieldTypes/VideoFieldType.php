@@ -44,9 +44,14 @@ class VideoFieldType extends AbstractFieldType
         ],
     ];
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new VideoFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new VideoFieldValue($data->value);
+        }
+
+        return new VideoFieldValue($data);
     }
 
 

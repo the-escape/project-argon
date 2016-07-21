@@ -191,7 +191,12 @@ class WysiwygFieldType extends AbstractFieldType
 
     public function parseData(FieldData $data = null)
     {
-        return new WysiwygFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new WysiwygFieldValue($data->value);
+        }
+
+        return new WysiwygFieldValue($data);
     }
 
     public function render($value = null, $data = [])

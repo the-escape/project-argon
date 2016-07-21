@@ -76,9 +76,14 @@ class TextFieldType extends AbstractFieldType
         ],
     ];
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new TextFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new TextFieldValue($data->value);
+        }
+
+        return new TextFieldValue($data);
     }
 
     public function isMultiline()

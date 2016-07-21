@@ -33,9 +33,14 @@ class ItemFieldType extends AbstractFieldType
         ],
     ];
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new ItemFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new ItemFieldValue($data->value);
+        }
+
+        return new ItemFieldValue($data);
     }
 
     public function getOptions()

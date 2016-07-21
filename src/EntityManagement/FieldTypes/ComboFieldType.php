@@ -42,9 +42,14 @@ class ComboFieldType extends AbstractFieldType
         return $subFields;
     }
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new ComboFieldValue($data->value, $this->getSubfields());
+        if ($data instanceof FieldData)
+        {
+            return new ComboFieldValue($data->value, $this->getSubfields());
+        }
+
+        return new ComboFieldValue($data, $this->getSubfields());
     }
 
     public function render($value = null, $data = [])

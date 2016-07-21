@@ -24,9 +24,14 @@ class BooleanFieldType extends AbstractFieldType
         ]
     ];
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new BooleanFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new BooleanFieldValue($data->value);
+        }
+
+        return new BooleanFieldValue($data);
     }
 
     public function getInitialValue()

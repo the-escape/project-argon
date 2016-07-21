@@ -38,9 +38,14 @@ class DatetimeFieldType extends AbstractFieldType
         return parent::getFormFieldName($hash) . '[]';
     }
 
-    public function parseData(FieldData $data)
+    public function parseData(FieldData $data = null)
     {
-        return new DatetimeFieldValue($data->value);
+        if ($data instanceof FieldData)
+        {
+            return new DatetimeFieldValue($data->value);
+        }
+
+        return new DatetimeFieldValue($data);
     }
 
     public function timeEnabled()
