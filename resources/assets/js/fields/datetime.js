@@ -39,6 +39,12 @@ var datetime = (function () {
             var $fieldDateime = $(this).parents('.field-datetime');
             $fieldDateime.find('.calendar').addClass('active');
         });
+
+        $('.field-datetime').keyup(function(e) {
+            if (e.keyCode == 27) { // escape key maps to keycode `27`
+                $('.calendar').removeClass('active');
+            }
+        });
     }
 
     function updateValue(field)
