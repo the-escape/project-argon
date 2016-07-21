@@ -2,36 +2,39 @@
     $requiredClass = $field->isRequired() ? 'required' : '';
 ?>
 
-<div class="field-{{ $field->getId() }} field-datetime {{ $requiredClass }}"
+<div class="field field-{{ $field->getId() }} field-datetime {{ $requiredClass }}"
      data-time-enabled="{{ $field->timeEnabled() ? 'true' : 'false' }}"
      data-seconds-enabled="{{ $field->timeEnabled() && $field->secondsEnabled() ? 'true' : 'false' }}"
 >
     <label class="{{ $requiredClass }}">{{ $field->getFieldName() }}</label>
+    <div class="field-values">
 
-    <div class="calendar" data-datetime="{{ $value->format('Y-m-d') }}">
-    </div>
+        <div class="calendar" data-datetime="{{ $value->format('Y-m-d') }}">
+        </div>
 
-    @if ($field->timeEnabled())
-        <select class="hours">
-            @foreach (range(0, 23) as $h)
-                <option value="{{ sprintf('%02d', $h) }}" @if($value->hour == $h) selected @endif>{{ sprintf('%02d', $h) }}</option>
-            @endforeach
-        </select>
-        :
-        <select class="minutes">
-            @foreach (range(0, 59) as $m)
-                <option value="{{ sprintf('%02d', $m) }}" @if($value->minute == $m) selected @endif>{{ sprintf('%02d', $m) }}</option>
-            @endforeach
-        </select>
-        @if ($field->secondsEnabled())
-            :
-            <select class="seconds">
-                @foreach (range(0, 59) as $s)
-                    <option value="{{ sprintf('%02d', $s) }}" @if($value->second == $s) selected @endif>{{ sprintf('%02d', $s) }}</option>
+        @if ($field->timeEnabled())
+            <select class="hours">
+                @foreach (range(0, 23) as $h)
+                    <option value="{{ sprintf('%02d', $h) }}" @if($value->hour == $h) selected @endif>{{ sprintf('%02d', $h) }}</option>
                 @endforeach
             </select>
-        @endif
+            :
+            <select class="minutes">
+                @foreach (range(0, 59) as $m)
+                    <option value="{{ sprintf('%02d', $m) }}" @if($value->minute == $m) selected @endif>{{ sprintf('%02d', $m) }}</option>
+                @endforeach
+            </select>
+            @if ($field->secondsEnabled())
+                :
+                <select class="seconds">
+                    @foreach (range(0, 59) as $s)
+                        <option value="{{ sprintf('%02d', $s) }}" @if($value->second == $s) selected @endif>{{ sprintf('%02d', $s) }}</option>
+                    @endforeach
+                </select>
+            @endif
 
-    @endif
-    <input type="text" class="value" id="field-{{ $field->getId() }}" name="{{ $field->getFormFieldName($hash) }}" value="{{$value->format('Y-m-d H:i:s')}}">
+        @endif
+        <input type="text" class="value" id="field-{{ $field->getId() }}" name="{{ $field->getFormFieldName($hash) }}" value="{{$value->format('Y-m-d H:i:s')}}">
+
+    </div>
 </div>

@@ -18,8 +18,11 @@
 
     @foreach($value as $k => $v)
 
-        <div class="input-group sortable-item">
-            <div class="input-group-addon sortable-handle">&#8645;</div>
+
+        @if($field->allowMultiple())
+            <div class="input-group sortable-item">
+                <div class="input-group-addon sortable-handle">&#8645;</div>
+        @endif
 
             <select name="{{ $field->getFormFieldName($hash) }}" class="form-control">
 
@@ -31,8 +34,10 @@
 
             </select>
 
+        @if($field->allowMultiple())
             <div class="input-group-addon field-remove">&#10005;</div>
-        </div>
+            </div>
+        @endif
 
     @endforeach
 

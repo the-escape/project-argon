@@ -60,6 +60,12 @@ class SelectFieldType extends AbstractFieldType
             $value = new SelectFieldValue();
         }
 
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
+        }
+
         $data = array_merge(
             ['hash' => ''],
             $data,

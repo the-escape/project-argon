@@ -39,16 +39,16 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
      */
     public function getValue()
     {
-        if ($this->isUnset()) {
+        if ($this->isEmpty()) {
             return null;
         }
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $this->data);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $this->data[0]);
         return $date;
     }
 
     public function getIterator()
     {
-        if ($this->isUnset()) {
+        if ($this->isEmpty()) {
             $data = [''];
         } else {
             $data = $this->getValue();
@@ -99,7 +99,7 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
             case 'tzName':
             case 'offset':
             case 'offsetHours':
-                if ($this->isUnset()) {
+                if ($this->isEmpty()) {
                     return "";
                 }
                 return $this->getValue()->$name;
@@ -135,7 +135,7 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
 
     public function format($format)
     {
-        if ($this->isUnset()) {
+        if ($this->isEmpty()) {
             return "";
         }
         return $this->getValue()->format($format);

@@ -4694,6 +4694,18 @@ body.dashboard {
     margin-bottom: 0.45rem; }
   body.dashboard .files + .field-add-file {
     margin-top: 0.75rem; }
+  body.dashboard .field-datetime {
+    position: relative; }
+    body.dashboard .field-datetime .calendar {
+      display: none;
+      position: absolute;
+      bottom: 35px;
+      background: #fff;
+      z-index: 10;
+      border: 1px solid #ccc;
+      border-radius: 0.25rem; }
+      body.dashboard .field-datetime .calendar.active {
+        display: block; }
   body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }
