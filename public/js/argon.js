@@ -209,6 +209,7 @@ var datetime = (function () {
         });
 
         $('.field-datetime').on('focus', '.value', function(e) {
+            $('.calendar').removeClass('active');
             var $fieldDateime = $(this).parents('.field-datetime');
             $fieldDateime.find('.calendar').addClass('active');
         });
