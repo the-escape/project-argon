@@ -212,18 +212,14 @@ var datetime = (function () {
             var $fieldDateime = $(this).parents('.field-datetime');
             $fieldDateime.find('.calendar').addClass('active');
         });
-        $('.field-datetime').on('blur', '.value', function(e) {
-            var $fieldDateime = $(this).parents('.field-datetime');
-            $fieldDateime.find('.calendar').removeClass('active');
-        });
-
     }
 
     function updateValue(field)
     {
         var time, datetime = [];
-        var date = $('.calendar', field).datepicker('getFormattedDate');
-
+        var $calendar = $('.calendar', field);
+        var date = $calendar.datepicker('getFormattedDate');
+        $calendar.removeClass('active');
         if (date == "") {
             $('.value', field).val('');
             return;

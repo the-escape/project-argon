@@ -42,7 +42,8 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
         if ($this->isEmpty()) {
             return null;
         }
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $this->data[0]);
+        $data = is_array($this->data) ? $this->data[0] : $this->data;
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $data);
         return $date;
     }
 
