@@ -70,6 +70,9 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
     /** Carbon imitation functions */
     public function __toString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->__toString();
     }
 
@@ -111,26 +114,41 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
 
     public function toDateTimeString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->__toString();
     }
 
     public function toDateString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->toDateString();
     }
 
     public function toFormattedDateString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->toFormattedDateString();
     }
 
     public function toTimeString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->toTimeString();
     }
 
     public function toDayDateTimeString()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
         return $this->getValue()->toDayDateTimeString();
     }
 
@@ -153,36 +171,57 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
 
     public function eq($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->eq($this->standardise($other));
     }
 
     public function ne($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->ne($this->standardise($other));
     }
 
     public function gt($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->gt($this->standardise($other));
     }
 
     public function gte($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->gte($this->standardise($other));
     }
 
     public function lt($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->lt($this->standardise($other));
     }
 
     public function lte($other)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->lte($this->standardise($other));
     }
 
     public function between($first, $second)
     {
+        if ($this->isEmpty()) {
+            throw new \RuntimeException("Empty datetime value. Carbon time comparison not feasible.");
+        }
         return $this->getValue()->between($this->standardise($first), $this->standardise($second));
     }
 }
