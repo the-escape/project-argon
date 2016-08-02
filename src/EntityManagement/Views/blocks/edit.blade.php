@@ -49,33 +49,46 @@
                 @endif
             </ul>
 
-            @if(!$page->getGroups()->isEmpty())
+            <br>
 
-                <br>
+            @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
-                @foreach($page->getGroups() as $group)
+                <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order">
 
-                    <div class="card accordion">
+                <div class="sortable" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
 
-                        <div class="card-header accordion-header">{{ $group->name }}</div>
+                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
 
-                        <div class="card-block accordion-body">
+                        <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
 
-                            @foreach ($group->getFields() as $field)
+                            <div class="card accordion">
 
-                                <div class="form-group sortable">
+                                <div class="card-header accordion-header">
+                                    <span class="sortable-handle">&#8645;</span>
+                                    {{ $group->name }}
+                                </div>
 
-                                    {!! $field->render($latest->getField($field->getId())) !!}
+                                <div class="card-block accordion-body">
+
+                                    @foreach ($group->getFields() as $field)
+
+                                        <div class="form-group sortable">
+
+                                            {!! $field->render($latest->getField($field->getId())) !!}
+
+                                        </div>
+
+                                    @endforeach
 
                                 </div>
 
-                            @endforeach
+                            </div>
 
                         </div>
 
-                    </div>
+                    @endforeach
 
-                @endforeach
+                </div>
 
             @endif
 
