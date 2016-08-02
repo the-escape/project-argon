@@ -11,6 +11,7 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Escape\Argon\Core\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * Class Entity
@@ -37,7 +38,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order'];
 
     public function addChild(Entity $child)
     {
@@ -97,15 +98,42 @@ class Entity extends Model
         return $this->localisations;
     }
 
-    public function getGroups()
+    public function getGroups($locale_id)
     {
         /** @var EntityGroupRepository $repo */
         $repo = app()->make(EntityGroupRepository::class);
-        return $repo->getUsedGroupsByEntityType($this->type->id)->each(
+        $groups =  $repo->getUsedGroupsByEntityType($this->type->id)->each(
             function (EntityGroup $item) {
                 $item->setEntity($this);
             }
         );
+
+        if ($group_order = $this->getGroupOrder($locale_id)) {
+
+            $ordered = new Collection;
+
+            foreach ($group_order as $group_id) {
+                foreach ($groups as $group) {
+                    if ($group->id == $group_id) {
+                        $ordered->push($group);
+                    }
+                }
+            }
+
+            $groups = $ordered;
+        }
+
+        return $groups;
+    }
+
+    public function getGroupOrder($locale_id)
+    {
+        $group_order = [];
+        $page_group_order = $this->group_order;
+        if (($this->group_order instanceof \stdClass) && property_exists($page_group_order, $locale_id)) {
+            $group_order = array_filter(explode(',', $page_group_order->$locale_id));
+        }
+        return $group_order;
     }
 
     public function getId()
@@ -124,6 +152,16 @@ class Entity extends Model
     }
 
     public function getRedirectUrlAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setGrouporderAttribute($value)
+    {
+        $this->attributes['group_order'] = json_encode($value);
+    }
+
+    public function getGrouporderAttribute($value)
     {
         return json_decode($value);
     }

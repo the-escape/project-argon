@@ -4672,6 +4672,8 @@ body.dashboard {
     width: 100%; }
   body.dashboard .input-group .form-control:last-child {
     border-radius: 0.25rem; }
+  body.dashboard .input-group > .card {
+    margin-bottom: 0; }
   body.dashboard .form-control + .field-clone,
   body.dashboard .input-group + .field-clone,
   body.dashboard .form-control + .input-group,
@@ -4706,6 +4708,8 @@ body.dashboard {
       border-radius: 0.25rem; }
       body.dashboard .field-datetime .calendar.active {
         display: block; }
+  body.dashboard .sortable + .btn {
+    margin-top: 0.75rem; }
   body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }

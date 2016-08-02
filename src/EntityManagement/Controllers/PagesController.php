@@ -138,7 +138,11 @@ class PagesController extends BaseController
         $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
         $request->merge(['redirect_url' => $redirect_url]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url']), $entity->id);
+        $group_order = new \stdClass();
+        $group_order->{$localisation->getLocaleId()} = $request->input('group_order');
+        $request->merge(['group_order' => $group_order]);
+
+        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order']), $entity->id);
 
         return Redirect::route(
             'cms:pages:edit_locale',
@@ -205,7 +209,11 @@ class PagesController extends BaseController
         $redirect_url->{$localeId} = $request->input('redirect_url');
         $request->merge(['redirect_url' => $redirect_url]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url']), $pageId);
+        $group_order = ($page->group_order instanceof \stdClass) ? $page->group_order : new \stdClass();
+        $group_order->{$localeId} = $request->input('group_order');
+        $request->merge(['group_order' => $group_order]);
+
+        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,

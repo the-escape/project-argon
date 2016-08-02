@@ -97,6 +97,10 @@ body.dashboard {
         border-radius: $standard-border-radius;
     }
 
+    .input-group > .card {
+        margin-bottom: 0;
+    }
+
     .form-control + .field-clone,
     .input-group + .field-clone,
     .form-control + .input-group,
@@ -150,6 +154,10 @@ body.dashboard {
             }
         }
     }
+
+    .sortable + .btn {
+        margin-top: $standard-margin;
+    } 
 
     .sortable-handle,
     .field-remove {

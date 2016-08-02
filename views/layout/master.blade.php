@@ -261,7 +261,7 @@
             {
                 var data = [];
 
-                $(this).find('.sortable-item').each(function(i, el){
+                $(this).children('.sortable-item').each(function(i, el){
                     data.push($(el).data('sortable_item'));
                 });
 
