@@ -203,6 +203,15 @@ class Page
 
     }
 
+    public function getGroupOrder($localeId=null)
+    {
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->getGroupOrder($localeId);
+    }
+
     public function getRequest()
     {
         return $this->request;
