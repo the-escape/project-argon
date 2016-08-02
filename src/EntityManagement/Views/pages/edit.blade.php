@@ -19,7 +19,18 @@
         <form action="{{ route('cms:pages:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
-                <div class="card-header">Details</div>
+                <div class="card-header">
+                    Details
+
+                    @foreach ($page->getLocalisations() as $l)
+
+                        @if ($l->getId() == $localisation->getId())
+                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
+                        @endif
+
+                    @endforeach
+
+                </div>
                 <div class="card-block">
                     <div class="form-group">
                         <label for="name" class="required">Name</label>

@@ -4630,6 +4630,10 @@ body.dashboard {
     border-top: 1px dotted #000; }
   body.dashboard .navbar-fixed-top {
     border: 0; }
+  body.dashboard .view-page {
+    float: right;
+    position: relative;
+    top: -4px; }
   body.dashboard .box {
     padding: 20px;
     margin: 20px 0;
