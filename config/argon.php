@@ -7,6 +7,7 @@ return [
     'highlight_color' => '#0275d8',
     'highlight_color_darker' => '#014c8c',
     'neutral_color' => '#373a3c',
+    'logo_admin_width' => 'auto',
 
     // content type Id to view template mapping
     'views' => [
