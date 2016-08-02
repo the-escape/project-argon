@@ -55,7 +55,7 @@
 
                 <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order">
 
-                <div class="sortable" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
+                <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
 
                     @foreach($page->getGroups($localisation->getLocaleId()) as $group)
 

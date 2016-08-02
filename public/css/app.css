@@ -4712,8 +4712,8 @@ body.dashboard {
       border-radius: 0.25rem; }
       body.dashboard .field-datetime .calendar.active {
         display: block; }
-  body.dashboard .sortable + .btn {
-    margin-top: 0.75rem; }
+  body.dashboard .sortable-groups {
+    margin-bottom: 0.75rem; }
   body.dashboard .sortable-handle,
   body.dashboard .field-remove {
     cursor: pointer; }
