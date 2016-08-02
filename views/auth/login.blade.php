@@ -7,6 +7,13 @@
     <meta name="author" content="The Escape" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/argon/css/app.css">
+    <style>
+
+        .logo-admin-login {
+            width: {{config('argon.logo_admin_login_width', 'auto')}};
+        }
+
+    </style>
 </head>
 <body class="argon-login">
 <div class="container">
@@ -15,7 +22,7 @@
 
             <div style="padding: 20px 0 10px;">
                 <h1>
-                    <img src="{{config('argon.client_logo_dark', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
+                    <img lass="logo-admin-login" src="{{config('argon.client_logo_dark', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
                 </h1>
 
                 <h4>Login</h4>
