@@ -139,7 +139,7 @@ class PagesController extends BaseController
         $request->merge(['redirect_url' => $redirect_url]);
 
         $group_order = new \stdClass();
-        $group_order->{$localisation->getLocaleId()} = $request->input('group_order');
+        $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order']), $entity->id);
@@ -210,7 +210,7 @@ class PagesController extends BaseController
         $request->merge(['redirect_url' => $redirect_url]);
 
         $group_order = ($page->group_order instanceof \stdClass) ? $page->group_order : new \stdClass();
-        $group_order->{$localeId} = $request->input('group_order');
+        $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
         $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order']), $pageId);

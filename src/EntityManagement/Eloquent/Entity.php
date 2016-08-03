@@ -108,15 +108,22 @@ class Entity extends Model
             }
         );
 
-        if ($group_order = $this->getGroupOrder($locale_id)) {
+        if (($this->group_order instanceof \stdClass) && property_exists($this->group_order, $locale_id)) {
+            $group_order = array_filter(explode(',', $this->group_order->$locale_id));
 
             $ordered = new Collection;
 
             foreach ($group_order as $group_id) {
-                foreach ($groups as $group) {
+                foreach ($groups as $idx => $group) {
                     if ($group->id == $group_id) {
-                        $ordered->push($group);
+                        $ordered->push($groups->pull($idx));
                     }
+                }
+            }
+
+            if(!$groups->isEmpty()){
+                foreach ($groups as $idx => $group) {
+                    $ordered->push($groups->pull($idx));
                 }
             }
 
@@ -128,12 +135,17 @@ class Entity extends Model
 
     public function getGroupOrder($locale_id)
     {
-        $group_order = [];
-        $page_group_order = $this->group_order;
-        if (($this->group_order instanceof \stdClass) && property_exists($page_group_order, $locale_id)) {
-            $group_order = array_filter(explode(',', $page_group_order->$locale_id));
+        $order = [];
+        $groups = $this->getGroups($locale_id);
+        foreach ($groups as $group) {
+            $order[] = $group->id;
         }
-        return $group_order;
+        return $order;
+    }
+
+    public function getGroupOrderString($locale_id)
+    {
+        return implode(',', $this->getGroupOrder($locale_id));
     }
 
     public function getId()
