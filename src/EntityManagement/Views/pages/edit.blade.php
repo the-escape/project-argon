@@ -107,42 +107,68 @@
 
             @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
-                <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
+                @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
+                    <div class="card accordion">
 
-                <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
+                        <div class="card-header accordion-header">
+                            {{ $group->name }}
+                        </div>
 
-                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
+                        <div class="card-block accordion-body">
 
-                        <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+                            @foreach ($group->getFields() as $field)
 
-                            <div class="card accordion">
+                                <div class="form-group sortable">
 
-                                <div class="card-header accordion-header">
-                                    <span class="sortable-handle">&#8645;</span>
-                                    {{ $group->name }}
+                                    {!! $field->render($latest->getField($field->getId())) !!}
+
                                 </div>
 
-                                <div class="card-block accordion-body">
+                            @endforeach
 
-                                    @foreach ($group->getFields() as $field)
+                        </div>
 
-                                        <div class="form-group sortable">
+                    </div>
+                @endforeach
 
-                                            {!! $field->render($latest->getField($field->getId())) !!}
 
-                                        </div>
+                @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
+                    <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
+                    <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
 
-                                    @endforeach
+                        @foreach($page->getSortableGroups($localisation->getLocaleId()) as $group)
+
+                            <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+
+                                <div class="card accordion">
+
+                                    <div class="card-header accordion-header">
+                                        <span class="sortable-handle">&#8645;</span>
+                                        {{ $group->name }}
+                                    </div>
+
+                                    <div class="card-block accordion-body">
+
+                                        @foreach ($group->getFields() as $field)
+
+                                            <div class="form-group sortable">
+
+                                                {!! $field->render($latest->getField($field->getId())) !!}
+
+                                            </div>
+
+                                        @endforeach
+
+                                    </div>
 
                                 </div>
 
                             </div>
 
-                        </div>
-
-                    @endforeach
+                        @endforeach
 
                 </div>
+                @endif
 
             @endif
 
