@@ -16,6 +16,15 @@
                         <label for="name" class="required">Name</label>
                         <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name', $group->name) }}">
                     </div>
+
+                    <div class="form-group">
+                        <label for="sortable" class="required">
+                            <input type="hidden" value="0" name="sortable">
+                            <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'sortable') }}" @if($group->sortable) checked @endif id="sortable" name="sortable" value="1">
+                            Sortable
+                        </label>
+                    </div>
+
                 </div>
             </div>
 

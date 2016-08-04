@@ -133,10 +133,23 @@ class Entity extends Model
         return $groups;
     }
 
+    public function getSortableGroups($locale_id) {
+        return $this->getGroups($locale_id)->filter(function ($group) {
+            return $group->isSortable();
+        });
+    }
+
+    public function getNonSortableGroups($locale_id) {
+        return $this->getGroups($locale_id)->filter(function ($group) {
+            return !$group->isSortable();
+        });
+    }
+
+
     public function getGroupOrder($locale_id)
     {
         $order = [];
-        $groups = $this->getGroups($locale_id);
+        $groups = $this->getSortableGroups($locale_id);
         foreach ($groups as $group) {
             $order[] = $group->id;
         }
