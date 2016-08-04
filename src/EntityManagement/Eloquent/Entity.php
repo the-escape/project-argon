@@ -102,7 +102,7 @@ class Entity extends Model
     {
         /** @var EntityGroupRepository $repo */
         $repo = app()->make(EntityGroupRepository::class);
-        $groups =  $repo->getUsedGroupsByEntityType($this->type->id, 'order')->each(
+        $groups =  $repo->getUsedGroupsByEntityType($this->type->id, ['order', 'id'])->each(
             function (EntityGroup $item) {
                 $item->setEntity($this);
             }
