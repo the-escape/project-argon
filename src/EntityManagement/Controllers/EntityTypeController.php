@@ -26,9 +26,9 @@ class EntityTypeController extends BaseController
         $this->middleware('auth');
         $this->middleware('perm:cms:login');
         $this->middleware('perm:cms:content:manage');
-        $this->middleware('perm:cms:entity:type:manage');
-        $this->middleware('perm:cms:entity:type:create');
-        $this->middleware('perm:cms:entity:type:edit');
+        $this->middleware('perm:cms:entity:type:manage', ['except' => ['cloneField']]);
+        $this->middleware('perm:cms:entity:type:create', ['except' => ['cloneField']]);
+        $this->middleware('perm:cms:entity:type:edit', ['except' => ['cloneField']]);
 
         parent::__construct($request);
     }
