@@ -68,6 +68,12 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
+            'pages/{id}/revisions',
+            'cms:pages:revisions',
+            PagesController::class,
+            'revisions'
+        );
+        $this->addRoute(
             'pages/{id}/create_locale',
             'cms:pages:create_locale',
             PagesController::class,

@@ -296,4 +296,11 @@ class PagesController extends BaseController
         return json_encode(['success' => $result]);
     }
 
+    public function revisions($pageId, EntityRevisionRepository $entityRevisionRepository)
+    {
+        $revisions = $entityRevisionRepository->all();
+
+        return view('argon::pages.revisions')->with(compact('revisions'));
+    }
+
 }
