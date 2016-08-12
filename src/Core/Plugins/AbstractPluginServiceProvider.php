@@ -24,13 +24,13 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
     /** @var AssetsManager */
     protected $assetsManager;
 
-    public function addRoute($path, $name, $controller, $methodName, $verbs = 'GET')
+    public function addRoute($path, $name, $controller, $methodName, $verbs = 'GET', $admin = true)
     {
         if (is_string($verbs)) {
             $verbs = [$verbs];
         }
 
-        $prefix = config('argon.admin_route_prefix');
+        $prefix = $admin ? config('argon.admin_route_prefix') : null;
         $prefix = rtrim($prefix, "/") . '/';
 
         $isUniqueRoute = $this->isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix);

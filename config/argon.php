@@ -7,8 +7,6 @@ return [
     'highlight_color' => '#0275d8',
     'highlight_color_darker' => '#014c8c',
     'neutral_color' => '#373a3c',
-
-    // content type Id to view template mapping
-    'views' => [
-    ],
+    'sitemap_view' => 'argon::pages.sitemap',
+    'views' => []
 ];
