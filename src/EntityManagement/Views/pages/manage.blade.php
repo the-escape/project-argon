@@ -15,6 +15,7 @@
         <h1>Pages</h1>
 
         <a href="" id="edit-button" disabled class="btn btn-primary-outline btn-sm">Edit</a>
+        <a hred="" id="revision-button" disabled class="btn btn-primary-outline btn-sm">Revisions</a>
         <div class="btn-group add-child-dropdown">
             <button type="button" disabled class="btn btn-primary-outline btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Child</button>
             <div class="dropdown-menu">
@@ -65,6 +66,9 @@
                 $('#edit-button')
                     .prop('disabled', false)
                     .attr('href', 'pages/' + id + '/edit');
+                $('#revision-button')
+                    .prop('disabled', false)
+                    .attr('href', 'pages/' + id + '/revisions');
                 $('#delete-form')
                     .attr('action', argon.root() + '/pages/' + id);
                 $('#delete-form button')

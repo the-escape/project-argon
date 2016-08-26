@@ -296,7 +296,7 @@ class PagesController extends BaseController
         return json_encode(['success' => $result]);
     }
 
-    public function revisions($pageId, EntityRevisionRepository $entityRevisionRepository)
+    public function revisions(Entity $entity, EntityRevisionRepository $entityRevisionRepository)
     {
         $revisions = $entityRevisionRepository->all();
 

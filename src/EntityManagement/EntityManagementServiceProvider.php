@@ -68,7 +68,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
-            'pages/{id}/revisions',
+            'pages/{entity}/revisions',
             'cms:pages:revisions',
             PagesController::class,
             'revisions'

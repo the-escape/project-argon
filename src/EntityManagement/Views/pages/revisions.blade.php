@@ -15,6 +15,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Created</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +25,7 @@
                         <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
                         <td>
                             <a href="" class="btn btn-primary">Preview</a>
+                            <a href="" class="btn btn-primary">Restore</a>
                         </td>
                     </tr>
                 @endforeach
