@@ -192,7 +192,7 @@ class Entity extends Model
     }
 
 
-    public function groupRender($localeId, $groupId)
+    public function isGroupRender($localeId, $groupId)
     {
         $group_render = $this->group_render;
         return (bool) @$group_render->{$localeId}->{$groupId};

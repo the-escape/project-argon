@@ -117,7 +117,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->groupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
                                         Render?
                                     </label>
                                 </div>
@@ -160,7 +160,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                                    <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->groupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                                    <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
                                                     Render?
                                                 </label>
                                             </div>

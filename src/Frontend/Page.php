@@ -212,10 +212,37 @@ class Page
         return $this->entity->getGroupOrder($localeId);
     }
 
-    public function getRequest()
+    public function getRenderableGroupOrder($localeId=null)
     {
-        return $this->request;
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->getRenderableGroupOrder($localeId);
     }
+
+    public function isGroupRender($groupId, $localeId=null)
+    {
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->isGroupRender($localeId, $groupId);
+    }
+
+    public function getRenderedGroups()
+    {
+        $renderableGroups = $this->getRenderableGroupOrder();
+
+        $r = new Collection();
+        foreach ($renderableGroups as $renderableGroup) {
+            if ($this->isGroupRender($renderableGroup)) {
+                $r->push($renderableGroup);
+            }
+        }
+        return $r;
+    }
+
 
     public function findWhere(array $where , $columns = array('*'))
     {
@@ -226,6 +253,11 @@ class Page
             $r->push($result->toPage($this->request));
         }
         return $r;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
     }
 
 }

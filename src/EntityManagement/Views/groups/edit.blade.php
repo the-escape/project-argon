@@ -25,13 +25,15 @@
                         </label>
                     </div>
 
-                    <div class="form-group">
-                        <label for="renderable">
-                            <input type="hidden" value="0" name="renderable">
-                            <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'renderable') }}" @if($group->renderable) checked @endif id="renderable" name="renderable" value="1">
-                            Renderable
-                        </label>
-                    </div>
+                    @if($type->isPage())
+                        <div class="form-group">
+                            <label for="renderable">
+                                <input type="hidden" value="0" name="renderable">
+                                <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'renderable') }}" @if($group->renderable) checked @endif id="renderable" name="renderable" value="1">
+                                Renderable
+                            </label>
+                        </div>
+                    @endif
 
                 </div>
             </div>

@@ -71,4 +71,19 @@ class EntityType extends Model
     {
         return $this->id;
     }
+
+    public function isBlock()
+    {
+        return $this->type == 'block';
+    }
+
+    public function isPage()
+    {
+        return $this->type == 'page';
+    }
+
+    public function isEmail()
+    {
+        return $this->type == 'email';
+    }
 }
