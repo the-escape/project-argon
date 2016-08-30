@@ -87,6 +87,19 @@ body.dashboard {
             cursor: pointer;
             position: relative;
             outline: none;
+
+            .checkbox {
+                display: inline-block;
+                float: right;
+                margin: 0;
+                padding: 0 4px;
+                border-radius: $standard-border-radius;
+
+                &.hover {
+                    background-color: $standard-input-border-color;
+
+                }
+            }
         }
 
     }

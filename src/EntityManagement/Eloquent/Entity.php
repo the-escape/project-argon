@@ -38,7 +38,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render'];
 
     public function addChild(Entity $child)
     {
@@ -168,6 +168,44 @@ class Entity extends Model
         return implode(',', $this->getGroupOrder($locale_id));
     }
 
+
+
+    public function getRenderableGroups($locale_id) {
+        return $this->getGroups($locale_id)->filter(function ($group) {
+            return $group->isRenderable();
+        });
+    }
+
+    public function getNonRenderableGroups($locale_id) {
+        return $this->getGroups($locale_id)->filter(function ($group) {
+            return !$group->isRenderable();
+        });
+    }
+
+
+    public function getRenderableGroupOrder($locale_id)
+    {
+        $order = [];
+        $groups = $this->getRenderableGroups($locale_id);
+        foreach ($groups as $group) {
+            $order[] = $group->id;
+        }
+        return $order;
+    }
+
+    public function getRenderableGroupOrderString($locale_id)
+    {
+        return implode(',', $this->getRenderableGroupOrder($locale_id));
+    }
+
+
+    public function groupRender($localeId, $groupId)
+    {
+        $group_render = $this->group_render;
+        return (bool) @$group_render->{$localeId}->{$groupId};
+    }
+
+
     public function getId()
     {
         return $this->id;
@@ -188,12 +226,22 @@ class Entity extends Model
         return json_decode($value);
     }
 
-    public function setGrouporderAttribute($value)
+    public function setGroupOrderAttribute($value)
     {
         $this->attributes['group_order'] = json_encode($value);
     }
 
-    public function getGrouporderAttribute($value)
+    public function getGroupOrderAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setGroupRenderAttribute($value)
+    {
+        $this->attributes['group_render'] = json_encode($value);
+    }
+
+    public function getGroupRenderAttribute($value)
     {
         return json_decode($value);
     }

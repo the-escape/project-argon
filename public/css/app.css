@@ -4808,6 +4808,14 @@ body.dashboard {
     cursor: pointer;
     position: relative;
     outline: none; }
+    body.dashboard .accordion .accordion-header .checkbox {
+      display: inline-block;
+      float: right;
+      margin: 0;
+      padding: 0 4px;
+      border-radius: 0.25rem; }
+      body.dashboard .accordion .accordion-header .checkbox.hover {
+        background-color: #ccc; }
   body.dashboard .subnav {
     margin-bottom: 0.75rem; }
   body.dashboard .input-group {
