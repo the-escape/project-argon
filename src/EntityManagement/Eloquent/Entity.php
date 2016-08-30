@@ -90,6 +90,13 @@ class Entity extends Model
         return $this->localisations()->where('locale_id', $locale->getId())->first();
     }
 
+    public function hasLocalisation($localeId)
+    {
+        $locale = Locale::find($localeId);
+
+        return $locale ? $this->getLocalisation($locale)->exists : false;
+    }
+
     /**
      * @return LocalisationCollection
      */
