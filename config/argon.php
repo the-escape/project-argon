@@ -10,10 +10,9 @@ return [
     'logo_admin_width' => 'auto',
     'logo_admin_login_width' => 'auto',
     'logo_admin_login_margin_bottom' => 'auto',
-
+    'sitemap_view' => 'argon::pages.sitemap',
     'client_name' => '',
 
     // content type Id to view template mapping
-    'views' => [
-    ],
+    'views' => [],
 ];
