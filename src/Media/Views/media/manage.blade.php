@@ -11,6 +11,7 @@
         @endif
 
         <button type="button" class="btn btn-primary btn-upload">Upload</button>
+        <button type="button" class="btn btn-primary btn-list">Change View</button>
 
         <div class="media-library" style="position: relative;">
             <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
@@ -89,6 +90,10 @@
 
                 loadItems(id);
             }
+        });
+
+        $('.btn-list').click(function() {
+            $('.files').toggleClass('list');
         });
 
         $('#add-folder').click(function() {
@@ -221,24 +226,7 @@
                 ).done(function(data) {
                    $('[data-id='+ id + ']').remove();
                 });
-            } else {
-//                console.log('keep');
             }
         }
-
-//        function sortItems() {
-//            var list = $('.files .media-item').get();
-//            list.sort(compareItems);
-//            for (var i = 0; i < list.length; i++) {
-//                list[i].parentNode.appendChild(list[i]);
-//            }
-//        }
-
-//        function compareItems(a, b) {
-//            var nameA = $(a).find('.filename').text(),
-//                nameB = $(b).find('.filename').text();
-//            return nameA.localeCompare(nameB);
-//        }
-
     </script>
 @stop

@@ -184,6 +184,7 @@
                 <div class="modal-body">
 
                     <button type="button" class="btn btn-primary btn-upload">Upload</button>
+                    <button type="button" class="btn btn-primary btn-list">Change View</button>
 
                     <div class="media-library" style="position: relative;">
                         <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
