@@ -18,10 +18,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="sortable" class="required">
+                        <label for="sortable">
                             <input type="hidden" value="0" name="sortable">
                             <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'sortable') }}" @if($group->sortable) checked @endif id="sortable" name="sortable" value="1">
                             Sortable
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="renderable">
+                            <input type="hidden" value="0" name="renderable">
+                            <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'renderable') }}" @if($group->renderable) checked @endif id="renderable" name="renderable" value="1">
+                            Renderable
                         </label>
                     </div>
 

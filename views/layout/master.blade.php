@@ -205,7 +205,7 @@
         animate: {
             duration: 400
         },
-        activate: function()
+        activate: function(event, ui)
         {
             var isActive = $(this).accordion("option", "active");
 
@@ -238,6 +238,16 @@
                 });
             }
         }
+    });
+
+    $('.accordion-header .checkbox').on({
+      click: function(e) {
+          e.stopPropagation();
+      }, mouseenter: function(e) {
+          $(this).addClass("hover");
+      }, mouseleave: function(e) {
+          $(this).removeClass("hover");
+      }
     });
 
 

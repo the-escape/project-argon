@@ -112,6 +112,16 @@
 
                         <div class="card-header accordion-header">
                             {{ $group->name }}
+
+                            @if($group->isRenderable())
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->groupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                        Render?
+                                    </label>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="card-block accordion-body">
@@ -145,6 +155,17 @@
                                     <div class="card-header accordion-header">
                                         <span class="sortable-handle">&#8645;</span>
                                         {{ $group->name }}
+
+                                        @if($group->isRenderable())
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                                    <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->groupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                                    Render?
+                                                </label>
+                                            </div>
+                                        @endif
+
                                     </div>
 
                                     <div class="card-block accordion-body">
@@ -167,7 +188,7 @@
 
                         @endforeach
 
-                </div>
+                    </div>
                 @endif
 
             @endif

@@ -23,7 +23,7 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order','sortable',  'entity_type_id'];
+    protected $fillable = ['name', 'order','sortable', 'renderable', 'entity_type_id'];
 
     protected $entity;
 
@@ -56,5 +56,10 @@ class EntityGroup extends Model
     public function isSortable()
     {
         return (bool)$this->sortable;
+    }
+
+    public function isRenderable()
+    {
+        return (bool)$this->renderable;
     }
 }

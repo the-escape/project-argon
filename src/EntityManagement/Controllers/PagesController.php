@@ -142,7 +142,11 @@ class PagesController extends BaseController
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order']), $entity->id);
+        $group_render = new \stdClass();
+        $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
+        $request->merge(['group_render' => $group_render]);
+
+        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
         return Redirect::route(
             'cms:pages:edit_locale',
@@ -213,7 +217,11 @@ class PagesController extends BaseController
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order']), $pageId);
+        $group_render = ($page->group_render instanceof \stdClass) ? $page->group_render : new \stdClass();
+        $group_render->{$localeId} = $request->input('group_render', []);
+        $request->merge(['group_render' => $group_render]);
+
+        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
