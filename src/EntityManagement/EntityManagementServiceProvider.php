@@ -438,15 +438,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'sitemap',
-            'cms:sitemap',
-            SitemapController::class,
-            'html',
-            Request::METHOD_GET,
-            false
-        );
-
-        $this->addRoute(
             'sitemap.xml',
             'cms:sitemap:xml',
             SitemapController::class,

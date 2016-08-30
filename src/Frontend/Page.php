@@ -66,7 +66,7 @@ class Page
         return $this->field($fieldName);
     }
 
-    public function getUrl()
+    public function getUrl($locale = null)
     {
         $segments = [];
         $parent = $this->entity;
@@ -75,7 +75,7 @@ class Page
             $parent = $parent->parent;
         }
 
-        $locale = $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->request->getArgonLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision

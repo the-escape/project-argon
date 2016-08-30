@@ -135,10 +135,6 @@
             }
         });
 
-        $('.btn-list').click(function() {
-            $('.files').toggleClass('list');
-        });
-
         $('#add-folder').click(function() {
 
             var currentFolder = $('#folders').jstree().get_selected(true)[0].data.id;
