@@ -61,6 +61,7 @@
 
             @if(!$groups->isEmpty())
 
+                <?php $sortable = []; ?>
 
                 @foreach($groups as $group)
 
