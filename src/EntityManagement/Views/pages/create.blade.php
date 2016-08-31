@@ -43,26 +43,125 @@
                 </div>
             </div>
 
-            @if(!$groups->isEmpty())
 
-                <div class="row subnav">
-                    <div class="col-md-12">
-                        <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+            <div class="card accordion">
+
+                <div class="card-header accordion-header">301 Redirect</div>
+
+                <div class="card-block accordion-body">
+
+                    <div class="form-group">
+                        <label for="redirect-url" class="required">Enter redirect URL</label>
+                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url') }}">
                     </div>
+
                 </div>
 
+            </div>
+
+            @if(!$groups->isEmpty())
+
+                <?php $sortable = []; ?>
+
                 @foreach($groups as $group)
-                    <div class="card accordion">
-                        <div class="card-header accordion-header">{{ $group->getName() }}</div>
-                        <div class="card-block accordion-body">
-                            @foreach ($group->getFields() as $field)
 
-                                {!! $field->render() !!}
+                    @if($group->isSortable())
 
-                            @endforeach
+                        <?php $sortable[] = $group; ?>
+
+                    @else
+
+                        <div class="card accordion">
+
+                            <div class="card-header accordion-header">
+                                {{ $group->name }}
+
+                                @if($group->isRenderable())
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                            <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
+                                            Render?
+                                        </label>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="card-block accordion-body">
+
+                                @foreach ($group->getFields() as $field)
+
+                                    <div class="form-group sortable">
+
+                                        {!! $field->render() !!}
+
+                                    </div>
+
+                                @endforeach
+
+                            </div>
+
                         </div>
-                    </div>
+                    @endif
                 @endforeach
+
+
+                @if($sortable)
+
+                    <?php $mt = str_replace('.', '', microtime(1)); ?>
+                    <input id="order-{{ $mt }}" type="hidden" name="group_order" value="{{ old('group_order') }}">
+                    <div class="sortable sortable-groups" data-sortable_field="order-{{ $mt }}">
+
+                        @foreach($groups as $group)
+
+                            @if($group->isSortable())
+
+                                <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+
+                                    <div class="card accordion">
+
+                                        <div class="card-header accordion-header">
+                                            <span class="sortable-handle">&#8645;</span>
+                                            {{ $group->name }}
+
+                                            @if($group->isRenderable())
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
+                                                        Render?
+                                                    </label>
+                                                </div>
+                                            @endif
+
+                                        </div>
+
+                                        <div class="card-block accordion-body">
+
+                                            @foreach ($group->getFields() as $field)
+
+                                                <div class="form-group sortable">
+
+                                                    {!! $field->render() !!}
+
+                                                </div>
+
+                                            @endforeach
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+                        @endforeach
+
+                    </div>
+
+                @endif
+
 
             @endif
 
@@ -86,6 +185,7 @@
                 <div class="modal-body">
 
                     <button type="button" class="btn btn-primary btn-upload">Upload</button>
+                    <button type="button" class="btn btn-primary btn-list">Change View</button>
 
                     <div class="media-library" style="position: relative;">
                         <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">

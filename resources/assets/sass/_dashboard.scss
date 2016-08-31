@@ -29,6 +29,11 @@ body.dashboard {
         border: 0;
     }
 
+    .view-page {
+        float: right;
+        position: relative;
+        top: -4px;
+    }
 
     .box {
         padding: 20px;
@@ -82,6 +87,19 @@ body.dashboard {
             cursor: pointer;
             position: relative;
             outline: none;
+
+            .checkbox {
+                display: inline-block;
+                float: right;
+                margin: 0;
+                padding: 0 4px;
+                border-radius: $standard-border-radius;
+
+                &.hover {
+                    background-color: $standard-input-border-color;
+
+                }
+            }
         }
 
     }
@@ -95,6 +113,10 @@ body.dashboard {
     }
     .input-group .form-control:last-child {
         border-radius: $standard-border-radius;
+    }
+
+    .input-group > .card {
+        margin-bottom: 0;
     }
 
     .form-control + .field-clone,
@@ -150,6 +172,10 @@ body.dashboard {
             }
         }
     }
+
+    .sortable-groups {
+        margin-bottom: $standard-margin;
+    } 
 
     .sortable-handle,
     .field-remove {

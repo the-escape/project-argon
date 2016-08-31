@@ -6,6 +6,7 @@ use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
+use Escape\Argon\EntityManagement\Controllers\SitemapController;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
@@ -440,6 +441,15 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'cloneField',
             Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'sitemap.xml',
+            'cms:sitemap:xml',
+            SitemapController::class,
+            'xml',
+            Request::METHOD_GET,
+            false
         );
 
     }

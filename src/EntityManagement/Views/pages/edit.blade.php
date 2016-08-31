@@ -19,7 +19,18 @@
         <form action="{{ route('cms:pages:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
-                <div class="card-header">Details</div>
+                <div class="card-header">
+                    Details
+
+                    @foreach ($page->getLocalisations() as $l)
+
+                        @if ($l->getId() == $localisation->getId())
+                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
+                        @endif
+
+                    @endforeach
+
+                </div>
                 <div class="card-block">
                     <div class="form-group">
                         <label for="name" class="required">Name</label>
@@ -94,13 +105,24 @@
 
             </div>
 
-            @if(!$page->getGroups()->isEmpty())
+            @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
-                @foreach($page->getGroups() as $group)
-
+                @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header">{{ $group->name }}</div>
+                        <div class="card-header accordion-header">
+                            {{ $group->name }}
+
+                            @if($group->isRenderable())
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                        Render?
+                                    </label>
+                                </div>
+                            @endif
+                        </div>
 
                         <div class="card-block accordion-body">
 
@@ -117,8 +139,57 @@
                         </div>
 
                     </div>
-
                 @endforeach
+
+
+                @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
+                    <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
+                    <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
+
+                        @foreach($page->getSortableGroups($localisation->getLocaleId()) as $group)
+
+                            <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+
+                                <div class="card accordion">
+
+                                    <div class="card-header accordion-header">
+                                        <span class="sortable-handle">&#8645;</span>
+                                        {{ $group->name }}
+
+                                        @if($group->isRenderable())
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                                    <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                                    Render?
+                                                </label>
+                                            </div>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="card-block accordion-body">
+
+                                        @foreach ($group->getFields() as $field)
+
+                                            <div class="form-group sortable">
+
+                                                {!! $field->render($latest->getField($field->getId())) !!}
+
+                                            </div>
+
+                                        @endforeach
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+                @endif
 
             @endif
 
@@ -142,6 +213,7 @@
                 <div class="modal-body">
 
                     <button type="button" class="btn btn-primary btn-upload">Upload</button>
+                    <button type="button" class="btn btn-primary btn-list">Change View</button>
 
                     <div class="media-library" style="position: relative;">
                         <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">

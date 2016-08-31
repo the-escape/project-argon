@@ -49,15 +49,16 @@
                 @endif
             </ul>
 
-            @if(!$page->getGroups()->isEmpty())
+            <br>
 
-                <br>
+            @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
-                @foreach($page->getGroups() as $group)
-
+                @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header">{{ $group->name }}</div>
+                        <div class="card-header accordion-header">
+                            {{ $group->name }}
+                        </div>
 
                         <div class="card-block accordion-body">
 
@@ -74,8 +75,45 @@
                         </div>
 
                     </div>
-
                 @endforeach
+
+
+                <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
+
+                <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
+
+                    @foreach($page->getSortableGroups($localisation->getLocaleId()) as $group)
+
+                        <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+
+                            <div class="card accordion">
+
+                                <div class="card-header accordion-header">
+                                    <span class="sortable-handle">&#8645;</span>
+                                    {{ $group->name }}
+                                </div>
+
+                                <div class="card-block accordion-body">
+
+                                    @foreach ($group->getFields() as $field)
+
+                                        <div class="form-group sortable">
+
+                                            {!! $field->render($latest->getField($field->getId())) !!}
+
+                                        </div>
+
+                                    @endforeach
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                </div>
 
             @endif
 

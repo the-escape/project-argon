@@ -132,6 +132,17 @@ class EntityRepository extends BaseRepository
         return $this->pages([$slug])->first();
     }
 
+    public function getPagesByLocale($localeId)
+    {
+        $pages = $this->type('page');
+
+        $pages = $pages->filter(function($page) use($localeId) {
+            return $page->hasLocalisation($localeId);
+        });
+
+        return $pages;
+    }
+
 
     public function blocks(array $slugs=[])
     {

@@ -459,6 +459,10 @@ $(document).on('click', '.field-image .field-add-file', function(e) {
     });
 });
 
+$('.btn-list').click(function() {
+    $('.dz .files').toggleClass('list');
+});
+
 //$(document).on('click', '.field-media .field-remove', function(e) {
 //    var $self = $(this);
 //    var $inputGroup = $self.parent('.input-group');

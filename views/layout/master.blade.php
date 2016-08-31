@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}">
-    <title>Argon Admin Area</title>
+    <title>CMS Admin Area</title>
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
     <link rel="stylesheet" href="/argon/css/app.css">
     <link rel="adminroot" href="/admin">
@@ -62,6 +62,10 @@
             color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
         }
 
+        .logo-admin {
+            width: {{config('argon.logo_admin_width', 'auto')}};
+        }
+
     </style>
 </head>
 
@@ -75,7 +79,7 @@
         <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
     </ul>
-    <a class="navbar-brand" href="{{ route('dashboard') }}"><img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
+    <a class="navbar-brand" href="{{ route('dashboard') }}"><img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
 </nav>
 
 <div class="container-fluid">
@@ -92,7 +96,7 @@
             @endforeach
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        <div class="col-sm-9 offset-sm-3 col-md-10 col-md-offset-2">
             @yield('content')
         </div>
     </div>
@@ -201,7 +205,7 @@
         animate: {
             duration: 400
         },
-        activate: function()
+        activate: function(event, ui)
         {
             var isActive = $(this).accordion("option", "active");
 
@@ -236,6 +240,16 @@
         }
     });
 
+    $('.accordion-header .checkbox').on({
+      click: function(e) {
+          e.stopPropagation();
+      }, mouseenter: function(e) {
+          $(this).addClass("hover");
+      }, mouseleave: function(e) {
+          $(this).removeClass("hover");
+      }
+    });
+
 
     <?php
     // ACCORDIONS: expand all instances on load after slight delay. ?>
@@ -261,7 +275,7 @@
             {
                 var data = [];
 
-                $(this).find('.sortable-item').each(function(i, el){
+                $(this).children('.sortable-item').each(function(i, el){
                     data.push($(el).data('sortable_item'));
                 });
 

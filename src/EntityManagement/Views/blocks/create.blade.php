@@ -34,24 +34,86 @@
 
             @if(!$groups->isEmpty())
 
-                <div class="row subnav">
-                    <div class="col-md-12">
-                        <a href="#" class="accordion-expand-collapse" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
-                    </div>
-                </div>
+                <?php $sortable = []; ?>
 
                 @foreach($groups as $group)
-                    <div class="card accordion">
-                        <div class="card-header accordion-header">{{ $group->getName() }}</div>
-                        <div class="card-block accordion-body">
-                            @foreach ($group->getFields() as $field)
 
-                                {!! $field->render() !!}
+                    @if($group->isSortable())
 
-                            @endforeach
+                        <?php $sortable[] = $group; ?>
+
+                    @else
+
+                        <div class="card accordion">
+
+                            <div class="card-header accordion-header">
+                                {{ $group->name }}
+                            </div>
+
+                            <div class="card-block accordion-body">
+
+                                @foreach ($group->getFields() as $field)
+
+                                    <div class="form-group sortable">
+
+                                        {!! $field->render() !!}
+
+                                    </div>
+
+                                @endforeach
+
+                            </div>
+
                         </div>
-                    </div>
+                    @endif
                 @endforeach
+
+
+                @if($sortable)
+
+                    <?php $mt = str_replace('.', '', microtime(1)); ?>
+                    <input id="order-{{ $mt }}" type="hidden" name="group_order" value="{{ old('group_order') }}">
+                    <div class="sortable sortable-groups" data-sortable_field="order-{{ $mt }}">
+
+                        @foreach($groups as $group)
+
+                            @if($group->isSortable())
+
+                                <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
+
+                                    <div class="card accordion">
+
+                                        <div class="card-header accordion-header">
+                                            <span class="sortable-handle">&#8645;</span>
+                                            {{ $group->name }}
+                                        </div>
+
+                                        <div class="card-block accordion-body">
+
+                                            @foreach ($group->getFields() as $field)
+
+                                                <div class="form-group sortable">
+
+                                                    {!! $field->render() !!}
+
+                                                </div>
+
+                                            @endforeach
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+                        @endforeach
+
+                    </div>
+
+                @endif
+
 
             @endif
 

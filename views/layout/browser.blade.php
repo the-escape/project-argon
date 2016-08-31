@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}">
-    <title>Argon Admin Area</title>
+    <title>CMS Admin Area</title>
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
     <link rel="stylesheet" href="/argon/css/app.css">
     <link rel="adminroot" href="/admin">

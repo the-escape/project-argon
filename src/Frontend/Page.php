@@ -71,7 +71,7 @@ class Page
         return $this->field($fieldName);
     }
 
-    public function getUrl()
+    public function getUrl($locale = null)
     {
         $segments = [];
         $parent = $this->entity;
@@ -80,7 +80,7 @@ class Page
             $parent = $parent->parent;
         }
 
-        $locale = $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->request->getArgonLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision
@@ -208,10 +208,46 @@ class Page
 
     }
 
-    public function getRequest()
+    public function getGroupOrder($localeId=null)
     {
-        return $this->request;
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->getGroupOrder($localeId);
     }
+
+    public function getRenderableGroupOrder($localeId=null)
+    {
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->getRenderableGroupOrder($localeId);
+    }
+
+    public function isGroupRender($groupId, $localeId=null)
+    {
+        if (!$localeId) {
+            $locale = $this->request->getArgonLocale();
+            $localeId = $locale->getId();
+        }
+        return $this->entity->isGroupRender($localeId, $groupId);
+    }
+
+    public function getRenderedGroups()
+    {
+        $renderableGroups = $this->getRenderableGroupOrder();
+
+        $r = new Collection();
+        foreach ($renderableGroups as $renderableGroup) {
+            if ($this->isGroupRender($renderableGroup)) {
+                $r->push($renderableGroup);
+            }
+        }
+        return $r;
+    }
+
 
     public function findWhere(array $where , $columns = array('*'))
     {
@@ -222,6 +258,11 @@ class Page
             $r->push($result->toPage($this->request));
         }
         return $r;
+    }
+
+    public function getRequest()
+    {
+        return $this->request;
     }
 
 }
