@@ -105,7 +105,7 @@ class PagesController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId}",
+            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId},deleted_at,NULL",
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
