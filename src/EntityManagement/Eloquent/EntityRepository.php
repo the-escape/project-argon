@@ -63,7 +63,12 @@ class EntityRepository extends BaseRepository
                         break;
                     }
 
-                    $n = $nodes[$n->parent_id];
+                    $matched = $nodes[$n->parent_id];
+                    if($matched->slug != end($segmentsToCheck)) {
+                        array_push($segmentsToCheck, $currentSegment);
+                        continue 2;
+                    }
+                    $n = $matched;
                 }
 
                 if ($n->parent_id == null) {
