@@ -50,6 +50,7 @@ class Solr
                 $doc->entity_slug = $entity->slug;
                 $doc->entity_type_id = $entity->entity_type_id;
                 $doc->entity_parent_id = $entity->parent_id;
+                $doc->entity_status = $entity->status;
                 $doc->entity_created_at = $entity->created_at->format('Y-m-d H:i:s');
                 $doc->entity_created_at_dts = $entity->created_at->format('Y-m-d\TH:i:s\Z');
 
