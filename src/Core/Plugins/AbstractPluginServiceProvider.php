@@ -47,13 +47,13 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
         foreach ($verbs as $verb) {
             switch (strtoupper($verb)) {
                 case Request::METHOD_GET:
-                    return Route::get($prefix . $path, $definition);
+                    Route::get($prefix . $path, $definition);
                     break;
                 case Request::METHOD_POST:
-                    return Route::post($prefix . $path, $definition);
+                    Route::post($prefix . $path, $definition);
                     break;
                 case Request::METHOD_DELETE:
-                    return Route::delete($prefix . $path, $definition);
+                    Route::delete($prefix . $path, $definition);
                     break;
                 default:
                     throw new \Exception('Method not implemented');

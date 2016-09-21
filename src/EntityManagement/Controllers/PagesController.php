@@ -105,7 +105,7 @@ class PagesController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId}",
+            'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId},deleted_at,NULL",
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
@@ -198,7 +198,7 @@ class PagesController extends BaseController
         ];
 
         if ($page->parent_id != null) {
-            $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id}";
+            $rules['slug'] = "required|unique:entities,slug,{$page->id},id,parent_id,{$page->parent_id},deleted_at,NULL";
         } else {
             $request->merge(['slug' => '/']);
         }

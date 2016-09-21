@@ -63,7 +63,12 @@ class EntityRepository extends BaseRepository
                         break;
                     }
 
-                    $n = $nodes[$n->parent_id];
+                    $matched = $nodes[$n->parent_id];
+                    if($matched->slug != end($segmentsToCheck)) {
+                        array_push($segmentsToCheck, $currentSegment);
+                        continue 2;
+                    }
+                    $n = $matched;
                 }
 
                 if ($n->parent_id == null) {
@@ -100,6 +105,12 @@ class EntityRepository extends BaseRepository
     }
 
 
+    /**
+     * Looks through the entities and filters them based on slug and 'subtype' - (block|page|email)
+     * @param $type
+     * @param array $slugs
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
     protected function type($type, array $slugs=[])
     {
         $entities = $this->model->with('type');

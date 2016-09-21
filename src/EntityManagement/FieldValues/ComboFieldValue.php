@@ -56,7 +56,9 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
                             return $f->getId() == $id;
                         }
                     );
-                    $data[$k][$field->getFieldSlug()] = $this->field($field->getFieldSlug(), $k);
+                    if ($field instanceof AbstractFieldType) {
+                        $data[$k][$field->getFieldSlug()] = $this->field($field->getFieldSlug(), $k);
+                    }
                 }
             }
         }
