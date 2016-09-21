@@ -24,4 +24,13 @@ class EntityRevisionRepository extends BaseRepository
             ->where('id', '<>', $except)
             ->update(['status' => RevisionStatus::PREVIOUSLY_PUBLISHED]);
     }
+
+    public function deletePreviews($exceptIds = [])
+    {
+        // TODO: Enforce foreign key constraint cascade.
+        $this->makeModel()
+            ->where('status', RevisionStatus::PREVIEW)
+            ->whereNotIn('id', $exceptIds)
+            ->forceDelete();
+    }
 }

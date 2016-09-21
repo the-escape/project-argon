@@ -194,6 +194,7 @@
             @endif
 
             <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" name="preview" value="1" class="btn btn-warning">Preview</button>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
 
