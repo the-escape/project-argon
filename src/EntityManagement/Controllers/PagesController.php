@@ -183,7 +183,7 @@ class PagesController extends BaseController
 
         $fields = $type->fields;
 
-        $preview = $request->exists('preview');
+        $preview = $request->exists('preview_page');
 
         $niceNames = [
             'name' => 'Name',
@@ -239,7 +239,7 @@ class PagesController extends BaseController
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
-            $previewUrl = url($entity->toPage()->getUrl().'?'.http_build_query(['preview' => $revision->id]));
+            $previewUrl = url($entity->toPage()->getUrl().'?'.http_build_query(['preview_page' => $revision->id]));
             return response($previewUrl);
         }
 

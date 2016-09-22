@@ -109,11 +109,11 @@ $(document).on('change', '.field-poputale', function(e) {
     }
 });
 
-$('.preview').on('click', function(e) {
+$('.preview-page').on('click', function(e) {
     e.preventDefault();
     $form = $(this).parent('form');
     $data = $form.serializeArray();
-    $data.push({ name: 'preview', value: true });
+    $data.push({ name: 'preview_page', value: true });
 
     $.ajax({
         type: 'POST',

@@ -27,8 +27,8 @@ class Page
     public function isPreview()
     {
         // TODO: Check for admin role.
-        return !auth()->guest() && $this->request->has('preview')
-            ? $this->request->get('preview')
+        return !auth()->guest() && $this->request->has('preview_page')
+            ? $this->request->get('preview_page')
             : null;
     }
 
