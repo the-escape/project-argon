@@ -69,7 +69,19 @@ class Page
 
     public function field($fieldName)
     {
-        return $this->getCurrentLocalisation()->publishedRevision($this->revisionId)->field($fieldName);
+        $revision = null;
+
+        $url = $this->getUrl();
+
+        if ($url !== '/') {
+            $url = trim($url, '/');
+        }
+
+        if ($this->entity->type->type === 'page' && str_is($this->request->path(), $url)) {
+            $revision = $this->revisionId;
+        }
+
+        return $this->getCurrentLocalisation()->publishedRevision($revision)->field($fieldName);
     }
 
     public function combo($fieldName)
