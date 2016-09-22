@@ -17,13 +17,19 @@ class Page
 
     protected $revisionId;
 
-    public function __construct(Entity $entity, Request $request=null, $revisionId=null)
+    public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
         $this->request = isset($request) ? $request : app()->make('\Escape\Argon\Core\Http\Request');
+        $this->revisionId = $this->isPreview();
+    }
 
+    public function isPreview()
+    {
         // TODO: Check for admin role.
-        $this->revisionId = !auth()->guest() ? $revisionId : null;
+        return !auth()->guest() && $this->request->has('preview')
+            ? $this->request->get('preview')
+            : null;
     }
 
     public function getCurrentLocalisation()
