@@ -171,8 +171,8 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request,
-        Solr $solr
-    ) {
+        Solr $solr)
+    {
         $page = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -182,6 +182,8 @@ class PagesController extends BaseController
         $type = $typeRepository->find($page->entity_type_id);
 
         $fields = $type->fields;
+
+        $preview = $request->exists('preview_page');
 
         $niceNames = [
             'name' => 'Name',
@@ -221,19 +223,28 @@ class PagesController extends BaseController
         $group_render->{$localeId} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']), $pageId);
+        $entity = $entityRepository->find($pageId);
+
+        if (!$preview) {
+            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+        }
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
-            'status' => RevisionStatus::PUBLISHED,
+            'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
             'created_by' => $this->request->user()->id
         ]);
 
-        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
-
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        $r = $solr->indexEntity($entity, $localisation);
+        if ($preview) {
+            $revisionsRepository->deletePreviews([$revision->id]);
+            $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
+            return response($previewUrl);
+        }
+
+        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+        $solr->indexEntity($entity, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
@@ -253,7 +264,7 @@ class PagesController extends BaseController
 
         $localisation = $page->getLocalisation($currentLocale);
 
-        $latestRevision = $localisation->latestRevision();
+        $latestRevision = $localisation->publishedRevision();
 
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
 
@@ -310,6 +321,13 @@ class PagesController extends BaseController
         $result = $page->save();
 
         return json_encode(['success' => $result]);
+    }
+
+    public function revisions(Entity $entity, EntityRevisionRepository $entityRevisionRepository)
+    {
+        $revisions = $entityRevisionRepository->all();
+
+        return view('argon::pages.revisions')->with(compact('revisions'));
     }
 
 }

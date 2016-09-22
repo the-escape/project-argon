@@ -109,9 +109,31 @@ $(document).on('change', '.field-poputale', function(e) {
     }
 });
 
+$('.preview-page').on('click', function(e) {
+    e.preventDefault();
+    $form = $(this).parent('form');
+    $data = $form.serializeArray();
+    $data.push({ name: 'preview_page', value: true });
 
-
-
+    $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: $.param($data),
+        success: function(url, status) {
+            if (status === 'success') {
+                $.fancybox.open({
+                    href: url,
+                    type: 'iframe',
+                    autoSize: false,
+                    height: '90%',
+                    width: '90%'
+                });
+            } else {
+                // TODO: Display error?
+            }
+        }
+    });
+});
 
 var expand = {
 

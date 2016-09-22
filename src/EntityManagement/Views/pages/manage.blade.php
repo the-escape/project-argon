@@ -65,6 +65,9 @@
                 $('#edit-button')
                     .prop('disabled', false)
                     .attr('href', 'pages/' + id + '/edit');
+                $('#revision-button')
+                    .prop('disabled', false)
+                    .attr('href', 'pages/' + id + '/revisions');
                 $('#delete-form')
                     .attr('action', argon.root() + '/pages/' + id);
                 $('#delete-form button')

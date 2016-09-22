@@ -15,10 +15,21 @@ class Page
     /** @var Request */
     protected $request;
 
+    protected $revisionId;
+
     public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
         $this->request = isset($request) ? $request : app()->make('\Escape\Argon\Core\Http\Request');
+        $this->revisionId = $this->isPreview();
+    }
+
+    public function isPreview()
+    {
+        // TODO: Check for admin role.
+        return !auth()->guest() && $this->request->has('preview_page')
+            ? $this->request->get('preview_page')
+            : null;
     }
 
     public function getCurrentLocalisation()
@@ -58,7 +69,19 @@ class Page
 
     public function field($fieldName)
     {
-        return $this->getCurrentLocalisation()->publishedRevision()->field($fieldName);
+        $revision = null;
+
+        $url = $this->getUrl();
+
+        if ($url !== '/') {
+            $url = trim($url, '/');
+        }
+
+        if ($this->entity->type->type === 'page' && str_is($this->request->path(), $url)) {
+            $revision = $this->revisionId;
+        }
+
+        return $this->getCurrentLocalisation()->publishedRevision($revision)->field($fieldName);
     }
 
     public function combo($fieldName)
