@@ -223,7 +223,11 @@ class PagesController extends BaseController
         $group_render->{$localeId} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']), $pageId);
+        $entity = $entityRepository->find($pageId);
+
+        if (!$preview) {
+            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+        }
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,

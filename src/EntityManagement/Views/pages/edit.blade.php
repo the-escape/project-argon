@@ -194,8 +194,7 @@
             @endif
 
             <button type="submit" class="btn btn-primary">Save</button>
-            <a href="http://cms.app/admin/pages/1/edit/1" data-fancybox-type="iframe" class="btn btn-warning preview">Preview</a>
-            <!--<button type="submit" name="preview" class="btn btn-warning preview">Preview</button>-->
+            <a href="#" class="btn btn-warning preview">Preview</a>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
 

@@ -119,15 +119,18 @@ $('.preview').on('click', function(e) {
         type: 'POST',
         url: $form.attr('action'),
         data: $.param($data),
-        success: function(url) {
-            console.log(url);
-            $.fancybox.open({
-                href: url,
-                type: 'iframe',
-                autoSize: false,
-                height: '80%',
-                width: '80%'
-            });
+        success: function(url, status) {
+            if (status === 'success') {
+                $.fancybox.open({
+                    href: url,
+                    type: 'iframe',
+                    autoSize: false,
+                    height: '90%',
+                    width: '90%'
+                });
+            } else {
+                // TODO: Display error?
+            }
         }
     });
 });

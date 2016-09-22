@@ -28,9 +28,16 @@ class EntityRevisionRepository extends BaseRepository
     public function deletePreviews($exceptIds = [])
     {
         // TODO: Enforce foreign key constraint cascade.
-        $this->makeModel()
+        $revisions = $this->makeModel()
             ->where('status', RevisionStatus::PREVIEW)
-            ->whereNotIn('id', $exceptIds)
-            ->forceDelete();
+            ->whereNotIn('id', $exceptIds);
+
+        // Delete all fields associated with this revision.
+        foreach ($revisions->get() as $revision) {
+            $revision->fields()->forceDelete();
+        }
+
+        // Force delete the revisions.
+        $revisions->forceDelete();
     }
 }
