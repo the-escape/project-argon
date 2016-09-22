@@ -2,9 +2,9 @@
   "name": "argon",
   "version": "0.0.1",
   "authors": [
-    "Seb Pollard <seb.pollard@the-escape.co.uk>"
+    "The Escape <digital@the-escape.co.uk>"
   ],
-  "description": "Escape CMS",
+  "description": "The Escape CMS",
   "moduleType": [
     "globals"
   ],
@@ -24,6 +24,7 @@
     "ckeditor": "#full/4.5.5",
     "dropzone": "~4.2.0",
     "bootstrap-datepicker": "~1.5.1",
-    "handlebars": "~4.0.5"
+    "handlebars": "~4.0.5",
+    "fancybox": "^2.1.5"
   }
 }

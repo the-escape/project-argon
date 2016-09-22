@@ -235,8 +235,8 @@ class PagesController extends BaseController
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
-            $previewUrl = $entity->toPage()->getUrl().'?'.http_build_query(['preview' => $revision->id]);
-            return redirect($previewUrl);
+            $previewUrl = url($entity->toPage()->getUrl().'?'.http_build_query(['preview' => $revision->id]));
+            return response($previewUrl);
         }
 
         $revisionsRepository->archiveRevisions($localisation->id, $revision->id);

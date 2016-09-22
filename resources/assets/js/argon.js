@@ -109,6 +109,25 @@ $(document).on('change', '.field-poputale', function(e) {
     }
 });
 
+$('.preview').on('click', function(e) {
+    e.preventDefault();
+    $form = $(this).parent('form');
+    $data = $form.serializeArray();
+    $data.push({ name: 'preview', value: true });
 
-
-
+    $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: $.param($data),
+        success: function(url) {
+            console.log(url);
+            $.fancybox.open({
+                href: url,
+                type: 'iframe',
+                autoSize: false,
+                height: '80%',
+                width: '80%'
+            });
+        }
+    });
+});
