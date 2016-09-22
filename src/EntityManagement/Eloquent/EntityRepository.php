@@ -111,12 +111,23 @@ class EntityRepository extends BaseRepository
      * @param array $slugs
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    protected function type($type, array $slugs=[])
+    protected function type($type, array $slugs=[], array $where=[])
     {
         $entities = $this->model->with('type');
 
         if ($slugs) {
             $entities = $entities->whereIn('slug', $slugs);
+        }
+
+        if ($where) {
+            foreach ($where as $field => $value) {
+                if (is_array($value)) {
+                    list($field, $condition, $val) = $value;
+                    $entities = $entities->where($field, $condition, $val);
+                } else {
+                    $entities = $entities->where($field, '=', $value);
+                }
+            }
         }
 
         $entities = $entities->get();
@@ -132,16 +143,41 @@ class EntityRepository extends BaseRepository
     }
 
 
-    public function pages(array $slugs=[])
+    public function pages(array $slugs=[], array $where=[])
     {
-        return $this->type('page', $slugs);
+        return $this->type('page', $slugs, $where);
     }
 
 
-    public function page($slug)
+    public function page($slug, array $where=[])
     {
-        return $this->pages([$slug])->first();
+        return $this->pages([$slug], $where)->first();
     }
+
+
+    public function blocks(array $slugs=[], array $where=[])
+    {
+        return $this->type('block', $slugs, $where);
+    }
+
+
+    public function block($slug, array $where=[])
+    {
+        return $this->blocks([$slug], $where)->first();
+    }
+
+
+    public function emails(array $slugs=[], array $where=[])
+    {
+        return $this->type('email', $slugs, $where);
+    }
+
+
+    public function email($slug, array $where=[])
+    {
+        return $this->emails([$slug], $where)->first();
+    }
+
 
     public function getPagesByLocale($localeId)
     {
@@ -152,30 +188,6 @@ class EntityRepository extends BaseRepository
         });
 
         return $pages;
-    }
-
-
-    public function blocks(array $slugs=[])
-    {
-        return $this->type('block', $slugs);
-    }
-
-
-    public function block($slug)
-    {
-        return $this->blocks([$slug])->first();
-    }
-
-
-    public function emails(array $slugs=[])
-    {
-        return $this->type('email', $slugs);
-    }
-
-
-    public function email($slug)
-    {
-        return $this->emails([$slug])->first();
     }
 
 }
