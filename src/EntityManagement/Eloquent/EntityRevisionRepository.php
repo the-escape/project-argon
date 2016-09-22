@@ -32,8 +32,10 @@ class EntityRevisionRepository extends BaseRepository
             ->where('status', RevisionStatus::PREVIEW)
             ->whereNotIn('id', $exceptIds);
 
+        $models = $revisions->get();
+
         // Delete all fields associated with this revision.
-        foreach ($revisions->get() as $revision) {
+        foreach ($models as $revision) {
             $revision->fields()->forceDelete();
         }
 
