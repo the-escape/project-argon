@@ -239,7 +239,7 @@ class PagesController extends BaseController
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
-            $previewUrl = url($entity->toPage()->getUrl().'?'.http_build_query(['preview_page' => $revision->id]));
+            $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
             return response($previewUrl);
         }
 
@@ -264,7 +264,7 @@ class PagesController extends BaseController
 
         $localisation = $page->getLocalisation($currentLocale);
 
-        $latestRevision = $localisation->latestRevision();
+        $latestRevision = $localisation->publishedRevision();
 
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
 

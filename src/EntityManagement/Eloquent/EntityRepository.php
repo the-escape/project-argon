@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Escape\Argon\Core\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -18,22 +19,38 @@ class EntityRepository extends BaseRepository
     }
 
     /**
-     * @param string $path
+     * @param Request $request
      * @return Entity|null
      */
-    public function findForPath($path, $status=1)
+    public function findForPath($request, $status=1)
     {
+        $path = $request->path();
+
+        $preview = $request->has('preview_page');
+
         $node = null;
 
         if ($path == '/') {
-            $node = $this->findWhere(['parent_id' => null, 'status' => $status])->first();
+            $node = $this->findWhere(['parent_id' => null]);
+
+            if (!$preview) {
+                $node = $node->where('status', '=', $status);
+            }
+
+            $node = $node->first();
         } else {
             $segments = explode('/', $path);
 
             array_unshift($segments, '/');
 
             /** @var Collection $nodes */
-            $nodes = $this->model->whereIn('slug', $segments)->where('status','=', $status)->with('type')->get();
+            $nodes = $this->model->whereIn('slug', $segments);
+
+            if (!$preview) {
+                $nodes = $nodes->where('status','=', $status);
+            }
+
+            $nodes = $nodes->with('type')->get();
 
             foreach ($nodes as $idx => $entity) {
                 if ($entity->type->type != 'page'){
