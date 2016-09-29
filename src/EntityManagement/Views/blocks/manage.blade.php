@@ -27,13 +27,14 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th></th>
+                    <th>Content Type</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($blocks as $block)
                     <tr>
                         <td>{{$block->name}}</td>
+                        <td>{{$block->type->name}}</td>
                         <td>
                             <a href="{{ route('cms:blocks:edit', ['blockId'=>$block->id, ]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             <a href="{{ route('cms:blocks:delete', ['blockId'=>$block->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>

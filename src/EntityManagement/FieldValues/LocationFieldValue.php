@@ -47,4 +47,28 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return new \ArrayIterator($data);
     }
 
+
+    public function getLatitude()
+    {
+        if (!empty($this->data)) {
+            foreach ($this->data as $data) {
+                return $data->latitude;
+            }
+        }
+
+        return null;
+    }
+
+
+    public function getLongitude()
+    {
+        if (!empty($this->data)) {
+            foreach ($this->data as $data) {
+                return $data->longitude;
+            }
+        }
+
+        return null;
+    }
+
 }
