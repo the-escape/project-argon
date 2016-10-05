@@ -407,7 +407,7 @@ $(document).on('click', '.field-file .field-add-file', function(e) {
         var field = $(e.target).closest('.field');
 
         $.ajax(
-            '../../../media/items/' +selected
+            argon.root() + '/media/items/' + selected
         ).done(function(data) {
 
             var settings = JSON.parse(field.attr('data-settings'));
@@ -441,7 +441,7 @@ $(document).on('click', '.field-image .field-add-file', function(e) {
         var field = $(e.target).closest('.field');
 
         $.ajax(
-            '../../../media/items/' +selected
+            argon.root() + '/media/items/' + selected
         ).done(function(data) {
             var guid = new Date().valueOf();
             var settings = JSON.parse(field.attr('data-settings'));
