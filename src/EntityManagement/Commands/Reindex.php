@@ -1,6 +1,6 @@
 <?php
 
-namespace Serco\DotCom\Console\Commands;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Escape\Argon\Helpers\Solr;
@@ -20,7 +20,7 @@ class Reindex extends Command
      *
      * @var string
      */
-    protected $description = 'Re-index entire content.';
+    protected $description = 'Re-index entire site content.';
 
     /**
      * Execute the console command.
@@ -29,8 +29,14 @@ class Reindex extends Command
      */
     public function handle()
     {
-        $this->info('Content reindexing...');
         $solr = new Solr();
+
+        if (!$solr->isEnabled()) {
+            $this->warn('Solr not enabled! Review configuration and try again.');
+            return;
+        }
+
+        $this->info('Content reindexing...');
         $results = $solr->reindex();
 
         foreach ($results as $result) {
