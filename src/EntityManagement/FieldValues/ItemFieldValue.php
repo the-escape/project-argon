@@ -11,6 +11,10 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
 
     public function __construct($data = [])
     {
+        if (is_object($data)) {
+            $data = toArray($data);
+        }
+
         if (is_array($data)) {
             $data = array_map(
                 function ($i) {
