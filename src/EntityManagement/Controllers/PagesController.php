@@ -315,7 +315,7 @@ class PagesController extends BaseController
 
 
     // Handles JSTree ajax reorder requests
-    public function updateParent($pageId, $parentId, EntityRepository $entityRepository)
+    public function updateParent($pageId, $parentId, EntityRepository $entityRepository, Solr $solr)
     {
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
@@ -323,6 +323,11 @@ class PagesController extends BaseController
 
         $page->parent_id = $parent->id;
         $result = $page->save();
+
+        $localisations = $page->localisations;
+        foreach ($localisations as $localisation) {
+            $solr->indexEntity($page, $localisation);
+        }
 
         return json_encode(['success' => $result]);
     }
