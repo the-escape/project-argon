@@ -51,9 +51,10 @@ class PagesController extends BaseController
         return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
     }
 
-    public function delete($pageId, EntityRepository $entityRepository)
+    public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
     {
         $entityRepository->delete($pageId);
+        $solr->unindexEntity($pageId);
 
         return Redirect::route('cms:pages:manage');
     }
@@ -86,7 +87,8 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionRepository,
         FieldDataRepository $fieldDataRepository,
         LocalisationRepository $localisationRepository,
-        Request $request
+        Request $request,
+        Solr $solr
     ) {
         $type = $typeRepository->find($typeId);
 
@@ -147,6 +149,8 @@ class PagesController extends BaseController
         $request->merge(['group_render' => $group_render]);
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
+
+        $solr->indexEntity($entity, $localisation);
 
         return Redirect::route(
             'cms:pages:edit_locale',

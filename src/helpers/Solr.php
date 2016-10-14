@@ -28,9 +28,13 @@ class Solr
     }
 
 
-    public function indexEntity(Entity $entity, Localisation $localisation)
+    public function indexEntity(Entity $entity, Localisation $localisation = null)
     {
         if ($this->isEnabled()) {
+
+            if ($localisation === null) {
+                $localisation = $entity->getDefaultLocalisation();
+            }
 
             $entities_to_index = config('solr.entity.types');
 
@@ -199,19 +203,19 @@ class Solr
     }
 
 
-    public function unindexEntity($entity)
+    public function unindexEntity($entityId)
     {
         if ($this->isEnabled()) {
 
             $update = $this->client->createUpdate();
-            $update->addDeleteQuery("entity_id:".$entity->id);
+            $update->addDeleteQuery("entity_id:".$entityId);
             $update->addCommit();
 
             $response = $this->client->update($update);
 
             return [
                 'action'      => 'unindexing',
-                'entity_id'   => $entity->id,
+                'entity_id'   => $entityId,
                 'solr_status' => $response->getResponse()->getStatusMessage(),
             ];
         }
@@ -250,6 +254,23 @@ class Solr
 
             return $results;
 
+        }
+    }
+
+
+    public function unindex()
+    {
+        if ($this->isEnabled()) {
+
+            $entityRepository = app()->make(EntityRepository::class);
+            $entities = $entityRepository->all();
+            $results = [];
+
+            foreach ($entities as $entity) {
+                $results[] = $this->unindexEntity($entity->id);
+            }
+
+            return $results;
         }
     }
 

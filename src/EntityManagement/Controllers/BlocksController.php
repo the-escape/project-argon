@@ -36,9 +36,10 @@ class BlocksController extends BaseController
         return View::make('argon::blocks.manage', ['types' => $types, 'blocks' => $blocks, 'locales' => $locales]);
     }
 
-    public function delete($pageId, EntityRepository $entityRepository)
+    public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
     {
         $entityRepository->delete($pageId);
+        $solr->unindexEntity($pageId);
 
         return Redirect::route('cms:blocks:manage');
     }
@@ -69,7 +70,8 @@ class BlocksController extends BaseController
         EntityRevisionRepository $revisionRepository,
         FieldDataRepository $fieldDataRepository,
         LocalisationRepository $localisationRepository,
-        Request $request
+        Request $request,
+        Solr $solr
     ) {
 
         $parentId = null;
@@ -125,6 +127,8 @@ class BlocksController extends BaseController
         $request->merge(['group_order' => $group_order]);
 
         $entity = $entityRepository->update(Input::only(['group_order']), $entity->id);
+
+        $solr->indexEntity($entity, $localisation);
 
         return Redirect::route(
             'cms:blocks:edit_locale',
@@ -199,7 +203,7 @@ class BlocksController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
 
-        $r = $solr->indexEntity($entity, $localisation);
+        $solr->indexEntity($entity, $localisation);
 
         return Redirect::route('cms:blocks:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
