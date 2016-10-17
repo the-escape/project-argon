@@ -41,7 +41,7 @@ class Unindex extends Command
 
         $this->info(json_encode($results));
 
-        $msg = ( $results['solr_status'] == "OK")
+        $msg = ($results['solr_status'] == "OK")
             ? "Unindexed all entities."
             : "Unindexing failed. Please review.";
 
