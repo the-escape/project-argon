@@ -262,15 +262,16 @@ class Solr
     {
         if ($this->isEnabled()) {
 
-            $entityRepository = app()->make(EntityRepository::class);
-            $entities = $entityRepository->all();
-            $results = [];
+            $update = $this->client->createUpdate();
+            $update->addDeleteQuery("id:*");
+            $update->addCommit();
 
-            foreach ($entities as $entity) {
-                $results[] = $this->unindexEntity($entity->id);
-            }
+            $response = $this->client->update($update);
 
-            return $results;
+            return [
+                'action'      => 'unindexing',
+                'solr_status' => $response->getResponse()->getStatusMessage(),
+            ];
         }
     }
 

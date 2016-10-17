@@ -39,15 +39,11 @@ class Unindex extends Command
         $this->info('Content unindexing...');
         $results = $solr->unindex();
 
-        foreach ($results as $result) {
-            $this->info(json_encode($result));
-        }
-
-        $results['solr_status'] = count($results);
+        $this->info(json_encode($results));
 
         $msg = ( $results['solr_status'] == "OK")
-            ? "Unindexing failed. Please review."
-            : "Unindexed all entities.";
+            ? "Unindexed all entities."
+            : "Unindexing failed. Please review.";
 
         $this->info($msg);
     }
