@@ -10,8 +10,7 @@
     <style>
 
         .logo-admin-login {
-            width: {{config('argon.logo_admin_login_width', 'auto')}};
-            margin-bottom: {{config('argon.logo_admin_login_margin_bottom', 0)}};
+            {{config('argon.logo-admin-login')}}
         }
 
     </style>

@@ -63,8 +63,24 @@
             color: {{config('argon.highlight_color_darker', config('argon.highlight_color', '#025aa5'))}};
         }
 
-        .logo-admin {
-            width: {{config('argon.logo_admin_width', 'auto')}};
+        .navbar {
+            {{config('argon.navbar')}}
+        }
+        .navbar .navbar-nav {
+            {{config('argon.navbar-nav')}}
+        }
+        .navbar .navbar-nav .nav-item {
+            {{config('argon.nav-item')}}
+        }
+        .navbar .navbar-nav .nav-link {
+            {{config('argon.nav-link')}}
+        }
+
+        .navbar .navbar-brand {
+            {{config('argon.navbar-brand')}}
+        }
+        .navbar .navbar-brand .logo-admin {
+            {{config('argon.logo-admin')}}
         }
 
     </style>
