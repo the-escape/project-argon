@@ -208,3 +208,30 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
 
     return null;
 }
+
+
+function getUrlWithQueryString($url=null, array $set=[], array $unset=[])
+{
+    if ($url === null) {
+        $url = $_SERVER['REQUEST_URI'];
+    }
+
+    $url = parse_url($url, PHP_URL_PATH);
+    $url = rtrim($url, '?&');
+
+    parse_str($_SERVER['QUERY_STRING'], $qs);
+
+    $qs = array_merge($qs, $set);
+
+    foreach ($unset as $key) {
+        unset($qs[$key]);
+    }
+
+    if ($qs) {
+
+        $url .= (strpos($url, '?')) ? '&' : '?';
+        $url .= http_build_query($qs);
+    }
+
+    return $url;
+}

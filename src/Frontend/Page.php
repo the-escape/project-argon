@@ -115,21 +115,7 @@ class Page
 
     public function getUrlWithQueryString(array $set=[], array $unset=[])
     {
-        $url = $this->getUrl();
-
-        $this->request->merge($set);
-
-        $qs = $this->request->all();
-
-        foreach ($unset as $key) {
-            unset($qs[$key]);
-        }
-
-        if ($qs) {
-            $url .= $queryString = '?'.http_build_query($qs);
-        }
-
-        return $url;
+        return getUrlWithQueryString($this->getUrl(), $set, $unset);
     }
 
     public function getName()
