@@ -258,12 +258,12 @@ class Solr
     }
 
 
-    public function unindex()
+    public function unindex($field='id', $value='*')
     {
         if ($this->isEnabled()) {
 
             $update = $this->client->createUpdate();
-            $update->addDeleteQuery("id:*");
+            $update->addDeleteQuery('%1%:%2%', [$field, $value]);
             $update->addCommit();
 
             $response = $this->client->update($update);
