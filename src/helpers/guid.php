@@ -210,7 +210,7 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
 }
 
 
-function getUrlWithQueryString($url=null, array $set=[], array $unset=[])
+function getUrlWithQueryString(array $set=[], array $unset=[], $url=null)
 {
     if ($url === null) {
         $url = $_SERVER['REQUEST_URI'];
@@ -228,7 +228,6 @@ function getUrlWithQueryString($url=null, array $set=[], array $unset=[])
     }
 
     if ($qs) {
-
         $url .= (strpos($url, '?')) ? '&' : '?';
         $url .= http_build_query($qs);
     }
