@@ -138,6 +138,11 @@ class Page
         return $this->entity->parent_id;
     }
 
+    public function getTypeId()
+    {
+        return $this->entity->entity_type_id;
+    }
+
     public function getBreadcrumbs($formatItems=true, $glue='/')
     {
         $breadcrumbs = [];
