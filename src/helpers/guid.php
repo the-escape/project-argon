@@ -234,3 +234,52 @@ function getUrlWithQueryString(array $set=[], array $unset=[], $url=null)
 
     return $url;
 }
+
+
+/**
+ * Sorts collection looking at CMS field values
+ * @param $field
+ * @param $collection
+ * @return mixed
+ */
+function sortByField($field, $collection)
+{
+    $temp = $collection->splice(0, $collection->count());
+
+    $sorted = [];
+
+    foreach($temp as $item)
+    {
+        $f = $item->field($field);
+
+        if ($f instanceof DatetimeFieldValue)
+        {
+            $v = $f->timestamp;
+        }
+        else
+        {
+            $v = (string) $f;
+        }
+
+        $sorted[] = $v;
+    }
+
+    natcasesort($sorted);
+
+    foreach ($sorted as $sortedValue)
+    {
+        foreach($temp as $i => $item)
+        {
+            $itemValue = (string) $item->field($field);
+
+            if ($sortedValue == $itemValue)
+            {
+                $collection->push($item);
+                $temp->forget($i);
+                break;
+            }
+        }
+    }
+
+    return $collection;
+}
