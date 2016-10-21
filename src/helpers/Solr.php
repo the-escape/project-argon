@@ -278,7 +278,9 @@ class Solr
 
     public static function buildQueryStringFromParams($field, $params, $glue="OR")
     {
-        $params = is_array($params) ?: [$params];
+        if (!is_array($params)) {
+            $params = [$params];
+        }
 
         $query = [];
 
@@ -292,4 +294,41 @@ class Solr
 
         return $query;
     }
+
+
+    public static function getDocumentsFromGroupedResultset($resultset)
+    {
+        $valueGroups = $resultset->getValueGroups();
+        $documents = [];
+
+        if ($valueGroups)
+        {
+            foreach ($valueGroups as $valueGroup)
+            {
+                $docs = $valueGroup->getDocuments();
+                $documents[] = array_pop($docs);
+            }
+        }
+
+        return $documents;
+    }
+
+
+    public static function getDocumentFieldValuesFromGroupedResultset($resultset, $field)
+    {
+        $ids = [];
+        $documents = self::getDocumentsFromGroupedResultset($resultset);
+
+        if ($documents)
+        {
+            foreach ($documents as $document)
+            {
+                $ids[] = $document->$field;
+            }
+        }
+
+        return $ids;
+    }
+
+
 }
