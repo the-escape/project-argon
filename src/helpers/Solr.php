@@ -276,4 +276,20 @@ class Solr
     }
 
 
+    public static function buildQueryStringFromParams($field, $params, $glue="OR")
+    {
+        $params = is_array($params) ?: [$params];
+
+        $query = [];
+
+        for ($i=1; $i<=count($params); $i++) {
+            $query[] = "{$field}:%P{$i}%";
+        }
+
+        $glue = trim($glue);
+
+        $query = implode(" {$glue} ", $query);
+
+        return $query;
+    }
 }
