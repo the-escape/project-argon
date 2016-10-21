@@ -19,6 +19,18 @@ return [
 
     'client_name' => '',
 
+    /*
+     * Options for jstree open on load:
+     * "open_all"
+     * "close_all"
+     * " 'open_node', ['#node-1','#node-7'] "
+     * */
+    'jstree' => [
+        'load' => [
+            'open' => "open_all",
+        ]
+    ],
+
     // content type Id to view template mapping
     'views' => [],
 ];
