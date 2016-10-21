@@ -296,28 +296,43 @@ class Solr
     }
 
 
-    public static function getDocumentsFromGroupedResultset($resultset)
+    public static function getDocumentsFromGroupedResultset($resultset, $groupValue=null)
     {
         $valueGroups = $resultset->getValueGroups();
         $documents = [];
 
         if ($valueGroups)
         {
-            foreach ($valueGroups as $valueGroup)
+            if (!$groupValue)
             {
-                $docs = $valueGroup->getDocuments();
-                $documents[] = array_pop($docs);
+                foreach ($valueGroups as $valueGroup)
+                {
+                    $docs = $valueGroup->getDocuments();
+                    $documents[] = array_pop($docs);
+                }
             }
+            else
+            {
+                foreach ($valueGroups as $valueGroup)
+                {
+                    if ($valueGroup->getValue() == $groupValue)
+                    {
+                        $docs = $valueGroup->getDocuments();
+                        $documents[] = array_pop($docs);
+                    }
+                }
+            }
+
         }
 
         return $documents;
     }
 
 
-    public static function getDocumentFieldValuesFromGroupedResultset($resultset, $field)
+    public static function getDocumentFieldValuesFromGroupedResultset($resultset, $groupValue=null, $field)
     {
         $ids = [];
-        $documents = self::getDocumentsFromGroupedResultset($resultset);
+        $documents = self::getDocumentsFromGroupedResultset($resultset, $groupValue);
 
         if ($documents)
         {
