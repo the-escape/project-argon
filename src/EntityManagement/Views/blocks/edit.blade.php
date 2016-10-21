@@ -118,6 +118,7 @@
             @endif
 
             <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="btn btn-primary-outline">Add another</a>
 
             <a href="{{ route('cms:blocks:manage') }}" class="btn btn-link">Back to blocks</a>
 

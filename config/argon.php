@@ -21,13 +21,13 @@ return [
 
     /*
      * Options for jstree open on load:
-     * "open_all"
-     * "close_all"
+     * " 'open_all' "
+     * " 'close_all' "
      * " 'open_node', ['#node-1','#node-7'] "
      * */
     'jstree' => [
         'load' => [
-            'open' => "open_all",
+            'open' => " 'open_all' ",
         ]
     ],
 
