@@ -119,7 +119,7 @@
 
             <button type="submit" class="btn btn-primary">Save</button>
 
-            <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
+            <a href="{{ route('cms:blocks:manage') }}" class="btn btn-link">Back to blocks</a>
 
         </form>
     </div>
