@@ -247,16 +247,22 @@ function getUrlWithQueryStringNoEncoding(array $set=[], array $unset=[], $url=nu
 }
 
 
-
 /**
  * Sorts collection looking at CMS field values
- * @param $field
  * @param $collection
+ * @param $field
+ * @param string $direction asc|desc
  * @return mixed
  */
-function sortByField($field, $collection)
+function sortByField($collection, $field, $direction='asc')
 {
     $temp = $collection->splice(0, $collection->count());
+
+    $directions = ['asc', 'desc'];
+    if (!in_array($direction, $directions))
+    {
+        throw new \RuntimeException("Invalid sorting direction. Expected asc|desc, '$direction' given.");
+    }
 
     $sorted = [];
 
@@ -277,6 +283,11 @@ function sortByField($field, $collection)
     }
 
     natcasesort($sorted);
+
+    if ($direction == 'desc')
+    {
+        $sorted = array_reverse($sorted);
+    }
 
     foreach ($sorted as $sortedValue)
     {
