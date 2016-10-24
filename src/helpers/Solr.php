@@ -308,7 +308,11 @@ class Solr
                 foreach ($valueGroups as $valueGroup)
                 {
                     $docs = $valueGroup->getDocuments();
-                    $documents[] = array_pop($docs);
+
+                    foreach ($docs as $doc)
+                    {
+                        $documents[] = $doc;
+                    }
                 }
             }
             else
@@ -318,7 +322,11 @@ class Solr
                     if ($valueGroup->getValue() == $groupValue)
                     {
                         $docs = $valueGroup->getDocuments();
-                        $documents[] = array_pop($docs);
+
+                        foreach ($docs as $doc)
+                        {
+                            $documents[] = $doc;
+                        }
                     }
                 }
             }
@@ -343,6 +351,23 @@ class Solr
         }
 
         return $ids;
+    }
+
+    public static function getValueGroupById($resultset, $groupId)
+    {
+        $valueGroups = $resultset->getValueGroups();
+        if ($valueGroups)
+        {
+            foreach ($valueGroups as $valueGroup)
+            {
+                if ($valueGroup->getValue() == $groupId)
+                {
+                    return $valueGroup;
+                }
+            }
+        }
+
+        return null;
     }
 
 

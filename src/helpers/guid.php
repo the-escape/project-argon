@@ -210,7 +210,7 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
 }
 
 
-function getUrlWithQueryString(array $set=[], array $unset=[], $url=null)
+function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encode=true)
 {
     if ($url === null) {
         $url = $_SERVER['REQUEST_URI'];
@@ -232,8 +232,20 @@ function getUrlWithQueryString(array $set=[], array $unset=[], $url=null)
         $url .= http_build_query($qs);
     }
 
+    if (!$encode)
+    {
+        $url = urldecode($url);
+        $url = preg_replace('/\s+/', '+', $url);
+    }
+
     return $url;
 }
+
+function getUrlWithQueryStringNoEncoding(array $set=[], array $unset=[], $url=null)
+{
+    return getUrlWithQueryString($set, $unset, $url, false);
+}
+
 
 
 /**
