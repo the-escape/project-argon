@@ -4,6 +4,7 @@ use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Solarium;
+use Solarium\QueryType\Select\Result\Grouping\FieldGroup;
 
 class Solr
 {
@@ -298,8 +299,14 @@ class Solr
 
     public static function getDocumentsFromGroupedResultset($resultset, $groupValue=null)
     {
-        $valueGroups = $resultset->getValueGroups();
         $documents = [];
+
+        if (!($resultset instanceof FieldGroup))
+        {
+            return $documents;
+        }
+
+        $valueGroups = $resultset->getValueGroups();
 
         if ($valueGroups)
         {
@@ -308,10 +315,12 @@ class Solr
                 foreach ($valueGroups as $valueGroup)
                 {
                     $docs = $valueGroup->getDocuments();
-
-                    foreach ($docs as $doc)
+                    if ($docs)
                     {
-                        $documents[] = $doc;
+                        foreach ($docs as $doc)
+                        {
+                            $documents[] = $doc;
+                        }
                     }
                 }
             }
@@ -322,10 +331,12 @@ class Solr
                     if ($valueGroup->getValue() == $groupValue)
                     {
                         $docs = $valueGroup->getDocuments();
-
-                        foreach ($docs as $doc)
+                        if ($docs)
                         {
-                            $documents[] = $doc;
+                            foreach ($docs as $doc)
+                            {
+                                $documents[] = $doc;
+                            }
                         }
                     }
                 }
@@ -339,28 +350,37 @@ class Solr
 
     public static function getDocumentFieldValuesFromGroupedResultset($resultset, $groupValue=null, $field)
     {
-        $ids = [];
+        $values = [];
+
+        if (!($resultset instanceof FieldGroup))
+        {
+            return $values;
+        }
+
         $documents = self::getDocumentsFromGroupedResultset($resultset, $groupValue);
 
         if ($documents)
         {
             foreach ($documents as $document)
             {
-                $ids[] = $document->$field;
+                $values[] = $document->$field;
             }
         }
 
-        return $ids;
+
+        return $values;
     }
 
-    public static function getValueGroupById($resultset, $groupId)
+
+    public static function getValueGroupById($resultset, $id)
     {
         $valueGroups = $resultset->getValueGroups();
+
         if ($valueGroups)
         {
             foreach ($valueGroups as $valueGroup)
             {
-                if ($valueGroup->getValue() == $groupId)
+                if ($valueGroup->getValue() == $id)
                 {
                     return $valueGroup;
                 }
@@ -369,6 +389,5 @@ class Solr
 
         return null;
     }
-
 
 }
