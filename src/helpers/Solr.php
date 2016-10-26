@@ -5,6 +5,8 @@ use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Solarium;
 use Solarium\QueryType\Select\Result\Grouping\FieldGroup;
+use Solarium\QueryType\Select\Result\Result;
+use Solarium\QueryType\Select\Result\Grouping\ValueGroup;
 
 class Solr
 {
@@ -370,6 +372,42 @@ class Solr
 
         return $values;
     }
+
+    public static function getDocumentFieldValues($resultset, $groupValue=null, $field)
+    {
+        $values = [];
+
+        if ($resultset instanceof FieldGroup)
+        {
+            $documents = self::getDocumentsFromGroupedResultset($resultset, $groupValue);
+        }
+        elseif ($resultset instanceof Result)
+        {
+            $documents = $resultset->getDocuments();
+        }
+        elseif ($resultset instanceof ValueGroup)
+        {
+            $docs = $resultset->getDocuments();
+            if ($docs)
+            {
+                foreach ($docs as $doc)
+                {
+                    $documents[] = $doc;
+                }
+            }
+        }
+
+        if ($documents)
+        {
+            foreach ($documents as $document)
+            {
+                $values[] = $document->$field;
+            }
+        }
+
+        return $values;
+    }
+
 
 
     public static function getValueGroupById($resultset, $id)
