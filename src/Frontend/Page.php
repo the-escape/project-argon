@@ -18,40 +18,12 @@ class Page
 
     protected $revisionId;
 
-    protected $custom = [];
-
     public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
         $this->request = isset($request) ? $request : app()->make('\Escape\Argon\Core\Http\Request');
         $this->revisionId = $this->isPreview();
     }
-
-
-    public function __set($name, $value)
-    {
-        $this->custom[$name] = $value;
-    }
-
-    public function __get($name)
-    {
-        if (array_key_exists($name, $this->custom)) {
-            return $this->custom[$name];
-        }
-
-        throw new RuntimeException("Trying to access undefined property '{$name}' via __get() in " . __METHOD__);
-    }
-
-    public function __isset($name)
-    {
-        return isset($this->custom[$name]);
-    }
-
-    public function __unset($name)
-    {
-        unset($this->custom[$name]);
-    }
-
 
     public function isPreview()
     {
