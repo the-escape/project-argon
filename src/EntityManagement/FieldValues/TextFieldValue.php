@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
-class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate
+class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \Countable
 {
     public function __toString()
     {
@@ -32,5 +32,10 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate
         }
 
         return new \ArrayIterator($data);
+    }
+
+    public function count()
+    {
+        return count($this->data);
     }
 }
