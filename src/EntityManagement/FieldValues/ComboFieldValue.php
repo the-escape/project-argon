@@ -5,10 +5,10 @@ namespace Escape\Argon\EntityManagement\FieldValues;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\EntityManagement\FieldTypes\AbstractFieldType;
 use Illuminate\Support\Collection;
-use MyProject\Proxies\__CG__\stdClass;
+use stdClass;
 use Traversable;
 
-class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
+class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, \Countable
 {
     /** @var  Collection */
     protected $subfields;
@@ -18,7 +18,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
         $newData = [];
         if ($data) {
             foreach ($data as $k => $v) {
-                $newV = new \stdClass();
+                $newV = new stdClass();
                 $newV->fields = [];
                 $v = (array)$v;
                 foreach ($v['fields'] as $fk => $fv) {
@@ -30,6 +30,11 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate
 
         parent::__construct($newData);
         $this->subfields = $subfields;
+    }
+
+    public function count()
+    {
+        return count($this->data);
     }
 
     /**
