@@ -21,7 +21,15 @@ class Page
     public function __construct(Entity $entity, Request $request=null)
     {
         $this->entity = $entity;
-        $this->request = isset($request) ? $request : app()->make('\Escape\Argon\Core\Http\Request');
+
+        if ($request !== null) {
+            $this->request = $request;
+        } else {
+            $this->request = app()->make(Request::class);
+            //$this->request = app()->make('\Escape\Argon\Core\Http\Request');
+            //$this->request->adjustLocale();
+        }
+
         $this->revisionId = $this->isPreview();
     }
 

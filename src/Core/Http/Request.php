@@ -13,7 +13,6 @@ class Request extends LaravelRequest
     public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
     }
 
     /**
@@ -27,9 +26,10 @@ class Request extends LaravelRequest
         return $this->argonLocale;
     }
 
-    protected function parseLocales()
+    protected function parseLocales($path=null)
     {
-        $path = parent::path();
+        $path = isset($path) ? $path : parent::path();
+
         /** @var LocaleRepository $localeRepository */
         $localeRepository = app()->make(LocaleRepository::class);
 
@@ -62,4 +62,18 @@ class Request extends LaravelRequest
         }
         return parent::path();
     }
+
+
+    /**
+     * Modify request by adjusting locale based on current page url
+     */
+    public function adjustLocale()
+    {
+        $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+        if ($path) {
+            $this->parseLocales($path);
+        }
+    }
+
 }
