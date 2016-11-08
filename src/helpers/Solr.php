@@ -227,36 +227,30 @@ class Solr
 
     public function reindex()
     {
-        if ($this->isEnabled()) {
-
+        if ($this->isEnabled())
+        {
             $entityRepository = app()->make(EntityRepository::class);
             $entities = $entityRepository->all();
             $entities_to_index = config('solr.entity.types');
-            $results = [];
 
-            foreach ($entities as $entity) {
-
-                if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index)) {
-
-                    $localisations = $entity->localisations;
-                    foreach ($localisations as $localisation) {
+            foreach ($entities as $entity)
+            {
+                if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index))
+                {
+                    foreach ($entity->localisations as $localisation)
+                    {
                         $latestRevision = $localisation->latestRevision();
                         $response = $this->indexEntity($entity, $localisation);
 
-                        $results[] = [
+                        yield [
                             'action'      => 'reindexing',
                             'entity_id'   => $entity->id,
                             'revision_id' => $latestRevision->id,
                             'solr_status' => $response['solr_status'],
                         ];
                     }
-
                 }
-
             }
-
-            return $results;
-
         }
     }
 

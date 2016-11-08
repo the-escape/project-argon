@@ -39,11 +39,12 @@ class Reindex extends Command
         $this->info('Content reindexing...');
         $results = $solr->reindex();
 
+        $count = 0;
+
         foreach ($results as $result) {
+            $count++;
             $this->info(json_encode($result));
         }
-
-        $count = count($results);
 
         $msg = ($count === 1)
             ? "Reindexed {$count} entity."
