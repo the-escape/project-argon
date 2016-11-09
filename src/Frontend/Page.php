@@ -25,9 +25,8 @@ class Page
         if ($request !== null) {
             $this->request = $request;
         } else {
-            $this->request = app()->make(Request::class);
-            //$this->request = app()->make('\Escape\Argon\Core\Http\Request');
-            //$this->request->adjustLocale();
+            $this->request = app()->make('Escape\Argon\Core\Http\Request');
+            $this->request->adjustLocale();
         }
 
         $this->revisionId = $this->isPreview();

@@ -69,10 +69,14 @@ class Request extends LaravelRequest
      */
     public function adjustLocale()
     {
-        $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+        if (isset($_SERVER['REQUEST_URI']))
+        {
+            $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-        if ($path) {
-            $this->parseLocales($path);
+            if ($path)
+            {
+                $this->parseLocales($path);
+            }
         }
     }
 
