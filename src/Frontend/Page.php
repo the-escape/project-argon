@@ -24,9 +24,11 @@ class Page
 
         if (!$request instanceof \Escape\Argon\Core\Http\Request)
         {
-            $this->request = new \Escape\Argon\Core\Http\Request;
-            $this->request->adjustLocale();
+            $request = new \Escape\Argon\Core\Http\Request;
+            $request->adjustLocale();
         }
+
+        $this->request  = $request;
 
         $this->revisionId = $this->isPreview();
     }
