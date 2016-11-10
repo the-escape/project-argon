@@ -22,10 +22,9 @@ class Page
     {
         $this->entity = $entity;
 
-        if ($request !== null) {
-            $this->request = $request;
-        } else {
-            $this->request = app()->make('Escape\Argon\Core\Http\Request');
+        if (!$request instanceof \Escape\Argon\Core\Http\Request)
+        {
+            $this->request = new \Escape\Argon\Core\Http\Request;
             $this->request->adjustLocale();
         }
 
