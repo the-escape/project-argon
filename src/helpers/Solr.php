@@ -77,6 +77,7 @@ class Solr
                     // run through $value since it contains subfields and build dynamic multivalued _txt field for solr
                     if ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ComboFieldType) {
 
+                        $itr = 0;
                         foreach ($values as $hash => $val) {
 
                             foreach ($type->getSubFields() as $subField) {
@@ -93,14 +94,8 @@ class Solr
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
                                     // TODO: REVIEW HERE
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
-                                    if ($vals) {
-                                        foreach ($vals as $val) {
-                                            $doc->addField($slug . "_is", (int)$val->isTrue());
-                                        }
-                                    } else {
-                                        $doc->addField($slug . "_is", (int)$vals->isTrue());
-                                    }
-
+                                    $doc->addField($slug . "_txt", (int)$vals->isTrue());
+                                    $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_is", (int)$vals->isTrue());
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
@@ -109,12 +104,14 @@ class Solr
 
                                         if ($v != '') {
                                             $doc->addField($slug . "_dts", $val->format('Y-m-d\TH:i:s\Z'));
+                                            $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_dts", $val->format('Y-m-d\TH:i:s\Z'));
                                         } else {
-                                            $doc->addField($slug . "_dts", $entity->created_at->format('Y-m-d\TH:i:s\Z'));
-                                            $v = $entity->created_at->format('Y-m-d H:i:s');
+                                            $doc->addField($slug . "_dts", null);
+                                            $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_dts", null);
                                         }
 
                                         $doc->addField($slug . "_txt", $v);
+                                        $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_txt", $v);
                                     }
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ItemFieldType) {
@@ -123,7 +120,8 @@ class Solr
 
                                     if (is_array($vals)) {
                                         foreach ($vals as $value) {
-                                            $doc->addField($slug."_txt", $value);
+                                            $doc->addField("{$slug}_txt", $value);
+                                            $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_txt", $value);
                                         }
                                     }
 
@@ -138,11 +136,14 @@ class Solr
                                         $v = (string) $val;
 
                                         if ($v != '') {
-                                            $doc->addField($slug."_txt", $v);
+                                            $doc->addField("{$slug}_txt", $v);
+                                            $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_txt", $v);
                                         }
                                     }
                                 }
                             }
+
+                            $itr++;
 
                         }
 
@@ -165,8 +166,7 @@ class Solr
                             if ($v != '') {
                                 $doc->addField($slug . "_dts", $val->format('Y-m-d\TH:i:s\Z'));
                             } else {
-                                $doc->addField($slug . "_dts", $entity->created_at->format('Y-m-d\TH:i:s\Z'));
-                                $v = $entity->created_at->format('Y-m-d H:i:s');
+                                $doc->addField($slug . "_dts", null);
                             }
 
                             $doc->addField($slug . "_txt", $v);
