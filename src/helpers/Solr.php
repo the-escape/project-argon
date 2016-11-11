@@ -91,7 +91,16 @@ class Solr
                                     continue;
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
-                                    continue;
+                                    // TODO: REVIEW HERE
+                                    $vals = $values->getValueForSubField($hash, $subField->getId());
+                                    if ($vals) {
+                                        foreach ($vals as $val) {
+                                            $doc->addField($slug . "_is", (int)$val->isTrue());
+                                        }
+                                    } else {
+                                        $doc->addField($slug . "_is", (int)$vals->isTrue());
+                                    }
+
 
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
                                     $vals = $values->getValueForSubField($hash, $subField->getId());
@@ -147,7 +156,7 @@ class Solr
                         continue;
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType) {
-                        continue;
+                        $doc->addField($slug . "_is", (int)$values->isTrue());
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType) {
                         foreach ($values as $val) {
