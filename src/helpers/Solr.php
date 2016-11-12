@@ -315,17 +315,21 @@ class Solr
 
         if ($valueGroups)
         {
-            if (!$groupValue)
+            if ($groupValue !== null)
             {
                 foreach ($valueGroups as $valueGroup)
                 {
-                    $docs = $valueGroup->getDocuments();
-                    if ($docs)
+                    if ($valueGroup->getValue() == $groupValue)
                     {
-                        foreach ($docs as $doc)
+                        $docs = $valueGroup->getDocuments();
+                        if ($docs)
                         {
-                            $documents[] = $doc;
+                            foreach ($docs as $doc)
+                            {
+                                $documents[] = $doc;
+                            }
                         }
+                        break;
                     }
                 }
             }
