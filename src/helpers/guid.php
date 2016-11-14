@@ -37,7 +37,7 @@ function spam_check($input, $min_time_to_fill=2)
 {
     // If the bot catcher field is populated or the form was loaded and submitted in under $min_time_to_fill seconds
     // then we assume it has been submitted by a spam bot
-    if (!empty($input['catcher']) || ( (time()-$min_time_to_fill) < @$input['timestamp'])) {
+    if (($input['catcher']=='') || ( (time()-$min_time_to_fill) < $input['timestamp'])) {
         // Add the users user agent to the input data and log the data
         $input['user_agent'] = @$_SERVER['HTTP_USER_AGENT'];
 
