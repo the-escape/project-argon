@@ -383,6 +383,7 @@ class Solr
     public static function getDocumentFieldValues($resultset, $groupValue=null, $field)
     {
         $values = [];
+        $documents = [];
 
         if ($resultset instanceof FieldGroup)
         {
