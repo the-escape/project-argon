@@ -5,4 +5,5 @@ body {
 	font-style: normal;
 	line-height: $text-size-sm + 12;
 	color: $color-text;
+	-webkit-font-smoothing: antialiased;
 }
