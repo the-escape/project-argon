@@ -24,6 +24,10 @@ use Lang;
 
 class PagesController extends BaseController
 {
+    public function ui() {
+        return View::make('argon::ui');
+    }
+
     public function manage(
         EntityTypeRepository $typeRepository,
         LocaleRepository $localeRepository,

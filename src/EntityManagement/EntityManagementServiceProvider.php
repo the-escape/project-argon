@@ -29,6 +29,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 
     protected function registerRoutes()
     {
+        $this->addRoute(
+            'ui',
+            'cms:ui',
+            PagesController::class,
+            'ui'
+        );
+
         // Pages
         $this->addRoute(
             'pages',

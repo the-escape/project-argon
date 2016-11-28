@@ -5350,4 +5350,303 @@ body.dashboard .dropdown-toggle::after {
     margin-left: -5px;
     margin-right: -5px; }
 
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-SemiboldIt.eot");
+  src: url("../fonts/SourceSansPro-SemiboldIt.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-SemiboldIt.woff2") format("woff2"), url("../fonts/SourceSansPro-SemiboldIt.woff") format("woff"), url("../fonts/SourceSansPro-SemiboldIt.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-LightIt.eot");
+  src: url("../fonts/SourceSansPro-LightIt.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-LightIt.woff2") format("woff2"), url("../fonts/SourceSansPro-LightIt.woff") format("woff"), url("../fonts/SourceSansPro-LightIt.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-Semibold.eot");
+  src: url("../fonts/SourceSansPro-Semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-Semibold.woff2") format("woff2"), url("../fonts/SourceSansPro-Semibold.woff") format("woff"), url("../fonts/SourceSansPro-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-Regular.eot");
+  src: url("../fonts/SourceSansPro-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-Regular.woff2") format("woff2"), url("../fonts/SourceSansPro-Regular.woff") format("woff"), url("../fonts/SourceSansPro-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-It.eot");
+  src: url("../fonts/SourceSansPro-It.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-It.woff2") format("woff2"), url("../fonts/SourceSansPro-It.woff") format("woff"), url("../fonts/SourceSansPro-It.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-ExtraLightIt.eot");
+  src: url("../fonts/SourceSansPro-ExtraLightIt.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-ExtraLightIt.woff2") format("woff2"), url("../fonts/SourceSansPro-ExtraLightIt.woff") format("woff"), url("../fonts/SourceSansPro-ExtraLightIt.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-ExtraLight.eot");
+  src: url("../fonts/SourceSansPro-ExtraLight.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-ExtraLight.woff2") format("woff2"), url("../fonts/SourceSansPro-ExtraLight.woff") format("woff"), url("../fonts/SourceSansPro-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-Light.eot");
+  src: url("../fonts/SourceSansPro-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-Light.woff2") format("woff2"), url("../fonts/SourceSansPro-Light.woff") format("woff"), url("../fonts/SourceSansPro-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-Black.eot");
+  src: url("../fonts/SourceSansPro-Black.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-Black.woff2") format("woff2"), url("../fonts/SourceSansPro-Black.woff") format("woff"), url("../fonts/SourceSansPro-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-BoldIt.eot");
+  src: url("../fonts/SourceSansPro-BoldIt.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-BoldIt.woff2") format("woff2"), url("../fonts/SourceSansPro-BoldIt.woff") format("woff"), url("../fonts/SourceSansPro-BoldIt.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-Bold.eot");
+  src: url("../fonts/SourceSansPro-Bold.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-Bold.woff2") format("woff2"), url("../fonts/SourceSansPro-Bold.woff") format("woff"), url("../fonts/SourceSansPro-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url("../fonts/SourceSansPro-BlackIt.eot");
+  src: url("../fonts/SourceSansPro-BlackIt.eot?#iefix") format("embedded-opentype"), url("../fonts/SourceSansPro-BlackIt.woff2") format("woff2"), url("../fonts/SourceSansPro-BlackIt.woff") format("woff"), url("../fonts/SourceSansPro-BlackIt.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic; }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 15px; }
+  h1.blue,
+  h2.blue,
+  h3.blue,
+  h4.blue,
+  h5.blue,
+  h6.blue {
+    color: #12a3c7; }
+
+h1 {
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 12px; }
+  h1 + p {
+    font-weight: 300;
+    font-size: 20px; }
+
+h2 {
+  font-weight: 600;
+  font-size: 18px; }
+  h2 + p {
+    font-weight: normal;
+    font-size: 18px; }
+
+p {
+  font-weight: 300;
+  margin-bottom: 9px; }
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 26px;
+  color: #2a2a2a; }
+
+body {
+  padding: 100px; }
+
+.row {
+  margin-bottom: 100px; }
+
+label {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 10px; }
+
+input,
+textarea {
+  font-size: 16px;
+  outline: none; }
+
+.form-group {
+  float: left;
+  clear: left;
+  margin-bottom: 23px; }
+
+.field-group {
+  float: left;
+  position: relative; }
+  .field-group span.icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 42px; }
+    .field-group span.icon.error {
+      background: url("../images/ic-error.png") center/20px 18px no-repeat; }
+    .field-group span.icon.search {
+      background: url("../images/ic-search.png") center/20px no-repeat; }
+
+.input {
+  float: left; }
+  .input:focus {
+    border-color: #12a3c7; }
+
+.text {
+  height: 48px;
+  width: 290px;
+  padding: 0 11px;
+  border: 1px solid #d8d8d8; }
+  .text.icon {
+    padding-right: 53px; }
+  .text.error {
+    border-color: #f66956; }
+  .text.success {
+    border-color: #51b989; }
+  .text.info {
+    border-color: #12a3c7; }
+  .text:focus {
+    border-color: #12a3c7; }
+    .text:focus + .icon.search {
+      background: #12a3c7 url("../images/ic-search-w.png") center/20px no-repeat; }
+
+.textarea {
+  height: auto;
+  padding: 9px 11px; }
+
+.checkbox {
+  margin: 0; }
+  .checkbox label {
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+    font-size: 16px; }
+    .checkbox label input {
+      display: none; }
+      .checkbox label input + span {
+        display: block;
+        float: left;
+        height: 24px;
+        width: 24px;
+        border: 1px solid #d8d8d8;
+        margin-right: 10px; }
+      .checkbox label input:checked + span {
+        border-color: #12a3c7;
+        background: url("../images/ic-tick.png") center/13px 11px no-repeat; }
+    .checkbox label:hover input + span {
+      border-color: #12a3c7; }
+
+.button {
+  min-width: 130px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #12a3c7;
+  border: none; }
+  .button:hover {
+    background-color: #1092b3; }
+  .button.grey {
+    background-color: #b6b6b6; }
+    .button.grey:hover {
+      background-color: #808080; }
+  .button:disabled {
+    background-color: #f0f0f0; }
+    .button:disabled:hover {
+      background-color: #f0f0f0; }
+  .button:focus {
+    outline: none; }
+
+.form-alert {
+  float: left;
+  padding: 10px 14px;
+  margin-left: 20px;
+  color: #ffffff; }
+  .form-alert.error {
+    background-color: #f66956; }
+  .form-alert.success {
+    background-color: #51b989; }
+  .form-alert.info {
+    background-color: #12a3c7; }
+
+.select2-container--default {
+  font-size: 16px; }
+  .select2-container--default .select2-selection--single {
+    height: 48px;
+    border-radius: 0;
+    border: 1px solid #d8d8d8;
+    outline: none; }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      height: 46px;
+      line-height: 46px;
+      padding: 0 11px; }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+      height: 46px;
+      width: 42px;
+      background: url("../images/ic-arrow-d.png") center/14px 8px no-repeat; }
+      .select2-container--default .select2-selection--single .select2-selection__arrow b {
+        display: none; }
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+      color: #b6b6b6; }
+  .select2-container--default .select2-results {
+    margin-top: -1px; }
+  .select2-container--default .select2-results__option {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 11px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #12a3c7; }
+    .select2-container--default .select2-results__option[aria-selected=true] {
+      background-color: #12a3c7;
+      color: #ffffff; }
+  .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #12a3c7;
+    color: #ffffff; }
+  .select2-container--default.select2-container--focus .select2-selection__arrow {
+    background: #12a3c7 url("../images/ic-arrow-d-w.png") center/14px 8px no-repeat; }
+  .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #12a3c7; }
+
+.select2-dropdown {
+  border: 1px solid #12a3c7;
+  border-radius: 0; }
+
+::-webkit-input-placeholder {
+  color: #b6b6b6; }
+
+::-moz-placeholder {
+  color: #b6b6b6; }
+
+:-ms-input-placeholder {
+  color: #b6b6b6; }
+
+:-moz-placeholder {
+  color: #b6b6b6; }
+
 /*# sourceMappingURL=app.css.map */

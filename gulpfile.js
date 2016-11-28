@@ -33,6 +33,8 @@ elixir(function(mix) {
         'public/js/argon.js'
     );
 
+    mix.copy ('resources/assets/fonts', 'public/fonts');
+
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
     mix.copy('bower_components/jquery.ui/ui/core.js', 'public/js');
@@ -56,4 +58,7 @@ elixir(function(mix) {
     mix.copy('bower_components/fancybox/source/jquery.fancybox.pack.js', 'public/js');
 
     mix.copy('bower_components/fancybox/source', 'public/css/fancybox');
+
+    mix.copy('bower_components/select2/dist/js/select2.min.js', 'public/js');
+    mix.copy('bower_components/select2/dist/css/select2.min.css', 'public/css');
 });
