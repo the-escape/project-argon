@@ -5705,4 +5705,9 @@ textarea {
 :-moz-placeholder {
   color: #b6b6b6; }
 
+body.bg {
+  background-image: url("../images/bg.png");
+  background-size: cover;
+  background-position: center; }
+
 /*# sourceMappingURL=app.css.map */

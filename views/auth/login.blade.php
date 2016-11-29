@@ -61,7 +61,7 @@
 
     </style>
 </head>
-<body class="argon-login">
+<body class="argon-login bg">
 <div class="container">
     <div class="row">
         <div class="col-md-4 col-md-push-4 well login">
