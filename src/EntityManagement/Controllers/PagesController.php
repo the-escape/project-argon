@@ -16,6 +16,7 @@ use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
+use Escape\Argon\Events\PageSaved;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
@@ -150,6 +151,8 @@ class PagesController extends BaseController
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
+        event(new PageSaved($entity, $localisation));
+
         $solr->indexEntity($entity, $localisation);
 
         return Redirect::route(
@@ -240,6 +243,8 @@ class PagesController extends BaseController
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+
+        event(new PageSaved($entity, $localisation));
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);

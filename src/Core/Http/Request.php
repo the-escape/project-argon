@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Core\Http;
 
+use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request as LaravelRequest;
@@ -67,9 +68,13 @@ class Request extends LaravelRequest
     /**
      * Modify request by adjusting locale based on current page url
      */
-    public function adjustLocale()
+    public function adjustLocale(Localisation $localisation=null)
     {
-        if (isset($_SERVER['REQUEST_URI']))
+        if ($localisation !== null)
+        {
+            $this->argonLocale = $localisation->getLocale();
+        }
+        elseif (isset($_SERVER['REQUEST_URI']))
         {
             $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 

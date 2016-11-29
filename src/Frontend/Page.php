@@ -5,6 +5,7 @@ namespace Escape\Argon\Frontend;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
@@ -31,6 +32,11 @@ class Page
         $this->request  = $request;
 
         $this->revisionId = $this->isPreview();
+    }
+
+    public function adjustLocale(Localisation $localisation)
+    {
+        $this->request->adjustLocale($localisation);
     }
 
     public function isPreview()
