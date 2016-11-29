@@ -5540,26 +5540,80 @@ textarea {
   padding: 9px 11px; }
 
 .checkbox {
+  margin: 0;
+  height: 24px;
+  line-height: 24px;
+  padding: 0;
+  font-size: 16px;
+  color: #b6b6b6;
+  cursor: pointer;
+  transition: 0.3s; }
+  .checkbox input {
+    display: none; }
+    .checkbox input + span {
+      display: block;
+      float: left;
+      height: 24px;
+      width: 24px;
+      border: 1px solid #d8d8d8;
+      margin-right: 10px;
+      transition: border-color 0.3s; }
+    .checkbox input:checked + span {
+      border-color: #12a3c7;
+      background: url("../images/ic-tick.png") center/13px 11px no-repeat; }
+    .checkbox input:checked ~ span {
+      color: #2a2a2a; }
+  .checkbox:hover input + span {
+    border-color: #12a3c7; }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 48px;
   margin: 0; }
-  .checkbox label {
-    height: 24px;
-    line-height: 24px;
-    padding: 0;
-    font-size: 16px; }
-    .checkbox label input {
-      display: none; }
-      .checkbox label input + span {
-        display: block;
+  .switch input {
+    display: none; }
+    .switch input:checked + .slider {
+      background-color: #51b989; }
+      .switch input:checked + .slider:before {
+        -webkit-transform: translateX(52px);
+        transform: translateX(52px); }
+    .switch input:focus + .slider {
+      box-shadow: 0 0 1px #2a2a2a; }
+  .switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #b6b6b6;
+    border-radius: 34px;
+    transition: 0.3s; }
+    .switch .slider span {
+      line-height: 48px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px; }
+      .switch .slider span:first-child {
         float: left;
-        height: 24px;
-        width: 24px;
-        border: 1px solid #d8d8d8;
-        margin-right: 10px; }
-      .checkbox label input:checked + span {
-        border-color: #12a3c7;
-        background: url("../images/ic-tick.png") center/13px 11px no-repeat; }
-    .checkbox label:hover input + span {
-      border-color: #12a3c7; }
+        margin-left: 18px; }
+      .switch .slider span:last-child {
+        float: right;
+        margin-right: 18px; }
+    .switch .slider:hover {
+      background-color: #808080; }
+    .switch .slider:before {
+      position: absolute;
+      content: "";
+      height: 34px;
+      width: 34px;
+      left: 7px;
+      bottom: 7px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      transition: 0.3s; }
 
 .button {
   min-width: 130px;
@@ -5570,7 +5624,8 @@ textarea {
   font-weight: 600;
   color: #ffffff;
   background-color: #12a3c7;
-  border: none; }
+  border: none;
+  transition: 0.3s; }
   .button:hover {
     background-color: #1092b3; }
   .button.grey {
@@ -5586,7 +5641,7 @@ textarea {
 
 .form-alert {
   float: left;
-  padding: 10px 14px;
+  padding: 11px 14px;
   margin-left: 20px;
   color: #ffffff; }
   .form-alert.error {

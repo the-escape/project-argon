@@ -68,20 +68,34 @@
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox">
-                        <span></span>Label
-                    </label>
-                </div>
+                <label class="checkbox">
+                    <input type="checkbox">
+                    <span></span><span>Label</span>
+                </label>
             </div>
             <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" checked>
-                        <span></span>Label
-                    </label>
-                </div>
+                <label class="checkbox">
+                    <input type="checkbox" checked>
+                    <span></span><span>Label</span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="switch">
+                    <input type="checkbox">
+                    <div class="slider">
+                        <span>YES</span>
+                        <span>NO</span>
+                    </div>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <div class="slider">
+                        <span>YES</span>
+                        <span>NO</span>
+                    </div>
+                </label>
             </div>
         </div>
         <div class="col-sm-4">

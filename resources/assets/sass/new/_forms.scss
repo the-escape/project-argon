@@ -83,30 +83,96 @@ textarea {
 
 .checkbox {
     margin: 0;
-    label {
-        height: 24px;
-        line-height: 24px;
-        padding: 0;
-        font-size: 16px;
-        input {
-            display: none;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+    font-size: 16px;
+    color: $color-grey-accent;
+    cursor: pointer;
+    @include transition($transition-sm);
+    input {
+        display: none;
+        + span {
+            display: block;
+            float: left;
+            height: 24px;
+            width: 24px;
+            border: 1px solid $color-grey-dark;
+            margin-right: 10px;
+            @include transition(border-color $transition-sm);
+        }
+        &:checked {
             + span {
-                display: block;
-                float: left;
-                height: 24px;
-                width: 24px;
-                border: 1px solid $color-grey-dark;
-                margin-right: 10px;
-            }
-            &:checked + span {
                 border-color: $color-blue;
                 background: url('../images/ic-tick.png') center / 13px 11px no-repeat;
             }
+            ~ span {
+                color: $color-text;
+            }
+        }
+    }
+    &:hover {
+        input + span {
+            border-color: $color-blue;
+        }
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 48px;
+    margin: 0;
+    input {
+        display: none;
+        &:checked + .slider {
+            background-color: $color-green;
+            &:before {
+                transform: translateX(52px);
+            }
+        }
+        &:focus + .slider {
+            box-shadow: 0 0 1px $color-text;
+        }
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $color-grey-accent;
+        border-radius: 34px;
+        @include transition($transition-sm);
+        span {
+            line-height: 48px;
+            color: $color-white;
+            font-weight: 600;
+            font-size: 14px;
+            &:first-child {
+                float: left;
+                margin-left: 18px;
+            }
+            &:last-child {
+                float: right;
+                margin-right: 18px;
+            }
         }
         &:hover {
-            input + span {
-                border-color: $color-blue;
-            }
+            background-color: $color-secondary-accent;
+        }
+        &:before {
+            position: absolute;
+            content: "";
+            height: 34px;
+            width: 34px;
+            left: 7px;
+            bottom: 7px;
+            background-color: $color-white;
+            border-radius: 50%;
+            @include transition($transition-sm);
         }
     }
 }
@@ -121,6 +187,7 @@ textarea {
     color: $color-white;
     background-color: $color-blue;
     border: none;
+    @include transition($transition-sm);
     &:hover {
         background-color: $color-primary-accent;
     }
@@ -143,7 +210,7 @@ textarea {
 
 .form-alert {
     float: left;
-    padding: 10px 14px;
+    padding: 11px 14px;
     margin-left: 20px;
     color: $color-white;
     &.error {
