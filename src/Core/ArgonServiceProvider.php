@@ -8,6 +8,7 @@ use Escape\Argon\Core\Plugins\PluginServiceProvider;
 use Escape\Argon\EntityManagement\EntityManagementServiceProvider;
 use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\Media\MediaServiceProvider;
+use Escape\Argon\RedirectManagement\RedirectManagementServiceProvider;
 use Escape\Argon\UserManagement\UserManagementServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
@@ -57,5 +58,6 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
         class_alias(Image::class, 'Image');
         $this->app->register(MediaServiceProvider::class);
+        $this->app->register(RedirectManagementServiceProvider::class);
     }
 }

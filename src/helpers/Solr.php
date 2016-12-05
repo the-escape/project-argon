@@ -337,15 +337,12 @@ class Solr
             {
                 foreach ($valueGroups as $valueGroup)
                 {
-                    if ($valueGroup->getValue() == $groupValue)
+                    $docs = $valueGroup->getDocuments();
+                    if ($docs)
                     {
-                        $docs = $valueGroup->getDocuments();
-                        if ($docs)
+                        foreach ($docs as $doc)
                         {
-                            foreach ($docs as $doc)
-                            {
-                                $documents[] = $doc;
-                            }
+                            $documents[] = $doc;
                         }
                     }
                 }
