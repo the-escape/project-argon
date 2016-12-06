@@ -22,6 +22,7 @@ textarea {
     float: left;
     clear: left;
     margin-bottom: 23px;
+    width: 100%;
 }
 
 .field-group {
@@ -54,6 +55,7 @@ textarea {
     width: 290px;
     padding: 0 11px;
     border: 1px solid $color-grey-dark;
+    width: 100%;
     &.icon {
         padding-right: 53px;
     }

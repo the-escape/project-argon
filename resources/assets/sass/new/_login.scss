@@ -1,0 +1,31 @@
+.bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url('../images/bg.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.login-box {
+    text-align: center;
+    .form-group:last-of-type {
+        margin-bottom: 30px;
+    }
+    a {
+        display: block;
+        margin-top: 50px;
+        color: $color-white;
+        text-decoration: underline;
+        &:hover {
+            color: $color-white;
+        }
+    }
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 60px;
+}

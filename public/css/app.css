@@ -5496,7 +5496,8 @@ textarea {
 .form-group {
   float: left;
   clear: left;
-  margin-bottom: 23px; }
+  margin-bottom: 23px;
+  width: 100%; }
 
 .field-group {
   float: left;
@@ -5521,7 +5522,8 @@ textarea {
   height: 48px;
   width: 290px;
   padding: 0 11px;
-  border: 1px solid #d8d8d8; }
+  border: 1px solid #d8d8d8;
+  width: 100%; }
   .text.icon {
     padding-right: 53px; }
   .text.error {
@@ -5705,9 +5707,30 @@ textarea {
 :-moz-placeholder {
   color: #b6b6b6; }
 
-body.bg {
+.bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-image: url("../images/bg.png");
   background-size: cover;
   background-position: center; }
+
+.login-box {
+  text-align: center; }
+  .login-box .form-group:last-of-type {
+    margin-bottom: 30px; }
+  .login-box a {
+    display: block;
+    margin-top: 50px;
+    color: #ffffff;
+    text-decoration: underline; }
+    .login-box a:hover {
+      color: #ffffff; }
+
+.logo {
+  display: block;
+  margin: 0 auto 60px; }
 
 /*# sourceMappingURL=app.css.map */
