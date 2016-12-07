@@ -364,6 +364,10 @@ class PagesController extends BaseController
                 {
                     $value = $latestRevisionFields[$field->id]->getData();
                 }
+                elseif ($field->field_type == 'image')
+                {
+                    $value = $latestRevisionFields[$field->id]->getData();
+                }
                 else
                 {
                     $value = (string)$latestRevisionFields[$field->id];
