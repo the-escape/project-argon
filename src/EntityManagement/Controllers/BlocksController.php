@@ -19,6 +19,7 @@ use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
+use stdClass;
 use View;
 use Lang;
 
@@ -27,13 +28,12 @@ class BlocksController extends BaseController
     public function manage(
         EntityTypeRepository $typeRepository,
         LocaleRepository $localeRepository,
-        EntityRepository $entityRepository,
-        Request $request
+        EntityRepository $entityRepository
     ) {
         $types = $typeRepository->block();
         $locales = $localeRepository->all();
         $blocks = $entityRepository->blocks();
-        return View::make('argon::blocks.manage', ['types' => $types, 'blocks' => $blocks, 'locales' => $locales]);
+        return view('argon::blocks.manage', ['types' => $types, 'blocks' => $blocks, 'locales' => $locales]);
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
@@ -52,7 +52,7 @@ class BlocksController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
-        return View::make(
+        return view(
             'argon::blocks.create',
             [
                 'type' => $type,
@@ -70,6 +70,7 @@ class BlocksController extends BaseController
         EntityRevisionRepository $revisionRepository,
         FieldDataRepository $fieldDataRepository,
         LocalisationRepository $localisationRepository,
+        LocaleRepository $localeRepository,
         Request $request,
         Solr $solr
     ) {
@@ -105,13 +106,14 @@ class BlocksController extends BaseController
             'entity_type_id' => $type->id,
             'owner_id' => $request->user()->id,
             'parent_id' => $parentId,
-            'locale' => $request->session()->get('locale'),
             'slug' => $slug,
         ]);
 
+        $locale = $localeRepository->getDefault();
+
         $localisation = $localisationRepository->create([
             'entity_id' => $entity->getId(),
-            'locale_id' => 1 // TODO: Wire up properly.
+            'locale_id' => $locale->getId(),
         ]);
 
         $revision = $revisionRepository->create([
@@ -120,9 +122,9 @@ class BlocksController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
 
-        $group_order = new \stdClass();
+        $group_order = new stdClass();
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
@@ -187,7 +189,7 @@ class BlocksController extends BaseController
 
         $this->validate($this->request, $rules, $messages, $niceNames);
 
-        $group_order = ($page->group_order instanceof \stdClass) ? $page->group_order : new \stdClass();
+        $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
@@ -201,7 +203,7 @@ class BlocksController extends BaseController
 
         $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -233,7 +235,7 @@ class BlocksController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
-        return View::make(
+        return view(
             'argon::blocks.edit',
             [
                 'page' => $page,
@@ -253,6 +255,7 @@ class BlocksController extends BaseController
         EntityRevisionRepository $revisionRepository
     ) {
         $localeId = (int)$request->input('locale');
+        $clone = (int)$request->input('clone');
 
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
@@ -264,6 +267,53 @@ class BlocksController extends BaseController
             'status' => RevisionStatus::DRAFT,
             'created_by' => $request->user()->id
         ]);
+
+        if ($clone)
+        {
+            $entityRepository = app()->make(EntityRepository::class);
+            $typeRepository = app()->make(EntityTypeRepository::class);
+            $fieldDataRepository = app()->make(FieldDataRepository::class);
+
+            $page = $entityRepository->find($pageId);
+
+            $pageData = [];
+
+            $locale = Locale::find($localeId);
+            $defaultLocalisation = $page->getDefaultLocalisation();
+            $latestRevision = $defaultLocalisation->publishedRevision();
+            $latestRevisionFields = $latestRevision->getFields();
+
+            $redirect_url = ($page->redirect_url instanceof stdClass) ? $page->redirect_url : new stdClass();
+            $redirect_url->{$localeId} = isset($redirect_url->{$defaultLocalisation->getLocaleId()}) ? $redirect_url->{$defaultLocalisation->getLocaleId()} : [];
+            $pageData['redirect_url'] = $redirect_url;
+
+            $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
+            $group_order->{$localeId} = isset($group_order->{$defaultLocalisation->getLocaleId()}) ? $group_order->{$defaultLocalisation->getLocaleId()} : [];
+            $pageData['group_order'] = $group_order;
+
+            $group_render = ($page->group_render instanceof stdClass) ? $page->group_render : new stdClass();
+            $group_render->{$localeId} = isset($group_render->{$defaultLocalisation->getLocaleId()}) ? $group_render->{$defaultLocalisation->getLocaleId()} : [];
+            $pageData['group_render'] = $group_render;
+
+            $page->update($pageData);
+
+            $type = $typeRepository->find($page->entity_type_id);
+            $fields = $type->fields;
+
+            foreach ($fields as $field)
+            {
+                if ($field->field_type == 'combo')
+                {
+                    $value = $latestRevisionFields[$field->id]->getData();
+                }
+                else
+                {
+                    $value = (string)$latestRevisionFields[$field->id];
+                }
+
+                FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
+            }
+        }
 
         return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }

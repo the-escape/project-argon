@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Escape\Argon\Core\Http\Request;
 use Illuminate\Support\Collection;
+use stdClass;
 
 /**
  * Class Entity
@@ -115,7 +116,7 @@ class Entity extends Model
             }
         );
 
-        if (($this->group_order instanceof \stdClass) && property_exists($this->group_order, $locale_id)) {
+        if (($this->group_order instanceof stdClass) && property_exists($this->group_order, $locale_id)) {
             $group_order = array_filter(explode(',', $this->group_order->$locale_id));
 
             $ordered = new Collection;

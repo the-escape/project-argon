@@ -37,6 +37,11 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         return count($this->data);
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     /**
      * Retrieve an external iterator
      * @link http://php.net/manual/en/iteratoraggregate.getiterator.php

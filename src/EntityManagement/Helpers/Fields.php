@@ -2,8 +2,12 @@
 
 namespace Escape\Argon\EntityManagement\Helpers;
 
+use Escape\Argon\EntityManagement\Eloquent\EntityField;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\Helpers\Validation as ValidationHelpers;
+use Escape\Argon\Locales\Eloquent\Locale;
+use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
 use Input;
 
@@ -277,65 +281,53 @@ class Fields
         Request $request,
         $fields,
         $revision,
-        FieldDataRepository $fieldDataRepository,
-        $combos = null
+        FieldDataRepository $fieldDataRepository=null,
+        Locale $locale=null
     ) {
-        if (!isset($combos)) {
-            $combos = $request->input("combo");
-        }
-        $hash = null;
-
-        foreach ($fields as $field) {
-
-            if ($field->field_type == 'combo') {
-                self::saveCombo($field, $revision, $request);
-                continue;
-            }
-
-            // default nicename
-            $niceName = "fields.{$field->id}";
-
-//            // adjust nicename for subfield
-//            if ($field->parent_field_id) {
-//                if (!isset($hash)) {
-//                    reset($combos[$field->parent_field_id]);
-//                    $hash = key($combos[$field->parent_field_id]);
-//                    unset($combos[$field->parent_field_id][$hash]);
-//                }
-//
-//                $niceName = "combo.{$field->parent_field_id}.{$hash}.fields.{$field->id}";
-//            }
-
-            $FieldData = $fieldDataRepository->create([
-                'field_id' => $field->id,
-                'entity_revision_id' => $revision->id,
-                'language' => 'en_GB',
-                'value' => $request->input($niceName),
-            ]);
-
-//            // when combo subfield, save $FieldData->id reference as combo value to enable combo rebuild
-//            // from (multiple) saved values
-//            if ($field->parent_field_id) {
-//                $fieldDataRepository->create([
-//                    'field_id' => $field->parent_field_id,
-//                    'entity_revision_id' => $revision->id,
-//                    'language' => 'en_GB',
-//                    'value' => json_encode([$hash => $FieldData->id]),
-//                ]);
-//            }
+        if ($fieldDataRepository === null)
+        {
+            $fieldDataRepository = app()->make(FieldDataRepository::class);
         }
 
-        return [$combos];
+        if ($locale === null)
+        {
+            $localeRepository = app()->make(LocaleRepository::class);
+            $locale = $localeRepository->getDefault();
+        }
+
+        foreach ($fields as $field)
+        {
+            $niceName = ($field->field_type == 'combo')
+                ? "combo.{$field->id}"
+                : "fields.{$field->id}";
+
+            self::saveField($field, $revision, $request->input($niceName), $fieldDataRepository, $locale);
+        }
     }
 
-    public static function saveCombo($field, $revision, $request)
+
+    public static function saveField(EntityField $field, EntityRevision $revision, $value, FieldDataRepository $fieldDataRepository=null, Locale $locale=null)
     {
-        /** @var FieldDataRepository $repo */
-        $repo = app()->make(FieldDataRepository::class);
-        $fieldData = $repo->create([
+        if ($fieldDataRepository === null)
+        {
+            $fieldDataRepository = app()->make(FieldDataRepository::class);
+        }
+
+        if ($locale === null)
+        {
+            $localeRepository = app()->make(LocaleRepository::class);
+            $locale = $localeRepository->getDefault();
+        }
+
+        $language = ($locale === null)
+            ? null
+            : $locale->getLanguageCode();
+
+        $fieldData = $fieldDataRepository->create([
             'field_id' => $field->id,
             'entity_revision_id' => $revision->id,
-            'value' => $request->input("combo.{$field->id}")
+            'language' => $language,
+            'value' => $value,
         ]);
     }
 }

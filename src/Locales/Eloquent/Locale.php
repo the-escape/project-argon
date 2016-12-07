@@ -30,4 +30,9 @@ class Locale extends Model
     {
         return $this->locale_slug;
     }
+
+    public function getLanguageCode()
+    {
+        return $this->languageCode;
+    }
 }

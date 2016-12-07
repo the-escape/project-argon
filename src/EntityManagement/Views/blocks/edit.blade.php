@@ -181,15 +181,32 @@
                     <h4 class="modal-title" id="newLocalisationLabel">Add A New Localisation</h4>
                 </div>
                 <form action="{{ route('cms:blocks:create_locale', [$page->getId()]) }}" method="POST">
+
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                     <div class="modal-body">
-                        <select name="locale">
-                            <option value="">Select a Locale</option>
-                            @foreach ($locales as $locale)
-                                <option value="{{$locale->getId()}}">{{$locale->getName()}}</option>
-                            @endforeach
-                        </select>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select name="locale">
+                                    <option value="">Select a Locale</option>
+                                    @foreach ($locales as $locale)
+                                        <option value="{{$locale->getId()}}">{{$locale->getName()}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="chk-field chk-label">
+                                    <input type="hidden" name="clone" value="0" class="chk-default">
+                                    <input type="checkbox" name="clone" value="1" class="chk-input">
+                                    <span class="chk-text">Clone content</span>
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Create</button>
