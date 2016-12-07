@@ -56,7 +56,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'edit'
         );
         $this->addRoute(
-            'pages/{id}/edit/{locale}',
+            'pages/{id}/edit/{locale}/{clone?}',
             'cms:pages:edit_locale',
             PagesController::class,
             'editLocale'

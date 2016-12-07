@@ -262,16 +262,21 @@ class PagesController extends BaseController
     public function editLocale(
         $pageId,
         $localeId,
-        EntityRepository $entityRepository,
-        EntityGroupRepository $groupRepository,
-        MediaFolderRepository $folderRepository
+        $clone=null
     ) {
+        $entityRepository = app()->make(EntityRepository::class);
+        $groupRepository = app()->make(EntityGroupRepository::class);
+        $folderRepository = app()->make(MediaFolderRepository::class);
+
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-        $currentLocale = Locale::find($localeId);
-
-        $localisation = $page->getLocalisation($currentLocale);
+        if ($clone) {
+            $localisation = $page->getDefaultLocalisation();
+        } else {
+            $currentLocale = Locale::find($localeId);
+            $localisation = $page->getLocalisation($currentLocale);
+        }
 
         $latestRevision = $localisation->publishedRevision();
 
@@ -292,6 +297,7 @@ class PagesController extends BaseController
                 'root' => $folderRepository->root(),
                 'groups' => $groups,
                 'locales' => $locales,
+                'localeId' => $localeId,
             ]
         );
     }
@@ -303,6 +309,7 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionRepository
     ) {
         $localeId = (int)$request->input('locale');
+        $clone = (int)$request->input('clone');
 
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
@@ -315,7 +322,7 @@ class PagesController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
+        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId, 'clone'=>$clone]);
     }
 
 
