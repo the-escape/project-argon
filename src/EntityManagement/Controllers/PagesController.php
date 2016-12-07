@@ -342,15 +342,15 @@ class PagesController extends BaseController
             $latestRevisionFields = $latestRevision->getFields();
 
             $redirect_url = ($page->redirect_url instanceof stdClass) ? $page->redirect_url : new stdClass();
-            $redirect_url->{$localeId} = isset($redirect_url->{$defaultLocalisation->getLocaleId()}) ? $redirect_url->{$defaultLocalisation->getLocaleId()} : [];
+            $redirect_url->{$localeId} = isset($redirect_url->{$defaultLocalisation->getLocaleId()}) ? $redirect_url->{$defaultLocalisation->getLocaleId()} : null;
             $pageData['redirect_url'] = $redirect_url;
 
             $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
-            $group_order->{$localeId} = isset($group_order->{$defaultLocalisation->getLocaleId()}) ? $group_order->{$defaultLocalisation->getLocaleId()} : [];
+            $group_order->{$localeId} = isset($group_order->{$defaultLocalisation->getLocaleId()}) ? $group_order->{$defaultLocalisation->getLocaleId()} : null;
             $pageData['group_order'] = $group_order;
 
             $group_render = ($page->group_render instanceof stdClass) ? $page->group_render : new stdClass();
-            $group_render->{$localeId} = isset($group_render->{$defaultLocalisation->getLocaleId()}) ? $group_render->{$defaultLocalisation->getLocaleId()} : [];
+            $group_render->{$localeId} = isset($group_render->{$defaultLocalisation->getLocaleId()}) ? $group_render->{$defaultLocalisation->getLocaleId()} : null;
             $pageData['group_render'] = $group_render;
 
             $page->update($pageData);
