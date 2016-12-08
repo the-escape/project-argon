@@ -29,11 +29,6 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
-    public function getData()
-    {
-        return $this->data;
-    }
-
     public function first()
     {
         if (is_array($this->data) && (count($this->data) > 1)) {

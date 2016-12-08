@@ -309,7 +309,8 @@ class PagesController extends BaseController
         $pageId,
         Request $request,
         LocalisationRepository $localisationRepository,
-        EntityRevisionRepository $revisionRepository
+        EntityRevisionRepository $revisionRepository,
+        Solr $solr
     ) {
         $localeId = (int)$request->input('locale');
         $clone = (int)$request->input('clone');
@@ -360,22 +361,26 @@ class PagesController extends BaseController
 
             foreach ($fields as $field)
             {
-                if ($field->field_type == 'combo')
+                switch ($field->field_type)
                 {
-                    $value = $latestRevisionFields[$field->id]->getData();
-                }
-                elseif ($field->field_type == 'image')
-                {
-                    $value = $latestRevisionFields[$field->id]->getData();
-                }
-                else
-                {
-                    $value = (string)$latestRevisionFields[$field->id];
+                    case 'combo':
+                    case 'image':
+                    case 'file':
+                    case 'location':
+                    case 'select':
+                    case 'item':
+                        $value = $latestRevisionFields[$field->id]->getData();
+                        break;
+
+                    default:
+                        $value = (string)$latestRevisionFields[$field->id];
                 }
 
                 FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
             }
         }
+
+        $solr->indexEntity($page, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }
