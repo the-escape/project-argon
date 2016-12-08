@@ -253,6 +253,7 @@ class BlocksController extends BaseController
         Request $request,
         LocalisationRepository $localisationRepository,
         EntityRevisionRepository $revisionRepository,
+        EntityRepository $entityRepository,
         Solr $solr
     ) {
         $localeId = (int)$request->input('locale');
@@ -269,13 +270,12 @@ class BlocksController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
+        $page = $entityRepository->find($pageId);
+
         if ($clone)
         {
-            $entityRepository = app()->make(EntityRepository::class);
             $typeRepository = app()->make(EntityTypeRepository::class);
             $fieldDataRepository = app()->make(FieldDataRepository::class);
-
-            $page = $entityRepository->find($pageId);
 
             $pageData = [];
 
