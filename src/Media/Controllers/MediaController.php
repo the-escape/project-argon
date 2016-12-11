@@ -6,6 +6,7 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use View;
@@ -114,9 +115,46 @@ class MediaController extends BaseController
 
     public function deleteItem($id, MediaItemRepository $itemRepository)
     {
+        $sql = "select
+                entity_localisations.entity_id,
+                entity_localisations.id as localisation_id,
+                field_data.entity_revision_id as revision_id,
+                field_data.id as data_id,
+                field_data.value as data_value,
+                locales.name as locale_name,
+                entities.name as entity_name
+                from `field_data`
+                inner join entity_revisions on entity_revisions.id = field_data.entity_revision_id
+                inner join entity_fields on entity_fields.id = field_data.field_id
+                inner join `entity_localisations` on `entity_localisations`.`id` = `entity_revisions`.`entity_localisation_id`
+                inner join `locales` on `locales`.`id` = `entity_localisations`.`locale_id`
+                inner join `entities` on `entities`.`id` = `entity_localisations`.`entity_id`
+                where 1
+                and `field_data`.`value` LIKE ?
+                and `entity_revisions`.`status` in (1,2)
+                and `entity_fields`.`field_type` in ('image', 'file')
+                and `entity_localisations`.`deleted_at` is null
+                and `entity_fields`.`deleted_at` is null
+                group by entity_revisions.entity_localisation_id";
+
+        $results = DB::select(DB::raw($sql), ['%"'.$id.'"%']);
+
+        if ($results)
+        {
+            return response()->json([
+                'error' => 'Could not delete. Media item in use.',
+                'results' => $results,
+            ], HTTP_OK);
+        }
+
         $itemRepository->delete($id);
 
-        return response('', Response::HTTP_NO_CONTENT);
+//        return response('', Response::HTTP_NO_CONTENT);
+
+        return response()->json([
+            'error' => '',
+            'results' => '',
+        ], Response::HTTP_OK);
     }
 
     public function createFolder(Request $request, MediaFolderRepository $folderRepository)
