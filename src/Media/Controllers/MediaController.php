@@ -122,13 +122,15 @@ class MediaController extends BaseController
                 field_data.id as data_id,
                 field_data.value as data_value,
                 locales.name as locale_name,
-                entities.name as entity_name
+                entities.name as entity_name,
+                entity_types.type as entity_type
                 from `field_data`
                 inner join entity_revisions on entity_revisions.id = field_data.entity_revision_id
                 inner join entity_fields on entity_fields.id = field_data.field_id
                 inner join `entity_localisations` on `entity_localisations`.`id` = `entity_revisions`.`entity_localisation_id`
                 inner join `locales` on `locales`.`id` = `entity_localisations`.`locale_id`
                 inner join `entities` on `entities`.`id` = `entity_localisations`.`entity_id`
+                inner join `entity_types` on `entity_types`.`id` = `entities`.`entity_type_id`
                 where 1
                 and `field_data`.`value` LIKE ?
                 and `entity_revisions`.`status` in (1,2)
@@ -142,14 +144,14 @@ class MediaController extends BaseController
         if ($results)
         {
             return response()->json([
-                'error' => 'Could not delete. Media item in use.',
+                'error' => 'Could not delete, media item in use:',
                 'results' => $results,
-            ], HTTP_OK);
+            ], Response::HTTP_OK);
         }
 
         $itemRepository->delete($id);
 
-//        return response('', Response::HTTP_NO_CONTENT);
+        //return response('', Response::HTTP_NO_CONTENT);
 
         return response()->json([
             'error' => '',

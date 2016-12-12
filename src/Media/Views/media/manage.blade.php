@@ -224,7 +224,7 @@
                         var msg = data.error;
                         var c = 0;
                         for (var i in data.results) {
-                            msg += "\n"+ ++c +") Entity ID: " + data.results[i].entity_id + ", Entity name: "+ data.results[i].entity_name +", Entity Locale: " + data.results[i].locale_name;
+                            msg += "\n"+ ++c +") Type: " + data.results[i].entity_type + ", Name: "+ data.results[i].entity_name +", Locale: " + data.results[i].locale_name + " (Entity ID: " + data.results[i].entity_id +")";
                         }
                         if(window.console) console.log(msg);
 
