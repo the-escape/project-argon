@@ -138,39 +138,47 @@
 <script src="/argon/js/argon.js"></script>
 
 <script>
-    var dropzone = new Dropzone(
-            'form.dz',
-            {
-                url: '/admin/media/upload',
-                clickable: '.btn-upload',
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                thumbnailWidth: 100,
-                thumbnailHeight: 100,
-                previewTemplate: $('#preview-template').html(),
-                previewsContainer: '.media-library .files'
+
+    var $formDZ = $('form.dz');
+
+    if ($formDZ && $formDZ.length)
+    {
+        var dropzone = new Dropzone(
+                'form.dz',
+                {
+                    url: '/admin/media/upload',
+                    clickable: '.btn-upload',
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    thumbnailWidth: 100,
+                    thumbnailHeight: 100,
+                    previewTemplate: $('#preview-template').html(),
+                    previewsContainer: '.media-library .files'
+                }
+        );
+        dropzone.on('success', function(e, response) {
+            loadItems($('#current-folder').val());
+        });
+
+        dropzone.on('error', function(file, errorMessage, xhr) {
+            console.log(errorMessage);
+        });
+
+        dropzone.on('uploadprogress', function(file, progress, bytesSent) {
+            $('progress', file.previewElement).val(progress);
+
+            if (progress == 100) {
+                $('progress', file.previewElement).hide();
             }
-    );
-    dropzone.on('success', function(e, response) {
-        loadItems($('#current-folder').val());
-    });
+        });
 
-    dropzone.on('error', function(file, errorMessage, xhr) {
-        console.log(errorMessage);
-    });
+        dropzone.on('addedfile', function(file) {
+            sortItems();
+        });
+    }
 
-    dropzone.on('uploadprogress', function(file, progress, bytesSent) {
-        $('progress', file.previewElement).val(progress);
 
-        if (progress == 100) {
-            $('progress', file.previewElement).hide();
-        }
-    });
-
-    dropzone.on('addedfile', function(file) {
-        sortItems();
-    });
 </script>
 
 @foreach($assetsManager->outputScripts() as $script)

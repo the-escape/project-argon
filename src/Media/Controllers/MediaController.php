@@ -51,15 +51,25 @@ class MediaController extends BaseController
     public function upload(Request $request, MediaItemRepository $mediaRepository)
     {
         $folderId = Input::get('current-folder');
+        
         $file = $request->file('file');
 
+        if (!$file)
+        {
+            return response()->json(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
         $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
-        while ($mediaRepository->itemExists($name, $folderId)) {
-            if (preg_match('/(.*) \((\d+)\)/', $name, $matches)) {
+        while ($mediaRepository->itemExists($name, $folderId))
+        {
+            if (preg_match('/(.*) \((\d+)\)/', $name, $matches))
+            {
                 $name = $matches[1];
                 $count = $matches[2];
-            } else {
+            }
+            else
+            {
                 $count = 1;
             }
 
