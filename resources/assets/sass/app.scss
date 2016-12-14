@@ -1,16 +1,9 @@
-@import "../../../bower_components/bootstrap/scss/bootstrap";
+@import 'includes/settings/vars';
+@import 'includes/settings/mixins';
+@import 'includes/settings/fonts';
 
-@import "login";
-@import "dashboard";
-@import "media";
-@import "fields/boolean";
-@import "fields/datetime";
+@import 'includes/content/base';
+@import 'includes/content/type';
+@import 'includes/content/forms';
 
-@import 'new/fonts';
-@import 'new/mixins';
-@import 'new/vars';
-@import 'new/type';
-@import 'new/base';
-@import 'new/forms';
-
-@import 'new/login';
+@import 'includes/structure/login';

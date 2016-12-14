@@ -1,0 +1,47 @@
+.login {
+    height: 100%;
+    width: 100%;
+    background: url('/argon/assets/img/bg.png') center / cover no-repeat;
+    .login__box {
+        position: absolute;
+        top: 40%;
+        left: 15px;
+        right: 15px;
+        transform: translateY(-40%);
+        text-align: center;
+    }
+    .login__logo {
+        margin: 0 auto 60px;
+        display: block;
+    }
+    .login__group {
+        float: left;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .login__group:last-child {
+        margin-bottom: 0;
+    }
+    .login__link {
+        display: block;
+        text-decoration: underline;
+        color: $color-white;
+        font-size: 14px;
+        margin-top: 60px;
+        &:hover {
+            color: $color-white;
+            text-decoration: none;
+        }
+    }
+    .form__alert {
+        margin-top: 10px;
+        margin-left: 0;
+        width: 100%;
+        &.form__alert--overview {
+            margin-top: 0;
+        }
+    }
+    .form__btn {
+        margin-top: 30px;
+    }
+}

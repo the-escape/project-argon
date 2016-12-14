@@ -49,8 +49,8 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->alias('request', Request::class);
 
         $this->app->register(RepositoryServiceProvider::class);
-        $this->app->register(AuthenticationServiceProvider::class);
         $this->app->register(PluginServiceProvider::class);
+        $this->app->register(AuthenticationServiceProvider::class);
         $this->app->register(EntityManagementServiceProvider::class);
         $this->app->register(UserManagementServiceProvider::class);
         $this->app->register(LocalesServiceProvider::class);

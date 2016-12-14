@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement;
 
+use Escape\Argon\Authentication\PermissionManager;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
@@ -29,13 +30,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 
     protected function registerRoutes()
     {
-        $this->addRoute(
-            'ui',
-            'cms:ui',
-            PagesController::class,
-            'ui'
-        );
-
         // Pages
         $this->addRoute(
             'pages',
@@ -493,7 +487,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 
         $this->pluginManager->registerNavLink('Content', route('cms:pages:manage'), 'cms:content:manage');
         $this->pluginManager->registerNavLink('Blocks', route('cms:blocks:manage'), 'cms:content:manage');
-//        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
         $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
 
         $this->fieldTypesManager->registerFieldType(new TextFieldType());
@@ -504,10 +497,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->fieldTypesManager->registerFieldType(new SelectFieldType());
         $this->fieldTypesManager->registerFieldType(new DatetimeFieldType());
         $this->fieldTypesManager->registerFieldType(new ImageFieldType());
-//        $this->fieldTypesManager->registerFieldType(new VideoFieldType());
         $this->fieldTypesManager->registerFieldType(new ItemFieldType());
-//        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
         $this->fieldTypesManager->registerFieldType(new LocationFieldType());
-//        $this->fieldTypesManager->registerFieldType(new UserFieldType());
     }
 }

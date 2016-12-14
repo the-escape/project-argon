@@ -39,7 +39,7 @@ class Authenticate
                 return response('Unauthorized.', 401);
             } else {
                 $prefix = trim(config('argon.admin_route_prefix'), '/');
-                return redirect()->guest("/{$prefix}/login");
+                //return redirect()->guest("/{$prefix}/login");
             }
         }
 

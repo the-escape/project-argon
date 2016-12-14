@@ -77,6 +77,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
+        //
     }
 
     public function boot()
