@@ -17,6 +17,17 @@ body.dashboard {
     }
 }
 
+
+.media-list {
+    td {
+        vertical-align: middle;
+    }
+    img {
+        max-width: 100%;
+        max-height: 50px;
+    }
+}
+
 .media-item {
     display: inline-block;
     margin: 10px 20px;

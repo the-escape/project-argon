@@ -4813,6 +4813,13 @@ body.dashboard .dropdown-toggle::after {
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent; }
 
+.media-list td {
+  vertical-align: middle; }
+
+.media-list img {
+  max-width: 100%;
+  max-height: 50px; }
+
 .media-item {
   display: inline-block;
   margin: 10px 20px;

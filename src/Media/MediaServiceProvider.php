@@ -70,6 +70,16 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             MediaController::class,
             'browse'
         );
+
+
+        $this->addRoute(
+            'media/list',
+            'cms:media:list',
+            MediaController::class,
+            'listAll',
+            Request::METHOD_GET
+        );
+
     }
 
     public function startup()

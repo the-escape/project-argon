@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
+use stdClass;
 
 /**
  * Class MediaItem
@@ -17,7 +18,7 @@ use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
  * @property int filesize
  * @property int folder
  * @property string mimetype
- * @property \stdClass meta
+ * @property stdClass meta
  * @property boolean hasThumb
  */
 class MediaItem extends Model implements Arrayable
@@ -34,6 +35,11 @@ class MediaItem extends Model implements Arrayable
         'uploaded_by',
         'hasThumb'
     ];
+
+    public function mediaFolder()
+    {
+        return $this->hasOne(MediaFolder::class,'id', 'folder');
+    }
 
     public function toArray()
     {
@@ -65,30 +71,30 @@ class MediaItem extends Model implements Arrayable
         return "/media/{$this->id}/{$this->id}.original.{$this->extension}";
     }
 
-    public function getDimentions()
+    public function getDimensions()
     {
-        $dimentions = new \stdClass();
+        $dimensions = new stdClass();
 
         if (@$this->meta->width && @$this->meta->height) {
-            $dimentions->width = $this->meta->width;
-            $dimentions->height = $this->meta->height;
+            $dimensions->width = $this->meta->width;
+            $dimensions->height = $this->meta->height;
         } else {
             list($width, $height) = @getimagesize($this->getPath());
-            $dimentions->width = @$width;
-            $dimentions->height = @$height;
+            $dimensions->width = @$width;
+            $dimensions->height = @$height;
         }
 
-        return $dimentions;
+        return $dimensions;
     }
 
     public function getWidth($px='')
     {
-        return $this->getDimentions()->width.$px;
+        return $this->getDimensions()->width.$px;
     }
 
     public function getHeight($px='')
     {
-        return $this->getDimentions()->height.$px;
+        return $this->getDimensions()->height.$px;
     }
 
     public function getAlt($default='')
@@ -100,7 +106,7 @@ class MediaItem extends Model implements Arrayable
     {
         return isset($this->filesize_formatted)
             ? $this->filesize_formatted
-            : MediaHelpers::size_format($this->filesize);
+            : MediaHelpers::sizeFormat($this->filesize);
     }
 
     public function getFullName()
@@ -108,5 +114,9 @@ class MediaItem extends Model implements Arrayable
         return $this->filename.'.'.$this->extension;
     }
 
+    public function isImage()
+    {
+        return MediaHelpers::isImage($this->mimetype);
+    }
 
 }

@@ -4,6 +4,7 @@ namespace Escape\Argon\Media\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
+use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,12 +16,7 @@ use Input;
 
 class MediaController extends BaseController
 {
-    protected $imageFormats = [
-        "image/jpg",
-        "image/jpeg",
-        "image/png",
-        "image/gif"
-    ];
+
 
     public function manage(MediaFolderRepository $folderRepository)
     {
@@ -250,4 +246,17 @@ class MediaController extends BaseController
         $item->filesize_formatted = $item->getFriendlyFilesize();
         return response()->json($item);
     }
+
+
+    public function listAll(MediaFolderRepository $folderRepository, MediaItemRepository $mediaItemRepository, MediaItem $mediaItem)
+    {
+//        $root = $folderRepository->root();
+
+        $mediaItems = $mediaItem->with('mediaFolder')->get();
+
+        return View::make('argon::media.list', [
+            'mediaItems' => $mediaItems,
+        ]);
+    }
+
 }

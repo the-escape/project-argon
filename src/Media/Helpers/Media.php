@@ -4,6 +4,7 @@ namespace Escape\Argon\Media\Helpers;
 
 class Media
 {
+
     /**
      * Convert number of bytes largest unit bytes will fit into.
      *
@@ -22,21 +23,40 @@ class Media
      * @param int        $decimals Optional. Precision of number of decimal places. Default 0.
      * @return bool|string False on failure. Number string on success.
      */
-    public static function size_format($bytes, $decimals = 0)
+    public static function sizeFormat($bytes, $decimals = 0)
     {
-        $quant = array(
+        $quant = [
             // ========================= Origin ====
             'TB' => 1099511627776,  // pow( 1024, 4)
             'GB' => 1073741824,     // pow( 1024, 3)
             'MB' => 1048576,        // pow( 1024, 2)
             'kB' => 1024,           // pow( 1024, 1)
             'B ' => 1,              // pow( 1024, 0)
-        );
-        foreach ($quant as $unit => $mag) {
-            if (doubleval($bytes) >= $mag) {
+        ];
+
+        foreach ($quant as $unit => $mag)
+        {
+            if (doubleval($bytes) >= $mag)
+            {
                 return number_format(($bytes / $mag), abs(intval($decimals))) . ' ' . $unit;
             }
         }
+
         return false;
     }
+
+    public static function isImage($mimeType, array $imageMimeTypes=[])
+    {
+        $defaultImageMimeTypes = [
+            "image/jpg",
+            "image/jpeg",
+            "image/png",
+            "image/gif"
+        ];
+
+        $mimeTypes = array_merge($defaultImageMimeTypes, $imageMimeTypes);
+
+        return in_array($mimeType, $mimeTypes);
+    }
+
 }
