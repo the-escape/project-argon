@@ -33,6 +33,8 @@ elixir(function(mix) {
         'public/js/argon.js'
     );
 
+    mix.copy('bower_components/font-awesome/fonts', 'public/fonts');
+
     mix.copy('bower_components/jquery/dist/jquery.*', 'public/js');
 
     mix.copy('bower_components/jquery.ui/ui/core.js', 'public/js');

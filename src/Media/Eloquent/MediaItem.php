@@ -114,6 +114,16 @@ class MediaItem extends Model implements Arrayable
         return $this->filename.'.'.$this->extension;
     }
 
+    public function getName()
+    {
+        return $this->filename;
+    }
+
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
     public function isImage()
     {
         return MediaHelpers::isImage($this->mimetype);

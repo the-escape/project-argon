@@ -86,7 +86,7 @@
     </style>
 </head>
 
-<body class="dashboard">
+<body class="@yield('body-class', 'dashboard')">
 
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
     <ul class="nav navbar-nav pull-xs-right">

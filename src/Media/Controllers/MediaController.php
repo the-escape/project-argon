@@ -250,11 +250,22 @@ class MediaController extends BaseController
     }
 
 
-    public function all(MediaItem $mediaItem)
+    public function all(Request $request, MediaItem $mediaItem)
     {
         $media = $mediaItem->with('mediaFolder')->get();
 
         return View::make('argon::media.list', [
+            'media' => $media,
+            'request' => $request,
+        ]);
+    }
+
+
+    public function folders(MediaItem $mediaItem)
+    {
+        $media = $mediaItem->with('mediaFolder')->get();
+
+        return View::make('argon::media.folders', [
             'media' => $media,
         ]);
     }

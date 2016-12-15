@@ -25,6 +25,7 @@
     "dropzone": "~4.2.0",
     "bootstrap-datepicker": "~1.5.1",
     "handlebars": "~4.0.5",
-    "fancybox": "^2.1.5"
+    "fancybox": "^2.1.5",
+    "font-awesome": "^4.7.0"
   }
 }

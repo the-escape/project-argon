@@ -112,6 +112,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
 
+        $this->addRoute(
+            'media/folders',
+            'cms:media:folders',
+            MediaController::class,
+            'folders',
+            Request::METHOD_GET
+        );
+
     }
 
     public function startup()

@@ -12,6 +12,11 @@ select[multiple] {
     min-height: 180px;
 }
 
+.actions-top {
+    @include clearfix;
+    margin-bottom: 2rem;
+}
+
 body.dashboard {
     padding-top: 50px;
 

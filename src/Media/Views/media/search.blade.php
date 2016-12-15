@@ -1,5 +1,7 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'dashboard media media-search')
+
 @section('content')
 
     <div class="main">
@@ -11,15 +13,20 @@
             </div>
         @endif
 
-        <button type="button" class="btn btn-primary btn-upload">Upload</button>
+        <div class="actions-top">
 
-        <form action="{{ route("cms:media:search") }}" method="get">
-            <input type="text" name="keywords" value="{{ $request->input('keywords') }}">
-            <button type="submit" class="btn btn-primary btn-sm ">Search</button>
-            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline btn-sm">Back to All</a>
-        </form>
+            <a href="{{ route("cms:media:upload") }}" class="btn btn-primary btn-upload">Upload</a>
+            <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
+            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
-        <table class="table table-striped media-list">
+            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline">
+                <input type="text" name="keywords" value="{{ $request->input('keywords') }}"  class="form-control">
+                <button type="submit" class="btn btn-primary-outline">Search</button>
+            </form>
+
+        </div>
+
+        <table class="table table-striped table-media table-media-search">
             <thead>
                 <tr>
                     <th>ID</th>
