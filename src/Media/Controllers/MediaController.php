@@ -252,7 +252,52 @@ class MediaController extends BaseController
 
     public function all(Request $request, MediaItem $mediaItem)
     {
-        $media = $mediaItem->with('mediaFolder')->get();
+        $query = $mediaItem;
+
+        if ($request->has('order'))
+        {
+            $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+            switch ($request->input('order'))
+            {
+                case 'name':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('filename', $dir);
+                    break;
+
+                case 'extension':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('extension', $dir);
+                    break;
+
+                case 'uploaded_at':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('created_at', $dir);
+                    break;
+
+                case 'size':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('filesize', $dir);
+                    break;
+
+                case 'folder':
+                    $query = $query->with(['mediaFolder' => function($q) use ($dir) {
+                        $q->orderBy('name', $dir);
+                    }]);
+                    break;
+
+                case 'width':
+                case 'height':
+                $query = $query->with('mediaFolder');
+                    dd('TODO');
+                    break;
+
+                default:
+                    throw new RuntimeException('Unknown order argument!');
+            }
+        }
+
+        $media = $query->get();
 
         return View::make('argon::media.list', [
             'media' => $media,
