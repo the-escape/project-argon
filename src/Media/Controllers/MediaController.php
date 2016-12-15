@@ -260,6 +260,11 @@ class MediaController extends BaseController
 
             switch ($request->input('order'))
             {
+                case 'id':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('id', $dir);
+                    break;
+
                 case 'name':
                     $query = $query->with('mediaFolder');
                     $query = $query->orderBy('filename', $dir);
@@ -281,15 +286,8 @@ class MediaController extends BaseController
                     break;
 
                 case 'folder':
-                    $query = $query->with(['mediaFolder' => function($q) use ($dir) {
-                        $q->orderBy('name', $dir);
-                    }]);
-                    break;
-
-                case 'width':
-                case 'height':
-                $query = $query->with('mediaFolder');
-                    dd('TODO');
+                    $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
+                    $query = $query->orderBy('media_folders.name', $dir);
                     break;
 
                 default:

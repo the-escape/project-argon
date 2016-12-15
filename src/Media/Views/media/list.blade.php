@@ -28,7 +28,19 @@
         <table class="table table-striped table-media table-media-all">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>
+                        @if($request->input('order') == 'id')
+                            @if($request->input('dir') == 'asc')
+                                <a href="?order=id&dir=desc">ID <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            @elseif($request->input('dir') == 'desc')
+                                <a href="?order=id&dir=asc">ID <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            @else
+                                <a href="?order=id&dir=asc">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            @endif
+                        @else
+                            <a href="?order=id&dir=asc">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        @endif
+                    </th>
                     <th>Thumbnail</th>
                     <th>
                         @if($request->input('order') == 'name')
@@ -57,6 +69,7 @@
                         @endif
                     </th>
                     <th>URL</th>
+                    <th>Dimensions</th>
                     <th>
                         @if($request->input('order') == 'size')
                             @if($request->input('dir') == 'asc')
@@ -68,32 +81,6 @@
                             @endif
                         @else
                             <a href="?order=size&dir=asc">Size <i class="fa fa-sort" aria-hidden="true"></i></a>
-                        @endif
-                    </th>
-                    <th>
-                        @if($request->input('order') == 'width')
-                            @if($request->input('dir') == 'asc')
-                                <a href="?order=width&dir=desc">Width <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                            @elseif($request->input('dir') == 'desc')
-                                <a href="?order=width&dir=asc">Width <i class="fa fa-caret-up" aria-hidden="true"></i></a>
-                            @else
-                                <a href="?order=width&dir=asc">Width <i class="fa fa-sort" aria-hidden="true"></i></a>
-                            @endif
-                        @else
-                            <a href="?order=width&dir=asc">Width <i class="fa fa-sort" aria-hidden="true"></i></a>
-                        @endif
-                    </th>
-                    <th>
-                        @if($request->input('order') == 'height')
-                            @if($request->input('dir') == 'asc')
-                                <a href="?order=height&dir=desc">Height <i class="fa fa-caret-down" aria-hidden="true"></i></a>
-                            @elseif($request->input('dir') == 'desc')
-                                <a href="?order=height&dir=asc">Height <i class="fa fa-caret-up" aria-hidden="true"></i></a>
-                            @else
-                                <a href="?order=height&dir=asc">Height <i class="fa fa-sort" aria-hidden="true"></i></a>
-                            @endif
-                        @else
-                            <a href="?order=height&dir=asc">Height <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     </th>
                     <th>
@@ -137,21 +124,14 @@
                         <td>{{ $mediaItem->getName() }}</td>
                         <td>{{ $mediaItem->getExtension() }}</td>
                         <td><a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab">{{ $mediaItem->getUrl() }}</a></td>
+                        <td>
+                            @if($mediaItem->isImage())
+                                {{ $mediaItem->getWidth() }} x {{ $mediaItem->getHeight() }} pixels
+                            @else
+                                &mdash;
+                            @endif
+                        </td>
                         <td>{{ $mediaItem->getFriendlyFilesize() }}</td>
-                        <td>
-                            @if($mediaItem->isImage())
-                                {{ $mediaItem->getWidth('px') }}
-                            @else
-                                &mdash;
-                            @endif
-                        </td>
-                        <td>
-                            @if($mediaItem->isImage())
-                                {{ $mediaItem->getHeight('px') }}
-                            @else
-                                &mdash;
-                            @endif
-                        </td>
                         <td data-folder-id="{{ $mediaItem->mediaFolder->id }}">{{ $mediaItem->mediaFolder->name }}</td>
                         <td>{{ $mediaItem->created_at }}</td>
                         <td>
