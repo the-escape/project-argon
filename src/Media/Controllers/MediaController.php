@@ -252,7 +252,7 @@ class MediaController extends BaseController
 
     public function all(Request $request, MediaItem $mediaItem)
     {
-        $query = $mediaItem;
+        $query = $mediaItem->whereNull('media_items.deleted_at');
 
         if ($request->has('order'))
         {
@@ -360,18 +360,59 @@ class MediaController extends BaseController
 
     public function search(Request $request, MediaItem $mediaItem)
     {
-        $media = $mediaItem
-            ->whereNull('deleted_at')
-            ->where(function ($query) use ($request) {
-                $query
-                    ->where('filename', 'like', '%' . $request->input('keywords') . '%')
-                    ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
-                    ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
-                    ->orWhereHas('mediaFolder', function($q) use($request) {
-                        $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
-                    });
-            })
-            ->get();
+        $query = $mediaItem;
+
+        if ($request->has('order'))
+        {
+            $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+            switch ($request->input('order'))
+            {
+                case 'id':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('id', $dir);
+                    break;
+
+                case 'name':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('filename', $dir);
+                    break;
+
+                case 'extension':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('extension', $dir);
+                    break;
+
+                case 'uploaded_at':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('created_at', $dir);
+                    break;
+
+                case 'size':
+                    $query = $query->with('mediaFolder');
+                    $query = $query->orderBy('filesize', $dir);
+                    break;
+
+                case 'folder':
+                    $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
+                    $query = $query->orderBy('media_folders.name', $dir);
+                    break;
+
+                default:
+                    throw new RuntimeException('Unknown order argument!');
+            }
+        }
+
+        $query = $query->where(function ($query) use ($request) {
+                    $query
+                        ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                        ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                        ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
+                        ->orWhereHas('mediaFolder', function($q) use($request) {
+                            $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
+                        });
+                });
+        $media = $query->get();
 
         return View::make('argon::media.search', [
             'media' => $media,

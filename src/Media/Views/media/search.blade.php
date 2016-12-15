@@ -32,41 +32,41 @@
                 <th>
                     @if($request->input('order') == 'id')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=id&dir=desc">ID <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=id&dir=desc' }}">ID <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=id&dir=asc">ID <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=id&dir=asc' }}">ID <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=id&dir=asc">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=id&dir=asc' }}">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=id&dir=asc">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=id&dir=asc' }}">ID <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>Thumbnail</th>
                 <th>
                     @if($request->input('order') == 'name')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=name&dir=desc">Name <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=name&dir=desc' }}">Name <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=name&dir=asc">Name <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=name&dir=asc' }}">Name <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=name&dir=asc">Name <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=name&dir=asc' }}">Name <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=name&dir=asc">Name <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=name&dir=asc' }}">Name <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>
                     @if($request->input('order') == 'extension')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=extension&dir=desc">Extension <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=extension&dir=desc' }}">Extension <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=extension&dir=asc">Extension <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=extension&dir=asc' }}">Extension <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=extension&dir=asc">Extension <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=extension&dir=asc' }}">Extension <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=extension&dir=asc">Extension <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=extension&dir=asc' }}">Extension <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>URL</th>
@@ -74,40 +74,40 @@
                 <th>
                     @if($request->input('order') == 'size')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=size&dir=desc">Size <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=size&dir=desc' }}">Size <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=size&dir=asc">Size <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=size&dir=asc' }}">Size <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=size&dir=asc">Size <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=size&dir=asc' }}">Size <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=size&dir=asc">Size <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=size&dir=asc' }}">Size <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>
                     @if($request->input('order') == 'folder')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=folder&dir=desc">Folder <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=folder&dir=desc' }}">Folder <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=folder&dir=asc">Folder <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=folder&dir=asc' }}">Folder <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=folder&dir=asc">Folder <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=folder&dir=asc' }}">Folder <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=folder&dir=asc">Folder <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=folder&dir=asc' }}">Folder <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>
                     @if($request->input('order') == 'uploaded_at')
                         @if($request->input('dir') == 'asc')
-                            <a href="?order=uploaded_at&dir=desc">Uploaded At <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=uploaded_at&dir=desc' }}">Uploaded At <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         @elseif($request->input('dir') == 'desc')
-                            <a href="?order=uploaded_at&dir=asc">Uploaded At <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=uploaded_at&dir=asc' }}">Uploaded At <i class="fa fa-caret-up" aria-hidden="true"></i></a>
                         @else
-                            <a href="?order=uploaded_at&dir=asc">Uploaded At <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            <a href="{{ '?keywords='.$request->input('keywords').'&order=uploaded_at&dir=asc' }}">Uploaded At <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     @else
-                        <a href="?order=uploaded_at&dir=asc">Uploaded At <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        <a href="{{ '?keywords='.$request->input('keywords').'&order=uploaded_at&dir=asc' }}">Uploaded At <i class="fa fa-sort" aria-hidden="true"></i></a>
                     @endif
                 </th>
                 <th>Actions</th>
