@@ -22,4 +22,19 @@ class MediaFolder extends Model
     {
         return count($this->children) > 0;
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getParentId()
+    {
+        return $this->parent;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -73,10 +73,42 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 
 
         $this->addRoute(
-            'media/list',
-            'cms:media:list',
+            'media/all',
+            'cms:media:all',
             MediaController::class,
-            'listAll',
+            'all',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
+            'media/edit/{id}',
+            'cms:media:edit',
+            MediaController::class,
+            'edit',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
+            'media/update/{id}',
+            'cms:media:update',
+            MediaController::class,
+            'update',
+            Request::METHOD_PUT
+        );
+
+        $this->addRoute(
+            'media/delete/{id}',
+            'cms:media:delete',
+            MediaController::class,
+            'delete',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
+            'media/search',
+            'cms:media:search',
+            MediaController::class,
+            'search',
             Request::METHOD_GET
         );
 

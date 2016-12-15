@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="main">
-        <h1 class="page-header">Media</h1>
+        <h1 class="page-header">Media Search</h1>
 
         @if (session('message'))
             <div class="alert alert-success" role="alert">
@@ -14,8 +14,9 @@
         <button type="button" class="btn btn-primary btn-upload">Upload</button>
 
         <form action="{{ route("cms:media:search") }}" method="get">
-            <input type="text" name="keywords" value="">
-            <button type="submit">Search</button>
+            <input type="text" name="keywords" value="{{ $request->input('keywords') }}">
+            <button type="submit" class="btn btn-primary btn-sm ">Search</button>
+            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline btn-sm">Back to All</a>
         </form>
 
         <table class="table table-striped media-list">

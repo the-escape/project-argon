@@ -6,9 +6,11 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
+use Escape\Argon\Media\Helpers\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -74,7 +76,7 @@ class MediaController extends BaseController
             $name = sprintf('%s (%d)', $name, $count);
         }
 
-        $isImage =  in_array($file->getMimeType(), $this->imageFormats);
+        $isImage =  Media::isImage($file->getMimeType());
 
         $tmpPath = $request->file('file')->getRealPath();
 
@@ -248,15 +250,81 @@ class MediaController extends BaseController
     }
 
 
-    public function listAll(MediaFolderRepository $folderRepository, MediaItemRepository $mediaItemRepository, MediaItem $mediaItem)
+    public function all(MediaItem $mediaItem)
     {
-//        $root = $folderRepository->root();
-
-        $mediaItems = $mediaItem->with('mediaFolder')->get();
+        $media = $mediaItem->with('mediaFolder')->get();
 
         return View::make('argon::media.list', [
-            'mediaItems' => $mediaItems,
+            'media' => $media,
         ]);
     }
+
+
+    public function edit($id, MediaItem $mediaItem, MediaFolderRepository $mediaFolderRepository)
+    {
+        $media = $mediaItem->with('mediaFolder')->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        $folders = $mediaFolderRepository->all();
+
+        return View::make('argon::media.edit', [
+            'media' => $media,
+            'folders' => $folders,
+        ]);
+    }
+
+
+    public function update($id, MediaItem $mediaItem)
+    {
+        $media = $mediaItem->with('mediaFolder')->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        throw new \Exception('Not implemented');
+    }
+
+
+    public function delete($id, MediaItem $mediaItem)
+    {
+        $media = $mediaItem->with('mediaFolder')->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        throw new \Exception('Not implemented');
+    }
+
+
+    public function search(Request $request, MediaItem $mediaItem)
+    {
+        $media = $mediaItem
+            ->whereNull('deleted_at')
+            ->where(function ($query) use ($request) {
+                $query
+                    ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                    ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                    ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
+                    ->orWhereHas('mediaFolder', function($q) use($request) {
+                        $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
+                    });
+            })
+            ->get();
+
+        return View::make('argon::media.search', [
+            'media' => $media,
+            'request'=>$request,
+        ]);
+    }
+
+
 
 }
