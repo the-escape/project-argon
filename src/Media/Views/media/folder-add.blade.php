@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="main">
-        <h1 class="page-header">Media Edit</h1>
+        <h1 class="page-header">Add Folder</h1>
 
         @if (session('message'))
             <div class="alert alert-success" role="alert">

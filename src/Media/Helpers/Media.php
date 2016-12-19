@@ -2,6 +2,12 @@
 
 namespace Escape\Argon\Media\Helpers;
 
+use Escape\Argon\Media\Eloquent\MediaItemRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Image;
+use stdClass;
+
 class Media
 {
 
@@ -45,6 +51,7 @@ class Media
         return false;
     }
 
+
     public static function isImage($mimeType, array $imageMimeTypes=[])
     {
         $defaultImageMimeTypes = [
@@ -57,6 +64,99 @@ class Media
         $mimeTypes = array_merge($defaultImageMimeTypes, $imageMimeTypes);
 
         return in_array($mimeType, $mimeTypes);
+    }
+
+
+    public static function isPdf($mimeType, array $imageMimeTypes=[])
+    {
+        $defaultImageMimeTypes = [
+            "application/pdf"
+        ];
+
+        $mimeTypes = array_merge($defaultImageMimeTypes, $imageMimeTypes);
+
+        return in_array($mimeType, $mimeTypes);
+    }
+
+
+    /**
+     * @param $file
+     * @param int $folderId
+     * @param int $userId
+     * @param MediaItemRepository|null $mediaRepository
+     * @param string $storageDisk
+     * @return mixed
+     */
+    public static function saveUploadedFile($file, $folderId, $userId, MediaItemRepository $mediaRepository=null, $storageDisk='media')
+    {
+        if ($mediaRepository === null)
+        {
+            $mediaRepository = app()->make(MediaItemRepository::class);
+        }
+
+        $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+        while ($mediaRepository->itemExists($name, $folderId))
+        {
+            if (preg_match('/(.*) \((\d+)\)/', $name, $matches))
+            {
+                $name = $matches[1];
+                $count = $matches[2];
+            }
+            else
+            {
+                $count = 1;
+            }
+
+            $count++;
+
+            $name = sprintf('%s (%d)', $name, $count);
+        }
+
+        $isImage =  Media::isImage($file->getMimeType());
+
+        $tmpPath = $file->getRealPath();
+
+        $meta = new stdClass();
+
+        if ($isImage)
+        {
+            list($meta->width, $meta->height) = @getimagesize($tmpPath);
+        }
+
+        $mediaItem = $mediaRepository->create([
+            'folder' => $folderId,
+            'filename' => $name,
+            'extension' => $file->getClientOriginalExtension(),
+            'filesize' => $file->getSize(),
+            'mimetype' => $file->getMimeType(),
+            'meta' => json_encode($meta),
+            'uploaded_by' => $userId,
+        ]);
+
+        $disk = Storage::disk($storageDisk);
+        $disk->makeDirectory($mediaItem->id);
+        $fileHandle = fopen($tmpPath, 'r+');
+        Storage::disk($storageDisk)->put(
+            "{$mediaItem->id}/{$mediaItem->id}.original.{$file->getClientOriginalExtension()}",
+            $fileHandle
+        );
+        fclose($fileHandle);
+
+        // Thumbnail images
+        if ($isImage)
+        {
+            $thumb = Image::make($file)->fit(100, 100);
+            Storage::disk($storageDisk)->put(
+                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                $thumb->encode()
+            );
+
+            $mediaItem->hasThumb = true;
+            $mediaItem->save();
+        }
+
+        return $mediaItem;
     }
 
 }

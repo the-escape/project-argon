@@ -15,10 +15,10 @@
 
         <div class="actions-top">
 
-            <a href="{{ route("cms:media:upload") }}" class="btn btn-primary btn-upload">Upload</a>
+            <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload">Upload</a>
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
 
-            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline">
+            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
                 <button type="submit" class="btn btn-primary-outline">Search</button>
             </form>

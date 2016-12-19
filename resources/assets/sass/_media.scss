@@ -21,6 +21,12 @@ body.dashboard {
 
 
 body.media {
+
+    #folders {
+        margin: 20px 0;
+        border-top: 1px dotted #000;
+    }
+
     th {
         a {
             color: inherit;
@@ -37,7 +43,7 @@ body.media {
         max-height: 50px;
     }
     .actions-top {
-        form {
+        .search-form {
             float: right;
         }
     }

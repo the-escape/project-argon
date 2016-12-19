@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -80,7 +81,7 @@ class MediaController extends BaseController
 
         $tmpPath = $request->file('file')->getRealPath();
 
-        $meta = new \stdClass();
+        $meta = new stdClass();
 
         if ($isImage)
         {
@@ -223,7 +224,7 @@ class MediaController extends BaseController
 
             return response()->json($folder);
         } else {
-            return response()->json(['error' => 'folder exists'], 409);
+            return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
         }
     }
 
@@ -233,11 +234,11 @@ class MediaController extends BaseController
         MediaItemRepository $itemRepository
     ) {
         if ($itemRepository->getItemsInFolder($folderId)->count() > 0) {
-            return response()->json(['error' => 'Folder not empty.'], 409);
+            return response()->json(['error' => 'Folder not empty.'], Response::HTTP_CONFLICT);
         } else {
             $folderRepository->delete($folderId);
 
-            return response('', 204);
+            return response('', Response::HTTP_NO_CONTENT);
         }
     }
 
@@ -287,6 +288,7 @@ class MediaController extends BaseController
 
                 case 'folder':
                     $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
+                    $query = $query->select('media_items.*');
                     $query = $query->orderBy('media_folders.name', $dir);
                     break;
 
@@ -304,13 +306,11 @@ class MediaController extends BaseController
     }
 
 
-    public function folders(MediaItem $mediaItem)
+    public function folders(MediaFolderRepository $folderRepository)
     {
-        $media = $mediaItem->with('mediaFolder')->get();
+        $root = $folderRepository->root();
 
-        return View::make('argon::media.folders', [
-            'media' => $media,
-        ]);
+        return View::make('argon::media.folders', ['root' => $root]);
     }
 
 
@@ -341,7 +341,7 @@ class MediaController extends BaseController
             abort(404);
         }
 
-        throw new \Exception('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
 
@@ -354,7 +354,7 @@ class MediaController extends BaseController
             abort(404);
         }
 
-        throw new \Exception('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
 
@@ -420,6 +420,78 @@ class MediaController extends BaseController
         ]);
     }
 
+
+    public function upload_get(Request $request, MediaFolderRepository $mediaFolderRepository)
+    {
+        $folders = $mediaFolderRepository->all();
+
+        return View::make('argon::media.upload', [
+            'folders' => $folders,
+        ]);
+    }
+
+
+    public function upload_post(Request $request)
+    {
+        $folderId = Input::get('folder');
+
+        $files = $request->file('file');
+
+        if ($files)
+        {
+            $userId = $request->user()->id;
+
+            $mediaRepository = app()->make(MediaItemRepository::class);
+
+            foreach ($files as $file)
+            {
+                $r = Media::saveUploadedFile($file, $folderId, $userId, $mediaRepository);
+            }
+        }
+
+        return redirect(route("cms:media:all"));
+    }
+
+
+    public function folderAdd(Request $request, MediaFolderRepository $folderRepository)
+    {
+        throw new RuntimeException('TODO');
+//        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
+//            $folder = $folderRepository->create($request->input());
+//
+//            return response()->json($folder);
+//        } else {
+//            return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
+//        }
+    }
+
+
+    public function folderEdit()
+    {
+        throw new RuntimeException('TODO');
+    }
+
+
+    public function folderSave()
+    {
+        throw new RuntimeException('TODO');
+    }
+
+
+    public function folderRemove(
+        $folderId,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository
+    ) {
+        throw new RuntimeException('TODO');
+//        if ($itemRepository->getItemsInFolder($folderId)->count() > 0) {
+//            return response()->json(['error' => 'Folder not empty.'], Response::HTTP_CONFLICT);
+//        } else {
+//            $folderRepository->delete($folderId);
+//
+//            return response('', Response::HTTP_NO_CONTENT);
+//        }
+    }
 
 
 }

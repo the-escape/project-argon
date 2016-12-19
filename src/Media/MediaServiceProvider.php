@@ -119,6 +119,48 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'folders',
             Request::METHOD_GET
         );
+        $this->addRoute(
+            'media/upload_get',
+            'cms:media:upload:get',
+            MediaController::class,
+            'upload_get',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
+            'media/upload_post',
+            'cms:media:upload:post',
+            MediaController::class,
+            'upload_post',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/folders/add/{id?}',
+            'cms:media:folders:add',
+            MediaController::class,
+            'folderAdd',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
+            'media/folders/{id}',
+            'cms:media:folders:edit',
+            MediaController::class,
+            'folderEdit',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
+            'media/folders/{id}/save',
+            'cms:media:folders:save',
+            MediaController::class,
+            'folderSave',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/folders/{id}/save',
+            'cms:media:folders:remove',
+            MediaController::class,
+            'folderRemove',
+            Request::METHOD_DELETE
+        );
 
     }
 

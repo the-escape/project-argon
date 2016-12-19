@@ -7146,6 +7146,10 @@ body.dashboard .dropdown-toggle::after {
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent; }
 
+body.media #folders {
+  margin: 20px 0;
+  border-top: 1px dotted #000; }
+
 body.media th a {
   color: inherit;
   text-decoration: none;
@@ -7159,7 +7163,7 @@ body.media img {
   max-width: 100%;
   max-height: 50px; }
 
-body.media .actions-top form {
+body.media .actions-top .search-form {
   float: right; }
 
 .media-item {

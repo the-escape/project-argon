@@ -19,7 +19,7 @@
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
             <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
-            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline">
+            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="{{ $request->input('keywords') }}"  class="form-control">
                 <button type="submit" class="btn btn-primary-outline">Search</button>
             </form>

@@ -23,6 +23,11 @@ class MediaFolder extends Model
         return count($this->children) > 0;
     }
 
+    public function items()
+    {
+        return $this->hasMany(MediaItem::class, 'folder');
+    }
+
     public function getId()
     {
         return $this->id;
