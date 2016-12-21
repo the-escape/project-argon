@@ -128,6 +128,23 @@ class Page
         return $url;
     }
 
+    public function getHomeUrl($locale = null)
+    {
+        $segments = [];
+
+        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $localisation = $this->entity->getLocalisation($locale);
+
+        // make sure entity has locale revision
+        if ($localisation && $locale_slug = $locale->getSlug()) {
+            $segments[] = $locale_slug;
+        }
+
+        $url = '/' . implode('/', $segments);
+
+        return $url;
+    }
+
     public function getUrlWithQueryString(array $set=[], array $unset=[])
     {
         return getUrlWithQueryString($set, $unset, $this->getUrl());
