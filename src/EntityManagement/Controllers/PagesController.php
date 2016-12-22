@@ -360,6 +360,11 @@ class PagesController extends BaseController
 
             foreach ($fields as $field)
             {
+                if (!$latestRevisionFields->has($field->id))
+                {
+                    continue;
+                }
+
                 switch ($field->field_type)
                 {
                     case 'combo':
