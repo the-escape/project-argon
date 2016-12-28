@@ -134,11 +134,18 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
-            'media/folders/add/{id?}',
+            'media/folders/{id}/add',
             'cms:media:folders:add',
             MediaController::class,
             'folderAdd',
             Request::METHOD_GET
+        );
+        $this->addRoute(
+            'media/folders/save',
+            'cms:media:folders:save',
+            MediaController::class,
+            'folderSave',
+            Request::METHOD_POST
         );
         $this->addRoute(
             'media/folders/{id}',
@@ -148,18 +155,32 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
         $this->addRoute(
-            'media/folders/{id}/save',
-            'cms:media:folders:save',
+            'media/folders/{id}/update',
+            'cms:media:folders:update',
             MediaController::class,
-            'folderSave',
-            Request::METHOD_POST
+            'folderUpdate',
+            Request::METHOD_PUT
         );
         $this->addRoute(
-            'media/folders/{id}/save',
+            'media/folders/{id}/remove',
             'cms:media:folders:remove',
             MediaController::class,
             'folderRemove',
-            Request::METHOD_DELETE
+            Request::METHOD_GET
+        );
+        $this->addRoute(
+            'media/{itemId}/folderParentUpdate/{parentId}',
+            'cms:media:parent:update',
+            MediaController::class,
+            'folderParentUpdate',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/{itemId}/itemParentUpdate/{parentId}',
+            'cms:media:parent:update',
+            MediaController::class,
+            'folderParentUpdate',
+            Request::METHOD_POST
         );
 
     }

@@ -250,6 +250,49 @@ class MediaController extends BaseController
         return response()->json($item);
     }
 
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('filename', $dir);
+                break;
+
+            case 'extension':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('extension', $dir);
+                break;
+
+            case 'uploaded_at':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('created_at', $dir);
+                break;
+
+            case 'size':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('filesize', $dir);
+                break;
+
+            case 'folder':
+                $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
+                $query = $query->select('media_items.*');
+                $query = $query->orderBy('media_folders.name', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
+    }
 
     public function all(Request $request, MediaItem $mediaItem)
     {
@@ -257,44 +300,7 @@ class MediaController extends BaseController
 
         if ($request->has('order'))
         {
-            $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
-
-            switch ($request->input('order'))
-            {
-                case 'id':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('id', $dir);
-                    break;
-
-                case 'name':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('filename', $dir);
-                    break;
-
-                case 'extension':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('extension', $dir);
-                    break;
-
-                case 'uploaded_at':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('created_at', $dir);
-                    break;
-
-                case 'size':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('filesize', $dir);
-                    break;
-
-                case 'folder':
-                    $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
-                    $query = $query->select('media_items.*');
-                    $query = $query->orderBy('media_folders.name', $dir);
-                    break;
-
-                default:
-                    throw new RuntimeException('Unknown order argument!');
-            }
+            $query = $this->getOrder($query, $request);
         }
 
         $media = $query->get();
@@ -364,54 +370,19 @@ class MediaController extends BaseController
 
         if ($request->has('order'))
         {
-            $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
-
-            switch ($request->input('order'))
-            {
-                case 'id':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('id', $dir);
-                    break;
-
-                case 'name':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('filename', $dir);
-                    break;
-
-                case 'extension':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('extension', $dir);
-                    break;
-
-                case 'uploaded_at':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('created_at', $dir);
-                    break;
-
-                case 'size':
-                    $query = $query->with('mediaFolder');
-                    $query = $query->orderBy('filesize', $dir);
-                    break;
-
-                case 'folder':
-                    $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
-                    $query = $query->orderBy('media_folders.name', $dir);
-                    break;
-
-                default:
-                    throw new RuntimeException('Unknown order argument!');
-            }
+            $query = $this->getOrder($query, $request);
         }
 
         $query = $query->where(function ($query) use ($request) {
-                    $query
-                        ->where('filename', 'like', '%' . $request->input('keywords') . '%')
-                        ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
-                        ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
-                        ->orWhereHas('mediaFolder', function($q) use($request) {
-                            $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
-                        });
+            $query
+                ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhereHas('mediaFolder', function($q) use($request) {
+                    $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
                 });
+        });
+
         $media = $query->get();
 
         return View::make('argon::media.search', [
@@ -453,28 +424,101 @@ class MediaController extends BaseController
     }
 
 
-    public function folderAdd(Request $request, MediaFolderRepository $folderRepository)
+    public function folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
     {
-        throw new RuntimeException('TODO');
-//        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
-//            $folder = $folderRepository->create($request->input());
-//
-//            return response()->json($folder);
-//        } else {
-//            return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
-//        }
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($parent === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $folders = $folderRepository->findWhere(['deleted_at' => null]);
+
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.folder-add', [
+            'parent' => $parent,
+            'folders' => $folders,
+            'root' => $root,
+        ]);
+
     }
 
 
-    public function folderEdit()
+    public function folderSave(MediaFolderRepository $folderRepository, Request $request)
     {
-        throw new RuntimeException('TODO');
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('parent')])->first();
+
+        if ($parent === null)
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Parent folder is required!");
+        }
+
+        $name = $request->input('name');
+
+        if (trim($name) == '')
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Folder name can't be empty");
+        }
+
+        if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Folder already exists!");
+        }
+
+        $folder = $folderRepository->create($request->input());
+
+        return redirect(route("cms:media:folders:edit", $folder->getId()))->with('message', 'Folder created!');
     }
 
 
-    public function folderSave()
+    public function folderEdit($id, MediaFolderRepository $folderRepository)
     {
-        throw new RuntimeException('TODO');
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+        
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+        
+        if ($currentFolder->getid() === 1)
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Root folder can't be changed!");
+        }
+
+        $folders = $folderRepository->findWhere(['deleted_at' => null, ['id', '!=', $id]]);
+
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.folder-edit', [
+            'currentFolder' => $currentFolder,
+            'folders' => $folders,
+            'root' => $root,
+        ]);
+    }
+
+
+    public function folderUpdate($id, MediaFolderRepository $folderRepository, Request $request)
+    {
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $name = $request->input('name', '');
+        $parent = $request->input('parent');
+
+        if (trim($name) == '')
+        {
+            return redirect(route("cms:media:folders:edit", $id))->with('message', "Folder name can't be empty");
+        }
+        
+        $currentFolder = $folderRepository->update(['name' => $name, 'parent'=>$parent], $id);
+
+        return redirect(route("cms:media:folders:edit", $id))->with('message', 'Folder updated!');
     }
 
 
@@ -483,15 +527,52 @@ class MediaController extends BaseController
         MediaFolderRepository $folderRepository,
         MediaItemRepository $itemRepository
     ) {
-        throw new RuntimeException('TODO');
-//        if ($itemRepository->getItemsInFolder($folderId)->count() > 0) {
-//            return response()->json(['error' => 'Folder not empty.'], Response::HTTP_CONFLICT);
-//        } else {
-//            $folderRepository->delete($folderId);
-//
-//            return response('', Response::HTTP_NO_CONTENT);
-//        }
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0)
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Folder not empty!");
+        }
+
+        $folderRepository->delete($folderId);
+        return redirect(route("cms:media:folders"))->with('message', "Folder deleted!");
     }
 
+
+    public function folderParentUpdate($id, $parentId, MediaFolderRepository $folderRepository)
+    {
+
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
+
+        if ($parent === null)
+        {
+            throw new RuntimeException("Parent folder is required!");
+        }
+
+
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $currentFolder = $folderRepository->update(['parent'=>$parentId], $id);
+
+        return json_encode(['success'=>true]);
+
+    }
+
+
+    public function itemParentUpdate($itemId, $parentId)
+    {
+        throw new RuntimeException("TODO");
+
+//        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('parent')])->first();
+//
+//        if ($parent === null)
+//        {
+//            return redirect(route("cms:media:folders"))->with('message', "Parent folder is required!");
+//        }
+
+    }
 
 }

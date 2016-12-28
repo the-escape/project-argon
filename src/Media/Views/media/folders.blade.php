@@ -63,6 +63,13 @@
         var $editBtn = $('#edit-button');
         var $addBtn = $('#add-button');
 
+        $addBtn.on('click', function (e) {
+            var url = this.getAttribute('data-url');
+            if (url && url.length) {
+                document.location.href = url;
+            }
+        });
+
         $('#folders').jstree({
             plugins: [
                 'dnd',
@@ -81,7 +88,8 @@
 
                 if (isFolder(data)) {
                     $addBtn.prop('disabled', false);
-                    $editBtn.attr('href', '/admin/media/folders/add/' + data.node.li_attr['data-id']);
+                    $addBtn.attr('data-url', '/admin/media/folders/' + data.node.li_attr['data-id'] + '/add');
+                    $editBtn.attr('href', '/admin/media/folders/' + data.node.li_attr['data-id']);
                 } else {
                     $addBtn.prop('disabled', true);
                     $editBtn.attr('href', '/admin/media/edit/' + data.node.li_attr['data-id']);
@@ -105,19 +113,28 @@
             }
         });
 
-//        $('#folders').on("move_node.jstree", function (e, data, foo) {
-//            var nodeId = argon.helpers.getIdFromNodeIdString(data.node.id);
-//            var parentId = argon.helpers.getIdFromNodeIdString(data.parent);
-//
-//            $.post("pages/"+nodeId+"/update_parent/"+parentId, function() {
-//                // if(window.console) console.log('Posted...');
-//            }, 'json')
-//                    .done(function(data) {
-//                        // TODO: implement visual feedback
-//                        // if(window.console) console.log(data);
-//                    });
-//
-//        });
+        $('#folders').on("move_node.jstree", function (e, data, foo) {
+            var nodeId = argon.helpers.getIdFromNodeIdString(data.node.id);
+            var parentId = argon.helpers.getIdFromNodeIdString(data.parent);
+            var url;
+
+            if (isFolder(data)) {
+                url = "/admin/media/"+nodeId+"/folderParentUpdate/"+parentId;
+            } else {
+                url = "/admin/media/"+nodeId+"/itemParentUpdate/"+parentId;
+            }
+
+            // TODO: use URL below and SPLIT! for the backend (perhaps split into 2 methods?)
+
+            $.post(url, function() {
+                // if(window.console) console.log('Posted...');
+            }, 'json')
+            .done(function(data) {
+                // TODO: implement visual feedback
+                 if(window.console) console.log(data);
+            });
+
+        });
 
 //        $('#folders').on("dblclick.jstree", function (e) {
 //            var node = $(e.target).closest("li");

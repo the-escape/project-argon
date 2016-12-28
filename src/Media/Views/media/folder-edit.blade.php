@@ -1,11 +1,11 @@
 @extends('argon::layout.master')
 
-@section('body-class', 'dashboard media media-folder-add')
+@section('body-class', 'dashboard media media-folder-edit')
 
 @section('content')
 
     <div class="main">
-        <h1 class="page-header">Add Folder</h1>
+        <h1 class="page-header">Edit Folder</h1>
 
         @if (session('message'))
             <div class="alert alert-success" role="alert">
@@ -13,26 +13,33 @@
             </div>
         @endif
 
-        <form action="{{ route("cms:media:folders:save") }}" method="post">
+        <div class="actions-top">
+
+            <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+
+        </div>
+
+        <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
 
             <div class="form-group">
-                <label for="name" class="required">Forder Name</label>
-                <input type="text" id="name" class="form-control required" name="name" value="{{ old('name') }}">
+                <label for="name" class="required">Folder Name</label>
+                <input type="text" id="name" class="form-control required " name="name" value="{{ $currentFolder->getName() }}">
             </div>
 
             <div class="form-group">
                 <label for="parent" class="required">Parent Folder</label>
 
                 <select name="parent" id="parent" class="form-control">
-                    <option value="{{ $root->getId() }}" @if($root->getId() == $parent->getId()) selected @endif>{{ $root->name }}</option>
+                    <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getParentId()) selected @endif>{{ $root->name }}</option>
 
                     @foreach($root->children as $child)
-                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentId'=>$parent->getId()])
+                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentId'=>$currentFolder->getParentId()])
                     @endforeach
                 </select>
             </div>
 
             {{csrf_field()}}
+            {{method_field('PUT')}}
 
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
