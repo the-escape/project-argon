@@ -1,6 +1,6 @@
 @extends('argon::layout.master')
 
-@section('body-class', 'dashboard media media-edit')
+@section('body-class', 'dashboard medialib medialib-edit')
 
 @section('content')
 

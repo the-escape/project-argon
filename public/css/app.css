@@ -7146,29 +7146,35 @@ body.dashboard .dropdown-toggle::after {
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent; }
 
-body.media #folders {
+body.medialib #folders {
   margin: 20px 0;
   border-top: 1px dotted #000; }
 
-body.media .table-media th a {
+body.medialib .table-media th a {
   color: inherit;
   text-decoration: none;
   white-space: nowrap; }
 
-body.media .table-media th {
+body.medialib .table-media th {
   vertical-align: bottom;
   padding: 0.75rem 0.25rem; }
 
-body.media .table-media td {
+body.medialib .table-media td {
   vertical-align: middle;
   padding: 0.25rem; }
+  body.medialib .table-media td.actions {
+    white-space: nowrap; }
 
-body.media .table-media img {
+body.medialib .table-media img {
   max-width: 100px;
   max-height: 50px; }
 
-body.media .actions-top .search-form {
+body.medialib .actions-top .search-form {
   float: right; }
+
+.pagination-media {
+  display: block;
+  text-align: center; }
 
 .media-item {
   display: inline-block;

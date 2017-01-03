@@ -303,7 +303,9 @@ class MediaController extends BaseController
             $query = $this->getOrder($query, $request);
         }
 
-        $media = $query->get();
+        $perPage = $request->input('perpage', 20);
+
+        $media = $query->paginate($perPage);
 
         return View::make('argon::media.list', [
             'media' => $media,

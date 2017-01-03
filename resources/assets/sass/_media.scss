@@ -20,7 +20,7 @@ body.dashboard {
 
 
 
-body.media {
+body.medialib {
 
     #folders {
         margin: 20px 0;
@@ -42,6 +42,9 @@ body.media {
         td {
             vertical-align: middle;
             padding: 0.25rem;
+            &.actions {
+                white-space: nowrap;
+            }
         }
         img {
             max-width: 100px;
@@ -53,6 +56,14 @@ body.media {
         .search-form {
             float: right;
         }
+    }
+}
+
+.pagination-media {
+    display: block;
+    text-align: center;
+
+    .active {
     }
 }
 
