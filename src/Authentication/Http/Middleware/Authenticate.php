@@ -1,11 +1,11 @@
 <?php
 
-namespace Escape\Argon\Authentication\Middleware;
+namespace Escape\Argon\Authentication\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class AssertRole
+class Authenticate
 {
     /**
      * The Guard implementation.
@@ -18,6 +18,7 @@ class AssertRole
      * Create a new filter instance.
      *
      * @param  Guard  $auth
+     * @return void
      */
     public function __construct(Guard $auth)
     {
@@ -29,22 +30,17 @@ class AssertRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
                 $prefix = trim(config('argon.admin_route_prefix'), '/');
-                return redirect()->guest("/{$prefix}/login");
+                //return redirect()->guest("/{$prefix}/login");
             }
-        }
-
-        if (!$request->user()->hasRole($role)) {
-            return response('Unauthorized.', 401);
         }
 
         return $next($request);

@@ -1,13 +1,12 @@
 <?php
 
-namespace Escape\Argon\Authentication\Controllers;
+namespace Escape\Argon\Authentication\Http\Controllers;
 
-use Escape\Argon\Authentication\User;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -25,7 +24,7 @@ class AuthController extends BaseController
      */
     public function getLogin()
     {
-        return view('argon::auth.login');
+        return view('argon.auth::pages.login');
     }
 
     /**
@@ -76,11 +75,11 @@ class AuthController extends BaseController
      */
     protected function getFailedLoginMessage()
     {
-        return Lang::get('argon-auth::auth.failed');
+        return trans('argon.auth::auth.failed');
     }
 
     /**
-     * Set the defaullt locale on authentication.
+     * Set the default locale on authentication.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

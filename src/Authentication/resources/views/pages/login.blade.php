@@ -1,4 +1,4 @@
-@extends ('argon::layout.auth')
+@extends ('argon.auth::layouts.main')
 @section ('body')
     <div class="login">
         <div class="container full-height">
@@ -8,6 +8,9 @@
                         <img class="login__logo" src="/argon/assets/img/e.png" width="38" height="63" alt="logo">
                         <form action="/admin/login" method="POST" class="login__form">
                             {{ csrf_field() }}
+                            @if (session()->has('success'))
+                                <div class="form__alert form__alert--success form__alert--overview">{{ session()->get('success') }}</div>
+                            @endif
                             @if ($errors->has('auth'))
                                 <div class="form__alert form__alert--error form__alert--overview">{{ $errors->first('auth') }}</div>
                             @endif

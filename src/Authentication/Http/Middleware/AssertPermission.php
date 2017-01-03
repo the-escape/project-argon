@@ -1,11 +1,11 @@
 <?php
 
-namespace Escape\Argon\Authentication\Middleware;
+namespace Escape\Argon\Authentication\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class Authenticate
+class AssertPermission
 {
     /**
      * The Guard implementation.
@@ -18,7 +18,6 @@ class Authenticate
      * Create a new filter instance.
      *
      * @param  Guard  $auth
-     * @return void
      */
     public function __construct(Guard $auth)
     {
@@ -30,17 +29,22 @@ class Authenticate
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param  string $perm
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $perm)
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
                 $prefix = trim(config('argon.admin_route_prefix'), '/');
-                //return redirect()->guest("/{$prefix}/login");
+                return redirect()->guest("/{$prefix}/login");
             }
+        }
+
+        if (!$request->user()->hasPermission($perm)) {
+            return response('Unauthorized.', 401);
         }
 
         return $next($request);

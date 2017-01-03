@@ -2,11 +2,11 @@
 
 namespace Escape\Argon\Authentication;
 
+use Escape\Argon\Authentication\Http\Controllers\ResetPasswordController;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
-use Escape\Argon\Authentication\Controllers\ForgotPasswordController;
-use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
+use Escape\Argon\Authentication\Http\Controllers\ForgotPasswordController;
+
 use Illuminate\Contracts\Auth\Access\Gate;
 
 class AuthenticationServiceProvider extends AbstractPluginServiceProvider
@@ -30,6 +30,22 @@ class AuthenticationServiceProvider extends AbstractPluginServiceProvider
             'create',
             'POST'
         );
+
+        $this->addRoute(
+            'reset-password/{token?}',
+            'cms:authentication:reset-password',
+            ResetPasswordController::class,
+            'index',
+            'GET'
+        );
+
+        $this->addRoute(
+            'reset-password',
+            'cms:authentication:reset-password',
+            ResetPasswordController::class,
+            'create',
+            'POST'
+        );
     }
 
     public function boot()
@@ -39,6 +55,10 @@ class AuthenticationServiceProvider extends AbstractPluginServiceProvider
         });
 
         $this->app->bind(PermissionManager::class, 'permissions');
+
+        $permissions = $this->app['permissions'];
+
+        $permissions->register('cms:login');
 
         $this->app->singleton('fieldTypes', function () {
             return new FieldTypesManager();
@@ -52,10 +72,11 @@ class AuthenticationServiceProvider extends AbstractPluginServiceProvider
     public function startup()
     {
         $router = $this->app['router'];
-        $router->middleware('auth', Middleware\Authenticate::class);
-        $router->middleware('role', Middleware\AssertRole::class);
-        $router->middleware('perm', Middleware\AssertPermission::class);
+        $router->middleware('auth', Http\Middleware\Authenticate::class);
+        $router->middleware('role', Http\Middleware\AssertRole::class);
+        $router->middleware('perm', Http\Middleware\AssertPermission::class);
 
-        $this->loadTranslationsFrom(__DIR__ . '/lang/', 'argon-auth');
+        $this->loadViewsFrom(__DIR__.'/resources/views/', 'argon.auth');
+        $this->loadTranslationsFrom(__DIR__.'/resources/lang/', 'argon.auth');
     }
 }

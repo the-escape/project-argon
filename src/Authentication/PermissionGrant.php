@@ -27,6 +27,7 @@ class PermissionGrant extends Model
 
     public function setPermissionAttribute($value)
     {
+        dd($value);
         if ($value instanceof Permission) {
             $value = $value->name;
         }

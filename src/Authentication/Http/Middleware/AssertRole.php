@@ -1,11 +1,11 @@
 <?php
 
-namespace Escape\Argon\Authentication\Middleware;
+namespace Escape\Argon\Authentication\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class AssertPermission
+class AssertRole
 {
     /**
      * The Guard implementation.
@@ -29,10 +29,10 @@ class AssertPermission
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string $perm
+     * @param  string $role
      * @return mixed
      */
-    public function handle($request, Closure $next, $perm)
+    public function handle($request, Closure $next, $role)
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
@@ -43,7 +43,7 @@ class AssertPermission
             }
         }
 
-        if (!$request->user()->hasPermission($perm)) {
+        if (!$request->user()->hasRole($role)) {
             return response('Unauthorized.', 401);
         }
 
