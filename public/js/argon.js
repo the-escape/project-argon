@@ -55,7 +55,7 @@ var argon = {
 
         // JSTree helper
         getIdFromNodeIdString: function(nodeIdString) {
-            return nodeIdString.split('-')[1];
+            return parseInt(nodeIdString.split('-')[1], 10);
         }
     },
 

@@ -179,7 +179,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'media/{itemId}/itemParentUpdate/{parentId}',
             'cms:media:parent:update',
             MediaController::class,
-            'folderParentUpdate',
+            'itemParentUpdate',
             Request::METHOD_POST
         );
 

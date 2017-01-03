@@ -129,4 +129,8 @@ class MediaItem extends Model implements Arrayable
         return MediaHelpers::isImage($this->mimetype);
     }
 
+    public function getParentId()
+    {
+        return $this->folder;
+    }
 }

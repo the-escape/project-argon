@@ -320,7 +320,7 @@ class MediaController extends BaseController
     }
 
 
-    public function edit($id, MediaItem $mediaItem, MediaFolderRepository $mediaFolderRepository)
+    public function edit($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository)
     {
         $media = $mediaItem->with('mediaFolder')->find($id);
 
@@ -329,25 +329,46 @@ class MediaController extends BaseController
             abort(404);
         }
 
-        $folders = $mediaFolderRepository->all();
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$media->getParentId()])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $root = $folderRepository->root();
 
         return View::make('argon::media.edit', [
             'media' => $media,
-            'folders' => $folders,
+            'root' => $root,
+            'currentFolder' => $currentFolder,
         ]);
     }
 
 
-    public function update($id, MediaItem $mediaItem)
+    public function update($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository, Request $request)
     {
-        $media = $mediaItem->with('mediaFolder')->find($id);
+        $media = $mediaItem->find($id);
 
         if (!$media)
         {
             abort(404);
         }
 
-        throw new RuntimeException('Not implemented');
+        $name = $request->input('name', '');
+        $parentId = $request->input('parent');
+
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
+
+        if ($parent === null)
+        {
+            throw new RuntimeException("Parent folder is required!");
+        }
+
+        $media->folder = $parent->getId();
+        $media->save();
+
+        return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
     }
 
 
@@ -562,17 +583,26 @@ class MediaController extends BaseController
     }
 
 
-    public function itemParentUpdate($itemId, $parentId)
+    public function itemParentUpdate($id, $parentId, MediaItem $mediaItem, MediaFolderRepository $folderRepository)
     {
-        throw new RuntimeException("TODO");
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
 
-//        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('parent')])->first();
-//
-//        if ($parent === null)
-//        {
-//            return redirect(route("cms:media:folders"))->with('message', "Parent folder is required!");
-//        }
+        if ($parent === null)
+        {
+            throw new RuntimeException("Parent folder is required!");
+        }
 
+        $media = $mediaItem->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        $media->folder = $parent->getId();
+        $media->save();
+
+        return json_encode(['success'=>true]);
     }
 
 }

@@ -114,7 +114,8 @@
         });
 
         $('#folders').on("move_node.jstree", function (e, data, foo) {
-            var nodeId = argon.helpers.getIdFromNodeIdString(data.node.id);
+            //var nodeId = data.node.li_attr['data-id'];
+            var nodeId = data.node.data.id;
             var parentId = argon.helpers.getIdFromNodeIdString(data.parent);
             var url;
 

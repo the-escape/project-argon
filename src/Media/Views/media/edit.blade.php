@@ -34,17 +34,18 @@
         <form action="{{ route("cms:media:update", [$media->getId()]) }}" method="post">
 
             <div class="form-group">
-                <label for="filename" class="required">Name</label>
-                <input type="text" id="filename" class="form-control required " name="filename" value="{{ $media->filename }}">
+                <label for="name" class="required">Name</label>
+                <input type="text" id="name" class="form-control required " name="name" value="{{ $media->filename }}">
             </div>
 
             <div class="form-group">
-                <label for="folder" class="required">Folder</label>
-                <select name="folder" id="folder" class="form-control">
-                    @foreach($folders as $folder)
+                <label for="parent" class="required">Parent Folder</label>
 
-                        <option value="{{ $folder->getId() }}">{{ $folder->getName() }}</option>
+                <select name="parent" id="parent" class="form-control">
+                    <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
 
+                    @foreach($root->children as $child)
+                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getId(), 'currentFolderId'=>null])
                     @endforeach
                 </select>
             </div>
@@ -53,6 +54,7 @@
             {{method_field('PUT')}}
 
             <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
             <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
         </form>
