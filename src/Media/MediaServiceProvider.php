@@ -72,6 +72,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         );
 
 
+
+        $this->addRoute(
+            'media/modal/all',
+            'cms:media:modal:all',
+            MediaController::class,
+            'modalAll',
+            Request::METHOD_GET
+        );
         $this->addRoute(
             'media/all',
             'cms:media:all',
@@ -117,6 +125,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'cms:media:folders',
             MediaController::class,
             'folders',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
+            'media/modal/folders',
+            'cms:media:modal:folders',
+            MediaController::class,
+            'modalFolders',
             Request::METHOD_GET
         );
         $this->addRoute(

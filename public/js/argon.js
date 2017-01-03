@@ -292,34 +292,34 @@ datetime.init();
 
 
 
-var folders = $('.media-library .folders');
-
-folders.on("changed.jstree", function (e, data) {
-    if (data.selected.length > 0) {
-        var id = data.selected[0].split('-')[1];
-
-        $('#selectedMediaItem').val('');
-        $('#medialibrary .btn-submit').prop('disabled', true);
-        loadItems(id);
-    }
-});
-
-folders
-    .children()
-    .children()
-    .attr('data-jstree', '{"opened":true,"selected":true}');
-
-folders.jstree({
-    plugins: [
-        'dnd',
-        'search'
-    ],
-    "core" : {
-        // so that create works
-        "check_callback" : true,
-        "multiple": false
-    }
-});
+//var folders = $('.media-library .folders');
+//
+//folders.on("changed.jstree", function (e, data) {
+//    if (data.selected.length > 0) {
+//        var id = data.selected[0].split('-')[1];
+//
+//        $('#selectedMediaItem').val('');
+//        $('#medialibrary .btn-submit').prop('disabled', true);
+//        loadItems(id);
+//    }
+//});
+//
+//folders
+//    .children()
+//    .children()
+//    .attr('data-jstree', '{"opened":true,"selected":true}');
+//
+//folders.jstree({
+//    plugins: [
+//        'dnd',
+//        'search'
+//    ],
+//    "core" : {
+//        // so that create works
+//        "check_callback" : true,
+//        "multiple": false
+//    }
+//});
 
 argon.dialog.medialibrary = function (settings, callback) {
     folders.jstree().deselect_all();
@@ -401,38 +401,47 @@ $('#medialibrary .btn-submit').on('click', function() {
     $('#medialibrary').modal('hide');
 });
 
+//$(document).on('click', '.field-file .field-add-file', function(e) {
+//    argon.dialog.medialibrary({}, function(selected) {
+//
+//        var field = $(e.target).closest('.field');
+//
+//        $.ajax(
+//            argon.root() + '/media/items/' + selected
+//        ).done(function(data) {
+//
+//            var settings = JSON.parse(field.attr('data-settings'));
+//            var fieldName = field.attr('data-name');
+//            var files = field.find('.files');
+//
+//            if (!settings.multiple) {
+//               files.empty();
+//            }
+//
+//            var container = $('<div/>').addClass('input-group sortable-item');
+//
+//            $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
+//
+//            if (settings.multiple) {
+//                $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
+//            }
+//
+//            $('<div/>').addClass('file-name form-control').text(data.filename + '.' + data.extension).appendTo(container);
+//
+//            $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+//
+//            files.append(container);
+//        });
+//    });
+//});
+
 $(document).on('click', '.field-file .field-add-file', function(e) {
-    argon.dialog.medialibrary({}, function(selected) {
+    $('#medialib').modal();
 
-        var field = $(e.target).closest('.field');
+});
 
-        $.ajax(
-            argon.root() + '/media/items/' + selected
-        ).done(function(data) {
-
-            var settings = JSON.parse(field.attr('data-settings'));
-            var fieldName = field.attr('data-name');
-            var files = field.find('.files');
-
-            if (!settings.multiple) {
-               files.empty();
-            }
-
-            var container = $('<div/>').addClass('input-group sortable-item');
-
-            $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
-
-            if (settings.multiple) {
-                $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
-            }
-
-            $('<div/>').addClass('file-name form-control').text(data.filename + '.' + data.extension).appendTo(container);
-
-            $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
-
-            files.append(container);
-        });
-    });
+$('#medialib').on('shown.bs.modal',function(){      //correct here use 'shown.bs.modal' event which comes in bootstrap3
+    $(this).find('iframe').attr('src', '/admin/media/modal/all')
 });
 
 $(document).on('click', '.field-image .field-add-file', function(e) {

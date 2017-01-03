@@ -7146,6 +7146,34 @@ body.dashboard .dropdown-toggle::after {
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent; }
 
+#medialib .modal-dialog {
+  width: 94%;
+  height: 94%; }
+
+#medialib .modal-content {
+  height: 100%; }
+
+#medialib .modal-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  width: 100%;
+  z-index: 10; }
+
+#medialib .modal-body {
+  height: 100%;
+  padding: 82px 15px 15px 15px; }
+
+#medialib .media-library {
+  height: 100%; }
+
+#medialib-iframe {
+  width: 100%;
+  min-height: 700px;
+  height: 100%; }
+
 body.medialib #folders {
   margin: 20px 0;
   border-top: 1px dotted #000; }
@@ -7171,6 +7199,11 @@ body.medialib .table-media img {
 
 body.medialib .actions-top .search-form {
   float: right; }
+
+body.medialib.medialib-modal {
+  padding: 0; }
+  body.medialib.medialib-modal .main {
+    padding: 0; }
 
 .pagination-media {
   display: block;

@@ -17,7 +17,36 @@ body.dashboard {
     }
 }
 
-
+#medialib {
+    .modal-dialog {
+        width: 94%;
+        height: 94%;
+    }
+    .modal-content {
+        height: 100%;
+    }
+    .modal-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        width: 100%;
+        z-index: 10;
+    }
+    .modal-body {
+        height: 100%;
+        padding: (15px+67px) 15px 15px 15px;
+    }
+    .media-library {
+        height: 100%;
+    }
+}
+#medialib-iframe {
+    width: 100%;
+    min-height: 700px;
+    height: 100%;
+}
 
 
 body.medialib {
@@ -55,6 +84,14 @@ body.medialib {
     .actions-top {
         .search-form {
             float: right;
+        }
+    }
+
+    &.medialib-modal {
+        padding: 0;
+
+        .main {
+            padding: 0;
         }
     }
 }

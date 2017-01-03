@@ -313,12 +313,39 @@ class MediaController extends BaseController
         ]);
     }
 
+    public function modalAll(Request $request, MediaItem $mediaItem)
+    {
+        $query = $mediaItem->whereNull('media_items.deleted_at');
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $perPage = $request->input('perpage', 20);
+
+        $media = $query->paginate($perPage);
+
+        return View::make('argon::media.modal.list', [
+            'media' => $media,
+            'request' => $request,
+        ]);
+    }
+
 
     public function folders(MediaFolderRepository $folderRepository)
     {
         $root = $folderRepository->root();
 
         return View::make('argon::media.folders', ['root' => $root]);
+    }
+
+
+    public function modalFolders(MediaFolderRepository $folderRepository)
+    {
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.modal.folders', ['root' => $root]);
     }
 
 
