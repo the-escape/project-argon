@@ -78,7 +78,7 @@ class MediaController extends BaseController
             $name = sprintf('%s (%d)', $name, $count);
         }
 
-        $isImage =  in_array($file->getMimeType(), $this->imageFormats);
+        $isImage =  in_array($file->getClientMimeType(), $this->imageFormats);
 
         $tmpPath = $request->file('file')->getRealPath();
 
