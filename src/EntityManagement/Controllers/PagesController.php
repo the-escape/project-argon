@@ -316,6 +316,13 @@ class PagesController extends BaseController
         $localeId = (int)$request->input('locale');
         $clone = (int)$request->input('clone');
 
+        $locale = Locale::find($localeId);
+
+        if (!$locale)
+        {
+            return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
+        }
+
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
             'entity_id' => $pageId
@@ -336,7 +343,6 @@ class PagesController extends BaseController
 
             $pageData = [];
 
-            $locale = Locale::find($localeId);
             $defaultLocalisation = $page->getDefaultLocalisation();
             $latestRevision = $defaultLocalisation->publishedRevision();
             $latestRevisionFields = $latestRevision->getFields();
