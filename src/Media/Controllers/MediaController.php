@@ -93,7 +93,7 @@ class MediaController extends BaseController
             'filename' => $name,
             'extension' => $file->getClientOriginalExtension(),
             'filesize' => $file->getSize(),
-            'mimetype' => $file->getMimeType(),
+            'mimetype' => $file->getClientMimeType(),
             'meta' => json_encode($meta),
             'uploaded_by' => $request->user()->id,
         ]);

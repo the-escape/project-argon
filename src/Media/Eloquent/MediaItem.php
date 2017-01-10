@@ -47,7 +47,7 @@ class MediaItem extends Model implements Arrayable
         if ($this->hasThumb) {
             $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
         } else {
-            $item['thumbUrl'] = 'http://placehold.it/100x100';
+            $item['thumbUrl'] = '/argon/images/file-info-icon.png';
         }
 
         $item['url'] = $this->getUrl();
