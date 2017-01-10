@@ -167,6 +167,10 @@ class MediaController extends BaseController
                     {
                         foreach ($fval as $value)
                         {
+                            if (is_array($value) && array_key_exists('id', $value))
+                            {
+                                $value = $value['id'];
+                            }
                             if (strpos($value, $id) !== false)
                             {
                                 // select field type to check if image/file

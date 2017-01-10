@@ -150,6 +150,11 @@ class Page
         return getUrlWithQueryString($set, $unset, $this->getUrl());
     }
 
+//    public function getEntity()
+//    {
+//        return $this->entity;
+//    }
+
     public function getName()
     {
         return $this->entity->name;
