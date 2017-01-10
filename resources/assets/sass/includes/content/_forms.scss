@@ -1,7 +1,8 @@
 label {
     display: block;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px;
+    font-weight: normal;
 }
 
 input,
@@ -20,6 +21,9 @@ textarea {
 .form__group {
     float: left;
     position: relative;
+    clear: left;
+    margin-bottom: 23px;
+    width: 100%;
     span.icon {
         position: absolute;
         top: 0;
@@ -27,10 +31,10 @@ textarea {
         bottom: 0;
         width: 42px;
         &.error {
-            background: url('../images/ic-error.png') center / 20px 18px no-repeat;
+            background: url('../img/ic-error.png') center / 20px 18px no-repeat;
         }
         &.search {
-            background: url('../images/ic-search.png') center / 20px no-repeat;
+            background: url('../img/ic-search.png') center / 20px no-repeat;
         }
     }
 }
@@ -63,7 +67,7 @@ textarea {
         border-color: $color-blue;
         + .icon {
             &.search {
-                background: $color-blue url('../images/ic-search-w.png') center / 20px no-repeat;
+                background: $color-blue url('../img/ic-search-w.png') center / 20px no-repeat;
             }
         }
     }
@@ -180,11 +184,16 @@ textarea {
     color: $color-white;
     background-color: $color-blue;
     border: none;
+    text-align: center;
+    display: inline-block;
+    line-height: 46px;
     @include transition($transition-sm);
     &:hover {
         background-color: $color-primary-accent;
+        color: $color-white;
+        text-decoration: none;
     }
-    &.grey {
+    &.form__btn--grey {
         background-color: $color-grey-accent;
         &:hover {
             background-color: $color-secondary-accent;
@@ -198,6 +207,13 @@ textarea {
     }
     &:focus {
         outline: none;
+        color: $color-white;
+        text-decoration: none;
+    }
+    &.form__btn--small {
+        height: 30px;
+        min-width: 0;
+        line-height: 28px;
     }
 }
 

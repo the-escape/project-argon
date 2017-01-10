@@ -4,6 +4,10 @@ body {
     width: 100%;
 }
 
+[v-cloak] {
+	display: none;
+}
+
 body {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: $text-size-sm;
@@ -20,6 +24,30 @@ body {
 }
 .main {
 	z-index: 0;
+	height: 100%;
+	.main__content {
+		margin-top: 50px;
+		float: left;
+		width: 100%;
+		position: relative;
+	}
+}
+
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 30px;
+	right: 0;
+	.footer__container {
+		border-top: 1px solid $color-sidebar;
+		padding-top: 30px;
+		.footer__right {
+			float: right;
+			.form__btn {
+				margin-left: 10px;
+			}
+		}
+	}
 }
 
 .bg-grey {
@@ -51,12 +79,40 @@ body {
 					font-weight: bold;
 					color: $color-white;
 					padding: 11px;
+					letter-spacing: 1px;
+					&:hover {
+						text-decoration: none;
+					}
+					&:focus {
+						text-decoration: none;
+					}
 					&.active {
 						background-color: $color-white;
 						color: $color-blue;
 					}
 				}
 			}
+		}
+	}
+}
+
+.actions {
+	margin: 0 0 30px;
+	float: left;
+	width: 100%;
+	.form__group {
+		width: 290px;
+	}
+	span {
+		font-size: 18px;
+	}
+	.actions__right {
+		float: right;
+	}
+	&.actions--large {
+		height: 48px;
+		.form__btn {
+			margin-top: 9px;
 		}
 	}
 }
