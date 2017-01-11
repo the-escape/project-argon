@@ -10,7 +10,8 @@
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium":"^3.5.1"
+        "solarium/solarium":"^3.5.1",
+        "oriceon/toastr-5-laravel": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -34,5 +35,6 @@
     },
     "config": {
         "preferred-install": "dist"
-    }
+    },
+    "minimum-stability": "dev"
 }

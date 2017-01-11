@@ -13,6 +13,8 @@ use Escape\Argon\User\UserServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
+use Kamaln7\Toastr\Facades\Toastr;
+use Kamaln7\Toastr\ToastrServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
 
 class ArgonServiceProvider extends ServiceProvider

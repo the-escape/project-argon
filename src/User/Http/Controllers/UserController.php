@@ -7,6 +7,8 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\Table\Models\Table;
 use Escape\Argon\Table\Models\TableRow;
+use Escape\Argon\User\Http\Requests\UserStoreRequest;
+use Kamaln7\Toastr\Facades\Toastr;
 
 class UserController extends BaseController
 {
@@ -76,5 +78,16 @@ class UserController extends BaseController
         return view('argon.user::pages.create')->with([
             'name' => 'Users',
         ]);
+    }
+
+    public function store(UserStoreRequest $request)
+    {
+        // Create a new user based on the request.
+        //$this->userRepository->create($request->only(['name', 'email', 'password']));
+
+        Toastr::success('User successfully created.', 'SUCCESS');
+
+        // Redirect back to the table view.
+        return redirect()->route('cms:user:manage');
     }
 }

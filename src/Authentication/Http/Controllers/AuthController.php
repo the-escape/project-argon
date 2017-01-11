@@ -2,20 +2,22 @@
 
 namespace Escape\Argon\Authentication\Http\Controllers;
 
-use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     protected $loginPath = '/admin/login';
 
     use ThrottlesLogins;
     use AuthenticatesAndRegistersUsers;
+    use ValidatesRequests;
 
     /**
      * Show the application login form.

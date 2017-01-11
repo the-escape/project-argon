@@ -41,5 +41,6 @@
         </div>
         <script type="application/javascript" src="{{ asset('argon/assets/js/libs.min.js') }}"></script>
         <script type="application/javascript" src="{{ asset('argon/assets/js/main.min.js') }}"></script>
+        {!! Toastr::render() !!}
     </body>
 </html>

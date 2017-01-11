@@ -27,10 +27,10 @@ class UserServiceProvider extends AbstractPluginServiceProvider
             'create'
         );
         $this->addRoute(
-            'users/create',
-            'cms:user:save',
+            'users/store',
+            'cms:user:store',
             UserController::class,
-            'save',
+            'store',
             Request::METHOD_POST
         );
         $this->addRoute(

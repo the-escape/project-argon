@@ -17,7 +17,8 @@ gulp.task('libs-js', function () {
     gulp.src([
         nodeModules + 'jquery/dist/jquery.min.js',
         nodeModules + 'bootstrap/dist/js/bootstrap.js',
-        nodeModules + 'parsleyjs/dist/parsley.js'
+        nodeModules + 'parsleyjs/dist/parsley.js',
+        nodeModules + 'toastr/build/toastr.min.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('libs.min.js'))
@@ -29,7 +30,8 @@ gulp.task('libs-js', function () {
 
 gulp.task('libs-css', function () {
     gulp.src([
-        nodeModules + 'bootstrap/dist/css/bootstrap.css'
+        nodeModules + 'bootstrap/dist/css/bootstrap.css',
+        nodeModules + 'toastr/build/toastr.css'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('libs.min.css'))
