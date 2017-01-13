@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{{ asset('argon/assets/css/libs.min.css') }}">
         <link rel="stylesheet" href="{{ asset('argon/assets/css/main.min.css') }}">
     </head>
-    <body>
+    <body class="@yield ('class')">
         @yield ('body')
         <script type="text/javascript" src="{{ asset('argon/assets/js/libs.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('argon/assets/js/main.min.js') }}"></script>

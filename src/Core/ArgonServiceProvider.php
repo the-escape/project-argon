@@ -5,6 +5,7 @@ namespace Escape\Argon\Core;
 use Escape\Argon\Authentication\AuthenticationServiceProvider;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\Core\Plugins\PluginServiceProvider;
+use Escape\Argon\Dashboard\DashboardServiceProvider;
 use Escape\Argon\EntityManagement\EntityManagementServiceProvider;
 use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\Media\MediaServiceProvider;
@@ -61,6 +62,7 @@ class ArgonServiceProvider extends ServiceProvider
         class_alias(Image::class, 'Image');
         $this->app->register(MediaServiceProvider::class);
         $this->app->register(TableServiceProvider::class);
+        $this->app->register(DashboardServiceProvider::class);
 
         $this->loadViewsFrom(__DIR__.'/resources/views', 'argon');
     }

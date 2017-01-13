@@ -1,0 +1,45 @@
+.dashboard {
+  color: $color-white;
+  .dashboard__header {
+    h1 {
+      margin: 0 0 30px;
+    }
+    p {
+      margin: 0 0 50px;
+    }
+  }
+  .dashboard__cta {
+    height: 290px;
+    display: table;
+    width: 100%;
+    text-align: center;
+    .dashboard__cta-container {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    &.dashboard__cta--manage {
+      background: url('../img/manage-content.png') center no-repeat;
+      background-size: cover;
+      &:hover {
+        .form__btn {
+          background-color: $color-white;
+          color: $color-blue;
+        }
+      }
+      .form__btn {
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+    }
+    &.dashboard__cta--half {
+      height: 130px;
+      border: 1px solid $color-white;
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.activity {
+  height: 290px;
+  background-color: $color-sidebar;
+}

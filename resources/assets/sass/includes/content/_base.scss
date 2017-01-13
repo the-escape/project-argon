@@ -4,10 +4,6 @@ body {
     width: 100%;
 }
 
-[v-cloak] {
-	display: none;
-}
-
 body {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: $text-size-sm;
@@ -16,6 +12,12 @@ body {
 	line-height: $text-size-sm + 12;
 	color: $color-text;
 	-webkit-font-smoothing: antialiased;
+}
+
+.bg {
+	height: 100%;
+	width: 100%;
+	background: url('/argon/assets/img/bg.png') center / cover no-repeat;
 }
 
 .full-height {

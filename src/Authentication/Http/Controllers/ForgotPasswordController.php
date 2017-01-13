@@ -3,11 +3,11 @@
 namespace Escape\Argon\Authentication\Http\Controllers;
 
 use Escape\Argon\Authentication\Http\Requests\ForgotPasswordRequest;
-use Escape\Argon\Core\Controllers\BaseController;
 
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Password;
 
-class ForgotPasswordController extends BaseController
+class ForgotPasswordController extends Controller
 {
     /**
      * Display the forgotten password view.

@@ -1,4 +1,5 @@
 @extends ('argon.auth::layouts.master')
+@section ('class', 'bg')
 @section ('body')
     <div class="login">
         <div class="container full-height">

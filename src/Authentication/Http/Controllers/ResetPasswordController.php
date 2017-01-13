@@ -4,11 +4,11 @@ namespace Escape\Argon\Authentication\Http\Controllers;
 
 use Escape\Argon\Authentication\Http\Requests\ResetPasswordRequest;
 use Escape\Argon\Authentication\User;
-use Escape\Argon\Core\Controllers\BaseController;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
-class ResetPasswordController extends BaseController
+class ResetPasswordController extends Controller
 {
     public function index($token = null)
     {
