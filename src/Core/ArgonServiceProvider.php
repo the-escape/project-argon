@@ -11,11 +11,11 @@ use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\Media\MediaServiceProvider;
 use Escape\Argon\Table\TableServiceProvider;
 use Escape\Argon\User\UserServiceProvider;
+use Escape\Argon\RedirectManagement\RedirectManagementServiceProvider;
+
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
-use Kamaln7\Toastr\Facades\Toastr;
-use Kamaln7\Toastr\ToastrServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
 
 class ArgonServiceProvider extends ServiceProvider
@@ -65,5 +65,6 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(DashboardServiceProvider::class);
 
         $this->loadViewsFrom(__DIR__.'/resources/views', 'argon');
+        $this->app->register(RedirectManagementServiceProvider::class);
     }
 }

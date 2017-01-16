@@ -23,7 +23,7 @@
                 @endforeach
             </div>
         </div>
-        <form id="delete-form" style="display: inline" method="POST" action="">
+        <form id="delete-form" style="display: inline" method="POST" action="" class="confirm">
             {{csrf_field()}}
             {{method_field('DELETE')}}
             <button type="submit" class="btn btn-danger btn-sm" disabled>Delete</button>

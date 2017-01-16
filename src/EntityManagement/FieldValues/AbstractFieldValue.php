@@ -25,6 +25,11 @@ abstract class AbstractFieldValue
         }
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
 
     public function isEmpty()
     {

@@ -16,9 +16,11 @@ use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
+use Escape\Argon\Events\PageSaved;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
+use stdClass;
 use View;
 use Lang;
 
@@ -31,8 +33,7 @@ class PagesController extends BaseController
     public function manage(
         EntityTypeRepository $typeRepository,
         LocaleRepository $localeRepository,
-        EntityRepository $entityRepository,
-        Request $request
+        EntityRepository $entityRepository
     ) {
         $types = $typeRepository->page();
 
@@ -52,7 +53,7 @@ class PagesController extends BaseController
             return $entity->parent_id == null;
         });
 
-        return View::make('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
+        return view('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
@@ -72,7 +73,7 @@ class PagesController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
-        return View::make(
+        return view(
             'argon::pages.create',
             [
                 'type' => $type,
@@ -91,6 +92,7 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionRepository,
         FieldDataRepository $fieldDataRepository,
         LocalisationRepository $localisationRepository,
+        LocaleRepository $localeRepository,
         Request $request,
         Solr $solr
     ) {
@@ -123,13 +125,15 @@ class PagesController extends BaseController
             'entity_type_id' => $type->id,
             'owner_id' => $request->user()->id,
             'parent_id' => $parentId,
-            'locale' => $request->session()->get('locale'),
             'slug' => $slug,
+            'status' => $request->input('status'),
         ]);
+
+        $locale = $localeRepository->getDefault();
 
         $localisation = $localisationRepository->create([
             'entity_id' => $entity->getId(),
-            'locale_id' => 1 // TODO: Wire up properly.
+            'locale_id' => $locale->getId(),
         ]);
 
         $revision = $revisionRepository->create([
@@ -138,21 +142,23 @@ class PagesController extends BaseController
             'created_by' => $request->user()->id
         ]);
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
 
-        $redirect_url = new \stdClass();
+        $redirect_url = new stdClass();
         $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
         $request->merge(['redirect_url' => $redirect_url]);
 
-        $group_order = new \stdClass();
+        $group_order = new stdClass();
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
-        $group_render = new \stdClass();
+        $group_render = new stdClass();
         $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
+
+        event(new PageSaved($entity, $localisation));
 
         $solr->indexEntity($entity, $localisation);
 
@@ -219,15 +225,15 @@ class PagesController extends BaseController
 
         $this->validate($this->request, $rules, $messages, $niceNames);
 
-        $redirect_url = ($page->redirect_url instanceof \stdClass) ? $page->redirect_url : new \stdClass();
+        $redirect_url = ($page->redirect_url instanceof stdClass) ? $page->redirect_url : new stdClass();
         $redirect_url->{$localeId} = $request->input('redirect_url');
         $request->merge(['redirect_url' => $redirect_url]);
 
-        $group_order = ($page->group_order instanceof \stdClass) ? $page->group_order : new \stdClass();
+        $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
-        $group_render = ($page->group_render instanceof \stdClass) ? $page->group_render : new \stdClass();
+        $group_render = ($page->group_render instanceof stdClass) ? $page->group_render : new stdClass();
         $group_render->{$localeId} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
@@ -243,7 +249,9 @@ class PagesController extends BaseController
             'created_by' => $this->request->user()->id
         ]);
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository);
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
+
+        event(new PageSaved($entity, $localisation));
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
@@ -261,16 +269,21 @@ class PagesController extends BaseController
     public function editLocale(
         $pageId,
         $localeId,
-        EntityRepository $entityRepository,
-        EntityGroupRepository $groupRepository,
-        MediaFolderRepository $folderRepository
+        $clone=null
     ) {
+        $entityRepository = app()->make(EntityRepository::class);
+        $groupRepository = app()->make(EntityGroupRepository::class);
+        $folderRepository = app()->make(MediaFolderRepository::class);
+
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-        $currentLocale = Locale::find($localeId);
-
-        $localisation = $page->getLocalisation($currentLocale);
+        if ($clone) {
+            $localisation = $page->getDefaultLocalisation();
+        } else {
+            $currentLocale = Locale::find($localeId);
+            $localisation = $page->getLocalisation($currentLocale);
+        }
 
         $latestRevision = $localisation->publishedRevision();
 
@@ -282,7 +295,7 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
-        return View::make(
+        return view(
             'argon::pages.edit',
             [
                 'page' => $page,
@@ -291,6 +304,7 @@ class PagesController extends BaseController
                 'root' => $folderRepository->root(),
                 'groups' => $groups,
                 'locales' => $locales,
+                'localeId' => $localeId,
             ]
         );
     }
@@ -299,9 +313,19 @@ class PagesController extends BaseController
         $pageId,
         Request $request,
         LocalisationRepository $localisationRepository,
-        EntityRevisionRepository $revisionRepository
+        EntityRevisionRepository $revisionRepository,
+        EntityRepository $entityRepository,
+        Solr $solr
     ) {
         $localeId = (int)$request->input('locale');
+        $clone = (int)$request->input('clone');
+
+        $locale = Locale::find($localeId);
+
+        if (!$locale)
+        {
+            return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
+        }
 
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
@@ -313,6 +337,64 @@ class PagesController extends BaseController
             'status' => RevisionStatus::DRAFT,
             'created_by' => $request->user()->id
         ]);
+
+        $page = $entityRepository->find($pageId);
+
+        if ($clone)
+        {
+            $typeRepository = app()->make(EntityTypeRepository::class);
+            $fieldDataRepository = app()->make(FieldDataRepository::class);
+
+            $pageData = [];
+
+            $defaultLocalisation = $page->getDefaultLocalisation();
+            $latestRevision = $defaultLocalisation->publishedRevision();
+            $latestRevisionFields = $latestRevision->getFields();
+
+            $redirect_url = ($page->redirect_url instanceof stdClass) ? $page->redirect_url : new stdClass();
+            $redirect_url->{$localeId} = isset($redirect_url->{$defaultLocalisation->getLocaleId()}) ? $redirect_url->{$defaultLocalisation->getLocaleId()} : null;
+            $pageData['redirect_url'] = $redirect_url;
+
+            $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
+            $group_order->{$localeId} = isset($group_order->{$defaultLocalisation->getLocaleId()}) ? $group_order->{$defaultLocalisation->getLocaleId()} : null;
+            $pageData['group_order'] = $group_order;
+
+            $group_render = ($page->group_render instanceof stdClass) ? $page->group_render : new stdClass();
+            $group_render->{$localeId} = isset($group_render->{$defaultLocalisation->getLocaleId()}) ? $group_render->{$defaultLocalisation->getLocaleId()} : null;
+            $pageData['group_render'] = $group_render;
+
+            $page->update($pageData);
+
+            $type = $typeRepository->find($page->entity_type_id);
+            $fields = $type->fields;
+
+            foreach ($fields as $field)
+            {
+                if (!$latestRevisionFields->has($field->id))
+                {
+                    continue;
+                }
+
+                switch ($field->field_type)
+                {
+                    case 'combo':
+                    case 'image':
+                    case 'file':
+                    case 'location':
+                    case 'select':
+                    case 'item':
+                        $value = $latestRevisionFields[$field->id]->getData();
+                        break;
+
+                    default:
+                        $value = (string)$latestRevisionFields[$field->id];
+                }
+
+                FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
+            }
+        }
+
+        $solr->indexEntity($page, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }

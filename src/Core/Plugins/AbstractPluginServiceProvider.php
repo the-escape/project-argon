@@ -52,6 +52,9 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
                 case Request::METHOD_POST:
                     Route::post($prefix . $path, $definition);
                     break;
+                case Request::METHOD_PUT:
+                    Route::put($prefix . $path, $definition);
+                    break;
                 case Request::METHOD_DELETE:
                     Route::delete($prefix . $path, $definition);
                     break;

@@ -35,18 +35,23 @@ class SitemapController extends Controller
         // Loop through all the pages and attach the relevent XML object.
         foreach ($pages as $page) {
 
+            $urlRaw = $page->toPage()->getUrl();
+
             $url = $xml->addChild('url');
-            $url->addChild('loc', url($page->toPage()->getUrl()));
+            $url->addChild('loc', url($urlRaw));
 
             $localisations = $page->getLocalisations();
 
             // Loop through each localisation.
-            foreach ($localisations as $localisation) {
-
+            foreach ($localisations as $localisation)
+            {
+                $locale = $localisation->getLocale();
                 $link = $url->addChild('xhtml:link', null, 'xhtml');
                 $link->addAttribute('rel', 'alternate');
-                $link->addAttribute('hreflang', $localisation->getLocale()->languageCode);
-                $link->addAttribute('href', url($localisation->entity->toPage()->getUrl($localisation->getLocale())));
+                $link->addAttribute('hreflang', $locale->getLanguageCode());
+                // workaround to limit db quiries, since and issue on large sites
+                // $link->addAttribute('href', url($localisation->entity->toPage()->getUrl($locale)));
+                $link->addAttribute('href', url($locale->getSlug().$urlRaw));
             }
 
             // If the page has an updated date, include it.

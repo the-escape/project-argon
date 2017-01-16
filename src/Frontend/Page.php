@@ -5,6 +5,7 @@ namespace Escape\Argon\Frontend;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
@@ -31,6 +32,11 @@ class Page
         $this->request  = $request;
 
         $this->revisionId = $this->isPreview();
+    }
+
+    public function adjustLocale(Localisation $localisation)
+    {
+        $this->request->adjustLocale($localisation);
     }
 
     public function isPreview()
@@ -122,10 +128,32 @@ class Page
         return $url;
     }
 
+    public function getHomeUrl($locale = null)
+    {
+        $segments = [];
+
+        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $localisation = $this->entity->getLocalisation($locale);
+
+        // make sure entity has locale revision
+        if ($localisation && $locale_slug = $locale->getSlug()) {
+            $segments[] = $locale_slug;
+        }
+
+        $url = '/' . implode('/', $segments);
+
+        return $url;
+    }
+
     public function getUrlWithQueryString(array $set=[], array $unset=[])
     {
         return getUrlWithQueryString($set, $unset, $this->getUrl());
     }
+
+//    public function getEntity()
+//    {
+//        return $this->entity;
+//    }
 
     public function getName()
     {
@@ -152,16 +180,26 @@ class Page
         return $this->entity->entity_type_id;
     }
 
-    public function getBreadcrumbs($formatItems=true, $glue='/')
+    public function getBreadcrumbs($formatItems=true, $glue='/', callable $callback=null)
     {
         $breadcrumbs = [];
         $segments = [];
         $output = [];
 
-        $parent = $this->entity;
         $request_url = $this->request->url();
 
+        $parent = $this->entity;
+        if ($callback)
+        {
+            $parent = call_user_func_array($callback, [$parent, $this->request]);
+        }
+
         while ($parent->parent) {
+
+            if ($callback)
+            {
+                $parent->parent = call_user_func_array($callback, [$parent->parent, $this->request]);
+            }
 
             if ($formatItems) {
 

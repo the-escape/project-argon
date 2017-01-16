@@ -220,7 +220,18 @@
                         }
                     }
                 ).done(function(data) {
-                   $('[data-id='+ id + ']').remove();
+                    if (data.error) {
+                        var msg = data.error;
+                        var c = 0;
+                        for (var i in data.results) {
+                            msg += "\n"+ ++c +") Type: " + data.results[i].entity_type + ", Name: "+ data.results[i].entity_name +", Locale: " + data.results[i].locale_name + " (Entity ID: " + data.results[i].entity_id +")";
+                        }
+                        if(window.console) console.log(msg);
+
+                        alert(msg);
+                    } else {
+                        $('[data-id='+ id + ']').remove();
+                    }
                 });
             }
         }

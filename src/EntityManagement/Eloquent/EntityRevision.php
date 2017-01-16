@@ -82,7 +82,14 @@ class EntityRevision extends Model
     {
         return $this->fields->keyBy('field_id')->map(
             function ($f) {
-                return $f->field->type->parseData($f);
+                $field = $f->field;
+
+                if ($field !== null)
+                {
+                    return $field->type->parseData($f);
+                }
+
+                return null;
             }
         );
     }

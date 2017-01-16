@@ -16,7 +16,7 @@
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:pages:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
+        <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">
@@ -58,7 +58,7 @@
             <ul class="nav nav-tabs">
                 @foreach ($page->getLocalisations() as $l)
                     <li class="nav-item">
-                        <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
+                        <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
                            href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
                             {{$l->getLocale()->getName()}}
                         </a>
@@ -261,15 +261,32 @@
                     <h4 class="modal-title" id="newLocalisationLabel">Add A New Localisation</h4>
                 </div>
                 <form action="{{ route('cms:pages:create_locale', [$page->getId()]) }}" method="POST">
+
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                     <div class="modal-body">
-                        <select name="locale">
-                            <option value="">Select a Locale</option>
-                            @foreach ($locales as $locale)
-                                <option value="{{$locale->getId()}}">{{$locale->getName()}}</option>
-                            @endforeach
-                        </select>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select name="locale">
+                                    <option value="">Select a Locale</option>
+                                    @foreach ($locales as $locale)
+                                        <option value="{{$locale->getId()}}">{{$locale->getName()}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="chk-field chk-label">
+                                    <input type="hidden" name="clone" value="0" class="chk-default">
+                                    <input type="checkbox" name="clone" value="1" class="chk-input">
+                                    <span class="chk-text">Clone content</span>
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Create</button>
