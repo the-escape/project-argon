@@ -2,10 +2,11 @@
 
 namespace Escape\Argon\EntityManagement;
 
-use Escape\Argon\Authentication\PermissionManager;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
+use Escape\Argon\EntityManagement\Http\Controllers\CreateController;
+use Escape\Argon\EntityManagement\Http\Controllers\PageController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\Controllers\SitemapController;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
@@ -13,15 +14,12 @@ use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FileFieldType;
-use Escape\Argon\EntityManagement\FieldTypes\VideoFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\BooleanFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\WysiwygFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType;
-use Escape\Argon\EntityManagement\FieldTypes\ColourpickerFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\LocationFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\SelectFieldType;
-use Escape\Argon\EntityManagement\FieldTypes\UserFieldType;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
@@ -34,15 +32,24 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->addRoute(
             'pages',
             'cms:pages:manage',
-            PagesController::class,
-            'manage'
+            PageController::class,
+            'index'
         );
+
+        $this->addRoute(
+            'pages/create/{parentId}/{typeId}',
+            'cms:content:create',
+            CreateController::class,
+            'page'
+        );
+        /*
         $this->addRoute(
             'pages/{id}/addchild/{typeId}',
             'cms:content:create',
             PagesController::class,
             'create'
         );
+        */
         $this->addRoute(
             'pages/{id}/addchild/{typeId}',
             'cms:content:save',
@@ -469,6 +476,8 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
     public function startup()
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
+
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'argon.entity');
 
         $this->permissionsManager->register('cms:entity:type:manage');
         $this->permissionsManager->register('cms:entity:type:create');

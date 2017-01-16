@@ -16,6 +16,8 @@ function error (e) {
 gulp.task('libs-js', function () {
     gulp.src([
         nodeModules + 'jquery/dist/jquery.min.js',
+        nodeModules + 'sortablejs/Sortable.js',
+        nodeModules + 'jquery-ui/ui/widgets/sortable.js',
         nodeModules + 'bootstrap/dist/js/bootstrap.js',
         nodeModules + 'parsleyjs/dist/parsley.js',
         nodeModules + 'toastr/build/toastr.min.js'

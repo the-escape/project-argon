@@ -71,6 +71,10 @@ body {
 			margin: 0;
 			.tabs__item {
 				float: left;
+				margin-right: 1px;
+				&:last-of-type {
+					margin-right: 0;
+				}
 				a {
 					display: block;
 					width: 160px;

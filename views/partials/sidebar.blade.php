@@ -9,43 +9,18 @@
         </div>
         <ul class="sidebar__nav">
             <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-da" href="#">
+                <a class="sidebar__nav-link ic-da" href="/admin">
                     <span>Dashboard</span>
-                    <span class="sidebar__nav-alert">2</span>
+                    <span class="sidebar__nav-alert">6</span>
                 </a>
             </li>
             <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-si" href="#">
+                <a class="sidebar__nav-link ic-si" href="/admin/pages">
                     <span>Sitemap</span>
                 </a>
             </li>
             <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-po" href="#">
-                    <span>Posts</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-me" href="#">
-                    <span>Media library</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-bl" href="#">
-                    <span>Blocks</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-fo" href="#">
-                    <span>Forms</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-re" href="#">
-                    <span>Redirects</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
-                <a class="sidebar__nav-link ic-us" href="#">
+                <a class="sidebar__nav-link ic-us" href="/admin/users">
                     <span>Users</span>
                 </a>
             </li>
