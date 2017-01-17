@@ -11,10 +11,16 @@ use Escape\Argon\Table\Models\TableRow;
 class PageController extends BaseController
 {
     protected $entityRepository;
+    protected $statuses;
 
     public function __construct(EntityRepository $entityRepository)
     {
         $this->entityRepository = $entityRepository;
+
+        $this->statuses = [
+            0 => view('argon.entity::partials.not-published'),
+            1 => view('argon.entity::partials.published'),
+        ];
 
         parent::__construct();
     }
@@ -35,34 +41,59 @@ class PageController extends BaseController
 
     public function index()
     {
-        $statuses = [
-            0 => view('argon.entity::partials.not-published'),
-            1 => view('argon.entity::partials.published'),
-        ];
+        $entities = $this->entityRepository
+            ->pages()
+            ->keyBy('id');
 
-        $entities = $this->entityRepository->all();
+        foreach ($entities as $entity) {
+            if ($entity->parent_id) {
+                $entities[$entity->parent_id]->addChild($entity);
+            }
+        }
+
+        $entities = $entities->filter(function ($entity) {
+            return $entity->parent_id == null;
+        });
 
         $table = new Table();
+
+        $table->setClassName('table--sitemap');
+        $table->setRowView('argon.entity::partials.row');
 
         $table->addColumn('navigation', 'NAVIGATION', 50);
         $table->addColumn('status', 'STATUS', 20);
 
         foreach ($entities as $entity) {
-
-
-
-            $row = new TableRow([
-                'navigation' => $entity->name,
-                'status' => $statuses[$entity->status],
-            ]);
-
-            $table->addRow($row);
+            $this->addRow($table, $entity);
         }
 
         return view('argon::partials.table', [
             'name' => 'Sitemap',
             'table' => $table,
         ]);
+    }
+
+    private function addRow(Table $table, $entity, $level = 0, $parent = 0)
+    {
+        $row = new TableRow($entity->id, [
+            'navigation' => $entity->name,
+            'status' => $this->statuses[$entity->status],
+        ]);
+
+        $row->setLevel($level);
+        $row->setParent($parent);
+
+        $row->addAction(TableRow::TABLE_ACTION_CREATE);
+        $row->addAction(TableRow::TABLE_ACTION_BUTTON, '#', 'EDIT');
+
+        $table->addRow($row);
+
+        if ($entity->hasChildren()) {
+            $level++;
+            foreach ($entity->getChildren() as $child) {
+                $this->addRow($table, $child, $level, $entity->id);
+            }
+        }
     }
 
     public function create($parentId, $typeId)

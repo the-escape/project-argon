@@ -4,15 +4,46 @@ namespace Escape\Argon\Table\Models;
 
 class TableRow
 {
-    const TABLE_ACTION_DELETE = 1;
-    const TABLE_ACTION_BUTTON = 2;
+    const TABLE_ACTION_BUTTON = 1;
+    const TABLE_ACTION_DELETE = 2;
+    const TABLE_ACTION_CREATE = 3;
+    const TABLE_ACTION_CLONE = 4;
 
+    private $id;
+    private $level;
+    private $parent;
     private $data = [];
     private $actions = [];
 
-    public function __construct(array $data)
+    public function __construct($id, array $data)
     {
+        $this->id = $id;
         $this->data = $data;
+    }
+
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function setData(array $data)
@@ -25,16 +56,22 @@ class TableRow
         return is_null($key) ? $this->data : $this->data[$key];
     }
 
-    public function addAction($type, $url, $label = null)
+    public function addAction($type, $url = '#', $label = null)
     {
         $action = '';
 
         switch ($type) {
+            case self::TABLE_ACTION_BUTTON:
+                $action = view('argon.table::actions.button')->with(compact('url', 'label'));
+                break;
             case self::TABLE_ACTION_DELETE:
                 $action = view('argon.table::actions.delete')->with(compact('url'));
                 break;
-            case self::TABLE_ACTION_BUTTON:
-                $action = view('argon.table::actions.button')->with(compact('url', 'label'));
+            case self::TABLE_ACTION_CREATE:
+                $action = view('argon.table::actions.create')->with(compact('url'));
+                break;
+            case self::TABLE_ACTION_CLONE:
+                $action = view('argon.table::actions.clone')->with(compact('url'));
                 break;
         }
 

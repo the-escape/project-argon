@@ -45,14 +45,14 @@ class UserController extends BaseController
         $table = new Table();
 
         // Setup the table columns.
-        $table->addColumn('name', 'NAME', 35);
-        $table->addColumn('role', 'ROLE', 35);
+        $table->addColumn('name', 'NAME', 20);
+        $table->addColumn('role', 'ROLE', 20);
 
         // Loop through all users to setup the data array.
         foreach ($users as $user) {
 
-            $row = new TableRow([
-                'name' => $user->name,
+            $row = new TableRow($user->id, [
+                'name' => '1234',
                 'role' => $user->roles->implode('name', ', ')
             ]);
 
@@ -67,7 +67,7 @@ class UserController extends BaseController
         }
 
         // Render the table using our custom columns and data.
-        return view('argon.user::pages.table')->with([
+        return view('argon::partials.table')->with([
             'name' => 'Users',
             'table' => $table,
         ]);

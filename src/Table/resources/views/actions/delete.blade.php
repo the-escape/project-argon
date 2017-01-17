@@ -1,1 +1,1 @@
-<a href="{{ $url }}" class="ic ic__bin"></a>
+<a href="{{ $url }}" class="ic ic__delete"></a>

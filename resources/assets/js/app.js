@@ -12,8 +12,36 @@ $(function () {
     });
 
     var blocksPage = document.getElementById('blocks--page');
-    Sortable.create(blocksPage, { group: 'blocks' });
+    if (blocksPage) {
+        Sortable.create(blocksPage, {group: 'blocks'});
+    }
 
     var blocksOptions = document.getElementById('blocks--options');
-    Sortable.create(blocksOptions, { group: 'blocks' });
+    if (blocksOptions) {
+        Sortable.create(blocksOptions, {group: 'blocks'});
+    }
+
+    $('.table--sitemap .ic.ic__create').on('click', function (e) {
+        e.preventDefault();
+        var id = $(this).parents('tr').data('id'),
+            pages = $('.table__page-attributes'),
+            page = $('.table__reveal[data-id="'+id+'"]').find('.table__page-attributes');
+        pages.slideUp();
+        page.slideDown();
+    });
+
+    $('.table__level').on('click', function (e) {
+        var self = $(this),
+            row = self.parents('.table__page'),
+            id = row.data('id'),
+            level = row.data('level'),
+            rows = $('.table__page[data-level="'+(level+1)+'"][data-parent="'+id+'"]');
+
+        if (self.hasClass('table__level--collapsed')) {
+            
+            rows.slideDown();
+        } else {
+            rows.slideUp();
+        }
+    });
 });

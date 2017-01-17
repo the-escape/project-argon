@@ -7,7 +7,7 @@
         <a href="#" class="form__btn form__btn--small">CREATE</a>
     </div>
 </div>
-<table class="table">
+<table class="table {{ $className }}">
     <thead>
         <tr>
             @foreach ($columns as $column)

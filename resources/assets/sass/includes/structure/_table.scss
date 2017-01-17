@@ -12,6 +12,7 @@
   }
   tbody {
     tr {
+      padding: 0;
       td {
         padding: 10px 0;
         border-top: 1px solid $color-grey-dark;
@@ -27,6 +28,38 @@
       }
     }
   }
+  .table__page {
+    &.table__page--hidden {
+      display: none;
+    }
+    .table__level {
+      float: left;
+      width: 14px;
+      height: 14px;
+      margin: 4px 10px 0 20px;
+      cursor: pointer;
+      &.table__level--collapsed {
+        background: url('../img/table/arrow-collapsed.png') center / 8px 14px no-repeat;
+      }
+    }
+  }
+  .table__reveal {
+    background-color: $color-grey-light;
+    td {
+      border: none;
+      padding: 0;
+      .table__page-attributes {
+        float: left;
+        width: 100%;
+        padding: 10px;
+        border-top: 1px solid $color-grey-dark;
+        display: none;
+        .form__text {
+          max-width: 290px;
+        }
+      }
+    }
+  }
 }
 
 .ic {
@@ -38,10 +71,15 @@
     height: 22px;
     background: url('../img/table/clone.png') center / 22px no-repeat;
   }
-  &.ic__bin {
+  &.ic__delete {
     width: 20px;
     height: 22px;
-    background: url('../img/table/bin.png') center / 20px 22px no-repeat;
+    background: url('../img/table/delete.png') center / 20px 22px no-repeat;
+  }
+  &.ic__create {
+    width: 23px;
+    height: 23px;
+    background: url('../img/table/create.png') center / 23px no-repeat;
   }
 }
 

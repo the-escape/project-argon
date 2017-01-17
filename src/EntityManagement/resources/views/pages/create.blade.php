@@ -21,19 +21,13 @@
             <h2>Page builder</h2>
             <p>Add blocks to create your own custom page layout.</p>
             <div class="blocks">
-                <ul  id="blocks--options">
-                    <li class="block">
-                        <div class="block__img"></div>
-                        <div class="block__title">Block #3</div>
-                    </li>
-                    <li class="block">
-                        <div class="block__img"></div>
-                        <div class="block__title">Block #4</div>
-                    </li>
-                    <li class="block">
-                        <div class="block__img"></div>
-                        <div class="block__title">Block #5</div>
-                    </li>
+                <ul id="blocks--options">
+                    @foreach ($groups as $group)
+                        <li class="block">
+                            <div class="block__img"></div>
+                            <div class="block__title">{{ $group->name }}</div>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>

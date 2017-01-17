@@ -4,9 +4,21 @@ namespace Escape\Argon\Table\Models;
 
 class Table
 {
+    private $className;
+    private $rowView = 'argon.table::partials.row';
     private $actions = false;
     private $rows = [];
     private $columns = [];
+
+    public function setClassName($className)
+    {
+        $this->className = $className;
+    }
+
+    public function setRowView($rowView)
+    {
+        $this->rowView = $rowView;
+    }
 
     public function addColumn($name, $label, $width)
     {
@@ -33,13 +45,14 @@ class Table
                 $row->setData($data);
             }
 
-            $rows[] = view('argon.table::partials.row')->with([
+            $rows[] = view($this->rowView)->with([
                 'row' => $row,
                 'columns' => $this->columns,
             ])->render();
         }
 
         return view('argon.table::partials.table')->with([
+            'className' => $this->className,
             'rows' => $rows,
             'columns' => $this->columns,
         ]);
