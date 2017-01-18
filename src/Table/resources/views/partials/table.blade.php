@@ -11,7 +11,7 @@
         </div>
     </form>
     <div class="actions__right">
-        <a href="#" class="form__btn form__btn--small">CREATE</a>
+        <!--<a href="#" class="form__btn form__btn--small">CREATE</a>-->
     </div>
 </div>
 <table class="table {{ $className }}">

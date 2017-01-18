@@ -1,4 +1,4 @@
-<tr class="table__page @if ($row->getLevel() > 1) table__page--hidden @endif" data-id="{{ $row->getId() }}" data-parent="{{ $row->getParent() }}" data-level="{{ $row->getLevel() }}">
+<tr class="table__page @if (!$row->getHasChildren()) table__page--inactive @endif @if ($row->getLevel() > 1) table__page--hidden @endif" data-id="{{ $row->getId() }}" data-parent="{{ $row->getParent() }}" data-level="{{ $row->getLevel() }}">
     @foreach ($columns as $key => $column)
         <td>
             @if ($key === 0)

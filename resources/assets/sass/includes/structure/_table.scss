@@ -29,16 +29,29 @@
     }
   }
   .table__page {
+    cursor: pointer;
     &.table__page--hidden {
       display: none;
     }
     &.table__page--active {
       background-color: $color-grey-light;
     }
+    &:hover {
+      .table__level {
+        color: $color-blue;
+        text-decoration: none;
+      }
+    }
+    &.table__page--inactive {
+      cursor: default;
+      .table__level {
+        color: $color-text;
+      }
+    }
     .table__level {
       float: left;
       cursor: pointer;
-      padding: 0 0 0 24px;
+      padding: 0 0 0 34px;
       color: $color-text;
       text-decoration: none;
       font-weight: 600;
@@ -47,15 +60,15 @@
         text-decoration: none;
       }
       &.table__level--collapsed {
-        background: url('../img/table/arrow-collapsed.png') 3px center / 8px 14px no-repeat;
+        background: url('../img/table/arrow-collapsed.png') 13px center / 8px 14px no-repeat;
       }
       &.table__level--end {
         pointer-events: none;
         cursor: default;
-        background: url('../img/table/arrow-expand-blue.png') left center / 14px 13px no-repeat;
+        background: url('../img/table/arrow-expand-blue.png') 10px center / 14px 13px no-repeat;
       }
       &.table__level--open {
-        background: url('../img/table/arrow-expand.png') left center / 14px 8px no-repeat;
+        background: url('../img/table/arrow-expand.png') 10px center / 14px 8px no-repeat;
       }
     }
     .form__btn {

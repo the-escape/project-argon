@@ -27,27 +27,40 @@ $(function () {
             pages = $('.table__page-attributes'),
             page = $('.table__reveal[data-id="'+id+'"]').find('.table__page-attributes');
         pages.slideUp();
-        page.slideDown();
+        if (page.is(':visible')) {
+            page.slideUp();
+        } else {
+            page.slideDown();
+        }
     });
 
-    $('.table__level').on('click', function (e) {
+    $('.table__page').on('click', function (e) {
         e.preventDefault();
-        var self = $(this),
-            row = self.parents('.table__page'),
-            id = row.data('id'),
-            level = row.data('level'),
+
+        if ($(e.target).hasClass('ic') || $(e.target).hasClass('form__btn')) {
+            return null;
+        }
+
+        var levelElement = $(this).find('.table__level'),
+            self = $(this),
+            id = self.data('id'),
+            level = self.data('level'),
             rows = $('.table__page[data-level="'+(level+1)+'"][data-parent="'+id+'"]');
+
+        $('.table__page--active').removeClass('table__page--active');
 
         if (rows.length > 0) {
             $('.table__page-attributes').hide();
-            if (self.hasClass('table__level--collapsed')) {
-                self.attr('class', 'table__level table__level--open');
+            if (levelElement.hasClass('table__level--collapsed')) {
+                levelElement.attr('class', 'table__level table__level--open');
                 rows.show();
-            } else if (self.hasClass('table__level--open')) {
-                self.attr('class', 'table__level table__level--collapsed');
+            } else if (levelElement.hasClass('table__level--open')) {
+                levelElement.attr('class', 'table__level table__level--collapsed');
                 collapseLevels(level, id);
             }
         }
+
+        //self.addClass('table__page--active');
     });
 
     function collapseLevels(level, id)
@@ -104,6 +117,9 @@ $(function () {
 
     $(document).on('mouseup', function (e) {
         click = $(e.target);
+        if (click.parents('.search__result').length == 0) {
+            $('.table__page--active').removeClass('table__page--active');
+        }
     });
 
     searchInput.on('blur', function () {
@@ -137,7 +153,7 @@ $(function () {
         row.addClass('table__page--active');
         findPage(rows);
 
-        $.scrollTo(row, 400);
+        $.scrollTo(row, 600);
         $('.search__results').hide();
         $('.search__results ul').html('');
     });
