@@ -20,7 +20,8 @@ gulp.task('libs-js', function () {
         nodeModules + 'jquery-ui/ui/widgets/sortable.js',
         nodeModules + 'bootstrap/dist/js/bootstrap.js',
         nodeModules + 'parsleyjs/dist/parsley.js',
-        nodeModules + 'toastr/build/toastr.min.js'
+        nodeModules + 'toastr/build/toastr.min.js',
+        nodeModules + 'jquery.scrollto/jquery.scrollTo.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('libs.min.js'))

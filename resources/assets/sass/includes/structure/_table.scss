@@ -32,15 +32,34 @@
     &.table__page--hidden {
       display: none;
     }
+    &.table__page--active {
+      background-color: $color-grey-light;
+    }
     .table__level {
       float: left;
-      width: 14px;
-      height: 14px;
-      margin: 4px 10px 0 20px;
       cursor: pointer;
-      &.table__level--collapsed {
-        background: url('../img/table/arrow-collapsed.png') center / 8px 14px no-repeat;
+      padding: 0 0 0 24px;
+      color: $color-text;
+      text-decoration: none;
+      font-weight: 600;
+      &:hover {
+        color: $color-blue;
+        text-decoration: none;
       }
+      &.table__level--collapsed {
+        background: url('../img/table/arrow-collapsed.png') 3px center / 8px 14px no-repeat;
+      }
+      &.table__level--end {
+        pointer-events: none;
+        cursor: default;
+        background: url('../img/table/arrow-expand-blue.png') left center / 14px 13px no-repeat;
+      }
+      &.table__level--open {
+        background: url('../img/table/arrow-expand.png') left center / 14px 8px no-repeat;
+      }
+    }
+    .form__btn {
+      margin-right: 10px;
     }
   }
   .table__reveal {
@@ -56,6 +75,68 @@
         display: none;
         .form__text {
           max-width: 290px;
+        }
+        .form__btn {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.search {
+  .search__results {
+    display: none;
+    position: absolute;
+    top: 47px;
+    left: 0;
+    width: 360px;
+    background-color: $color-white;
+    border: 1px solid $color-blue;
+    svg {
+      display: block;
+      width: 50px;
+      height: 50px;
+      margin: 11px auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        float: left;
+        width: 100%;
+        border-bottom: 1px solid $color-grey-dark;
+        &:last-of-type {
+          border: none;
+        }
+        a {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          color: $color-text;
+          text-decoration: none;
+          &:hover {
+            color: $color-text;
+            text-decoration: none;
+            background-color: $color-grey-light;
+          }
+          span {
+            display: block;
+            width: 100%;
+          }
+          .title {
+            font-size: 16px;
+            .status {
+              float: left;
+              display: block;
+              margin: 6px 10px 0 0;
+            }
+          }
+          .date {
+            font-size: 12px;
+            color: $color-grey-accent;
+          }
         }
       }
     }

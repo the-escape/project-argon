@@ -8,6 +8,10 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 class EntityRepository extends BaseRepository
 {
+    protected $fieldSearchable = [
+        'name',
+    ];
+
     /**
      * Specify Model class name
      *
@@ -130,6 +134,8 @@ class EntityRepository extends BaseRepository
      */
     protected function type($type, array $slugs=[], array $where=[])
     {
+        $this->applyCriteria();
+
         $entities = $this->model->with('type');
 
         if ($slugs) {

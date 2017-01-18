@@ -4,9 +4,12 @@ namespace Escape\Argon\EntityManagement\Http\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
+use Escape\Argon\EntityManagement\Criterias\SearchCriteria;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityType;
 use Escape\Argon\Table\Models\Table;
 use Escape\Argon\Table\Models\TableRow;
+use Illuminate\Http\Request;
 
 class PageController extends BaseController
 {
@@ -90,18 +93,33 @@ class PageController extends BaseController
 
         if ($entity->hasChildren()) {
             $level++;
+            $row->setHasChildren(true);
             foreach ($entity->getChildren() as $child) {
                 $this->addRow($table, $child, $level, $entity->id);
             }
         }
     }
 
-    public function create($parentId, $typeId)
+    public function search(Request $request)
     {
+        $search = $request->get('search');
 
+        $entities = $this->entityRepository
+            ->pushCriteria(new SearchCriteria($search))
+            ->pages();
 
-        return view('argon.entity::pages.create', [
-            'name' => 'New Page'
-        ]);
+        $html = '';
+
+        foreach ($entities as $entity) {
+            $html .= view('argon.entity::partials.search-result', [
+                'entity' => $entity,
+            ]);
+        }
+
+        if ($entities->count() == 0) {
+            $html = view('argon.entity::partials.search-result-empty');
+        }
+
+        return response()->make($html, 200);
     }
 }

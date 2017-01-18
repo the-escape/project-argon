@@ -42,6 +42,15 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             CreateController::class,
             'page'
         );
+
+        $this->addRoute(
+            'pages/search',
+            'cms:content:search',
+            PageController::class,
+            'search',
+            'POST'
+        );
+
         /*
         $this->addRoute(
             'pages/{id}/addchild/{typeId}',

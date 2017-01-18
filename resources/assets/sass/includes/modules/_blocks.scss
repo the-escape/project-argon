@@ -1,5 +1,5 @@
 .blocks {
-  background-color: $color-block-background;
+  background-color: $color-grey-light;
   border: 1px solid $color-grey-dark;
   margin-top: 30px;
   float: left;
@@ -15,7 +15,7 @@
       height: 60px;
       border-top: 1px solid $color-grey-dark;
       border-bottom: 1px solid $color-grey-dark;
-      background-color: $color-block-background;
+      background-color: $color-grey-light;
       .block__img {
         float: left;
         height: 59px;

@@ -106,7 +106,7 @@
       overflow-y: scroll;
       @include transition($transition-sm);
       &:hover {
-        background-color: $color-sidebar-accent;
+        background-color: $color-sidebar-divider;
         text-decoration: none;
       }
       .activity__user {
@@ -121,7 +121,7 @@
         line-height: 20px;
         span {
           display: block;
-          color: $color-grey-text;
+          color: $color-grey-accent;
         }
         .title {
           color: $color-white;

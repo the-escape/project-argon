@@ -12,6 +12,7 @@ class TableRow
     private $id;
     private $level;
     private $parent;
+    private $hasChildren = false;
     private $data = [];
     private $actions = [];
 
@@ -44,6 +45,16 @@ class TableRow
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setHasChildren($hasChildren)
+    {
+        $this->hasChildren = $hasChildren;
+    }
+
+    public function getHasChildren()
+    {
+        return $this->hasChildren;
     }
 
     public function setData(array $data)

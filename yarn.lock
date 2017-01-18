@@ -26,6 +26,10 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+animated-scrollto@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/animated-scrollto/-/animated-scrollto-1.1.0.tgz#735012da38bf97d337087f969d9bbe6a24c4acbc"
+
 ansi-regex@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.0.0.tgz#c5061b6e0ef8a81775e50f5d66151bf6bf371107"
@@ -1272,9 +1276,15 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
-jquery, jquery@>=1.8.0:
+jquery, jquery@>=1.8, jquery@>=1.8.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"
+
+jquery.scrollto@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz#e7580d9c7ac46ef5bb25319483f6f45713fd7c6c"
+  dependencies:
+    jquery ">=1.8"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -2307,6 +2317,12 @@ sass-graph@^2.1.1:
 sax@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
+scrollto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/scrollto/-/scrollto-1.0.1.tgz#a89ce8e641f37b1e63519675edd2c91f22fae6f7"
+  dependencies:
+    animated-scrollto "^1.1.0"
 
 "semver@2 || 3 || 4 || 5", "semver@2.x || 3.x || 4 || 5", semver@^4.1.0:
   version "4.3.6"
