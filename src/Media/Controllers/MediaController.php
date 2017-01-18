@@ -476,9 +476,9 @@ class MediaController extends BaseController
 
     public function folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
     {
-        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
 
-        if ($parent === null)
+        if ($currentFolder === null)
         {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
@@ -488,7 +488,7 @@ class MediaController extends BaseController
         $root = $folderRepository->root();
 
         return View::make('argon::media.folder-add', [
-            'parent' => $parent,
+            'currentFolder' => $currentFolder,
             'folders' => $folders,
             'root' => $root,
         ]);
