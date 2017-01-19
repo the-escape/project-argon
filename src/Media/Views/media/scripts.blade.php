@@ -54,6 +54,8 @@
                 var id = data.node.li_attr['data-id'];
                 var root = argon.root();
 
+                // TODO: HANDLE DATA-URL %%ID%% REPLACEMENTS BELOW
+
                 if (isFolder(data))
                 {
                     $addBtn.prop('disabled', false);
