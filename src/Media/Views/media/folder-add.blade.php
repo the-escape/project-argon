@@ -24,11 +24,11 @@
                 <label for="parent" class="required">Parent Folder</label>
 
                 <select name="parent" id="parent" class="form-control">
-                    <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
+                    <option value="{{ $root->getId() }}" @if($root->getId() == $parentFolder->getId()) selected @endif>{{ $root->name }}</option>
 
-                    @if($currentFolder->getParentId())
+                    @if($parentFolder->getId())
                         @foreach($root->children as $child)
-                            @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getParentId(), 'currentFolderId'=>$currentFolder->getId()])
+                            @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$parentFolder->getId(), 'currentFolderId'=>null])
                         @endforeach
                     @endif
                 </select>

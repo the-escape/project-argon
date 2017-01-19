@@ -121,6 +121,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
+            'media/modal/search',
+            'cms:media:modal:search',
+            MediaController::class,
+            'modal_search',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
             'media/folders',
             'cms:media:folders',
             MediaController::class,
@@ -143,10 +151,24 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
         $this->addRoute(
+            'media/modal/upload_get',
+            'cms:media:modal:upload:get',
+            MediaController::class,
+            'modal_upload_get',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
             'media/upload_post',
             'cms:media:upload:post',
             MediaController::class,
             'upload_post',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/modal/upload_post',
+            'cms:media:modal:upload:post',
+            MediaController::class,
+            'modal_upload_post',
             Request::METHOD_POST
         );
         $this->addRoute(
@@ -182,7 +204,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'cms:media:folders:remove',
             MediaController::class,
             'folderRemove',
-            Request::METHOD_GET
+            [Request::METHOD_GET]
         );
         $this->addRoute(
             'media/{itemId}/folderParentUpdate/{parentId}',

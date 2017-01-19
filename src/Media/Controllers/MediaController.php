@@ -442,11 +442,49 @@ class MediaController extends BaseController
     }
 
 
+    public function modal_search(Request $request, MediaItem $mediaItem)
+    {
+        $query = $mediaItem;
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $query = $query->where(function ($query) use ($request) {
+            $query
+                ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhereHas('mediaFolder', function($q) use($request) {
+                    $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
+                });
+        });
+
+        $media = $query->get();
+
+        return View::make('argon::media.modal.search', [
+            'media' => $media,
+            'request'=>$request,
+        ]);
+    }
+
+
     public function upload_get(Request $request, MediaFolderRepository $mediaFolderRepository)
     {
         $folders = $mediaFolderRepository->all();
 
         return View::make('argon::media.upload', [
+            'folders' => $folders,
+        ]);
+    }
+
+
+    public function modal_upload_get(Request $request, MediaFolderRepository $mediaFolderRepository)
+    {
+        $folders = $mediaFolderRepository->all();
+
+        return View::make('argon::media.modal.upload', [
             'folders' => $folders,
         ]);
     }
@@ -476,9 +514,9 @@ class MediaController extends BaseController
 
     public function folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
     {
-        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+        $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
 
-        if ($currentFolder === null)
+        if ($parentFolder === null)
         {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
@@ -488,7 +526,7 @@ class MediaController extends BaseController
         $root = $folderRepository->root();
 
         return View::make('argon::media.folder-add', [
-            'currentFolder' => $currentFolder,
+            'parentFolder' => $parentFolder,
             'folders' => $folders,
             'root' => $root,
         ]);
@@ -575,14 +613,23 @@ class MediaController extends BaseController
     public function folderRemove(
         $folderId,
         MediaFolderRepository $folderRepository,
-        MediaItemRepository $itemRepository
+        MediaItemRepository $itemRepository,
+        Request $request
     ) {
+        if ($folderId == 1)
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Root folder can't be removed!");
+        }
+
+        // TODO: getItemsInFolder needs to be recursive as it fails currently
+        // if child folder has items so they are not direcly under the folder being deleted
         if ($itemRepository->getItemsInFolder($folderId)->count() > 0)
         {
             return redirect(route("cms:media:folders"))->with('message', "Folder not empty!");
         }
 
         $folderRepository->delete($folderId);
+
         return redirect(route("cms:media:folders"))->with('message', "Folder deleted!");
     }
 
