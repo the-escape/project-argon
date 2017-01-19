@@ -9,7 +9,8 @@ class DashboardController extends BaseController
     function setMiddleware()
     {
         return [
-            'perm:cms:login'
+            'auth',
+            'perm:cms:login',
         ];
     }
 

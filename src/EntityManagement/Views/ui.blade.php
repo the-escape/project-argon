@@ -111,7 +111,6 @@
 
 <script>
     $('select').select2({
-        placeholder: 'Dropdown',
         minimumResultsForSearch: Infinity
     });
 </script>

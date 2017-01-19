@@ -27,12 +27,17 @@ class Table
 
     public function addRow(TableRow $row)
     {
-        if (!$this->actions && count($row->getActions()) > 0) {
-            $this->actions = true;
-            $this->columns[] = new TableColumn('action', 'ACTION', 30);
-        }
-
         $this->rows[] = $row;
+    }
+
+    public function getRows()
+    {
+
+    }
+
+    public function getColumns()
+    {
+        return $this->columns;
     }
 
     public function render()
@@ -40,15 +45,7 @@ class Table
         $rows = [];
 
         foreach ($this->rows as $row) {
-            if ($this->actions) {
-                $data = $row->getData() + ['action' => $row->renderActions()];
-                $row->setData($data);
-            }
-
-            $rows[] = view($this->rowView)->with([
-                'row' => $row,
-                'columns' => $this->columns,
-            ])->render();
+            $rows[] = $row->render($this->columns, $this->rowView);
         }
 
         return view('argon.table::partials.table')->with([

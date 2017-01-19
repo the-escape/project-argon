@@ -86,11 +86,24 @@
         padding: 10px;
         border-top: 1px solid $color-grey-dark;
         display: none;
+        .form__group {
+          float: left;
+          width: 290px;
+          clear: none;
+          margin: 0 10px 0 0;
+        }
         .form__text {
           max-width: 290px;
         }
         .form__btn {
           margin-left: 10px;
+          &.form__btn--small {
+            margin-top: 9px;
+          }
+          &[type="submit"] {
+            float: left;
+            margin: 0;
+          }
         }
       }
     }

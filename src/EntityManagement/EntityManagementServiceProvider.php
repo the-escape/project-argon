@@ -51,6 +51,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'POST'
         );
 
+        $this->addRoute(
+            'pages/store',
+            'cms:content:store',
+            PageController::class,
+            'store',
+            'POST'
+        );
+
         /*
         $this->addRoute(
             'pages/{id}/addchild/{typeId}',

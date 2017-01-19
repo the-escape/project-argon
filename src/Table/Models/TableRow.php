@@ -15,11 +15,17 @@ class TableRow
     private $hasChildren = false;
     private $data = [];
     private $actions = [];
+    private $columns = [];
 
     public function __construct($id, array $data)
     {
         $this->id = $id;
         $this->data = $data;
+    }
+
+    public function setColumns($columns)
+    {
+        $this->columns = $columns;
     }
 
     public function setParent($parent)
@@ -105,5 +111,19 @@ class TableRow
     public function getActions()
     {
         return $this->actions;
+    }
+
+    public function render($columns, $rowView = 'argon.table::partials.row')
+    {
+        if ($this->actions) {
+            $columns[] = new TableColumn('action', 'ACTION', 30);
+            $data = $this->getData() + ['action' => $this->renderActions()];
+            $this->setData($data);
+        }
+
+        return view($rowView)->with([
+            'row' => $this,
+            'columns' => $columns,
+        ]);
     }
 }

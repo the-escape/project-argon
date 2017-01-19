@@ -14,10 +14,23 @@
 <tr class="table__reveal" data-id="{{ $row->getId() }}">
     <td colspan="{{ count($columns) }}">
         <div class="table__page-attributes">
-            <label for="entity-name-{{ $row->getId() }}" class="sr-only">Entity Name</label>
-            <input id="entity-name-{{ $row->getId() }}" type="text" class="form__text" placeholder="Please enter a new page name" />
-            <button class="form__btn form__btn--grey">CANCEL</button>
-            <button type="submit" class="form__btn">CREATE</button>
+            <form class="page__create" action="{{ action('\Escape\Argon\EntityManagement\Http\Controllers\PageController@store') }}" method="POST">
+                {{ csrf_field() }}
+                <div class="form__group">
+                    <label for="entity-type-{{ $row->getId() }}" class="sr-only">Entity Type</label>
+                    <select name="type" id="entity-type-{{ $row->getId() }}" class="form__select" data-placeholder="Please select a page type">
+                        <option value=""></option>
+                        <option value="1">Generic</option>
+                        <option value="2">Product</option>
+                    </select>
+                </div>
+                <div class="form__group">
+                    <label for="entity-name-{{ $row->getId() }}" class="sr-only">Entity Name</label>
+                    <input name="name" id="entity-name-{{ $row->getId() }}" type="text" class="form__text" placeholder="Please enter a new page name" />
+                </div>
+                <button type="submit" class="form__btn">CREATE</button>
+            </form>
+            <button class="form__btn form__btn--small form__btn--grey table__reveal-cancel">CANCEL</button>
         </div>
     </td>
 </tr>

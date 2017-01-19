@@ -21,7 +21,7 @@ $(function () {
         Sortable.create(blocksOptions, {group: 'blocks'});
     }
 
-    $('.table--sitemap .ic.ic__create').on('click', function (e) {
+    $('body').on('click', '.ic__create', function (e) {
         e.preventDefault();
         var id = $(this).parents('tr').data('id'),
             pages = $('.table__page-attributes'),
@@ -172,4 +172,35 @@ $(function () {
             findPage(parents);
         });
     }
+
+    $('.form__select').select2({
+        placeholder: 'Dropdown',
+        minimumResultsForSearch: Infinity
+    });
+
+    $('body').on('click', '.table__reveal-cancel', function (e) {
+        e.preventDefault();
+        $(this).parents('.table__page-attributes').slideUp();
+    });
+
+    $('body').on('submit', '.page__create', function (e) {
+        e.preventDefault();
+        var self = $(this),
+            parent = self.parents('.table__reveal'),
+            page = parent.prev('.table__page'),
+            data = self.serializeArray();
+
+        data.push({
+            name: 'level',
+            value: (page.data('level') + 1)
+        }, {
+            name: 'parent',
+            value: page.data('id')
+        });
+
+        $.post(self.attr('action'), data)
+            .done(function (data) {
+                parent.after(data);
+        });
+    });
 });

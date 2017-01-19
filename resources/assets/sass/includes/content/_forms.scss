@@ -39,6 +39,10 @@ textarea {
     }
 }
 
+.form__select {
+    width: 290px;
+}
+
 .form .form__text {
     width: 40%;
 }
@@ -105,7 +109,7 @@ textarea {
         &:checked {
             + span {
                 border-color: $color-blue;
-                background: url('../images/ic-tick.png') center / 13px 11px no-repeat;
+                background: url('../img/ic-tick.png') center / 13px 11px no-repeat;
             }
             ~ span {
                 color: $color-text;
@@ -253,8 +257,10 @@ textarea {
 
 .select2-container--default {
     font-size: 16px;
+    width: 100%;
     .select2-selection--single {
         height: 48px;
+        width: 100%;
         border-radius: 0;
         border: 1px solid $color-grey-dark;
         outline: none;
@@ -266,7 +272,7 @@ textarea {
         .select2-selection__arrow {
             height: 46px;
             width: 42px;
-            background: url('../images/ic-arrow-d.png') center / 14px 8px no-repeat;
+            background: url('../img/ic-arrow-d.png') center / 14px 8px no-repeat;
             b {
                 display: none;
             }
@@ -295,7 +301,7 @@ textarea {
     }
     &.select2-container--focus {
         .select2-selection__arrow {
-            background: $color-blue url('../images/ic-arrow-d-w.png') center / 14px 8px no-repeat;
+            background: $color-blue url('../img/ic-arrow-d-w.png') center / 14px 8px no-repeat;
         }
         .select2-selection--single {
             border-color: $color-blue;
