@@ -37,10 +37,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'pages/create/{parentId}/{typeId}',
+            'pages/edit/{entityId}',
             'cms:content:create',
             CreateController::class,
-            'page'
+            'edit'
         );
 
         $this->addRoute(

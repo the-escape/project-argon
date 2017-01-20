@@ -32,7 +32,7 @@ class UserController extends BaseController
     public function setTabs()
     {
         return [
-            new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
+            new Tab('ALL USERS', '#'),
             new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
         ];
     }
@@ -45,8 +45,8 @@ class UserController extends BaseController
         $table = new Table();
 
         // Setup the table columns.
-        $table->addColumn('name', 'NAME', 20);
-        $table->addColumn('role', 'ROLE', 20);
+        $table->addColumn('name', 'NAME', 35);
+        $table->addColumn('role', 'ROLE', 35);
 
         // Loop through all users to setup the data array.
         foreach ($users as $user) {

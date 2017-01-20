@@ -1,4 +1,4 @@
-@extends('argon::layout.master')
+@extends('argon::layouts.master')
 @section('body')
     <div class="actions">
         <span>Create new user</span>

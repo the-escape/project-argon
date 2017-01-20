@@ -88,7 +88,9 @@ class PageController extends BaseController
         $row->setParent($parent);
 
         $row->addAction(TableRow::TABLE_ACTION_CREATE);
-        $row->addAction(TableRow::TABLE_ACTION_BUTTON, '#', 'EDIT');
+        $row->addAction(TableRow::TABLE_ACTION_BUTTON,
+            action('\Escape\Argon\EntityManagement\Http\Controllers\CreateController@edit', $entity->id),
+            'EDIT');
 
         if ($return) {
             return $row;

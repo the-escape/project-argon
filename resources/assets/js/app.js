@@ -1,5 +1,6 @@
 $(function () {
-    var sidebar = $('.sidebar');
+    var sidebar = $('.sidebar'),
+        body = $('body');
     sidebar.on('mouseenter', function (e) {
         var self = $(this);
         self.parent().addClass('active');
@@ -9,6 +10,12 @@ $(function () {
         var self = $(this);
         self.parent().removeClass('active');
         self.prev('.sidebar__overlay').stop().fadeOut(200);
+    });
+
+    body.on('mouseleave', function () {
+        if (sidebar.hasClass('active')) {
+            sidebar.trigger('mouseleave');
+        }
     });
 
     var blocksPage = document.getElementById('blocks--page');
@@ -21,7 +28,7 @@ $(function () {
         Sortable.create(blocksOptions, {group: 'blocks'});
     }
 
-    $('body').on('click', '.ic__create', function (e) {
+    body.on('click', '.ic__create', function (e) {
         e.preventDefault();
         var id = $(this).parents('tr').data('id'),
             pages = $('.table__page-attributes'),
@@ -35,11 +42,12 @@ $(function () {
     });
 
     $('.table__page').on('click', function (e) {
-        e.preventDefault();
 
         if ($(e.target).hasClass('ic') || $(e.target).hasClass('form__btn')) {
             return null;
         }
+
+        e.preventDefault();
 
         var levelElement = $(this).find('.table__level'),
             self = $(this),
@@ -136,7 +144,7 @@ $(function () {
         resultsContainer.hide();
     });
 
-    $('body').on('click', '.search__result', function (e) {
+    body.on('click', '.search__result', function (e) {
         e.preventDefault();
         var self = $(this),
             id = self.data('id'),
@@ -178,12 +186,12 @@ $(function () {
         minimumResultsForSearch: Infinity
     });
 
-    $('body').on('click', '.table__reveal-cancel', function (e) {
+    body.on('click', '.table__reveal-cancel', function (e) {
         e.preventDefault();
         $(this).parents('.table__page-attributes').slideUp();
     });
 
-    $('body').on('submit', '.page__create', function (e) {
+    body.on('submit', '.page__create', function (e) {
         e.preventDefault();
         var self = $(this),
             parent = self.parents('.table__reveal'),
