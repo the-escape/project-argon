@@ -54,22 +54,24 @@
                 var id = data.node.li_attr['data-id'];
                 var root = argon.root();
 
-                // TODO: HANDLE DATA-URL %%ID%% REPLACEMENTS BELOW
-
                 if (isFolder(data))
                 {
                     $addBtn.prop('disabled', false);
                     $addBtn.attr('data-url', root + '/media/folders/' + id + '/add');
                     $editBtn.attr('href', root + '/media/folders/' + id);
                     $deleteBtn.prop('disabled', false);
-                    $deleteBtn.attr('data-url', root + '/media/folders/' + id +'/remove');
+                    var dataUrl = $deleteBtn.data('folder-delete').replace('%%ID%%', id);
+//                    $deleteBtn.attr('data-url', root + '/media/folders/' + id +'/remove');
+                    $deleteBtn.attr('data-url', dataUrl);
                 }
                 else
                 {
                     $addBtn.prop('disabled', true);
                     $editBtn.attr('href', root + '/media/edit/' + id);
                     $deleteBtn.prop('disabled', false);
-                    $deleteBtn.attr('data-url', root + '/media/delete/' + id);
+                    var dataUrl = $deleteBtn.data('item-delete').replace('%%ID%%', id);
+//                    $deleteBtn.attr('data-url', root + '/media/delete/' + id);
+                    $deleteBtn.attr('data-url', dataUrl);
                 }
             }
         });
