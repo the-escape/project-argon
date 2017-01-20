@@ -97,10 +97,26 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
+            'media/modal/edit/{id}',
+            'cms:media:modal:edit',
+            MediaController::class,
+            'modal_edit',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
             'media/update/{id}',
             'cms:media:update',
             MediaController::class,
             'update',
+            Request::METHOD_PUT
+        );
+
+        $this->addRoute(
+            'media/modal/update/{id}',
+            'cms:media:modal:update',
+            MediaController::class,
+            'modal_update',
             Request::METHOD_PUT
         );
 

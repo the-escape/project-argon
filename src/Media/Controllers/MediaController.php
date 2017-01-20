@@ -375,6 +375,32 @@ class MediaController extends BaseController
     }
 
 
+    public function modal_edit($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository)
+    {
+        $media = $mediaItem->with('mediaFolder')->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$media->getParentId()])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.modal.edit', [
+            'media' => $media,
+            'root' => $root,
+            'currentFolder' => $currentFolder,
+        ]);
+    }
+
+
     public function update($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository, Request $request)
     {
         $media = $mediaItem->find($id);
@@ -398,6 +424,32 @@ class MediaController extends BaseController
         $media->save();
 
         return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
+    }
+
+
+    public function modal_update($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository, Request $request)
+    {
+        $media = $mediaItem->find($id);
+
+        if (!$media)
+        {
+            abort(404);
+        }
+
+        $name = $request->input('name', '');
+        $parentId = $request->input('parent');
+
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
+
+        if ($parent === null)
+        {
+            throw new RuntimeException("Parent folder is required!");
+        }
+
+        $media->folder = $parent->getId();
+        $media->save();
+
+        return redirect(route("cms:media:modal:edit", $id))->with('message', 'Media item updated!');
     }
 
 

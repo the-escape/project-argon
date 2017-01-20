@@ -17,7 +17,7 @@
             <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload">Upload</a>
             <a href="{{ route("cms:media:modal:folders") }}" class="btn btn-primary-outline">Media Folders</a>
 
-            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
+            <form action="{{ route("cms:media:modal:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
                 <button type="submit" class="btn btn-primary-outline">Search</button>
             </form>
@@ -136,7 +136,7 @@
                         <td class="actions">
                             <button type="button" class="btn btn-primary-outline btn-sm">Select</button>
                             <a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline btn-sm">View</a>
-                            <a href="{{ route("cms:media:edit", [$mediaItem->getId()]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
+                            <a href="{{ route("cms:media:modal:edit", [$mediaItem->getId()]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             <a href="{{ route("cms:media:delete", [$mediaItem->getId()]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
                         </td>
                     </tr>

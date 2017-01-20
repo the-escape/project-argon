@@ -17,7 +17,7 @@
             <a href="{{ $media->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline">View</a>
             <a href="{{ route("cms:media:delete", [$media->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
 
-            <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
+            <form action="{{ route("cms:media:modal:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
                 <button type="submit" class="btn btn-primary-outline">Search</button>
             </form>
@@ -30,7 +30,7 @@
             {{--</div>--}}
         {{--@endif--}}
 
-        <form action="{{ route("cms:media:update", [$media->getId()]) }}" method="post">
+        <form action="{{ route("cms:media:modal:update", [$media->getId()]) }}" method="post">
 
             <div class="form-group">
                 <label for="name" class="required">Name</label>
@@ -53,8 +53,8 @@
             {{method_field('PUT')}}
 
             <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
-            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
+            <a href="{{ route("cms:media:modal:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
+            <a href="{{ route("cms:media:modal:all") }}" class="btn btn-primary-outline">Back to All</a>
 
         </form>
 
