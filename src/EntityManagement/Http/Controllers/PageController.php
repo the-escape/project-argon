@@ -7,6 +7,7 @@ use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Criterias\SearchCriteria;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 use Escape\Argon\Table\Models\Table;
 use Escape\Argon\Table\Models\TableRow;
 use Illuminate\Http\Request;
@@ -81,7 +82,7 @@ class PageController extends BaseController
     {
         $row = new TableRow($entity->id, [
             'navigation' => $entity->name,
-            'status' => '',
+            'status' => EntityRevision::getStatusView($entity),
         ]);
 
         $row->setLevel($level);

@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EntityRevision extends Model
 {
-    const STATUS_DRAFT = 1;
-    const STATUS_PUBLISHED = 2;
+    const STATUS_DRAFT = 0;
+    const STATUS_PUBLISHED = 1;
     const STATUS_PREVIOUSLY_PUBLISHED = 3;
     const STATUS_PREVIEW = 4;
 
@@ -23,14 +23,14 @@ class EntityRevision extends Model
      */
     protected $fillable = ['entity_localisation_id', 'status', 'created_by'];
 
-    public function getStatusView()
+    public static function getStatusView($entity)
     {
         $views = [
             self::STATUS_DRAFT => view('argon.entity::partials.not-published'),
             self::STATUS_PUBLISHED => view('argon.entity::partials.published'),
         ];
 
-        return isset($views[$this->status_id]) ? $views[$this->status_id] : '';
+        return isset($views[$entity->status]) ? $views[$entity->status] : '';
     }
 
     public function localisation()
