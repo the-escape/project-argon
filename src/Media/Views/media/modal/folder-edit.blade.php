@@ -1,6 +1,6 @@
 @extends('argon::layout.medialib')
 
-@section('body-class', 'dashboard medialib-library medialib-folder-edit medialib-modal')
+@section('body-class', 'dashboard medialib medialib-library medialib-folder-edit medialib-modal')
 
 @section('content')
 
@@ -15,11 +15,11 @@
 
         <div class="actions-top">
 
-            <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+            <a href="{{ route("cms:media:modal:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
 
         </div>
 
-        <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
+        <form action="{{ route("cms:media:modal:folders:update", [$currentFolder->getId()]) }}" method="post">
 
             <div class="form-group">
                 <label for="name" class="required">Folder Name</label>

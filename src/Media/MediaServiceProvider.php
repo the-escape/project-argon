@@ -129,6 +129,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
+            'media/modal/delete/{id}',
+            'cms:media:modal:delete',
+            MediaController::class,
+            'modal_delete',
+            Request::METHOD_GET
+        );
+
+        $this->addRoute(
             'media/search',
             'cms:media:search',
             MediaController::class,
@@ -195,10 +203,24 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
         $this->addRoute(
+            'media/modal/folders/{id}/add',
+            'cms:media:modal:folders:add',
+            MediaController::class,
+            'modal_folderAdd',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
             'media/folders/save',
             'cms:media:folders:save',
             MediaController::class,
             'folderSave',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/modal/folders/save',
+            'cms:media:modal:folders:save',
+            MediaController::class,
+            'modal_folderSave',
             Request::METHOD_POST
         );
         $this->addRoute(
@@ -209,6 +231,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
         $this->addRoute(
+            'media/modal/folders/{id}',
+            'cms:media:modal:folders:edit',
+            MediaController::class,
+            'modal_folderEdit',
+            Request::METHOD_GET
+        );
+        $this->addRoute(
             'media/folders/{id}/update',
             'cms:media:folders:update',
             MediaController::class,
@@ -216,10 +245,24 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_PUT
         );
         $this->addRoute(
+            'media/modal/folders/{id}/update',
+            'cms:media:modal:folders:update',
+            MediaController::class,
+            'modal_folderUpdate',
+            Request::METHOD_PUT
+        );
+        $this->addRoute(
             'media/folders/{id}/remove',
             'cms:media:folders:remove',
             MediaController::class,
             'folderRemove',
+            [Request::METHOD_GET]
+        );
+        $this->addRoute(
+            'media/modal/folders/{id}/remove',
+            'cms:media:modal:folders:remove',
+            MediaController::class,
+            'modal_folderRemove',
             [Request::METHOD_GET]
         );
         $this->addRoute(

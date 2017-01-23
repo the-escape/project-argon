@@ -15,7 +15,7 @@
 
         <div class="actions-top">
 
-            <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
+            <a href="{{ route("cms:media:modal:folders") }}" class="btn btn-primary-outline">Media Folders</a>
 
             <form action="{{ route("cms:media:modal:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
@@ -24,7 +24,7 @@
 
         </div>
 
-        <form action="{{ route("cms:media:upload:post") }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route("cms:media:modal:upload:post") }}" method="post" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label for="file">Select Image:</label>

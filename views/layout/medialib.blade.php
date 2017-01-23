@@ -351,7 +351,9 @@
     // Add confirm class to elements that should trigger confirm window
     // To show custom text, add data-confirm attribute on html element ?>
     $('.confirm').on('click', function(){
-        return argon.dialog.confirm(this);
+        var boolean = argon.dialog.confirm(this);
+        $(this).attr('confirm', boolean);
+        return boolean;
     });
 
     <?php

@@ -29,6 +29,11 @@
         });
 
         $deleteBtn.on('click', function (e) {
+            var confirm = this.getAttribute('confirm');
+            if (confirm && confirm == 'false') {
+                return;
+            }
+
             var url = this.getAttribute('data-url');
             if (url && url.length) {
                 document.location.href = url;
@@ -57,21 +62,29 @@
                 if (isFolder(data))
                 {
                     $addBtn.prop('disabled', false);
-                    $addBtn.attr('data-url', root + '/media/folders/' + id + '/add');
-                    $editBtn.attr('href', root + '/media/folders/' + id);
+
+                    var dataAddUrl = $addBtn.data('folder-add').replace('%%ID%%', id);
+                    $addBtn.attr('data-url', dataAddUrl);
+
+                    var dataEditUrl = $editBtn.data('folder-edit').replace('%%ID%%', id);
+                    $editBtn.attr('href', dataEditUrl);
+
                     $deleteBtn.prop('disabled', false);
-                    var dataUrl = $deleteBtn.data('folder-delete').replace('%%ID%%', id);
-//                    $deleteBtn.attr('data-url', root + '/media/folders/' + id +'/remove');
-                    $deleteBtn.attr('data-url', dataUrl);
+                    var dataDeleteUrl = $deleteBtn.data('folder-delete').replace('%%ID%%', id);
+                    $deleteBtn.attr('data-url', dataDeleteUrl);
                 }
                 else
                 {
                     $addBtn.prop('disabled', true);
-                    $editBtn.attr('href', root + '/media/edit/' + id);
+
+                    //$editBtn.attr('href', root + '/media/edit/' + id);
+
+                    var dataEditUrl = $editBtn.data('item-edit').replace('%%ID%%', id);
+                    $editBtn.attr('href', dataEditUrl);
+
                     $deleteBtn.prop('disabled', false);
-                    var dataUrl = $deleteBtn.data('item-delete').replace('%%ID%%', id);
-//                    $deleteBtn.attr('data-url', root + '/media/delete/' + id);
-                    $deleteBtn.attr('data-url', dataUrl);
+                    var dataDeleteUrl = $deleteBtn.data('item-delete').replace('%%ID%%', id);
+                    $deleteBtn.attr('data-url', dataDeleteUrl);
                 }
             }
         });

@@ -124,6 +124,28 @@ class MediaController extends BaseController
 
     public function deleteItem($id, MediaItemRepository $itemRepository)
     {
+        $results = $this->deleteItemCheck($id, $itemRepository);
+
+        if ($results)
+        {
+            return response()->json([
+                'error' => 'Could not delete, media item in use:',
+                'results' => $results,
+            ], Response::HTTP_OK);
+        }
+
+        $itemRepository->delete($id);
+
+        //return response('', Response::HTTP_NO_CONTENT);
+
+        return response()->json([
+            'error' => '',
+            'results' => '',
+        ], Response::HTTP_OK);
+    }
+
+    private function deleteItemCheck($id, MediaItemRepository $itemRepository)
+    {
         $sql = "select
                 entity_localisations.entity_id,
                 entity_localisations.id as localisation_id,
@@ -199,22 +221,7 @@ class MediaController extends BaseController
             }
         }
 
-        if ($results)
-        {
-            return response()->json([
-                'error' => 'Could not delete, media item in use:',
-                'results' => $results,
-            ], Response::HTTP_OK);
-        }
-
-        $itemRepository->delete($id);
-
-        //return response('', Response::HTTP_NO_CONTENT);
-
-        return response()->json([
-            'error' => '',
-            'results' => '',
-        ], Response::HTTP_OK);
+        return $results;
     }
 
     public function createFolder(Request $request, MediaFolderRepository $folderRepository)
@@ -453,16 +460,89 @@ class MediaController extends BaseController
     }
 
 
-    public function delete($id, MediaItem $mediaItem)
-    {
-        $media = $mediaItem->with('mediaFolder')->find($id);
+//    public function delete($id, MediaItem $mediaItem)
+//    {
+//        $media = $mediaItem->with('mediaFolder')->find($id);
+//
+//        if (!$media)
+//        {
+//            abort(404);
+//        }
+//
+//        throw new RuntimeException('Not implemented');
+//    }
 
-        if (!$media)
+
+    public function delete($id, MediaItemRepository $itemRepository)
+    {
+        $results = $this->deleteItemCheck($id, $itemRepository);
+
+        if ($results)
         {
-            abort(404);
+//            $stop=1;
+//            return response()->json([
+//                'error' => 'Could not delete, media item in use:',
+//                'results' => $results,
+//            ], Response::HTTP_OK);
+
+            $message = ["Could not delete, media item in use:"];
+
+            foreach($results as $i => $result)
+            {
+                $message[] = "(".($i+1).") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
+            }
+
+            return back()
+                ->with('message', implode(PHP_EOL, $message))
+                ->with('results', $results);
         }
 
-        throw new RuntimeException('Not implemented');
+        $stop=1;
+        $itemRepository->delete($id);
+
+        return back()
+            ->with('message', 'Media item deleted!');
+
+//        return redirect(route("cms:media:modal:all"));
+        //return response('', Response::HTTP_NO_CONTENT);
+
+//        return response()->json([
+//            'error' => '',
+//            'results' => '',
+//        ], Response::HTTP_OK);
+    }
+
+
+    public function modal_delete($id, MediaItemRepository $itemRepository)
+    {
+        $results = $this->deleteItemCheck($id, $itemRepository);
+        if ($results)
+        {
+//            $stop=1;
+//            return response()->json([
+//                'error' => 'Could not delete, media item in use:',
+//                'results' => $results,
+//            ], Response::HTTP_OK);
+
+            return back()
+                ->with('message', 'Could not delete, media item in use:')
+                ->with('results', $results);
+        }
+
+        $stop=1;
+        $itemRepository->delete($id);
+
+        return back()
+            ->with('message', 'Media item deleted!');
+
+//        $media = $mediaItem->with('mediaFolder')->find($id);
+//
+//        if (!$media)
+//        {
+//            abort(404);
+//        }
+//
+//        throw new RuntimeException('Not implemented');
     }
 
 
@@ -542,6 +622,28 @@ class MediaController extends BaseController
     }
 
 
+    public function modal_upload_post(Request $request)
+    {
+        $folderId = Input::get('folder');
+
+        $files = $request->file('file');
+
+        if ($files)
+        {
+            $userId = $request->user()->id;
+
+            $mediaRepository = app()->make(MediaItemRepository::class);
+
+            foreach ($files as $file)
+            {
+                $r = Media::saveUploadedFile($file, $folderId, $userId, $mediaRepository);
+            }
+        }
+
+        return redirect(route("cms:media:modal:all"));
+    }
+
+
     public function upload_post(Request $request)
     {
         $folderId = Input::get('folder');
@@ -564,6 +666,28 @@ class MediaController extends BaseController
     }
 
 
+    public function modal_folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
+    {
+        $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($parentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $folders = $folderRepository->findWhere(['deleted_at' => null]);
+
+        $root = $folderRepository->root();
+
+        return View::make('argon::media.modal.folder-add', [
+            'parentFolder' => $parentFolder,
+            'folders' => $folders,
+            'root' => $root,
+        ]);
+
+    }
+
+
     public function folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
     {
         $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
@@ -583,6 +707,33 @@ class MediaController extends BaseController
             'root' => $root,
         ]);
 
+    }
+
+
+    public function modal_folderSave(MediaFolderRepository $folderRepository, Request $request)
+    {
+        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('parent')])->first();
+
+        if ($parent === null)
+        {
+            return redirect(route("cms:media:modal:folders"))->with('message', "Parent folder is required!");
+        }
+
+        $name = $request->input('name');
+
+        if (trim($name) == '')
+        {
+            return redirect(route("cms:media:modal:folders"))->with('message', "Folder name can't be empty");
+        }
+
+        if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
+            return redirect(route("cms:media:modal:folders"))->with('message', "Folder already exists!");
+        }
+
+        $folder = $folderRepository->create($request->input());
+
+        return redirect(route("cms:media:modal:folders:edit", $folder->getId()))->with('message', 'Folder created!');
     }
 
 
@@ -613,7 +764,7 @@ class MediaController extends BaseController
     }
 
 
-    public function folderEdit($id, MediaFolderRepository $folderRepository)
+    public function modal_folderEdit($id, MediaFolderRepository $folderRepository)
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
         
@@ -631,11 +782,60 @@ class MediaController extends BaseController
 
         $root = $folderRepository->root();
 
+        return View::make('argon::media.modal.folder-edit', [
+            'currentFolder' => $currentFolder,
+            'folders' => $folders,
+            'root' => $root,
+        ]);
+    }
+
+
+    public function folderEdit($id, MediaFolderRepository $folderRepository)
+    {
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        if ($currentFolder->getid() === 1)
+        {
+            return redirect(route("cms:media:folders"))->with('message', "Root folder can't be changed!");
+        }
+
+        $folders = $folderRepository->findWhere(['deleted_at' => null, ['id', '!=', $id]]);
+
+        $root = $folderRepository->root();
+
         return View::make('argon::media.folder-edit', [
             'currentFolder' => $currentFolder,
             'folders' => $folders,
             'root' => $root,
         ]);
+    }
+
+
+    public function modal_folderUpdate($id, MediaFolderRepository $folderRepository, Request $request)
+    {
+        $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($currentFolder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
+        }
+
+        $name = $request->input('name', '');
+        $parent = $request->input('parent');
+
+        if (trim($name) == '')
+        {
+            return redirect(route("cms:media:modal:folders:edit", $id))->with('message', "Folder name can't be empty");
+        }
+        
+        $currentFolder = $folderRepository->update(['name' => $name, 'parent'=>$parent], $id);
+
+        return redirect(route("cms:media:modal:folders:edit", $id))->with('message', 'Folder updated!');
     }
 
 
@@ -655,10 +855,34 @@ class MediaController extends BaseController
         {
             return redirect(route("cms:media:folders:edit", $id))->with('message', "Folder name can't be empty");
         }
-        
+
         $currentFolder = $folderRepository->update(['name' => $name, 'parent'=>$parent], $id);
 
         return redirect(route("cms:media:folders:edit", $id))->with('message', 'Folder updated!');
+    }
+
+
+    public function modal_folderRemove(
+        $folderId,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository,
+        Request $request
+    ) {
+        if ($folderId == 1)
+        {
+            return redirect(route("cms:media:modal:folders"))->with('message', "Root folder can't be removed!");
+        }
+
+        // TODO: getItemsInFolder needs to be recursive as it fails currently
+        // if child folder has items so they are not direcly under the folder being deleted
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0)
+        {
+            return redirect(route("cms:media:modal:folders"))->with('message', "Folder not empty!");
+        }
+
+        $folderRepository->delete($folderId);
+
+        return redirect(route("cms:media:modal:folders"))->with('message', "Folder deleted!");
     }
 
 
