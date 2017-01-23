@@ -20,12 +20,25 @@ $(function () {
 
     var blocksPage = document.getElementById('blocks--page');
     if (blocksPage) {
-        Sortable.create(blocksPage, {group: 'blocks'});
+        Sortable.create(blocksPage, {
+            group: {
+                name: 'blocks',
+                pull: false,
+                put: true
+            },
+            ghostClass: 'block--ghost'
+        });
     }
 
     var blocksOptions = document.getElementById('blocks--options');
     if (blocksOptions) {
-        Sortable.create(blocksOptions, {group: 'blocks'});
+        Sortable.create(blocksOptions, {
+            group: {
+                name: 'blocks',
+                pull: true,
+                put: false
+            }
+        });
     }
 
     body.on('click', '.ic__create', function (e) {

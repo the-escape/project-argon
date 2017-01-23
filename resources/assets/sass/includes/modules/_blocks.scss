@@ -42,6 +42,8 @@
       background-color: $color-white;
       height: 60px;
       &.block--ghost {
+        height: 60px;
+        border: 1px solid red;
 
       }
       .block__edit {
@@ -57,6 +59,14 @@
         text-align: center;
         transition: width .3s;
         overflow: hidden;
+      }
+      .block__add {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 60px;
+        background-color: $color-blue;
       }
       .block__actions {
         position: absolute;
@@ -78,10 +88,10 @@
       }
       .block__img {
         float: left;
-        height: 59px;
+        height: 58px;
         width: 120px;
         border-right: 1px solid $color-grey-dark;
-        background: url('../img/blocks/block-1.png') 0 / 120px 59px no-repeat;
+        background: url('../img/blocks/block-1.png') 0 / 120px 58px no-repeat;
       }
       .block__title {
         float: left;

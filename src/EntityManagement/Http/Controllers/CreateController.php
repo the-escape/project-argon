@@ -6,6 +6,7 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Illuminate\Support\Collection;
 
 class CreateController extends BaseController
 {
@@ -40,14 +41,23 @@ class CreateController extends BaseController
 
     public function edit($entityId)
     {
+        // Get the current entity.
         $entity = $this->entityRepository->find($entityId);
 
+        // TODO: Change to the active Locale.
+        $rendered = $entity->getRenderedGroups(1);
+
+        // Get all entity type groups minus the already rendered ones.
         $groups = $this->entityGroupRepository
-            ->findByField('entity_type_id', $entity->entity_type_id);
+            ->makeModel()
+            ->where('entity_type_id', $entity->entity_type_id)
+            ->whereNotIn('id', $rendered->keys())
+            ->get();
 
         return view('argon.entity::pages.create', [
             'name' => $entity->name,
             'groups' => $groups,
+            'rendered' => $rendered,
         ]);
     }
 }

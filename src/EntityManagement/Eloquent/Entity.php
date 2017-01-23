@@ -2,44 +2,37 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
-use Carbon\Carbon;
-use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
-use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
-use Escape\Argon\EntityManagement\RevisionStatus;
-use Escape\Argon\Frontend\Page;
-use Escape\Argon\Locales\Eloquent\Locale;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Escape\Argon\Core\Http\Request;
-use Illuminate\Support\Collection;
 use stdClass;
 
-/**
- * Class Entity
- *
- * @property-get int id
- * @property string name
- * @property string slug
- * @property int|null parent_id
- * @property int entity_type_id
- * @property int owner_id
- * @property int status
- * @property Carbon created_at
- * @property Carbon updated_at
- * @property Carbon deleted_at
- */
+use Escape\Argon\Frontend\Page;
+use Escape\Argon\Core\Http\Request;
+use Escape\Argon\Locales\Eloquent\Locale;
+
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Entity extends Model
 {
-    protected $children = [];
-
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render'];
+    protected $children = [];
+    protected $fillable = [
+        'name',
+        'slug',
+        'parent_id',
+        'entity_type_id',
+        'owner_id',
+        'status',
+        'redirect_url',
+        'group_order',
+        'group_render',
+    ];
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function addChild(Entity $child)
     {
@@ -82,10 +75,6 @@ class Entity extends Model
         return $this->localisations()->orderBy('created_at', 'ASC')->first();
     }
 
-    /**
-     * @param Locale $locale
-     * @return Localisation
-     */
     public function getLocalisation(Locale $locale)
     {
         return $this->localisations()->where('locale_id', $locale->getId())->first();
@@ -98,9 +87,6 @@ class Entity extends Model
         return $locale ? $this->getLocalisation($locale)->exists : false;
     }
 
-    /**
-     * @return LocalisationCollection
-     */
     public function getLocalisations()
     {
         return $this->localisations;
@@ -108,7 +94,6 @@ class Entity extends Model
 
     public function getGroups($locale_id)
     {
-        /** @var EntityGroupRepository $repo */
         $repo = app()->make(EntityGroupRepository::class);
         $groups =  $repo->getUsedGroupsByEntityType($this->type->id, ['order', 'id'])->each(
             function (EntityGroup $item) {
@@ -141,18 +126,19 @@ class Entity extends Model
         return $groups;
     }
 
-    public function getSortableGroups($locale_id) {
+    public function getSortableGroups($locale_id)
+    {
         return $this->getGroups($locale_id)->filter(function ($group) {
             return $group->isSortable();
         });
     }
 
-    public function getNonSortableGroups($locale_id) {
+    public function getNonSortableGroups($locale_id)
+    {
         return $this->getGroups($locale_id)->filter(function ($group) {
             return !$group->isSortable();
         });
     }
-
 
     public function getGroupOrder($locale_id)
     {
@@ -169,20 +155,28 @@ class Entity extends Model
         return implode(',', $this->getGroupOrder($locale_id));
     }
 
-
-
-    public function getRenderableGroups($locale_id) {
+    public function getRenderableGroups($locale_id)
+    {
         return $this->getGroups($locale_id)->filter(function ($group) {
             return $group->isRenderable();
         });
     }
 
-    public function getNonRenderableGroups($locale_id) {
+    public function getNonRenderableGroups($locale_id)
+    {
         return $this->getGroups($locale_id)->filter(function ($group) {
             return !$group->isRenderable();
         });
     }
 
+    public function getRenderedGroups($localeId)
+    {
+        $groupIds = array_keys((array) $this->group_render->$localeId, EntityGroup::RENDERED);
+
+        return $this->getGroups($localeId)->filter(function ($group) use ($groupIds) {
+            return in_array($group->id, $groupIds);
+        })->keyBy('id');
+    }
 
     public function getRenderableGroupOrder($locale_id)
     {
@@ -199,20 +193,13 @@ class Entity extends Model
         return implode(',', $this->getRenderableGroupOrder($locale_id));
     }
 
-
     public function isGroupRender($localeId, $groupId)
     {
         $group_render = $this->group_render;
         return (bool) @$group_render->{$localeId}->{$groupId};
     }
 
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function toPage(Request $request=null)
+    public function toPage(Request $request = null)
     {
         return new Page($this, $request);
     }
@@ -246,5 +233,4 @@ class Entity extends Model
     {
         return json_decode($value);
     }
-
 }

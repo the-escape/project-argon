@@ -1,4 +1,5 @@
-<li class="block">
+<li class="block block--ghost">
+    <a href="#" class="block__add"></a>
     <a href="#" class="block__edit">Edit block content</a>
     <div class="block__actions">
         <span class="drag"></span>

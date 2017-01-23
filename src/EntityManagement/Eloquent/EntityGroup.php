@@ -18,6 +18,9 @@ class EntityGroup extends Model
 {
     use SoftDeletes;
 
+    const HIDDEN = 0;
+    const RENDERED = 1;
+
     /**
      * The attributes that are mass assignable.
      *
