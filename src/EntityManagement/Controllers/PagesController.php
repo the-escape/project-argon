@@ -425,4 +425,13 @@ class PagesController extends BaseController
         return view('argon::pages.revisions')->with(compact('revisions'));
     }
 
+    function setMiddleware()
+    {
+        return [];
+    }
+
+    function setTabs()
+    {
+        return [];
+    }
 }

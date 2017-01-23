@@ -1,64 +1,64 @@
-<link rel="stylesheet" type="text/css" href="/argon/css/select2.min.css">
-<link rel="stylesheet" type="text/css" href="/argon/css/app.css">
-<script src="/argon/js/jquery.min.js"></script>
-<script src="/argon/js/select2.min.js"></script>
+<link rel="stylesheet" href="{{ asset('argon/assets/css/libs.min.css') }}">
+<link rel="stylesheet" href="{{ asset('argon/assets/css/main.min.css') }}">
+<script type="application/javascript" src="{{ asset('argon/assets/js/libs.min.js') }}"></script>
+<script type="application/javascript" src="{{ asset('argon/assets/js/main.min.js') }}"></script>
 
-<div class="container-fluid">
+<div class="container-fluid" id="ui">
     <div class="row">
         <div class="col-sm-3">
             <div class="form-group">
                 <label>Field title</label>
-                <input type="text" class="input text" placeholder="Label">
+                <input type="text" class="input form__text" placeholder="Label">
             </div>
             <div class="form-group">
                 <label>Field title</label>
-                <textarea class="input text textarea" placeholder="Label"></textarea>
+                <textarea class="input form__text textarea" placeholder="Label"></textarea>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <div class="field-group">
-                    <input type="text" class="input text" placeholder="Label">
+                    <input type="text" class="input form__text" placeholder="Label">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form__group">
                 <div class="field-group">
-                    <input type="text" class="input text error icon" placeholder="Label">
+                    <input type="text" class="input form__text error icon" placeholder="Label">
                     <span class="icon error"></span>
                 </div>
-                <div class="form-alert error">Error alert</div>
+                <div class="form__alert form__alert--error">Error alert</div>
             </div>
-            <div class="form-group">
+            <div class="form__group">
                 <div class="field-group">
-                    <input type="text" class="input text success" placeholder="Label">
+                    <input type="text" class="input form__text success" placeholder="Label">
                 </div>
-                <div class="form-alert success">Success alert</div>
+                <div class="form__alert form__alert--success">Success alert</div>
             </div>
             <div class="form-group">
                 <div class="field-group">
-                    <input type="text" class="input text icon" placeholder="Search">
+                    <input type="text" class="input form__text icon" placeholder="Search">
                     <span class="icon search"></span>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
-                <button class="button" disabled>PREVIEW</button>
+                <button class="form__btn" disabled>PREVIEW</button>
             </div>
             <div class="form-group">
-                <button class="button">PREVIEW</button>
+                <button class="form__btn">PREVIEW</button>
             </div>
             <div class="form-group">
-                <button class="button grey" disabled>CANCEL</button>
+                <button class="form__btn form__btn--grey" disabled>CANCEL</button>
             </div>
             <div class="form-group">
-                <button class="button grey">CANCEL</button>
+                <button class="form__btn form__btn--grey">CANCEL</button>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-3">
-            <select class="input text">
+            <select class="input form__text">
                 <option value="">Dropdown</option>
                 <option value="1">Option #1</option>
                 <option value="2">Option #2</option>
