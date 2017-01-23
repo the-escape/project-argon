@@ -13,7 +13,7 @@
                     <ul id="blocks--page">
                         @include ('argon.entity::partials.block-row')
                         @include ('argon.entity::partials.block-row')
-                        <li class="block block--ghost"></li>
+                        <!--<li class="block block--ghost"></li>-->
                     </ul>
                 </div>
             </div>

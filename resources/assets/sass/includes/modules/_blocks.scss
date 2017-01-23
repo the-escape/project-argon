@@ -22,6 +22,18 @@
     padding: 0;
     margin: 0;
     height: 100%;
+    &#blocks--page {
+      .block {
+        &:hover {
+          .block__edit {
+            width: 70%;
+          }
+          .block__actions {
+            width: 30%;
+          }
+        }
+      }
+    }
     .block {
       position: relative;
       float: left;
@@ -31,14 +43,6 @@
       height: 60px;
       &.block--ghost {
 
-      }
-      &:hover {
-        .block__edit {
-          width: 70%;
-        }
-        .block__actions {
-          width: 30%;
-        }
       }
       .block__edit {
         position: absolute;

@@ -32,7 +32,7 @@ class UserController extends BaseController
     public function setTabs()
     {
         return [
-            new Tab('ALL USERS', '#'),
+            new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
             new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
         ];
     }
@@ -45,15 +45,17 @@ class UserController extends BaseController
         $table = new Table();
 
         // Setup the table columns.
-        $table->addColumn('name', 'NAME', 35);
-        $table->addColumn('role', 'ROLE', 35);
+        $table->addColumn('name', 'NAME', 26);
+        $table->addColumn('email', 'EMAIL', 26);
+        $table->addColumn('role', 'ROLE', 26);
 
         // Loop through all users to setup the data array.
         foreach ($users as $user) {
 
             $row = new TableRow($user->id, [
-                'name' => '1234',
-                'role' => $user->roles->implode('name', ', ')
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->roles->implode('name', ', '),
             ]);
 
             // Create all of the rows actions.
@@ -83,7 +85,7 @@ class UserController extends BaseController
     public function store(UserStoreRequest $request)
     {
         // Create a new user based on the request.
-        //$this->userRepository->create($request->only(['name', 'email', 'password']));
+        $this->userRepository->create($request->only(['name', 'email', 'password']));
 
         Toastr::success('User successfully created.', 'SUCCESS');
 

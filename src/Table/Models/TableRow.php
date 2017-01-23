@@ -116,7 +116,7 @@ class TableRow
     public function render($columns, $rowView = 'argon.table::partials.row')
     {
         if ($this->actions) {
-            $columns[] = new TableColumn('action', 'ACTION', 30);
+            $columns[] = new TableColumn('action', 'ACTION', 20);
             $data = $this->getData() + ['action' => $this->renderActions()];
             $this->setData($data);
         }

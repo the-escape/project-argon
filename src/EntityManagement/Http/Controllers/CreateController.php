@@ -31,7 +31,7 @@ class CreateController extends BaseController
     function setTabs()
     {
         return [
-            new Tab('PAGE CONTENT', '/admin/pages/edit'),
+            new Tab('PAGE CONTENT', action('\Escape\Argon\EntityManagement\Http\Controllers\CreateController@edit', 1)),
             new Tab('ATTRIBUTES', ''),
             new Tab('SEO', ''),
             new Tab('REVISIONS', ''),
