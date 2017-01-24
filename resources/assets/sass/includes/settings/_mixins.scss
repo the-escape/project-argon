@@ -5,7 +5,3 @@
     -o-transition: $args;
     transition: $args;
 }
-
-@mixin sprite($x, $y, $h, $w) {
-    background: url('../img/sprite.png') $x $y / $h $w no-repeat;
-}

@@ -15,11 +15,9 @@ abstract class BaseController extends Controller
     public function __construct()
     {
         $this->addMiddleware();
-        $this->addTabs();
     }
 
     abstract function setMiddleware();
-    abstract function setTabs();
 
     private function addMiddleware()
     {
@@ -30,14 +28,14 @@ abstract class BaseController extends Controller
         }
     }
 
-    private function addTabs()
+    public function addTabs(array $tabs)
     {
-        $tabs = '';
+        $html = '';
 
-        foreach ($this->setTabs() as $tab) {
-            $tabs .= view('argon::partials.tab')->with(compact('tab'))->render();
+        foreach ($tabs as $tab) {
+            $html .= view('argon::partials.tab')->with(compact('tab'))->render();
         }
 
-        view()->share('tabs', $tabs);
+        view()->share('tabs', $html);
     }
 }

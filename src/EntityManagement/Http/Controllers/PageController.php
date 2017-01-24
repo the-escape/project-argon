@@ -40,6 +40,10 @@ class PageController extends BaseController
      */
     public function index()
     {
+        $this->addTabs([
+            new Tab('PAGES', action('\Escape\Argon\EntityManagement\Http\Controllers\PageController@index')),
+        ]);
+
         //  Get all pages and key by ID.
         $entities = $this->entityRepository
             ->pages()
@@ -90,7 +94,7 @@ class PageController extends BaseController
 
         $row->addAction(TableRow::TABLE_ACTION_CREATE);
         $row->addAction(TableRow::TABLE_ACTION_BUTTON,
-            action('\Escape\Argon\EntityManagement\Http\Controllers\CreateController@edit', $entity->id),
+            action('\Escape\Argon\EntityManagement\Http\Controllers\ContentController@edit', $entity->id),
             'EDIT');
 
         if ($return) {
@@ -160,18 +164,6 @@ class PageController extends BaseController
         return [
             'auth',
             'perm:cms:login',
-        ];
-    }
-
-    /**
-     * Set the controllers tabs.
-     *
-     * @return array
-     */
-    function setTabs()
-    {
-        return [
-            new Tab('PAGES', action('\Escape\Argon\EntityManagement\Http\Controllers\PageController@index')),
         ];
     }
 }

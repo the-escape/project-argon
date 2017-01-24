@@ -1,1 +1,1 @@
-<li class="tabs__item"><a href="{{ $tab->getUrl() }}" class="{{ request()->fullUrl() == $tab->getUrl() ? 'active' : '' }}">{{ strtoupper($tab->getLabel()) }}</a></li>
+<li class="tabs__item"><a href="{{ $tab->getUrl() }}" class="{{ $tab->isActive() }}">{{ strtoupper($tab->getLabel()) }}</a></li>

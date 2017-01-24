@@ -1,8 +1,9 @@
 @extends ('argon::layouts.master')
 @section ('body')
-    <form action="#" method="post">
-        <input type="hidden" name="existing" value="{{ $rendered->keys()->toJson() }}">
-        <input type="hidden" name="render" value="{{ $rendered->keys()->toJson() }}">
+    <form action="{{ action('\Escape\Argon\EntityManagement\Http\Controllers\ContentController@update', $entity->id) }}" method="post">
+        {{ csrf_field() }}
+        <input type="hidden" name="current" value="{{ $rendered->keys()->toJson() }}">
+        <input type="hidden" name="selected" value="{{ $rendered->keys()->toJson() }}">
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
@@ -21,11 +22,11 @@
                     <div class="col-sm-6">
                         <div class="blocks">
                             <div class="form__group">
-                                <input type="text" class="form__text icon" placeholder="Search blocks">
+                                <input type="text" class="form__text icon blocks__search" placeholder="Search blocks">
                                 <span class="icon search"></span>
                             </div>
                             <div class="block__container">
-                                <ul id="blocks--page">
+                                <ul id="blocks-selected">
                                     @foreach ($rendered as $render)
                                         @include ('argon.entity::partials.block-row', ['group' => $render])
                                     @endforeach
@@ -36,11 +37,11 @@
                     <div class="col-sm-6">
                         <div class="blocks">
                             <div class="form__group">
-                                <input type="text" class="form__text icon" placeholder="Search blocks">
+                                <input type="text" class="form__text icon blocks__search" placeholder="Search blocks">
                                 <span class="icon search"></span>
                             </div>
                             <div class="block__container">
-                                <ul id="blocks--options">
+                                <ul id="blocks-all">
                                     @foreach ($groups as $group)
                                         @include ('argon.entity::partials.block-row', ['group' => $group])
                                     @endforeach

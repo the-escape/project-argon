@@ -6,9 +6,11 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 
-class CreateController extends BaseController
+class ContentController extends BaseController
 {
     private $entityRepository;
     private $entityGroupRepository;
@@ -29,18 +31,14 @@ class CreateController extends BaseController
         ];
     }
 
-    function setTabs()
-    {
-        return [
-            new Tab('PAGE CONTENT', action('\Escape\Argon\EntityManagement\Http\Controllers\CreateController@edit', 1)),
-            new Tab('ATTRIBUTES', ''),
-            new Tab('SEO', ''),
-            new Tab('REVISIONS', ''),
-        ];
-    }
-
     public function edit($entityId)
     {
+        $this->addTabs([
+            new Tab('PAGE CONTENT', route('cms:pages:content', $entityId)),
+            new Tab('ATTRIBUTES', route('cms:pages:attributes', $entityId)),
+            new Tab('SEO', route('cms:pages:seo', $entityId)),
+        ]);
+
         // Get the current entity.
         $entity = $this->entityRepository->find($entityId);
 
@@ -54,10 +52,29 @@ class CreateController extends BaseController
             ->whereNotIn('id', $rendered->keys())
             ->get();
 
-        return view('argon.entity::pages.create', [
+        return view('argon.entity::pages.content', [
+            'entity' => $entity,
             'name' => $entity->name,
             'groups' => $groups,
             'rendered' => $rendered,
         ]);
+    }
+
+    public function update(Request $request, $entityId)
+    {
+        $currentLocale = 1;
+
+        // Get the current entity.
+        $entity = $this->entityRepository->find($entityId);
+
+        $groups = ($entity->group_render instanceof  \stdClass) ? $entity->group_render : new \stdClass();
+        $groups->{$currentLocale} = json_decode($request->get('selected'));
+
+        $request->merge(['group_render' => $groups]);
+
+        $entity->fill($request->all());
+        $entity->save();
+
+        return redirect()->back();
     }
 }

@@ -22,15 +22,29 @@
     padding: 0;
     margin: 0;
     height: 100%;
-    &#blocks--page {
+    &#blocks-all {
       .block {
-        &:hover {
-          .block__edit {
-            width: 70%;
+        .block__add {
+          display: block;
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 60px;
+          background: url('../img/placeholder.png') center / 23px no-repeat;
+          &:hover {
+            background-color: $color-blue;
           }
-          .block__actions {
-            width: 30%;
-          }
+        }
+      }
+    }
+    &#blocks-selected {
+      .block:hover {
+        .block__edit {
+          width: 70%;
+        }
+        .block__actions {
+          width: 30%;
         }
       }
     }
@@ -41,16 +55,18 @@
       border-bottom: 1px solid $color-grey-dark;
       background-color: $color-white;
       height: 60px;
+      cursor: move;
       &.block--ghost {
-        height: 60px;
-        border: 1px solid red;
-
+        background-color: $color-grey-light;
+      }
+      &.block--hidden {
+        display: none;
       }
       .block__edit {
         position: absolute;
         top: 0;
         bottom: 0;
-        left: 0;
+        left: -1px;
         width: 0;
         background-color: $color-blue;
         color: $color-white;
@@ -61,12 +77,7 @@
         overflow: hidden;
       }
       .block__add {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 60px;
-        background-color: $color-blue;
+        display: none;
       }
       .block__actions {
         position: absolute;
@@ -85,13 +96,20 @@
           background: url('../img/blocks/drag.png') center / 18px 12px no-repeat;
           display: inline-block;
         }
+        .delete {
+          width: 18px;
+          height: 12px;
+          background: url('../img/placeholder.png');
+          display: inline-block;
+          margin-right: 10px;
+        }
       }
       .block__img {
         float: left;
-        height: 58px;
+        height: 59px;
         width: 120px;
         border-right: 1px solid $color-grey-dark;
-        background: url('../img/blocks/block-1.png') 0 / 120px 58px no-repeat;
+        background-color: $color-white;
       }
       .block__title {
         float: left;

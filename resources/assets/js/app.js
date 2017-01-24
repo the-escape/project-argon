@@ -18,28 +18,81 @@ $(function () {
         }
     });
 
-    var blocksPage = document.getElementById('blocks--page');
-    if (blocksPage) {
-        Sortable.create(blocksPage, {
+    var blocksAll = document.getElementById('blocks-all');
+    if (blocksAll) {
+        Sortable.create(blocksAll, {
             group: {
                 name: 'blocks',
-                pull: false,
-                put: true
+                pull: true,
+                put: false
             },
             ghostClass: 'block--ghost'
         });
     }
 
-    var blocksOptions = document.getElementById('blocks--options');
-    if (blocksOptions) {
-        Sortable.create(blocksOptions, {
+    var blocksSelected = document.getElementById('blocks-selected');
+    if (blocksSelected) {
+        Sortable.create(blocksSelected, {
             group: {
                 name: 'blocks',
-                pull: true,
-                put: false
+                pull: false,
+                put: true
+            },
+            ghostClass: 'block--ghost',
+            onSort: function (evt, originalEvent) {
+                var all = $(blocksAll).find('li'),
+                    blocks = $(blocksSelected).find('li'),
+                    blockArray = {};
+
+                all.each(function (index, value) {
+                    blockArray[$(value).data('id')] = 0;
+                });
+
+                blocks.each(function (index, value) {
+                    blockArray[$(value).data('id')] = 1;
+                });
+
+                $('input[name="selected"]').val(JSON.stringify(blockArray));
             }
         });
     }
+
+    $('.block__add').on('click', function (e) {
+        e.preventDefault();
+        var self = $(this),
+            block = self.parents('.block');
+
+        block.appendTo('#blocks-selected');
+    });
+
+    $('.block .delete').on('click', function (e) {
+        e.preventDefault();
+        var self = $(this),
+            block = self.parents('.block');
+
+        block.appendTo('#blocks-all');
+    });
+
+    $('.blocks__search').on('keyup', function () {
+        var self = $(this),
+            filter = self.val(),
+            blocks = self.parents('.blocks').find('.block');
+
+        if (filter == '') {
+            blocks.removeClass('block--hidden');
+        }
+
+        blocks.each(function (index, value) {
+            var elem = $(value),
+                name = elem.data('name');
+
+            if (name.indexOf(filter) > -1) {
+                elem.removeClass('block--hidden');
+            } else {
+                elem.addClass('block--hidden');
+            }
+        });
+    });
 
     body.on('click', '.ic__create', function (e) {
         e.preventDefault();

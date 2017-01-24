@@ -5,7 +5,9 @@ namespace Escape\Argon\EntityManagement;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
-use Escape\Argon\EntityManagement\Http\Controllers\CreateController;
+use Escape\Argon\EntityManagement\Http\Controllers\AttributeController;
+use Escape\Argon\EntityManagement\Http\Controllers\BlockController;
+use Escape\Argon\EntityManagement\Http\Controllers\ContentController;
 use Escape\Argon\EntityManagement\Http\Controllers\PageController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\Controllers\SitemapController;
@@ -20,6 +22,7 @@ use Escape\Argon\EntityManagement\FieldTypes\WysiwygFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\DatetimeFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\LocationFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\SelectFieldType;
+use Escape\Argon\EntityManagement\Http\Controllers\SeoController;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
@@ -37,9 +40,30 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'pages/edit/{entityId}',
-            'cms:content:create',
-            CreateController::class,
+            'pages/{entityId}/content',
+            'cms:pages:content',
+            ContentController::class,
+            'edit'
+        );
+
+        $this->addRoute(
+            'pages/{entityId}/attributes',
+            'cms:pages:attributes',
+            AttributeController::class,
+            'edit'
+        );
+
+        $this->addRoute(
+            'pages/{entityId}/seo',
+            'cms:pages:seo',
+            SeoController::class,
+            'edit'
+        );
+
+        $this->addRoute(
+            'pages/{entityId}/block/{groupId}',
+            'cms:pages:block',
+            BlockController::class,
             'edit'
         );
 
@@ -56,6 +80,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'cms:content:store',
             PageController::class,
             'store',
+            'POST'
+        );
+
+        $this->addRoute(
+            'pages/update/{entityId}',
+            'cms:content:update',
+            ContentController::class,
+            'update',
             'POST'
         );
 
