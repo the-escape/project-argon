@@ -8,11 +8,11 @@
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h2>Page preview</h2>
+                        <h2 class="margin-t-no">Page preview</h2>
                         <p>Here you can edit, duplicate, remove or re-order page content.</p>
                     </div>
                     <div class="col-sm-6">
-                        <h2>Page builder</h2>
+                        <h2 class="margin-t-no">Page builder</h2>
                         <p>Add blocks to create your own custom page layout.</p>
                     </div>
                 </div>
