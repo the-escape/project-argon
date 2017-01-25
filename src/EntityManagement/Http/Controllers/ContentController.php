@@ -49,8 +49,10 @@ class ContentController extends BaseController
         $entityRevisionGroups = $entity->getPublishedRevision()
             ->entityRevisionGroups;
 
+        $entityRevisionGroupIds = $entityRevisionGroups->pluck('entity_group_id');
+
         $entityGroups = $entity->type->groups()
-            ->whereNotIn('id', $entityRevisionGroups->pluck('entity_group_id'))->get();
+            ->whereNotIn('id', $entityRevisionGroupIds)->get();
 
         return view('argon.entity::pages.content', [
             'entity' => $entity,
@@ -58,6 +60,7 @@ class ContentController extends BaseController
             'name' => $entity->name,
             'groups' => $entityGroups,
             'rendered' => $entityRevisionGroups,
+            'entityRevisionGroupIds' => $entityRevisionGroupIds,
         ]);
     }
 
@@ -74,6 +77,15 @@ class ContentController extends BaseController
             $this->entityRevisionGroupRepository->createGroups($entityRevision->id, $entityGroupIds);
         }
 
+        if ($request->exists('publish')) {
+            $this->publish($entityLocalisationId);
+        }
+
         return redirect()->back();
+    }
+
+    public function publish($entityLocalisationId)
+    {
+        $this->entityRevisionRepository->publishDraft($entityLocalisationId);
     }
 }

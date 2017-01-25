@@ -2,8 +2,7 @@
 @section ('body')
     <form action="{{ action('\Escape\Argon\EntityManagement\Http\Controllers\ContentController@update', [$entityLocalisationId]) }}" method="post">
         {{ csrf_field() }}
-        <input type="hidden" name="current" value="{{ $rendered->keys()->toJson() }}">
-        <input type="hidden" name="groups" value="{{ $rendered->keys()->toJson() }}">
+        <input type="hidden" name="groups" value="{{ $entityRevisionGroupIds }}">
         <div class="row">
             <div class="col-sm-12">
                 <div class="row">
@@ -59,7 +58,7 @@
                         <div class="footer__container">
                             <div class="footer__right">
                                 <button type="submit" class="form__btn">SAVE</button>
-                                <button type="submit" class="form__btn">PUBLISH</button>
+                                <button type="submit" name="publish" class="form__btn">PUBLISH</button>
                             </div>
                         </div>
                     </div>

@@ -42,6 +42,30 @@ class EntityRevisionRepository extends BaseRepository
         return $entityRevisionDraft;
     }
 
+    public function publishDraft($entityLocalisationId)
+    {
+        $entityRevisionDraft = $this->findWhere([
+            ['entity_localisation_id', '=', $entityLocalisationId],
+            ['status', '=', RevisionStatus::DRAFT],
+        ])->first();
+
+        $entityRevisionDraft->update([
+            'status' => RevisionStatus::PUBLISHED,
+        ]);
+
+        $entityRevisionPublished = $this->findWhere([
+            ['entity_localisation_id', '=', $entityLocalisationId],
+            ['status', '=', RevisionStatus::PUBLISHED],
+            ['id', '<>', $entityRevisionDraft->id],
+        ])->first();
+
+        if ($entityRevisionPublished) {
+            $entityRevisionPublished->update([
+                'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,
+            ]);
+        }
+    }
+
     public function archiveRevisions($localisationId, $except)
     {
         $this->makeModel()

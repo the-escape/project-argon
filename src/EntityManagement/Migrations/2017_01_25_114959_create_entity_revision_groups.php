@@ -19,7 +19,7 @@ class CreateEntityRevisionGroups extends Migration
             $table->integer('status')->unsigned();
             $table->integer('order')->unsigned();
             $table->timestamps();
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
 
             $table->foreign('entity_revision_id')->references('id')->on('entity_revisions')->onDelete('cascade');
             $table->foreign('entity_group_id')->references('id')->on('entity_groups')->onDelete('cascade');

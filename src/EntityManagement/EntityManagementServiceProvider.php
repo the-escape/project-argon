@@ -47,6 +47,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
+            'pages/{entityId}/publish/{entityLocalisationId}',
+            'cms:pages:publish',
+            ContentController::class,
+            'publish'
+        );
+
+        $this->addRoute(
             'pages/{entityId}/attributes/{entityLocalisationId}',
             'cms:pages:attributes',
             AttributeController::class,

@@ -40,15 +40,7 @@ $(function () {
             },
             ghostClass: 'block--ghost',
             onSort: function (evt, originalEvent) {
-                var blocks = $(blocksSelected).find('li'),
-                    blockArray = [];
-
-                blocks.each(function (index, value) {
-
-                    blockArray.push($(value).data('id'));
-                });
-
-                $('input[name="groups"]').val(JSON.stringify(blockArray));
+                updateBlockArray();
             }
         });
     }
@@ -67,7 +59,21 @@ $(function () {
             block = self.parents('.block');
 
         block.appendTo('#blocks-all');
+
+        updateBlockArray();
     });
+
+    function updateBlockArray()
+    {
+        var blocks = $(blocksSelected).find('li'),
+            blockArray = [];
+
+        blocks.each(function (index, value) {
+            blockArray.push($(value).data('id'));
+        });
+
+        $('input[name="groups"]').val(JSON.stringify(blockArray));
+    }
 
     $('.blocks__search').on('keyup', function () {
         var self = $(this),
