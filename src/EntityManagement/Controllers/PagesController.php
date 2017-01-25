@@ -247,7 +247,9 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
-        event(new PageSaved($entity, $localisation));
+        if (!$preview) {
+            event(new PageSaved($entity, $localisation));
+        }
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
@@ -387,6 +389,10 @@ class PagesController extends BaseController
                 }
 
                 FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
+            }
+
+            if ($page->status == 1) {
+                event(new PageSaved($page, $localisation));
             }
         }
 
