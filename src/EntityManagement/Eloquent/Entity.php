@@ -233,4 +233,21 @@ class Entity extends Model
     {
         return json_decode($value);
     }
+
+    public function getPublishedRevision($revisionId = null)
+    {
+        return $this->getCurrentLocalisation()->publishedRevision($revisionId);
+    }
+
+    public function getCurrentLocalisation()
+    {
+        $locale = request()->getArgonLocale();
+        $localisation = $this->getLocalisation($locale);
+
+        if ($localisation) {
+            return $localisation;
+        } else {
+            return $this->getDefaultLocalisation();
+        }
+    }
 }

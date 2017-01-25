@@ -7,14 +7,39 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 class EntityRevisionRepository extends BaseRepository
 {
-    /**
-     * Specify Model class name
-     *
-     * @return string
-     */
     public function model()
     {
         return EntityRevision::class;
+    }
+
+    /**
+     * Creates a new draft revision and deletes the previous.
+     *
+     * @param int $entityLocalisationId
+     * @return EntityRevision
+     */
+    public function createDraft($entityLocalisationId)
+    {
+        // Create the new draft revision.
+        $entityRevisionDraft = $this->create([
+            'entity_localisation_id' => $entityLocalisationId,
+            'status' => RevisionStatus::DRAFT,
+            'created_by' => 1,
+        ]);
+
+        // Find all draft revisions (except for the latest one).
+        $entityRevisions = $this->findWhere([
+            ['entity_localisation_id', '=', $entityLocalisationId],
+            ['status', '=', RevisionStatus::DRAFT],
+            ['id', '<>', $entityRevisionDraft->id],
+        ]);
+
+        // Loop through all of the previous draft revisions and delete them.
+        foreach ($entityRevisions as $entityRevision) {
+            $this->delete($entityRevision->id);
+        }
+
+        return $entityRevisionDraft;
     }
 
     public function archiveRevisions($localisationId, $except)

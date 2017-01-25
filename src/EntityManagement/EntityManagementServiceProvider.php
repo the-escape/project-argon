@@ -40,21 +40,21 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'pages/{entityId}/content',
+            'pages/{entityId}/content/{entityLocalisationId}',
             'cms:pages:content',
             ContentController::class,
             'edit'
         );
 
         $this->addRoute(
-            'pages/{entityId}/attributes',
+            'pages/{entityId}/attributes/{entityLocalisationId}',
             'cms:pages:attributes',
             AttributeController::class,
             'edit'
         );
 
         $this->addRoute(
-            'pages/{entityId}/seo',
+            'pages/{entityId}/seo/{entityLocalisationId}',
             'cms:pages:seo',
             SeoController::class,
             'edit'

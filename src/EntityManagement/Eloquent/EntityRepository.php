@@ -213,4 +213,13 @@ class EntityRepository extends BaseRepository
         return $pages;
     }
 
+    public function findPublishedRevision($entityId)
+    {
+        $entity = $this->find($entityId);
+
+        $revision = $entity->getCurrentLocalisation()->publishedRevision();
+
+        return $revision ? $revision : null;
+    }
+
 }

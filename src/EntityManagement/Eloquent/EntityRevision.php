@@ -33,6 +33,11 @@ class EntityRevision extends Model
         return isset($views[$entity->status]) ? $views[$entity->status] : '';
     }
 
+    public function entityRevisionGroups()
+    {
+        return $this->hasMany(EntityRevisionGroup::class);
+    }
+
     public function localisation()
     {
         return $this->belongsTo(Localisation::class, 'entity_localisation_id');
@@ -42,12 +47,12 @@ class EntityRevision extends Model
     {
         return $this->hasMany(FieldData::class, 'entity_revision_id');
     }
-
+    /*
     public function newCollection(array $models = [])
     {
         return new RevisionsCollection($models);
     }
-
+    */
     // TODO: $name seems ambiguous
     public function field($name)
     {

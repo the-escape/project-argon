@@ -4,21 +4,25 @@ namespace Escape\Argon\EntityManagement\Http\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
-use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 
 class ContentController extends BaseController
 {
     private $entityRepository;
-    private $entityGroupRepository;
+    private $entityRevisionRepository;
+    private $entityRevisionGroupRepository;
 
-    public function __construct(EntityRepository $entityRepository, EntityGroupRepository $entityGroupRepository)
+    public function __construct(
+        EntityRepository $entityRepository,
+        EntityRevisionRepository $entityRevisionRepository,
+        EntityRevisionGroupRepository $entityRevisionGroupRepository)
     {
         $this->entityRepository = $entityRepository;
-        $this->entityGroupRepository = $entityGroupRepository;
+        $this->entityRevisionRepository = $entityRevisionRepository;
+        $this->entityRevisionGroupRepository = $entityRevisionGroupRepository;
 
         parent::__construct();
     }
@@ -31,49 +35,44 @@ class ContentController extends BaseController
         ];
     }
 
-    public function edit($entityId)
+    public function edit($entityId, $entityLocalisationId)
     {
         $this->addTabs([
-            new Tab('PAGE CONTENT', route('cms:pages:content', $entityId)),
+            new Tab('PAGE CONTENT', route('cms:pages:content', [$entityId, $entityLocalisationId])),
             new Tab('ATTRIBUTES', route('cms:pages:attributes', $entityId)),
             new Tab('SEO', route('cms:pages:seo', $entityId)),
         ]);
 
-        // Get the current entity.
         $entity = $this->entityRepository->find($entityId);
 
-        // TODO: Change to the active Locale.
-        $rendered = $entity->getRenderedGroups(1);
+        /** @var \Illuminate\Support\Collection $entityRevisionGroups **/
+        $entityRevisionGroups = $entity->getPublishedRevision()
+            ->entityRevisionGroups;
 
-        // Get all entity type groups minus the already rendered ones.
-        $groups = $this->entityGroupRepository
-            ->makeModel()
-            ->where('entity_type_id', $entity->entity_type_id)
-            ->whereNotIn('id', $rendered->keys())
-            ->get();
+        $entityGroups = $entity->type->groups()
+            ->whereNotIn('id', $entityRevisionGroups->pluck('entity_group_id'))->get();
 
         return view('argon.entity::pages.content', [
             'entity' => $entity,
+            'entityLocalisationId' => $entityLocalisationId,
             'name' => $entity->name,
-            'groups' => $groups,
-            'rendered' => $rendered,
+            'groups' => $entityGroups,
+            'rendered' => $entityRevisionGroups,
         ]);
     }
 
-    public function update(Request $request, $entityId)
+    public function update(Request $request, $entityLocalisationId)
     {
-        $currentLocale = 1;
+        // Create a new draft revision.
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
-        // Get the current entity.
-        $entity = $this->entityRepository->find($entityId);
+        // Get the new entity group IDs.
+        $entityGroupIds = json_decode($request->get('groups'));
 
-        $groups = ($entity->group_render instanceof  \stdClass) ? $entity->group_render : new \stdClass();
-        $groups->{$currentLocale} = json_decode($request->get('selected'));
-
-        $request->merge(['group_render' => $groups]);
-
-        $entity->fill($request->all());
-        $entity->save();
+        // If the entity group IDs exist, create instances and attach them to the revision.
+        if (!is_null($entityGroupIds)) {
+            $this->entityRevisionGroupRepository->createGroups($entityRevision->id, $entityGroupIds);
+        }
 
         return redirect()->back();
     }

@@ -40,19 +40,15 @@ $(function () {
             },
             ghostClass: 'block--ghost',
             onSort: function (evt, originalEvent) {
-                var all = $(blocksAll).find('li'),
-                    blocks = $(blocksSelected).find('li'),
-                    blockArray = {};
-
-                all.each(function (index, value) {
-                    blockArray[$(value).data('id')] = 0;
-                });
+                var blocks = $(blocksSelected).find('li'),
+                    blockArray = [];
 
                 blocks.each(function (index, value) {
-                    blockArray[$(value).data('id')] = 1;
+
+                    blockArray.push($(value).data('id'));
                 });
 
-                $('input[name="selected"]').val(JSON.stringify(blockArray));
+                $('input[name="groups"]').val(JSON.stringify(blockArray));
             }
         });
     }

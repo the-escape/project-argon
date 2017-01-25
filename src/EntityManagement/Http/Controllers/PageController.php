@@ -94,7 +94,7 @@ class PageController extends BaseController
 
         $row->addAction(TableRow::TABLE_ACTION_CREATE);
         $row->addAction(TableRow::TABLE_ACTION_BUTTON,
-            action('\Escape\Argon\EntityManagement\Http\Controllers\ContentController@edit', $entity->id),
+            action('\Escape\Argon\EntityManagement\Http\Controllers\ContentController@edit', [$entity->id, $entity->getDefaultLocalisation()]),
             'EDIT');
 
         if ($return) {
