@@ -68,7 +68,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'pages/{entityId}/block/{groupId}',
+            'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
             'cms:pages:block',
             BlockController::class,
             'edit'

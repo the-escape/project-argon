@@ -26,8 +26,8 @@
                             </div>
                             <div class="block__container">
                                 <ul id="blocks-selected">
-                                    @foreach ($rendered as $render)
-                                        @include ('argon.entity::partials.block-row', ['group' => $render->entityGroup])
+                                    @foreach ($entityRevisionGroups as $entityRevisionGroup)
+                                        @include ('argon.entity::partials.block-row', ['entityGroup' => $entityRevisionGroup->entityGroup, 'entityGroupId' => $entityRevisionGroup->entity_group_id])
                                     @endforeach
                                 </ul>
                             </div>
@@ -41,8 +41,8 @@
                             </div>
                             <div class="block__container">
                                 <ul id="blocks-all">
-                                    @foreach ($groups as $group)
-                                        @include ('argon.entity::partials.block-row', ['group' => $group])
+                                    @foreach ($entityGroups as $entityGroup)
+                                        @include ('argon.entity::partials.block-row', ['entityGroup' => $entityGroup, 'entityGroupId' => $entityGroup->id])
                                     @endforeach
                                 </ul>
                             </div>
@@ -57,7 +57,6 @@
                     <div class="col-xs-10 col-xs-offset-1">
                         <div class="footer__container">
                             <div class="footer__right">
-                                <button type="submit" class="form__btn">SAVE</button>
                                 <button type="submit" name="publish" class="form__btn">PUBLISH</button>
                             </div>
                         </div>

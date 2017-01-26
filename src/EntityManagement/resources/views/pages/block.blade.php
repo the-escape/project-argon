@@ -5,15 +5,11 @@
     </div>
     <form class="form" action="{{ route('cms:user:store') }}" method="post">
         {{ csrf_field() }}
-        <div class="form__group">
-            <label for="name">Name*</label>
-            <input id="name" name="name" type="text" class="form__text" value="">
-            @if ($errors->has('name'))
-                <div class="form__error">
-                    <div class="form__alert form__alert--error">{{ $errors->first('name') }}</div>
-                </div>
-            @endif
-        </div>
+        @foreach ($entityGroup->getFields() as $entityField)
+            <div class="form__group">
+                {!! $entityField->render() !!}
+            </div>
+        @endforeach
         <div class="footer">
             <div class="container-fluid">
                 <div class="row">

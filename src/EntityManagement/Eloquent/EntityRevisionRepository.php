@@ -12,6 +12,13 @@ class EntityRevisionRepository extends BaseRepository
         return EntityRevision::class;
     }
 
+    public function getLatestRevision($entityLocalisationId)
+    {
+        return $this->findWhere([
+            ['entity_localisation_id', '=', $entityLocalisationId],
+        ])->sortByDesc('created_at')->first();
+    }
+
     /**
      * Creates a new draft revision and deletes the previous.
      *
@@ -34,31 +41,40 @@ class EntityRevisionRepository extends BaseRepository
             ['id', '<>', $entityRevisionDraft->id],
         ]);
 
-        // Loop through all of the previous draft revisions and delete them.
+        // Loop through all of the previous draft revisions and force delete them.
         foreach ($entityRevisions as $entityRevision) {
-            $this->delete($entityRevision->id);
+            $entityRevision->forceDelete();
         }
 
         return $entityRevisionDraft;
     }
 
+    /**
+     * Turn a draft revision in to a published revision.
+     *
+     * @param int $entityLocalisationId
+     */
     public function publishDraft($entityLocalisationId)
     {
+        //  Get the draft.
         $entityRevisionDraft = $this->findWhere([
             ['entity_localisation_id', '=', $entityLocalisationId],
             ['status', '=', RevisionStatus::DRAFT],
         ])->first();
 
+        // Set the draft to published.
         $entityRevisionDraft->update([
             'status' => RevisionStatus::PUBLISHED,
         ]);
 
+        // Get all published revisions except for the new one.
         $entityRevisionPublished = $this->findWhere([
             ['entity_localisation_id', '=', $entityLocalisationId],
             ['status', '=', RevisionStatus::PUBLISHED],
             ['id', '<>', $entityRevisionDraft->id],
         ])->first();
 
+        // Set all published revisions to previous published.
         if ($entityRevisionPublished) {
             $entityRevisionPublished->update([
                 'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,

@@ -17,12 +17,12 @@ class SeoController extends BaseController
         parent::__construct();
     }
 
-    public function edit($entityId)
+    public function edit($entityId, $entityLocalisationId)
     {
         $this->addTabs([
-            new Tab('PAGE CONTENT', route('cms:pages:content', $entityId)),
-            new Tab('ATTRIBUTES', route('cms:pages:attributes', $entityId)),
-            new Tab('SEO', route('cms:pages:seo', $entityId)),
+            new Tab('ATTRIBUTES', route('cms:pages:attributes', [$entityId, $entityLocalisationId])),
+            new Tab('PAGE CONTENT', route('cms:pages:content', [$entityId, $entityLocalisationId])),
+            new Tab('SEO', route('cms:pages:seo', [$entityId, $entityLocalisationId])),
         ]);
 
         $entity = $this->entityRepository->find($entityId);

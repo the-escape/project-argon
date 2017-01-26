@@ -40,7 +40,7 @@ $(function () {
             },
             ghostClass: 'block--ghost',
             onSort: function (evt, originalEvent) {
-                updateBlockArray();
+                updateBlockArray($(evt.item).data('id'));
             }
         });
     }
@@ -51,6 +51,8 @@ $(function () {
             block = self.parents('.block');
 
         block.appendTo('#blocks-selected');
+
+        updateBlockArray(block.data('id'));
     });
 
     $('.block .delete').on('click', function (e) {
@@ -60,19 +62,33 @@ $(function () {
 
         block.appendTo('#blocks-all');
 
-        updateBlockArray();
+        updateBlockArray(block.data('id'));
     });
 
-    function updateBlockArray()
+    function updateBlockArray(itemId)
     {
         var blocks = $(blocksSelected).find('li'),
-            blockArray = [];
+            blockArray = [],
+            form = $('form'),
+            current = $('input[name="groups"]'),
+            item = $('.block[data-id="'+itemId+'"]');
 
         blocks.each(function (index, value) {
             blockArray.push($(value).data('id'));
         });
 
-        $('input[name="groups"]').val(JSON.stringify(blockArray));
+        var json = JSON.stringify(blockArray);
+
+        if (current.val() != json) {
+            current.val(JSON.stringify(blockArray));
+
+            item.addClass('block--loading');
+
+            $.post(form.attr('action'), form.serialize())
+                .done(function (data) {
+                    item.removeClass('block--loading');
+                });
+        }
     }
 
     $('.blocks__search').on('keyup', function () {
