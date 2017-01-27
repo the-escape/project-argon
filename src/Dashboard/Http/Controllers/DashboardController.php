@@ -14,11 +14,6 @@ class DashboardController extends BaseController
         ];
     }
 
-    function setTabs()
-    {
-        return [];
-    }
-
     public function index()
     {
         return view('argon.dashboard::pages.index');

@@ -25,9 +25,13 @@
                                 <span class="icon search"></span>
                             </div>
                             <div class="block__container">
-                                <ul id="blocks-selected">
+                                <ul id="blocks-selected" data->
                                     @foreach ($entityRevisionGroups as $entityRevisionGroup)
-                                        @include ('argon.entity::partials.block-row', ['entityGroup' => $entityRevisionGroup->entityGroup, 'entityGroupId' => $entityRevisionGroup->entity_group_id])
+                                        @include ('argon.entity::partials.block-row', [
+                                            'entityGroup' => $entityRevisionGroup->entityGroup,
+                                            'entityGroupId' => $entityRevisionGroup->entity_group_id,
+                                            'isEntityRevisionGroup' => true,
+                                        ])
                                     @endforeach
                                 </ul>
                             </div>
@@ -42,7 +46,11 @@
                             <div class="block__container">
                                 <ul id="blocks-all">
                                     @foreach ($entityGroups as $entityGroup)
-                                        @include ('argon.entity::partials.block-row', ['entityGroup' => $entityGroup, 'entityGroupId' => $entityGroup->id])
+                                        @include ('argon.entity::partials.block-row', [
+                                            'entityGroup' => $entityGroup,
+                                            'entityGroupId' => $entityGroup->id,
+                                            'isEntityRevisionGroup' => false,
+                                        ])
                                     @endforeach
                                 </ul>
                             </div>

@@ -55,7 +55,7 @@ $(function () {
         updateBlockArray(block.data('id'));
     });
 
-    $('.block .delete').on('click', function (e) {
+    $('.block__delete').on('click', function (e) {
         e.preventDefault();
         var self = $(this),
             block = self.parents('.block');

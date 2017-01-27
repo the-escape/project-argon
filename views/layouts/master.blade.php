@@ -13,7 +13,7 @@
             <div class="row full-height">
                 @include('argon::partials.sidebar')
                 <div class="main">
-                    @if ($tabs)
+                    @if (isset($tabs))
                         @include ('argon::partials.tabs')
                     @endif
                     <div class="container-fluid">

@@ -2,7 +2,6 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
-use Escape\Argon\EntityManagement\RevisionStatus;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class EntityRevisionRepository extends BaseRepository
@@ -12,6 +11,12 @@ class EntityRevisionRepository extends BaseRepository
         return EntityRevision::class;
     }
 
+    /**
+     * Get the latest entity revision fot a given entity localisation.
+     *
+     * @param $entityLocalisationId
+     * @return EntityRevision
+     */
     public function getLatestRevision($entityLocalisationId)
     {
         return $this->findWhere([
@@ -30,14 +35,14 @@ class EntityRevisionRepository extends BaseRepository
         // Create the new draft revision.
         $entityRevisionDraft = $this->create([
             'entity_localisation_id' => $entityLocalisationId,
-            'status' => RevisionStatus::DRAFT,
+            'status' => EntityRevision::STATUS_DRAFT,
             'created_by' => 1,
         ]);
 
         // Find all draft revisions (except for the latest one).
         $entityRevisions = $this->findWhere([
             ['entity_localisation_id', '=', $entityLocalisationId],
-            ['status', '=', RevisionStatus::DRAFT],
+            ['status', '=', EntityRevision::STATUS_DRAFT],
             ['id', '<>', $entityRevisionDraft->id],
         ]);
 
@@ -59,25 +64,25 @@ class EntityRevisionRepository extends BaseRepository
         //  Get the draft.
         $entityRevisionDraft = $this->findWhere([
             ['entity_localisation_id', '=', $entityLocalisationId],
-            ['status', '=', RevisionStatus::DRAFT],
+            ['status', '=', EntityRevision::STATUS_DRAFT],
         ])->first();
 
         // Set the draft to published.
         $entityRevisionDraft->update([
-            'status' => RevisionStatus::PUBLISHED,
+            'status' => EntityRevision::STATUS_PUBLISHED,
         ]);
 
         // Get all published revisions except for the new one.
         $entityRevisionPublished = $this->findWhere([
             ['entity_localisation_id', '=', $entityLocalisationId],
-            ['status', '=', RevisionStatus::PUBLISHED],
+            ['status', '=', EntityRevision::STATUS_PUBLISHED],
             ['id', '<>', $entityRevisionDraft->id],
         ])->first();
 
         // Set all published revisions to previous published.
         if ($entityRevisionPublished) {
             $entityRevisionPublished->update([
-                'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,
+                'status' => EntityRevision::STATUS_PREVIOUSLY_PUBLISHED,
             ]);
         }
     }
@@ -87,14 +92,14 @@ class EntityRevisionRepository extends BaseRepository
         $this->makeModel()
             ->where('entity_localisation_id', $localisationId)
             ->where('id', '<>', $except)
-            ->update(['status' => RevisionStatus::PREVIOUSLY_PUBLISHED]);
+            ->update(['status' => EntityRevision::STATUS_PREVIOUSLY_PUBLISHED]);
     }
 
     public function deletePreviews($exceptIds = [])
     {
         // TODO: Enforce foreign key constraint cascade.
         $revisions = $this->makeModel()
-            ->where('status', RevisionStatus::PREVIEW)
+            ->where('status', EntityRevision::STATUS_PREVIEW)
             ->whereNotIn('id', $exceptIds);
 
         $models = $revisions->get();

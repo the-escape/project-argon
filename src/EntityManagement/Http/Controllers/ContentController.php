@@ -5,6 +5,7 @@ namespace Escape\Argon\EntityManagement\Http\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
@@ -61,7 +62,7 @@ class ContentController extends BaseController
         return view('argon.entity::pages.content', [
             'entity' => $entity,
             'entityLocalisationId' => $entityLocalisationId,
-            'name' => $entity->name.' '.$this->getStatusView($entityRevisionStatus->status),
+            'name' => $entity->name,
             'entityGroups' => $entityGroups,
             'entityRevisionGroups' => $entityRevisionGroups,
             'entityRevisionGroupIds' => $entityRevisionGroupIds,
@@ -93,22 +94,5 @@ class ContentController extends BaseController
     public function publish($entityLocalisationId)
     {
         $this->entityRevisionRepository->publishDraft($entityLocalisationId);
-    }
-
-    protected function getStatusView($statusId)
-    {
-        switch ($statusId) {
-            case RevisionStatus::DRAFT:
-                $view = 'DRAFT';
-                break;
-            case RevisionStatus::PUBLISHED:
-                $view = 'PUBLISHED';
-                break;
-            default:
-                $view = 'UNKNOWN';
-                break;
-        }
-
-        return $view;
     }
 }

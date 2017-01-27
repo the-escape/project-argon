@@ -2,22 +2,32 @@
 
 namespace Escape\Argon\EntityManagement\Http\Controllers;
 
+use App\Http\Requests\Request;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
+use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
+use Escape\Argon\EntityManagement\Helpers\Fields;
 
 class BlockController extends BaseController
 {
     protected $entityRepository;
     protected $entityGroupRepository;
+    protected $entityRevisionRepository;
+    protected $fieldDataRepository;
 
     public function __construct(
         EntityRepository $entityRepository,
-        EntityGroupRepository $entityGroupRepository)
+        EntityGroupRepository $entityGroupRepository,
+        EntityRevisionRepository $entityRevisionRepository,
+        FieldDataRepository $fieldDataRepository)
     {
         $this->entityRepository = $entityRepository;
         $this->entityGroupRepository = $entityGroupRepository;
+        $this->entityRevisionRepository = $entityRevisionRepository;
+        $this->fieldDataRepository = $fieldDataRepository;
 
         parent::__construct();
     }
@@ -41,9 +51,25 @@ class BlockController extends BaseController
         ]);
     }
 
-    public function update()
+    public function update(Request $request, $entityId, $entityLocalisationId, $entityGroupId)
     {
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
+        Fields::saveFields($request, $entityRevision->entity->type->fields, $entityRevision, $this->fieldDataRepository, $entityRevision->localisation);
+
+        foreach ($entityRevision->entity->type->fields as $field) {
+
+            $niceName = $field->field_type === 'combo' ? 'combo.'.$field->id : 'fields.'.$field->id;
+
+            $this->fieldDataRepository->create([
+                'field_id' => $field->id,
+                'entity_revision_id' => $entityRevision->id,
+                'language' => $entityRevision->localisation->getLocale()->getLanguageCode(),
+                'value' => $request->get($niceName),
+            ]);
+        }
+
+        return redirect()->route('cms:pages:content', [$entityId, $entityLocalisationId]);
     }
 
     function setMiddleware()

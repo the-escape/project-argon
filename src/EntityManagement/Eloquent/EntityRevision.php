@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EntityRevision extends Model
 {
-    const STATUS_DRAFT = 0;
-    const STATUS_PUBLISHED = 1;
+    const STATUS_DRAFT = 1;
+    const STATUS_PUBLISHED = 2;
     const STATUS_PREVIOUSLY_PUBLISHED = 3;
     const STATUS_PREVIEW = 4;
 
@@ -22,6 +22,11 @@ class EntityRevision extends Model
      * @var array
      */
     protected $fillable = ['entity_localisation_id', 'status', 'created_by'];
+
+    public function isStatus($statusId)
+    {
+        return $this->status == $statusId;
+    }
 
     public static function getStatusView($entity)
     {

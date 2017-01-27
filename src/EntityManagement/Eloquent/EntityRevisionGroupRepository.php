@@ -26,4 +26,14 @@ class EntityRevisionGroupRepository extends BaseRepository
 
         return $entityRevisionGroups;
     }
+
+    public function createEntityRevisionGroup($entityRevisionId, $entityGroupId)
+    {
+        return $this->create([
+            'entity_revision_id' => $entityRevisionId,
+            'entity_group_id' => $entityGroupId,
+            'status' => EntityRevisionGroup::STATUS_UNPUBLISHED,
+            'order' => 0,
+        ]);
+    }
 }
