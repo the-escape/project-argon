@@ -310,7 +310,7 @@ class MediaController extends BaseController
             $query = $this->getOrder($query, $request);
         }
 
-        $perPage = $request->input('perpage', 20);
+        $perPage = $request->input('perpage', config('argon.medialibrary.perpage', 20));
 
         $media = $query->paginate($perPage);
 
@@ -329,7 +329,7 @@ class MediaController extends BaseController
             $query = $this->getOrder($query, $request);
         }
 
-        $perPage = $request->input('perpage', 20);
+        $perPage = $request->input('perpage', config('argon.medialibrary.perpage', 20));
 
         $media = $query->paginate($perPage);
 

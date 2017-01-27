@@ -33,4 +33,8 @@ return [
 
     // content type Id to view template mapping
     'views' => [],
+
+    'medialibrary' => [
+        'perpage' => 20,
+    ]
 ];
