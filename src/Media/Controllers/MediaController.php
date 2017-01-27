@@ -524,8 +524,16 @@ class MediaController extends BaseController
 //                'results' => $results,
 //            ], Response::HTTP_OK);
 
+
+            $message = ["Could not delete, media item in use:"];
+
+            foreach($results as $i => $result)
+            {
+                $message[] = "(".($i+1).") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
+            }
+
             return back()
-                ->with('message', 'Could not delete, media item in use:')
+                ->with('message', implode(PHP_EOL, $message))
                 ->with('results', $results);
         }
 

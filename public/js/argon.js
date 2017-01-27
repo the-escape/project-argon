@@ -436,9 +436,69 @@ $('#medialibrary .btn-submit').on('click', function() {
 //});
 
 $(document).on('click', '.field-file .field-add-file', function(e) {
-    $('#medialib').modal();
 
+    $('#medialib').off('hidden.bs.modal');
+    $('#medialib').on('hidden.bs.modal', function() {
+
+        var mlselect = $(this).data('mlselect');
+
+        $(this).data('mlselect', null);
+
+        if(window.console) console.log(mlselect);
+
+        if (mlselect)
+        {
+            var field = $(e.target).closest('.field');
+
+            $.ajax(
+                argon.root() + '/media/items/' + mlselect
+            ).done(function(data) {
+
+                    var settings = JSON.parse(field.attr('data-settings'));
+                    var fieldName = field.attr('data-name');
+                    var files = field.find('.files');
+
+                    if (!settings.multiple) {
+                        files.empty();
+                    }
+
+                    var container = $('<div/>').addClass('input-group sortable-item');
+
+                    $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
+
+                    if (settings.multiple) {
+                        $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
+                    }
+
+                    $('<div/>').addClass('file-name form-control').text(data.filename + '.' + data.extension).appendTo(container);
+
+                    $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+
+                    files.append(container);
+                });
+        }
+    });
+
+    $('#medialib').modal();
 });
+
+function medialib(data)
+{
+    if (window.opener)
+    {
+        $.ajax(
+            argon.root() + '/media/items/' + data
+        ).done(function(r) {
+                window.opener.CKEDITOR.tools.callFunction(argon.helpers.getUrlParam('CKEditorFuncNum'), r.url, '');
+                window.close();
+            });
+
+        return;
+    }
+
+    $('#medialib').data('mlselect', data).modal('hide');
+    return;
+}
 
 $('#medialib').on('shown.bs.modal',function(){      //correct here use 'shown.bs.modal' event which comes in bootstrap3
     $(this).find('iframe').attr('src', '/admin/media/modal/all')
@@ -592,7 +652,8 @@ var WYSIWYG = {
     },
 
     init: function(el) {
-        CKEDITOR.config.filebrowserBrowseUrl = '/admin/media/browser';
+        //CKEDITOR.config.filebrowserBrowseUrl = '/admin/media/browser';
+        CKEDITOR.config.filebrowserBrowseUrl = '/admin/media/modal/all';
         // CKEDITOR: Custom toolbar setup and initialization
         CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
         CKEDITOR.replaceClass = null; // disable auto initialization by class

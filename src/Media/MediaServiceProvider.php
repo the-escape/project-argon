@@ -16,7 +16,8 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'media',
             'cms:media:manage',
             MediaController::class,
-            'manage'
+//            'manage'
+            'all'
         );
         $this->addRoute(
             'media/upload',
