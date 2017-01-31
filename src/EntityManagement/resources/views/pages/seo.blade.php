@@ -1,8 +1,6 @@
 @extends('argon::layouts.master')
 @section('body')
-    <div class="actions">
-        <span>Update page search engine optimisation attributes</span>
-    </div>
+    <div class="actions">Update page search engine optimisation attributes</div>
     <form class="form" action="{{ route('cms:user:store') }}" method="post">
         {{ csrf_field() }}
         <div class="form__group">

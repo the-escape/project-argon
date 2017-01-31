@@ -2,31 +2,34 @@
 
 namespace Escape\Argon\EntityManagement\Http\Controllers;
 
-use App\Http\Requests\Request;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
-use Escape\Argon\EntityManagement\Helpers\Fields;
+use Illuminate\Http\Request;
 
 class BlockController extends BaseController
 {
     protected $entityRepository;
     protected $entityGroupRepository;
     protected $entityRevisionRepository;
+    protected $entityRevisionGroupRepository;
     protected $fieldDataRepository;
 
     public function __construct(
         EntityRepository $entityRepository,
         EntityGroupRepository $entityGroupRepository,
         EntityRevisionRepository $entityRevisionRepository,
+        EntityRevisionGroupRepository $entityRevisionGroupRepository,
         FieldDataRepository $fieldDataRepository)
     {
         $this->entityRepository = $entityRepository;
         $this->entityGroupRepository = $entityGroupRepository;
         $this->entityRevisionRepository = $entityRevisionRepository;
+        $this->entityRevisionGroupRepository = $entityRevisionGroupRepository;
         $this->fieldDataRepository = $fieldDataRepository;
 
         parent::__construct();
@@ -42,12 +45,20 @@ class BlockController extends BaseController
 
         $entity = $this->entityRepository->find($entityId);
 
-        $entityGroup = $this->entityGroupRepository->find($entityGroupId);
+        $entityRevision = $this->entityRevisionRepository->getLatestRevision($entityLocalisationId);
+
+        $entityRevisionGroup = $this->entityRevisionGroupRepository
+            ->makeModel()
+            ->where('entity_revision_id', $entityRevision->id)
+            ->where('entity_group_id', $entityGroupId)
+            ->first();
 
         return view('argon.entity::pages.block', [
             'entity' => $entity,
             'name' => $entity->name,
-            'entityGroup' => $entityGroup,
+            'entityRevisionGroup' => $entityRevisionGroup,
+            'entityLocalisationId' => $entityLocalisationId,
+            'entityRevision' => $entityRevision,
         ]);
     }
 
@@ -55,17 +66,30 @@ class BlockController extends BaseController
     {
         $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
-        Fields::saveFields($request, $entityRevision->entity->type->fields, $entityRevision, $this->fieldDataRepository, $entityRevision->localisation);
+        $entityRevisionGroup = $this->entityRevisionGroupRepository
+            ->makeModel()
+            ->where('entity_revision_id', $entityRevision->id)
+            ->where('entity_group_id', $entityGroupId)
+            ->first();
 
-        foreach ($entityRevision->entity->type->fields as $field) {
+        $fields = $entityRevisionGroup->entityGroup->fields;
 
-            $niceName = $field->field_type === 'combo' ? 'combo.'.$field->id : 'fields.'.$field->id;
+        $entityRevisionGroup->status = $request->input('status');
+        $entityRevisionGroup->save();
 
-            $this->fieldDataRepository->create([
+        foreach ($fields as $field) {
+
+            $value = $field->field_type === 'combo' ? 'combo.'.$field->id : 'fields.'.$field->id;
+
+            $this->fieldDataRepository->updateOrCreate([
                 'field_id' => $field->id,
                 'entity_revision_id' => $entityRevision->id,
                 'language' => $entityRevision->localisation->getLocale()->getLanguageCode(),
-                'value' => $request->get($niceName),
+            ], [
+                'field_id' => $field->id,
+                'entity_revision_id' => $entityRevision->id,
+                'language' => $entityRevision->localisation->getLocale()->getLanguageCode(),
+                'value' => $request->input($value),
             ]);
         }
 

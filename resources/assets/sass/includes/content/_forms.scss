@@ -31,10 +31,10 @@ textarea {
         bottom: 0;
         width: 42px;
         &.error {
-            background: url('../img/ic-error.png') center / 20px 18px no-repeat;
+            background: url('/argon/assets/img/ic-error.png') center / 20px 18px no-repeat;
         }
         &.search {
-            background: url('../img/ic-search.png') center / 20px no-repeat;
+            background: url('/argon/assets/img/ic-search.png') center / 20px no-repeat;
         }
     }
 }
@@ -75,7 +75,7 @@ textarea {
         border-color: $color-blue;
         + .icon {
             &.search {
-                background: $color-blue url('../img/ic-search-w.png') center / 20px no-repeat;
+                background: $color-blue url('/argon/assets/img/ic-search-w.png') center / 20px no-repeat;
             }
         }
     }
@@ -109,7 +109,7 @@ textarea {
         &:checked {
             + span {
                 border-color: $color-blue;
-                background: url('../img/ic-tick.png') center / 13px 11px no-repeat;
+                background: url('/argon/assets/img/ic-tick.png') center / 13px 11px no-repeat;
             }
             ~ span {
                 color: $color-text;
@@ -272,7 +272,7 @@ textarea {
         .select2-selection__arrow {
             height: 46px;
             width: 42px;
-            background: url('../img/ic-arrow-d.png') center / 14px 8px no-repeat;
+            background: url('/argon/assets/img/ic-arrow-d.png') center / 14px 8px no-repeat;
             b {
                 display: none;
             }
@@ -301,7 +301,7 @@ textarea {
     }
     &.select2-container--focus {
         .select2-selection__arrow {
-            background: $color-blue url('../img/ic-arrow-d-w.png') center / 14px 8px no-repeat;
+            background: $color-blue url('/argon/assets/img/ic-arrow-d-w.png') center / 14px 8px no-repeat;
         }
         .select2-selection--single {
             border-color: $color-blue;

@@ -1,8 +1,6 @@
 @extends('argon::layouts.master')
 @section('body')
-    <div class="actions">
-        <span>Update page attributes</span>
-    </div>
+    <div class="actions">Update page attributes</div>
     <form class="form" action="{{ route('cms:user:store') }}" method="post">
         {{ csrf_field() }}
         <div class="form__group">
@@ -25,15 +23,13 @@
         </div>
         <div class="form__group">
             <label for="password_confirmation">Published*</label>
-            <div class="form__group">
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <div class="slider">
-                        <span>YES</span>
-                        <span>NO</span>
-                    </div>
-                </label>
-            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <div class="slider">
+                    <span>YES</span>
+                    <span>NO</span>
+                </div>
+            </label>
         </div>
         <div class="footer">
             <div class="container-fluid">

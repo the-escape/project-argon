@@ -1,15 +1,25 @@
 @extends('argon::layouts.master')
 @section('body')
     <div class="actions">
-        <span>Block copy</span>
+        You are editing <span>{{ ucwords($entityRevisionGroup->entityGroup->name) }}</span>
     </div>
-    <form class="form" action="{{ route('cms:user:store') }}" method="post">
+    <form class="form" action="{{ route('cms:pages:block:update', [$entity->id, $entityLocalisationId, $entityRevisionGroup->entity_group_id]) }}" method="post">
         {{ csrf_field() }}
-        @foreach ($entityGroup->getFields() as $entityField)
+        @foreach ($entityRevisionGroup->entityGroup->getFields() as $entityField)
             <div class="form__group">
-                {!! $entityField->render() !!}
+                {!! $entityField->render($entityRevision->getField($entityField->getId())) !!}
             </div>
         @endforeach
+        <div class="form__group">
+            <label for="status">Enabled*</label>
+            <label class="switch">
+                <input type="checkbox" name="status" value="1" {{ $entityRevisionGroup->status ? 'checked' : '' }}>
+                <div class="slider">
+                    <span>YES</span>
+                    <span>NO</span>
+                </div>
+            </label>
+        </div>
         <div class="footer">
             <div class="container-fluid">
                 <div class="row">

@@ -121,11 +121,12 @@ body {
 	margin: 0 0 30px;
 	float: left;
 	width: 100%;
+	font-size: 18px;
 	.form__group {
 		width: 290px;
 	}
 	span {
-		font-size: 18px;
+		color: $color-blue;
 	}
 	.actions__right {
 		float: right;

@@ -32,6 +32,12 @@ class EntityRevisionRepository extends BaseRepository
      */
     public function createDraft($entityLocalisationId)
     {
+        $entityRevision = $this->getLatestRevision($entityLocalisationId);
+
+        if ($entityRevision->isStatus(EntityRevision::STATUS_DRAFT)) {
+            return $entityRevision;
+        }
+
         // Create the new draft revision.
         $entityRevisionDraft = $this->create([
             'entity_localisation_id' => $entityLocalisationId,

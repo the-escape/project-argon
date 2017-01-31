@@ -23,9 +23,4 @@ class EntityRevisionGroup extends Model
     {
         return $this->hasOne(EntityGroup::class, 'id', 'entity_group_id');
     }
-
-    public function entityFields()
-    {
-        return $this->hasManyThrough(EntityField::class, EntityGroup::class, 'id', 'entity_group_id', 'entity_group_id');
-    }
 }

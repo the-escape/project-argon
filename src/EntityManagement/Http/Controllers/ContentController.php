@@ -5,10 +5,8 @@ namespace Escape\Argon\EntityManagement\Http\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
-use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
-use Escape\Argon\EntityManagement\RevisionStatus;
 use Illuminate\Http\Request;
 
 class ContentController extends BaseController
@@ -47,27 +45,20 @@ class ContentController extends BaseController
 
         $entity = $this->entityRepository->find($entityId);
 
-        /** @var \Illuminate\Support\Collection $entityRevisionGroups **/
-        $entityRevisionGroups = $entity->getPublishedRevision()
-            ->entityRevisionGroups;
+        $entityRevision = $this->entityRevisionRepository
+            ->getLatestRevision($entityLocalisationId);
+
+        $entityRevisionGroups = $entityRevision->entityRevisionGroups;
 
         $entityRevisionGroupIds = $entityRevisionGroups->pluck('entity_group_id');
 
         $entityGroups = $entity->type->groups()
             ->whereNotIn('id', $entityRevisionGroupIds)->get();
 
-        $entityRevisionStatus = $this->entityRevisionRepository
-            ->getLatestRevision($entityLocalisationId);
-
-        $status = [
-            EntityRevision::STATUS_DRAFT => 'DRAFT',
-            EntityRevision::STATUS_PUBLISHED => 'PUBLISHED',
-        ];
-
         return view('argon.entity::pages.content', [
             'entity' => $entity,
             'entityLocalisationId' => $entityLocalisationId,
-            'name' => $entity->name.' '.$status[$entityRevisionStatus->status],
+            'name' => $entity->name,
             'entityGroups' => $entityGroups,
             'entityRevisionGroups' => $entityRevisionGroups,
             'entityRevisionGroupIds' => $entityRevisionGroupIds,
@@ -94,6 +85,18 @@ class ContentController extends BaseController
             $this->publish($entityLocalisationId);
             return redirect()->back();
         }
+
+        $html = '';
+
+        foreach ($entityRevisionGroups as $entityRevisionGroup) {
+            $html .= view('argon.entity::partials.block-row', [
+                'entity' => $entityRevision->localisation->entity,
+                'entityLocalisationId' => $entityLocalisationId,
+                'entityGroup' => $entityRevisionGroup->entityGroup,
+            ])->render();
+        }
+
+        return response($html);
     }
 
     public function publish($entityLocalisationId)

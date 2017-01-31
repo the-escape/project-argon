@@ -31,10 +31,13 @@
           right: 0;
           bottom: 0;
           width: 60px;
-          background: url('../img/placeholder.png') center / 23px no-repeat;
+          background: url('/argon/assets/img/placeholder.png') center / 23px no-repeat;
           &:hover {
             background-color: $color-blue;
           }
+        }
+        .block__status {
+          display: none;
         }
       }
     }
@@ -84,18 +87,17 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: rgba(255, 255, 255, 0.8) url('../img/loading.svg') center / 30px no-repeat;
+        background: rgba(255, 255, 255, 0.8) url('/argon/assets/img/loading.svg') center / 30px no-repeat;
         z-index: 1;
       }
       .block__edit {
         position: absolute;
         top: 0;
         bottom: 0;
-        left: -1px;
+        left: 0;
         width: 0;
         background-color: $color-blue;
         color: $color-white;
-        border-right: 1px solid $color-grey-dark;
         line-height: 60px;
         text-align: center;
         transition: width .3s;
@@ -103,6 +105,13 @@
       }
       .block__add {
         display: none;
+      }
+      .block__status {
+        position: relative;
+        height: 60px;
+        line-height: 60px;
+        width: 34px;
+        float: right;
       }
       .block__actions {
         position: absolute;
@@ -118,13 +127,13 @@
         .drag {
           width: 18px;
           height: 12px;
-          background: url('../img/blocks/drag.png') center / 18px 12px no-repeat;
+          background: url('/argon/assets/img/blocks/drag.png') center / 18px 12px no-repeat;
           display: inline-block;
         }
         .block__delete {
           width: 18px;
           height: 12px;
-          background: url('../img/placeholder.png');
+          background: url('/argon/assets/img/placeholder.png');
           display: inline-block;
           margin-right: 10px;
         }

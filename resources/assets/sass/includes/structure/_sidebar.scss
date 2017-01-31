@@ -26,7 +26,7 @@
     .sidebar {
       width: 210px;
       .sidebar__user {
-        background: url('../img/sidebar/user-bg.png') center no-repeat;
+        background: url('/argon/assets/img/sidebar/user-bg.png') center no-repeat;
         background-size: cover;
         .sidebar__img {
           img {
@@ -110,28 +110,28 @@
           color: $color-white;
           font-size: 16px;
           &.ic-da:before {
-            background: url('../img/sidebar/dashboard.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/dashboard.png') center no-repeat;
           }
           &.ic-si:before {
-            background: url('../img/sidebar/sitemap.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/sitemap.png') center no-repeat;
           }
           &.ic-po:before {
-            background: url('../img/sidebar/posts.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/posts.png') center no-repeat;
           }
           &.ic-me:before {
-            background: url('../img/sidebar/media-library.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/media-library.png') center no-repeat;
           }
           &.ic-bl:before {
-            background: url('../img/sidebar/blocks.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/forms.png') center no-repeat;
           }
           &.ic-fo:before {
-            background: url('../img/sidebar/forms.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/forms.png') center no-repeat;
           }
           &.ic-re:before {
-            background: url('../img/sidebar/redirects.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/redirects.png') center no-repeat;
           }
           &.ic-us:before {
-            background: url('../img/sidebar/users.png') center no-repeat;
+            background: url('/argon/assets/img/sidebar/users.png') center no-repeat;
           }
           &:before {
             float: left;

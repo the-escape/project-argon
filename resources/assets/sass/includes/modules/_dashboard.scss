@@ -18,7 +18,7 @@
       vertical-align: middle;
     }
     &.dashboard__cta--manage {
-      background: url('../img/manage-content.png') center no-repeat;
+      background: url('/argon/assets/img/manage-content.png') center no-repeat;
       background-size: cover;
       &:hover {
         .form__btn {
@@ -62,10 +62,10 @@
     display: block;
     margin: 0 auto 10px;
     &.icon--add {
-      background: url('../img/icons/add.png') center / 45px no-repeat;
+      background: url('/argon/assets/img/icons/add.png') center / 45px no-repeat;
     }
     &.icon--upload {
-      background: url('../img/icons/upload.png') center / 45px no-repeat;
+      background: url('/argon/assets/img/icons/upload.png') center / 45px no-repeat;
     }
   }
 }
@@ -87,7 +87,7 @@
       margin: 0 auto 10px;
       width: 44px;
       height: 44px;
-      background: url('../img/icons/bell.png') center / 44px no-repeat;
+      background: url('/argon/assets/img/icons/bell.png') center / 44px no-repeat;
     }
     span {
       color: $color-blue;
