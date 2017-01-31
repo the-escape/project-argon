@@ -59,10 +59,15 @@ class ContentController extends BaseController
         $entityRevisionStatus = $this->entityRevisionRepository
             ->getLatestRevision($entityLocalisationId);
 
+        $status = [
+            EntityRevision::STATUS_DRAFT => 'DRAFT',
+            EntityRevision::STATUS_PUBLISHED => 'PUBLISHED',
+        ];
+
         return view('argon.entity::pages.content', [
             'entity' => $entity,
             'entityLocalisationId' => $entityLocalisationId,
-            'name' => $entity->name,
+            'name' => $entity->name.' '.$status[$entityRevisionStatus->status],
             'entityGroups' => $entityGroups,
             'entityRevisionGroups' => $entityRevisionGroups,
             'entityRevisionGroupIds' => $entityRevisionGroupIds,
