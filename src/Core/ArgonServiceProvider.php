@@ -29,7 +29,7 @@ class ArgonServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../../views', 'argon');
 
         $this->publishes([
-            __DIR__.'/../../public/argon' => public_path('argon'),
+            __DIR__.'/../../public' => public_path('argon/assets'),
         ], 'public');
 
         $this->publishes([

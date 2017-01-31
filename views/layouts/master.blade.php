@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <script type="application/javascript" src="{{ asset('argon/assets/js/app.js') }}"></script>
         </div>
+        <script type="application/javascript" src="{{ asset('argon/assets/js/app.js') }}"></script>
     </body>
 </html>
