@@ -51,14 +51,14 @@ class MediaController extends BaseController
     public function upload(Request $request, MediaItemRepository $mediaRepository)
     {
         $folderId = Input::get('current-folder');
-        
+
         $file = $request->file('file');
 
         if (!$file)
         {
             return response()->json(null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
         while ($mediaRepository->itemExists($name, $folderId))
@@ -134,7 +134,9 @@ class MediaController extends BaseController
                 locales.name as locale_name,
                 entities.name as entity_name,
                 entity_types.type as entity_type,
-                entity_fields.field_type
+                entity_fields.field_type,
+                entity_fields.name as field_name,
+                entity_fields.id as field_id
                 from `field_data`
                 inner join entity_revisions on entity_revisions.id = field_data.entity_revision_id
                 inner join entity_fields on entity_fields.id = field_data.field_id
@@ -165,13 +167,41 @@ class MediaController extends BaseController
                 {
                     foreach ($subfields['fields'] as $fid => $fval)
                     {
-                        foreach ($fval as $value)
+                        if (is_array($fval))
                         {
-                            if (is_array($value) && array_key_exists('id', $value))
+                            foreach ($fval as $value)
                             {
-                                $value = $value['id'];
+                                if (is_array($value) && array_key_exists('id', $value))
+                                {
+                                    $value = $value['id'];
+                                }
+                                if (strpos($value, $id) !== false)
+                                {
+                                    // select field type to check if image/file
+                                    $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
+                                        where 1
+                                        and `id` = ?
+                                        and `deleted_at` is null";
+
+                                    $r = DB::select(DB::raw($sql), [$fid]);
+
+                                    if ($r)
+                                    {
+                                        foreach ($r as $subfield)
+                                        {
+                                            if (in_array($subfield->field_type, ['image', 'file']))
+                                            {
+                                                $valid = true;
+                                                $result->{$fid} = $subfield;
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                            if (strpos($value, $id) !== false)
+                        }
+                        else
+                        {
+                            if (strpos($fval, $id) !== false)
                             {
                                 // select field type to check if image/file
                                 $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
@@ -194,6 +224,29 @@ class MediaController extends BaseController
                                 }
                             }
                         }
+
+                    }
+                }
+
+
+                if (!$valid)
+                {
+                    unset($results[$i]);
+                }
+            }
+            elseif ( in_array($result->field_type, ['image', 'file']))
+            {
+                $fields = json_decode($result->data_value, true);
+
+                foreach ($fields as $field) {
+                    if ($field['id'] == $id)
+                    {
+                        $subfield = new \stdClass();
+                        $subfield->field_type = $result->field_type;
+                        $subfield->field_name = $result->field_name;
+
+                        $valid = true;
+                        $result->{$id} = $subfield;
                     }
                 }
 
@@ -201,6 +254,11 @@ class MediaController extends BaseController
                 {
                     unset($results[$i]);
                 }
+
+            }
+            else
+            {
+                unset($results[$i]);
             }
         }
 
