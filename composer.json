@@ -11,7 +11,8 @@
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
         "solarium/solarium":"^3.5.1",
-        "oriceon/toastr-5-laravel": "dev-master"
+        "oriceon/toastr-5-laravel": "dev-master",
+        "league/fractal": "^0.15.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

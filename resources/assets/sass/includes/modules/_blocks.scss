@@ -24,40 +24,8 @@
     height: 100%;
     &#blocks-all {
       .block {
-        .block__add {
-          display: block;
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          width: 60px;
-          background: url('/argon/assets/img/placeholder.png') center / 23px no-repeat;
-          &:hover {
-            background-color: $color-blue;
-          }
-        }
         .block__status {
           display: none;
-        }
-      }
-    }
-    &#blocks-selected {
-      .block {
-        &.block--loading {
-          &:hover {
-            .block__edit,
-            .block__add {
-              width: 0;
-            }
-          }
-        }
-        &:hover {
-          .block__edit {
-            width: 50%;
-          }
-          .block__actions {
-            width: 50%;
-          }
         }
       }
     }
@@ -68,7 +36,16 @@
       border-bottom: 1px solid $color-grey-dark;
       background-color: $color-white;
       height: 60px;
-      cursor: move;
+      &.block__revision {
+        &:hover {
+          .block__edit {
+            width: 50%;
+          }
+          .block__actions {
+            width: 50%;
+          }
+        }
+      }
       &.block--ghost {
         background-color: $color-grey-light;
       }
@@ -78,10 +55,16 @@
       &.block--loading {
         .block__loading {
           display: block;
+          &:hover {
+            .block__edit,
+            .block__add {
+              width: 0;
+            }
+          }
         }
       }
       .block__loading {
-        display: none;
+        display: block;
         position: absolute;
         top: 0;
         right: 0;
@@ -104,7 +87,17 @@
         overflow: hidden;
       }
       .block__add {
-        display: none;
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 60px;
+        background: url('/argon/assets/img/placeholder.png') center / 23px no-repeat;
+        cursor: pointer;
+        &:hover {
+          background-color: $color-blue;
+        }
       }
       .block__status {
         position: relative;

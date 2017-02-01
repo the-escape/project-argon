@@ -6,7 +6,8 @@ use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Http\Controllers\AttributeController;
-use Escape\Argon\EntityManagement\Http\Controllers\BlockController;
+use Escape\Argon\EntityManagement\Http\Controllers\Block\AdminController;
+use Escape\Argon\EntityManagement\Http\Controllers\Block\ApiController;
 use Escape\Argon\EntityManagement\Http\Controllers\ContentController;
 use Escape\Argon\EntityManagement\Http\Controllers\PageController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
@@ -70,16 +71,46 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->addRoute(
             'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
             'cms:pages:block',
-            BlockController::class,
+            AdminController::class,
             'edit'
         );
 
         $this->addRoute(
             'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
             'cms:pages:block:update',
-            BlockController::class,
+            AdminController::class,
             'update',
             'post'
+        );
+
+        $this->addRoute(
+            'api/blocks/{entityLocalisationId}',
+            'api:blocks',
+            ApiController::class,
+            'index'
+        );
+
+        $this->addRoute(
+            'api/blocks/{entityLocalisationId}/add',
+            'api:blocks:add',
+            ApiController::class,
+            'store',
+            'post'
+        );
+
+        $this->addRoute(
+            'api/blocks/{entityRevisionGroupId}/remove',
+            'api:blocks:remove',
+            ApiController::class,
+            'destroy',
+            'delete'
+        );
+
+        $this->addRoute(
+            'api/entity-group/{entityTypeId}',
+            'api:entity-group:index',
+            ApiController::class,
+            'entityGroups'
         );
 
         $this->addRoute(
