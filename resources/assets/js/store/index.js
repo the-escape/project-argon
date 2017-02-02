@@ -26,8 +26,8 @@ const store = new Vuex.Store({
                     commit('ADD_ENTITY_REVISION_GROUPS', { entityRevisionGroups: [entityRevisionGroup.data.data] })
                 })
         },
-        DELETE_ENTITY_REVISION_GROUP_REMOVE: ({ commit }, { entityRevisionGroup }) => {
-            return apiDelete('/admin/api/blocks/' + entityRevisionGroup.id + '/remove')
+        DELETE_ENTITY_REVISION_GROUP_REMOVE: ({ commit }, { entityLocalisationId, entityRevisionGroup }) => {
+            return apiDelete('/admin/api/blocks/' + entityLocalisationId + '/remove/' + entityRevisionGroup.entity_group_id)
                 .then(entityGroup => {
                     commit('REMOVE_ENTITY_REVISION_GROUP', { payload: entityRevisionGroup })
                     commit('ADD_ENTITY_GROUPS', { entityGroups: [entityGroup.data.data] })

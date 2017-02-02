@@ -69,7 +69,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
+            'pages/{entityId}/block/{entityLocalisationId}/{entityRevisionGroupId}',
             'cms:pages:block',
             AdminController::class,
             'edit'
@@ -99,7 +99,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
-            'api/blocks/{entityRevisionGroupId}/remove',
+            'api/blocks/{entityLocalisationId}/remove/{entityGroupId}',
             'api:blocks:remove',
             ApiController::class,
             'destroy',

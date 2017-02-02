@@ -53,11 +53,7 @@ class ApiController extends BaseApiController
 
     public function store(Request $request, $entityLocalisationId)
     {
-        $entityRevision = $this->entityRevisionRepository->getLatestRevision($entityLocalisationId);
-
-        if (!$entityRevision->isStatus(EntityRevision::STATUS_DRAFT)) {
-            $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
-        }
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
         $entityRevisionGroup = $this->entityRevisionGroupRepository->create([
             'entity_revision_id' => $entityRevision->id,
@@ -71,9 +67,16 @@ class ApiController extends BaseApiController
         return response()->json($response);
     }
 
-    public function destroy($entityRevisionGroupId)
+    public function destroy($entityLocalisationId, $entityGroupId)
     {
-        $entityRevisionGroup = $this->entityRevisionGroupRepository->find($entityRevisionGroupId);
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
+
+        // @TODO: Figure out a way to use entity revision group ID on the new draft...
+        $entityRevisionGroup = $this->entityRevisionGroupRepository
+            ->makeModel()
+            ->where('entity_revision_id', '=', $entityRevision->id)
+            ->where('entity_group_id', '=', $entityGroupId)
+            ->first();
 
         $entityGroup = $entityRevisionGroup->entityGroup;
 

@@ -17,6 +17,7 @@ class EntityRevisionGroupTransformer extends TransformerAbstract
         return [
             'id' => (int) $entityRevisionGroup->id,
             'name' => $entityRevisionGroup->entityGroup->name,
+            'entity_group_id' => (int) $entityRevisionGroup->entity_group_id,
         ];
     }
 

@@ -8,6 +8,7 @@
                 </div>
                 <div class="blocks__container">
                     <entity-revision-groups
+                        v-bind:entity-localisation-id="entityLocalisationId"
                         v-bind:searchQuery="searchEntityRevisionGroups">
                     </entity-revision-groups>
                 </div>

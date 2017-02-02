@@ -7,7 +7,6 @@ use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
-use Illuminate\Http\Request;
 
 class ContentController extends BaseController
 {
@@ -45,8 +44,7 @@ class ContentController extends BaseController
 
         $entity = $this->entityRepository->find($entityId);
 
-        $entityRevision = $this->entityRevisionRepository
-            ->getLatestRevision($entityLocalisationId);
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
         $entityRevisionGroups = $entityRevision->entityRevisionGroups;
 
@@ -65,42 +63,10 @@ class ContentController extends BaseController
         ]);
     }
 
-    public function update(Request $request, $entityLocalisationId)
-    {
-        // Create a new draft revision.
-        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
-
-        // Get the new entity group IDs.
-        $entityGroupIds = json_decode($request->get('groups'));
-
-        $entityRevisionGroups = [];
-
-        // If the entity group IDs exist, create instances and attach them to the revision.
-        if (!is_null($entityGroupIds)) {
-            $entityRevisionGroups = $this->entityRevisionGroupRepository
-                ->createGroups($entityRevision->id, $entityGroupIds);
-        }
-
-        if ($request->exists('publish')) {
-            $this->publish($entityLocalisationId);
-            return redirect()->back();
-        }
-
-        $html = '';
-
-        foreach ($entityRevisionGroups as $entityRevisionGroup) {
-            $html .= view('argon.entity::partials.block-row', [
-                'entity' => $entityRevision->localisation->entity,
-                'entityLocalisationId' => $entityLocalisationId,
-                'entityGroup' => $entityRevisionGroup->entityGroup,
-            ])->render();
-        }
-
-        return response($html);
-    }
-
-    public function publish($entityLocalisationId)
+    public function update($entityLocalisationId)
     {
         $this->entityRevisionRepository->publishDraft($entityLocalisationId);
+
+        return redirect()->back();
     }
 }

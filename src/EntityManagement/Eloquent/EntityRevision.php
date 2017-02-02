@@ -43,6 +43,11 @@ class EntityRevision extends Model
         return $this->hasMany(EntityRevisionGroup::class);
     }
 
+    public function fieldData()
+    {
+        return $this->hasMany(FieldData::class);
+    }
+
     public function localisation()
     {
         return $this->belongsTo(Localisation::class, 'entity_localisation_id');

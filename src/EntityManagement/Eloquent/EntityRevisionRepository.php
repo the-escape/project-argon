@@ -45,16 +45,12 @@ class EntityRevisionRepository extends BaseRepository
             'created_by' => 1,
         ]);
 
-        // Find all draft revisions (except for the latest one).
-        $entityRevisions = $this->findWhere([
-            ['entity_localisation_id', '=', $entityLocalisationId],
-            ['status', '=', EntityRevision::STATUS_DRAFT],
-            ['id', '<>', $entityRevisionDraft->id],
-        ]);
+        foreach ($entityRevision->fieldData as $fieldData) {
+            $fieldData->fill(['id' => null, 'entity_revision_id' => $entityRevisionDraft->id])->save();
+        }
 
-        // Loop through all of the previous draft revisions and force delete them.
-        foreach ($entityRevisions as $entityRevision) {
-            $entityRevision->forceDelete();
+        foreach ($entityRevision->entityRevisionGroups as $entityRevisionGroup) {
+            $entityRevisionGroup->fill(['id' => null, 'entity_revision_id' => $entityRevisionDraft->id])->save();
         }
 
         return $entityRevisionDraft;

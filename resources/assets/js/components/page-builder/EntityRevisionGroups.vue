@@ -3,9 +3,9 @@
         <li class="block block__revision" v-for="entityRevisionGroup in entityRevisionGroups">
             <div class="block__loading" v-if="loadingId === entityRevisionGroup.id"></div>
             <div class="block__overlay">
-                <a href="#" class="block__edit">Edit block content</a>
+                <a v-bind:href="getEditUrl(entityRevisionGroup)" class="block__edit">Edit block content</a>
                 <div class="block__actions">
-                    <a href="#" class="block__delete" @click="removeEntityRevisionGroup(entityRevisionGroup)"></a>
+                    <a href="#" class="block__delete" v-on:click="removeEntityRevisionGroup(entityRevisionGroup)"></a>
                     <span class="drag"></span>
                 </div>
             </div>
@@ -21,6 +21,7 @@
     export default {
         name: 'EntityRevisionGroups',
         props: [
+            'entityLocalisationId',
             'searchQuery'
         ],
         computed: {
@@ -34,9 +35,15 @@
         methods: {
             removeEntityRevisionGroup(entityRevisionGroup) {
                 this.loadingId = entityRevisionGroup.id;
-                this.$store.dispatch('DELETE_ENTITY_REVISION_GROUP_REMOVE', { entityRevisionGroup }).then(() => {
+                this.$store.dispatch('DELETE_ENTITY_REVISION_GROUP_REMOVE', {
+                    entityLocalisationId: this.entityLocalisationId,
+                    entityRevisionGroup: entityRevisionGroup
+                }).then(() => {
                     this.loadingId = 0;
                 })
+            },
+            getEditUrl(entityRevisionGroup) {
+                return '/admin/block/' + this.entityLocalisationId + '/' + entityRevisionGroup.id
             }
         },
         data() {
