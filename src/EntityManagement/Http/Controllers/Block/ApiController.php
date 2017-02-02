@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Http\Controllers\Block;
 
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
@@ -11,7 +12,6 @@ use Escape\Argon\EntityManagement\Transformers\EntityGroupTransformer;
 use Escape\Argon\EntityManagement\Transformers\EntityRevisionGroupTransformer;
 use Escape\Argon\EntityManagement\Transformers\EntityRevisionTransformer;
 use Illuminate\Http\Request;
-use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 
 class ApiController extends BaseApiController
@@ -55,6 +55,10 @@ class ApiController extends BaseApiController
     {
         $entityRevision = $this->entityRevisionRepository->getLatestRevision($entityLocalisationId);
 
+        if (!$entityRevision->isStatus(EntityRevision::STATUS_DRAFT)) {
+            $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
+        }
+
         $entityRevisionGroup = $this->entityRevisionGroupRepository->create([
             'entity_revision_id' => $entityRevision->id,
             'entity_group_id' => $request->input('id'),
@@ -69,8 +73,16 @@ class ApiController extends BaseApiController
 
     public function destroy($entityRevisionGroupId)
     {
-        $entityRevisionGroup = $this->entityRevisionGroupRepository->delete($entityRevisionGroupId);
+        $entityRevisionGroup = $this->entityRevisionGroupRepository->find($entityRevisionGroupId);
 
-        return response()->json($entityRevisionGroup);
+        $entityGroup = $entityRevisionGroup->entityGroup;
+
+        $entityRevisionGroup->delete();
+
+        $item = new Item($entityGroup, new EntityGroupTransformer());
+
+        $response = $this->manager->createData($item)->toArray();
+
+        return response()->json($response);
     }
 }

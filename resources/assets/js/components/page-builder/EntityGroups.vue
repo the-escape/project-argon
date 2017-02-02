@@ -1,46 +1,45 @@
 <template>
-    <div class="blocks">
-        <div class="form__group">
-            <input type="text" class="form__text icon blocks__search" placeholder="Search blocks">
-            <span class="icon search"></span>
-        </div>
-        <div class="block__container">
-            <ul>
-                <li class="block" v-for="entityGroup in entityGroups">
-                    <div class="block__loading" v-if="entityGroupActive === entityGroup.id"></div>
-                    <a href="#" class="block__add" v-on:click="addEntityGroup(entityGroup)"></a>
-                    <div class="block__content">
-                        <div class="block__img"></div>
-                        <div class="block__title">{{ entityGroup.name }}</div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <ul>
+        <li class="block" v-for="entityGroup in entityGroups">
+            <div class="block__loading" v-if="loadingId === entityGroup.id"></div>
+            <a href="#" class="block__add" @click="addEntityGroup(entityGroup)"></a>
+            <div class="block__content">
+                <div class="block__img"></div>
+                <div class="block__title">{{ entityGroup.name }}</div>
+            </div>
+        </li>
+    </ul>
 </template>
 
 <script>
     export default {
-        props: ['entityLocalisationId'],
-        data() {
-            return {
-                entityGroupActive: 0
+        name: 'EntityGroups',
+        props: [
+            'entityLocalisationId',
+            'searchQuery'
+        ],
+        computed: {
+            entityGroups() {
+                const self = this
+                return this.$store.state.entityGroups.filter(entityGroup => {
+                    return entityGroup.name.toLowerCase().indexOf(self.searchQuery.toLowerCase()) !== -1
+                })
             }
         },
         methods: {
             addEntityGroup(entityGroup) {
-                this.entityGroupActive = entityGroup.id;
-
-                axios.post('/admin/api/blocks/'+this.entityLocalisationId+'/add', entityGroup)
-                    .then((response) => {
-                        this.$store.commit('removeEntityGroup', entityGroup);
-                        this.$store.commit('addEntityRevisionGroup', response.data.data)
-                    })
+                this.loadingId = entityGroup.id;
+                this.$store.dispatch('POST_ENTITY_GROUP_ADD', {
+                    entityLocalisationId: this.entityLocalisationId,
+                    entityGroup: entityGroup
+                }).then(() => {
+                    this.loadingId = 0;
+                })
             }
         },
-        computed: {
-            entityGroups() {
-                return this.$store.getters.allEntityGroups
+        data() {
+            return {
+                loadingId: 0
             }
         }
     }

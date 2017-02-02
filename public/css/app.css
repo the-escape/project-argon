@@ -9035,14 +9035,6 @@ textarea {
   font-size: 12px;
 }
 
-.blocks {
-  background-color: #f0f0f0;
-  border: 1px solid #d8d8d8;
-  margin-top: 30px;
-  float: left;
-  width: 100%;
-}
-
 .blocks .form__group {
   margin: 0;
   border-bottom: 1px solid #d8d8d8;
@@ -9050,13 +9042,6 @@ textarea {
 
 .blocks .form__group .form__text {
   border: none;
-}
-
-.blocks .block__container {
-  height: 500px;
-  overflow: scroll;
-  float: left;
-  width: 100%;
 }
 
 .blocks ul {
