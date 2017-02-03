@@ -161,9 +161,6 @@ class PageController extends BaseController
      */
     function setMiddleware()
     {
-        return [
-            'auth',
-            'perm:cms:login',
-        ];
+        return [];
     }
 }

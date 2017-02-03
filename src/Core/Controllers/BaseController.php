@@ -21,7 +21,7 @@ abstract class BaseController extends Controller
 
     private function addMiddleware()
     {
-        $middleware = ['auth'] + $this->setMiddleware();
+        $middleware = /*['auth'] +*/ $this->setMiddleware();
 
         foreach ($middleware as $class) {
             $this->middleware($class);
