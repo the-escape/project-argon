@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\User\Http\Controllers;
 
-use Escape\Argon\Authentication\UserRepository;
+use Escape\Argon\Auth\UserRepository;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\Table\Models\Table;

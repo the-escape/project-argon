@@ -16,22 +16,15 @@
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "~4.0",
         "laravel/laravel": "^5.1.0"
     },
     "autoload": {
         "psr-4": {
-            "Escape\\Argon\\Tests\\": "Tests",
             "Escape\\Argon\\": "src"
         },
         "files": [
             "src/helpers/guid.php",
             "src/helpers/Solr.php"
-        ]
-    },
-    "autoload-dev": {
-        "classmap": [
-            "Tests/Cases/TestCase.php"
         ]
     },
     "config": {

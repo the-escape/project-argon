@@ -3,11 +3,10 @@
 namespace Escape\Argon\Frontend;
 
 use Escape\Argon\Core\Http\Request;
-use Escape\Argon\EntityManagement\Eloquent\Entity;
-use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
-use Escape\Argon\EntityManagement\Eloquent\Localisation;
+use Escape\Argon\Entity\Eloquent\Entity;
+use Escape\Argon\Entity\Eloquent\EntityRepository;
+use Escape\Argon\Entity\Eloquent\Localisation;
 use Illuminate\Support\Collection;
-use RuntimeException;
 
 class Page
 {

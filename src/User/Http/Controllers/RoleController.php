@@ -2,10 +2,9 @@
 
 namespace Escape\Argon\User\Http\Controllers;
 
-use Escape\Argon\Authentication\GrantRepository;
-use Escape\Argon\Authentication\RoleRepository;
+use Escape\Argon\Auth\GrantRepository;
+use Escape\Argon\Auth\RoleRepository;
 use Escape\Argon\Core\Controllers\BaseController;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
