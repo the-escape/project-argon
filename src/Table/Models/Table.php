@@ -9,14 +9,16 @@ class Table
     private $actions = false;
     private $rows = [];
     private $columns = [];
+    private $data;
 
     public function setClassName($className)
     {
         $this->className = $className;
     }
 
-    public function setRowView($rowView)
+    public function setRowView($rowView, $data = [])
     {
+        $this->data = $data;
         $this->rowView = $rowView;
     }
 
@@ -45,7 +47,7 @@ class Table
         $rows = [];
 
         foreach ($this->rows as $row) {
-            $rows[] = $row->render($this->columns, $this->rowView);
+            $rows[] = $row->render($this->columns, $this->rowView, $this->data);
         }
 
         return view('argon.table::partials.table')->with([

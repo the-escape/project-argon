@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Access\Gate;
 
 class AuthServiceProvider extends AbstractPluginServiceProvider
 {
-    protected $name = 'authentication';
+    protected $name = 'Auth';
 
     protected function registerRoutes()
     {

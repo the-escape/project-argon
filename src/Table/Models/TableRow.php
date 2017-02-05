@@ -113,7 +113,7 @@ class TableRow
         return $this->actions;
     }
 
-    public function render($columns, $rowView = 'argon.table::partials.row')
+    public function render($columns, $rowView = 'argon.table::partials.row', $viewData = [])
     {
         if ($this->actions) {
             $columns[] = new TableColumn('action', 'ACTION', 20);
@@ -121,9 +121,11 @@ class TableRow
             $this->setData($data);
         }
 
-        return view($rowView)->with([
+        $viewData = [
             'row' => $this,
             'columns' => $columns,
-        ]);
+        ] + $viewData;
+
+        return view($rowView)->with($viewData);
     }
 }

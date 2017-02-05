@@ -4,6 +4,7 @@ import Sortable from 'sortablejs'
 import PageBuilder from './components/page-builder/PageBuilder.vue'
 
 window.$ = require('jquery')
+require('select2')
 
 Vue.directive('sortable', {
     inserted: function (el, binding) {

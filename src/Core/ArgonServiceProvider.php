@@ -26,7 +26,7 @@ class ArgonServiceProvider extends ServiceProvider
             require __DIR__ . '/Http/routes.php';
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../../views', 'argon');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'argon');
 
         $this->publishes([
             __DIR__.'/../../public' => public_path('argon/assets'),

@@ -8,6 +8,7 @@ use Escape\Argon\Entity\Criterias\SearchCriteria;
 use Escape\Argon\Entity\Eloquent\Entity;
 use Escape\Argon\Entity\Eloquent\EntityRepository;
 use Escape\Argon\Entity\Eloquent\EntityRevision;
+use Escape\Argon\Entity\Eloquent\EntityTypeRepository;
 use Escape\Argon\Table\Models\Table;
 use Escape\Argon\Table\Models\TableRow;
 use Illuminate\Http\Request;
@@ -15,17 +16,23 @@ use Illuminate\View\View;
 
 class PageController extends BaseController
 {
-    protected $entityRepository;
     protected $table;
+    protected $entityRepository;
+    protected $entityTypeRepository;
 
-    public function __construct(EntityRepository $entityRepository)
+    public function __construct(
+        EntityRepository $entityRepository,
+        EntityTypeRepository $entityTypeRepository)
     {
         $this->entityRepository = $entityRepository;
+        $this->entityTypeRepository = $entityTypeRepository;
 
         $this->table = new Table();
 
         $this->table->setClassName('table--sitemap');
-        $this->table->setRowView('argon.entity::partials.row');
+        $this->table->setRowView('argon.entity::partials.row', [
+            'entityTypes' => $this->entityTypeRepository->page(),
+        ]);
 
         $this->table->addColumn('navigation', 'NAVIGATION', 50);
         $this->table->addColumn('status', 'STATUS', 20);
@@ -120,7 +127,11 @@ class PageController extends BaseController
 
         $row = $this->addTableRow($entity, $request->get('level'), $request->get('parent'), true);
 
-        return $row->render($this->table->getColumns(), 'argon.entity::partials.row');
+        $viewData = [
+            'entityTypes' => $this->entityTypeRepository->page(),
+        ];
+
+        return $row->render($this->table->getColumns(), 'argon.entity::partials.row', $viewData);
     }
 
     /**

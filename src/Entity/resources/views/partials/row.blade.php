@@ -20,8 +20,9 @@
                     <label for="entity-type-{{ $row->getId() }}" class="sr-only">Entity Type</label>
                     <select name="type" id="entity-type-{{ $row->getId() }}" class="form__select" data-placeholder="Please select a page type">
                         <option value=""></option>
-                        <option value="1">Generic</option>
-                        <option value="2">Product</option>
+                        @foreach ($entityTypes as $entityType)
+                            <option value="{{ $entityType->id }}">{{ $entityType->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form__group">
