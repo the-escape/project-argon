@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\Entity\Eloquent;
 
-use Escape\Argon\Core\Http\Request;
+use Escape\Argon\Core\Http\Requests\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 

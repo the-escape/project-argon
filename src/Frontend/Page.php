@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\Frontend;
 
-use Escape\Argon\Core\Http\Request;
+use Escape\Argon\Core\Http\Requests\Request;
 use Escape\Argon\Entity\Eloquent\Entity;
 use Escape\Argon\Entity\Eloquent\EntityRepository;
 use Escape\Argon\Entity\Eloquent\Localisation;
@@ -22,9 +22,9 @@ class Page
     {
         $this->entity = $entity;
 
-        if (!$request instanceof \Escape\Argon\Core\Http\Request)
+        if (!$request instanceof Request)
         {
-            $request = new \Escape\Argon\Core\Http\Request;
+            $request = new Request;
             $request->adjustLocale();
         }
 
@@ -307,7 +307,6 @@ class Page
         }
         return $r;
     }
-
 
     public function findWhere(array $where , $columns = array('*'))
     {
