@@ -23,8 +23,8 @@
             "Escape\\Argon\\": "src"
         },
         "files": [
-            "src/helpers/guid.php",
-            "src/helpers/Solr.php"
+            "src/Helper/guid.php",
+            "src/Helper/Solr.php"
         ]
     },
     "config": {
