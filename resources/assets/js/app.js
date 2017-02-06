@@ -3,7 +3,8 @@ import store from './store'
 import Sortable from 'sortablejs'
 import PageBuilder from './components/page-builder/PageBuilder.vue'
 
-window.$ = require('jquery')
+window.$ = window.jQuery = require('jquery')
+require('bootstrap-sass')
 require('select2')
 
 Vue.directive('sortable', {

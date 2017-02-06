@@ -5,6 +5,10 @@ $(function () {
         resultContainer = searchForm.find('.search__results'),
         resultList = resultContainer.find('ul');
 
+    $(document).on('click', function (e) {
+        console.log(e);
+    });
+
     /**
      * TABLE SEARCH
      */
@@ -29,7 +33,8 @@ $(function () {
                 })
         }, 300);
     });
-    searchInput.on('blur', function (e) {
+    searchInput.on('blur', function () {
+        $(this).val('');
         resultList.html('');
         resultContainer.hide();
     });
@@ -49,9 +54,7 @@ $(function () {
             pageId = self.data('id'),
             level = self.data('level'),
             rows = $('.table__page[data-level="' + (level + 1) + '"][data-parent="' + pageId + '"]');
-        $('.table__page--active').removeClass('table__page--active');
         if (rows.length > 0) {
-            $('.table__page-attributes').hide();
             if (levelElem.hasClass('table__level--collapsed')) {
                 levelElem.attr('class', 'table__level table__level--open');
                 rows.show();
@@ -66,13 +69,21 @@ $(function () {
         e.preventDefault();
         let pageId = $(this).parents('tr').data('id'),
             page = $('.table__reveal[data-id="' + pageId + '"]').find('.table__page-attributes');
-        $('.table__page-attributes').hide();
-        $(this).parents('.table__page').trigger('click');
-        if (page.is(':visible')) {
-            page.hide();
+        $('.table__page-attributes').removeClass('table__page--attributes-show');
+        $('.table__page').removeClass('table__page--active');
+        if (page.hasClass('table__page--attributes-show')) {
+            page.removeClass('table__page--attributes-show');
+            page.parents('.table__reveal').prev('.table__page').removeClass('table__page--active');
         } else {
-            page.show();
+            page.addClass('table__page--attributes-show');
+            page.parents('.table__reveal').prev('.table__page').addClass('table__page--active');
         }
+    });
+
+    $('.table__reveal-cancel').on('click', function (e) {
+        e.preventDefault();
+        $('.table__page-attributes').removeClass('table__page--attributes-show');
+        $('.table__page').removeClass('table__page--active');
     });
 
     $('.page__create').on('submit', function (e) {
@@ -85,17 +96,24 @@ $(function () {
             name: 'level',
             value: (page.data('level') + 1)
         }, {
-            name: 'parent',
+            name: 'parent_id',
             value: page.data('id')
         });
         $.post(self.attr('action'), data)
             .done(function (data) {
-                parent.after(data);
+                let row = $(data);
+                parent.find('.table__reveal-cancel').trigger('click');
+                row.removeClass('table__page--hidden');
+                parent.after(row);
             });
     });
 
     $('.form__select').select2({
         minimumResultsForSearch: Infinity
+    });
+
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
     });
 
     function collapseLevels(level, pageId) {

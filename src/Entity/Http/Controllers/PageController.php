@@ -35,7 +35,7 @@ class PageController extends BaseController
         ]);
 
         $this->table->addColumn('navigation', 'NAVIGATION', 50);
-        $this->table->addColumn('status', 'STATUS', 20);
+        $this->table->addColumn('status', 'STATUS', 30);
 
         parent::__construct();
     }
@@ -102,7 +102,7 @@ class PageController extends BaseController
         $row->addAction(TableRow::TABLE_ACTION_CREATE);
         $row->addAction(TableRow::TABLE_ACTION_BUTTON,
             action('\Escape\Argon\Entity\Http\Controllers\ContentController@edit', [$entity->id, $entity->getDefaultLocalisation()]),
-            'EDIT');
+            'EDIT PAGE');
 
         if ($return) {
             return $row;
@@ -121,11 +121,16 @@ class PageController extends BaseController
 
     public function store(Request $request)
     {
-        $entity = $this->entityRepository->find(1);
+        $entity = $this->entityRepository->createPage([
+            'name' => $request->input('name'),
+            'entity_type_id' => $request->input('entity_type_id'),
+            'owner_id' => 1,
+            'parent_id' => $request->input('parent_id'),
+            'slug' => $request->input('slug'),
+            'status' => 0,
+        ]);
 
-        $entity->id = 1000;
-
-        $row = $this->addTableRow($entity, $request->get('level'), $request->get('parent'), true);
+        $row = $this->addTableRow($entity, $request->input('level'), $entity->parent_id, true);
 
         $viewData = [
             'entityTypes' => $this->entityTypeRepository->page(),

@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let elixir = require('laravel-elixir');
 require('laravel-elixir-vue-2');

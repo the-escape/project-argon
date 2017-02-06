@@ -28,6 +28,10 @@
       }
     }
   }
+  .form__btn {
+    font-size: 14px;
+    min-width: 125px;
+  }
   .table__page {
     cursor: pointer;
     &.table__page--hidden {
@@ -76,7 +80,7 @@
     }
   }
   .table__reveal {
-    background-color: $color-grey-light;
+    background-color: #f1fafc;
     td {
       border: none;
       padding: 0;
@@ -104,6 +108,9 @@
             float: left;
             margin: 0;
           }
+        }
+        &.table__page--attributes-show {
+          display: block;
         }
       }
     }
@@ -173,6 +180,7 @@
   display: inline-block;
   vertical-align: middle;
   margin: 4px 10px 0 0;
+  fill: $color-grey-accent;
   &.ic__clone {
     width: 22px;
     height: 22px;
@@ -184,10 +192,15 @@
     background: url('/argon/assets/img/table/delete.png') center / 20px 22px no-repeat;
   }
   &.ic__create {
-    width: 23px;
-    height: 23px;
-    background: url('/argon/assets/img/table/create.png') center / 23px no-repeat;
+    width: 24px;
+    height: 24px;
+    background: url('/argon/assets/img/icons/add-grey.png') center / 24px no-repeat;
+    fill: $color-grey-accent;
   }
+}
+
+svg {
+  fill: $color-grey-accent;
 }
 
 .status {
@@ -200,5 +213,8 @@
   }
   &.status--red {
     background-color: $color-red;
+  }
+  &.status--yellow {
+    background-color: yellow;
   }
 }

@@ -27,14 +27,14 @@ class EntityRevision extends Model
         return $this->status == $statusId;
     }
 
-    public static function getStatusView($entity)
+    public static function getStatusView(Entity $entity)
     {
-        $views = [
-            self::STATUS_DRAFT => view('argon.entity::partials.not-published'),
-            self::STATUS_PUBLISHED => view('argon.entity::partials.published'),
+        $statusViews = [
+            1 => view('argon.entity::partials.statuses.published', ['showText' => true]),
+            0 => view('argon.entity::partials.statuses.previously-published', ['showText' => true]),
         ];
 
-        return isset($views[$entity->status]) ? $views[$entity->status] : '';
+        return isset($statusViews[$entity->status]) ? $statusViews[$entity->status] : '';
     }
 
     public function entityRevisionGroups()

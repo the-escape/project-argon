@@ -2,7 +2,8 @@
 
 namespace Escape\Argon\Entity\Eloquent;
 
-use Escape\Argon\Core\Http\Requests\Request;
+use Escape\Argon\Locale\Eloquent\Locale;
+use Escape\Argon\Locale\Eloquent\LocaleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -12,20 +13,43 @@ class EntityRepository extends BaseRepository
         'name',
     ];
 
-    /**
-     * Specify Model class name
-     *
-     * @return string
-     */
     public function model()
     {
         return Entity::class;
     }
 
-    /**
-     * @param Request $request
-     * @return Entity|null
-     */
+    public function createPage(array $attributes, Locale $locale = null)
+    {
+        if (!isset($attributes['slug'])) {
+
+            // TODO: Make this URL safe.
+            $attributes['slug'] = urlencode($attributes['name']);
+        }
+
+        $entity = $this->create($attributes);
+
+        if (is_null($locale)) {
+
+            // TODO: Get the correct locale.
+            $localeRepository = $this->app->make(LocaleRepository::class);
+            $locale = $localeRepository->find(1);
+        }
+
+        $localisationRepository = $this->app->make(LocalisationRepository::class);
+
+        $localisationRepository->create([
+            'entity_id' => $entity->getId(),
+            'locale_id' => $locale->getId(),
+        ]);
+
+        $entity->getLocalisation($locale)->revisions()->create([
+            'status' => EntityRevision::STATUS_DRAFT,
+            'created_by' => 1,
+        ]);
+
+        return $entity;
+    }
+
     public function findForPath($request, $status=1)
     {
         $path = $request->path();

@@ -8833,7 +8833,7 @@ textarea {
 .form__btn {
   min-width: 130px;
   height: 48px;
-  padding: 0 20px;
+  padding: 0 30px;
   border-radius: 24px;
   font-size: 16px;
   font-weight: 600;
@@ -9307,6 +9307,11 @@ textarea {
   float: right;
 }
 
+.table .form__btn {
+  font-size: 14px;
+  min-width: 125px;
+}
+
 .table .table__page {
   cursor: pointer;
 }
@@ -9365,7 +9370,7 @@ textarea {
 }
 
 .table .table__reveal {
-  background-color: #f0f0f0;
+  background-color: #f1fafc;
 }
 
 .table .table__reveal td {
@@ -9403,6 +9408,10 @@ textarea {
 .table .table__reveal td .table__page-attributes .form__btn[type="submit"] {
   float: left;
   margin: 0;
+}
+
+.table .table__reveal td .table__page-attributes.table__page--attributes-show {
+  display: block;
 }
 
 .search .search__results {
@@ -9476,6 +9485,7 @@ textarea {
   display: inline-block;
   vertical-align: middle;
   margin: 4px 10px 0 0;
+  fill: #b6b6b6;
 }
 
 .ic.ic__clone {
@@ -9491,9 +9501,14 @@ textarea {
 }
 
 .ic.ic__create {
-  width: 23px;
-  height: 23px;
-  background: url("/argon/assets/img/table/create.png") center/23px no-repeat;
+  width: 24px;
+  height: 24px;
+  background: url("/argon/assets/img/icons/add-grey.png") center/24px no-repeat;
+  fill: #b6b6b6;
+}
+
+svg {
+  fill: #b6b6b6;
 }
 
 .status {
@@ -9509,6 +9524,10 @@ textarea {
 
 .status.status--red {
   background-color: #f66956;
+}
+
+.status.status--yellow {
+  background-color: yellow;
 }
 
 .dashboard {
