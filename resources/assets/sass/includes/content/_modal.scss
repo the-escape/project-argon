@@ -1,0 +1,53 @@
+.modal {
+  .modal__table {
+    display: table;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+  }
+  .modal__cell {
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events: none;
+  }
+  .modal-content {
+    box-shadow: none;
+    border-radius: 0;
+    width: inherit;
+    height: inherit;
+    margin: 0 auto;
+    pointer-events: all;
+    text-align: center;
+  }
+  .modal__header {
+    height: 180px;
+    display: table;
+    width: 100%;
+    background: url('/argon/assets/img/bg.png') center no-repeat;
+    background-size: cover;
+    h1 {
+      vertical-align: middle;
+      margin: 0 auto;
+      color: $color-white;
+    }
+  }
+  .modal__content {
+    padding: 40px;
+    h2 {
+      margin-top: 0;
+    }
+    p, a {
+      font-size: 14px;
+    }
+    a {
+      margin-right: 10px;
+      min-width: 100px;
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+    p:last-of-type {
+      margin-bottom: 30px;
+    }
+  }
+}

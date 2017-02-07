@@ -9,22 +9,38 @@
         <link rel="stylesheet" href="{{ asset('argon/assets/css/app.css') }}">
     </head>
     <body class="@yield('class')">
-        <div id="app">
-            <div class="container-fluid full-height">
-                <div class="row full-height">
-                    @include('argon::partials.sidebar')
-                    <div class="main">
-                        @if (isset($tabs))
-                            @include ('argon::partials.tabs')
-                        @endif
-                        <div class="container-fluid">
-                            <div class="row full-height">
-                                <div class="col-xs-10 col-xs-offset-1">
-                                    <div class="main__content">
-                                        @yield('body')
-                                    </div>
+        <div class="container-fluid full-height">
+            <div class="row full-height">
+                @include('argon::partials.sidebar')
+                <div class="main">
+                    @if (isset($tabs))
+                        @include ('argon::partials.tabs')
+                    @endif
+                    <div class="container-fluid">
+                        <div class="row full-height">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div class="main__content">
+                                    @yield('body')
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade">
+            <div class="modal__table">
+                <div class="modal__cell modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal__header">
+                            <div class="modal__cell">
+                                <h1>DO YOU WISH TO CONTINUE</h1>
+                            </div>
+                        </div>
+                        <div class="modal__content">
+                            <h2>Title to go here</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adip venenatis pellentesque accumsan.</p>
+                            <a href="#" class="form__btn form__btn--small form__btn--grey">NO</a><a href="#" class="form__btn form__btn--small form__btn--grey">YES</a>
                         </div>
                     </div>
                 </div>

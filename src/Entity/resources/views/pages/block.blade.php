@@ -25,9 +25,8 @@
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1">
                         <div class="footer__container">
-                            <div class="footer__right">
-                                <button type="submit" class="form__btn">SAVE</button>
-                            </div>
+                            <a href="{{ route('cms:pages:content', [$entity->id, $entityLocalisationId]) }}" class="form__btn form__btn--grey">CANCEL</a>
+                            <button type="submit" class="form__btn">SAVE</button>
                         </div>
                     </div>
                 </div>

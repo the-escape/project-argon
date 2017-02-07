@@ -4,10 +4,15 @@
             <div class="tabs">
                 <div class="tabs__header">
                     <h1>{{ $name }}</h1>
-                    <ul class="tabs__items">
-                        {!! $tabs !!}
-                    </ul>
+                    @if (isset($entity))
+                        <div class="tabs__revert">
+                            Last modified: {{ $entity->updated_at->format('d M Y') }}. <span><a href="#">Revert</a> to published state</span>
+                        </div>
+                    @endif
                 </div>
+                <ul class="tabs__items">
+                    {!! $tabs !!}
+                </ul>
             </div>
         </div>
     </div>

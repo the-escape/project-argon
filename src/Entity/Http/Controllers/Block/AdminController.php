@@ -35,19 +35,23 @@ class AdminController extends BaseController
         parent::__construct();
     }
 
-    public function edit($entityLocalisationId, $entityRevisionGroupId)
+    public function edit($entityId, $entityLocalisationId, $entityGroupId)
     {
         $this->addTabs([
-            new Tab('ATTRIBUTES', route('cms:pages:attributes', [1, $entityLocalisationId])),
-            new Tab('PAGE CONTENT', route('cms:pages:content', [1, $entityLocalisationId]), true),
-            new Tab('SEO', route('cms:pages:seo', [1, $entityLocalisationId])),
+            new Tab('ATTRIBUTES', route('cms:pages:attributes', [$entityId, $entityLocalisationId])),
+            new Tab('PAGE CONTENT', route('cms:pages:content', [$entityId, $entityLocalisationId]), true),
+            new Tab('SEO', route('cms:pages:seo', [$entityId, $entityLocalisationId])),
         ]);
 
         $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
 
-        $entity = $entityRevision->localisation->entity;
+        $entity = $this->entityRepository->find($entityId);
 
-        $entityRevisionGroup = $this->entityRevisionGroupRepository->find($entityRevisionGroupId);
+        $entityRevisionGroup = $this->entityRevisionGroupRepository
+            ->makeModel()
+            ->where('entity_revision_id', '=', $entityRevision->id)
+            ->where('entity_group_id', '=', $entityGroupId)
+            ->first();
 
         return view('argon.entity::pages.block', [
             'entity' => $entity,

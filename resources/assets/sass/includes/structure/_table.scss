@@ -198,15 +198,16 @@
       fill: $color-secondary-accent;
     }
   }
-  .ic-add {
-    transition: all .3s;
-    fill: $color-grey-accent;
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-    &:hover {
-      fill: $color-secondary-accent;
-    }
+}
+
+.ic-add {
+  transition: all .3s;
+  fill: $color-grey-accent;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  &:hover {
+    fill: $color-secondary-accent;
   }
 }
 

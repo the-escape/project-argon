@@ -7,6 +7,7 @@ use Escape\Argon\Core\Models\Tab;
 use Escape\Argon\Entity\Eloquent\EntityRepository;
 use Escape\Argon\Entity\Eloquent\EntityRevisionGroupRepository;
 use Escape\Argon\Entity\Eloquent\EntityRevisionRepository;
+use Illuminate\Http\Request;
 
 class ContentController extends BaseController
 {
@@ -63,7 +64,16 @@ class ContentController extends BaseController
         ]);
     }
 
-    public function update($entityLocalisationId)
+    public function update(Request $request, $entityLocalisationId)
+    {
+        $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
+
+        $this->entityRevisionGroupRepository->createGroups($entityRevision, json_decode($request->input('array')));
+
+        return redirect()->back();
+    }
+
+    public function publish($entityLocalisationId)
     {
         $this->entityRevisionRepository->publishDraft($entityLocalisationId);
 

@@ -5,10 +5,6 @@ $(function () {
         resultContainer = searchForm.find('.search__results'),
         resultList = resultContainer.find('ul');
 
-    $(document).on('click', function (e) {
-        console.log(e);
-    });
-
     /**
      * TABLE SEARCH
      */
@@ -34,9 +30,29 @@ $(function () {
         }, 300);
     });
     searchInput.on('blur', function () {
-        $(this).val('');
-        resultList.html('');
-        resultContainer.hide();
+        if (!$('.search__results:hover').length) {
+            $(this).val('');
+            resultList.html('');
+            resultContainer.hide();
+        }
+    });
+
+    $('body').on('click', '.search__result', function (e) {
+        e.preventDefault();
+        let self = $(this),
+            pageId = self.data('id'),
+            pageParent = self.data('parent');
+        if (pageId == undefined || pageParent == undefined) {
+            return null;
+        }
+        let row = $('.table__page[data-id="' + pageId + '"]'),
+            rows = $('.table__page[data-parent="' + pageParent + '"]');
+        $('.table__page--active').removeClass('table__page--active');
+        row.addClass('table__page--active');
+        findPage(rows);
+        $.scrollTo(row, 600);
+        $('.search__results').hide();
+        $('.search__results ul').html('');
     });
 
     /**
@@ -115,6 +131,18 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip({
         trigger: 'hover'
     });
+
+    function findPage(rows) {
+        rows.each(function (i, v) {
+            let row = $(v),
+                parents = $('.table__page[data-id="' + row.data('parent') + '"]');
+            parents.each(function (i, v) {
+                $(v).find('.table__level').attr('class', 'table__level table__level--open');
+            });
+            row.show();
+            findPage(parents);
+        });
+    }
 
     function collapseLevels(level, pageId) {
         level++;
