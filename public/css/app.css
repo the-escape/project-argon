@@ -9482,10 +9482,10 @@ textarea {
 }
 
 .ic {
-  display: inline-block;
   vertical-align: middle;
-  margin: 4px 10px 0 0;
   fill: #b6b6b6;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .ic.ic__clone {
@@ -9503,12 +9503,25 @@ textarea {
 .ic.ic__create {
   width: 24px;
   height: 24px;
-  background: url("/argon/assets/img/icons/add-grey.png") center/24px no-repeat;
-  fill: #b6b6b6;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
-svg {
+.ic.ic__create:hover svg {
+  fill: #808080;
+}
+
+.ic .ic-add {
+  -webkit-transition: all .3s;
+  transition: all .3s;
   fill: #b6b6b6;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.ic .ic-add:hover {
+  fill: #808080;
 }
 
 .status {

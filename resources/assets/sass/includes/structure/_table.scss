@@ -177,10 +177,9 @@
 }
 
 .ic {
-  display: inline-block;
   vertical-align: middle;
-  margin: 4px 10px 0 0;
   fill: $color-grey-accent;
+  transition: all .3s;
   &.ic__clone {
     width: 22px;
     height: 22px;
@@ -194,13 +193,21 @@
   &.ic__create {
     width: 24px;
     height: 24px;
-    background: url('/argon/assets/img/icons/add-grey.png') center / 24px no-repeat;
-    fill: $color-grey-accent;
+    transition: all .3s;
+    &:hover svg {
+      fill: $color-secondary-accent;
+    }
   }
-}
-
-svg {
-  fill: $color-grey-accent;
+  .ic-add {
+    transition: all .3s;
+    fill: $color-grey-accent;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    &:hover {
+      fill: $color-secondary-accent;
+    }
+  }
 }
 
 .status {
