@@ -124,14 +124,6 @@ $(function () {
             });
     });
 
-    $('.form__select').select2({
-        minimumResultsForSearch: Infinity
-    });
-
-    $('[data-toggle="tooltip"]').tooltip({
-        trigger: 'hover'
-    });
-
     function findPage(rows) {
         rows.each(function (i, v) {
             let row = $(v),

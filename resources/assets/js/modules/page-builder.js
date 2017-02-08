@@ -1,6 +1,8 @@
 $(function () {
+
     let entityGroups = document.getElementById('entity-groups'),
         entityRevisionGroups = document.getElementById('entity-revision-groups');
+
     if (entityGroups) {
         Sortable.create(entityGroups, {
             group: {
@@ -11,6 +13,7 @@ $(function () {
             ghostClass: 'block--ghost'
         });
     }
+
     if (entityRevisionGroups) {
         Sortable.create(entityRevisionGroups, {
             group: {
@@ -24,18 +27,21 @@ $(function () {
             }
         });
     }
+
     $('.block__add').on('click', function (e) {
         e.preventDefault();
         let block = $(this).parents('.block');
         block.appendTo('#entity-revision-groups');
         updateBlockArray(block.data('id'));
     });
+
     $('.block__delete').on('click', function (e) {
         e.preventDefault();
         let block = $(this).parents('.block');
         block.appendTo('#entity-groups');
         updateBlockArray(block.data('id'));
     });
+
     $('.blocks__search').on('keyup', function () {
         let self = $(this);
         self.parents('.blocks').find('li').each(function () {
@@ -47,10 +53,12 @@ $(function () {
             }
         });
     });
-    $('.form__btn--grey').on('click', function (e) {
+
+    $('.blocks__cancel').on('click', function (e) {
         e.preventDefault();
-        $('.modal').modal();
+        //$('.modal').modal();
     });
+
     function updateBlockArray(itemId) {
         let blocks = $(entityRevisionGroups).find('.block'),
             currentArray = $('input[name="array"]'),

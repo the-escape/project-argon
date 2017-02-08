@@ -4,6 +4,7 @@ require('bootstrap-sass')
 require('jquery.scrollto')
 require('select2')
 
+require('./modules/global')
 require('./modules/sidebar')
 require('./modules/sitemap')
-require('./modules/pagebuilder')
+require('./modules/page-builder')

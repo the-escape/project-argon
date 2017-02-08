@@ -13,10 +13,19 @@ class EntityRevisionGroupRepository extends BaseRepository
 
     public function createGroups(EntityRevision $entityRevision, array $entityGroupIds)
     {
-        $entityRevisionGroups = $entityRevision->entityRevisionGroups;
+        $entityGroupIds = array_combine($entityGroupIds, $entityGroupIds);
 
-        foreach ($entityRevisionGroups as $entityRevisionGroup) {
-            $this->delete($entityRevisionGroup->id);
+        $entityRevisionGroups = $entityRevision->entityRevisionGroups
+            ->keyBy('entity_group_id');
+
+        foreach ($entityRevisionGroups as $entityGroupId => $entityRevisionGroup) {
+
+            if (!in_array($entityGroupId, $entityGroupIds)) {
+                $this->delete($entityRevisionGroup->id);
+                continue;
+            }
+
+            unset($entityGroupIds[$entityGroupId]);
         }
 
         $entityRevisionGroups = [];
