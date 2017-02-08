@@ -59,6 +59,7 @@ class ContentController extends BaseController
             'entityLocalisationId' => $entityLocalisationId,
             'name' => $entity->name,
             'entityGroups' => $entityGroups,
+            'entityRevision' => $entityRevision,
             'entityRevisionGroups' => $entityRevisionGroups,
             'entityRevisionGroupIds' => $entityRevisionGroupIds,
         ]);
@@ -67,6 +68,8 @@ class ContentController extends BaseController
     public function update(Request $request, $entityLocalisationId)
     {
         $entityRevision = $this->entityRevisionRepository->createDraft($entityLocalisationId);
+
+        $entityRevision->touch();
 
         $this->entityRevisionGroupRepository->createGroups($entityRevision, json_decode($request->input('array')));
 

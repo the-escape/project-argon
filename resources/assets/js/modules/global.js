@@ -1,3 +1,16 @@
+let dirtyElem = $('meta[name="_dirty"]');
+
+window.argon = {
+    setDirty: function(status) {
+        let dirty = status ? 1 : 0;
+        dirtyElem.attr('content', dirty);
+        return true;
+    },
+    isDirty: function() {
+        return !!+dirtyElem.attr('content');
+    }
+};
+
 /**
  * Enable select 2 on the select boxes.
  */
@@ -12,26 +25,30 @@ $('[data-toggle="tooltip"]').tooltip({
     trigger: 'hover'
 });
 
+$('[data-toggle="modal"]').on('click', function (e) {
+    e.preventDefault();
+});
+
+$('.modal__link').on('click', function (e) {
+    e.preventDefault();
+    let href = $(this).attr('href'),
+        modal = $('.modal');
+    if (argon.isDirty() && !modal.is(':visible')) {
+        modal.data('href', href);
+        modal.modal();
+    } else {
+        window.location.href = href;
+    }
+});
+
 /**
  * Generic modal logic.
  */
 $('.modal').on('show.bs.modal', function (e) {
     let self = $(this),
-        triggerElem = $(e.relatedTarget),
-        title = triggerElem.data('title'),
-        subtitle = triggerElem.data('subtitle'),
-        message = triggerElem.data('message'),
-        url = triggerElem.data('url');
-    if (title != undefined) {
-        self.find('.modal__title').text(title);
-    }
-    if (subtitle != undefined) {
-        self.find('.modal__subtitle').text(subtitle);
-    }
-    if (message != undefined) {
-        self.find('.modal__message').text(message);
-    }
-    if (url != undefined) {
-        self.find('.modal__confirm').attr('href', url);
+        href = self.data('href');
+
+    if (href != undefined) {
+        self.find('.modal__confirm').attr('href', href);
     }
 });

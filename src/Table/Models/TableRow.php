@@ -121,10 +121,10 @@ class TableRow
             $this->setData($data);
         }
 
-        $viewData = [
+        $viewData = array_merge([
             'row' => $this,
             'columns' => $columns,
-        ] + $viewData;
+        ], $viewData);
 
         return view($rowView)->with($viewData);
     }

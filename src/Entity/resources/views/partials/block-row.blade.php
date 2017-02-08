@@ -1,6 +1,6 @@
 <li class="block" data-id="{{ $entityGroup->id }}" data-name="{{ $entityGroup->name }}">
     <div class="block__overlay">
-        <a href="{{ route('cms:pages:block', [$entity->id, $entityLocalisationId, $entityGroup->id]) }}" class="block__edit">Edit block content</a>
+        <a href="{{ route('cms:pages:block', [$entity->id, $entityLocalisationId, $entityGroup->id]) }}" class="block__edit modal__link">Edit block content</a>
         <div class="block__actions">
             <a href="#" class="block__delete"></a>
             <span class="drag">

@@ -4,8 +4,7 @@ namespace Escape\Argon\Entity;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Entity\Http\Controllers\AttributeController;
-use Escape\Argon\Entity\Http\Controllers\Block\AdminController;
-use Escape\Argon\Entity\Http\Controllers\Block\ApiController;
+use Escape\Argon\Entity\Http\Controllers\BlockController;
 use Escape\Argon\Entity\Http\Controllers\ContentController;
 use Escape\Argon\Entity\Http\Controllers\PageController;
 use Escape\Argon\Entity\FieldTypes\ComboFieldType;
@@ -64,48 +63,25 @@ class EntityServiceProvider extends AbstractPluginServiceProvider
         );
 
         $this->addRoute(
+            'pages/{entityId}/revert/{entityLocalisationId}',
+            'cms:pages:revert',
+            PageController::class,
+            'revert'
+        );
+
+        $this->addRoute(
             'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
             'cms:pages:block',
-            AdminController::class,
+            BlockController::class,
             'edit'
         );
 
         $this->addRoute(
             'pages/{entityId}/block/{entityLocalisationId}/{entityGroupId}',
             'cms:pages:block:update',
-            AdminController::class,
+            BlockController::class,
             'update',
             'post'
-        );
-
-        $this->addRoute(
-            'api/blocks/{entityLocalisationId}',
-            'api:blocks',
-            ApiController::class,
-            'index'
-        );
-
-        $this->addRoute(
-            'api/blocks/{entityLocalisationId}/add',
-            'api:blocks:add',
-            ApiController::class,
-            'store',
-            'post'
-        );
-
-        $this->addRoute(
-            'api/blocks/{entityLocalisationId}/remove/{entityGroupId}',
-            'api:blocks:remove',
-            ApiController::class,
-            'destroy',
-            'delete'
-        );
-
-        $this->addRoute(
-            'api/entity-group/{entityTypeId}',
-            'api:entity-group:index',
-            ApiController::class,
-            'entityGroups'
         );
 
         $this->addRoute(

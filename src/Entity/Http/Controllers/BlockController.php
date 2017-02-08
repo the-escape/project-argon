@@ -1,6 +1,6 @@
 <?php
 
-namespace Escape\Argon\Entity\Http\Controllers\Block;
+namespace Escape\Argon\Entity\Http\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Core\Models\Tab;
@@ -11,7 +11,7 @@ use Escape\Argon\Entity\Eloquent\EntityRevisionRepository;
 use Escape\Argon\Entity\Eloquent\FieldDataRepository;
 use Illuminate\Http\Request;
 
-class AdminController extends BaseController
+class BlockController extends BaseController
 {
     protected $entityRepository;
     protected $entityGroupRepository;

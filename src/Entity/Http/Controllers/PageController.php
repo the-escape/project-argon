@@ -8,6 +8,7 @@ use Escape\Argon\Entity\Criterias\SearchCriteria;
 use Escape\Argon\Entity\Eloquent\Entity;
 use Escape\Argon\Entity\Eloquent\EntityRepository;
 use Escape\Argon\Entity\Eloquent\EntityRevision;
+use Escape\Argon\Entity\Eloquent\EntityRevisionRepository;
 use Escape\Argon\Entity\Eloquent\EntityTypeRepository;
 use Escape\Argon\Table\Models\Table;
 use Escape\Argon\Table\Models\TableRow;
@@ -19,13 +20,16 @@ class PageController extends BaseController
     protected $table;
     protected $entityRepository;
     protected $entityTypeRepository;
+    protected $entityRevisionRepository;
 
     public function __construct(
         EntityRepository $entityRepository,
-        EntityTypeRepository $entityTypeRepository)
+        EntityTypeRepository $entityTypeRepository,
+        EntityRevisionRepository $entityRevisionRepository)
     {
         $this->entityRepository = $entityRepository;
         $this->entityTypeRepository = $entityTypeRepository;
+        $this->entityRevisionRepository = $entityRevisionRepository;
 
         $this->table = new Table();
 
@@ -137,6 +141,19 @@ class PageController extends BaseController
         ];
 
         return $row->render($this->table->getColumns(), 'argon.entity::partials.row', $viewData);
+    }
+
+    public function revert($entityId, $entityLocalisationId)
+    {
+        $latestEntityRevision = $this->entityRevisionRepository->getLatestRevision($entityLocalisationId);
+
+        if ($latestEntityRevision->isStatus(EntityRevision::STATUS_DRAFT)) {
+            $this->entityRevisionRepository->delete($latestEntityRevision->id);
+        }
+
+        $this->entityRevisionRepository->createDraft($entityLocalisationId, true);
+
+        return redirect()->back();
     }
 
     /**

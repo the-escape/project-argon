@@ -22,8 +22,8 @@ $(function () {
                 put: true
             },
             ghostClass: 'block--ghost',
-            onSort: function (event, originalEvent) {
-                //
+            onSort: function () {
+                updateBlockArray();
             }
         });
     }
@@ -32,14 +32,14 @@ $(function () {
         e.preventDefault();
         let block = $(this).parents('.block');
         block.appendTo('#entity-revision-groups');
-        updateBlockArray(block.data('id'));
+        updateBlockArray();
     });
 
     $('.block__delete').on('click', function (e) {
         e.preventDefault();
         let block = $(this).parents('.block');
         block.appendTo('#entity-groups');
-        updateBlockArray(block.data('id'));
+        updateBlockArray();
     });
 
     $('.blocks__search').on('keyup', function () {
@@ -54,12 +54,7 @@ $(function () {
         });
     });
 
-    $('.blocks__cancel').on('click', function (e) {
-        e.preventDefault();
-        //$('.modal').modal();
-    });
-
-    function updateBlockArray(itemId) {
+    function updateBlockArray() {
         let blocks = $(entityRevisionGroups).find('.block'),
             currentArray = $('input[name="array"]'),
             blockArray = [];
@@ -70,5 +65,6 @@ $(function () {
         if (currentArray.val() != json) {
             currentArray.val(JSON.stringify(blockArray));
         }
+        argon.setDirty(true);
     }
 });

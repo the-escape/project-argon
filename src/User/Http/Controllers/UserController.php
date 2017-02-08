@@ -23,22 +23,16 @@ class UserController extends BaseController
 
     function setMiddleware()
     {
-        return [
-            'perm:cms:login',
-            'perm:cms:user:manage',
-        ];
-    }
-
-    public function setTabs()
-    {
-        return [
-            new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
-            new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
-        ];
+        return [];
     }
 
     public function index()
     {
+        $this->addTabs([
+            new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
+            new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
+        ]);
+
         // Get all users.
         $users = $this->userRepository->all();
 

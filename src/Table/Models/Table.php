@@ -6,10 +6,9 @@ class Table
 {
     private $className;
     private $rowView = 'argon.table::partials.row';
-    private $actions = false;
     private $rows = [];
     private $columns = [];
-    private $data;
+    private $data = [];
 
     public function setClassName($className)
     {
@@ -30,11 +29,6 @@ class Table
     public function addRow(TableRow $row)
     {
         $this->rows[] = $row;
-    }
-
-    public function getRows()
-    {
-
     }
 
     public function getColumns()

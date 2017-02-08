@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Entity\Eloquent;
 
+use Carbon\Carbon;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class EntityRevisionRepository extends BaseRepository
@@ -24,13 +25,7 @@ class EntityRevisionRepository extends BaseRepository
         ])->sortByDesc('created_at')->first();
     }
 
-    /**
-     * Creates a new draft revision and deletes the previous.
-     *
-     * @param int $entityLocalisationId
-     * @return EntityRevision
-     */
-    public function createDraft($entityLocalisationId)
+    public function createDraft($entityLocalisationId, $timestamps = false)
     {
         $entityRevision = $this->getLatestRevision($entityLocalisationId);
 
@@ -39,11 +34,17 @@ class EntityRevisionRepository extends BaseRepository
         }
 
         // Create the new draft revision.
-        $entityRevisionDraft = $this->create([
+        $entityRevisionDraft = $this->makeModel()->fill([
             'entity_localisation_id' => $entityLocalisationId,
             'status' => EntityRevision::STATUS_DRAFT,
             'created_by' => 1,
         ]);
+
+        if ($timestamps) {
+            $entityRevisionDraft->setCreatedAt($entityRevision->created_at);
+            $entityRevisionDraft->setUpdatedAt($entityRevision->updated_at);
+            $entityRevisionDraft->save();
+        }
 
         foreach ($entityRevision->fieldData as $fieldData) {
             $fieldData->fill(['id' => null, 'entity_revision_id' => $entityRevisionDraft->id])->save();

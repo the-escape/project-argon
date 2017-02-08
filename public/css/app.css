@@ -9804,7 +9804,6 @@ textarea {
 
 .blocks {
   background-color: #f0f0f0;
-  border: 1px solid #d8d8d8;
   float: left;
   margin-top: 30px;
   width: 100%;
@@ -9815,15 +9814,13 @@ textarea {
   height: 500px;
   overflow: scroll;
   width: 100%;
+  border-right: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+  border-left: 1px solid #d8d8d8;
 }
 
 .blocks .form__group {
   margin: 0;
-  border-bottom: 1px solid #d8d8d8;
-}
-
-.blocks .form__group .form__text {
-  border: none;
 }
 
 .blocks ul {

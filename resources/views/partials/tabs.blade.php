@@ -4,9 +4,9 @@
             <div class="tabs">
                 <div class="tabs__header">
                     <h1>{{ $name }}</h1>
-                    @if (isset($entity))
+                    @if (isset($entityRevision) && isset($entityLocalisationId))
                         <div class="tabs__revert">
-                            Last modified: {{ $entity->updated_at->format('d M Y') }}. <span><a href="#">Revert</a> to published state</span>
+                            Last modified: {{ $entityRevision->updated_at->format('d M Y \a\t H:i:s') }}. <span><a href="{{ route('cms:pages:revert', [$entity->id, $entityLocalisationId]) }}">Revert</a> to published state</span>
                         </div>
                     @endif
                 </div>

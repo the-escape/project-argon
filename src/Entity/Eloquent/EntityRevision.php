@@ -20,7 +20,7 @@ class EntityRevision extends Model
      *
      * @var array
      */
-    protected $fillable = ['entity_localisation_id', 'status', 'created_by'];
+    protected $fillable = ['entity_localisation_id', 'status', 'created_at', 'updated_at', 'created_by'];
 
     public function isStatus($statusId)
     {
