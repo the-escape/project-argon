@@ -43,8 +43,11 @@ textarea {
     width: 290px;
 }
 
-.form .form__text {
-    width: 40%;
+.form {
+    .form__text,
+    .form__select {
+        width: 40%;
+    }
 }
 
 .form__text {
@@ -81,7 +84,7 @@ textarea {
     }
 }
 
-.textarea {
+.form__text--area {
     height: auto;
     padding: 9px 11px;
 }

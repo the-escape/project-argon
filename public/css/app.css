@@ -8705,7 +8705,8 @@ textarea {
   width: 290px;
 }
 
-.form .form__text {
+.form .form__text,
+.form .form__select {
   width: 40%;
 }
 
@@ -8749,7 +8750,7 @@ textarea {
   background: #12a3c7 url("/argon/assets/img/ic-search-w.png") center/20px no-repeat;
 }
 
-.textarea {
+.form__text--area {
   height: auto;
   padding: 9px 11px;
 }
@@ -9852,7 +9853,7 @@ textarea {
   width: 100%;
   border-bottom: 1px solid #d8d8d8;
   background-color: #ffffff;
-  height: 60px;
+  height: 61px;
 }
 
 .blocks ul .block.block__revision:hover .block__edit {
@@ -9976,8 +9977,8 @@ textarea {
 
 .blocks ul .block .block__img {
   float: left;
-  height: 59px;
-  width: 120px;
+  height: 60px;
+  width: 121px;
   border-right: 1px solid #d8d8d8;
   background-color: #ffffff;
 }
