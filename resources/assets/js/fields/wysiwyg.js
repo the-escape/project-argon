@@ -1,20 +1,8 @@
-let wysiwyg = {
-    init: function (e) {
+// Set base URL for assets.
+tinymce.baseURL = '/argon/assets/js/tinymce/';
 
-        let elem = $(e);
+// Init the WYSIWYG.
+tinymce.init({
+    selector: '.form__wysiwyg',
 
-        CKEDITOR.basePath = '/argon/assets/js/ckeditor/';
-        CKEDITOR.config.contentsCss = CKEDITOR.basePath + 'contents.css';
-        CKEDITOR.config.skin = 'moono-lisa';
-
-        CKEDITOR.replace(e, CKEDITOR.config);
-
-        if (elem.hasClass('error')) {
-            elem.parent().addClass('error');
-        }
-    }
-};
-
-$('.form__wysiwyg').each(function (i, e) {
-    wysiwyg.init(e);
 });

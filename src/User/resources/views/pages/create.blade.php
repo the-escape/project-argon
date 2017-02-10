@@ -1,8 +1,6 @@
 @extends('argon::layouts.master')
 @section('body')
-    <div class="actions">
-        <span>Create new user</span>
-    </div>
+    <div class="actions">Create new user</div>
     <form class="form" action="{{ route('cms:user:store') }}" method="post">
         {{ csrf_field() }}
         <div class="form__group">
@@ -46,8 +44,9 @@
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1">
                         <div class="footer__container">
+                            <a href="{{ route('cms:user:manage') }}" class="form__btn form__btn--grey">CANCEL</a>
                             <div class="footer__right">
-                                <a href="{{ route('cms:user:manage') }}" class="form__btn form__btn--grey">CANCEL</a><button type="submit" class="form__btn">SAVE</button>
+                                <button type="submit" class="form__btn">SAVE</button>
                             </div>
                         </div>
                     </div>

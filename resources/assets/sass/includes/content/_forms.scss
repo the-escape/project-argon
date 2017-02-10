@@ -45,7 +45,9 @@ textarea {
 
 .form {
     .form__text,
-    .form__select {
+    .form__select,
+    .form__wysiwyg,
+    .mce-tinymce {
         width: 40%;
     }
 }

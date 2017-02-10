@@ -1,5 +1,6 @@
 $(function () {
-    let searchTimer = null,
+    let body = $('body'),
+        searchTimer = null,
         searchInput = $('.search__input'),
         searchForm = searchInput.parents('form'),
         resultContainer = searchForm.find('.search__results'),
@@ -37,7 +38,7 @@ $(function () {
         }
     });
 
-    $('body').on('click', '.search__result', function (e) {
+    body.on('click', '.search__result', function (e) {
         e.preventDefault();
         let self = $(this),
             pageId = self.data('id'),
@@ -60,40 +61,47 @@ $(function () {
      */
 
     $('.table__page').on('click', function (e) {
+
         let target = $(e.target);
+
         if (target.hasClass('ic') || target.hasClass('form__btn')) {
-            return null;
+            return false;
         }
+
         e.preventDefault();
+
         let self = $(this),
             levelElem = self.find('.table__level'),
             pageId = self.data('id'),
             level = self.data('level'),
             rows = $('.table__page[data-level="' + (level + 1) + '"][data-parent="' + pageId + '"]');
+
+        $('.table__page--active').removeClass('table__page--active');
+
         if (rows.length > 0) {
             if (levelElem.hasClass('table__level--collapsed')) {
                 levelElem.attr('class', 'table__level table__level--open');
                 rows.show();
             } else if (levelElem.hasClass('table__level--open')) {
                 levelElem.attr('class', 'table__level table__level--collapsed');
+                levelElem.parents('.table__page').next('.table__reveal').find('.table__page-attributes').removeClass('table__page--attributes-show');
                 collapseLevels(level, pageId);
             }
         }
     });
 
     $('.ic__create').on('click', function (e) {
+
         e.preventDefault();
+        e.stopPropagation();
+
         let pageId = $(this).parents('tr').data('id'),
             page = $('.table__reveal[data-id="' + pageId + '"]').find('.table__page-attributes');
+
         $('.table__page-attributes').removeClass('table__page--attributes-show');
         $('.table__page').removeClass('table__page--active');
-        if (page.hasClass('table__page--attributes-show')) {
-            page.removeClass('table__page--attributes-show');
-            page.parents('.table__reveal').prev('.table__page').removeClass('table__page--active');
-        } else {
-            page.addClass('table__page--attributes-show');
-            page.parents('.table__reveal').prev('.table__page').addClass('table__page--active');
-        }
+
+        page.addClass('table__page--attributes-show');
     });
 
     $('.table__reveal-cancel').on('click', function (e) {
@@ -101,6 +109,10 @@ $(function () {
         $('.table__page-attributes').removeClass('table__page--attributes-show');
         $('.table__page').removeClass('table__page--active');
     });
+
+    /**
+     *  CREATE PAGE
+     */
 
     $('.page__create').on('submit', function (e) {
         e.preventDefault();
@@ -117,12 +129,22 @@ $(function () {
         });
         $.post(self.attr('action'), data)
             .done(function (data) {
-                let row = $(data);
-                parent.find('.table__reveal-cancel').trigger('click');
-                row.removeClass('table__page--hidden');
-                parent.after(row);
+                appendRow(parent, $(data));
             });
     });
+
+    function appendRow(parent, row) {
+        parent.find('.table__reveal-cancel').trigger('click');
+        row.removeClass('table__page--hidden');
+        parent.after(row);
+
+        let levelElem = parent.prev('.table__page').find('.table__level');
+
+        if (levelElem.hasClass('table__level--end')) {
+            levelElem.removeClass('table__level--end');
+            levelElem.addClass('table__level--open');
+        }
+    }
 
     function findPage(rows) {
         rows.each(function (i, v) {

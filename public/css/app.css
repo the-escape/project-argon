@@ -8706,7 +8706,9 @@ textarea {
 }
 
 .form .form__text,
-.form .form__select {
+.form .form__select,
+.form .form__wysiwyg,
+.form .mce-tinymce {
   width: 40%;
 }
 

@@ -1,7 +1,7 @@
 window.$ = window.jQuery = require('jquery')
 window.Sortable = require('sortablejs')
 require('bootstrap-sass')
-require('ckeditor')
+require('tinymce')
 require('jquery.scrollto')
 require('select2')
 

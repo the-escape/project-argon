@@ -30,7 +30,7 @@ class UserController extends BaseController
     {
         $this->addTabs([
             new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
-            new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
+            new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create'), false),
         ]);
 
         // Get all users.
@@ -71,6 +71,11 @@ class UserController extends BaseController
 
     public function create()
     {
+        $this->addTabs([
+            new Tab('ALL USERS', action('\Escape\Argon\User\Http\Controllers\UserController@index')),
+            new Tab('NEW USER', action('\Escape\Argon\User\Http\Controllers\UserController@create')),
+        ]);
+
         return view('argon.user::pages.create')->with([
             'name' => 'Users',
         ]);

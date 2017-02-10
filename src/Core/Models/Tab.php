@@ -2,21 +2,19 @@
 
 namespace Escape\Argon\Core\Models;
 
-use Illuminate\Http\Request;
-
 class Tab
 {
     const CLASS_ACTIVE = 'active';
 
     private $label;
     private $url;
-    private $forceActive;
+    private $active;
 
-    public function __construct($label, $url, $forceActive = false)
+    public function __construct($label, $url, $active = null)
     {
         $this->label = $label;
         $this->url = $url;
-        $this->forceActive = $forceActive;
+        $this->active = $active;
     }
 
     public function getLabel()
@@ -31,11 +29,11 @@ class Tab
 
     public function isActive()
     {
-        if ($this->forceActive) {
+        if ($this->active === true) {
             return self::CLASS_ACTIVE;
         }
 
-        if (is_null($this->url)) {
+        if ($this->active === false || is_null($this->url)) {
             return '';
         }
 
