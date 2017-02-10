@@ -22,6 +22,16 @@ class MediaController extends BaseController
         "image/gif"
     ];
 
+    public function setMiddleware()
+    {
+        return [];
+    }
+
+    public function index()
+    {
+        return view('argon.media::index');
+    }
+
     public function manage(MediaFolderRepository $folderRepository)
     {
         $media = [];

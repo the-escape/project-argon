@@ -20,6 +20,11 @@
                 </a>
             </li>
             <li class="sidebar__nav-item">
+                <a class="sidebar__nav-link ic-me" href="/admin/media">
+                    <span>Media library</span>
+                </a>
+            </li>
+            <li class="sidebar__nav-item">
                 <a class="sidebar__nav-link ic-us" href="/admin/users">
                     <span>Users</span>
                 </a>

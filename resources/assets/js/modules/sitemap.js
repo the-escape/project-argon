@@ -63,9 +63,9 @@ $(function () {
     $('.table__page').on('click', function (e) {
 
         let target = $(e.target);
-
+console.log(target);
         if (target.hasClass('ic') || target.hasClass('form__btn')) {
-            return false;
+            return null;
         }
 
         e.preventDefault();

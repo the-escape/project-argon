@@ -14,9 +14,9 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
     {
         $this->addRoute(
             'media',
-            'cms:media:manage',
+            'cms:media:index',
             MediaController::class,
-            'manage'
+            'index'
         );
         $this->addRoute(
             'media/upload',
@@ -58,12 +58,6 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'deleteFolder',
             Request::METHOD_DELETE
         );
-//        $this->addRoute(
-//            'locales/set/{localeId}',
-//            'cms:locales:set',
-//            LocalesController::class,
-//            'set'
-//        );
         $this->addRoute(
             'media/browser',
             'cms:media:browse',
@@ -74,7 +68,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 
     public function startup()
     {
-        $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
+        $this->loadViewsFrom(__DIR__ . '/resouces/views', 'argon.media');
 
         $this->pluginManager->registerNavLink('Media Library', route('cms:media:manage'), 'cms:content:manage');
 
