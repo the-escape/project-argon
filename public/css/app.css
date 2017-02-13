@@ -9083,6 +9083,7 @@ textarea {
   margin: 0 auto;
   pointer-events: all;
   text-align: center;
+  border: 0;
 }
 
 .modal .modal__header {
