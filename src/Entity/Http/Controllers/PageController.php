@@ -148,7 +148,7 @@ class PageController extends BaseController
         $latestEntityRevision = $this->entityRevisionRepository->getLatestRevision($entityLocalisationId);
 
         if ($latestEntityRevision->isStatus(EntityRevision::STATUS_DRAFT)) {
-            $this->entityRevisionRepository->delete($latestEntityRevision->id);
+            $latestEntityRevision->forceDelete();
         }
 
         $this->entityRevisionRepository->createDraft($entityLocalisationId, true);

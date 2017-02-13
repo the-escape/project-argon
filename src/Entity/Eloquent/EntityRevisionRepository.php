@@ -43,15 +43,26 @@ class EntityRevisionRepository extends BaseRepository
         if ($timestamps) {
             $entityRevisionDraft->setCreatedAt($entityRevision->created_at);
             $entityRevisionDraft->setUpdatedAt($entityRevision->updated_at);
-            $entityRevisionDraft->save();
         }
 
+        $entityRevisionDraft->save();
+
         foreach ($entityRevision->fieldData as $fieldData) {
-            $fieldData->fill(['id' => null, 'entity_revision_id' => $entityRevisionDraft->id])->save();
+            $fieldDataClone = new FieldData();
+            $fieldDataClone->field_id = $fieldData->field_id;
+            $fieldDataClone->entity_revision_id = $entityRevisionDraft->id;
+            $fieldDataClone->language = $fieldData->language;
+            $fieldDataClone->value = $fieldData->value;
+            $fieldDataClone->save();
         }
 
         foreach ($entityRevision->entityRevisionGroups as $entityRevisionGroup) {
-            $entityRevisionGroup->fill(['id' => null, 'entity_revision_id' => $entityRevisionDraft->id])->save();
+            $entityRevisionGroupClone = new EntityRevisionGroup();
+            $entityRevisionGroupClone->entity_revision_id = $entityRevisionDraft->id;
+            $entityRevisionGroupClone->entity_group_id = $entityRevisionGroup->entity_group_id;
+            $entityRevisionGroupClone->status = $entityRevisionGroup->status;
+            $entityRevisionGroupClone->order = $entityRevisionGroup->order;
+            $entityRevisionGroupClone->save();
         }
 
         return $entityRevisionDraft;

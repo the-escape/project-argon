@@ -45,7 +45,7 @@ class Localisation extends Model
         if (!is_null($revisionId)) {
             $revision = $revision->where('id', '=', $revisionId);
         } else {
-            $revision = $revision->whereIn('status', [RevisionStatus::DRAFT, RevisionStatus::PUBLISHED]);
+            $revision = $revision->whereIn('status', [EntityRevision::STATUS_PUBLISHED]);
         }
 
         $revision = $revision->orderBy('created_at', 'desc')->first();

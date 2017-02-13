@@ -75,6 +75,7 @@ class BlockController extends BaseController
         $fields = $entityRevisionGroup->entityGroup->fields;
 
         $entityRevisionGroup->status = $request->input('status');
+        //dd($request->all());
         $entityRevisionGroup->save();
 
         foreach ($fields as $field) {

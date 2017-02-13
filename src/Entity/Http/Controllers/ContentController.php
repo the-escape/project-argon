@@ -73,6 +73,10 @@ class ContentController extends BaseController
 
         $this->entityRevisionGroupRepository->createGroups($entityRevision, json_decode($request->input('array')));
 
+        if ($request->exists('publish')) {
+            $this->entityRevisionRepository->publishDraft($entityLocalisationId);
+        }
+
         return redirect()->back();
     }
 

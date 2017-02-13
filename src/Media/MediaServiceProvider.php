@@ -14,7 +14,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
     {
         $this->addRoute(
             'media',
-            'cms:media:index',
+            'cms:media:manage',
             MediaController::class,
             'index'
         );

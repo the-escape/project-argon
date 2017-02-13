@@ -94,13 +94,17 @@ class Entity extends Model
 
     public function getGroups($locale_id)
     {
-        $repo = app()->make(EntityGroupRepository::class);
+        $repo = app()->make(EntityRevisionGroupRepository::class);
+        /*
         $groups =  $repo->getUsedGroupsByEntityType($this->type->id, ['order', 'id'])->each(
             function (EntityGroup $item) {
                 $item->setEntity($this);
             }
         );
+        */
 
+
+        /*
         if (($this->group_order instanceof stdClass) && property_exists($this->group_order, $locale_id)) {
             $group_order = array_filter(explode(',', $this->group_order->$locale_id));
 
@@ -122,8 +126,8 @@ class Entity extends Model
 
             $groups = $ordered;
         }
-
-        return $groups;
+        */
+        //return $groups;
     }
 
     public function getSortableGroups($locale_id)
@@ -157,6 +161,8 @@ class Entity extends Model
 
     public function getRenderableGroups($locale_id)
     {
+
+
         return $this->getGroups($locale_id)->filter(function ($group) {
             return $group->isRenderable();
         });
