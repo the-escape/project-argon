@@ -9993,4 +9993,58 @@ textarea {
   padding: 0 10px;
 }
 
+.media {
+  min-height: 500px;
+  margin-top: 30px;
+  position: relative;
+  border: 1px solid #b6b6b6;
+}
+
+.media .media__tree {
+  width: 30%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-right: 1px solid #b6b6b6;
+  overflow: scroll;
+}
+
+.media .media__tree ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.media .media__tree ul li .media__folder {
+  display: block;
+  width: 100%;
+  padding: 5px 5px 5px 40px;
+  border-bottom: 1px solid #b6b6b6;
+  background: url("/argon/assets/img/icons/folder-small.png") 10px center/20px 14px no-repeat;
+  color: #1f1f1f;
+}
+
+.media .media__tree ul li .media__folder.media__folder--active {
+  background-color: #f0f0f0;
+}
+
+.media .media__tree ul li .media__folder:hover {
+  background-color: #f0f0f0;
+}
+
+.media .media__browser {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 30%;
+  padding: 30px;
+}
+
+.media .media__browser h1 {
+  margin: 0 0 30px;
+}
+
 /*# sourceMappingURL=app.css.map */

@@ -1,13 +1,17 @@
 <?php
 
-namespace Escape\Argon\Media\Controllers;
+namespace Escape\Argon\Media\Http\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
+use Escape\Argon\Media\Transformers\MediaFolderTransformer;
+use Escape\Argon\Media\Transformers\MediaItemTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -15,6 +19,9 @@ use Input;
 
 class MediaController extends BaseController
 {
+    protected $manager;
+    protected $mediaFolderRepository;
+    protected $mediaItemRepository;
     protected $imageFormats = [
         "image/jpg",
         "image/jpeg",
@@ -27,10 +34,48 @@ class MediaController extends BaseController
         return [];
     }
 
+    public function __construct(
+        MediaFolderRepository $mediaFolderRepository,
+        MediaItemRepository $mediaItemRepository)
+    {
+        $this->manager = new Manager();
+        $this->mediaFolderRepository = $mediaFolderRepository;
+        $this->mediaItemRepository = $mediaItemRepository;
+        parent::__construct();
+    }
+
     public function index()
     {
-        return view('argon.media::index');
+        $this->addTabs([]);
+
+        return view('argon.media::pages.index', [
+            'name' => 'Media'
+        ]);
     }
+
+    public function folders()
+    {
+        $folders = $this->mediaFolderRepository->all();
+
+        $collection = new Collection($folders, new MediaFolderTransformer());
+
+        $response = $this->manager->createData($collection)->toArray();
+
+        return response()->json($response);
+    }
+
+    public function items()
+    {
+        $items = $this->mediaItemRepository->all();
+
+        $collection = new Collection($items, new MediaItemTransformer());
+
+        $response = $this->manager->createData($collection)->toArray();
+
+        return response()->json($response);
+    }
+
+    //------------//
 
     public function manage(MediaFolderRepository $folderRepository)
     {
@@ -49,7 +94,7 @@ class MediaController extends BaseController
 
         return View::make('argon::media.browser', ['media' => $media, 'root' => $root]);
     }
-
+    /*
     public function items(MediaItemRepository $mediaRepository)
     {
         $folderId = Input::get('folderId');
@@ -57,7 +102,7 @@ class MediaController extends BaseController
 
         return response()->json($items);
     }
-
+    */
     public function upload(Request $request, MediaItemRepository $mediaRepository)
     {
         $folderId = Input::get('current-folder');

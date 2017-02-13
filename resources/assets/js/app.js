@@ -1,13 +1,16 @@
-window.$ = window.jQuery = require('jquery')
-window.Sortable = require('sortablejs')
-require('bootstrap-sass')
-require('tinymce')
-require('jquery.scrollto')
-require('select2')
+require('./bootstrap')
 
-require('./modules/global')
-require('./modules/sidebar')
-require('./modules/sitemap')
-require('./modules/page-builder')
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+import store from './store'
+import Media from './components/Media.vue'
 
-require ('./fields/wysiwyg')
+Vue.use(VueResource)
+
+new Vue({
+    el: '#app',
+    store,
+    components: {
+        Media
+    }
+})

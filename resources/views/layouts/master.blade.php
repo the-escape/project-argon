@@ -10,26 +10,28 @@
         <link rel="stylesheet" href="{{ asset('argon/assets/css/app.css') }}">
     </head>
     <body class="@yield('class')">
-        <div class="container-fluid full-height">
-            <div class="row full-height">
-                @include('argon::partials.sidebar')
-                <div class="main">
-                    @if (isset($tabs))
-                        @include ('argon::partials.tabs')
-                    @endif
-                    <div class="container-fluid">
-                        <div class="row full-height">
-                            <div class="col-xs-10 col-xs-offset-1">
-                                <div class="main__content">
-                                    @yield('body')
+        <div id="app">
+            <div class="container-fluid full-height">
+                <div class="row full-height">
+                    @include('argon::partials.sidebar')
+                    <div class="main">
+                        @if (isset($tabs))
+                            @include ('argon::partials.tabs')
+                        @endif
+                        <div class="container-fluid">
+                            <div class="row full-height">
+                                <div class="col-xs-10 col-xs-offset-1">
+                                    <div class="main__content">
+                                        @yield('body')
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @include ('argon::partials.modal')
         </div>
-        @include ('argon::partials.modal')
         <script type="application/javascript" src="{{ asset('argon/assets/js/app.js') }}"></script>
     </body>
 </html>

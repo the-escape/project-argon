@@ -1,0 +1,48 @@
+.media {
+  min-height: 500px;
+  margin-top: 30px;
+  position: relative;
+  border: 1px solid $color-grey-accent;
+  .media__tree {
+    width: 30%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-right: 1px solid $color-grey-accent;
+    overflow: scroll;
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      li {
+        .media__folder {
+          display: block;
+          width: 100%;
+          padding: 5px 5px 5px 40px;
+          border-bottom: 1px solid $color-grey-accent;
+          background: url('/argon/assets/img/icons/folder-small.png') 10px center / 20px 14px no-repeat;
+          color: $color-text;
+          &.media__folder--active {
+            background-color: $color-grey-light;
+          }
+          &:hover {
+            background-color: $color-grey-light;
+          }
+        }
+      }
+    }
+  }
+  .media__browser {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 30%;
+    padding: 30px;
+    h1 {
+      margin: 0 0 30px;
+    }
+  }
+}

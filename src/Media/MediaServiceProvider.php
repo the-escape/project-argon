@@ -3,7 +3,7 @@
 namespace Escape\Argon\Media;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
-use Escape\Argon\Media\Controllers\MediaController;
+use Escape\Argon\Media\Http\Controllers\MediaController;
 use Illuminate\Http\Request;
 
 class MediaServiceProvider extends AbstractPluginServiceProvider
@@ -18,6 +18,22 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             MediaController::class,
             'index'
         );
+
+        $this->addRoute(
+            'media/folders',
+            'cms:media:folders',
+            MediaController::class,
+            'folders'
+        );
+
+        $this->addRoute(
+            'media/items',
+            'cms:media:items',
+            MediaController::class,
+            'items'
+        );
+
+
         $this->addRoute(
             'media/upload',
             'cms:media:upload',
@@ -25,12 +41,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'upload',
             Request::METHOD_POST
         );
+        /*
         $this->addRoute(
             'media/items',
             'cms:media:items',
             MediaController::class,
             'items'
         );
+        */
         $this->addRoute(
             'media/items/{itemId}',
             'cms:media:items:details',
@@ -68,7 +86,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 
     public function startup()
     {
-        $this->loadViewsFrom(__DIR__ . '/resouces/views', 'argon.media');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'argon.media');
 
         $this->pluginManager->registerNavLink('Media Library', route('cms:media:manage'), 'cms:content:manage');
 
