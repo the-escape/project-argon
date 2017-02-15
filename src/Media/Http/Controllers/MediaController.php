@@ -64,9 +64,12 @@ class MediaController extends BaseController
         return response()->json($response);
     }
 
-    public function items()
+    public function items($folderId)
     {
-        $items = $this->mediaItemRepository->all();
+        $items = $this->mediaItemRepository
+            ->makeModel()
+            ->where('folder', '=', $folderId)
+            ->get();
 
         $collection = new Collection($items, new MediaItemTransformer());
 

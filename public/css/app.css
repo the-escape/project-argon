@@ -8689,8 +8689,8 @@ textarea {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   width: 42px;
+  height: 48px;
 }
 
 .form__group span.icon.error {
@@ -9997,7 +9997,7 @@ textarea {
   min-height: 900px;
   margin-top: 30px;
   position: relative;
-  border: 1px solid #b6b6b6;
+  border: 1px solid #d8d8d8;
 }
 
 .media .media__tree {
@@ -10006,7 +10006,7 @@ textarea {
   top: 0;
   bottom: 0;
   left: 0;
-  border-right: 1px solid #b6b6b6;
+  border-right: 1px solid #d8d8d8;
   overflow: scroll;
 }
 
@@ -10021,17 +10021,48 @@ textarea {
   display: block;
   width: 100%;
   padding: 5px 5px 5px 40px;
-  border-bottom: 1px solid #b6b6b6;
-  background: url("/argon/assets/img/icons/folder-small.png") 10px center/20px 14px no-repeat;
+  border-bottom: 1px solid #d8d8d8;
+  background: url("/argon/assets/img/icons/folder.svg") 10px center/20px 14px no-repeat;
   color: #1f1f1f;
 }
 
 .media .media__tree ul li .media__folder.media__folder--active {
-  background-color: #f0f0f0;
+  background-color: #d8d8d8;
 }
 
 .media .media__tree ul li .media__folder:hover {
-  background-color: #f0f0f0;
+  background-color: #d8d8d8;
+}
+
+.media .media__header {
+  float: left;
+  width: 100%;
+  padding: 30px 30px 40px;
+}
+
+.media .media__header .form__group {
+  margin: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d8d8d8;
+  width: 100%;
+  float: left;
+  clear: none;
+}
+
+.media .media__actions {
+  float: left;
+  width: 100%;
+  padding: 20px 0 0;
+}
+
+.media .media__actions h1 {
+  float: left;
+  margin: 0;
+  line-height: 24px;
+}
+
+.media .media__actions a {
+  float: right;
 }
 
 .media .media__browser {
@@ -10040,8 +10071,54 @@ textarea {
   right: 0;
   bottom: 0;
   left: 25%;
-  padding: 30px 30px 0;
   overflow: scroll;
+}
+
+.media .media__items {
+  width: 100%;
+  float: left;
+}
+
+@media (min-width: 992px) {
+  .media .media__grid:nth-child(6n+7) {
+    clear: left;
+  }
+}
+
+@media (max-width: 992px) {
+  .media .media__grid:nth-child(4n+5) {
+    clear: left;
+  }
+}
+
+.media .media__item {
+  float: left;
+  width: 86px;
+  text-align: center;
+  margin: 0 30px 30px;
+  line-height: 18px;
+}
+
+.media .media__name {
+  display: block;
+  height: 36px;
+  word-break: break-all;
+}
+
+.media .media__asset {
+  width: 86px;
+  height: 86px;
+  display: block;
+  margin-bottom: 15px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.media .media__asset.media__asset--folder {
+  background-image: url("/argon/assets/img/icons/folder.svg");
+  background-size: contain;
+  background-position: center bottom;
 }
 
 /*# sourceMappingURL=app.css.map */

@@ -1,27 +1,18 @@
 <template>
-    <div class="col-xs-2">
-        <div class="media__item media__item--folder">
-            <div class="media__asset">
-                <img src="/argon/assets/img/icons/folder.png" width="100%" alt="folder">
-            </div>
-            <span class="media__name">Folder 1</span>
-        </div>
+    <div class="media__item media__item--folder"
+         v-on:click="select()">
+        <div class="media__asset" style="background-image: url('/argon/assets/img/user.png');"></div>
+        <span class="media__name">{{ item.filename | length }}</span>
     </div>
 </template>
 
 <script>
     export default {
-
+        props: ['item'],
+        methods: {
+            select () {
+                //
+            }
+        }
     }
 </script>
-
-<style>
-    .media__item {
-        text-align: center;
-        margin-bottom: 50px;
-    }
-    .media__asset {
-        display: block;
-        margin-bottom: 15px;
-    }
-</style>

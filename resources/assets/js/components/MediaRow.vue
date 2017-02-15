@@ -1,8 +1,8 @@
 <template>
     <li>
         <a href="#"
-           v-bind:class="isActive(folder)"
-           v-on:click="select(folder)">{{ folder.name }}</a>
+           v-bind:class="isActive()"
+           v-on:click="select()">{{ folder.name }}</a>
     </li>
 </template>
 
@@ -15,11 +15,11 @@
             activeFolder: 'activeFolder'
         }),
         methods: {
-            select (folder) {
-                this.$store.dispatch('selectFolder', folder)
+            select () {
+                this.$store.dispatch('selectFolder', this.folder)
             },
-            isActive (folder) {
-                return this.activeFolder === folder ? 'media__folder media__folder--active' : 'media__folder'
+            isActive () {
+                return this.activeFolder === this.folder ? 'media__folder media__folder--active' : 'media__folder'
             }
         }
     }

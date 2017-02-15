@@ -12,6 +12,7 @@ class MediaItemTransformer extends TransformerAbstract
         return [
             'id' => (int) $mediaItem->id,
             'filename' => $mediaItem->filename,
+            'folder' => (int) $mediaItem->folder,
         ];
     }
 }

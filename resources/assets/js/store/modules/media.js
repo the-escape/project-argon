@@ -10,7 +10,9 @@ const state = {
     /**
      * An array of all folders.
      */
-    folders: []
+    folders: [],
+
+    items: []
 };
 
 const getters = {
@@ -35,31 +37,43 @@ const getters = {
         return state.folders.filter((folder) => {
             return folder.parent === state.folder.id
         })
-    }
+    },
+
+    childItems: state => state.items
 };
 
 const actions = {
     /**
      * Get all folders from the server.
      * @param commit
+     * @param dispatch
      */
-    getFolders ({ commit }) {
+    getFolders ({ commit, dispatch }) {
         mediaApi.getFolders(folders => {
             commit(types.MEDIA_FOLDERS_GET, { folders });
 
             // Get the root folder.. Change this!
             let folder = folders[0];
-            commit(types.MEDIA_FOLDERS_SELECT, { folder })
+            dispatch('selectFolder', folder)
         })
     },
 
     /**
      * Select a folder to become the active folder.
      * @param commit
+     * @param dispatch
      * @param folder
      */
-    selectFolder ({ commit }, folder) {
-        commit(types.MEDIA_FOLDERS_SELECT, { folder })
+    selectFolder ({ commit, dispatch }, folder) {
+        commit(types.MEDIA_FOLDERS_SELECT, { folder });
+        dispatch('getItems')
+    },
+
+    getItems ({ state, commit }) {
+        commit(types.MEDIA_ITEMS_CLEAR);
+        mediaApi.getItems(state.folder, items => {
+            commit(types.MEDIA_ITEMS_GET, {items})
+        })
     }
 };
 
@@ -80,6 +94,14 @@ const mutations = {
      */
     [types.MEDIA_FOLDERS_SELECT] (state, { folder }) {
         state.folder = folder
+    },
+
+    [types.MEDIA_ITEMS_GET] (state, { items }) {
+        state.items = items
+    },
+
+    [types.MEDIA_ITEMS_CLEAR] (state) {
+        state.items = []
     }
 };
 
