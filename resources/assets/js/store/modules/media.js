@@ -78,8 +78,14 @@ const actions = {
     getItems ({ state, commit }) {
         commit(types.MEDIA_ITEMS_CLEAR);
         mediaApi.getItems(state.folder, items => {
-            commit(types.MEDIA_ITEMS_GET, {items});
+            commit(types.MEDIA_ITEMS_GET, { items });
             commit(types.MEDIA_LOADING, false)
+        })
+    },
+
+    searchItems ({ commit }, searchQuery) {
+        mediaApi.searchItems(searchQuery, items => {
+            commit(types.MEDIA_SEARCH, { items })
         })
     }
 };
@@ -113,6 +119,10 @@ const mutations = {
 
     [types.MEDIA_LOADING] (state, loading) {
         state.loading = loading
+    },
+
+    [types.MEDIA_SEARCH] (state, items) {
+        state.items = items
     }
 };
 

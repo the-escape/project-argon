@@ -18,14 +18,15 @@
                     </div>
                 </form>
                 <div class="media__actions">
-                    <h1 v-if="!search.length">{{ activeFolder.name }}</h1>
-                    <h1 v-else>Search: {{ search }}</h1>
+                    <h1 v-if="!searchQuery.length">{{ activeFolder.name }}</h1>
+                    <h1 v-else>Search: {{ searchQuery }}</h1>
                     <a href="#" class="form__btn form__btn--small">UPLOAD MEDIA</a>
                 </div>
             </div>
             <div class="media__browser">
                 <div class="media__items">
                     <MediaFolder
+                            v-if="!searchQuery.length"
                             v-for="folder in childFolders"
                             v-bind:folder="folder">
                     </MediaFolder>
@@ -59,14 +60,21 @@
                 searchQuery: ''
             }
         },
+        methods: {
+            search () {
+                this.$store.dispatch('searchItems', this.searchQuery)
+            }
+        },
         watch: {
-            search: (val) => {
-                console.log(val)
+            searchQuery: {
+                handler: () => {
+                    this.search()
+                },
+                deep: true
             }
         },
         created () {
             this.$store.dispatch('getFolders')
-
         },
         components: {
             MediaRow,
