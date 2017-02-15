@@ -1,10 +1,10 @@
 .media {
-  min-height: 500px;
+  min-height: 900px;
   margin-top: 30px;
   position: relative;
   border: 1px solid $color-grey-accent;
   .media__tree {
-    width: 30%;
+    width: 25%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -39,10 +39,8 @@
     top: 0;
     right: 0;
     bottom: 0;
-    left: 30%;
-    padding: 30px;
-    h1 {
-      margin: 0 0 30px;
-    }
+    left: 25%;
+    padding: 30px 30px 0;
+    overflow: scroll;
   }
 }

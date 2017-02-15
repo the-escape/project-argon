@@ -12,6 +12,7 @@ class MediaFolderTransformer extends TransformerAbstract
         return [
             'id' => (int) $mediaFolder->id,
             'name' => $mediaFolder->name,
+            'parent' => (int) $mediaFolder->parent,
         ];
     }
 }

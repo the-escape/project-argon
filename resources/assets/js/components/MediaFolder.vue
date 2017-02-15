@@ -1,26 +1,38 @@
 <template>
-    <li>
-        <a href="#"
-           v-bind:class="isActive(folder)"
-           v-on:click="select(folder)">{{ folder.name }}</a>
-    </li>
+    <div class="media__grid col-xs-3 col-sm-3 col-md-2 col-lg-2">
+        <div class="media__item media__item--folder">
+            <div class="media__asset">
+                <img src="/argon/assets/img/icons/folder.png" width="100%">
+            </div>
+            <span class="media__name">{{ folder.name }}</span>
+        </div>
+    </div>
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-
     export default {
-        props: ['folder'],
-        computed: mapGetters({
-            selected: 'folder'
-        }),
-        methods: {
-            select (folder) {
-                this.$store.dispatch('selectFolder', folder)
-            },
-            isActive (folder) {
-                return this.selected === folder ? 'media__folder media__folder--active' : 'media__folder'
-            }
-        }
+        props: ['folder']
     }
 </script>
+
+<style>
+    @media (min-width: 992px) {
+        .media__grid:nth-child(6n+7) {
+            clear: left;
+        }
+    }
+    @media (max-width: 992px) {
+        .media__grid:nth-child(4n+5) {
+            clear: left;
+        }
+    }
+    .media__item {
+        text-align: center;
+        margin-bottom: 50px;
+        line-height: 16px;
+    }
+    .media__asset {
+        display: block;
+        margin-bottom: 15px;
+    }
+</style>

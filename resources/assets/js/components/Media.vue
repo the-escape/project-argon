@@ -2,16 +2,23 @@
     <div class="media">
         <div class="media__tree">
             <ul>
-                <MediaFolder
-                        v-for="folder in folders"
-                        v-bind:folder="folder">
-                </MediaFolder>
+                <MediaRow
+                    v-for="folder in allFolders"
+                    v-bind:folder="folder">
+                </MediaRow>
             </ul>
         </div>
         <div class="media__browser">
-            <h1>{{ folder.name }}</h1>
+            <div class="media__header">
+                <form>
+                    <input type="text" class="form__text" placeholder="Search library">
+                </form>
+            </div>
             <div class="row">
-                <MediaItem></MediaItem>
+                <MediaFolder
+                    v-for="folder in childFolders"
+                    v-bind:folder="folder">
+                </MediaFolder>
             </div>
         </div>
     </div>
@@ -19,20 +26,21 @@
 
 <script>
     import { mapGetters } from 'vuex'
+    import MediaRow from './MediaRow.vue'
     import MediaFolder from './MediaFolder.vue'
-    import MediaItem from './MediaItem.vue'
 
     export default {
         computed: mapGetters({
-            folder: 'folder',
-            folders: 'folders'
+            activeFolder: 'activeFolder',
+            allFolders: 'allFolders',
+            childFolders: 'childFolders'
         }),
         created () {
-            this.$store.dispatch('getAllFolders')
+            this.$store.dispatch('getFolders')
         },
         components: {
-            MediaFolder,
-            MediaItem
+            MediaRow,
+            MediaFolder
         }
     }
 </script>
