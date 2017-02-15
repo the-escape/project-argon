@@ -13,6 +13,7 @@ class MediaItemTransformer extends TransformerAbstract
             'id' => (int) $mediaItem->id,
             'filename' => $mediaItem->filename,
             'folder' => (int) $mediaItem->folder,
+            'thumbUrl' => $mediaItem->getThumbUrl(),
         ];
     }
 }

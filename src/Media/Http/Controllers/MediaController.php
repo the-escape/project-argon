@@ -78,6 +78,26 @@ class MediaController extends BaseController
         return response()->json($response);
     }
 
+    public function search(Request $request)
+    {
+        $searchQuery = $request->get('searchQuery');
+
+        $items = [];
+
+        if ($searchQuery) {
+            $items = $this->mediaItemRepository
+                ->makeModel()
+                ->where('filename', 'LIKE', '%' . $searchQuery . '%')
+                ->get();
+        }
+
+        $collection = new Collection($items, new MediaItemTransformer());
+
+        $response = $this->manager->createData($collection)->toArray();
+
+        return response()->json($response);
+    }
+
     //------------//
 
     public function manage(MediaFolderRepository $folderRepository)

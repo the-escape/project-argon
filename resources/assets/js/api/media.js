@@ -10,5 +10,10 @@ export default {
         Vue.http.get('/admin/media/' + folder.id + '/items').then(response => {
             cb(response.data.data)
         })
+    },
+    searchItems (searchQuery, cb) {
+        Vue.http.post('/admin/media/search', { searchQuery: searchQuery }).then(response => {
+            cb(response.data.data)
+        })
     }
 }

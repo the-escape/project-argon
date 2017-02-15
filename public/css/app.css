@@ -10001,7 +10001,7 @@ textarea {
 }
 
 .media .media__tree {
-  width: 25%;
+  width: 300px;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -10027,17 +10027,18 @@ textarea {
 }
 
 .media .media__tree ul li .media__folder.media__folder--active {
-  background-color: #d8d8d8;
+  background-color: #f0f0f0;
 }
 
 .media .media__tree ul li .media__folder:hover {
-  background-color: #d8d8d8;
+  background-color: #f0f0f0;
 }
 
 .media .media__header {
   float: left;
   width: 100%;
-  padding: 30px 30px 40px;
+  padding: 30px;
+  height: 180px;
 }
 
 .media .media__header .form__group {
@@ -10065,30 +10066,26 @@ textarea {
   float: right;
 }
 
-.media .media__browser {
+.media .media__right {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 25%;
+  left: 300px;
   overflow: scroll;
+}
+
+.media .media__browser {
+  position: relative;
+  float: left;
+  width: 100%;
 }
 
 .media .media__items {
   width: 100%;
+  height: 100%;
   float: left;
-}
-
-@media (min-width: 992px) {
-  .media .media__grid:nth-child(6n+7) {
-    clear: left;
-  }
-}
-
-@media (max-width: 992px) {
-  .media .media__grid:nth-child(4n+5) {
-    clear: left;
-  }
+  position: relative;
 }
 
 .media .media__item {
@@ -10097,6 +10094,19 @@ textarea {
   text-align: center;
   margin: 0 30px 30px;
   line-height: 18px;
+  position: relative;
+}
+
+.media .media__loading {
+  position: absolute;
+  top: 180px;
+  right: 0;
+  bottom: 0;
+  left: 300px;
+  background-color: #ffffff;
+  background-image: url("/argon/assets/img/loading.svg");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .media .media__name {
@@ -10113,6 +10123,17 @@ textarea {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  position: relative;
+  text-align: center;
+}
+
+.media .media__asset span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  font-size: 16px;
+  color: #ffffff;
 }
 
 .media .media__asset.media__asset--folder {

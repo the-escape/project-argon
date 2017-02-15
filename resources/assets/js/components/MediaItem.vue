@@ -1,7 +1,9 @@
 <template>
     <div class="media__item media__item--folder"
          v-on:click="select()">
-        <div class="media__asset" style="background-image: url('/argon/assets/img/user.png');"></div>
+        <div class="media__asset"
+             v-bind:style="{ 'background-image': 'url(' + item.thumbUrl + ')' }">
+        </div>
         <span class="media__name">{{ item.filename | length }}</span>
     </div>
 </template>

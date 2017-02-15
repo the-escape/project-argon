@@ -33,6 +33,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'items'
         );
 
+        $this->addRoute(
+            'media/search',
+            'cms:media:search',
+            MediaController::class,
+            'search'
+        );
+
 
         $this->addRoute(
             'media/upload',

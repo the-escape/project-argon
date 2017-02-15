@@ -49,6 +49,13 @@ class MediaItem extends Model implements Arrayable
         return $item;
     }
 
+    public function getThumbUrl()
+    {
+        return $this->hasThumb
+            ? '/media/' . $this->id . '/' . $this->id . '.thumb.' . $this->extension
+            : '/argon/images/file-info-icon.png';
+    }
+
     public function getId()
     {
         return $this->id;

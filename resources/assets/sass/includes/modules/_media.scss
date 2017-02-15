@@ -4,7 +4,7 @@
   position: relative;
   border: 1px solid $color-grey-dark;
   .media__tree {
-    width: 25%;
+    width: 300px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -25,10 +25,10 @@
           background: url('/argon/assets/img/icons/folder.svg') 10px center / 20px 14px no-repeat;
           color: $color-text;
           &.media__folder--active {
-            background-color: $color-grey-dark;
+            background-color: $color-grey-light;
           }
           &:hover {
-            background-color: $color-grey-dark;
+            background-color: $color-grey-light;
           }
         }
       }
@@ -37,7 +37,8 @@
   .media__header {
     float: left;
     width: 100%;
-    padding: 30px 30px 40px;
+    padding: 30px;
+    height: 180px;
     .form__group {
       margin: 0;
       padding-bottom: 20px;
@@ -63,27 +64,24 @@
       float: right;
     }
   }
-  .media__browser {
+  .media__right {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    left: 25%;
+    left: 300px;
     overflow: scroll;
+  }
+  .media__browser {
+    position: relative;
+    float: left;
+    width: 100%;
   }
   .media__items {
     width: 100%;
+    height: 100%;
     float: left;
-  }
-  @media (min-width: 992px) {
-    .media__grid:nth-child(6n+7) {
-      clear: left;
-    }
-  }
-  @media (max-width: 992px) {
-    .media__grid:nth-child(4n+5) {
-      clear: left;
-    }
+    position: relative;
   }
   .media__item {
     float: left;
@@ -91,6 +89,18 @@
     text-align: center;
     margin: 0 30px 30px;
     line-height: 18px;
+    position: relative;
+  }
+  .media__loading {
+    position: absolute;
+    top: 180px;
+    right: 0;
+    bottom: 0;
+    left: 300px;
+    background-color: $color-white;
+    background-image: url('/argon/assets/img/loading.svg');
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .media__name {
     display: block;
@@ -105,6 +115,16 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
+    text-align: center;
+    span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 16px;
+      font-size: 16px;
+      color: $color-white;
+    }
     &.media__asset--folder {
       background-image: url('/argon/assets/img/icons/folder.svg');
       background-size: contain;

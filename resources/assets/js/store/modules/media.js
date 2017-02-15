@@ -2,6 +2,8 @@ import mediaApi from '../../api/media'
 import * as types from '../mutation-types'
 
 const state = {
+    loading: false,
+
     /**
      * The active folder.
      */
@@ -39,7 +41,9 @@ const getters = {
         })
     },
 
-    childItems: state => state.items
+    childItems: state => state.items,
+
+    isLoading: state => state.loading
 };
 
 const actions = {
@@ -49,6 +53,7 @@ const actions = {
      * @param dispatch
      */
     getFolders ({ commit, dispatch }) {
+        commit(types.MEDIA_LOADING, true);
         mediaApi.getFolders(folders => {
             commit(types.MEDIA_FOLDERS_GET, { folders });
 
@@ -66,13 +71,15 @@ const actions = {
      */
     selectFolder ({ commit, dispatch }, folder) {
         commit(types.MEDIA_FOLDERS_SELECT, { folder });
+        commit(types.MEDIA_LOADING, true);
         dispatch('getItems')
     },
 
     getItems ({ state, commit }) {
         commit(types.MEDIA_ITEMS_CLEAR);
         mediaApi.getItems(state.folder, items => {
-            commit(types.MEDIA_ITEMS_GET, {items})
+            commit(types.MEDIA_ITEMS_GET, {items});
+            commit(types.MEDIA_LOADING, false)
         })
     }
 };
@@ -84,7 +91,7 @@ const mutations = {
      * @param folders
      */
     [types.MEDIA_FOLDERS_GET] (state, { folders }) {
-        state.folders = folders
+        state.folders = folders;
     },
 
     /**
@@ -102,6 +109,10 @@ const mutations = {
 
     [types.MEDIA_ITEMS_CLEAR] (state) {
         state.items = []
+    },
+
+    [types.MEDIA_LOADING] (state, loading) {
+        state.loading = loading
     }
 };
 
