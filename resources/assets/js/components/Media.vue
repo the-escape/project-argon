@@ -26,7 +26,7 @@
             <div class="media__browser">
                 <div class="media__items">
                     <MediaFolder
-                            v-if="!searchQuery.length"
+                            v-if="!searchQuery.length && !isLoading"
                             v-for="folder in childFolders"
                             v-bind:folder="folder">
                     </MediaFolder>
@@ -38,14 +38,19 @@
             </div>
         </div>
         <div v-if="isLoading" class="media__loading"></div>
+        <MediaModal></MediaModal>
     </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex'
+    import _ from 'lodash'
+    import * as types from '../store/mutation-types'
     import MediaRow from './MediaRow.vue'
     import MediaFolder from './MediaFolder.vue'
     import MediaItem from './MediaItem.vue'
+    import MediaModal from './MediaModal.vue'
+    import Dropzone from 'vue2-dropzone'
 
     export default {
         computed: mapGetters({
@@ -53,33 +58,39 @@
             activeFolder: 'activeFolder',
             allFolders: 'allFolders',
             childFolders: 'childFolders',
-            childItems: 'childItems'
+            childItems: 'childItems',
+            activeItem: 'activeItem'
         }),
         data: () => {
             return {
                 searchQuery: ''
             }
         },
-        methods: {
-            search () {
-                this.$store.dispatch('searchItems', this.searchQuery)
-            }
-        },
-        watch: {
-            searchQuery: {
-                handler: () => {
-                    this.search()
-                },
-                deep: true
-            }
-        },
         created () {
             this.$store.dispatch('getFolders')
+        },
+        methods: {
+            search: _.debounce(function () {
+                this.$store.dispatch('searchItems', this.searchQuery)
+            }, 500)
+        },
+        watch: {
+            searchQuery () {
+                this.$store.dispatch('isLoading', true);
+
+                if (!this.searchQuery.length) {
+                    this.$store.dispatch('selectFolder', this.activeFolder);
+                    return true
+                }
+
+                this.search()
+            }
         },
         components: {
             MediaRow,
             MediaFolder,
-            MediaItem
+            MediaItem,
+            MediaModal
         }
     }
 </script>

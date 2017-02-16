@@ -9065,7 +9065,8 @@ textarea {
 .modal .modal__table {
   display: table;
   height: 100%;
-  width: 100%;
+  width: 70%;
+  margin: 0 auto;
   pointer-events: none;
 }
 
@@ -10095,6 +10096,17 @@ textarea {
   margin: 0 30px 30px;
   line-height: 18px;
   position: relative;
+  cursor: pointer;
+}
+
+.media .media__item a {
+  outline: none;
+  color: #1f1f1f;
+}
+
+.media .media__item a:hover, .media .media__item a:focus, .media .media__item a:active {
+  text-decoration: none;
+  color: #1f1f1f;
 }
 
 .media .media__loading {
@@ -10140,6 +10152,86 @@ textarea {
   background-image: url("/argon/assets/img/icons/folder.svg");
   background-size: contain;
   background-position: center bottom;
+}
+
+.media .modal-dialog {
+  width: 70%;
+}
+
+.media .modal-content {
+  width: 100%;
+  text-align: left;
+  float: left;
+}
+
+.media .media__modal-header {
+  height: 60px;
+  background-color: #f0f0f0;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.media .media__modal-header h1 {
+  margin: 0;
+  line-height: 60px;
+}
+
+.media .media__modal-content {
+  padding: 20px;
+  float: left;
+  width: 100%;
+}
+
+.media .media__modal-image {
+  width: 50%;
+  float: left;
+  padding-right: 15px;
+  display: table;
+}
+
+.media .media__modal-image .media__modal-asset {
+  display: table-cell;
+  vertical-align: middle;
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 332px;
+  text-align: center;
+}
+
+.media .media__modal-image .media__modal-asset img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.media .modal__modal-buttons button {
+  float: right;
+  display: block;
+}
+
+.media .modal__modal-buttons button:first-child {
+  margin-left: 10px;
+}
+
+.media .media__modal-details {
+  width: 50%;
+  float: left;
+  padding-left: 15px;
+}
+
+.media .media__modal-details .form__group {
+  margin-bottom: 30px;
+}
+
+.media .media__modal-details ul {
+  float: left;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.media .media__modal-details ul li span {
+  font-weight: bold;
 }
 
 /*# sourceMappingURL=app.css.map */

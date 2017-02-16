@@ -1,4 +1,4 @@
-import mediaApi from '../../api/media'
+import { getFolders, getItems, searchItems } from '../../api/media'
 import * as types from '../mutation-types'
 
 const state = {
@@ -14,7 +14,9 @@ const state = {
      */
     folders: [],
 
-    items: []
+    items: [],
+
+    item: {}
 };
 
 const getters = {
@@ -43,7 +45,9 @@ const getters = {
 
     childItems: state => state.items,
 
-    isLoading: state => state.loading
+    isLoading: state => state.loading,
+
+    activeItem: state => state.item
 };
 
 const actions = {
@@ -53,8 +57,8 @@ const actions = {
      * @param dispatch
      */
     getFolders ({ commit, dispatch }) {
-        commit(types.MEDIA_LOADING, true);
-        mediaApi.getFolders(folders => {
+        dispatch('isLoading', true);
+        getFolders(folders => {
             commit(types.MEDIA_FOLDERS_GET, { folders });
 
             // Get the root folder.. Change this!
@@ -71,22 +75,35 @@ const actions = {
      */
     selectFolder ({ commit, dispatch }, folder) {
         commit(types.MEDIA_FOLDERS_SELECT, { folder });
-        commit(types.MEDIA_LOADING, true);
+        dispatch('isLoading', true);
         dispatch('getItems')
     },
 
-    getItems ({ state, commit }) {
-        commit(types.MEDIA_ITEMS_CLEAR);
-        mediaApi.getItems(state.folder, items => {
+    getItems ({ state, commit, dispatch }) {
+        dispatch('isLoading', true);
+        getItems(state.folder, items => {
             commit(types.MEDIA_ITEMS_GET, { items });
-            commit(types.MEDIA_LOADING, false)
+            dispatch('isLoading', false)
         })
     },
 
-    searchItems ({ commit }, searchQuery) {
-        mediaApi.searchItems(searchQuery, items => {
-            commit(types.MEDIA_SEARCH, { items })
+    searchItems ({ commit, dispatch }, searchQuery) {
+        dispatch('isLoading', true);
+        searchItems(searchQuery, items => {
+            commit(types.MEDIA_ITEMS_GET, { items });
+            dispatch('isLoading', false)
         })
+    },
+
+    isLoading ({ commit }, loading) {
+        commit(types.MEDIA_LOADING, loading);
+        if (loading) {
+            commit(types.MEDIA_ITEMS_CLEAR);
+        }
+    },
+
+    selectItem ({ commit }, item) {
+        commit(types.MEDIA_ITEMS_SELECT, item)
     }
 };
 
@@ -121,8 +138,8 @@ const mutations = {
         state.loading = loading
     },
 
-    [types.MEDIA_SEARCH] (state, items) {
-        state.items = items
+    [types.MEDIA_ITEMS_SELECT] (state, item) {
+        state.item = item
     }
 };
 

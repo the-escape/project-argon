@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Media\Eloquent;
 
+use Escape\Argon\Auth\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,6 +35,11 @@ class MediaItem extends Model implements Arrayable
         'uploaded_by',
         'hasThumb'
     ];
+
+    public function getMetaAttribute($value)
+    {
+        return json_decode($value);
+    }
 
     public function toArray()
     {
@@ -115,5 +121,8 @@ class MediaItem extends Model implements Arrayable
         return $this->filename.'.'.$this->extension;
     }
 
-
+    public function uploadedBy()
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
 }

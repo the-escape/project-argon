@@ -15,6 +15,8 @@ const app = new Vue({
     }
 });
 
+Vue.http.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
+
 Vue.filter('length', (value) => {
     let length = 28;
     if (value.length < length) {

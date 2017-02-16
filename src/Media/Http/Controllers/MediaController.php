@@ -78,6 +78,11 @@ class MediaController extends BaseController
         return response()->json($response);
     }
 
+    public function rename()
+    {
+
+    }
+
     public function search(Request $request)
     {
         $searchQuery = $request->get('searchQuery');

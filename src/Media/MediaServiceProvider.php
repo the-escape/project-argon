@@ -37,7 +37,8 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'media/search',
             'cms:media:search',
             MediaController::class,
-            'search'
+            'search',
+            'post'
         );
 
 

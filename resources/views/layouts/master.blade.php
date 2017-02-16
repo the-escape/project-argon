@@ -32,6 +32,11 @@
             </div>
             @include ('argon::partials.modal')
         </div>
-        <script type="application/javascript" src="{{ asset('argon/assets/js/app.js') }}"></script>
+        <script>
+            window.Laravel = <?php echo json_encode([
+                'csrfToken' => csrf_token(),
+            ]); ?>
+        </script>
+        <script src="{{ asset('argon/assets/js/app.js') }}"></script>
     </body>
 </html>
