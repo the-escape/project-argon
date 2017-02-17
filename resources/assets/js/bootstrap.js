@@ -3,7 +3,6 @@ window._ = require('lodash');
 window.Sortable = require('sortablejs');
 require('vue');
 require('vue-resource');
-window.Dropzone = require('dropzone');
 require('bootstrap-sass');
 require('tinymce');
 require('jquery.scrollto');

@@ -39,15 +39,6 @@
         </div>
         <div v-if="isLoading" class="media__loading"></div>
         <MediaModal></MediaModal>
-        <div id="media__template" style="display: none;">
-            <div class="media__item dz-preview dz-file-preview dz-complete">
-                <a href="#" data-toggle="modal" data-target="#media-view">
-                    <img class="media__asset" data-dz-thumbnail />
-                    <div class="media__name dz-filename"><span data-dz-name></span></div>
-                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                </a>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -59,7 +50,6 @@
     import MediaFolder from './MediaFolder.vue'
     import MediaItem from './MediaItem.vue'
     import MediaModal from './MediaModal.vue'
-    import Dropzone from 'dropzone'
 
     export default {
         computed: mapGetters({
@@ -72,20 +62,11 @@
         }),
         data: () => {
             return {
-                searchQuery: '',
-                dropZone: {}
+                searchQuery: ''
             }
         },
         created () {
             this.$store.dispatch('getFolders');
-        },
-        mounted () {
-            Dropzone.autoDiscover = false;
-            this.dropZone = new Dropzone('#media__dropzone', {
-                url: '/admin',
-                clickable: '.media__upload',
-                previewTemplate: document.getElementById('media__template').innerHTML
-            })
         },
         methods: {
             search: _.debounce(function () {
@@ -111,8 +92,7 @@
             MediaRow,
             MediaFolder,
             MediaItem,
-            MediaModal,
-            Dropzone
+            MediaModal
         }
     }
 </script>

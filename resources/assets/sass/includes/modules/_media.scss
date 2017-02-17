@@ -1,17 +1,8 @@
-@import '../../../../../node_modules/dropzone/src/basic';
-@import '../../../../../node_modules/dropzone/src/dropzone';
-
 .media {
   min-height: 900px;
   margin-top: 30px;
   position: relative;
   border: 1px solid $color-grey-dark;
-  .dropzone {
-    border: 0;
-    .dz-default {
-      display: none;
-    }
-  }
   .media__tree {
     width: 300px;
     position: absolute;
