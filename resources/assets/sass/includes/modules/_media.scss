@@ -1,8 +1,17 @@
+@import '../../../../../node_modules/dropzone/src/basic';
+@import '../../../../../node_modules/dropzone/src/dropzone';
+
 .media {
   min-height: 900px;
   margin-top: 30px;
   position: relative;
   border: 1px solid $color-grey-dark;
+  .dropzone {
+    border: 0;
+    .dz-default {
+      display: none;
+    }
+  }
   .media__tree {
     width: 300px;
     position: absolute;
@@ -60,7 +69,7 @@
       margin: 0;
       line-height: 24px;
     }
-    a {
+    button {
       float: right;
     }
   }
@@ -73,15 +82,18 @@
     overflow: scroll;
   }
   .media__browser {
-    position: relative;
-    float: left;
-    width: 100%;
+    position: absolute;
+    top:180px;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
   .media__items {
     width: 100%;
     height: 100%;
     float: left;
     position: relative;
+    overflow: auto;
   }
   .media__item {
     float: left;
