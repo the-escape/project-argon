@@ -14,8 +14,14 @@ const state = {
      */
     folders: [],
 
+    /**
+     * An array of items in the active folder.
+     */
     items: [],
 
+    /**
+     * Current selected item.
+     */
     item: {}
 };
 
@@ -43,10 +49,22 @@ const getters = {
         })
     },
 
+    /**
+     * Returns child items of the active folder.
+     * @param state
+     */
     childItems: state => state.items,
 
+    /**
+     * Is currently loading.
+     * @param state
+     */
     isLoading: state => state.loading,
 
+    /**
+     * Returns the active item.
+     * @param state
+     */
     activeItem: state => state.item
 };
 
@@ -79,6 +97,12 @@ const actions = {
         dispatch('getItems')
     },
 
+    /**
+     * Get all items from the active folder.
+     * @param state
+     * @param commit
+     * @param dispatch
+     */
     getItems ({ state, commit, dispatch }) {
         dispatch('isLoading', true);
         getItems(state.folder, items => {
@@ -87,6 +111,12 @@ const actions = {
         })
     },
 
+    /**
+     * Search items with the supplied query.
+     * @param commit
+     * @param dispatch
+     * @param searchQuery
+     */
     searchItems ({ commit, dispatch }, searchQuery) {
         dispatch('isLoading', true);
         searchItems(searchQuery, items => {
@@ -95,6 +125,11 @@ const actions = {
         })
     },
 
+    /**
+     * Set the loading state.
+     * @param commit
+     * @param loading
+     */
     isLoading ({ commit }, loading) {
         commit(types.MEDIA_LOADING, loading);
         if (loading) {
@@ -102,6 +137,11 @@ const actions = {
         }
     },
 
+    /**
+     * Select an item.
+     * @param commit
+     * @param item
+     */
     selectItem ({ commit }, item) {
         commit(types.MEDIA_ITEMS_SELECT, item)
     }
@@ -126,18 +166,37 @@ const mutations = {
         state.folder = folder
     },
 
+    /**
+     * Store items in to the items state.
+     * @param state
+     * @param items
+     */
     [types.MEDIA_ITEMS_GET] (state, { items }) {
         state.items = items
     },
 
+    /**
+     * Clear all items.
+     * @param state
+     */
     [types.MEDIA_ITEMS_CLEAR] (state) {
         state.items = []
     },
 
+    /**
+     * Set the loading state.
+     * @param state
+     * @param loading
+     */
     [types.MEDIA_LOADING] (state, loading) {
         state.loading = loading
     },
 
+    /**
+     * Set the active item.
+     * @param state
+     * @param item
+     */
     [types.MEDIA_ITEMS_SELECT] (state, item) {
         state.item = item
     }
