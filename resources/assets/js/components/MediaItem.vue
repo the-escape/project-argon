@@ -4,6 +4,7 @@
             v-on:click="select()">
             <div class="media__asset"
                  v-bind:style="{ 'background-image': 'url(' + item.thumbUrl + ')' }">
+                <div class="media__overlay"></div>
             </div>
             <span class="media__name">{{ item.filename | length }}</span>
         </a>

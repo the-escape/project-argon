@@ -94,6 +94,12 @@
     line-height: 18px;
     position: relative;
     cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+      .media__overlay {
+        opacity: .2;
+      }
+    }
     a {
       outline: none;
       color: $color-text;
@@ -105,13 +111,20 @@
       }
     }
   }
+  .media__item--folder {
+    &:hover {
+      .media__asset--folder svg {
+        fill: $color-primary-accent;
+      }
+    }
+  }
   .media__loading {
     position: absolute;
     top: 180px;
     right: 0;
     bottom: 0;
     left: 300px;
-    background-color: $color-white;
+    background-color: rgba(255, 255, 255, .85);
     background-image: url('/argon/assets/img/loading.svg');
     background-position: center;
     background-repeat: no-repeat;
@@ -131,6 +144,19 @@
     background-repeat: no-repeat;
     position: relative;
     text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+    .media__overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $color-black;
+      opacity: 0;
+      border-radius: 5px;
+      transition: opacity $transition-sm;
+    }
     span {
       position: absolute;
       left: 0;
@@ -139,10 +165,12 @@
       font-size: 16px;
       color: $color-white;
     }
-    &.media__asset--folder {
-      background-image: url('/argon/assets/img/icons/folder.svg');
-      background-size: contain;
-      background-position: center bottom;
+    &.media__asset--folder svg {
+      fill: $color-blue;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transition: fill $transition-sm;
     }
   }
   .modal-dialog {

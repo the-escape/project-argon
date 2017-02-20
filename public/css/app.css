@@ -10100,6 +10100,11 @@ textarea {
   line-height: 18px;
   position: relative;
   cursor: pointer;
+  border-radius: 5px;
+}
+
+.media .media__item:hover .media__overlay {
+  opacity: .2;
 }
 
 .media .media__item a {
@@ -10112,13 +10117,17 @@ textarea {
   color: #1f1f1f;
 }
 
+.media .media__item--folder:hover .media__asset--folder svg {
+  fill: #0d728b;
+}
+
 .media .media__loading {
   position: absolute;
   top: 180px;
   right: 0;
   bottom: 0;
   left: 300px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.85);
   background-image: url("/argon/assets/img/loading.svg");
   background-position: center;
   background-repeat: no-repeat;
@@ -10140,6 +10149,21 @@ textarea {
   background-repeat: no-repeat;
   position: relative;
   text-align: center;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.media .media__asset .media__overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  opacity: 0;
+  border-radius: 5px;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
 }
 
 .media .media__asset span {
@@ -10151,10 +10175,13 @@ textarea {
   color: #ffffff;
 }
 
-.media .media__asset.media__asset--folder {
-  background-image: url("/argon/assets/img/icons/folder.svg");
-  background-size: contain;
-  background-position: center bottom;
+.media .media__asset.media__asset--folder svg {
+  fill: #12a3c7;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  -webkit-transition: fill 0.3s;
+  transition: fill 0.3s;
 }
 
 .media .modal-dialog {
