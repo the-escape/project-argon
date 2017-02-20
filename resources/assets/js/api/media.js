@@ -6,6 +6,14 @@ export function getFolders (cb) {
     })
 }
 
+export function storeFolder (parentId, name, done, error) {
+    Vue.http.post('/admin/media/folders/store', { parent_id: parentId, name: name }).then(response => {
+        done(response.data.data)
+    }, response => {
+        error(response.data.data)
+    })
+}
+
 export function getItems (folder, cb) {
     Vue.http.get('/admin/media/' + folder.id + '/items').then(response => {
         cb(response.data.data)

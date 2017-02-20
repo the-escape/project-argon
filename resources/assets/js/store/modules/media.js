@@ -1,4 +1,4 @@
-import { getFolders, getItems, searchItems } from '../../api/media'
+import { getFolders, getItems, searchItems, storeFolder } from '../../api/media'
 import * as types from '../mutation-types'
 
 const state = {
@@ -22,7 +22,9 @@ const state = {
     /**
      * Current selected item.
      */
-    item: {}
+    item: {},
+
+    creating: false
 };
 
 const getters = {
@@ -65,7 +67,9 @@ const getters = {
      * Returns the active item.
      * @param state
      */
-    activeItem: state => state.item
+    activeItem: state => state.item,
+
+    isCreating: state => state.creating
 };
 
 const actions = {
@@ -144,6 +148,17 @@ const actions = {
      */
     selectItem ({ commit }, item) {
         commit(types.MEDIA_ITEMS_SELECT, item)
+    },
+
+    storeFolder({ commit, dispatch }, { parentId, name }) {
+        commit(types.MEDIA_LOADING, true);
+        commit(types.MEDIA_FOLDERS_STORE);
+        storeFolder(parentId, name, folder => {
+            commit(types.MEDIA_FOLDERS_STORE, folder);
+            dispatch('isLoading', false)
+        }, folder => {
+            dispatch('isLoading', false)
+        })
     }
 };
 
@@ -199,6 +214,17 @@ const mutations = {
      */
     [types.MEDIA_ITEMS_SELECT] (state, item) {
         state.item = item
+    },
+
+    [types.MEDIA_FOLDERS_STORE] (state, folder) {
+
+        if (folder === undefined) {
+            state.creating = true;
+            return true;
+        }
+
+        state.creating = false;
+        state.folders.unshift(folder)
     }
 };
 

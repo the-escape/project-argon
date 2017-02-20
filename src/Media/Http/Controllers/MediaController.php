@@ -5,6 +5,7 @@ namespace Escape\Argon\Media\Http\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
+use Escape\Argon\Media\Http\Requests\FolderStoreRequest;
 use Escape\Argon\Media\Transformers\MediaFolderTransformer;
 use Escape\Argon\Media\Transformers\MediaItemTransformer;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -55,7 +57,7 @@ class MediaController extends BaseController
 
     public function folders()
     {
-        $folders = $this->mediaFolderRepository->all();
+        $folders = $this->mediaFolderRepository->orderBy('name')->all();
 
         $collection = new Collection($folders, new MediaFolderTransformer());
 
@@ -69,11 +71,26 @@ class MediaController extends BaseController
         $items = $this->mediaItemRepository
             ->makeModel()
             ->where('folder', '=', $folderId)
+            ->orderBy('filename')
             ->get();
 
         $collection = new Collection($items, new MediaItemTransformer());
 
         $response = $this->manager->createData($collection)->toArray();
+
+        return response()->json($response);
+    }
+
+    public function folderStore(FolderStoreRequest $request)
+    {
+        $folder = $this->mediaFolderRepository->create([
+            'name' => $request->get('name'),
+            'parent' => $request->get('parent_id')
+        ]);
+
+        $item = new Item($folder, new MediaFolderTransformer());
+
+        $response = $this->manager->createData($item)->toArray();
 
         return response()->json($response);
     }
@@ -304,7 +321,7 @@ class MediaController extends BaseController
             'results' => '',
         ], Response::HTTP_OK);
     }
-
+    /*
     public function createFolder(Request $request, MediaFolderRepository $folderRepository)
     {
         if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
@@ -315,7 +332,7 @@ class MediaController extends BaseController
             return response()->json(['error' => 'folder exists'], 409);
         }
     }
-
+    */
     public function deleteFolder(
         $folderId,
         MediaFolderRepository $folderRepository,

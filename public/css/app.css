@@ -11147,6 +11147,10 @@ textarea {
   word-break: break-all;
 }
 
+.media .media__name input {
+  width: 100%;
+}
+
 .media .media__asset {
   width: 86px;
   height: 86px;
@@ -11181,6 +11185,12 @@ textarea {
   bottom: 16px;
   font-size: 16px;
   color: #ffffff;
+}
+
+.media .media__asset.media__asset--folder img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
 .media .media__asset.media__asset--folder svg {

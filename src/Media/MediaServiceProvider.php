@@ -41,6 +41,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'post'
         );
 
+        $this->addRoute(
+            'media/folders/store',
+            'cms:media:folders:store',
+            MediaController::class,
+            'folderStore',
+            'post'
+        );
+
 
         $this->addRoute(
             'media/upload',
