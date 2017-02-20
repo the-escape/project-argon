@@ -233,12 +233,6 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-axios@^0.15.3:
-  version "0.15.3"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
-  dependencies:
-    follow-redirects "1.0.0"
-
 babel-code-frame@^6.11.0, babel-code-frame@^6.22.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.22.0.tgz#027620bee567a88c32561574e7fd0801d33118e4"
@@ -1526,10 +1520,6 @@ domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
-dropzone@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.3.0.tgz#48b0b8f2ad092872e4b535b672a7c3f1a1d67c91"
-
 duplexer2@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -1760,12 +1750,6 @@ flagged-respawn@^0.3.2:
 flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
-
-follow-redirects@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
-  dependencies:
-    debug "^2.2.0"
 
 for-in@^0.1.5:
   version "0.1.6"
@@ -2593,9 +2577,13 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
-jquery-mousewheel@~3.1.13:
+jquery-mousewheel@>=3.0.6, jquery-mousewheel@~3.1.13:
   version "3.1.13"
   resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
+
+jquery.scrollbar@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/jquery.scrollbar/-/jquery.scrollbar-0.2.11.tgz#e91bd4a97d83859463024d26e730dc36676ab59d"
 
 jquery.scrollto@^2.1.2:
   version "2.1.2"
@@ -3041,6 +3029,12 @@ magic-string@^0.14.0:
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.14.0.tgz#57224aef1701caeed273b17a39a956e72b172462"
   dependencies:
     vlq "^0.2.1"
+
+malihu-custom-scrollbar-plugin@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/malihu-custom-scrollbar-plugin/-/malihu-custom-scrollbar-plugin-3.1.5.tgz#310cecc5e59415a1c29e9dfb5d2b6e01d66a29ef"
+  dependencies:
+    jquery-mousewheel ">=3.0.6"
 
 map-cache@^0.2.0:
   version "0.2.2"
@@ -4812,12 +4806,6 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-dropzone@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/vue-dropzone/-/vue-dropzone-1.0.4.tgz#4c09ac22ea26932992af06bb57243cdd0d80bef0"
-  dependencies:
-    dropzone "^4.3.0"
-
 vue-hot-reload-api@^2.0.1:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.0.8.tgz#b3ba6a9a443d561b14f2785c8ea056618cb2faa3"
@@ -4862,14 +4850,7 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.5.0.tgz#e4f672ab1718a3abf9171a080daefac31be117e1"
 
-vue2-dropzone@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-2.1.8.tgz#17b703245e8d43cfe90396f248705528b0423808"
-  dependencies:
-    dropzone "^4.3.0"
-    vue "^2.0.0"
-
-vue@^2.0.0, vue@^2.1.10:
+vue@^2.1.10:
   version "2.1.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.1.10.tgz#c9235ca48c7925137be5807832ac4e3ac180427b"
 

@@ -4,6 +4,7 @@ window.Sortable = require('sortablejs');
 require('vue');
 require('vue-resource');
 require('bootstrap-sass');
+require('jquery.scrollbar');
 require('tinymce');
 require('jquery.scrollto');
 require('select2');

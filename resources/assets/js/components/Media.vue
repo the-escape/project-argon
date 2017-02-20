@@ -1,39 +1,43 @@
 <template>
     <div class="media">
         <div class="media__tree">
-            <ul>
-                <MediaRow
-                    v-for="folder in allFolders"
-                    v-bind:folder="folder">
-                </MediaRow>
-            </ul>
+            <div class="media__scroll">
+                <ul>
+                    <MediaRow
+                            v-for="folder in allFolders"
+                            v-bind:folder="folder">
+                    </MediaRow>
+                </ul>
+            </div>
         </div>
         <div class="media__right">
-            <div class="media__header">
-                <form>
-                    <div class="form__group">
-                        <label for="search" class="sr-only">Search library</label>
-                        <input v-model="searchQuery" id="search" type="text" class="form__text icon" placeholder="Search library">
-                        <span class="icon search"></span>
+            <div class="media__scroll">
+                <div class="media__header">
+                    <form>
+                        <div class="form__group">
+                            <label for="search" class="sr-only">Search library</label>
+                            <input v-model="searchQuery" id="search" type="text" class="form__text icon" placeholder="Search library">
+                            <span class="icon search"></span>
+                        </div>
+                    </form>
+                    <div class="media__actions">
+                        <h1 v-if="!searchQuery.length">{{ activeFolder.name }}</h1>
+                        <h1 v-else>Search: {{ searchQuery }}</h1>
+                        <button class="form__btn form__btn--small media__upload">UPLOAD MEDIA</button>
                     </div>
-                </form>
-                <div class="media__actions">
-                    <h1 v-if="!searchQuery.length">{{ activeFolder.name }}</h1>
-                    <h1 v-else>Search: {{ searchQuery }}</h1>
-                    <button class="form__btn form__btn--small media__upload">UPLOAD MEDIA</button>
                 </div>
-            </div>
-            <div class="media__browser">
-                <div id="media__dropzone" class="media__items dropzone">
-                    <MediaFolder
-                            v-if="!searchQuery.length && !isLoading"
-                            v-for="folder in childFolders"
-                            v-bind:folder="folder">
-                    </MediaFolder>
-                    <MediaItem
-                            v-for="item in childItems"
-                            v-bind:item="item">
-                    </MediaItem>
+                <div class="media__browser">
+                    <div class="media__items">
+                        <MediaFolder
+                                v-if="!searchQuery.length && !isLoading"
+                                v-for="folder in childFolders"
+                                v-bind:folder="folder">
+                        </MediaFolder>
+                        <MediaItem
+                                v-for="item in childItems"
+                                v-bind:item="item">
+                        </MediaItem>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,6 +71,9 @@
         },
         created () {
             this.$store.dispatch('getFolders');
+        },
+        mounted () {
+            $('.media__scroll').scrollbar();
         },
         methods: {
             search: _.debounce(function () {
