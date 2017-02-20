@@ -14,12 +14,12 @@
             <div class="container-fluid full-height">
                 <div class="row full-height">
                     @include('argon::partials.sidebar')
-                    <div class="main">
+                    <div class="main full-height">
                         @if (isset($tabs))
                             @include ('argon::partials.tabs')
                         @endif
                         <div class="container-fluid">
-                            <div class="row full-height">
+                            <div class="row">
                                 <div class="col-xs-10 col-xs-offset-1">
                                     <div class="main__content">
                                         @yield('body')

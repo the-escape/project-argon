@@ -19,6 +19,15 @@
                             <input v-model="searchQuery" id="search" type="text" class="form__text icon" placeholder="Search library">
                             <span class="icon search"></span>
                         </div>
+                        <div class="form__group">
+                            <label for="type" class="sr-only">Media Type</label>
+                            <select v-model="mediaType" id="type" class="form__select">
+                                <option></option>
+                                <option value="all">All</option>
+                                <option value="files">Files</option>
+                                <option value="folders">Folders</option>
+                            </select>
+                        </div>
                     </form>
                     <div class="media__actions">
                         <h1 v-if="!searchQuery.length">{{ activeFolder.name }}</h1>
@@ -29,11 +38,12 @@
                 <div class="media__browser">
                     <div class="media__items">
                         <MediaFolder
-                                v-if="!searchQuery.length && !isLoading"
+                                v-if="(!searchQuery.length && !isLoading) && mediaType !== 'files'"
                                 v-for="folder in childFolders"
                                 v-bind:folder="folder">
                         </MediaFolder>
                         <MediaItem
+                                v-if="mediaType !== 'folders'"
                                 v-for="item in childItems"
                                 v-bind:item="item">
                         </MediaItem>
@@ -66,22 +76,28 @@
         }),
         data: () => {
             return {
-                searchQuery: ''
+                searchQuery: '',
+                mediaType: ''
             }
         },
         created () {
             this.$store.dispatch('getFolders');
         },
         mounted () {
+            let self = this;
             $('.media__scroll').scrollbar();
+            $('.media .form__select').select2({
+                placeholder: 'Media type',
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            }).on('change', function (e) {
+                self.mediaType = $(this).val();
+            });
         },
         methods: {
             search: _.debounce(function () {
                 this.$store.dispatch('searchItems', this.searchQuery)
-            }, 500),
-            showSuccess: function (file) {
-                console.log(file)
-            }
+            }, 500)
         },
         watch: {
             searchQuery () {

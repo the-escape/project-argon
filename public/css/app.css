@@ -8428,14 +8428,8 @@ body {
   width: 100%;
 }
 
-#ui {
-  padding: 50px;
-}
-
-#ui .field-group {
-  position: relative;
-  float: left;
-  width: 290px;
+#app {
+  height: 100%;
 }
 
 .margin-t-no {
@@ -10949,6 +10943,11 @@ textarea {
 }
 
 /* scrollbar height/width & offset from container borders */
+.scroll-wrapper > .scroll-content {
+  left: -15px;
+  margin-left: 15px;
+}
+
 .scroll-content.scroll-scrolly_visible {
   left: -15px;
   margin-left: 15px;
@@ -10987,7 +10986,7 @@ textarea {
 }
 
 .media {
-  min-height: 900px;
+  min-height: 540px;
   margin-top: 30px;
   position: relative;
   border: 1px solid #d8d8d8;
@@ -11031,13 +11030,34 @@ textarea {
   float: left;
 }
 
+.media .media__header form {
+  width: 100%;
+  float: left;
+  border-bottom: 1px solid #d8d8d8;
+}
+
 .media .media__header .form__group {
   margin: 0;
   padding-bottom: 20px;
-  border-bottom: 1px solid #d8d8d8;
-  width: 100%;
+  width: 50%;
   float: left;
   clear: none;
+}
+
+.media .media__header .form__group:first-child {
+  padding-right: 5px;
+}
+
+.media .media__header .form__group:last-child {
+  padding-left: 5px;
+}
+
+.media .media__header .form__group select {
+  width: 100%;
+}
+
+.media .media__header .form__group .icon.search {
+  right: 5px;
 }
 
 .media .media__actions {
