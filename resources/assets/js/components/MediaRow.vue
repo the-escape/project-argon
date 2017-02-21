@@ -1,9 +1,9 @@
 <template>
     <li>
         <a href="#"
-           v-bind:class="isActive()"
+           v-bind:class="isLinkActive() ? 'media__folder media__folder--active' : 'media__folder'"
            v-on:click="select()">{{ folder.name }}</a>
-        <ul>
+        <ul v-show="isRowActive(folder)">
             <media-row
                     v-for="childFolder in childFolders"
                     v-bind:folder="childFolder">
@@ -21,7 +21,9 @@
         props: ['folder'],
         computed: {
             ...mapGetters({
-                activeFolder: 'activeFolder'
+                activeFolder: 'activeFolder',
+                rootFolder: 'rootFolder',
+                parentFolders: 'parentFolders'
             }),
             childFolders: function () {
                 return this.$store.getters.childFolders(this.folder)
@@ -30,9 +32,18 @@
         methods: {
             select () {
                 this.$store.dispatch('selectFolder', this.folder)
+
             },
-            isActive () {
-                return this.activeFolder === this.folder ? 'media__folder media__folder--active' : 'media__folder'
+            isLinkActive () {
+                return this.activeFolder === this.folder
+            },
+            isRowActive (folder) {
+
+                let rowActive = this.parentFolders.find(function (parent) {
+                    return parent === folder.id
+                });
+
+                return rowActive || this.rootFolder === folder || this.isLinkActive()
             }
         },
         components: {

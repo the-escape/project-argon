@@ -4,8 +4,7 @@
             <div class="media__scroll">
                 <ul>
                     <media-row
-                            v-for="folder in allFolders"
-                            v-bind:folder="folder">
+                            v-bind:folder="rootFolder">
                     </media-row>
                 </ul>
             </div>
@@ -16,12 +15,12 @@
                     <form>
                         <div class="form__group">
                             <label for="search" class="sr-only">Search library</label>
-                            <input v-model="searchQuery" id="search" type="text" class="form__text icon" placeholder="Search library">
+                            <input v-model="searchFilter" id="search" type="text" class="form__text icon" placeholder="Search library">
                             <span class="icon search"></span>
                         </div>
                         <div class="form__group">
                             <label for="type" class="sr-only">Media Type</label>
-                            <select v-model="mediaType" id="type" class="form__select">
+                            <select v-model="typeFilter" id="type" class="form__select">
                                 <option></option>
                                 <option value="all">All</option>
                                 <option value="files">Files</option>
@@ -30,7 +29,7 @@
                         </div>
                     </form>
                     <div class="media__actions">
-                        <h1 v-if="!searchQuery.length">{{ activeFolder.name }}</h1>
+                        <h1 v-if="!searchFilter.length">{{ activeFolder.name }}</h1>
                         <h1 v-else>Search: {{ searchQuery }}</h1>
                         <button class="form__btn form__btn--small media__upload">UPLOAD MEDIA</button>
                     </div>
@@ -53,12 +52,12 @@
                             </span>
                         </div>
                         <media-folder
-                                v-if="(!searchQuery.length && !isLoading) && mediaType !== 'files'"
+                                v-if="(!searchFilter.length && !isLoading) && typeFilter !== 'files'"
                                 v-for="folder in childFolders"
                                 v-bind:folder="folder">
                         </media-folder>
                         <media-item
-                                v-if="mediaType !== 'folders'"
+                                v-if="typeFilter !== 'folders'"
                                 v-for="item in childItems"
                                 v-bind:item="item">
                         </media-item>
@@ -86,7 +85,7 @@
             ...mapGetters({
                 isLoading: 'isLoading',
                 activeFolder: 'activeFolder',
-                allFolders: 'allFolders',
+                rootFolder: 'rootFolder',
                 childItems: 'childItems',
                 activeItem: 'activeItem',
                 isCreating: 'isCreating'
@@ -97,8 +96,8 @@
         },
         data: () => {
             return {
-                searchQuery: '',
-                mediaType: '',
+                searchFilter: '',
+                typeFilter: '',
                 folderName: ''
             }
         },
@@ -117,8 +116,8 @@
             });
         },
         methods: {
-            search: _.debounce(function () {
-                this.$store.dispatch('searchItems', this.searchQuery)
+            doSearch: _.debounce(function () {
+                this.$store.dispatch('searchItems', this.searchFilter)
             }, 500),
             setCreating () {
                 this.$store.commit(types.MEDIA_FOLDERS_STORE)
@@ -136,15 +135,15 @@
             }
         },
         watch: {
-            searchQuery () {
+            searchFilter () {
                 this.$store.dispatch('isLoading', true);
 
-                if (!this.searchQuery.length) {
+                if (!this.searchFilter.length) {
                     this.$store.dispatch('selectFolder', this.activeFolder);
                     return true
                 }
 
-                this.search()
+                this.doSearch()
             }
         },
         components: {

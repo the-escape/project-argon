@@ -2,7 +2,10 @@ import { getFolders, getItems, searchItems, storeFolder } from '../../api/media'
 import * as types from '../mutation-types'
 
 const state = {
+
     loading: false,
+
+    root: {},
 
     /**
      * The active folder.
@@ -13,6 +16,8 @@ const state = {
      * An array of all folders.
      */
     folders: [],
+
+    parents: [],
 
     /**
      * An array of items in the active folder.
@@ -28,17 +33,14 @@ const state = {
 };
 
 const getters = {
+
+    rootFolder: state => state.root,
+
     /**
      * Returns the active folder.
      * @param state
      */
     activeFolder: state => state.folder,
-
-    /**
-     * Returns all folders.
-     * @param state
-     */
-    allFolders: state => state.folders,
 
     /**
      * Returns child folders of the active folder.
@@ -50,6 +52,8 @@ const getters = {
             return parent.id === folder.parent
         })
     },
+
+    parentFolders: (state) => state.parents,
 
     /**
      * Returns child items of the active folder.
@@ -85,6 +89,7 @@ const actions = {
 
             // Get the root folder.. Change this!
             let folder = folders[0];
+            commit(types.MEDIA_FOLDERS_ROOT, folder);
             dispatch('selectFolder', folder)
         })
     },
@@ -163,13 +168,18 @@ const actions = {
 };
 
 const mutations = {
+
+    [types.MEDIA_FOLDERS_ROOT] (state, folder) {
+        state.root = folder
+    },
+
     /**
      * Store folders in to the folders state.
      * @param state
      * @param folders
      */
     [types.MEDIA_FOLDERS_GET] (state, { folders }) {
-        state.folders = folders;
+        state.folders = folders
     },
 
     /**
@@ -178,7 +188,21 @@ const mutations = {
      * @param folder
      */
     [types.MEDIA_FOLDERS_SELECT] (state, { folder }) {
-        state.folder = folder
+
+        state.folder = folder;
+
+        let parentFolders = [];
+
+        while (folder.parent !== undefined && folder.parent !== 0) {
+
+            folder = state.folders.find((item) => {
+                return folder.parent === item.id
+            });
+
+            parentFolders.push(folder.id);
+        }
+
+        state.parents = parentFolders
     },
 
     /**

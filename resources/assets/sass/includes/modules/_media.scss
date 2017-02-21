@@ -96,21 +96,21 @@
     top: 0;
     bottom: 0;
     border-right: 1px solid $color-grey-dark;
-    li>ul {
-      padding-left: 15px;
-    }
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
       width: 100%;
+      ul {
+        padding-left: 15px;
+      }
       li {
         position: relative;
         .media__folder {
           display: block;
           width: 100%;
           padding: 5px 5px 5px 40px;
-          border-bottom: 1px solid $color-grey-dark;
+          /*border-bottom: 1px solid $color-grey-dark;*/
           background: url('/argon/assets/img/icons/folder.svg') 10px center / 20px 14px no-repeat;
           color: $color-text;
           &.media__folder--active {
@@ -119,14 +119,6 @@
           &:hover {
             background-color: $color-grey-light;
           }
-        }
-        &:after {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background-color: red;
-          height: 1px;
         }
       }
     }
