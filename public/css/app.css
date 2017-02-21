@@ -11007,10 +11007,6 @@ textarea {
   width: 100%;
 }
 
-.media .media__tree ul ul {
-  padding-left: 15px;
-}
-
 .media .media__tree ul li {
   position: relative;
 }
@@ -11019,17 +11015,27 @@ textarea {
   display: block;
   width: 100%;
   padding: 5px 5px 5px 40px;
-  /*border-bottom: 1px solid $color-grey-dark;*/
-  background: url("/argon/assets/img/icons/folder.svg") 10px center/20px 14px no-repeat;
   color: #1f1f1f;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.media .media__tree ul li .media__folder i {
+  display: block;
+  float: left;
+  width: 20px;
+  height: 14px;
+  margin: 5px 10px 5px 0;
+  background: url("/argon/assets/img/icons/folder.svg") center/20px 14px no-repeat;
 }
 
 .media .media__tree ul li .media__folder.media__folder--active {
   background-color: #f0f0f0;
 }
 
-.media .media__tree ul li .media__folder:hover {
+.media .media__tree ul li .media__folder:hover, .media .media__tree ul li .media__folder:focus, .media .media__tree ul li .media__folder:active {
   background-color: #f0f0f0;
+  color: #1f1f1f;
+  text-decoration: none;
 }
 
 .media .media__header {

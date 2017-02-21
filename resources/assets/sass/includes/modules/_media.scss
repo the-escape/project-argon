@@ -101,23 +101,31 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      ul {
-        padding-left: 15px;
-      }
       li {
         position: relative;
         .media__folder {
           display: block;
           width: 100%;
           padding: 5px 5px 5px 40px;
-          /*border-bottom: 1px solid $color-grey-dark;*/
-          background: url('/argon/assets/img/icons/folder.svg') 10px center / 20px 14px no-repeat;
           color: $color-text;
+          border-bottom: 1px solid $color-grey-dark;
+          i {
+            display: block;
+            float: left;
+            width: 20px;
+            height: 14px;
+            margin: 5px 10px 5px 0;
+            background: url('/argon/assets/img/icons/folder.svg') center / 20px 14px no-repeat;
+          }
           &.media__folder--active {
             background-color: $color-grey-light;
           }
-          &:hover {
+          &:hover,
+          &:focus,
+          &:active {
             background-color: $color-grey-light;
+            color: $color-text;
+            text-decoration: none;
           }
         }
       }

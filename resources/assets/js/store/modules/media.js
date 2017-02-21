@@ -53,6 +53,21 @@ const getters = {
         })
     },
 
+    getNumParents: (state) => (folder) => {
+        let parentFolders = [];
+
+        while (folder.parent !== undefined && folder.parent !== 0) {
+
+            folder = state.folders.find((item) => {
+                return folder.parent === item.id
+            });
+
+            parentFolders.push(folder.id);
+        }
+
+        return parentFolders.length
+    },
+
     parentFolders: (state) => state.parents,
 
     /**
@@ -102,6 +117,7 @@ const actions = {
      */
     selectFolder ({ commit, dispatch }, folder) {
         commit(types.MEDIA_FOLDERS_SELECT, { folder });
+        commit(types.MEDIA_FOLDERS_PARENTS, { folder });
         dispatch('isLoading', true);
         dispatch('getItems')
     },
@@ -188,9 +204,10 @@ const mutations = {
      * @param folder
      */
     [types.MEDIA_FOLDERS_SELECT] (state, { folder }) {
-
         state.folder = folder;
+    },
 
+    [types.MEDIA_FOLDERS_PARENTS] (state, { folder }) {
         let parentFolders = [];
 
         while (folder.parent !== undefined && folder.parent !== 0) {
