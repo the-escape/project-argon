@@ -3,10 +3,10 @@
         <div class="media__tree">
             <div class="media__scroll">
                 <ul>
-                    <MediaRow
+                    <media-row
                             v-for="folder in allFolders"
                             v-bind:folder="folder">
-                    </MediaRow>
+                    </media-row>
                 </ul>
             </div>
         </div>
@@ -52,22 +52,22 @@
                                 <input v-model="folderName" id="name" type="text" v-on:keyup.enter="storeFolder" autofocus>
                             </span>
                         </div>
-                        <MediaFolder
+                        <media-folder
                                 v-if="(!searchQuery.length && !isLoading) && mediaType !== 'files'"
                                 v-for="folder in childFolders"
                                 v-bind:folder="folder">
-                        </MediaFolder>
-                        <MediaItem
+                        </media-folder>
+                        <media-item
                                 v-if="mediaType !== 'folders'"
                                 v-for="item in childItems"
                                 v-bind:item="item">
-                        </MediaItem>
+                        </media-item>
                     </div>
                 </div>
             </div>
         </div>
         <div v-if="isLoading" class="media__loading"></div>
-        <MediaModal></MediaModal>
+        <media-modal></media-modal>
     </div>
 </template>
 
@@ -81,15 +81,20 @@
     import MediaModal from './MediaModal.vue'
 
     export default {
-        computed: mapGetters({
-            isLoading: 'isLoading',
-            activeFolder: 'activeFolder',
-            allFolders: 'allFolders',
-            childFolders: 'childFolders',
-            childItems: 'childItems',
-            activeItem: 'activeItem',
-            isCreating: 'isCreating'
-        }),
+        name: 'media',
+        computed: {
+            ...mapGetters({
+                isLoading: 'isLoading',
+                activeFolder: 'activeFolder',
+                allFolders: 'allFolders',
+                childItems: 'childItems',
+                activeItem: 'activeItem',
+                isCreating: 'isCreating'
+            }),
+            childFolders: function () {
+                return this.$store.getters.childFolders(this.activeFolder)
+            }
+        },
         data: () => {
             return {
                 searchQuery: '',
@@ -143,10 +148,10 @@
             }
         },
         components: {
-            MediaRow,
-            MediaFolder,
-            MediaItem,
-            MediaModal
+            'media-row': MediaRow,
+            'media-folder': MediaFolder,
+            'media-item': MediaItem,
+            'media-modal': MediaModal
         }
     }
 </script>

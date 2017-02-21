@@ -57,8 +57,21 @@ class MediaController extends BaseController
 
     public function folders()
     {
-        $folders = $this->mediaFolderRepository->orderBy('name')->all();
+        $folders = $this->mediaFolderRepository->all()->keyBy('id');
+        /*
+        foreach ($folders as $key => $folder) {
+            if ($folder->parent) {
+                $folders[$folder->parent]->setChildFolders($folder);
+            }
+        }
 
+        foreach ($folders as $key => $folder) {
+            if (!is_null($folder->parent)) {
+                unset($folders[$key]);
+                continue;
+            }
+        }
+        */
         $collection = new Collection($folders, new MediaFolderTransformer());
 
         $response = $this->manager->createData($collection)->toArray();

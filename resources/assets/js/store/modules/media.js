@@ -45,9 +45,9 @@ const getters = {
      * @param state
      * @returns {Array.<*>}
      */
-    childFolders: state => {
+    childFolders: (state) => (parent) => {
         return state.folders.filter((folder) => {
-            return folder.parent === state.folder.id
+            return parent.id === folder.parent
         })
     },
 

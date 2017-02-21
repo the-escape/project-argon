@@ -11,6 +11,7 @@
 
 <script>
     export default {
+        name: 'media-folder',
         props: ['folder'],
         methods: {
             select () {

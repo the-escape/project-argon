@@ -42,6 +42,7 @@
     import { mapGetters } from 'vuex'
 
     export default {
+        name: 'media-modal',
         computed: mapGetters({
             activeItem: 'activeItem'
         })
