@@ -14,7 +14,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         // make data consistently object
         if ($data) {
             if (is_object($data)) {
-                $data = toArray($data);
+                $data = (array) $data;
             }
             foreach ($data as $k => &$v) {
                 if (is_array($v)) {
@@ -62,7 +62,6 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
                 throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
             }
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
-            $media_item->meta = json_decode($media_item->meta);
             $media_item->data = new \stdClass();
             $media_item->data->alt = @$obj->alt;
             return $media_item;

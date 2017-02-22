@@ -5,6 +5,14 @@ const state = {
 
     loading: false,
 
+    searching: false,
+
+    filtering: false,
+
+    filter: '',
+
+    search: '',
+
     root: {},
 
     /**
@@ -88,7 +96,11 @@ const getters = {
      */
     activeItem: state => state.item,
 
-    isCreating: state => state.creating
+    isCreating: state => state.creating,
+
+    searching: state => state.search.length > 0,
+
+    filter: state => state.filter
 };
 
 const actions = {
@@ -111,11 +123,17 @@ const actions = {
 
     /**
      * Select a folder to become the active folder.
+     * @param state
      * @param commit
      * @param dispatch
      * @param folder
      */
-    selectFolder ({ commit, dispatch }, folder) {
+    selectFolder ({ state, commit, dispatch }, folder) {
+
+        if (state.search.length > 0) {
+            commit(types.MEDIA_SEARCH, false);
+        }
+
         commit(types.MEDIA_FOLDERS_SELECT, { folder });
         commit(types.MEDIA_FOLDERS_PARENTS, { folder });
         dispatch('isLoading', true);
@@ -140,14 +158,19 @@ const actions = {
      * Search items with the supplied query.
      * @param commit
      * @param dispatch
-     * @param searchQuery
+     * @param search
      */
-    searchItems ({ commit, dispatch }, searchQuery) {
+    searchItems ({ commit, dispatch }, search) {
         dispatch('isLoading', true);
-        searchItems(searchQuery, items => {
+        commit(types.MEDIA_SEARCH, search);
+        searchItems(search, items => {
             commit(types.MEDIA_ITEMS_GET, { items });
-            dispatch('isLoading', false)
+            dispatch('isLoading', false);
         })
+    },
+
+    filterItems ({ commit, dispatch }, filter) {
+        commit(types.MEDIA_FILTER, filter);
     },
 
     /**
@@ -266,6 +289,18 @@ const mutations = {
 
         state.creating = false;
         state.folders.unshift(folder)
+    },
+
+    [types.MEDIA_SEARCHING] (state, searching) {
+        state.searching = searching
+    },
+
+    [types.MEDIA_SEARCH] (state, search) {
+        state.search = search
+    },
+
+    [types.MEDIA_FILTER] (state, filter) {
+        state.filter = filter
     }
 };
 

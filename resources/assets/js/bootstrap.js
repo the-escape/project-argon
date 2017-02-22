@@ -5,6 +5,7 @@ require('vue');
 require('vue-resource');
 require('bootstrap-sass');
 require('jquery.scrollbar');
+require('blueimp-file-upload');
 require('tinymce');
 require('jquery.scrollto');
 require('select2');
