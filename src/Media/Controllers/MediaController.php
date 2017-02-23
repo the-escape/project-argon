@@ -433,6 +433,7 @@ class MediaController extends BaseController
         }
 
         $media->folder = $parent->getId();
+        $media->filename = $name;
         $media->save();
 
         return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
@@ -459,6 +460,7 @@ class MediaController extends BaseController
         }
 
         $media->folder = $parent->getId();
+        $media->filename = $name;
         $media->save();
 
         return redirect(route("cms:media:modal:edit", $id))->with('message', 'Media item updated!');
