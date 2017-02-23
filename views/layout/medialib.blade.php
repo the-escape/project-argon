@@ -110,12 +110,12 @@
 <script src="/argon/js/jstree.min.js"></script>
 <script src="/argon/js/bootstrap-datepicker.min.js"></script>
 <script src="/argon/js/handlebars.min.js"></script>
-<script src="/argon/js/dropzone.min.js"></script>
+{{--<script src="/argon/js/dropzone.min.js"></script>--}}
 <script src="/argon/js/jquery.fancybox.pack.js"></script>
 <script src="/argon/js/argon.js"></script>
 
 <script>
-
+/*
     var $formDZ = $('form.dz');
 
     if ($formDZ && $formDZ.length)
@@ -154,8 +154,7 @@
             sortItems();
         });
     }
-
-
+*/
 </script>
 
 @foreach($assetsManager->outputScripts() as $script)

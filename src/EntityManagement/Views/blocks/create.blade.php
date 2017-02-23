@@ -159,6 +159,8 @@
         </div>
     </div>
 
+    @include('argon::pages.partials.medialib')
+
     <div style="display: none;" id="preview-template">
         <div class="media-item">
             <img class="thumb" data-dz-thumbnail>
