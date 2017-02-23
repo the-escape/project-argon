@@ -104,7 +104,7 @@ class EntityRepository extends BaseRepository
     /**
      * Returns entities specified by type id(s).
      * @param array $typeIds - array of entity_type_id
-     * @param array $order - array of column names from entities table
+     * @param array $order - array of column names from entities table or keys (column names) and values ("asc"/"desc")
      * @param int $paginate - number of items per page
      * @return mixed Collection|LengthAwarePaginator - depending on paginate parameter
      */
@@ -112,8 +112,22 @@ class EntityRepository extends BaseRepository
     {
         $r = $this->model->whereIn('entity_type_id', $typeIds);
 
-        foreach ($order as $o) {
-            $r->orderBy($o);
+        foreach ($order as $o)
+        {
+            if (!is_array($o)) {
+
+                $r->orderBy($o);
+
+            } else {
+
+                foreach($o as $column => $order) {
+
+                    $r->orderBy($column, $order);
+
+                }
+
+            }
+
         }
 
         return ($paginate)
