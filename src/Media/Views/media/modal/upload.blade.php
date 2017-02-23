@@ -9,7 +9,7 @@
 
         @if (session('message'))
             <div class="alert alert-success" role="alert">
-                {{ session('message') }}
+                {!! session('message') !!}
             </div>
         @endif
 
@@ -32,12 +32,13 @@
             </div>
 
             <div class="form-group">
-                <label for="folder">Select Folder:</label>
+                <label for="folder" class="required">Select Folder:</label>
+
                 <select name="folder" id="folder" class="form-control">
-                    @foreach($folders as $folder)
+                    <option value="{{ $root->getId() }}" @if($root->getId() == 0) selected @endif>{{ $root->name }}</option>
 
-                        <option value="{{ $folder->getId() }}">{{ $folder->getName() }}</option>
-
+                    @foreach($root->children as $child)
+                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>0, 'currentFolderId'=>null])
                     @endforeach
                 </select>
             </div>

@@ -126,6 +126,24 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return null;
     }
 
+    public function getWidth()
+    {
+        if ($this->current()) {
+            return $this->current()->getWidth();
+        }
+
+        return null;
+    }
+
+    public function getHeight()
+    {
+        if ($this->current()) {
+            return $this->current()->getHeight();
+        }
+
+        return null;
+    }
+
     public function getImageAlt($default='')
     {
         if ($this->current()) {

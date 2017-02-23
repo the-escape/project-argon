@@ -3,9 +3,12 @@
 namespace Escape\Argon\Media\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MediaFolder extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['name', 'parent'];
 
     public function parent()

@@ -15,12 +15,13 @@
 
         <div class="actions-top">
 
-            <a href="" id="edit-button" class="btn btn-primary-outline">Edit</a>
-            <button id="add-button" disabled class="btn btn-primary-outline">Add Subfolder</button>
-            <button id="delete-button" disabled class="btn btn-danger-outline confirm">Delete</button>
+            <a href="" id="edit-button" class="btn btn-primary-outline" data-item-edit="{{ route("cms:media:edit", ['%%ID%%']) }}" data-folder-edit="{{ route("cms:media:folders:edit", ['%%ID%%']) }}">Edit</a>
+            <button id="add-button" disabled class="btn btn-primary-outline" data-folder-add="{{ route("cms:media:folders:add", ['%%ID%%']) }}">Add Subfolder</button>
+            <button id="delete-button" disabled class="btn btn-danger-outline confirm" data-item-delete="{{ route("cms:media:delete", ['%%ID%%']) }}" data-folder-delete="{{ route("cms:media:folders:remove", ['%%ID%%']) }}">Delete</button>
+
 
             <div class="pull-xs-right">
-                <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload">Upload</a>
+                <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload" id="upload-button">Upload</a>
                 <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
             </div>
 

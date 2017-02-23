@@ -25,4 +25,9 @@ class MediaFolderRepository extends BaseRepository
     {
         return $this->findWhere(['parent' => $parent, 'name' => $name])->count() > 0;
     }
+
+    public function getSubfolders($folderId)
+    {
+        return $this->findWhere(['parent' => $folderId]);
+    }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 use stdClass;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
 use View;
 use Image;
@@ -614,71 +615,145 @@ class MediaController extends BaseController
     }
 
 
-    public function upload_get(Request $request, MediaFolderRepository $mediaFolderRepository)
+    public function upload_get(MediaFolderRepository $folderRepository)
     {
-        $folders = $mediaFolderRepository->all();
+        $root = $folderRepository->root();
 
         return View::make('argon::media.upload', [
-            'folders' => $folders,
+            'root' => $root,
         ]);
     }
 
 
-    public function modal_upload_get(Request $request, MediaFolderRepository $mediaFolderRepository)
+    public function modal_upload_get(MediaFolderRepository $folderRepository)
     {
-        $folders = $mediaFolderRepository->all();
+        $root = $folderRepository->root();
 
         return View::make('argon::media.modal.upload', [
-            'folders' => $folders,
+            'root' => $root,
         ]);
     }
 
 
-    public function modal_upload_post(Request $request)
+    public function modal_upload_post(Request $request, MediaFolderRepository $folderRepository)
     {
-        $folderId = Input::get('folder');
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('folder')])->first();
+
+        if ($folder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$request->input('folder')}'. Perhaps soft deleted?");
+        }
 
         $files = $request->file('file');
 
-        if ($files)
+        if (empty($files[0]))
         {
-            $userId = $request->user()->id;
-
-            $mediaRepository = app()->make(MediaItemRepository::class);
-
-            foreach ($files as $file)
-            {
-                $r = Media::saveUploadedFile($file, $folderId, $userId, $mediaRepository);
-            }
+            return redirect(route("cms:media:modal:upload:get"))->with('message', "No file(s) selected for upload.");
         }
 
-        return redirect(route("cms:media:modal:all"));
+        $userId = $request->user()->id;
+
+        $mediaRepository = app()->make(MediaItemRepository::class);
+
+        $msgErrors = [];
+        $msgSuccess = [];
+
+        foreach ($files as $file)
+        {
+            if ($file->getError() !== 0)
+            {
+                $msgErrors[] = $file->getErrorMessage();
+                continue;
+            }
+
+            $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
+            $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
+        }
+
+        if ($msgErrors)
+        {
+            $messageCombined = [];
+
+            foreach ($msgErrors as $msg)
+            {
+                $messageCombined[] = $msg;
+            }
+
+            if ($msgSuccess)
+            {
+                foreach ($msgSuccess as $msg)
+                {
+                    $messageCombined[] = $msg;
+                }
+            }
+
+            return redirect(route("cms:media:modal:upload:get"))->with('message', implode('<br>', $messageCombined));
+        }
+
+        return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
     }
 
 
-    public function upload_post(Request $request)
+    public function upload_post(Request $request, MediaFolderRepository $folderRepository)
     {
-        $folderId = Input::get('folder');
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$request->input('folder')])->first();
+
+        if ($folder === null)
+        {
+            throw new RuntimeException("No folder with ID: '{$request->input('folder')}'. Perhaps soft deleted?");
+        }
 
         $files = $request->file('file');
 
-        if ($files)
+        if (empty($files[0]))
         {
-            $userId = $request->user()->id;
-
-            $mediaRepository = app()->make(MediaItemRepository::class);
-
-            foreach ($files as $file)
-            {
-                $r = Media::saveUploadedFile($file, $folderId, $userId, $mediaRepository);
-            }
+            return redirect(route("cms:media:modal:upload:get"))->with('message', "No file(s) selected for upload.");
         }
 
-        return redirect(route("cms:media:all"));
+        $userId = $request->user()->id;
+
+        $mediaRepository = app()->make(MediaItemRepository::class);
+
+        $msgErrors = [];
+        $msgSuccess = [];
+
+        foreach ($files as $file)
+        {
+            if ($file->getError() !== 0)
+            {
+                $msgErrors[] = $file->getErrorMessage();
+                continue;
+            }
+
+            $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
+            $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
+        }
+
+        if ($msgErrors)
+        {
+            $messageCombined = [];
+
+            foreach ($msgErrors as $msg)
+            {
+                $messageCombined[] = $msg;
+            }
+
+            if ($msgSuccess)
+            {
+                foreach ($msgSuccess as $msg)
+                {
+                    $messageCombined[] = $msg;
+                }
+            }
+
+            return redirect(route("cms:media:upload:get"))->with('message', implode('<br>', $messageCombined));
+        }
+
+        return redirect(route("cms:media:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
     }
 
 
-    public function modal_folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
+    public function modal_folderAdd($id, MediaFolderRepository $folderRepository)
     {
         $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
 
@@ -700,7 +775,7 @@ class MediaController extends BaseController
     }
 
 
-    public function folderAdd($id, Request $request, MediaFolderRepository $folderRepository)
+    public function folderAdd($id,MediaFolderRepository $folderRepository)
     {
         $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
 
@@ -709,13 +784,13 @@ class MediaController extends BaseController
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
-        $folders = $folderRepository->findWhere(['deleted_at' => null]);
+//        $folders = $folderRepository->findWhere(['deleted_at' => null]);
 
         $root = $folderRepository->root();
 
         return View::make('argon::media.folder-add', [
             'parentFolder' => $parentFolder,
-            'folders' => $folders,
+//            'folders' => $folders,
             'root' => $root,
         ]);
 
@@ -877,17 +952,14 @@ class MediaController extends BaseController
     public function modal_folderRemove(
         $folderId,
         MediaFolderRepository $folderRepository,
-        MediaItemRepository $itemRepository,
-        Request $request
+        MediaItemRepository $itemRepository
     ) {
         if ($folderId == 1)
         {
             return redirect(route("cms:media:modal:folders"))->with('message', "Root folder can't be removed!");
         }
 
-        // TODO: getItemsInFolder needs to be recursive as it fails currently
-        // if child folder has items so they are not direcly under the folder being deleted
-        if ($itemRepository->getItemsInFolder($folderId)->count() > 0)
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0 || $folderRepository->getSubfolders($folderId)->count() > 0)
         {
             return redirect(route("cms:media:modal:folders"))->with('message', "Folder not empty!");
         }
@@ -901,17 +973,14 @@ class MediaController extends BaseController
     public function folderRemove(
         $folderId,
         MediaFolderRepository $folderRepository,
-        MediaItemRepository $itemRepository,
-        Request $request
+        MediaItemRepository $itemRepository
     ) {
         if ($folderId == 1)
         {
             return redirect(route("cms:media:folders"))->with('message', "Root folder can't be removed!");
         }
 
-        // TODO: getItemsInFolder needs to be recursive as it fails currently
-        // if child folder has items so they are not direcly under the folder being deleted
-        if ($itemRepository->getItemsInFolder($folderId)->count() > 0)
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0 || $folderRepository->getSubfolders($folderId)->count() > 0)
         {
             return redirect(route("cms:media:folders"))->with('message', "Folder not empty!");
         }
