@@ -4700,10 +4700,12 @@ body.dashboard {
     width: auto; }
   body.dashboard .field-media .media-preview {
     width: 130px;
+    height: 130px;
     float: left;
     margin-right: 20px; }
   body.dashboard .field-media .media-preview > img {
-    max-width: 130px; }
+    max-width: 100%;
+    max-height: 100%; }
   body.dashboard .field-media .media-preview ~ .file-name {
     margin-bottom: 0.45rem; }
   body.dashboard .files + .field-add-file {
