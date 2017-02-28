@@ -37,6 +37,7 @@ abstract class AbstractFieldValue
             $count = count($this->data);
 
             if ($count === 0) {
+                reset($this->data);
                 return true;
             }
 
@@ -48,8 +49,12 @@ abstract class AbstractFieldValue
             }
 
             if ($count == $c) {
+                reset($this->data);
                 return true;
             }
+
+            reset($this->data);
+            return false;
         }
 
         if (($this->data === '') || ($this->data === null)) {
