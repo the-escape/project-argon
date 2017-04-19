@@ -489,7 +489,7 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'group' => 'required',
-            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},deleted_at,NULL",
+            'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},deleted_at,NULL,parent_field_id,0",
         ]);
 
         $settings = $comboFieldType->getDefaultSettings();
@@ -561,17 +561,16 @@ class EntityTypeController extends BaseController
         ComboFieldType $comboFieldType,
         EntityTypeRepository $typeRepository
     ) {
-
         $this->validate($this->request, [
             'name' => 'required',
             'group' => 'required',
-            'field_slug' => "required|unique:entity_fields,field_slug,$comboId,id,entity_type_id,{$typeId},deleted_at,NULL",
+            'field_slug' => "required|unique:entity_fields,field_slug,$comboId,id,entity_type_id,{$typeId},deleted_at,NULL,parent_field_id,0",
         ]);
 
         $type = $typeRepository->find($typeId);
         $combo = $fieldRepository->find($comboId);
 
-       // update settings
+        // update settings
         $settings = $combo->settings;
         foreach ($settings as $k => &$v) {
             $v = Input::get($k, $v);
