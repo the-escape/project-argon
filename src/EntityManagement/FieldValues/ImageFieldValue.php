@@ -13,15 +13,18 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
 
     public function __construct($data = null)
     {
-        // make data consistently object
-        if ($data) {
-            if (is_object($data)) {
-                $data = toArray($data);
-            }
-            foreach ($data as $k => &$v) {
-                if (is_array($v)) {
-                    $v = (object)$v;
-                }
+        // format data consistently
+        if (!$data) {
+            $data = [];
+        }
+
+        if (is_object($data)) {
+            $data = toArray($data);
+        }
+
+        foreach ($data as $k => &$v) {
+            if (is_array($v)) {
+                $v = (object)$v;
             }
         }
 
@@ -121,6 +124,24 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     {
         if ($this->current()) {
             return $this->current()->getUrl();
+        }
+
+        return null;
+    }
+
+    public function getWidth()
+    {
+        if ($this->current()) {
+            return $this->current()->getWidth();
+        }
+
+        return null;
+    }
+
+    public function getHeight()
+    {
+        if ($this->current()) {
+            return $this->current()->getHeight();
         }
 
         return null;
