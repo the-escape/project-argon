@@ -7,6 +7,7 @@ use Escape\Argon\EntityManagement\Eloquent\Collections\LocalisationCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Frontend\Page;
+use Escape\Argon\Authentication\User;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -70,6 +71,11 @@ class Entity extends Model
     public function revisions()
     {
         return $this->hasMany(EntityRevision::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     protected function localisations()
