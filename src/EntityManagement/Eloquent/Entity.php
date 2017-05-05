@@ -73,11 +73,6 @@ class Entity extends Model
         return $this->hasMany(EntityRevision::class);
     }
 
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
-
     protected function localisations()
     {
         return $this->hasMany(Localisation::class);
