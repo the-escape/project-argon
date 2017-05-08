@@ -27,6 +27,13 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         } else {
             $data = [];
         }
+
+        foreach ($data as $k => $v) {
+            if (!$v) {
+                unset($data[$k]);
+            }
+        }
+
         parent::__construct($data);
         $this->position = 0;
     }
