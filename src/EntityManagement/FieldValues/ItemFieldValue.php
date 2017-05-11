@@ -34,6 +34,8 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
             }
         }
 
+        $data = array_values($data);
+
         parent::__construct($data);
         $this->position = 0;
     }
