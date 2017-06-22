@@ -15,7 +15,7 @@
 
         <div class="actions-top">
 
-            <a href="{{ route("cms:media:upload") }}" class="btn btn-primary btn-upload">Upload</a>
+            <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload">Upload</a>
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
             <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
