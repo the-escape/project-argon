@@ -26,6 +26,7 @@ class MediaItem extends Model implements Arrayable
     use SoftDeletes;
 
     protected $fillable = [
+        'slug',
         'filename',
         'filesize',
         'extension',
@@ -45,7 +46,7 @@ class MediaItem extends Model implements Arrayable
     {
         $item = parent::toArray();
         if ($this->hasThumb) {
-            $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
+            $item['thumbUrl'] = "/media/{$this->id}/{$this->getSlug()}.thumb.{$this->extension}";
         } else {
             $item['thumbUrl'] = '/argon/images/file-info-icon.png';
         }
@@ -63,12 +64,12 @@ class MediaItem extends Model implements Arrayable
     public function getPath()
     {
         $folder_path = config('filesystems.disks.media.root');
-        return "{$folder_path}/{$this->id}/{$this->id}.original.{$this->extension}";
+        return "{$folder_path}/{$this->id}/{$this->getSlug()}.{$this->extension}";
     }
 
     public function getUrl()
     {
-        return "/media/{$this->id}/{$this->id}.original.{$this->extension}";
+        return "/media/{$this->id}/{$this->getSlug()}.{$this->extension}";
     }
 
     public function getDimensions()
@@ -132,5 +133,9 @@ class MediaItem extends Model implements Arrayable
     public function getParentId()
     {
         return $this->folder;
+    }
+    public function getSlug()
+    {
+        return empty($this->slug) ? $this->id : $this->slug;
     }
 }

@@ -127,6 +127,7 @@ class Media
         $mediaItem = $mediaRepository->create([
             'folder' => $folderId,
             'filename' => $name,
+            'slug' => str_slug($name),
             'extension' => $file->getClientOriginalExtension(),
             'filesize' => $file->getSize(),
             'mimetype' => $file->getMimeType(),
@@ -138,7 +139,7 @@ class Media
         $disk->makeDirectory($mediaItem->id);
         $fileHandle = fopen($tmpPath, 'r+');
         Storage::disk($storageDisk)->put(
-            "{$mediaItem->id}/{$mediaItem->id}.original.{$file->getClientOriginalExtension()}",
+            "{$mediaItem->id}/{$mediaItem->getSlug()}.{$file->getClientOriginalExtension()}",
             $fileHandle
         );
         fclose($fileHandle);
@@ -148,7 +149,7 @@ class Media
         {
             $thumb = Image::make($file)->fit(100, 100);
             Storage::disk($storageDisk)->put(
-                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
                 $thumb->encode()
             );
 
