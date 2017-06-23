@@ -149,7 +149,7 @@ class Media
         {
             $thumb = Image::make($file)->fit(100, 100);
             Storage::disk($storageDisk)->put(
-                "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
+                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
                 $thumb->encode()
             );
 

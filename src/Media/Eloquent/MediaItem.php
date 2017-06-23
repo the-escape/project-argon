@@ -46,7 +46,7 @@ class MediaItem extends Model implements Arrayable
     {
         $item = parent::toArray();
         if ($this->hasThumb) {
-            $item['thumbUrl'] = "/media/{$this->id}/{$this->getSlug()}.thumb.{$this->extension}";
+            $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
         } else {
             $item['thumbUrl'] = '/argon/images/file-info-icon.png';
         }
@@ -136,6 +136,6 @@ class MediaItem extends Model implements Arrayable
     }
     public function getSlug()
     {
-        return empty($this->slug) ? $this->id : $this->slug;
+        return empty($this->slug) ? "{$this->id}.original" : $this->slug;
     }
 }
