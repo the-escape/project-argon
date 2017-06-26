@@ -473,26 +473,78 @@ class MediaController extends BaseController
 
     public function update($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository, Request $request)
     {
-        $media = $mediaItem->find($id);
+        $mediaItem = $mediaItem->find($id);
 
-        if (!$media)
+        if (!$mediaItem)
         {
             abort(404);
         }
 
         $name = $request->input('name', '');
-        $parentId = $request->input('parent');
+        $folderId = $request->input('parent');
 
-        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$folderId])->first();
 
-        if ($parent === null)
+        if ($folder === null)
         {
             throw new RuntimeException("Parent folder is required!");
         }
 
-        $media->folder = $parent->getId();
-        $media->filename = $name;
-        $media->save();
+        $mediaItem->folder = $folder->getId();
+        $mediaItem->filename = $name;
+
+        $file = $request->file('file');
+
+        if (!$file)
+        {
+            $mediaItem->save();
+            return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
+        }
+
+        $isImage =  Media::isImage($file->getMimeType());
+
+        $tmpPath = $request->file('file')->getRealPath();
+
+        $meta = new stdClass();
+
+        if ($isImage)
+        {
+            list($meta->width, $meta->height) = @getimagesize($tmpPath);
+        }
+
+        $mediaItem->extension = $file->getClientOriginalExtension();
+        $mediaItem->filesize = $file->getSize();
+        $mediaItem->mimetype = $file->getClientMimeType();
+        $mediaItem->meta = json_encode($meta);
+        $mediaItem->uploaded_by = $request->user()->id;
+        $mediaItem->save();
+
+        $disk = Storage::disk('media');
+        $disk->makeDirectory($mediaItem->id);
+
+        $fileHandle = fopen($tmpPath, 'r+');
+
+        Storage::disk('media')->put(
+            "{$mediaItem->id}/{$mediaItem->getSlug()}.{$file->getClientOriginalExtension()}",
+            $fileHandle
+        );
+
+        fclose($fileHandle);
+
+        // Thumbnail images
+        if ($isImage)
+        {
+            $thumb = Image::make($file)->fit(100, 100);
+
+            Storage::disk('media')->put(
+                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                $thumb->encode()
+            );
+
+            $mediaItem->hasThumb = true;
+            $mediaItem->save();
+        }
+
 
         return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
     }
@@ -500,26 +552,77 @@ class MediaController extends BaseController
 
     public function modal_update($id, MediaItem $mediaItem, MediaFolderRepository $folderRepository, Request $request)
     {
-        $media = $mediaItem->find($id);
+        $mediaItem = $mediaItem->find($id);
 
-        if (!$media)
+        if (!$mediaItem)
         {
             abort(404);
         }
 
         $name = $request->input('name', '');
-        $parentId = $request->input('parent');
+        $folderId = $request->input('parent');
 
-        $parent = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$parentId])->first();
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$folderId])->first();
 
-        if ($parent === null)
+        if ($folder === null)
         {
             throw new RuntimeException("Parent folder is required!");
         }
 
-        $media->folder = $parent->getId();
-        $media->filename = $name;
-        $media->save();
+        $mediaItem->folder = $folder->getId();
+        $mediaItem->filename = $name;
+
+        $file = $request->file('file');
+
+        if (!$file)
+        {
+            $mediaItem->save();
+            return redirect(route("cms:media:modal:edit", $id))->with('message', 'Media item updated!');
+        }
+
+        $isImage =  Media::isImage($file->getMimeType());
+
+        $tmpPath = $request->file('file')->getRealPath();
+
+        $meta = new stdClass();
+
+        if ($isImage)
+        {
+            list($meta->width, $meta->height) = @getimagesize($tmpPath);
+        }
+
+        $mediaItem->extension = $file->getClientOriginalExtension();
+        $mediaItem->filesize = $file->getSize();
+        $mediaItem->mimetype = $file->getClientMimeType();
+        $mediaItem->meta = json_encode($meta);
+        $mediaItem->uploaded_by = $request->user()->id;
+        $mediaItem->save();
+
+        $disk = Storage::disk('media');
+        $disk->makeDirectory($mediaItem->id);
+
+        $fileHandle = fopen($tmpPath, 'r+');
+
+        Storage::disk('media')->put(
+            "{$mediaItem->id}/{$mediaItem->getSlug()}.{$file->getClientOriginalExtension()}",
+            $fileHandle
+        );
+
+        fclose($fileHandle);
+
+        // Thumbnail images
+        if ($isImage)
+        {
+            $thumb = Image::make($file)->fit(100, 100);
+
+            Storage::disk('media')->put(
+                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                $thumb->encode()
+            );
+
+            $mediaItem->hasThumb = true;
+            $mediaItem->save();
+        }
 
         return redirect(route("cms:media:modal:edit", $id))->with('message', 'Media item updated!');
     }
@@ -967,6 +1070,11 @@ class MediaController extends BaseController
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
 
+        if ($currentFolder->getParentId() === null)
+        {
+            return redirect(route("cms:media:folders:edit", $id))->with('message', "Master folder can't be changed");
+        }
+
         if ($currentFolder === null)
         {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
@@ -989,6 +1097,11 @@ class MediaController extends BaseController
     public function folderUpdate($id, MediaFolderRepository $folderRepository, Request $request)
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
+
+        if ($currentFolder->getParentId() === null)
+        {
+            return redirect(route("cms:media:folders:edit", $id))->with('message', "Master folder can't be changed");
+        }
 
         if ($currentFolder === null)
         {

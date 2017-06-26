@@ -14,8 +14,8 @@
 
         <div class="actions-top">
 
-            <a href="{{ $media->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline">View</a>
-            <a href="{{ route("cms:media:delete", [$media->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+            <a href="{{ $media->getUrl() }}" target="_blank"  title="Open asset in new tab" class="btn btn-primary-outline">View</a>
+            <a href="{{ route("cms:media:modal:delete", [$media->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
 
             <form action="{{ route("cms:media:modal:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
@@ -24,30 +24,69 @@
 
         </div>
 
-        {{--@if($media->isImage())--}}
-            {{--<div class="preview">--}}
-                {{--<img src="{{ $media->getUrl() }}">--}}
-            {{--</div>--}}
-        {{--@endif--}}
 
-        <form action="{{ route("cms:media:modal:update", [$media->getId()]) }}" method="post">
+        <form action="{{ route("cms:media:modal:update", [$media->getId()]) }}" method="post" enctype="multipart/form-data">
 
-            <div class="form-group">
-                <label for="name" class="required">Name</label>
-                <input type="text" id="name" class="form-control required " name="name" value="{{ $media->filename }}">
+            <div class="card">
+
+                <div class="card-header">
+                    Asset details
+                </div>
+
+                <div class="card-block">
+
+                    @if($media->isImage())
+                        <div class="form-group">
+                            <div class="preview">
+                                <a href="{{ $media->getUrl() }}" target="_blank"  title="Open asset in new tab"><img src="{{ $media->getUrl() }}"></a>
+                            </div>
+                        </div>
+                    @endif
+
+
+                    <div class="form-group">
+                        <label for="name" class="required">Name</label>
+                        <input type="text" id="name" class="form-control required " name="name" value="{{ $media->filename }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parent" class="required">Parent Folder</label>
+
+                        <select name="parent" id="parent" class="form-control">
+                            <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
+
+                            @foreach($root->children as $child)
+                                @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getId(), 'currentFolderId'=>null])
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">Generated Url - not editable</label>
+                        <p class="form-control disabled"><a href="{{ $media->getUrl() }}" target="_blank"  title="Open asset in new tab">{{ $media->getUrl() }}</a></p>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label for="parent" class="required">Parent Folder</label>
+            <div class="card">
 
-                <select name="parent" id="parent" class="form-control">
-                    <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
+                <div class="card-header">
+                    Overwrite existing asset?
+                </div>
 
-                    @foreach($root->children as $child)
-                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getId(), 'currentFolderId'=>null])
-                    @endforeach
-                </select>
+                <div class="card-block">
+
+                    <div class="form-group">
+                        <label for="file">Select Image:</label>
+                        <input type="file" name="file" id="file" class="form-control">
+                    </div>
+
+                </div>
+
             </div>
+
 
             {{csrf_field()}}
             {{method_field('PUT')}}

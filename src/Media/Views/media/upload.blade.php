@@ -43,16 +43,6 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="hidden" name="overwrite" value="0">
-                        <input type="checkbox" name="overwrite" value="1">
-                        Overwrite existing assets?
-                    </label>
-                </div>
-            </div>
-
             {{csrf_field()}}
 
             <button type="submit" class="btn btn-primary">Save</button>

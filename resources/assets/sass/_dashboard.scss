@@ -8,6 +8,18 @@ $standard-input-border-color: #ccc;
 $standard-border-radius: 0.25rem;
 $standard-color: #373a3c;
 
+img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
+
+.form-control.disabled {
+    background-color: #fdfdfd;
+    cursor: not-allowed;
+    border-color: rgba($standard-input-border-color, 0.5);
+}
+
 select[multiple] {
     min-height: 180px;
 }

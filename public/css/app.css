@@ -1399,9 +1399,6 @@ pre {
   .form-control::-webkit-input-placeholder {
     color: #999;
     opacity: 1; }
-  .form-control::-moz-placeholder {
-    color: #999;
-    opacity: 1; }
   .form-control:-ms-input-placeholder {
     color: #999;
     opacity: 1; }
@@ -3004,10 +3001,8 @@ input[type="button"].btn-block {
 @media (min-width: 544px) {
   .card-columns {
     -webkit-column-count: 3;
-    -moz-column-count: 3;
     column-count: 3;
     -webkit-column-gap: 1.25rem;
-    -moz-column-gap: 1.25rem;
     column-gap: 1.25rem; }
     .card-columns .card {
       display: inline-block;
@@ -4615,7 +4610,7 @@ a.bg-danger:focus, a.bg-danger:hover {
 
 .fa {
   display: inline-block;
-  font: normal normal normal 14px / 1 FontAwesome;
+  font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -6934,6 +6929,16 @@ a.bg-danger:focus, a.bg-danger:hover {
 .argon-login .btn-submit {
   float: right; }
 
+img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto; }
+
+.form-control.disabled {
+  background-color: #fdfdfd;
+  cursor: not-allowed;
+  border-color: rgba(204, 204, 204, 0.5); }
+
 select[multiple] {
   min-height: 180px; }
 
@@ -7147,6 +7152,10 @@ body.dashboard .dropdown-toggle::after {
   border-top: 0.3em solid;
   border-right: 0.3em solid transparent;
   border-left: 0.3em solid transparent; }
+
+body.dashboard .preview {
+  max-width: 100%;
+  box-sizing: border-box; }
 
 #medialib .modal-dialog {
   width: 94%;
