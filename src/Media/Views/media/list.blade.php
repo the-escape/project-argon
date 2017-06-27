@@ -18,6 +18,25 @@
             <a href="{{ route("cms:media:upload:get") }}" class="btn btn-primary btn-upload">Upload</a>
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
 
+            @if($folders = Escape\Argon\Media\Helpers\Media::traverseFolders(Escape\Argon\Media\Helpers\Media::getFolderTree(), function($folder){
+                return sprintf('<a class="dropdown-item" href="#">%s %s</a>', str_repeat('- ', $folder['level']), $folder['name']);
+            }))
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Fitler by folder:
+                </button>
+                <div class="dropdown-menu">
+
+                    @foreach($folders as $folder)
+
+                        {!! $folder !!}
+
+                    @endforeach
+
+                </div>
+            </div>
+            @endif
+
             <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">
                 <button type="submit" class="btn btn-primary-outline">Search</button>

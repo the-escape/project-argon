@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\Media\Helpers;
 
+use Escape\Argon\Media\Eloquent\MediaFolder;
+use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -159,5 +161,59 @@ class Media
 
         return $mediaItem;
     }
+
+
+    public static function getFolderTree(MediaFolder $folder = null, $level=0)
+    {
+        $level++;
+
+        if ($folder === null)
+        {
+            $folderRepository = app()->make(MediaFolderRepository::class);
+            $folder = $folderRepository->root();
+        }
+
+        $folderId = $folder->getId();
+
+        $tree = [
+            $folderId => [
+                'name' => $folder->getName(),
+                'level' => $level,
+                'children' => [],
+            ],
+        ];
+
+        $children = $folder->children;
+
+        if ($children)
+        {
+            foreach($children as $child)
+            {
+                $tree[$folderId]['children'] = self::getFolderTree($child, $level);
+            }
+        }
+
+        return $tree;
+    }
+
+
+
+    public static function traverseFolders(array $folders=[], callable $callback, array $r=[])
+    {
+        foreach ($folders as $folder)
+        {
+            $r[] = $callback($folder);
+
+            if ($folder['children'])
+            {
+                return Media::traverseFolders($folder['children'], $callback, $r);
+            }
+        }
+
+        return $r;
+    }
+
+
+
 
 }
