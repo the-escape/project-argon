@@ -163,10 +163,8 @@ class Media
     }
 
 
-    public static function getFolderTree(MediaFolder $folder = null, $level=0)
+    public static function getFolderTree(MediaFolder $folder = null, $level=0, array $tree=[])
     {
-        $level++;
-
         if ($folder === null)
         {
             $folderRepository = app()->make(MediaFolderRepository::class);
@@ -175,21 +173,22 @@ class Media
 
         $folderId = $folder->getId();
 
-        $tree = [
-            $folderId => [
-                'name' => $folder->getName(),
-                'level' => $level,
-                'children' => [],
-            ],
+        $tree[$folderId] = [
+            'id' => $folderId,
+            'name' => $folder->getName(),
+            'level' => $level,
+            'children' => [],
         ];
 
         $children = $folder->children;
 
         if ($children)
         {
+            $level++;
+
             foreach($children as $child)
             {
-                $tree[$folderId]['children'] = self::getFolderTree($child, $level);
+                $tree[$folderId]['children'] = self::getFolderTree($child, $level, $tree[$folderId]['children']);
             }
         }
 
@@ -206,7 +205,7 @@ class Media
 
             if ($folder['children'])
             {
-                return Media::traverseFolders($folder['children'], $callback, $r);
+                $r = Media::traverseFolders($folder['children'], $callback, $r);
             }
         }
 

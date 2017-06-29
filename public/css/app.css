@@ -6949,6 +6949,12 @@ select[multiple] {
     display: table;
     clear: both; }
 
+.alert-info {
+  border-left-width: 5px;
+  border-color: #e5e5e5;
+  background-color: #fff;
+  color: #373a3c; }
+
 body.dashboard {
   padding-top: 50px;
   /*

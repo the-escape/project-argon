@@ -120,10 +120,27 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
-    public function getImageSrc()
+    /**
+     * Legacy method. Will be removed at some point.
+     * Use getUrl() method instead to keep things in sync with Escape\Argon\Media\Eloquent\MediaItem object instance.
+     * @param string $queryStringArgs - 'updatedAt=0' - see Escape\Argon\Media\Eloquent\MediaItem::getUrl() for more info.
+     * @return null|string
+     */
+    public function getImageSrc($queryStringArgs='')
+    {
+        return $this->getUrl($queryStringArgs);
+    }
+
+    /**
+     * Generates URL to asset.
+     * Accepts args formatted as query string key=value pairs separated by & symbol.
+     * @param string $queryStringArgs - 'updatedAt=0' - see Escape\Argon\Media\Eloquent\MediaItem::getUrl() for more info.
+     * @return string $url
+     */
+    public function getUrl($queryStringArgs='')
     {
         if ($this->current()) {
-            return $this->current()->getUrl();
+            return $this->current()->getUrl($queryStringArgs);
         }
 
         return null;

@@ -29,6 +29,13 @@ select[multiple] {
     margin-bottom: 2rem;
 }
 
+.alert-info {
+    border-left-width: 5px;
+    border-color: $standard-border-color;
+    background-color: #fff;
+    color: $standard-color;
+}
+
 body.dashboard {
     padding-top: 50px;
 

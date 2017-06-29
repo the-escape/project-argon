@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                         <label for="url">Generated Url - not editable</label>
-                        <p class="form-control disabled"><a href="{{ $media->getUrl() }}" target="_blank"  title="Open asset in new tab">{{ $media->getUrl() }}</a></p>
+                        <p class="form-control disabled"><a href="{{ $media->getUrl() }}" target="_blank"  title="Open asset in new tab">{{ $media->getUrl('updatedAt=0') }}</a></p>
                     </div>
 
                 </div>

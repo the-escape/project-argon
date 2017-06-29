@@ -26,21 +26,34 @@
 
         <form action="{{ route("cms:media:modal:upload:post") }}" method="post" enctype="multipart/form-data">
 
-            <div class="form-group">
-                <label for="file">Select Image:</label>
-                <input type="file" name="file[]" multiple id="file" class="form-control">
-            </div>
+            <div class="card">
 
-            <div class="form-group">
-                <label for="folder" class="required">Select Folder:</label>
+                <div class="card-header">Upload Images</div>
 
-                <select name="folder" id="folder" class="form-control">
-                    <option value="{{ $root->getId() }}" @if($root->getId() == 0) selected @endif>{{ $root->name }}</option>
+                <div class="card-block">
 
-                    @foreach($root->children as $child)
-                        @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>0, 'currentFolderId'=>null])
-                    @endforeach
-                </select>
+                    <div class="alert alert-info" role="alert">
+                        Please consider optimising your images for web. We recommend online service  <a href="https://tinypng.com/" target="_blank">TinyPNG</a>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Select Image:</label>
+                        <input type="file" name="file[]" multiple id="file" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="folder" class="required">Select Folder:</label>
+
+                        <select name="folder" id="folder" class="form-control">
+                            <option value="{{ $root->getId() }}" @if($root->getId() == 0) selected @endif>{{ $root->name }}</option>
+
+                            @foreach($root->children as $child)
+                                @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>0, 'currentFolderId'=>null])
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
             </div>
 
             {{csrf_field()}}

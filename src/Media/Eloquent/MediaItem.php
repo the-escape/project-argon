@@ -67,9 +67,32 @@ class MediaItem extends Model implements Arrayable
         return "{$folder_path}/{$this->id}/{$this->getSlug()}.{$this->extension}";
     }
 
-    public function getUrl()
+    /**
+     * Generates URL to asset.
+     * Accepts args formatted as query string key=value pairs separated by & symbol.
+     * @param string $queryStringArgs - 'updatedAt=0'
+     * @return string $url
+     */
+    public function getUrl($queryStringArgs='')
     {
-        return "/media/{$this->id}/{$this->getSlug()}.{$this->extension}";
+        $args = [
+            'updatedAt' => true,
+        ];
+
+        if ($queryStringArgs)
+        {
+            parse_str($queryStringArgs, $queryStringArgs);
+            $args = array_merge($args, $queryStringArgs);
+        }
+
+        $url = "/media/{$this->id}/{$this->getSlug()}.{$this->extension}";
+
+        if (in_array($args['updatedAt'], ['1', 'true']))
+        {
+            $url = $url."?".strtotime($this->updated_at);
+        }
+
+        return $url;
     }
 
     public function getDimensions()

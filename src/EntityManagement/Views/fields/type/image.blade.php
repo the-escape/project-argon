@@ -37,7 +37,7 @@ $name = $field->getFormFieldName($hash);
                                 <img src="{{ $v->getUrl() }}" alt="">
                             </div>
 
-                            <div class="file-name"> Url: <a target="_blank" href="{{ $v->getUrl() }}">{{ $v->getUrl() }}</a> (<a href="{{ route('cms:media:edit', [$v->getId()]) }}">edit</a>)</div>
+                            <div class="file-name"> Url: <a target="_blank" href="{{ $v->getUrl() }}">{{ $v->getUrl('updatedAt=0') }}</a> (<a href="{{ route('cms:media:edit', [$v->getId()]) }}">edit</a>)</div>
                             <div class="file-name"> Size: {{ $v->getFriendlyFilesize() }}</div>
                             <div class="file-name"> Dimensions: {{ $v->getWidth() }} x {{ $v->getHeight() }} pixels</div>
                             <input type="text" name="{{$name}}[alt]" value="{{ $v->getAlt() }}" placeholder="Alt text" class="form-control inline">
