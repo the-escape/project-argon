@@ -108,38 +108,6 @@ Route::get('404', function() {
 // This should be the last route defined.
 Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 ```
-Create app/Providers/AuthServiceProvvider.php and add:
-```
-<?php
-
-namespace App\Providers;
-
-use Illuminate\Support\ServiceProvider;
-
-class AppServiceProvider extends ServiceProvider
-{
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
-}
-```
-
 
 ### Configuration
 
