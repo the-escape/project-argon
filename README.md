@@ -152,6 +152,7 @@ Add the ArgonServiceProvider to the providers array in `config/app.php`
     ...
 
     Escape\Argon\Core\ArgonServiceProvider::class,
+    App\Providers\AuthServiceProvider::class,
 
 ],
 ```
