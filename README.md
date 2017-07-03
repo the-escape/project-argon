@@ -60,12 +60,22 @@ return [
         ],
 ];
 ```
-Edit app/Http/Controllers/Controller.php as follows:
+Replace app/Http/Controllers/Controller.php content with:
 ```
+<?php
+
+namespace App\Http\Controllers;
+
+use Escape\Argon\Frontend\Controllers\CmsController;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 abstract class Controller extends CmsController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
+
 ```
 Create app/Http/Controllers/ContentController.php and add:
 ```
