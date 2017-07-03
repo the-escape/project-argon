@@ -36,6 +36,23 @@ select[multiple] {
     color: $standard-color;
 }
 
+.dashboard-actions {
+    @include clearfix;
+}
+.dashboard-actions--top {
+
+}
+.dashboard-actions--bottom {
+
+}
+* + .dashboard-content {
+    margin-top: 1.5rem;
+}
+
+.dashboard-content {
+    @include clearfix;
+}
+
 body.dashboard {
     padding-top: 50px;
 

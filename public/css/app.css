@@ -6955,6 +6955,19 @@ select[multiple] {
   background-color: #fff;
   color: #373a3c; }
 
+.dashboard-actions::after {
+  content: "";
+  display: table;
+  clear: both; }
+
+* + .dashboard-content {
+  margin-top: 1.5rem; }
+
+.dashboard-content::after {
+  content: "";
+  display: table;
+  clear: both; }
+
 body.dashboard {
   padding-top: 50px;
   /*
@@ -7214,7 +7227,7 @@ body.medialib .table-media img {
   max-width: 100px;
   max-height: 50px; }
 
-body.medialib .actions-top .search-form {
+body.medialib .dashboard-actions--top .search-form {
   float: right; }
 
 body.medialib.medialib-modal {
