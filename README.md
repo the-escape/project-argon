@@ -32,19 +32,7 @@ composer require escape/argon
 ```
 ### Files
 
-Create /app/config/argon.php and add:
-```
-<?php
 
-return [
-    'admin_route_prefix' => '/admin',
-    'client_name' => 'Client Name',
-
-    'views' => [
-        1 => 'homepage',        
-        ],
-];
-```
 Replace app/Http/Controllers/Controller.php content with:
 ```
 <?php
@@ -167,6 +155,7 @@ Use artisan to publish the admin assets.
 
 ```
 php artisan vendor:publish --tag=public
+php artisan vendor:publish --tag=config --force
 ```
 
 ### Tidy Up
