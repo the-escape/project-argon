@@ -30,6 +30,78 @@ Run the following to install the base CMS:
 ```
 composer require escape/argon
 ```
+### Files
+
+Create /app/config/argon.php and add:
+```
+<?php
+
+return [
+    'admin_route_prefix' => '/admin',
+    'client_logo_dark' => '/cms/logo.png',
+    'client_logo_light' => '/cms/logo-light.png',
+    'highlight_color' => '#eb2d2e',
+    'highlight_color_darker' => '#bd2029',
+    'neutral_color' => '#46555f',
+    'logo-admin-login' => 'width: auto;margin-bottom: auto;',
+    'navbar' => 'padding-left: 0;padding-top: 0;padding-bottom: 0;height: 51px;',
+    'navbar-nav' => 'height:51px;',
+    'nav-item' => 'height:51px;',
+    'nav-link' => 'line-height:51px; padding-top:0; padding-bottom:0;',
+    'navbar-brand' => 'padding:0;margin:0;',
+    'logo-admin' => 'height:39px; padding:0; margin:6px;',
+    'sitemap_view' => 'argon::pages.sitemap',
+
+    'client_name' => 'Client Name',
+
+    'views' => [
+        1 => 'pages.homepage',        
+        7 => 'pages.generic',
+        ],
+];
+```
+Edit app/Http/Controllers/Controller.php as follows:
+```
+abstract class Controller extends CmsController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+}
+```
+Create app/Http/Controllers/ContentController.php and add:
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Helpers\ThemeHelper;
+use Escape\Argon\Core\Http\Request;
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\Frontend\Page;
+
+class ContentController extends Controller
+{
+    public function page(Request $request, EntityRepository $entityRepository)
+    {
+        $node = $entityRepository->findForPath($request);
+
+        if (!$node) {
+            abort(404);
+        }
+
+        $page = new Page($node, $request);
+
+        if ($redirect = $page->getRedirect()) {
+            return redirect($redirect, 301);
+        }
+
+        $viewName = $this->getViewNameForType($node->entity_type_id);
+
+        return view($viewName, [
+            'page' => $page,
+        ]);
+    }
+}
+```
 
 ### Configuration
 
@@ -63,6 +135,7 @@ Add the ArgonServiceProvider to the providers array in `config/app.php`
 ],
 ```
 
+
 Change the Request class in index.php to Escape\Argon\Core\Http\Request
 ```
 $response = $kernel->handle(
@@ -72,37 +145,6 @@ $response = $kernel->handle(
 ```
 
 Set your database settings in the .env file.
-
-### Configuration
-
-Create /app/config/argon.php and add:
-```
-<?php
-
-return [
-    'admin_route_prefix' => '/admin',
-    'client_logo_dark' => '/cms/logo.png',
-    'client_logo_light' => '/cms/logo-light.png',
-    'highlight_color' => '#eb2d2e',
-    'highlight_color_darker' => '#bd2029',
-    'neutral_color' => '#46555f',
-    'logo-admin-login' => 'width: auto;margin-bottom: auto;',
-    'navbar' => 'padding-left: 0;padding-top: 0;padding-bottom: 0;height: 51px;',
-    'navbar-nav' => 'height:51px;',
-    'nav-item' => 'height:51px;',
-    'nav-link' => 'line-height:51px; padding-top:0; padding-bottom:0;',
-    'navbar-brand' => 'padding:0;margin:0;',
-    'logo-admin' => 'height:39px; padding:0; margin:6px;',
-    'sitemap_view' => 'argon::pages.sitemap',
-
-    'client_name' => 'Client Name',
-
-    'views' => [
-        1 => 'pages.homepage',        
-        7 => 'pages.generic',
-        ],
-];
-```
 
 ### Database
 
