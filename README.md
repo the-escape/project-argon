@@ -102,6 +102,17 @@ class ContentController extends Controller
     }
 }
 ```
+Replace content in /app/Http/routes.php with:
+```
+<?php
+
+Route::get('404', function() {
+    abort(404);
+});
+
+// This should be the last route defined.
+Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
+```
 
 ### Configuration
 
