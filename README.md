@@ -124,7 +124,8 @@ Route::get('404', function() {
 Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 ```
 Create app/Providers/AuthServiceProvvider.php and add:
-```<?php
+```
+<?php
 
 namespace App\Providers;
 
@@ -167,7 +168,7 @@ Edit `config/auth.php` and change the model property as follows
 ...
 ```
 
-Add the ArgonServiceProvider to the providers array in `config/app.php`
+Add the ArgonServiceProvider to the providers array in `config/app.php` (Make sure ArgonServiceProvider is called before RouteServiceProvider)
 
 ```
 'providers' => [
@@ -182,9 +183,8 @@ Add the ArgonServiceProvider to the providers array in `config/app.php`
      */
     ...
 
-    Escape\Argon\Core\ArgonServiceProvider::class,
     App\Providers\AuthServiceProvider::class,
-
+    Escape\Argon\Core\ArgonServiceProvider::class,   
 ],
 ```
 
