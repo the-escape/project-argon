@@ -73,6 +73,37 @@ $response = $kernel->handle(
 
 Set your database settings in the .env file.
 
+### Configuration
+
+Create /app/config/argon.php and add:
+```
+<?php
+
+return [
+    'admin_route_prefix' => '/admin',
+    'client_logo_dark' => '/cms/logo.png',
+    'client_logo_light' => '/cms/logo-light.png',
+    'highlight_color' => '#eb2d2e',
+    'highlight_color_darker' => '#bd2029',
+    'neutral_color' => '#46555f',
+    'logo-admin-login' => 'width: auto;margin-bottom: auto;',
+    'navbar' => 'padding-left: 0;padding-top: 0;padding-bottom: 0;height: 51px;',
+    'navbar-nav' => 'height:51px;',
+    'nav-item' => 'height:51px;',
+    'nav-link' => 'line-height:51px; padding-top:0; padding-bottom:0;',
+    'navbar-brand' => 'padding:0;margin:0;',
+    'logo-admin' => 'height:39px; padding:0; margin:6px;',
+    'sitemap_view' => 'argon::pages.sitemap',
+
+    'client_name' => 'Client Name',
+
+    'views' => [
+        1 => 'pages.homepage',        
+        7 => 'pages.generic',
+        ],
+];
+```
+
 ### Database
 
 Publish the migrations for Argon.
