@@ -5,7 +5,7 @@
 Create a basic Laravel (5.1.0) project:
 
 ```
-composer create-project laravel/laravel --prefer-dist
+composer create-project laravel/laravel . "~5.1.0" --prefer-dist
 ```
 
 Add a repositories section to the composer.json:
