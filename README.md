@@ -2,7 +2,7 @@
 
 ## Installation
 
-Create a basic Laravel (5.1) project:
+Create a basic Laravel (5.1.0) project:
 
 ```
 composer create-project laravel/laravel --prefer-dist
@@ -136,7 +136,6 @@ Add the ArgonServiceProvider to the providers array in `config/app.php` (Make su
      */
     ...
 
-    App\Providers\AuthServiceProvider::class,
     Escape\Argon\Core\ArgonServiceProvider::class,   
 ],
 ```
