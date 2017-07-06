@@ -2,7 +2,7 @@
 
 ## Installation
 
-Create a basic Laravel (##5.1.0##) project:
+Create a basic Laravel (**5.1.0**) project:
 
 ```
 composer create-project laravel/laravel . "~5.1.0" --prefer-dist
