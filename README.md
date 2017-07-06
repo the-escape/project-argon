@@ -8,7 +8,7 @@ Create a basic Laravel (**5.1.0**) project:
 composer create-project laravel/laravel . "~5.1.0" --prefer-dist
 ```
 
-Add a repositories section to the composer.json:
+Add a repositories section to the **composer.json**:
 
 ```
 "repositories": [
@@ -33,7 +33,7 @@ composer require escape/argon
 ### Files
 
 
-Replace app/Http/Controllers/Controller.php content with:
+Replace **app/Http/Controllers/Controller.php** content with:
 ```
 <?php
 
@@ -50,7 +50,7 @@ abstract class Controller extends CmsController
 }
 
 ```
-Create app/Http/Controllers/ContentController.php and add:
+Create **app/Http/Controllers/ContentController.php** and add:
 ```
 <?php
 
@@ -85,7 +85,7 @@ class ContentController extends Controller
     }
 }
 ```
-Replace content in /app/Http/routes.php with:
+Replace content in **/app/Http/routes.php** with:
 ```
 <?php
 
@@ -99,7 +99,7 @@ Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 
 ### Configuration
 
-Edit `config/auth.php` and change the model property as follows
+Edit **config/auth.php* and change the model property as follows
 
 ```
 ...
@@ -109,7 +109,7 @@ Edit `config/auth.php` and change the model property as follows
 ...
 ```
 
-Add the ArgonServiceProvider to the providers array in `config/app.php` (Make sure ArgonServiceProvider is called before RouteServiceProvider)
+Add the ArgonServiceProvider to the providers array in **config/app.php** (Make sure ArgonServiceProvider is called before RouteServiceProvider)
 
 ```
 'providers' => [
@@ -129,7 +129,7 @@ Add the ArgonServiceProvider to the providers array in `config/app.php` (Make su
 ```
 
 
-Change the Request class in index.php to Escape\Argon\Core\Http\Request
+Change the Request class in **public/index.php** to Escape\Argon\Core\Http\Request
 ```
 $response = $kernel->handle(
     $request = \Escape\Argon\Core\Http\Request::capture()
@@ -137,7 +137,7 @@ $response = $kernel->handle(
 
 ```
 
-Set your database settings in the .env file.
+Set your database settings in the **.env** file.
 
 ### Database
 
