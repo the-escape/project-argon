@@ -99,7 +99,7 @@ Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 
 ### Configuration
 
-Edit **config/auth.php* and change the model property as follows
+Edit **config/auth.php** and change the model property as follows
 
 ```
 ...
@@ -160,11 +160,11 @@ php artisan vendor:publish --tag=config --force
 
 ### Tidy Up
 
-Delete the `app/Http/Middleware/Authenticate.php` file (as Argon has it's own).
+Delete the **app/Http/Middleware/Authenticate.php** file (as Argon has it's own).
 
-Delete the `app/User.php` file (ditto).
+Delete the **app/User.php** file (ditto).
 
-Remove the 'auth' route Middleware from `app/Http/Kernel.php` file (again, Argon has it's own).
+Remove the 'auth' route Middleware from **app/Http/Kernel.php** file (again, Argon has it's own).
 
 
 ## Development
@@ -179,7 +179,7 @@ PHP dependencies are installed with composer:
 composer install
 ```
 
-Frontend dependencies are installed with Bower and specified in the `bower.json`. If you don't have bower installed
+Frontend dependencies are installed with Bower and specified in the **bower.json**. If you don't have bower installed
 already install it with:
 
 ```
