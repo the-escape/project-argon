@@ -2,7 +2,7 @@
 
 namespace Escape\Argon\Core\Plugins;
 
-use Escape\Argon\Authentication\User;
+use Escape\Argon\Auth\User;
 
 class PluginManager
 {

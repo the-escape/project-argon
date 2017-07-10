@@ -1,0 +1,336 @@
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+input,
+textarea {
+    font-size: 16px;
+    outline: none;
+}
+
+.form-group {
+    float: left;
+    clear: left;
+    margin-bottom: 23px;
+    width: 100%;
+}
+
+.form__group {
+    float: left;
+    position: relative;
+    clear: left;
+    margin-bottom: 23px;
+    width: 100%;
+    span.icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 42px;
+        height: 48px;
+        &.error {
+            background: url('/argon/assets/img/ic-error.png') center / 20px 18px no-repeat;
+        }
+        &.search {
+            background: url('/argon/assets/img/ic-search.png') center / 20px no-repeat;
+        }
+    }
+}
+
+.form__select {
+    width: 290px;
+}
+
+.form {
+    .form__text,
+    .form__select,
+    .form__wysiwyg,
+    .mce-tinymce {
+        width: 40%;
+    }
+}
+
+.form__text {
+    height: 48px;
+    padding: 0 11px;
+    border: 1px solid $color-grey-dark;
+    width: 100%;
+    float: left;
+    &:focus {
+        border-color: #12a3c7;
+    }
+    &.form__text--borderless {
+        border: 1px solid $color-white;
+    }
+    &.icon {
+        padding-right: 53px;
+    }
+    &.form__text--error {
+        border-color: $color-red;
+    }
+    &.success {
+        border-color: $color-green;
+    }
+    &.info {
+        border-color: $color-blue;
+    }
+    &:focus {
+        border-color: $color-blue;
+        + .icon {
+            &.search {
+                background: $color-blue url('/argon/assets/img/ic-search-w.png') center / 20px no-repeat;
+            }
+        }
+    }
+}
+
+.form__text--area {
+    height: auto;
+    padding: 9px 11px;
+}
+
+.checkbox {
+    margin: 0;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+    font-size: 16px;
+    color: $color-grey-accent;
+    cursor: pointer;
+    @include transition($transition-sm);
+    input {
+        display: none;
+        + span {
+            display: block;
+            float: left;
+            height: 24px;
+            width: 24px;
+            border: 1px solid $color-grey-dark;
+            margin-right: 10px;
+            @include transition(border-color $transition-sm);
+        }
+        &:checked {
+            + span {
+                border-color: $color-blue;
+                background: url('/argon/assets/img/ic-tick.png') center / 13px 11px no-repeat;
+            }
+            ~ span {
+                color: $color-text;
+            }
+        }
+    }
+    &:hover {
+        input + span {
+            border-color: $color-blue;
+        }
+    }
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 48px;
+    margin: 0;
+    input {
+        display: none;
+        &:checked + .slider {
+            background-color: $color-green;
+            &:before {
+                transform: translateX(52px);
+            }
+        }
+        &:focus + .slider {
+            box-shadow: 0 0 1px $color-text;
+        }
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $color-grey-accent;
+        border-radius: 34px;
+        @include transition($transition-sm);
+        span {
+            line-height: 48px;
+            color: $color-white;
+            font-weight: 600;
+            font-size: 14px;
+            &:first-child {
+                float: left;
+                margin-left: 18px;
+            }
+            &:last-child {
+                float: right;
+                margin-right: 18px;
+            }
+        }
+        &:hover {
+            background-color: $color-secondary-accent;
+        }
+        &:before {
+            position: absolute;
+            content: "";
+            height: 34px;
+            width: 34px;
+            left: 7px;
+            bottom: 7px;
+            background-color: $color-white;
+            border-radius: 50%;
+            @include transition($transition-sm);
+        }
+    }
+}
+
+.form__btn {
+    min-width: 130px;
+    height: 48px;
+    padding: 0 30px;
+    border-radius: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: $color-white;
+    background-color: $color-blue;
+    border: none;
+    text-align: center;
+    display: inline-block;
+    line-height: 46px;
+    @include transition($transition-sm);
+    &:hover {
+        background-color: $color-primary-accent;
+        color: $color-white;
+        text-decoration: none;
+    }
+    &.form__btn--grey {
+        background-color: $color-grey-accent;
+        &:hover {
+            background-color: $color-secondary-accent;
+        }
+    }
+    &.form__btn--transparent {
+        background-color: transparent;
+        color: $color-white;
+        border: 1px solid $color-white;
+    }
+    &:disabled {
+        background-color: $color-grey-light;
+        &:hover {
+            background-color: $color-grey-light;
+        }
+    }
+    &:focus {
+        outline: none;
+        color: $color-white;
+        text-decoration: none;
+    }
+    &.form__btn--small {
+        height: 30px;
+        min-width: 0;
+        line-height: 28px;
+    }
+}
+
+.form__alert {
+    float: left;
+    padding: 11px 14px;
+    margin-left: 20px;
+    color: $color-white;
+    text-align: left;
+    &.form__alert--overview {
+        margin: 0 0 20px;
+    }
+    &.form__alert--error {
+        background-color: $color-red;
+    }
+    &.form__alert--success {
+        background-color: $color-green;
+    }
+    &.form_alert--info {
+        background-color: $color-blue;
+    }
+}
+
+.form__error {
+    max-width: 60%;
+    float: left;
+}
+
+.select2-container--default {
+    font-size: 16px;
+    width: 100%;
+    .select2-selection--single {
+        height: 48px;
+        width: 100%;
+        border-radius: 0;
+        border: 1px solid $color-grey-dark;
+        outline: none;
+        .select2-selection__rendered {
+            height: 46px;
+            line-height: 46px;
+            padding: 0 11px;
+        }
+        .select2-selection__arrow {
+            height: 46px;
+            width: 42px;
+            background: url('/argon/assets/img/ic-arrow-d.png') center / 14px 8px no-repeat;
+            b {
+                display: none;
+            }
+        }
+        .select2-selection__placeholder {
+            color: $color-grey-accent;
+        }
+    }
+    .select2-results {
+        margin-top: -1px;
+    }
+    .select2-results__option {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 11px;
+        background-color: $color-grey-light;
+        border-top: 1px solid $color-blue;
+        &[aria-selected=true] {
+            background-color: $color-blue;
+            color: $color-white;
+        }
+    }
+    .select2-results__option--highlighted[aria-selected] {
+        background-color: $color-blue;
+        color: $color-white;
+    }
+    &.select2-container--focus {
+        .select2-selection__arrow {
+            background: $color-blue url('/argon/assets/img/ic-arrow-d-w.png') center / 14px 8px no-repeat;
+        }
+        .select2-selection--single {
+            border-color: $color-blue;
+        }
+    }
+}
+
+.select2-dropdown {
+    border: 1px solid $color-blue;
+    border-radius: 0;
+}
+
+::-webkit-input-placeholder {
+    color: $color-grey-accent;
+}
+
+::-moz-placeholder {
+    color: $color-grey-accent;
+}
+
+:-ms-input-placeholder {
+    color: $color-grey-accent;
+}
+
+:-moz-placeholder {
+    color: $color-grey-accent;
+}

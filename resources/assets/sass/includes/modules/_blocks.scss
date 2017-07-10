@@ -1,0 +1,174 @@
+.blocks {
+  background-color: $color-grey-light;
+  float: left;
+  margin-top: 30px;
+  width: 100%;
+  .blocks__container {
+    float: left;
+    height: 500px;
+    overflow: scroll;
+    width: 100%;
+    border-right: 1px solid $color-grey-dark;
+    border-bottom: 1px solid $color-grey-dark;
+    border-left: 1px solid $color-grey-dark;
+  }
+  .form__group {
+    margin: 0;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    &#entity-groups {
+      .block {
+        .block__status {
+          display: none;
+        }
+      }
+    }
+    &#entity-revision-groups {
+      .block {
+        .block__add {
+          display: none;
+        }
+        &:hover {
+          .block__edit {
+            width: 50%;
+          }
+          .block__actions {
+            width: 50%;
+          }
+        }
+      }
+    }
+    .block {
+      position: relative;
+      float: left;
+      width: 100%;
+      border-bottom: 1px solid $color-grey-dark;
+      background-color: $color-white;
+      height: 61px;
+      &.block__revision {
+        &:hover {
+          .block__edit {
+            width: 50%;
+          }
+          .block__actions {
+            width: 50%;
+          }
+        }
+      }
+      &.block--ghost {
+        background-color: $color-grey-light;
+      }
+      &.block--hidden {
+        display: none;
+      }
+      &.block--loading {
+        .block__loading {
+          display: block;
+          &:hover {
+            .block__edit,
+            .block__add {
+              width: 0;
+            }
+          }
+        }
+      }
+      .block__loading {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(255, 255, 255, 0.8) url('/argon/assets/img/loading.svg') center / 30px no-repeat;
+        z-index: 1;
+      }
+      .block__edit {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        background-color: $color-blue;
+        color: $color-white;
+        line-height: 60px;
+        text-align: center;
+        transition: width .3s;
+        overflow: hidden;
+      }
+      .block__add {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 60px;
+        padding: 18px;
+        cursor: pointer;
+        .ic-add {
+          vertical-align: baseline;
+          transition: none;
+        }
+        &:hover {
+          background-color: $color-blue;
+          .ic-add {
+            fill: $color-white;
+          }
+        }
+      }
+      .block__status {
+        position: relative;
+        top: 23px;
+        right: 23px;
+        width: 14px;
+        height: 14px;
+        float: right;
+      }
+      .block__actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 0;
+        line-height: 60px;
+        text-align: center;
+        transition: width .3s;
+        overflow: hidden;
+        background: $color-white;
+        .drag {
+          width: 18px;
+          height: 12px;
+          cursor: move;
+          .ic-drag {
+            width: 18px;
+            height: 12px;
+            display: inline-block;
+          }
+        }
+        .block__delete {
+          width: 18px;
+          height: 12px;
+          background: url('/argon/assets/img/placeholder.png');
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+      .block__img {
+        float: left;
+        height: 60px;
+        width: 121px;
+        border-right: 1px solid $color-grey-dark;
+        background-color: $color-white;
+      }
+      .block__title {
+        float: left;
+        height: 60px;
+        line-height: 60px;
+        padding: 0 10px;
+      }
+    }
+  }
+}

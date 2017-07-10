@@ -1,0 +1,361 @@
+@import '../../../../../node_modules/jquery.scrollbar/sass/jquery.scrollbar';
+
+.scroll-element,
+.scroll-element div
+{
+  border: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 10;
+}
+
+.scroll-element {
+  background-color: #ffffff;
+}
+
+.scroll-element div {
+  display: block;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+.scroll-element.scroll-x {
+  bottom: 0;
+  height: 15px;
+  left: 0;
+  width: 100%;
+  background-color: $color-grey-light;
+  display: none;
+}
+
+.scroll-element.scroll-y {
+  height: 100%;
+  right: 0;
+  top: 0;
+  width: 15px;
+  border-left: 1px solid $color-grey-dark;
+  background-color: $color-grey-light;
+  display: block;
+}
+
+.scroll-element.scroll-x .scroll-element_outer { height: 9px; top: 3px; right: 3px; bottom: 3px; left: 3px; }
+.scroll-element.scroll-y .scroll-element_outer {
+  left: 3px;
+  right: 3px;
+  width: 9px;
+  top: 3px;
+  bottom: 3px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px; height: auto }
+
+.scroll-element .scroll-element_outer { overflow: hidden; }
+.scroll-element .scroll-element_track { background-color: $color-grey-light; }
+
+.scroll-element .scroll-bar {
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.scroll-element .scroll-bar { background-color: $color-grey-accent; }
+.scroll-element .scroll-bar:hover { background-color: $color-grey-accent; }
+.scroll-element.scroll-draggable .scroll-bar { background-color: $color-grey-accent; }
+
+
+/* scrollbar height/width & offset from container borders */
+
+.scroll-wrapper > .scroll-content { left: -15px; margin-left: 15px; }
+
+.scroll-content.scroll-scrolly_visible { left: -15px; margin-left: 15px; }
+.scroll-content.scroll-scrollx_visible { top:  -15px; margin-top:  15px; }
+
+.scroll-element.scroll-x .scroll-bar { min-width: 15px; height: 9px; }
+.scroll-element.scroll-y .scroll-bar { min-height: 15px; width: 9px; }
+
+
+/* update scrollbar offset if both scrolls are visible */
+
+.scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_track { left: -15px; }
+.scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track { top: -15px; }
+
+.scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { left: -15px; }
+.scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -15px; }
+
+.media {
+  min-height: 540px;
+  margin-top: 30px;
+  position: relative;
+  border: 1px solid $color-grey-dark;
+  .media__tree {
+    width: 300px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-right: 1px solid $color-grey-dark;
+    li>ul {
+      padding-left: 15px;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      li {
+        position: relative;
+        .media__folder {
+          display: block;
+          width: 100%;
+          padding: 5px 5px 5px 40px;
+          border-bottom: 1px solid $color-grey-dark;
+          background: url('/argon/assets/img/icons/folder.svg') 10px center / 20px 14px no-repeat;
+          color: $color-text;
+          &.media__folder--active {
+            background-color: $color-grey-light;
+          }
+          &:hover {
+            background-color: $color-grey-light;
+          }
+        }
+        &:after {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: red;
+          height: 1px;
+        }
+      }
+    }
+  }
+  .media__header {
+    width: 100%;
+    padding: 30px;
+    float: left;
+    form {
+      width: 100%;
+      float: left;
+      border-bottom: 1px solid $color-grey-dark;
+    }
+    .form__group {
+      margin: 0;
+      padding-bottom: 20px;
+      width: 50%;
+      float: left;
+      clear: none;
+      &:first-child {
+        padding-right: 5px;
+      }
+      &:last-child {
+        padding-left: 5px;
+      }
+      select {
+        width: 100%;
+      }
+      .icon.search {
+        right: 5px;
+      }
+    }
+  }
+  .media__actions {
+    float: left;
+    width: 100%;
+    padding: 20px 0 0;
+    h1 {
+      float: left;
+      margin: 0;
+      line-height: 24px;
+    }
+    button {
+      float: right;
+    }
+  }
+  .media__scroll {
+    height: 100%;
+  }
+  .media__browser {
+    width: 100%;
+  }
+  .media__right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 300px;
+    overflow: scroll;
+  }
+  .media__items {
+    width: 100%;
+    height: 100%;
+    float: left;
+    position: relative;
+  }
+  .media__item {
+    float: left;
+    width: 86px;
+    text-align: center;
+    margin: 0 30px 30px;
+    line-height: 18px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+      .media__overlay {
+        opacity: .2;
+      }
+    }
+    a {
+      outline: none;
+      color: $color-text;
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: none;
+        color: $color-text;
+      }
+    }
+  }
+  .media__item--folder {
+    &:hover {
+      .media__asset--folder svg {
+        fill: $color-primary-accent;
+      }
+    }
+  }
+  .media__loading {
+    position: absolute;
+    top: 180px;
+    right: 0;
+    bottom: 0;
+    left: 300px;
+    background-color: rgba(255, 255, 255, .85);
+    background-image: url('/argon/assets/img/loading.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .media__name {
+    display: block;
+    height: 36px;
+    word-break: break-all;
+    input {
+      width: 100%;
+    }
+  }
+  .media__asset {
+    width: 86px;
+    height: 86px;
+    display: block;
+    margin-bottom: 15px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+    .media__overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $color-black;
+      opacity: 0;
+      border-radius: 5px;
+      transition: opacity $transition-sm;
+    }
+    span {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 16px;
+      font-size: 16px;
+      color: $color-white;
+    }
+    &.media__asset--folder {
+      img {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+      }
+      svg {
+        fill: $color-blue;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        transition: fill $transition-sm;
+      }
+    }
+  }
+  .modal-dialog {
+    width: 70%;
+  }
+  .modal-content {
+    width: 100%;
+    text-align: left;
+    float: left;
+  }
+  .media__modal-header {
+    height: 60px;
+    background-color: $color-grey-light;
+    width: 100%;
+    padding: 0 20px;
+    h1 {
+      margin: 0;
+      line-height: 60px;
+    }
+  }
+  .media__modal-content {
+    padding: 20px;
+    float: left;
+    width: 100%;
+  }
+  .media__modal-image {
+    width: 50%;
+    float: left;
+    padding-right: 15px;
+    display: table;
+    .media__modal-asset {
+      display: table-cell;
+      vertical-align: middle;
+      background-color: $color-grey-light;
+      width: 100%;
+      height: 332px;
+      text-align: center;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+  .modal__modal-buttons {
+    button {
+      float: right;
+      display: block;
+      &:first-child {
+        margin-left: 10px;
+      }
+    }
+  }
+  .media__modal-details {
+    width: 50%;
+    float: left;
+    padding-left: 15px;
+    .form__group {
+      margin-bottom: 30px;
+    }
+    ul {
+      float: left;
+      margin: 0 0 40px;
+      padding: 0;
+      list-style: none;
+      width: 100%;
+      li span {
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -2,10 +2,10 @@
 
 ## Installation
 
-Create a basic Laravel (5.1.0) project:
+Create a basic Laravel (5.1) project:
 
 ```
-composer create-project laravel/laravel . "~5.1.0" --prefer-dist
+composer create-project laravel/laravel --prefer-dist
 ```
 
 Add a repositories section to the composer.json:
@@ -30,72 +30,6 @@ Run the following to install the base CMS:
 ```
 composer require escape/argon
 ```
-### Files
-
-
-Replace app/Http/Controllers/Controller.php content with:
-```
-<?php
-
-namespace App\Http\Controllers;
-
-use Escape\Argon\Frontend\Controllers\CmsController;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-abstract class Controller extends CmsController
-{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-}
-
-```
-Create app/Http/Controllers/ContentController.php and add:
-```
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Helpers\ThemeHelper;
-use Escape\Argon\Core\Http\Request;
-use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
-use Escape\Argon\Frontend\Page;
-
-class ContentController extends Controller
-{
-    public function page(Request $request, EntityRepository $entityRepository)
-    {
-        $node = $entityRepository->findForPath($request);
-
-        if (!$node) {
-            abort(404);
-        }
-
-        $page = new Page($node, $request);
-
-        if ($redirect = $page->getRedirect()) {
-            return redirect($redirect, 301);
-        }
-
-        $viewName = $this->getViewNameForType($node->entity_type_id);
-
-        return view($viewName, [
-            'page' => $page,
-        ]);
-    }
-}
-```
-Replace content in /app/Http/routes.php with:
-```
-<?php
-
-Route::get('404', function() {
-    abort(404);
-});
-
-// This should be the last route defined.
-Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
-```
 
 ### Configuration
 
@@ -109,7 +43,7 @@ Edit `config/auth.php` and change the model property as follows
 ...
 ```
 
-Add the ArgonServiceProvider to the providers array in `config/app.php` (Make sure ArgonServiceProvider is called before RouteServiceProvider)
+Add the ArgonServiceProvider to the providers array in `config/app.php`
 
 ```
 'providers' => [
@@ -124,10 +58,10 @@ Add the ArgonServiceProvider to the providers array in `config/app.php` (Make su
      */
     ...
 
-    Escape\Argon\Core\ArgonServiceProvider::class,   
+    Escape\Argon\Core\ArgonServiceProvider::class,
+
 ],
 ```
-
 
 Change the Request class in index.php to Escape\Argon\Core\Http\Request
 ```
@@ -155,7 +89,6 @@ Use artisan to publish the admin assets.
 
 ```
 php artisan vendor:publish --tag=public
-php artisan vendor:publish --tag=config --force
 ```
 
 ### Tidy Up

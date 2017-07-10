@@ -2,8 +2,8 @@
 
 namespace Escape\Argon\Core\Plugins;
 
-use Escape\Argon\Authentication\PermissionManager;
-use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
+use Escape\Argon\Auth\PermissionManager;
+use Escape\Argon\Entity\FieldTypes\FieldTypesManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Route;
@@ -80,6 +80,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
+        //
     }
 
     public function boot()

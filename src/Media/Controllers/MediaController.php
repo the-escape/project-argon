@@ -2,13 +2,15 @@
 
 namespace Escape\Argon\Media\Controllers;
 
-use Escape\Argon\Core\Controllers\BaseController;
+//use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+
+
 use View;
 use Image;
 use Input;

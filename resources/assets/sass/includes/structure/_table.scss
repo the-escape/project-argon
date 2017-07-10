@@ -1,0 +1,228 @@
+.table {
+  width: 100%;
+  thead {
+    tr {
+      th {
+        padding: 0 0 20px 0;
+        border-bottom: 1px solid $color-grey-dark;
+        font-size: 16px;
+        letter-spacing: 1px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      padding: 0;
+      td {
+        padding: 10px 0;
+        border-top: 1px solid $color-grey-dark;
+        font-size: 16px;
+        vertical-align: middle;
+        .status {
+          margin: 0 10px 2px 0;
+          vertical-align: middle;
+        }
+        .form__btn {
+          float: right;
+        }
+      }
+    }
+  }
+  .form__btn {
+    font-size: 14px;
+    min-width: 125px;
+  }
+  .table__page {
+    cursor: pointer;
+    &.table__page--hidden {
+      display: none;
+    }
+    &.table__page--active {
+      background-color: $color-grey-light;
+    }
+    &:hover {
+      .table__level {
+        color: $color-blue;
+        text-decoration: none;
+      }
+    }
+    &.table__page--inactive {
+      cursor: default;
+      .table__level {
+        color: $color-text;
+      }
+    }
+    .table__level {
+      float: left;
+      cursor: pointer;
+      padding: 0 0 0 34px;
+      color: $color-text;
+      text-decoration: none;
+      font-weight: 600;
+      &:hover {
+        color: $color-blue;
+        text-decoration: none;
+      }
+      &.table__level--collapsed {
+        background: url('/argon/assets/img/table/arrow-collapsed.png') 13px center / 8px 14px no-repeat;
+      }
+      &.table__level--end {
+        pointer-events: none;
+        cursor: default;
+        background: url('/argon/assets/img/table/arrow-expand-blue.png') 10px center / 14px 13px no-repeat;
+      }
+      &.table__level--open {
+        background: url('/argon/assets/img/table/arrow-expand.png') 10px center / 14px 8px no-repeat;
+      }
+    }
+    .form__btn {
+      margin-right: 10px;
+    }
+  }
+  .table__reveal {
+    background-color: #f1fafc;
+    td {
+      border: none;
+      padding: 0;
+      .table__page-attributes {
+        float: left;
+        width: 100%;
+        padding: 10px;
+        border-top: 1px solid $color-grey-dark;
+        display: none;
+        .form__group {
+          float: left;
+          width: 290px;
+          clear: none;
+          margin: 0 10px 0 0;
+        }
+        .form__text {
+          max-width: 290px;
+        }
+        .form__btn {
+          margin-left: 10px;
+          &.form__btn--small {
+            margin-top: 9px;
+          }
+          &[type="submit"] {
+            float: left;
+            margin: 0;
+          }
+        }
+        &.table__page--attributes-show {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.search {
+  .search__results {
+    display: none;
+    position: absolute;
+    top: 47px;
+    left: 0;
+    width: 360px;
+    background-color: $color-white;
+    border: 1px solid $color-blue;
+    svg {
+      display: block;
+      width: 50px;
+      height: 50px;
+      margin: 11px auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        float: left;
+        width: 100%;
+        border-bottom: 1px solid $color-grey-dark;
+        &:last-of-type {
+          border: none;
+        }
+        a {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          color: $color-text;
+          text-decoration: none;
+          &:hover {
+            color: $color-text;
+            text-decoration: none;
+            background-color: $color-grey-light;
+          }
+          span {
+            display: block;
+            width: 100%;
+          }
+          .title {
+            font-size: 16px;
+            .status {
+              float: left;
+              display: block;
+              margin: 6px 10px 0 0;
+            }
+          }
+          .date {
+            font-size: 12px;
+            color: $color-grey-accent;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ic {
+  vertical-align: middle;
+  fill: $color-grey-accent;
+  transition: all .3s;
+  &.ic__clone {
+    width: 22px;
+    height: 22px;
+    background: url('/argon/assets/img/table/clone.png') center / 22px no-repeat;
+  }
+  &.ic__delete {
+    width: 20px;
+    height: 22px;
+    background: url('/argon/assets/img/table/delete.png') center / 20px 22px no-repeat;
+  }
+  &.ic__create {
+    width: 24px;
+    height: 24px;
+    transition: all .3s;
+    &:hover svg {
+      fill: $color-secondary-accent;
+    }
+  }
+}
+
+.ic-add {
+  transition: all .3s;
+  fill: $color-grey-accent;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  &:hover {
+    fill: $color-secondary-accent;
+  }
+}
+
+.status {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: inline-block;
+  &.status--green {
+    background-color: $color-green;
+  }
+  &.status--red {
+    background-color: $color-red;
+  }
+  &.status--yellow {
+    background-color: yellow;
+  }
+}

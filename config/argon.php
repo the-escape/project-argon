@@ -4,52 +4,16 @@ return [
     'admin_route_prefix' => '/admin',
     'client_logo_dark' => '/argon/images/logo.png',
     'client_logo_light' => '/argon/images/logo.png',
-
-    'admin_css' => '
-        .argon-login h1 { background-color: #fff; }
-
-        .navbar.bg-inverse { background-color: #373a3c; }
-
-        a,
-        .nav-link,
-        .btn-link,
-        .btn-primary-outline { color: #0275d8; }
-
-        .btn-primary { background-color: #0275d8; }
-
-        .btn-primary,
-        .btn-primary-outline { border-color: #0275d8; }
-
-        .btn-primary-outline:hover,
-        .btn-primary-outline:focus,
-        .btn-primary-outline:active,
-        .btn-primary:hover,
-        .btn-primary:focus,
-        .btn-primary:active,
-        .open .btn-primary-outline.dropdown-toggle { background-color: #025aa5; }
-
-        .btn-primary-outline:hover,
-        .btn-primary-outline:focus,
-        .btn-primary-outline:active,
-        .btn-primary:hover,
-        .btn-primary:focus,
-        .btn-primary:active,
-        .open .btn-primary-outline.dropdown-toggle { border-color: #025aa5; }
-
-        a:hover,
-        .btn-link:hover,
-        .btn-link:active,
-        .btn-link:focus { color: #025aa5; }
-
-        .logo-admin-login { width:auto; margin-bottom:auto; max-width:100%; }
-
-        .navbar { padding-left:0; padding-top:0; padding-bottom:0; height:51px; }
-        .navbar .navbar-nav { height:51px; }
-        .navbar .navbar-nav .nav-item { height:51px; }
-        .navbar .navbar-nav .nav-link { line-height:51px; padding-top:0; padding-bottom:0; }
-        .navbar .navbar-brand { padding:0; margin:0; }
-        .navbar .navbar-brand .logo-admin { height:51px; padding:0; margin:0; }
-    ',
+    'highlight_color' => '#0275d8',
+    'highlight_color_darker' => '#014c8c',
+    'neutral_color' => '#373a3c',
+    'logo-admin-login' => 'width:auto; margin-bottom:auto; max-width:100%',
+    'navbar' => 'padding-left:0; padding-top:0; padding-bottom:0; height:51px;',
+    'navbar-nav' => 'height:51px;',
+    'nav-item' => 'height:51px;',
+    'nav-link' => 'line-height:51px; padding-top:0; padding-bottom:0;',
+    'navbar-brand' => 'padding:0; margin:0;',
+    'logo-admin' => 'height:51px; padding:0; margin:0;',
 
     'sitemap_view' => 'argon::pages.sitemap',
 

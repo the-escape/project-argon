@@ -1,0 +1,136 @@
+.dashboard {
+  color: $color-white;
+  .dashboard__header {
+    h1 {
+      margin: 0 0 30px;
+    }
+    p {
+      margin: 0 0 50px;
+    }
+  }
+  .dashboard__cta {
+    height: 290px;
+    display: table;
+    width: 100%;
+    text-align: center;
+    .dashboard__cta-container {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    &.dashboard__cta--manage {
+      background: url('/argon/assets/img/manage-content.png') center no-repeat;
+      background-size: cover;
+      &:hover {
+        .form__btn {
+          background-color: $color-white;
+          color: $color-blue;
+        }
+      }
+      .form__btn {
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+    }
+    &.dashboard__cta--half {
+      height: 130px;
+      border: 1px solid $color-white;
+      margin-bottom: 30px;
+      display: table;
+    }
+    .dashboard__cta-cell {
+      display: table-cell;
+      vertical-align: middle;
+      color: $color-white;
+      text-decoration: none;
+      cursor: pointer;
+      @include transition($transition-sm);
+      &:hover {
+        background-color: $color-white;
+        color: $color-blue;
+      }
+    }
+    .dashboard__cta-content {
+      font-weight: bold;
+      letter-spacing: 1px;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+  .icon {
+    width: 45px;
+    height: 45px;
+    display: block;
+    margin: 0 auto 10px;
+    &.icon--add {
+      background: url('/argon/assets/img/icons/add.png') center / 45px no-repeat;
+    }
+    &.icon--upload {
+      background: url('/argon/assets/img/icons/upload.png') center / 45px no-repeat;
+    }
+  }
+}
+
+.activity {
+  height: 290px;
+  background-color: $color-sidebar;
+  .activity__head {
+    padding: 20px 0;
+    width: 100%;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: $color-white;
+    font-weight: bold;
+    text-align: center;
+    height: 115px;
+    i {
+      display: block;
+      margin: 0 auto 10px;
+      width: 44px;
+      height: 44px;
+      background: url('/argon/assets/img/icons/bell.png') center / 44px no-repeat;
+    }
+    span {
+      color: $color-blue;
+    }
+  }
+  .activity__content {
+    width: 100%;
+    height: 175px;
+    overflow: scroll;
+    .activity__event {
+      width: 100%;
+      display: block;
+      cursor: pointer;
+      padding: 15px;
+      float: left;
+      overflow-y: scroll;
+      @include transition($transition-sm);
+      &:hover {
+        background-color: $color-sidebar-divider;
+        text-decoration: none;
+      }
+      .activity__user {
+        float: left;
+        margin-right: 10px;
+        img {
+          border-radius: 36px;
+        }
+      }
+      .activity__text {
+        float: left;
+        line-height: 20px;
+        span {
+          display: block;
+          color: $color-grey-accent;
+        }
+        .title {
+          color: $color-white;
+          font-size: 16px;
+        }
+        .date {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

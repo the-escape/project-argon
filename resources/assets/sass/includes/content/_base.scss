@@ -1,0 +1,163 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+#app {
+	height: 100%;
+}
+
+.margin-t-no {
+	margin-top: 0;
+}
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: $text-size-sm;
+	font-weight: normal;
+	font-style: normal;
+	line-height: $text-size-sm + 12;
+	color: $color-text;
+	-webkit-font-smoothing: antialiased;
+}
+
+.bg {
+	height: 100%;
+	width: 100%;
+	background: url('/argon/assets/img/bg.png') center / cover no-repeat;
+}
+
+.full-height {
+	height: 100%;
+	min-height: 100%;
+}
+.main {
+	z-index: 0;
+	height: 100%;
+	.main__content {
+		margin-top: 50px;
+		float: left;
+		width: 100%;
+		position: relative;
+	}
+}
+
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	padding: 0 0 30px 0;
+	background-color: rgba(255, 255, 255, .6);
+	.form__btn {
+		display: block;
+		float: left;
+		margin: 0 10px 0 0;
+	}
+	.footer__container {
+		border-top: 1px solid $color-sidebar;
+		padding-top: 30px;
+		.footer__right {
+			float: right;
+			.form__btn {
+				margin: 0 0 0 10px;
+			}
+		}
+	}
+}
+
+.bg-grey {
+	background-color: $color-grey-light;
+}
+
+.tabs {
+	.tabs__header {
+		position: relative;
+		float: left;
+		width: 100%;
+		padding: 50px 0;
+		h1 {
+			margin: 0;
+			float: left;
+			font-size: 40px;
+			font-weight: normal;
+			color: $color-blue;
+		}
+		.tabs__revert {
+			position: absolute;
+			bottom: 50px;
+			right: 0;
+			font-size: 14px;
+			font-style: italic;
+			font-weight: normal;
+			span {
+				font-style: normal;
+			}
+			a {
+				text-decoration: underline;
+				color: $color-text;
+				&:hover {
+					color: $color-blue;
+				}
+			}
+		}
+	}
+	.tabs__items {
+		width: 100%;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		.tabs__item {
+			float: left;
+			margin-right: 1px;
+			&:last-of-type {
+				margin-right: 0;
+			}
+			a {
+				display: block;
+				width: 160px;
+				height: 48px;
+				text-align: center;
+				background-color: $color-black;
+				font-size: 16px;
+				font-weight: bold;
+				color: $color-white;
+				padding: 11px;
+				letter-spacing: 1px;
+				&:hover {
+					text-decoration: none;
+				}
+				&:focus {
+					text-decoration: none;
+				}
+				&.active {
+					background-color: $color-white;
+					color: $color-blue;
+				}
+			}
+		}
+	}
+}
+
+.actions {
+	margin: 0 0 30px;
+	float: left;
+	width: 100%;
+	font-size: 18px;
+	.form__group {
+		width: 290px;
+	}
+	span {
+		color: $color-blue;
+	}
+	.actions__right {
+		float: right;
+	}
+	&.actions--large {
+		height: 48px;
+		.form__btn {
+			margin-top: 9px;
+		}
+	}
+}

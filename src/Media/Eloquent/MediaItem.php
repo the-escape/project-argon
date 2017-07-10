@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Media\Eloquent;
 
+use Escape\Argon\Auth\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,6 +36,11 @@ class MediaItem extends Model implements Arrayable
         'hasThumb'
     ];
 
+    public function getMetaAttribute($value)
+    {
+        return json_decode($value);
+    }
+
     public function toArray()
     {
         $item = parent::toArray();
@@ -47,6 +53,13 @@ class MediaItem extends Model implements Arrayable
         $item['url'] = $this->getUrl();
 
         return $item;
+    }
+
+    public function getThumbUrl()
+    {
+        return $this->hasThumb
+            ? '/media/' . $this->id . '/' . $this->id . '.thumb.' . $this->extension
+            : '/argon/images/file-info-icon.png';
     }
 
     public function getId()
@@ -108,5 +121,8 @@ class MediaItem extends Model implements Arrayable
         return $this->filename.'.'.$this->extension;
     }
 
-
+    public function uploadedBy()
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
 }

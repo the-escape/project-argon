@@ -1,7 +1,20 @@
-@import "../../../bower_components/bootstrap/scss/bootstrap";
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import '../../../node_modules/select2/src/scss/core';
 
-@import "login";
-@import "dashboard";
-@import "media";
-@import "fields/boolean";
-@import "fields/datetime";
+@import 'includes/settings/vars';
+@import 'includes/settings/mixins';
+@import 'includes/settings/fonts';
+
+@import 'includes/content/base';
+@import 'includes/content/type';
+@import 'includes/content/forms';
+@import 'includes/content/toastr';
+@import 'includes/content/modal';
+
+@import 'includes/structure/login';
+@import 'includes/structure/sidebar';
+@import 'includes/structure/table';
+
+@import 'includes/modules/dashboard';
+@import 'includes/modules/blocks';
+@import 'includes/modules/media';

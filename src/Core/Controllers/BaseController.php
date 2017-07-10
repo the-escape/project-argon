@@ -4,23 +4,38 @@ namespace Escape\Argon\Core\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use View;
 
 abstract class BaseController extends Controller
 {
     use DispatchesJobs, ValidatesRequests;
 
-    protected $request;
+    protected $name;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->middleware('auth', ['except' => ['getLogin', 'postLogin', 'forgotPassword']]);
+        $this->addMiddleware();
+    }
 
-        View::share('currentUser', $request->user());
-        View::share('plugins', app('pluginManager'));
+    abstract function setMiddleware();
 
-        $this->request = $request;
+    private function addMiddleware()
+    {
+        $middleware = /*['auth'] +*/ $this->setMiddleware();
+
+        foreach ($middleware as $class) {
+            $this->middleware($class);
+        }
+    }
+
+    public function addTabs(array $tabs)
+    {
+        $html = '';
+
+        foreach ($tabs as $tab) {
+            $html .= view('argon::partials.tab')->with(compact('tab'))->render();
+        }
+
+        view()->share('tabs', $html);
     }
 }
