@@ -24,11 +24,6 @@ select[multiple] {
     min-height: 180px;
 }
 
-.actions-top {
-    @include clearfix;
-    margin-bottom: 2rem;
-}
-
 .alert-info {
     border-left-width: 5px;
     border-color: $standard-border-color;

@@ -146,7 +146,7 @@
                         @endif
                         <td>{{ $mediaItem->getName() }}</td>
                         <td>{{ $mediaItem->getExtension() }}</td>
-                        <td><a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab">{{ $mediaItem->getUrl() }}</a></td>
+                        <td><a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab">{{ $mediaItem->getUrl(['updatedAt'=>false]) }}</a></td>
                         <td>
                             @if($mediaItem->isImage())
                                 {{ $mediaItem->getWidth() }} x {{ $mediaItem->getHeight() }} pixels

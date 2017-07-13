@@ -22,7 +22,22 @@ class EntityRevisionRepository extends BaseRepository
         $this->makeModel()
             ->where('entity_localisation_id', $localisationId)
             ->where('id', '<>', $except)
+            ->whereNotIn('status', [RevisionStatus::PREVIEW])
             ->update(['status' => RevisionStatus::PREVIOUSLY_PUBLISHED]);
+    }
+
+    /**
+     * Equivalent to Escape\Argon\EntityManagement\Eloquent\Localisation@archivedRevisions
+     * @return collection of EntityRevisions
+     */
+    public function archivedRevisions($localisationId)
+    {
+        return $this->makeModel()
+            ->orderBy('created_at', 'desc')
+            ->with('user')
+            ->where('entity_localisation_id', $localisationId)
+            ->where('status', RevisionStatus::PREVIOUSLY_PUBLISHED)
+            ->get();
     }
 
     public function deletePreviews($exceptIds = [])

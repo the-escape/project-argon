@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <div class="actions-top">
+        <div class="dashboard-actions dashboard-actions--top">
 
             <a href="" id="edit-button" class="btn btn-primary-outline" data-item-edit="{{ route("cms:media:edit", ['%%ID%%']) }}" data-folder-edit="{{ route("cms:media:folders:edit", ['%%ID%%']) }}">Edit</a>
             <button id="add-button" disabled class="btn btn-primary-outline" data-folder-add="{{ route("cms:media:folders:add", ['%%ID%%']) }}">Add Subfolder</button>
@@ -27,10 +27,12 @@
 
         </div>
 
-        <div id="folders">
-            <ul>
-                @each('argon::media.folder-single', [$root], 'folder')
-            </ul>
+        <div class="dashboard-content">
+            <div id="folders">
+                <ul>
+                    @each('argon::media.folder-single', [$root], 'folder')
+                </ul>
+            </div>
         </div>
 
     </div>

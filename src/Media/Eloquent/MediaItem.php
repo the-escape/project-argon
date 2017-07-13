@@ -70,24 +70,23 @@ class MediaItem extends Model implements Arrayable
     /**
      * Generates URL to asset.
      * Accepts args formatted as query string key=value pairs separated by & symbol.
-     * @param string $queryStringArgs - 'updatedAt=0'
+     * @param array $args
      * @return string $url
      */
-    public function getUrl($queryStringArgs='')
+    public function getUrl(array $args=[])
     {
-        $args = [
+        $properties = [
             'updatedAt' => true,
         ];
 
-        if ($queryStringArgs)
+        if ($args)
         {
-            parse_str($queryStringArgs, $queryStringArgs);
-            $args = array_merge($args, $queryStringArgs);
+            $properties = array_merge($properties, $args);
         }
 
         $url = "/media/{$this->id}/{$this->getSlug()}.{$this->extension}";
 
-        if (in_array($args['updatedAt'], ['1', 'true']))
+        if (in_array($properties['updatedAt'], ['1', 'true', true], true))
         {
             $url = $url."?".strtotime($this->updated_at);
         }

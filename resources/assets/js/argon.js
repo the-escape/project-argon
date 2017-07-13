@@ -134,3 +134,14 @@ $('.preview-page').on('click', function(e) {
         }
     });
 });
+
+$('.save-revision').on('click', function(e) {
+    e.preventDefault();
+    $form = $(this).parent('form');
+    $form.attr('action', $(this).data('form-action'));
+    $form.submit();
+});
+
+$('#pageEditForm').submit(function(){
+
+});

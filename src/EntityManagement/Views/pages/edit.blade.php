@@ -16,7 +16,7 @@
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST">
+        <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST" id="pageEditForm">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">
@@ -54,24 +54,96 @@
                 </div>
             </div>
 
+            @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
+                <ul class="nav nav-tabs">
+                    @foreach ($page->getLocalisations() as $l)
+                        <li class="nav-item">
+                            <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
+                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
+                                {{$l->getLocale()->getName()}}
+                            </a>
+                        </li>
+                    @endforeach
+                    @if (!$locales->isEmpty())
+                        <li class="nav-item">
+                            <a class="nav-link add-localisation" href="">+ Add Localisation</a>
+                        </li>
+                    @endif
+                </ul>
 
-            <ul class="nav nav-tabs">
-                @foreach ($page->getLocalisations() as $l)
-                    <li class="nav-item">
-                        <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
-                           href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
-                            {{$l->getLocale()->getName()}}
-                        </a>
-                    </li>
-                @endforeach
-                @if (!$locales->isEmpty())
-                    <li class="nav-item">
-                        <a class="nav-link add-localisation" href="">+ Add Localisation</a>
-                    </li>
-                @endif
-            </ul>
+                <br>
 
-            <br>
+            @endif
+
+
+            @if($revisionsTotal = $revisions->total())
+                <div class="card accordion">
+
+                    <div class="card-header accordion-header">Revisions ({{ $revisionsTotal }})</div>
+
+                    <div class="card-block accordion-body">
+
+                        <div class="alert alert-info" role="alert">
+                            Current published revision ID: {{ $latest->id }}, created at {{ $latest->created_at->format('d/m/Y H:i:s') }}, by user: {{ $latest->user->name }}.
+                        </div>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Created At</th>
+                                <th>Created By</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($revisions as $revision)
+                                <tr>
+                                    <td>{{ $revision->id }}</td>
+                                    <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
+                                    <td>{{ $revision->user->name }}</td>
+                                    <td>
+                                        <a href="" class="btn btn-primary preview-page" data-preview-id="{{ $revision->id }}">Preview</a>
+                                        <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                        @if(( $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage()) ) && $revisionsPagination['pages_count'] > 1)
+
+                            <nav>
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item @if(!$revisionsPagination['page_prev']) disabled @endif">
+                                        @if($revisionsPagination['page_prev'])
+                                            <a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_prev']])  }}" tabindex="-1">Previous</a>
+                                        @else
+                                            <span class="page-link">Previous</span>
+                                        @endif
+                                    </li>
+
+                                    @foreach (range(1, $revisionsPagination['pages_count']) as $num)
+                                        <li class="page-item  @if($num == $revisionsPagination['current_page_number']) active @endif"><a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$num]) }}">{{ $num }}</a></li>
+                                    @endforeach
+
+                                    <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
+                                        @if($revisionsPagination['page_next'])
+                                            <a class="page-link" href=" {{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_next']])  }}">Next</a>
+                                        @else
+                                            <span class="page-link">Next</span>
+                                        @endif
+                                    </li>
+                                </ul>
+                            </nav>
+
+                        @endif
+
+                    </div>
+
+                </div>
+            @endif
+
 
             <div class="card accordion">
 
@@ -141,7 +213,6 @@
                     </div>
                 @endforeach
 
-
                 @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
                     <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
                     <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
@@ -193,8 +264,9 @@
 
             @endif
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="#" class="btn btn-warning preview-page">Preview</a>
+            <button type="submit" class="btn btn-primary save-publish">Save and Publish</button>
+            <button type="submit" class="btn btn-primary-outline save-revision" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
+            <a href="#" class="btn btn-warning preview-page" data-preview-id="{{ $latest->id }}">Preview</a>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
 

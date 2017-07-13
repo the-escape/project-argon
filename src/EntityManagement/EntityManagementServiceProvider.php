@@ -62,6 +62,12 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'editLocale'
         );
         $this->addRoute(
+            'pages/{id}/delete/{locale}',
+            'cms:pages:delete_locale',
+            PagesController::class,
+            'deleteLocale'
+        );
+        $this->addRoute(
             'pages/{id}/edit/{locale}',
             'cms:pages:update',
             PagesController::class,
@@ -69,11 +75,29 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
-            'pages/{entity}/revisions',
+            'pages/{id}/locale/{locale}/revisions',
+            'cms:revisions:create',
+            PagesController::class,
+            'saveRevision',
+            Request::METHOD_POST
+        );
+
+        /**
+         * Deprecated, as revisions handled within page edit view.
+         */
+        $this->addRoute(
+            'pages/{entity}/revisions/{locale}',
             'cms:pages:revisions',
             PagesController::class,
             'revisions'
         );
+        $this->addRoute(
+            'restore/{revisionId}',
+            'cms:revisions:restore',
+            PagesController::class,
+            'restore'
+        );
+
         $this->addRoute(
             'pages/{id}/create_locale',
             'cms:pages:create_locale',

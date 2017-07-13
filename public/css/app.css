@@ -6942,13 +6942,6 @@ img {
 select[multiple] {
   min-height: 180px; }
 
-.actions-top {
-  margin-bottom: 2rem; }
-  .actions-top::after {
-    content: "";
-    display: table;
-    clear: both; }
-
 .alert-info {
   border-left-width: 5px;
   border-color: #e5e5e5;
@@ -7205,7 +7198,6 @@ body.dashboard .preview {
   height: 100%; }
 
 body.medialib #folders {
-  margin: 20px 0;
   border-top: 1px dotted #000; }
 
 body.medialib .table-media th a {

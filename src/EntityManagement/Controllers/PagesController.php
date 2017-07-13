@@ -264,6 +264,78 @@ class PagesController extends BaseController
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
+    public function saveRevision(
+        $pageId,
+        $localeId,
+        EntityRepository $entityRepository,
+        EntityRevisionRepository $revisionsRepository,
+        FieldDataRepository $fieldDataRepository,
+        EntityTypeRepository $typeRepository,
+        Request $request,
+        Solr $solr)
+    {
+        dd(1);
+        $entity = $entityRepository->find($pageId);
+
+        $currentLocale = Locale::find($localeId);
+
+        $currentLocalisation = $entity->getLocalisation($currentLocale);
+
+        $type = $typeRepository->find($entity->entity_type_id);
+
+        $fields = $type->fields;
+
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
+
+        $slug = str_slug($request->input('slug'));
+
+        // update input slug value to reflect str_slug, then validate it
+        $request->merge(array('slug' => $slug));
+
+        $rules = [
+            'name' => "required",
+        ];
+
+        if ($entity->parent_id != null) {
+            $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
+        } else {
+            $request->merge(['slug' => '/']);
+        }
+
+        $messages = [];
+
+        list($niceNames, $rules, $messages) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules, $messages);
+
+        $this->validate($this->request, $rules, $messages, $niceNames);
+
+        $redirect_url = ($entity->redirect_url instanceof stdClass) ? $entity->redirect_url : new stdClass();
+        $redirect_url->{$localeId} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
+
+        $group_order = ($entity->group_order instanceof stdClass) ? $entity->group_order : new stdClass();
+        $group_order->{$localeId} = $request->input('group_order', $entity->getGroupOrderString($localeId));
+        $request->merge(['group_order' => $group_order]);
+
+        $group_render = ($entity->group_render instanceof stdClass) ? $entity->group_render : new stdClass();
+        $group_render->{$localeId} = $request->input('group_render', []);
+        $request->merge(['group_render' => $group_render]);
+
+        $revision = $revisionsRepository->create([
+            'entity_localisation_id' => $currentLocalisation->id,
+            'status' =>  RevisionStatus::PREVIOUSLY_PUBLISHED,
+            'created_by' => $this->request->user()->id
+        ]);
+
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
+
+
+        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+            ->with('message', "Revision has been saved.");
+    }
+
     public function editLocale(
         $pageId,
         $localeId,
@@ -285,6 +357,8 @@ class PagesController extends BaseController
 
         $latestRevision = $localisation->publishedRevision();
 
+        $revisions = $localisation->archivedRevisions(3, ['*'], 'revisions');
+
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
 
         $currentLocales = $page->getLocalisations()->getLocales();
@@ -303,6 +377,7 @@ class PagesController extends BaseController
                 'groups' => $groups,
                 'locales' => $locales,
                 'localeId' => $localeId,
+                'revisions' => $revisions,
             ]
         );
     }
@@ -402,6 +477,20 @@ class PagesController extends BaseController
     }
 
 
+    public function deleteLocale($pageId, $localeId)
+    {
+        $entityRepository = app()->make(EntityRepository::class);
+        $page = $entityRepository->find($pageId);
+        $currentLocale = Locale::find($localeId);
+        $defaultLocale = $page->getDefaultLocalisation();
+        $localisation = $page->getLocalisation($currentLocale);
+
+        $localisation->delete();
+
+        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
+    }
+
+
     // Handles JSTree ajax reorder requests
     public function updateParent($pageId, $parentId, EntityRepository $entityRepository, Solr $solr)
     {
@@ -420,11 +509,43 @@ class PagesController extends BaseController
         return json_encode(['success' => $result]);
     }
 
-    public function revisions(Entity $entity, EntityRevisionRepository $entityRevisionRepository)
+    /**
+     * Deprecated, as revisions handled within page edit view.
+     * @param $pageId
+     * @param $localeId
+     * @return mixed
+     */
+    public function revisions($pageId, $localeId)
     {
-        $revisions = $entityRevisionRepository->all();
+        $entityRepository = app()->make(EntityRepository::class);
+        $page = $entityRepository->find($pageId);
+        $currentLocale = Locale::find($localeId);
+        $localisation = $page->getLocalisation($currentLocale);
+
+        $entityRevisionRepository = app()->make(EntityRevisionRepository::class);
+        $revisions = $entityRevisionRepository->archivedRevisions($localisation->id);
 
         return view('argon::pages.revisions')->with(compact('revisions'));
+    }
+
+    public function restore($revisionId)
+    {
+        $revisionsRepository = app()->make(EntityRevisionRepository::class);
+        $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
+
+        if ($revision === null)
+        {
+            return back()->with('message', 'Invalid revision.');
+        }
+
+        $localisation = $revision->localisation;
+
+        $revision->status = RevisionStatus::PUBLISHED;
+        $revision->save();
+
+        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+
+        return back()->with('message', 'Revision restored.');
     }
 
 }

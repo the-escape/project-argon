@@ -57,6 +57,21 @@ class Localisation extends Model
         return $revision;
     }
 
+
+
+    /**
+     * Equivalent to Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository@archivedRevisions
+     * @return collection of EntityRevisions
+     */
+    public function archivedRevisions($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+    {
+        return $this->revisions()
+            ->orderBy('created_at', 'desc')
+            ->with('user')
+            ->whereIn('status', [RevisionStatus::PREVIOUSLY_PUBLISHED])
+            ->paginate($perPage, $columns, $pageName, $page);
+    }
+
     public function locale()
     {
         return $this->belongsTo(Locale::class, 'locale_id');

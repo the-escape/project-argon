@@ -135,6 +135,14 @@ $('.preview-page').on('click', function(e) {
     });
 });
 
+$('.save-revision').on('click', function(e) {
+    e.preventDefault();
+    $form = $(this).parent('form');
+    $form.attr('action', $(this).data('form-action'));
+    if(window.console) console.log($(this).data('form-action'));
+
+
+});
 var expand = {
 
 };

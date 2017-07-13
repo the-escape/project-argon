@@ -13,42 +13,45 @@
             </div>
         @endif
 
-        <div class="actions-top">
+        <div class="dashboard-actions dashboard-actions--top">
 
             <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
 
         </div>
 
-        <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
+        <div class="dashboard-content">
 
-            <div class="form-group">
-                <label for="name" class="required">Folder Name</label>
-                <input type="text" id="name" class="form-control required " name="name" value="{{ $currentFolder->getName() }}">
-            </div>
+            <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
 
-            <div class="form-group">
-                <label for="parent" class="required">Parent Folder</label>
+                <div class="form-group">
+                    <label for="name" class="required">Folder Name</label>
+                    <input type="text" id="name" class="form-control required " name="name" value="{{ $currentFolder->getName() }}">
+                </div>
 
-                <select name="parent" id="parent" class="form-control">
-                    <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
+                <div class="form-group">
+                    <label for="parent" class="required">Parent Folder</label>
 
-                    @if($currentFolder->getParentId())
-                        @foreach($root->children as $child)
-                            @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getParentId(), 'currentFolderId'=>$currentFolder->getId()])
-                        @endforeach
-                    @endif
-                </select>
-            </div>
+                    <select name="parent" id="parent" class="form-control">
+                        <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
 
-            {{csrf_field()}}
-            {{method_field('PUT')}}
+                        @if($currentFolder->getParentId())
+                            @foreach($root->children as $child)
+                                @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getParentId(), 'currentFolderId'=>$currentFolder->getId()])
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
-            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
+                {{csrf_field()}}
+                {{method_field('PUT')}}
 
-        </form>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
+                <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
+            </form>
+
+        </div>
     </div>
 
 @stop

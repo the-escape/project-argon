@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <div class="actions-top">
+        <div class="dashboard-actions dashboard-actions--top">
 
             <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Media Folders</a>
 
@@ -24,44 +24,47 @@
 
         </div>
 
-        <form action="{{ route("cms:media:upload:post") }}" method="post" enctype="multipart/form-data">
+        <div class="dashboard-content">
 
-            <div class="card">
+            <form action="{{ route("cms:media:upload:post") }}" method="post" enctype="multipart/form-data">
 
-                <div class="card-header">Upload Images</div>
+                <div class="card">
 
-                <div class="card-block">
+                    <div class="card-header">Upload Images</div>
 
-                    <div class="alert alert-info" role="alert">
-                        Please consider optimising your images for web. We recommend online service  <a href="https://tinypng.com/" target="_blank">TinyPNG</a>
-                    </div>
+                    <div class="card-block">
 
-                    <div class="form-group">
-                        <label for="file">Select Image:</label>
-                        <input type="file" name="file[]" multiple id="file" class="form-control">
-                    </div>
+                        <div class="alert alert-info" role="alert">
+                            Please consider optimising your images for web. We recommend online service  <a href="https://tinypng.com/" target="_blank">TinyPNG</a>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="folder" class="required">Select Folder:</label>
+                        <div class="form-group">
+                            <label for="file">Select Image:</label>
+                            <input type="file" name="file[]" multiple id="file" class="form-control">
+                        </div>
 
-                        <select name="folder" id="folder" class="form-control">
-                            <option value="{{ $root->getId() }}" @if($root->getId() == 0) selected @endif>{{ $root->name }}</option>
+                        <div class="form-group">
+                            <label for="folder" class="required">Select Folder:</label>
 
-                            @foreach($root->children as $child)
-                                @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>0, 'currentFolderId'=>null])
-                            @endforeach
-                        </select>
+                            <select name="folder" id="folder" class="form-control">
+                                <option value="{{ $root->getId() }}" @if($root->getId() == 0) selected @endif>{{ $root->name }}</option>
+
+                                @foreach($root->children as $child)
+                                    @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>0, 'currentFolderId'=>null])
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {{csrf_field()}}
+                {{csrf_field()}}
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
-        </form>
+            </form>
 
+        </div>
     </div>
 
 @stop

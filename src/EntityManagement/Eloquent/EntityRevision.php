@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Escape\Argon\Authentication\User;
 use Escape\Argon\EntityManagement\Collections\RevisionsCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,11 @@ class EntityRevision extends Model
     public function fields()
     {
         return $this->hasMany(FieldData::class, 'entity_revision_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function newCollection(array $models = [])

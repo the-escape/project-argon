@@ -10,26 +10,28 @@
             </div>
         @endif
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Created</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($revisions as $revision)
+        <div class="dashboard-content">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{ $revision->id }}</td>
-                        <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
-                        <td>
-                            <a href="" class="btn btn-primary">Preview</a>
-                            <a href="" class="btn btn-primary">Restore</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Created</th>
+                        <th></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($revisions as $revision)
+                        <tr>
+                            <td>{{ $revision->id }}</td>
+                            <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
+                            <td>
+                                <a href="" class="btn btn-primary">Preview</a>
+                                <a href="" class="btn btn-primary">Restore</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @stop
