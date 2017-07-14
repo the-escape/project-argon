@@ -111,6 +111,28 @@ $(document).on('change', '.field-poputale', function(e) {
 
 $('.preview-page').on('click', function(e) {
     e.preventDefault();
+    //WYSIWYG.repopulate();
+
+    $('textarea.ckeditor').each(function () {
+        var $textarea = $(this);
+        var name = '#cke_'+this.name;
+        name = name.replace(new RegExp('\\[', 'g'), '\\\[');
+        name = name.replace(new RegExp('\\]', 'g'), '\\\]');
+        var $cke_editor = $textarea.parents('.input-group').find(name).first();
+        if(window.console) console.log($cke_editor.contents().find('body').html());
+        //$textarea.val($cke_editor.getData());
+    });
+
+
+    //for (var i in CKEDITOR.instances)
+    //{
+    //    if(window.console) console.log(i);
+    //    CKEDITOR.instances[i].updateElement();
+    //}
+
+
+    return false;
+
     $form = $(this).parent('form');
     $data = $form.serializeArray();
     $data.push({ name: 'preview_page', value: true });
@@ -140,8 +162,4 @@ $('.save-revision').on('click', function(e) {
     $form = $(this).parent('form');
     $form.attr('action', $(this).data('form-action'));
     $form.submit();
-});
-
-$('#pageEditForm').submit(function(){
-
 });

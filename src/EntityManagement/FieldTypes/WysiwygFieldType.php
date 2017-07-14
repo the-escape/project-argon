@@ -199,6 +199,11 @@ class WysiwygFieldType extends AbstractFieldType
         return new WysiwygFieldValue($data);
     }
 
+    public function getFormFieldName($hash)
+    {
+        return parent::getFormFieldName($hash) . '[]';
+    }
+
     public function render($value = null, $data = [])
     {
         if (!$this->isInCombo()) {

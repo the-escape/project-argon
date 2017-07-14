@@ -111,6 +111,28 @@ $(document).on('change', '.field-poputale', function(e) {
 
 $('.preview-page').on('click', function(e) {
     e.preventDefault();
+    //WYSIWYG.repopulate();
+
+    $('textarea.ckeditor').each(function () {
+        var $textarea = $(this);
+        var name = '#cke_'+this.name;
+        name = name.replace(new RegExp('\\[', 'g'), '\\\[');
+        name = name.replace(new RegExp('\\]', 'g'), '\\\]');
+        var $cke_editor = $textarea.parents('.input-group').find(name).first();
+        if(window.console) console.log($cke_editor.contents().find('body').html());
+        //$textarea.val($cke_editor.getData());
+    });
+
+
+    //for (var i in CKEDITOR.instances)
+    //{
+    //    if(window.console) console.log(i);
+    //    CKEDITOR.instances[i].updateElement();
+    //}
+
+
+    return false;
+
     $form = $(this).parent('form');
     $data = $form.serializeArray();
     $data.push({ name: 'preview_page', value: true });
@@ -139,9 +161,7 @@ $('.save-revision').on('click', function(e) {
     e.preventDefault();
     $form = $(this).parent('form');
     $form.attr('action', $(this).data('form-action'));
-    if(window.console) console.log($(this).data('form-action'));
-
-
+    $form.submit();
 });
 var expand = {
 
@@ -701,22 +721,11 @@ var WYSIWYG = {
 
         if (editors_present && editors_present.length) {
             // force all wysiwyg fields to populate native equivalents and remove before cloning
-            for (var i in CKEDITOR.instances)
-            {
-                CKEDITOR.instances[i].updateElement();
-                CKEDITOR.instances[i].destroy();
-            }
-            $('.ckeditor').each(function(i, el)
-            {
-                CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
-                CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
-                CKEDITOR.config.height = WYSIWYG.getHeight(el);
-                CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
-                CKEDITOR.config.on = {
-                    'instanceReady': function(e){}
-                };
-                CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-            });
+            WYSIWYG.repopulate();
+
+            //editors_present.each(function(i, el) {
+            //    WYSIWYG.init(el);
+            //});
         }
     },
 
@@ -743,6 +752,47 @@ var WYSIWYG = {
         if ($el.hasClass('error')) {
             $el.parent().addClass('error');
         }
+    },
+
+    repopulate: function () {
+        // force all wysiwyg fields to populate native equivalents and remove before cloning
+        for (var i in CKEDITOR.instances)
+        {
+            CKEDITOR.instances[i].updateElement();
+            CKEDITOR.instances[i].destroy();
+        }
+        $('.ckeditor').each(function(i, el)
+        {
+            var $el = $(el);
+            var name = '#cke_'+el.name;
+            name = name.replace(new RegExp('\\[', 'g'), '\\\[');
+            name = name.replace(new RegExp('\\]', 'g'), '\\\]');
+            var $cke_editor = $el.parents('.input-group').find(name);
+            if (!$cke_editor || $cke_editor.length === 0)
+            {
+                CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
+                CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
+                CKEDITOR.config.height = WYSIWYG.getHeight(el);
+                CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
+                CKEDITOR.config.on = {
+                    'instanceReady': function(e){}
+                };
+                CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+                //var cke = CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
+                //cke.on('change', function(){
+                //    this.updateElement();
+                //    if(window.console) console.log("updating...");
+                //});
+            }
+        });
+
+        //for (var i in CKEDITOR.instances)
+        //{
+        //    CKEDITOR.instances[i].on('change', function() {
+        //        this.updateElement();
+        //        if(window.console) console.log("updates");
+        //    });
+        //}
     }
 
 };

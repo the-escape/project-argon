@@ -43,6 +43,7 @@
          data-hash="{{$hash}}">
 
         <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
+        <div class="field-values">
 @endif
 
     @foreach($value as $k => $v)
@@ -62,7 +63,7 @@
     @endforeach
 
 @if(!$isCloning)
-
+        </div>
         @if($field->allowMultiple())
             <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
         @endif

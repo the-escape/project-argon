@@ -271,10 +271,9 @@ class PagesController extends BaseController
         EntityRevisionRepository $revisionsRepository,
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
-        Request $request,
-        Solr $solr)
+        Request $request
+    )
     {
-        dd(1);
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -544,6 +543,13 @@ class PagesController extends BaseController
         $revision->save();
 
         $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+
+        $entity = $localisation->entity;
+
+        event(new PageSaved($entity, $localisation));
+
+        $solr = app()->make(Solr::class);
+        $solr->indexEntity($entity, $localisation);
 
         return back()->with('message', 'Revision restored.');
     }

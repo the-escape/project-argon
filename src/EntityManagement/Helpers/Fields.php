@@ -116,7 +116,7 @@ class Fields
                 ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name
                 : $field->name;
 
-            $rules = self::rules($rules, $settings, $niceName);
+            $rules = self::rules($rules, $settings, $niceName, $field->field_type);
 
             // validate each multiple field value individually
             // copy fields validation rules to individual subfields,
@@ -163,7 +163,7 @@ class Fields
 
             $settings_id = clone $settings;
             unset($settings_id->width, $settings_id->height);
-            $rules = self::rules($rules, $settings_id, $id);
+            $rules = self::rules($rules, $settings_id, $id, $field->field_type);
 
 
             // width
@@ -177,7 +177,7 @@ class Fields
 
             $settings_width = clone $settings;
             unset($settings_width->height, $settings_width->required);
-            $rules = self::rules($rules, $settings_width, $width);
+            $rules = self::rules($rules, $settings_width, $width, $field->field_type);
 
             // height
             $height = "{$niceName}.{$k}.height";
@@ -190,7 +190,7 @@ class Fields
 
             $settings_height = clone $settings;
             unset($settings_height->width, $settings_height->required);
-            $rules = self::rules($rules, $settings_height, $height);
+            $rules = self::rules($rules, $settings_height, $height, $field->field_type);
         }
 
         return [$rules, $niceNames, $messages];
@@ -220,14 +220,14 @@ class Fields
                 ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Latitude'
                 : $field->name.self::DIVIDER.($i).self::DIVIDER.'Latitude';
 
-            $rules = self::rules($rules, $settings, $latitude);
+            $rules = self::rules($rules, $settings, $latitude, $field->field_type);
         }
 
         return [$rules, $niceNames, $messages];
     }
 
 
-    private static function rules(array $rules, $settings, $niceName)
+    private static function rules(array $rules, $settings, $niceName, $field_type)
     {
         if (@$settings->required) {
             $rules[$niceName][] = 'required';
@@ -261,13 +261,17 @@ class Fields
             $rules[$niceName][] = 'regex:'.ValidationHelpers::REGEX_PHONE;
         }
 
-        if (@$settings->width) {
-            $rules[$niceName][] = "in:{$settings->width}";
+        if ($field_type == 'image')
+        {
+            if (@$settings->width) {
+                $rules[$niceName][] = "in:{$settings->width}";
+            }
+
+            if (@$settings->height) {
+                $rules[$niceName][] = "in:{$settings->height}";
+            }
         }
 
-        if (@$settings->height) {
-            $rules[$niceName][] = "in:{$settings->height}";
-        }
 
         if (@$rules[$niceName]) {
             $rules[$niceName] = implode('|', $rules[$niceName]);
