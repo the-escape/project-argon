@@ -35,13 +35,7 @@
 
     $wysiwyg_config_extraAllowedContent = $field->getSetting('iframe');
 
-    /*
-     * This suffix is necessary to allow rendering multiple WYSIWYGs that should have the same name.
-     * Since array like name used, WYSIWYG had issues as it generates id for each editor instance based on a textarea field name.
-     * To fix it
-     *
-     * */
-    $fieldNameSuffix = 'wysiwyg-'. str_replace('.', '', microtime(1));
+
 
 ?>
 
@@ -60,6 +54,16 @@
             <div class="input-group sortable-item">
                 <div class="input-group-addon sortable-handle">&#8645;</div>
         @endif
+
+                <?php
+                /*
+                 * This suffix is necessary to allow rendering multiple WYSIWYGs that should have the same name.
+                 * Since array like name used, WYSIWYG had issues as it generates id for each editor instance based on a textarea field name.
+                 * To fix it
+                 *
+                 * */
+                $fieldNameSuffix = 'wysiwyg-'. str_replace('.', '', microtime(1));
+                ?>
 
             <textarea name="{{ $field->getFormFieldName($hash) }}[{{ $fieldNameSuffix }}]" class="form-control ckeditor @if($field->isRequired()) required @endif" data-wysiwyg_height="{{$wysiwyg_config_height}}" data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}" data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}" data-wysiwyg_extraAllowedContent="{{$wysiwyg_config_extraAllowedContent}}">{{ $v }}</textarea>
 
