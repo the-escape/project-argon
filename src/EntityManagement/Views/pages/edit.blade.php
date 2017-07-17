@@ -123,8 +123,26 @@
                                         @endif
                                     </li>
 
+                                    <?php
+                                        $counter = 1;
+                                        $current_page_number = $revisionsPagination['current_page_number'];
+                                        if ($current_page_number < 4)
+                                        {
+                                            $current_page_number = 4;
+                                        }
+                                        elseif ($current_page_number > ($revisionsPagination['pages_count'] -3))
+                                        {
+                                            $current_page_number = $revisionsPagination['pages_count'] -3;
+                                        }
+                                    ?>
                                     @foreach (range(1, $revisionsPagination['pages_count']) as $num)
-                                        <li class="page-item  @if($num == $revisionsPagination['current_page_number']) active @endif"><a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$num]) }}">{{ $num }}</a></li>
+                                        @if($counter == $current_page_number)
+                                            <li class="page-item"><span class="page-link">&hellip;</span></li>
+                                        @elseif($counter < $current_page_number || $counter > ($revisionsPagination['pages_count'] -3))
+                                            <li class="page-item  @if($num == $revisionsPagination['current_page_number']) active @endif"><a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$num]) }}">{{ $num }}</a></li>
+                                        @endif
+
+                                        <?php $counter++; ?>
                                     @endforeach
 
                                     <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">

@@ -110,21 +110,9 @@ var WYSIWYG = {
                     'instanceReady': function(e){}
                 };
                 CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-                //var cke = CKEDITOR.replace(el, CKEDITOR.config); // initialize manually with custom config
-                //cke.on('change', function(){
-                //    this.updateElement();
-                //    if(window.console) console.log("updating...");
-                //});
+
             }
         });
-
-        //for (var i in CKEDITOR.instances)
-        //{
-        //    CKEDITOR.instances[i].on('change', function() {
-        //        this.updateElement();
-        //        if(window.console) console.log("updates");
-        //    });
-        //}
     }
 
 };

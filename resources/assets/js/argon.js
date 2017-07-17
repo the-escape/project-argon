@@ -111,36 +111,34 @@ $(document).on('change', '.field-poputale', function(e) {
 
 $('.preview-page').on('click', function(e) {
     e.preventDefault();
-    //WYSIWYG.repopulate();
 
-    $('textarea.ckeditor').each(function () {
-        var $textarea = $(this);
-        var name = '#cke_'+this.name;
-        name = name.replace(new RegExp('\\[', 'g'), '\\\[');
-        name = name.replace(new RegExp('\\]', 'g'), '\\\]');
-        var $cke_editor = $textarea.parents('.input-group').find(name).first();
-        if(window.console) console.log($cke_editor.contents().find('body').html());
-        //$textarea.val($cke_editor.getData());
-    });
+    var $form = $(this).parents('form');
+    var $ckeditor = $form.find('.ckeditor');
 
+    if ($ckeditor && $ckeditor.length)
+    {
+        for (var i in CKEDITOR.instances)
+        {
+            CKEDITOR.instances[i].updateElement();
+        }
+    }
 
-    //for (var i in CKEDITOR.instances)
-    //{
-    //    if(window.console) console.log(i);
-    //    CKEDITOR.instances[i].updateElement();
-    //}
+    var formdata = $form.serializeArray();
+    formdata.push({ name: 'preview_page', value: true });
 
-
-    return false;
-
-    $form = $(this).parent('form');
-    $data = $form.serializeArray();
-    $data.push({ name: 'preview_page', value: true });
+    for (var i in formdata)
+    {
+        var n = formdata[i].name;
+        if (n.indexOf("wysiwyg-") !== -1)
+        {
+            formdata[i].name = n.replace(/wysiwyg-[^\]]*/, '');
+        }
+    }
 
     $.ajax({
         type: 'POST',
         url: $form.attr('action'),
-        data: $.param($data),
+        data: $.param(formdata),
         success: function(url, status) {
             if (status === 'success') {
                 $.fancybox.open({
@@ -162,4 +160,28 @@ $('.save-revision').on('click', function(e) {
     $form = $(this).parent('form');
     $form.attr('action', $(this).data('form-action'));
     $form.submit();
+});
+
+
+$('form').submit(function(e) {
+    var $form = $(this);
+    var $ckeditor = $form.find('.ckeditor');
+    
+    if ($ckeditor && $ckeditor.length)
+    {
+        for (var i in CKEDITOR.instances)
+        {
+            CKEDITOR.instances[i].updateElement();
+
+            if (i.indexOf("wysiwyg-") !== -1)
+            {
+                var field = $form.find('[name="'+i+'"]')[0] || null;
+                if (field)
+                {
+                    field.name = field.name.replace(/wysiwyg-[^\]]*/, '');
+                }
+            }
+        }
+    }
+
 });
