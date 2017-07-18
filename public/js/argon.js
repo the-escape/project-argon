@@ -155,6 +155,19 @@ $('.preview-page').on('click', function(e) {
     });
 });
 
+$('.preview-revision').on('click', function(e) {
+    e.preventDefault();
+
+    var url = this.href;
+    $.fancybox.open({
+        href: url,
+        type: 'iframe',
+        autoSize: false,
+        height: '90%',
+        width: '90%'
+    });
+})
+
 $('.save-revision').on('click', function(e) {
     e.preventDefault();
     $form = $(this).parent('form');
