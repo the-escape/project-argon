@@ -211,7 +211,7 @@ class Fields
                 ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'Longitude'
                 : $field->name.self::DIVIDER.($i).self::DIVIDER.'Longitude';
 
-            $rules = self::rules($rules, $settings, $longitude);
+            $rules = self::rules($rules, $settings, $longitude, $field->field_type);
 
             // latitude
             $latitude = "{$niceName}.{$k}.latitude";
