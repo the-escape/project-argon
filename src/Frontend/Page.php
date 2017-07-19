@@ -92,7 +92,9 @@ class Page
             $url = trim($url, '/');
         }
 
-        if ($this->entity->type->type === 'page' && str_is($this->request->path(), $url)) {
+        $requestPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+        if ($this->entity->type->type === 'page' && str_is($requestPath, $url)) {
             $revision = $this->revisionId;
         }
 
@@ -106,6 +108,10 @@ class Page
 
     public function getUrl($locale = null)
     {
+        if (isset($this->url))
+        {
+            return $this->url;
+        }
         $segments = [];
         $parent = $this->entity;
         while ($parent->parent) {
@@ -125,6 +131,8 @@ class Page
 
         $url = '/' . implode('/', $segments);
 
+
+        $this->url = $url;
         return $url;
     }
 

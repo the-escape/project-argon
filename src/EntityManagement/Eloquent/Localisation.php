@@ -43,12 +43,14 @@ class Localisation extends Model
         $revision = $this->revisions();
 
         if (!is_null($revisionId)) {
-            $revision = $revision->where('id', '=', $revisionId);
+            $revision = $revision->where('id', $revisionId);
         } else {
-            $revision = $revision->whereIn('status', [RevisionStatus::DRAFT, RevisionStatus::PUBLISHED]);
+            $revision = $revision
+                ->whereIn('status', [RevisionStatus::DRAFT, RevisionStatus::PUBLISHED])
+                ->orderBy('created_at', 'desc');
         }
 
-        $revision = $revision->orderBy('created_at', 'desc')->first();
+        $revision = $revision->first();
 
         if ($revision === null) {
             throw new Exception('Entity has no published revisions.');

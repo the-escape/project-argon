@@ -1,3 +1,9 @@
+<?php
+$fronEndPage = $page->toPage();
+$defaultFronEndPageUrl = $fronEndPage->getUrl();
+$pageLocaleSlug = $localisation->getLocale()->getSlug();
+$localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+?>
 @extends('argon::layout.master')
 
 @section('content')
@@ -25,7 +31,7 @@
                     @foreach ($page->getLocalisations() as $l)
 
                         @if ($l->getId() == $localisation->getId())
-                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
+                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
                         @endif
 
                     @endforeach
@@ -59,7 +65,7 @@
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
-                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
+                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
                                 {{$l->getLocale()->getName()}}
                             </a>
                         </li>
@@ -103,7 +109,7 @@
                                     <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
                                     <td>{{ $revision->user->name }}</td>
                                     <td>
-                                        <a href="{{ url() }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
+                                        <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
                                         <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
                                     </td>
                                 </tr>
@@ -135,7 +141,7 @@
                                     </li>
 
                                     @foreach ($revisionsPresenter as $li)
-                                       {!! $li !!}
+                                        {!! $li !!}
                                     @endforeach
 
                                     <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
@@ -171,7 +177,7 @@
 
                                 @foreach ($page->getLocalisations() as $l)
                                     @if ($l->getId() != $localisation->getId())
-                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$page->toPage()->getUrl()}}@else{{$page->toPage()->getUrl()}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif</option>
+                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$defaultFronEndPageUrl}}@else{{$defaultFronEndPageUrl}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif</option>
                                     @endif
                                 @endforeach
 
@@ -181,7 +187,7 @@
                     @endif
                     <div class="form-group">
                         <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
-                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $page->toPage()->getRedirect($localisation->getLocale()->getId())) }}">
+                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $fronEndPage->getRedirect($localisation->getLocale()->getId())) }}">
                     </div>
 
                 </div>
