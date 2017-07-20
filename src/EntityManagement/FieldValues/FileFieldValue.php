@@ -115,4 +115,33 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
 
         return true;
     }
+
+    public function __toString()
+    {
+        if ($this->isEmpty())
+        {
+            return "";
+        }
+
+        $media_items = [];
+
+        foreach ($this->data as $key => $id)
+        {
+            if ($id) {
+                /** @var MediaItemRepository $itemRepository */
+                $itemRepository = app()->make(MediaItemRepository::class);
+                $media_item = $itemRepository->findWhere(['id' => $id])->first();
+                if (!$media_item) {
+                    throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$id'.");
+                }
+                $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
+                $media_item->meta = json_decode($media_item->meta);
+                $media_item->data = new \stdClass();
+                $media_items[] = $media_item;
+            }
+        }
+
+        return json_encode($media_items);
+
+    }
 }

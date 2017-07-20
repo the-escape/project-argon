@@ -147,4 +147,60 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         }
         return false;
     }
+
+
+
+    public function __toString()
+    {
+        if ($this->isEmpty())
+        {
+            return "";
+        }
+
+        $string = [];
+
+        foreach ($this as $subfields)
+        {
+            if (is_array($subfields))
+            {
+                foreach ($subfields as $subfield)
+                {
+                    if (!$subfield instanceof AbstractFieldValue)
+                    {
+                        continue;
+                    }
+                    if (!$subfield->isEmpty())
+                    {
+                        $string[] = (string)$subfield;
+                    }
+                }
+            }
+        }
+
+        return json_encode($string);
+    }
+
+
+    public function isEmpty()
+    {
+        foreach ($this as $subfields)
+        {
+            if (is_array($subfields))
+            {
+                foreach ($subfields as $subfield)
+                {
+                    if (!$subfield instanceof AbstractFieldValue)
+                    {
+                        continue;
+                    }
+                    if (!$subfield->isEmpty())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 }
