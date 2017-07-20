@@ -49,7 +49,7 @@ class Page
 
     public function getCurrentLocalisation()
     {
-        $locale = $this->request->getArgonLocale();
+        $locale = $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         if ($localisation) {
@@ -119,7 +119,7 @@ class Page
             $parent = $parent->parent;
         }
 
-        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision
@@ -140,7 +140,7 @@ class Page
     {
         $segments = [];
 
-        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision
@@ -272,8 +272,7 @@ class Page
     {
         $redirects = $this->entity->redirect_url;
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         if (isset($redirects->{$localeId})) {
             return $redirects->{$localeId};
@@ -285,8 +284,7 @@ class Page
     public function getGroupOrder($localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->getGroupOrder($localeId);
     }
@@ -294,8 +292,7 @@ class Page
     public function getRenderableGroupOrder($localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->getRenderableGroupOrder($localeId);
     }
@@ -303,8 +300,7 @@ class Page
     public function isGroupRender($groupId, $localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->isGroupRender($localeId, $groupId);
     }
