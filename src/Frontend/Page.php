@@ -188,6 +188,11 @@ class Page
         return $this->entity->entity_type_id;
     }
 
+    public function getLocale()
+    {
+        return $this->request->getArgonLocale();
+    }
+
     public function getBreadcrumbs($formatItems=true, $glue='/', callable $callback=null)
     {
         $breadcrumbs = [];
