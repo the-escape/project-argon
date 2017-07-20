@@ -97,6 +97,11 @@ class Localisation extends Model
         return (int)$this->attributes['locale_id'];
     }
 
+    public function getEntityId()
+    {
+        return (int)$this->attributes['entity_id'];
+    }
+
     public function newCollection(array $models = [])
     {
         return new LocalisationCollection($models);
