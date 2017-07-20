@@ -1,3 +1,9 @@
+<?php
+$fronEndPage = $page->toPage();
+$defaultFronEndPageUrl = $fronEndPage->getUrl();
+$pageLocaleSlug = $localisation->getLocale()->getSlug();
+$localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+?>
 @extends('argon::layout.master')
 
 @section('content')
@@ -25,7 +31,7 @@
                     @foreach ($page->getLocalisations() as $l)
 
                         @if ($l->getId() == $localisation->getId())
-                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
+                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
                         @endif
 
                     @endforeach
@@ -59,7 +65,7 @@
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
-                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif">
+                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
                                 {{$l->getLocale()->getName()}}
                             </a>
                         </li>
@@ -103,7 +109,7 @@
                                     <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
                                     <td>{{ $revision->user->name }}</td>
                                     <td>
-                                        <a href="" class="btn btn-primary preview-page" data-preview-id="{{ $revision->id }}">Preview</a>
+                                        <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
                                         <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
                                     </td>
                                 </tr>
@@ -111,7 +117,18 @@
                             </tbody>
                         </table>
 
-                        @if(( $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage()) ) && $revisionsPagination['pages_count'] > 1)
+                        @if($revisionsPagination['pages_count'] > 1)
+
+                            <?php
+                            $revisionsPresenter = paginationPresenter($revisionsPagination, '...', 1, 2, function($element, $hellip, $current_page_number)
+                            {
+                                if ($element != $hellip)
+                                {
+                                    return '<li class="page-item class="'.(($element == $current_page_number) ? "active" : "").'"><a class="page-link" href="'.getUrlWithQueryString(['revisions'=>$element]).'">'.$element.'</a></li>';
+                                }
+                                return '<li class="page-item"><span class="page-link">'.$element.'</span></li>';
+                            });
+                            ?>
 
                             <nav>
                                 <ul class="pagination pagination-sm">
@@ -123,26 +140,8 @@
                                         @endif
                                     </li>
 
-                                    <?php
-                                        $counter = 1;
-                                        $current_page_number = $revisionsPagination['current_page_number'];
-                                        if ($current_page_number < 4)
-                                        {
-                                            $current_page_number = 4;
-                                        }
-                                        elseif ($current_page_number > ($revisionsPagination['pages_count'] -3))
-                                        {
-                                            $current_page_number = $revisionsPagination['pages_count'] -3;
-                                        }
-                                    ?>
-                                    @foreach (range(1, $revisionsPagination['pages_count']) as $num)
-                                        @if($counter == $current_page_number)
-                                            <li class="page-item"><span class="page-link">&hellip;</span></li>
-                                        @elseif($counter < $current_page_number || $counter > ($revisionsPagination['pages_count'] -3))
-                                            <li class="page-item  @if($num == $revisionsPagination['current_page_number']) active @endif"><a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$num]) }}">{{ $num }}</a></li>
-                                        @endif
-
-                                        <?php $counter++; ?>
+                                    @foreach ($revisionsPresenter as $li)
+                                        {!! $li !!}
                                     @endforeach
 
                                     <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
@@ -178,7 +177,7 @@
 
                                 @foreach ($page->getLocalisations() as $l)
                                     @if ($l->getId() != $localisation->getId())
-                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$page->toPage()->getUrl()}}@else{{$page->toPage()->getUrl()}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$page->toPage()->getUrl() }} @else {{ $page->toPage()->getUrl() }} @endif</option>
+                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$defaultFronEndPageUrl}}@else{{$defaultFronEndPageUrl}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif</option>
                                     @endif
                                 @endforeach
 
@@ -188,7 +187,7 @@
                     @endif
                     <div class="form-group">
                         <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
-                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $page->toPage()->getRedirect($localisation->getLocale()->getId())) }}">
+                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url', $fronEndPage->getRedirect($localisation->getLocale()->getId())) }}">
                     </div>
 
                 </div>

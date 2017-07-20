@@ -210,6 +210,80 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
 }
 
 
+function paginationPresenter($pagination, $hellip='...', $minThreshold=1, $maxThreshold=2, callable $callback=null)
+{
+    $output = [];
+
+    $current_page_number = $pagination['current_page_number'];
+
+    $maxThreshold = $pagination['pages_count'] - $maxThreshold;
+
+    $range = range(1, $pagination['pages_count']);
+
+
+    foreach ($range as $num)
+    {
+        if ($current_page_number == $num)
+        {
+            $output[] = $num;
+            continue;
+        }
+
+        if ($current_page_number == ($num-1))
+        {
+            $output[] = $num;
+            continue;
+        }
+
+        if (($num+1) <= $pagination['pages_count'] && $current_page_number == ($num+1))
+        {
+            $output[] = $num;
+            continue;
+        }
+
+        if ($num <= $minThreshold)
+        {
+            $output[] = $num;
+            continue;
+        }
+
+        if ($num > $maxThreshold)
+        {
+            $output[] = $num;
+            continue;
+        }
+
+        $output[] = $hellip;
+    }
+
+    $v = '';
+
+    // collapse duplicate segments of  $hellip values into single instance
+    foreach ($output as $key => $value)
+    {
+        if ($value != $v)
+        {
+            $v = $value;
+        }
+        else
+        {
+            unset($output[$key]);
+        }
+    }
+
+    // if defined apply callback to each output item
+    if ($callback)
+    {
+        foreach ($output as $key => &$value)
+        {
+            $value = call_user_func_array($callback, [$value, $hellip, $current_page_number]);
+        }
+    }
+
+    return $output;
+}
+
+
 function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encode=true)
 {
     if ($url === null) {

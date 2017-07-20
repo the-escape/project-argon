@@ -49,7 +49,7 @@ class Page
 
     public function getCurrentLocalisation()
     {
-        $locale = $this->request->getArgonLocale();
+        $locale = $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         if ($localisation) {
@@ -92,7 +92,9 @@ class Page
             $url = trim($url, '/');
         }
 
-        if ($this->entity->type->type === 'page' && str_is($this->request->path(), $url)) {
+        $requestPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+        if ($this->entity->type->type === 'page' && str_is($requestPath, $url)) {
             $revision = $this->revisionId;
         }
 
@@ -106,6 +108,10 @@ class Page
 
     public function getUrl($locale = null)
     {
+        if (isset($this->url))
+        {
+            return $this->url;
+        }
         $segments = [];
         $parent = $this->entity;
         while ($parent->parent) {
@@ -113,7 +119,7 @@ class Page
             $parent = $parent->parent;
         }
 
-        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision
@@ -125,6 +131,8 @@ class Page
 
         $url = '/' . implode('/', $segments);
 
+
+        $this->url = $url;
         return $url;
     }
 
@@ -132,7 +140,7 @@ class Page
     {
         $segments = [];
 
-        $locale = $locale ? $locale : $this->request->getArgonLocale();
+        $locale = $locale ? $locale : $this->getLocale();
         $localisation = $this->entity->getLocalisation($locale);
 
         // make sure entity has locale revision
@@ -178,6 +186,11 @@ class Page
     public function getTypeId()
     {
         return $this->entity->entity_type_id;
+    }
+
+    public function getLocale()
+    {
+        return $this->request->getArgonLocale();
     }
 
     public function getBreadcrumbs($formatItems=true, $glue='/', callable $callback=null)
@@ -259,8 +272,7 @@ class Page
     {
         $redirects = $this->entity->redirect_url;
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         if (isset($redirects->{$localeId})) {
             return $redirects->{$localeId};
@@ -272,8 +284,7 @@ class Page
     public function getGroupOrder($localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->getGroupOrder($localeId);
     }
@@ -281,8 +292,7 @@ class Page
     public function getRenderableGroupOrder($localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->getRenderableGroupOrder($localeId);
     }
@@ -290,8 +300,7 @@ class Page
     public function isGroupRender($groupId, $localeId=null)
     {
         if (!$localeId) {
-            $locale = $this->request->getArgonLocale();
-            $localeId = $locale->getId();
+            $localeId = $this->getLocale()->getId();
         }
         return $this->entity->isGroupRender($localeId, $groupId);
     }

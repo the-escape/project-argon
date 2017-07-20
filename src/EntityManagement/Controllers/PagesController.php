@@ -356,7 +356,9 @@ class PagesController extends BaseController
 
         $latestRevision = $localisation->publishedRevision();
 
-        $revisions = $localisation->archivedRevisions(3, ['*'], 'revisions');
+        $revisions = $localisation->archivedRevisions(5, ['*'], 'revisions');
+
+        $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage());
 
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
 
@@ -377,6 +379,7 @@ class PagesController extends BaseController
                 'locales' => $locales,
                 'localeId' => $localeId,
                 'revisions' => $revisions,
+                'revisionsPagination' => $revisionsPagination,
             ]
         );
     }

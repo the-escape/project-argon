@@ -58,13 +58,23 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
      */
     public function current()
     {
-        $id = $this->data[$this->position];
+        $id = @$this->data[$this->position];
+        if (is_null($id))
+        {
+            return $this;
+        }
         /** @var EntityRepository $repository */
         $repository = app()->make(EntityRepository::class);
 
         $entity = $repository->find($id);
 
         return new Page($entity);
+    }
+
+    public function first()
+    {
+        $this->rewind();
+        return $this->current();
     }
 
     /**
