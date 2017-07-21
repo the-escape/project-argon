@@ -70,6 +70,9 @@ class Localisation extends Model
         return $this->revisions()
             ->orderBy('created_at', 'desc')
             ->with('user')
+            ->with(['user' => function ($query) {
+                $query->withTrashed();
+            }])
             ->whereIn('status', [RevisionStatus::PREVIOUSLY_PUBLISHED])
             ->paginate($perPage, $columns, $pageName, $page);
     }

@@ -34,7 +34,9 @@ class EntityRevisionRepository extends BaseRepository
     {
         return $this->makeModel()
             ->orderBy('created_at', 'desc')
-            ->with('user')
+            ->with(['user' => function ($query) {
+                $query->withTrashed();
+            }])
             ->where('entity_localisation_id', $localisationId)
             ->where('status', RevisionStatus::PREVIOUSLY_PUBLISHED)
             ->get();
