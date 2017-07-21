@@ -121,7 +121,8 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     }
 
     /**
-     * Legacy method. Will be removed at some point.
+     * @deprecated
+     * Legacy method not recommended. Will be removed at some point.
      * Use getUrl() method instead to keep things in sync with Escape\Argon\Media\Eloquent\MediaItem object instance.
      * @param array $args - see Escape\Argon\Media\Eloquent\MediaItem::getUrl() for more info.
      * @return null|string
@@ -164,6 +165,13 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return null;
     }
 
+    /**
+     * @deprecated
+     * Legacy method not recommended. Will be removed at some point.
+     * Use getAlt() method instead to keep things in sync with Escape\Argon\Media\Eloquent\MediaItem object instance.
+     * @param sring $default - string to use if no saved value. Dafaults to empty string.
+     * @return null|string
+     */
     public function getImageAlt($default='')
     {
         if ($this->current()) {
@@ -182,4 +190,33 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return true;
     }
 
+    public function __toString()
+    {
+        if ($this->isEmpty())
+        {
+            return "";
+        }
+
+        $media_items = [];
+
+        foreach ($this->data as $key => $obj)
+        {
+            if (@$obj->id) {
+                /** @var MediaItemRepository $itemRepository */
+                $itemRepository = app()->make(MediaItemRepository::class);
+                $media_item = $itemRepository->findWhere(['id' => $obj->id])->first();
+                if (!$media_item) {
+                    throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
+                }
+                $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
+                $media_item->meta = json_decode($media_item->meta);
+                $media_item->data = new \stdClass();
+                $media_item->data->alt = @$obj->alt;
+                $media_items[] = $media_item;
+            }
+        }
+
+        return json_encode($media_items);
+
+    }
 }

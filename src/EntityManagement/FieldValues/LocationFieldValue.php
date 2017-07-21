@@ -23,13 +23,40 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
 
     public function __toString()
     {
-        if (is_array($this->data)) {
-            return implode(PHP_EOL, $this->data);
-        } elseif ($this->data) {
-            return $this->data;
-        } else {
+        if ($this->isEmpty())
+        {
             return "";
         }
+
+        return json_encode($this->data);
+    }
+
+
+    public function isEmpty()
+    {
+        if (is_array($this->data))
+        {
+            foreach ($this->data as $key => $value)
+            {
+                if (is_object($value))
+                {
+                    foreach ($value as $k => $v)
+                    {
+                        if ($v != "" && $v !== null)
+                        {
+                            return false;
+                        }
+                    }
+                }    
+            }
+            return true;
+        }
+
+        if (($this->data === '') || ($this->data === null)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function getIterator()
