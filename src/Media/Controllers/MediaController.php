@@ -368,6 +368,11 @@ class MediaController extends BaseController
     {
         $query = $mediaItem->whereNull('media_items.deleted_at');
 
+        if ($request->has('folder'))
+        {
+            $query = $query->where('media_items.folder', $request->input('folder'));
+        }
+
         if ($request->has('order'))
         {
             $query = $this->getOrder($query, $request);
