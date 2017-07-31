@@ -174,6 +174,11 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      */
     public function getImageAlt($default='')
     {
+        return $this->getAlt($default);
+    }
+
+    public function getAlt($default='')
+    {
         if ($this->current()) {
             return $this->current()->getAlt($default);
         }
