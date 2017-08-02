@@ -22,7 +22,7 @@
             }))
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Fitler by folder:
+                        Filter by folder:
                     </button>
                     <div class="dropdown-menu">
 
