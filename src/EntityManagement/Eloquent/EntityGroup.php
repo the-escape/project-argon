@@ -62,4 +62,27 @@ class EntityGroup extends Model
     {
         return (bool)$this->renderable;
     }
+
+    public function getSettingsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = json_encode($value);
+    }
+
+    public function getSetting($name, $default=null)
+    {
+        foreach ($this->settings as $k => $v)
+        {
+            if ($name == $k)
+            {
+                return $v;
+            }
+        }
+        return $default;
+
+    }
 }

@@ -35,6 +35,14 @@
                         </div>
                     @endif
 
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="settings" class="required">Settings</label>
+                            <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'settings') }}" id="settings" name="settings" placeholder="Settings" value="{{ old('settings', $group->settings) }}">
+                            <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'settings') }}" id="settings" name="settings" placeholder="Settings" value="{{ old('settings', $group->settings) }}">
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
