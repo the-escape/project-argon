@@ -422,7 +422,30 @@ class EntityTypeController extends BaseController
             'name' => 'required',
         ]);
 
-        $group = $groupRepository->update(Input::all(), $group->id);
+        $data = $this->request->except('settings');
+
+        $settings = [];
+
+        foreach ($this->request->input('settings') as $setting)
+        {
+            // skip empty entries
+            if ($setting['key'] == "")
+            {
+                continue;
+            }
+            // skip existing setting, keys need to be unique
+            if (isset($settings[$setting['key']]))
+            {
+                continue;
+            }
+            // save unique keys with their values
+            $settings[$setting['key']] = $setting['value'];
+        }
+
+        $data['settings'] = $settings;
+
+
+        $group = $groupRepository->update($data, $group->id);
 
         return Redirect::route('cms:types:groups', [$type->id])
             ->with('message', Lang::get('argon-entities::group.updated'));
@@ -1136,5 +1159,11 @@ class EntityTypeController extends BaseController
         $field->setIsCloning();
         $hash = $request->input('hash');
         return $field->render(null, ['hash' => $hash]);
+    }
+
+
+    public function groupSettingsAdd()
+    {
+        return view('argon::groups.setting')->render();
     }
 }

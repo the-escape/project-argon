@@ -23,7 +23,7 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order','sortable', 'renderable', 'entity_type_id'];
+    protected $fillable = ['name', 'order','sortable', 'renderable', 'entity_type_id', 'settings',];
 
     protected $entity;
 
@@ -63,9 +63,14 @@ class EntityGroup extends Model
         return (bool)$this->renderable;
     }
 
+    /**
+     * Returns array from saved json value
+     * @param $value
+     * @return array
+     */
     public function getSettingsAttribute($value)
     {
-        return json_decode($value);
+        return json_decode($value, true);
     }
 
     public function setSettingsAttribute($value)

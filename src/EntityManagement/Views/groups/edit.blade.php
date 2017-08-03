@@ -36,11 +36,15 @@
                     @endif
 
                     <div class="form-group">
-                        <div class="form-group">
-                            <label for="settings" class="required">Settings</label>
-                            <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'settings') }}" id="settings" name="settings" placeholder="Settings" value="{{ old('settings', $group->settings) }}">
-                            <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'settings') }}" id="settings" name="settings" placeholder="Settings" value="{{ old('settings', $group->settings) }}">
-                        </div>
+                        <label for="settings" class="required">Settings</label>
+
+                        @forelse ($group->settings as $key => $value)
+                            @include('argon::groups.setting')
+                        @empty
+                            @include('argon::groups.setting')
+                        @endforelse
+
+                        <a class="btn btn-secondary-outline btn-sm" id="settings-add">Add New</a>
                     </div>
 
                 </div>

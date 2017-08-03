@@ -476,6 +476,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             false
         );
 
+        $this->addRoute(
+            'group/settings/add',
+            'cms:group:settings:add',
+            EntityTypeController::class,
+            'groupSettingsAdd',
+            Request::METHOD_POST
+        );
+
     }
 
     public function boot()
