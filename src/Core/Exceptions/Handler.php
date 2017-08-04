@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 
 use \Auth;
 use \Slack;
@@ -33,7 +34,26 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        $this->sendSlackMessage($e);
+        if ($e instanceof TokenMismatchException)
+        {
+            return;
+        }
+
+        $errorCode = method_exists($e, 'getStatusCode')
+            ? $e->getStatusCode()
+            : $e->getCode();
+
+        if (in_array($errorCode, [404, 405]))
+        {
+            return;
+        }
+
+        $app = app();
+
+        if (!$app->isLocal())
+        {
+            $this->sendSlackMessage($e);
+        }
 
         return parent::report($e);
     }

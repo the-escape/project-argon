@@ -128,9 +128,11 @@ Add the ArgonServiceProvider to the providers array in **config/app.php** (Make 
 ],
 ```
 If you want to utilize Slack Error handler then
-change the line in the Error Handler in **app/ndler.php** 
-```Exceptions/Ha
+change the line in **app/Exceptions/Handler.php** 
+```
+
 // use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+ 
 use Escape\Argon\Core\Exceptions\Handler as ExceptionHandler;
 ```
 
