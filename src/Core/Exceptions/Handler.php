@@ -76,7 +76,8 @@ class Handler extends ExceptionHandler
 
     public function sendSlackMessage($e)
     {
-        $dump  = Auth::user() ? 'User: ' . Auth::user()->name.' ('.Auth::user()->id.")\n":'guest';
+        $dump = date('Y-m-d H:i:s'). "\n\n";
+        $dump .= Auth::user() ? 'User: ' . Auth::user()->name.' ('.Auth::user()->id.")\n":'Guest user';
         $dump .= (Auth::user() ? 'Email: ' . Auth::user()->email:'')."\n\n";
 
         $dump_all = [
@@ -85,7 +86,6 @@ class Handler extends ExceptionHandler
             'FILES' => @$_FILES,
             'SESSION' => @$_SESSION,
             'COOKIE' => $_COOKIE,
-            'SERVER' => $_SERVER
         ];
 
         foreach($dump_all as $name => $data)
@@ -103,6 +103,48 @@ class Handler extends ExceptionHandler
                 $dump .= $name." empty\n\n";
             }
         }
+
+        $allowed_server_variables = [
+            'argv',
+            'argc',
+            'GATEWAY_INTERFACE',
+            'SERVER_ADDR',
+            'SERVER_NAME',
+            'SERVER_SOFTWARE',
+            'SERVER_PROTOCOL',
+            'REQUEST_METHOD',
+            'REQUEST_TIME',
+            'REQUEST_TIME_FLOAT',
+            'QUERY_STRING',
+            'DOCUMENT_ROOT',
+            'HTTP_ACCEPT',
+            'HTTP_ACCEPT_CHARSET',
+            'HTTP_ACCEPT_ENCODING',
+            'HTTP_ACCEPT_LANGUAGE',
+            'HTTP_CONNECTION',
+            'HTTP_HOST',
+            'HTTP_REFERER',
+            'HTTP_USER_AGENT',
+            'HTTPS',
+            'REMOTE_ADDR',
+            'REMOTE_HOST',
+            'REMOTE_PORT',
+            'REMOTE_USER',
+            'REDIRECT_REMOTE_USER',
+            'SCRIPT_FILENAME',
+            'SERVER_ADMIN',
+            'SERVER_PORT',
+            'SERVER_SIGNATURE',
+            'SCRIPT_NAME',
+            'REQUEST_URI',
+        ];
+
+        foreach ($allowed_server_variables as $srv_var_name)
+        {
+            $srv_var_val = array_key_exists($srv_var_name, $_SERVER) ? $_SERVER[$srv_var_name] : null;
+            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$v."\n" : '';
+        }
+
 
         $error_msg = "Exception was thrown in ".
             $e->getFile()." on line ".$e->getLine().

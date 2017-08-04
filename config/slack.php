@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'endpoint' => 'https://hooks.slack.com/services/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',
+    'endpoint' => env('SLACK_ENDPOINT','https://hooks.slack.com/services/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'),
 
     /*
     |-------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'channel' => '#argon',
+    'channel' => env('SLACK_CHANNEL','#cms-errors'),
 
     /*
     |-------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'username' => 'Robot',
+    'username' => env('SLACK_USERNAME','Argon'),
 
     /*
     |-------------------------------------------------------------
