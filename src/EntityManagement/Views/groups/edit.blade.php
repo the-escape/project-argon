@@ -38,13 +38,23 @@
                     <div class="form-group">
                         <label for="settings" class="required">Settings</label>
 
-                        @forelse ($group->settings as $key => $value)
-                            @include('argon::groups.setting')
-                        @empty
-                            @include('argon::groups.setting')
-                        @endforelse
+                        @if($settings = old('settings'))
 
-                        <a class="btn btn-secondary-outline btn-sm" id="settings-add">Add New</a>
+                            @foreach($settings as $setting)
+                                @include('argon::groups.setting', ['key'=>$setting['key'], 'value'=>$setting['value']])
+                            @endforeach
+
+                        @else
+
+                            @forelse ($group->settings as $key => $value)
+                                @include('argon::groups.setting')
+                            @empty
+                                @include('argon::groups.setting')
+                            @endforelse
+
+                        @endif
+
+                        <button class="btn btn-secondary-outline btn-sm" id="settings-add">Add New</button>
                     </div>
 
                 </div>
