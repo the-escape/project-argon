@@ -111,7 +111,7 @@ return [
     |
     */
 
-    'markdown_in_attachments' => [],
+    'markdown_in_attachments' => ['text'],
 
     // Allow Markdown in just the text and title fields
     // 'markdown_in_attachments' => ['text', 'title']
