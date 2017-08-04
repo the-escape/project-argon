@@ -70,7 +70,12 @@ class EntityGroup extends Model
      */
     public function getSettingsAttribute($value)
     {
-        return json_decode($value, true);
+        $value = json_decode($value, true);
+        if ($value === null)
+        {
+            return [];
+        }
+        return $value;
     }
 
     public function setSettingsAttribute($value)
