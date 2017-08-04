@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
 
         $app = app();
 
-        if (!$app->isLocal())
+        if (true || !$app->isLocal())
         {
             $this->sendSlackMessage($e);
         }
@@ -142,9 +142,8 @@ class Handler extends ExceptionHandler
         foreach ($allowed_server_variables as $srv_var_name)
         {
             $srv_var_val = array_key_exists($srv_var_name, $_SERVER) ? $_SERVER[$srv_var_name] : null;
-            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$v."\n" : '';
+            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$srv_var_val."\n" : '';
         }
-
 
         $error_msg = "Exception was thrown in ".
             $e->getFile()." on line ".$e->getLine().
