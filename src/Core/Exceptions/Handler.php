@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
 
         $app = app();
 
-        if (true || !$app->isLocal())
+        if (!$app->isLocal())
         {
             $this->sendSlackMessage($e);
         }
