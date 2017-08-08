@@ -3,12 +3,12 @@ namespace Escape\Argon\Events;
 
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
-use Illuminate\Http\Request;
 use Event;
+use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PageSaved extends Event
+class BeforePageSaved extends Event
 {
     use SerializesModels;
 

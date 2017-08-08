@@ -12,6 +12,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Events\BeforePageSaved;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
@@ -132,6 +133,13 @@ class PagesController extends BaseController
             'locale_id' => $locale->getId(),
         ]);
 
+        $result = event(new BeforePageSaved($entity, $localisation, $request));
+
+        if (isset($result->request))
+        {
+            $request = $result->request;
+        }
+
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
             'status' => RevisionStatus::PUBLISHED,
@@ -154,7 +162,7 @@ class PagesController extends BaseController
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
-        event(new PageSaved($entity, $localisation));
+        event(new PageSaved($entity, $localisation, $request));
 
         $solr->indexEntity($entity, $localisation);
 
@@ -188,6 +196,13 @@ class PagesController extends BaseController
         $currentLocale = Locale::find($localeId);
 
         $currentLocalisation = $entity->getLocalisation($currentLocale);
+
+        $result = event(new BeforePageSaved($entity, $currentLocalisation, $request));
+
+        if (isset($result->request))
+        {
+            $request = $result->request;
+        }
 
         $type = $typeRepository->find($entity->entity_type_id);
 
@@ -258,7 +273,7 @@ class PagesController extends BaseController
             $solr->indexEntity($entity, $localisation);
         }
 
-        event(new PageSaved($entity, $currentLocalisation));
+        event(new PageSaved($entity, $currentLocalisation, $request));
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
@@ -329,7 +344,6 @@ class PagesController extends BaseController
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
-
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
             ->with('message', "Revision has been saved.");
@@ -469,7 +483,7 @@ class PagesController extends BaseController
             }
 
             if ($page->status == 1) {
-                event(new PageSaved($page, $localisation));
+                event(new PageSaved($page, $localisation, $request));
             }
         }
 
@@ -530,7 +544,7 @@ class PagesController extends BaseController
         return view('argon::pages.revisions')->with(compact('revisions'));
     }
 
-    public function restore($revisionId)
+    public function restore($revisionId, Request $request)
     {
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
@@ -549,7 +563,7 @@ class PagesController extends BaseController
 
         $entity = $localisation->entity;
 
-        event(new PageSaved($entity, $localisation));
+        event(new PageSaved($entity, $localisation, $request));
 
         $solr = app()->make(Solr::class);
         $solr->indexEntity($entity, $localisation);
