@@ -100,6 +100,19 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
             RoleController::class,
             'delete'
         );
+        //FrontEnd Routes
+        $this->addRoute(
+            'f_users',
+            'frontend:user:manage',
+            UserAdapter::class,
+            'getAll'
+        );
+        $this->addRoute(
+            'f_users/create',
+            'frontend:user:create',
+            UserAdapter::class,
+            'create'
+        );
     }
 
     public function startup()
