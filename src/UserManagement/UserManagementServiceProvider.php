@@ -102,17 +102,12 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         );
         //FrontEnd Routes
         $this->addRoute(
-            'f_users',
-            'frontend:user:manage',
+            'api/{data}',
+            'api:manage',
             UserAdapter::class,
-            'getAll'
+            "getData"
         );
-        $this->addRoute(
-            'f_users/create',
-            'frontend:user:create',
-            UserAdapter::class,
-            'create'
-        );
+
     }
 
     public function startup()
