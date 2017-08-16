@@ -10,6 +10,8 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
+use Escape\Argon\Media\Eloquent\MediaFolderRepository;
+use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
@@ -400,12 +402,20 @@ class EntityTypeController extends BaseController
         $typeId,
         $groupId,
         EntityTypeRepository $typeRepository,
-        EntityGroupRepository $groupRepository
+        EntityGroupRepository $groupRepository,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository
     ) {
         $type = $typeRepository->find($typeId);
         $group = $groupRepository->find($groupId);
+        $thumbnail = $itemRepository->findWhere(['id' => $group->thumbnail])->first();
 
-        return View::make('argon::groups.edit', ['type' => $type, 'group' => $group,]);
+        return View::make('argon::groups.edit', [
+            'type' => $type,
+            'group' => $group,
+            'root' => $folderRepository->root(),
+            'thumbnail' => $thumbnail
+            ]);
     }
 
     public function updateGroup(

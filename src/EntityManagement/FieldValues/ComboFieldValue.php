@@ -132,6 +132,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
         $fieldData = new FieldData();
         $fieldData->value = $value;
+
         return $field->parseData($fieldData);
     }
 

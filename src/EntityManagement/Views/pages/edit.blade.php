@@ -211,6 +211,13 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                     </label>
                                 </div>
                             @endif
+
+                            @if($group->hasImage())
+                              <div style="display:inline;">
+                                  <img src="{{ $group->getImage() }}" style="width:50px;">
+                              </div>
+                            @endif
+
                         </div>
 
                         <div class="card-block accordion-body">
@@ -231,6 +238,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @endforeach
 
                 @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
+
                     <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
                     <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
 
@@ -245,6 +253,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                         {{ $group->name }}
 
                                         @if($group->isRenderable())
+
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="hidden" name="group_render[{{$group->id}}]" value="0">

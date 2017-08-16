@@ -170,7 +170,10 @@ class PagesController extends BaseController
         $page = $entityRepository->find($pageId);
         $locale = $page->getDefaultLocalisation();
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+        return Redirect::route('cms:pages:edit_locale', [
+            'page' => $pageId,
+            'locale' => $locale->getLocaleId()
+        ]);
     }
 
     public function update(

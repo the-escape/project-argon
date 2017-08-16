@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Eloquent;
 
 use Carbon\Carbon;
+use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,7 +24,7 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order','sortable', 'renderable', 'entity_type_id'];
+    protected $fillable = ['name', 'order','sortable', 'renderable', 'thumbnail', 'entity_type_id'];
 
     protected $entity;
 
@@ -61,5 +62,23 @@ class EntityGroup extends Model
     public function isRenderable()
     {
         return (bool)$this->renderable;
+    }
+
+    public function hasImage() {
+        return (bool)$this->thumbnail;
+    }
+
+    public function getImage()
+    {
+        try{
+            $itemRepository = app()->make(MediaItemRepository::class);
+            $thumbnail = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
+
+            return (string)$thumbnail->getThumbnail();
+        } catch (\Exception $e) {
+
+            return false;
+        }
+
     }
 }

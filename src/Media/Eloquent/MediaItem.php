@@ -94,7 +94,13 @@ class MediaItem extends Model implements Arrayable
         return $url;
     }
 
+    public function getThumbnail()
+    {
+        return "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
+    }
+
     public function getDimensions()
+
     {
         $dimensions = new stdClass();
 

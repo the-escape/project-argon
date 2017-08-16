@@ -26,6 +26,7 @@ function guid()
 function toArray($var)
 {
     $newVar = [];
+
     foreach ($var as $key => $value) {
         $newVar[$key] = $value;
     }

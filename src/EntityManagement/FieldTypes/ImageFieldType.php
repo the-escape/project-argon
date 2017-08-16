@@ -46,6 +46,7 @@ class ImageFieldType extends AbstractFieldType
 
     public function parseData(FieldData $data = null)
     {
+
         if ($data instanceof FieldData)
         {
             return new ImageFieldValue($data->value);
