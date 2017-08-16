@@ -36,28 +36,28 @@
                     @endif
 
                     @if($type->isPage())
-                    <div class="form-group">
-                        <div class="col-xs-9">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div id="boxshadow">
-                                        <a href="" data-toggle="modal" data-target="#medialibrary">
-                                            @if($group->thumbnail==0)
-                                                <img class="thumbnail-image" title="Click to add thumbnail"
-                                                     src="{{config('argon.group-no-image', '/argon/images/no-image.png')}}">
-                                                <input type="hidden" id="thumbUrl" value="">
-                                            @else
-                                                <img class="thumbnail-image" title="Click to change thumbnail"
-                                                     src="{{ $thumbnail->getThumbnail() }}">
-                                                <input type="hidden" id="thumbUrl" value="{{ $thumbnail->getThumbnail() }}">
-                                            @endif
-                                            <input type="hidden" id="thumbnail" name="thumbnail" value="0">
-                                        </a>
+                        <div class="form-group">
+                            <div class="col-xs-9">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div id="boxshadow">
+                                            <a href="" data-toggle="modal" data-target="#medialib">
+                                                @if($group->thumbnail==0)
+                                                    <img class="thumbnail-image" title="Click to add thumbnail"
+                                                         src="{{config('argon.group-no-image', '/argon/images/no-image.png')}}">
+                                                    <input type="hidden" id="thumbUrl" value="">
+                                                @else
+                                                    <img class="thumbnail-image" title="Click to change thumbnail"
+                                                         src="{{ $thumbnail->getThumbnail() }}">
+                                                    <input type="hidden" id="thumbUrl" value="{{ $thumbnail->getThumbnail() }}">
+                                                @endif
+                                                <input type="hidden" id="thumbnail" name="thumbnail" value="0">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endif
                 </div>
             </div>
@@ -67,9 +67,16 @@
             <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
             <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
         </form>
-        <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+
+
+
+
+
+
+
+        <div id="medialib" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
             <input type="hidden" id="selectedMediaItem" value="">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -79,43 +86,29 @@
                     </div>
                     <div class="modal-body">
 
-                        <button type="button" class="btn btn-primary btn-upload">Upload</button>
-                        <button type="button" class="btn btn-primary btn-list">Change View</button>
-
                         <div class="media-library" style="position: relative;">
-                            <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
-                                <div class="folders">
-                                    <ul>
-                                        @each('argon::media.folder', [$root], 'folder')
-                                    </ul>
-                                </div>
-                            </div>
-                            <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
-                                <input type="hidden" name="current-folder" id="current-folder" value="1">
-                                <div class="files">
 
-                                </div>
-                            </form>
+                            <iframe id="medialib-iframe" frameborder="0"></iframe>
+
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-submit" disabled onclick="renderThumbnail()" >Select</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div style="display: none;" id="preview-template">
-            <div class="media-item">
-                <img class="thumb" data-dz-thumbnail onclick="getUrl(this.src)">
-                <span class="filename" data-dz-name></span>
-                <span class="filesize" data-dz-size></span>
 
-                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                <progress class="progress" value="25" max="100"></progress>
-            </div>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
         @endsection
 
         <script>
