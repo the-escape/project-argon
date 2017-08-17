@@ -45,13 +45,11 @@
                                                 @if($group->thumbnail==0)
                                                     <img class="thumbnail-image" title="Click to add thumbnail"
                                                          src="{{config('argon.group-no-image', '/argon/images/no-image.png')}}">
-                                                    <input type="hidden" id="thumbUrl" value="">
                                                 @else
                                                     <img class="thumbnail-image" title="Click to change thumbnail"
                                                          src="{{ $thumbnail->getThumbnail() }}">
-                                                    <input type="hidden" id="thumbUrl" value="{{ $thumbnail->getThumbnail() }}">
                                                 @endif
-                                                <input type="hidden" id="thumbnail" name="thumbnail" value="0">
+                                                <input type="hidden" id="thumbnail-id" name="thumbnail" value="0">
                                             </a>
                                         </div>
                                     </div>
@@ -67,12 +65,6 @@
             <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
             <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
         </form>
-
-
-
-
-
-
 
         <div id="medialib" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
             <input type="hidden" id="selectedMediaItem" value="">
@@ -96,41 +88,20 @@
             </div>
         </div>
 
+    @endsection
+    <script>
+        //Catches selected image id and url from media modal
+        function clickedSelect(id, url){
+            $('#thumbnail-id').val(id);
+            $('.thumbnail-image').attr('src', url);
+        }
+    </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-        @endsection
-
-        <script>
-
-            function getUrl($imageUrl) {
-                $('#thumbUrl').val($imageUrl);
-            }
-
-            function renderThumbnail() {
-                var selectedId = $('#selectedMediaItem').val();
-                if (selectedId != 0) {
-                    $('.thumbnail-image').attr('src', $('#thumbUrl').val());
-                    $('#thumbnail').val(selectedId);
-                }
-            }
-        </script>
-
-        <style>
-            #boxshadow img {
-                width:100px;
-                height:100px;
-                border: 1px solid #8a4419;
-                border-style: inset;
-            }
-        </style>
+    <style>
+        #boxshadow img {
+            width:100px;
+            height:100px;
+            border: 1px solid #8a4419;
+            border-style: inset;
+        }
+    </style>

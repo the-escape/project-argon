@@ -68,13 +68,20 @@ class EntityGroup extends Model
         return (bool)$this->thumbnail;
     }
 
-    public function getImage()
+    public function getImage($thumbnail=true)
     {
         try{
             $itemRepository = app()->make(MediaItemRepository::class);
-            $thumbnail = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
 
-            return (string)$thumbnail->getThumbnail();
+            $image = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
+
+            if ($thumbnail)
+                $result = (string)$image->getThumbnail();
+            else
+                $result = (string)$image->getUrl();
+
+            return $result;
+
         } catch (\Exception $e) {
 
             return false;

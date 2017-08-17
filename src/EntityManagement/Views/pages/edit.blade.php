@@ -199,7 +199,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header">
+                        <div class="card-header accordion-header" style="height:88px;">
                             {{ $group->name }}
 
                             @if($group->isRenderable())
@@ -213,9 +213,12 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                             @endif
 
                             @if($group->hasImage())
-                              <div style="display:inline;">
-                                  <img src="{{ $group->getImage() }}" style="width:50px;">
-                              </div>
+                                <div class="thumbnail">
+                                    <a href="{{ $group->getImage() }}" >
+                                        <img src="{{ $group->getImage() }}" >
+                                    </a>
+                                    <input type="hidden" class="url" value="{{ $group->getImage(false) }}">
+                                </div>
                             @endif
 
                         </div>
@@ -248,9 +251,18 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="card accordion">
 
-                                    <div class="card-header accordion-header">
+                                    <div class="card-header accordion-header" style="height:88px;">
                                         <span class="sortable-handle">&#8645;</span>
                                         {{ $group->name }}
+
+                                        @if($group->hasImage())
+                                            <div class="thumbnail">
+                                                <a href="{{ $group->getImage() }}" >
+                                                    <img src="{{ $group->getImage() }}" >
+                                                </a>
+                                                <input type="hidden" class="url" value="{{ $group->getImage(false) }}">
+                                            </div>
+                                        @endif
 
                                         @if($group->isRenderable())
 
@@ -262,6 +274,8 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                                 </label>
                                             </div>
                                         @endif
+
+
 
                                     </div>
 
@@ -397,3 +411,19 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
     </div><!-- /.modal -->
 
 @stop
+
+<script>
+
+
+</script>
+
+<style>
+    .thumbnail {
+        display:inline-block;
+        float:right;"
+    }
+    .thumbnail img {
+        width: 66px;
+    }
+
+</style>

@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
     <link rel="stylesheet" href="/argon/css/app.css">
     <link rel="adminroot" href="/admin">
+
+    <!-- Magnific Popup core CSS file -->
+    <link rel="stylesheet" href="/argon/css/magnific-popup.css">
+
+
     @foreach ($assetsManager->outputStyles() as $styles)
         <link rel="stylesheet" href="{{$styles}}">
     @endforeach
@@ -70,6 +75,9 @@
 {{--<script src="/argon/js/dropzone.min.js"></script>--}}
 <script src="/argon/js/jquery.fancybox.pack.js"></script>
 <script src="/argon/js/argon.js"></script>
+
+<!-- Magnific Popup core JS file -->
+<script src="/argon/js/jquery.magnific-popup.js"></script>
 
 <script>
 /*
@@ -210,6 +218,23 @@
       }
     });
 
+    $('.accordion-header .thumbnail').on({
+        click: function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            $('.thumbnail').magnificPopup({
+                delegate: 'a', // child items selector, by clicking on it popup will open
+                type: 'image',
+                src: $('.url').val()
+                // other options
+            });
+        }, mouseenter: function(e) {
+            $(this).addClass("hover");
+        }, mouseleave: function(e) {
+            $(this).removeClass("hover");
+        }
+    });
 
     <?php
     // ACCORDIONS: expand all instances on load after slight delay. ?>

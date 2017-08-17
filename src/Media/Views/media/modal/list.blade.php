@@ -157,7 +157,7 @@
                         <td data-folder-id="{{ $mediaItem->mediaFolder->id }}"><a href="{{ route('cms:media:modal:folders:edit', [$mediaItem->mediaFolder->id]) }}" title="Edit folder">{{ $mediaItem->mediaFolder->name }}</a></td>
                         <td>{{ $mediaItem->created_at }}</td>
                         <td class="actions">
-                            <button type="button" class="btn btn-primary-outline btn-sm" data-mlselect="{{ $mediaItem->getId() }}">Select</button>
+                            <button type="button" class="btn btn-primary-outline btn-sm" data-mlselect="{{ $mediaItem->getId()}}" data-mlselect-url="{{ $mediaItem->getUrl()}}">Select</button>
                             <a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline btn-sm">View</a>
                             <a href="{{ route("cms:media:modal:edit", [$mediaItem->getId()]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             <a href="{{ route("cms:media:delete", [$mediaItem->getId()]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
@@ -197,6 +197,10 @@
         $('[data-mlselect]').on('click', function (e) {
             e.preventDefault();
             parent.medialib(this.getAttribute('data-mlselect'));
+
+            //Pass image url back to form
+            if(typeof parent.clickedSelect != "undefined")
+                parent.clickedSelect(this.getAttribute('data-mlselect'), this.getAttribute('data-mlselect-url'));
         });
 
     </script>

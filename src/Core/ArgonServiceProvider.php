@@ -59,5 +59,8 @@ class ArgonServiceProvider extends ServiceProvider
         class_alias(Image::class, 'Image');
         $this->app->register(MediaServiceProvider::class);
         $this->app->register(RedirectManagementServiceProvider::class);
+
+        //Register helper files
+        require_once __DIR__ . '/../helpers/guid.php';
     }
 }

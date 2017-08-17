@@ -28,7 +28,8 @@ elixir(function(mix) {
             'fields/text.js',
             'fields/wysiwyg.js',
             'fields/location.js',
-            'localisations.js'
+            'localisations.js',
+            'vendor/Magnific-Popup/jquery.magnific-popup.js'
         ],
         'public/js/argon.js'
     );
