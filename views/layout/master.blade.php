@@ -226,7 +226,7 @@
             $('.thumbnail').magnificPopup({
                 delegate: 'a', // child items selector, by clicking on it popup will open
                 type: 'image',
-                src: $('.url').val()
+
                 // other options
             });
         }, mouseenter: function(e) {

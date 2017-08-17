@@ -214,7 +214,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                             @if($group->hasImage())
                                 <div class="thumbnail">
-                                    <a href="{{ $group->getImage() }}" >
+                                    <a href="{{ $group->getImage(false) }}" >
                                         <img src="{{ $group->getImage() }}" >
                                     </a>
                                     <input type="hidden" class="url" value="{{ $group->getImage(false) }}">
@@ -257,10 +257,10 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                         @if($group->hasImage())
                                             <div class="thumbnail">
-                                                <a href="{{ $group->getImage() }}" >
+                                                <a href="{{ $group->getImage(false) }}" >
                                                     <img src="{{ $group->getImage() }}" >
                                                 </a>
-                                                <input type="hidden" class="url" value="{{ $group->getImage(false) }}">
+
                                             </div>
                                         @endif
 
