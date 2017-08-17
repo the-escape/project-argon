@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+Use App;
 
 /*
  * @property int $id
@@ -75,10 +76,13 @@ class EntityGroup extends Model
 
             $image = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
 
-            if ($thumbnail)
+            $file = get_headers(App::make('url')->to($image->getUrl()));
+
+            if (strpos($file[8], 'are') !== false) {
                 $result = (string)$image->getThumbnail();
-            else
+            } else {
                 $result = (string)$image->getUrl();
+            }
 
             return $result;
 

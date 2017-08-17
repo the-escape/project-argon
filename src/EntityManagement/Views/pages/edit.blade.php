@@ -424,6 +424,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
     }
     .thumbnail img {
         width: 66px;
+        height:66px;
     }
 
 </style>
