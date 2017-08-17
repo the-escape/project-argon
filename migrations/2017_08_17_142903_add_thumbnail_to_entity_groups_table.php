@@ -13,7 +13,7 @@ class AddThumbnailToEntityGroupsTable extends Migration
     public function up()
     {
         Schema::table('entity_groups', function (Blueprint $table) {
-            $table->int('thumbnail')->after('sortable');
+            $table->integer('thumbnail')->after('sortable');
         });
     }
 
