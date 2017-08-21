@@ -94,14 +94,6 @@ class MediaItem extends Model implements Arrayable
         return $url;
     }
 
-    public function getThumbnail()
-    {
-        if (file_exists("/media/{$this->id}/{$this->id}.thumb.{$this->extension}"))
-            return "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
-        else
-            return "/media/{$this->id}/{$this->id}.original.{$this->extension}";
-    }
-
     public function getDimensions()
 
     {

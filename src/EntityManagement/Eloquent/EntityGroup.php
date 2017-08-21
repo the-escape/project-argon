@@ -25,7 +25,7 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order','sortable', 'renderable', 'thumbnail', 'entity_type_id'];
+    protected $fillable = ['name', 'order', 'sortable', 'renderable', 'thumbnail', 'entity_type_id'];
 
     protected $entity;
 
@@ -65,26 +65,19 @@ class EntityGroup extends Model
         return (bool)$this->renderable;
     }
 
-    public function hasImage() {
+    public function hasImage()
+    {
         return (bool)$this->thumbnail;
     }
 
-    public function getImage($thumbnail=true)
+    public function getImage()
     {
-        try{
+        try {
             $itemRepository = app()->make(MediaItemRepository::class);
 
             $image = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
-
-            $file = get_headers(App::make('url')->to($image->getUrl()));
-
-            if (strpos($file[8], 'are') !== false) {
-                $result = (string)$image->getThumbnail();
-            } else {
-                $result = (string)$image->getUrl();
-            }
-
-            return $result;
+            
+            return (string)$image->getUrl();
 
         } catch (\Exception $e) {
 

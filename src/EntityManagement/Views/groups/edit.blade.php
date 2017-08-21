@@ -47,7 +47,7 @@
                                                          src="{{config('argon.group-no-image', '/argon/images/no-image.png')}}">
                                                 @else
                                                     <img class="thumbnail-image" title="Click to change thumbnail"
-                                                         src="{{ $thumbnail->getThumbnail() }}">
+                                                         src="{{ $thumbnail->getUrl() }}">
                                                 @endif
                                                 <input type="hidden" id="thumbnail-id" name="thumbnail" value="0">
                                             </a>
