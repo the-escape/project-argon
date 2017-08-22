@@ -199,7 +199,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header" style="height:88px;">
+                        <div class="card-header accordion-header"  @if($group->hasImage()) style="height:88px;" @else style="height:auto;" @endif>
                             {{ $group->name }}
 
                             @if($group->isRenderable())
@@ -214,10 +214,10 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                             @if($group->hasImage())
                                 <div class="thumbnail">
-                                    <a href="{{ $group->getImage(false) }}" >
-                                        <img src="{{ $group->getImage() }}" >
+                                    <a href="{{ $group->getImage() }}" >
+                                        <img src="{{ $group->getImage() }}">
                                     </a>
-                                    <input type="hidden" class="url" value="{{ $group->getImage(false) }}">
+                                    <input type="hidden" class="url" value="{{ $group->getImage() }}">
                                 </div>
                             @endif
 
@@ -251,7 +251,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="card accordion">
 
-                                    <div class="card-header accordion-header" style="height:88px;">
+                                    <div class="card-header accordion-header" @if($group->hasImage()) style="height:88px;" @else style="height:auto;" @endif>
                                         <span class="sortable-handle">&#8645;</span>
                                         {{ $group->name }}
 
@@ -419,12 +419,20 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
 <style>
     .thumbnail {
-        display:inline-block;
-        float:right;"
+        width: 60px;
+        max-width: 60px;
+        height: 60px;
+        border: solid 1px #ccc;
+        position: relative;
+        display: inline-block;
+        float: right;
     }
+
     .thumbnail img {
-        width: 66px;
-        height:66px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0%, -50%);
     }
 
 </style>

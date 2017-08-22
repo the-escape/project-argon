@@ -76,7 +76,7 @@ class EntityGroup extends Model
             $itemRepository = app()->make(MediaItemRepository::class);
 
             $image = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
-            
+
             return (string)$image->getUrl();
 
         } catch (\Exception $e) {
