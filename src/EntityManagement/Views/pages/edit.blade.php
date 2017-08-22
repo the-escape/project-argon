@@ -164,7 +164,8 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
             <div class="card accordion">
 
-                <div class="card-header accordion-header">301 Redirect</div>
+                <div class="card-header accordion-header "><div>301 Redirect</div></div>
+
 
                 <div class="card-block accordion-body">
 
@@ -199,18 +200,20 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header"  @if($group->hasImage()) style="height:88px;" @else style="height:auto;" @endif>
-                            {{ $group->name }}
+                        <div class="card-header accordion-header">
+                            <div style="margin-left:80px;">{{ $group->name }}</div>
 
-                            @if($group->isRenderable())
-                                <div class="checkbox">
+                            <div class="checkbox">
+                                @if($group->isRenderable())
                                     <label>
                                         <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1"
+                                               @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
                                         Render?
                                     </label>
-                                </div>
-                            @endif
+
+                                @endif
+                            </div>
 
                             @if($group->hasImage())
                                 <div class="thumbnail">
@@ -251,16 +254,15 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="card accordion">
 
-                                    <div class="card-header accordion-header" @if($group->hasImage()) style="height:88px;" @else style="height:auto;" @endif>
+                                    <div class="card-header accordion-header">
                                         <span class="sortable-handle">&#8645;</span>
-                                        {{ $group->name }}
+                                        <div class="leftPadding">{{ $group->name }}</div>
 
                                         @if($group->hasImage())
                                             <div class="thumbnail">
-                                                <a href="{{ $group->getImage(false) }}" >
+                                                <a href="{{ $group->getImage() }}" >
                                                     <img src="{{ $group->getImage() }}" >
                                                 </a>
-
                                             </div>
                                         @endif
 
@@ -419,20 +421,36 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
 <style>
     .thumbnail {
+        top: 0;
         width: 60px;
-        max-width: 60px;
-        height: 60px;
-        border: solid 1px #ccc;
-        position: relative;
+        max-width: 100px;
+        max-height: 100%;
+        height: 100%;
+        left: 20px;
+        position: absolute;
         display: inline-block;
-        float: right;
+        float:left;
+        background-size: cover;
+        background-position: left center;
+
+        border: 2px solid #f5f5f5;
     }
 
     .thumbnail img {
         position: absolute;
+        max-height: 100%;
         top: 50%;
         left: 0;
         transform: translate(0%, -50%);
     }
 
+    .leftPadding {
+        margin-left: 20px;
+        display:inline;
+    }
+
+    body.dashboard .sortable-handle {
+        margin-left: 80px;
+
+    }
 </style>
