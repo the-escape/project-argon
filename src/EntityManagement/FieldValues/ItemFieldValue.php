@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\Frontend\Page;
 
@@ -63,12 +64,15 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         {
             return $this;
         }
-        /** @var EntityRepository $repository */
-        $repository = app()->make(EntityRepository::class);
 
-        $entity = $repository->find($id);
-
-        return new Page($entity);
+        return EntityCache::where('entity_id', $id)->first();
+//
+//        /** @var EntityRepository $repository */
+//        $repository = app()->make(EntityRepository::class);
+//
+//        $entity = $repository->find($id);
+//
+//        return new Page($entity);
     }
 
     public function first()

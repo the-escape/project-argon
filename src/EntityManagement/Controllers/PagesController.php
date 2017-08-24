@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Controllers;
 
 use Escape\Argon\EntityManagement\Eloquent\Entity;
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
 use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\Core\Controllers\BaseController;
@@ -162,9 +163,11 @@ class PagesController extends BaseController
 
         $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
-        event(new PageSaved($entity, $localisation, $request));
-
         $solr->indexEntity($entity, $localisation);
+
+        EntityCache::cache($entity, $localisation);
+
+        event(new PageSaved($entity, $localisation, $request));
 
         return Redirect::route(
             'cms:pages:edit_locale',
@@ -269,8 +272,12 @@ class PagesController extends BaseController
         $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
 
         $localisations = $entity->localisations;
-        foreach ($localisations as $localisation) {
+
+        foreach ($localisations as $localisation)
+        {
             $solr->indexEntity($entity, $localisation);
+
+            EntityCache::cache($entity, $localisation, $request);
         }
 
         event(new PageSaved($entity, $currentLocalisation, $request));
@@ -488,6 +495,8 @@ class PagesController extends BaseController
         }
 
         $solr->indexEntity($page, $localisation);
+
+        EntityCache::cache($page, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }

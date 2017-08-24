@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Controllers;
 
 use Escape\Argon\EntityManagement\Eloquent\Entity;
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
 use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\Core\Controllers\BaseController;
@@ -132,6 +133,8 @@ class BlocksController extends BaseController
 
         $solr->indexEntity($entity, $localisation);
 
+        EntityCache::cache($entity, $localisation);
+
         return Redirect::route(
             'cms:blocks:edit_locale',
             ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
@@ -205,7 +208,15 @@ class BlocksController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
-        $solr->indexEntity($entity, $localisation);
+
+        $localisations = $entity->localisations;
+
+        foreach ($localisations as $localisation)
+        {
+            $solr->indexEntity($entity, $localisation);
+
+            EntityCache::cache($entity, $localisation);
+        }
 
         return Redirect::route('cms:blocks:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
@@ -323,6 +334,8 @@ class BlocksController extends BaseController
         }
 
         $solr->indexEntity($page, $localisation);
+
+        EntityCache::cache($page, $localisation);
 
         return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }
