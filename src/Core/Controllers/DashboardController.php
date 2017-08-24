@@ -3,6 +3,7 @@
 namespace Escape\Argon\Core\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Events\AdminAccess;
 use Illuminate\Http\Request;
 use View;
 
@@ -15,8 +16,15 @@ class DashboardController extends BaseController
         parent::__construct($request);
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        $event = event(new AdminAccess($request));
+
+        if(isset($event[0]->return))
+        {
+            return $event[0]->return;
+        }
+
         return View::make('argon::page.overview', []);
     }
 }
