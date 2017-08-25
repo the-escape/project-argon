@@ -209,9 +209,82 @@ class EntityCache extends Model
         return $url;
     }
 
-    public function findByField($field, $value = null, $columns = array('*'))
+    /**
+     * Example call
+     * $cache = $entityCache->findByField('entity_url', $url)->first();
+     *
+     * @param $field
+     * @param null $value
+     * @param string $operator
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function findByField($field, $value = null, $operator = '=', $columns = array('*'))
     {
-        return $this->where($field, '=', $value)->get($columns);
+        return $this->findByFields([
+            [$field, '=', $value],
+        ]);
+    }
+
+
+
+    /**
+     * Example calls:
+     *
+     * Easy/quick syntax, without passing operators - defaults to '=' for each key => value
+     * $cache = $entityCache->findByFields([
+     *     'entity_url' => $url,
+     *     'entity_status' => 1,
+     * ])->first();
+     *
+     * Syntax for when different comparison operators are needed to resulting where queries
+     * $cache = $entityCache->findByFields([
+     *     ['entity_url', '=', $url],
+     *     ['entity_status', '=', 1],
+     * ])->first();
+     *
+     * Mixed syntax - working, but not recommended
+     * $cache = $entityCache->findByFields([
+     *     ['entity_url', '=', $url],
+     *     ['entity_status', 1],
+     * ])->first();
+     *
+     * Mixed syntax - working, but not recommended
+     * $cache = $entityCache->findByFields([
+     *     ['entity_url', '=', $url],
+     *     'entity_status' => 1,
+     * ])->first();
+     *
+     * @param array $array
+     * @param array $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function findByFields(array $array, $columns = array('*'))
+    {
+        $query = $this->newQuery();
+        foreach ($array as $k => $v)
+        {
+            if (is_array($v))
+            {
+                $count = count($v);
+                if ($count == 3)
+                {
+                    list($field, $operator, $value) = $v;
+                    $query->where($field, $operator, $value);
+                }
+                elseif ($count == 2)
+                {
+                    list($field, $value) = $v;
+                    $query->where($field, '=', $value);
+                }
+            }
+            else
+            {
+                $query->where($k, '=', $v);
+            }
+        }
+
+        return $query->get($columns);
     }
 
     public function fieldExists($fieldName)
@@ -250,6 +323,21 @@ class EntityCache extends Model
         }
 
         return $default;
+    }
+
+    public function findForPath($url=null, $status=1)
+    {
+        if (is_null($url))
+        {
+            $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        }
+
+        $cache = $this
+            ->where('entity_url', $url)
+            ->where('entity_status', $status)
+            ->first();
+
+        return $cache;
     }
 
 }
