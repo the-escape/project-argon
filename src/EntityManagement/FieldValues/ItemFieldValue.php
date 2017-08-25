@@ -65,14 +65,22 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
             return $this;
         }
 
-        return EntityCache::where('entity_id', $id)->first();
-//
-//        /** @var EntityRepository $repository */
-//        $repository = app()->make(EntityRepository::class);
-//
-//        $entity = $repository->find($id);
-//
-//        return new Page($entity);
+        if (isset($_GET['cache']))
+        {
+            $item = EntityCache::where('entity_id', $id)->first();
+            if (!is_null($item))
+            {
+                return $item;
+            }
+        }
+
+
+        /** @var EntityRepository $repository */
+        $repository = app()->make(EntityRepository::class);
+
+        $entity = $repository->find($id);
+
+        return new Page($entity);
     }
 
     public function first()

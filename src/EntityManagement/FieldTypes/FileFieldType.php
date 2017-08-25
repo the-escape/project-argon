@@ -49,7 +49,7 @@ class FileFieldType extends AbstractFieldType
         return new FileFieldValue();
     }
 
-    public function parseData(FieldData $data = null)
+    public function parseData($data = null)
     {
         if ($data instanceof FieldData)
         {

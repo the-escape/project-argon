@@ -42,7 +42,7 @@ class SelectFieldType extends AbstractFieldType
         return parent::getFormFieldName($hash) . '[]';
     }
 
-    public function parseData(FieldData $data = null)
+    public function parseData($data = null)
     {
         if ($data instanceof FieldData)
         {

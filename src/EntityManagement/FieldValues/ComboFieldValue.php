@@ -102,6 +102,38 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
     public function field($fieldName, $k = null)
     {
+        if (!$this->subfields)
+        {
+            if ($k)
+            {
+                if (array_key_exists($k, $this->data))
+                {
+                    $currentIteration = $this->data[$k];
+                }
+                else
+                {
+                    throw new \RuntimeException("Requested field '{$fieldName}' doesn't have offset '{$k}'.");
+                }
+            }
+            else
+            {
+                $currentIteration = @array_values($this->data)[0];
+            }
+
+            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($fieldName, $currentIteration->fields))
+            {
+                $value = $currentIteration->fields[$fieldName]->value;
+            }
+            else
+            {
+                $value = null;
+            }
+
+            $fieldType = app('fieldTypes')->getType($currentIteration->fields[$fieldName]->type);
+            $fieldValue = $fieldType->parseData($value);
+            return $fieldValue;
+        }
+
         /** @var AbstractFieldType $field */
         $field = $this->subfields->first(
             function ($i, AbstractFieldType $f) use ($fieldName) {
