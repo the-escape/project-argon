@@ -35,14 +35,20 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
+//    public function first()
+//    {
+//        if (is_array($this->data) && (count($this->data) > 1)) {
+//            $this->data = array_slice($this->data, 0, 1);
+//            return $this;
+//        }
+//
+//        return $this;
+//    }
+
     public function first()
     {
-        if (is_array($this->data) && (count($this->data) > 1)) {
-            $this->data = array_slice($this->data, 0, 1);
-            return $this;
-        }
-
-        return $this;
+        $this->rewind();
+        return $this->current();
     }
 
     public function count()
@@ -60,40 +66,36 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     {
         $key = @array_keys($this->data)[$this->position];
 
-        $obj = @$this->data[$key];
+        $value = @$this->data[$key];
 
-        if (!is_object($obj))
+        if (!is_object($value))
         {
             return null;
         }
 
-        if (property_exists($obj, 'id') && property_exists($obj, 'url') && property_exists($obj, 'alt'))
+        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
         {
             return new CacheMediaItemValue([
-                'id' => $obj->id,
-                'url' => $obj->url,
-                'alt' => $obj->alt,
+                'id' => $value->id,
+                'url' => $value->url,
+                'alt' => $value->alt,
             ]);
         }
 
-        $key = @array_keys($this->data)[$this->position];
-
-        $obj = @$this->data[$key];
-
-        if (@$obj->id)
+        if (@$value->id)
         {
             $itemRepository = app()->make(MediaItemRepository::class);
-            $media_item = $itemRepository->findWhere(['id' => $obj->id])->first();
+            $media_item = $itemRepository->findWhere(['id' => $value->id])->first();
 
             if (!$media_item)
             {
-                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
+                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value->id'.");
             }
 
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
             $media_item->meta = json_decode($media_item->meta);
             $media_item->data = new stdClass();
-            $media_item->data->alt = @$obj->alt;
+            $media_item->data->alt = @$value->alt;
 
             return $media_item;
         }

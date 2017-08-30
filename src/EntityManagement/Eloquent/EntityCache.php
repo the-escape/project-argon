@@ -154,7 +154,13 @@ class EntityCache extends Model
         foreach ($fieldValue as $key => $value)
         {
             $id = is_object($value) ? $value->id : $value;
-            $values[$id] = $key;
+            if ($id)
+            {
+                $values[$id] = [
+                    'key' => $key,
+                    'alt' => @$value->alt,
+                ];
+            }
         }
 
         $mediaItems = MediaItem::withTrashed()->whereIn('id', array_keys($values))->get();
@@ -164,67 +170,28 @@ class EntityCache extends Model
             return null;
         }
 
-        $returnValue = new stdClass();
+        $returnValue = [];
 
         // Can't add more properties to $item as these are the onlu reliable ones.
         // Properties like width, height, filesize cat me affected without changing cache,
         // However asset's i and url will not change, so safe to use.
         // And alt text change will trigger cache update so we can use it here safely.
-        foreach ($mediaItems as $mediaItem)
+        foreach ($values as $id => $value)
         {
-            $item = new stdClass();
-            $item->id = $mediaItem->getId();
-            $item->url = $mediaItem->getUrl();
-            $item->alt = $mediaItem->getAlt();
+            foreach ($mediaItems as $mediaItem)
+            {
+                if ($mediaItem->getId() != $id)
+                {
+                    continue;
+                }
 
-            $returnValue->{$values[$item->id]} = $item;
-        }
+                $item = new stdClass();
+                $item->id = $id;
+                $item->url = $mediaItem->getUrl();
+                $item->alt = $value['alt'];
 
-        return $returnValue;
-    }
-
-    public static function prepImageValue($fieldValue)
-    {
-        $ids = [];
-
-        foreach ($fieldValue as $key => $value)
-        {
-            $ids[] = $value->id;
-        }
-
-        $images = MediaItem::withTrashed()->whereIn('id', $ids)->get();
-
-        if ($images->isEmpty())
-        {
-            return null;
-        }
-
-        $images = $images->keyBy('id');
-
-        $returnValue = new stdClass();
-
-        foreach ($fieldValue as $key => $value)
-        {
-            $img = new stdClass();
-            $img->id = $value->id;
-            $img->filename = $images[$value->id]->filename;
-            $img->extension = $images[$value->id]->extension;
-            $img->folder = $images[$value->id]->folder;
-            $img->filesize = $images[$value->id]->filesize;
-            $img->mimetype = $images[$value->id]->mimetype;
-            $img->hasThumb = $images[$value->id]->hasThumb;
-            $img->filesize_formatted = $images[$value->id]->filesize_formatted;
-
-            $meta = new stdClass();
-            $meta->width = $value->width;
-            $meta->height = $value->height;
-            $img->meta = $meta;
-
-            $data = new stdClass();
-            $data->alt = $value->alt;
-            $img->data = $data;
-
-            $returnValue->$key = $img;
+                $returnValue[$value['key']] = $item;
+            }
         }
 
         return $returnValue;
