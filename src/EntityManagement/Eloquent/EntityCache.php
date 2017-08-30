@@ -96,7 +96,7 @@ class EntityCache extends Model
 
                             if ($subfield->getKey() == 'image')
                             {
-                                $formattedSubfieldValue = self::prepImageValue($formattedSubfieldValue);
+                                $formattedSubfieldValue = self::prepMediaItemValue($formattedSubfieldValue);
                             }
 
                             $fieldValue[$formattedHash]['fields'][$subfield->getFieldSlug()] = [
@@ -111,7 +111,12 @@ class EntityCache extends Model
 
             if ($field->field->field_type == 'image')
             {
-                $fieldValue = self::prepImageValue($field->value);
+                $fieldValue = self::prepMediaItemValue($field->value);
+            }
+
+            if ($field->field->field_type == 'file')
+            {
+                $fieldValue = self::prepMediaItemValue($field->value);
             }
 
             $cacheFields[$field->field->field_slug] = [
@@ -126,7 +131,7 @@ class EntityCache extends Model
 
         $origin = $entity->type->type;
 
-        $values['entity_url'] = ($origin == 'page') ? static::getUrl($entity, $localisation) : null;
+        $values['entity_url'] = ($origin == 'page') ? static::getPageUrl($entity, $localisation) : null;
 
         $attributes = [
             'entity_id' => $values['entity_id'],
@@ -136,6 +141,46 @@ class EntityCache extends Model
         $entityCache = static::updateOrCreate($attributes, $values);
 
         return $entityCache;
+    }
+
+    /**
+     * @param $fieldValue
+     * @return null|stdClass
+     */
+    public static function prepMediaItemValue($fieldValue)
+    {
+        $values = [];
+
+        foreach ($fieldValue as $key => $value)
+        {
+            $id = is_object($value) ? $value->id : $value;
+            $values[$id] = $key;
+        }
+
+        $mediaItems = MediaItem::withTrashed()->whereIn('id', array_keys($values))->get();
+
+        if ($mediaItems->isEmpty())
+        {
+            return null;
+        }
+
+        $returnValue = new stdClass();
+
+        // Can't add more properties to $item as these are the onlu reliable ones.
+        // Properties like width, height, filesize cat me affected without changing cache,
+        // However asset's i and url will not change, so safe to use.
+        // And alt text change will trigger cache update so we can use it here safely.
+        foreach ($mediaItems as $mediaItem)
+        {
+            $item = new stdClass();
+            $item->id = $mediaItem->getId();
+            $item->url = $mediaItem->getUrl();
+            $item->alt = $mediaItem->getAlt();
+
+            $returnValue->{$values[$item->id]} = $item;
+        }
+
+        return $returnValue;
     }
 
     public static function prepImageValue($fieldValue)
@@ -153,6 +198,7 @@ class EntityCache extends Model
         {
             return null;
         }
+
         $images = $images->keyBy('id');
 
         $returnValue = new stdClass();
@@ -184,7 +230,7 @@ class EntityCache extends Model
         return $returnValue;
     }
 
-    public static function getUrl(Entity $entity, Localisation $localisation = null)
+    public static function getPageUrl(Entity $entity, Localisation $localisation = null)
     {
         $segments = [];
         $parent = $entity;
@@ -323,6 +369,11 @@ class EntityCache extends Model
         }
 
         return $default;
+    }
+
+    public function getUrl()
+    {
+        return $this->entity_url;
     }
 
     public function findForPath($url=null, $status=1)

@@ -25,12 +25,38 @@ function guid()
 
 function toArray($var)
 {
-    $newVar = [];
-    foreach ($var as $key => $value) {
-        $newVar[$key] = $value;
+    if (is_array($var))
+    {
+        return $var;
     }
 
-    return $newVar;
+    $array = [];
+
+    if (is_object($var))
+    {
+        foreach ($var as $key => $value)
+        {
+            $array[$key] = $value;
+        }
+        return $array;
+    }
+
+    if (is_null($var))
+    {
+        return $array;
+    }
+
+    if (is_scalar($var))
+    {
+        return [$var];
+    }
+
+    if (is_resource($var))
+    {
+        return $array;
+    }
+
+    return $array;
 }
 
 function spam_check($input, $min_time_to_fill=2)

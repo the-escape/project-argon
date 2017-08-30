@@ -31,6 +31,17 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return json_encode($this->data);
     }
 
+    public function toJson($options = 0)
+    {
+        $values = [];
+        $data = $this->toArray();
+        foreach ($data as $value)
+        {
+            $values[] = (array) $value;
+        }
+
+        return json_encode($values, $options);
+    }
 
     public function isEmpty()
     {
@@ -47,7 +58,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
                             return false;
                         }
                     }
-                }    
+                }
             }
             return true;
         }

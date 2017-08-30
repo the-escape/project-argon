@@ -65,6 +65,7 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
             return $this;
         }
 
+        // TODO: REMOVE - just for testing
         if (isset($_GET['cache']))
         {
             $item = EntityCache::where('entity_id', $id)->first();
