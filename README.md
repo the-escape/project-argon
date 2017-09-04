@@ -217,3 +217,11 @@ vendor/bin/phpunit
 ```
 
 Unit tests are located in the `Tests/Cases` folder.
+
+
+
+## Imporant Git changes notice:
+Branch medialib has been merged to master and should not be used from now on.
+The last commit on medialib was 3eef6e1.
+
+Branch oldmedialib has been created as a reference to the legacy media library but it should be maintained only to certain degree. 
