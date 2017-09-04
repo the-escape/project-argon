@@ -10,7 +10,8 @@
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium":"^3.5.1"
+        "solarium/solarium":"^3.5.1",
+        "maknz/slack-laravel": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -20,7 +21,9 @@
     "autoload": {
         "psr-4": {
             "Escape\\Argon\\Tests\\": "Tests",
-            "Escape\\Argon\\": "src"
+            "Escape\\Argon\\": "src",
+            "Maknz\\Slack\\Laravel\\": "vendor/maknz/slack-laravel/src",
+            "Maknz\\Slack\\Laravel\\": "vendor/maknz/slack/src"
         },
         "files": [
             "src/helpers/guid.php",

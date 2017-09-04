@@ -14,6 +14,8 @@ use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
+use Maknz\Slack\Laravel\ServiceProvider as SlackServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 
 class ArgonServiceProvider extends ServiceProvider
 {
@@ -35,17 +37,17 @@ class ArgonServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../../config/argon.php' => config_path('argon.php'),
+            __DIR__.'/../../config/solr.php' => config_path('solr.php'),
+            __DIR__.'/../../config/slack.php' => config_path('slack.php'),
         ], 'config');
 
-        $this->publishes([
-            __DIR__.'/../../config/solr.php' => config_path('solr.php'),
-        ], 'config');
     }
 
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/argon.php', 'argon');
         $this->mergeConfigFrom(__DIR__ . '/../../config/solr.php', 'solr');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/slack.php', 'slack');
 
         $this->app->alias('request', Request::class);
 
@@ -59,5 +61,13 @@ class ArgonServiceProvider extends ServiceProvider
         class_alias(Image::class, 'Image');
         $this->app->register(MediaServiceProvider::class);
         $this->app->register(RedirectManagementServiceProvider::class);
+        $this->app->register(RedirectManagementServiceProvider::class);
+
+        $this->app->register(SlackServiceProvider::class);
+
+        $loader = AliasLoader::getInstance();
+        $loader->alias('Slack', 'Maknz\Slack\Laravel\Facade');
+
+//        class_alias(Slack::class, 'Maknz\Slack\Laravel\Facade');
     }
 }
