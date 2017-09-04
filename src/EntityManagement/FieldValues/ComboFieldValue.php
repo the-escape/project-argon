@@ -13,7 +13,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     /** @var  Collection */
     protected $subfields;
 
-    public function __construct($data, $subfields)
+    public function __construct($data, $subfields=null)
     {
         $newData = [];
         if ($data) {
@@ -29,6 +29,11 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         }
 
         parent::__construct($newData);
+
+        if (is_null($subfields))
+        {
+            $subfields = new Collection();
+        }
         $this->subfields = $subfields;
     }
 
@@ -102,7 +107,8 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
     public function field($fieldName, $k = null)
     {
-        if (!$this->subfields)
+        // check if handling cached combo
+        if ($this->subfields->isEmpty() && $this->data)
         {
             if ($k)
             {
@@ -235,4 +241,55 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
         return true;
     }
+
+
+    public function compress()
+    {
+        $values = [];
+
+        // check if handling cached combo
+        if ($this->subfields->isEmpty() && $this->data)
+        {
+            foreach ($this->data as $subfields)
+            {
+                $subfieldValues = [];
+
+                foreach ($subfields->fields as $subfieldKey => $subfieldValue)
+                {
+                    $subfieldValues[$subfieldKey] = $subfieldValue->value;
+                }
+                $values[] = $subfieldValues;
+            }
+        }
+        else
+        {
+            foreach ($this as $subfields)
+            {
+                if (is_array($subfields))
+                {
+                    $subfieldValues = [];
+                    foreach ($subfields as $fieldName => $fieldValue)
+                    {
+                        if (!$fieldValue instanceof AbstractFieldValue)
+                        {
+                            continue;
+                        }
+
+                        $subfieldValues[$fieldName] = $fieldValue->compress();
+                    }
+                    $values[] = $subfieldValues;
+                }
+            }
+        }
+
+        return $values;
+    }
+
+    public function toJson($options = 0)
+    {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
+
+
 }

@@ -253,6 +253,12 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     // TODO: trait
     public function toJson($options = 0)
     {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
+
+    public function compress()
+    {
         $values = [];
         $ids = [];
 
@@ -270,7 +276,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
 
         if ($values)
         {
-            return json_encode($values, $options);
+            return $values;
         }
 
         foreach ($this->data as $key => $value)
@@ -291,6 +297,6 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             $values[] = $item;
         }
 
-        return json_encode($values, $options);
+        return $values;
     }
 }

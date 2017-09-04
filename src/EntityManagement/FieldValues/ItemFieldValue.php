@@ -134,4 +134,60 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
     {
         $this->position = 0;
     }
+
+    public function compress()
+    {
+        $ids = $this->data;
+        $values = [];
+
+        if (!$ids)
+        {
+            return $values;
+        }
+
+        // TODO: REMOVE - just for testing
+        if (isset($_GET['cache']))
+        {
+            $items = EntityCache::whereIn('entity_id', $ids)->get();
+            if (!$items->isEmpty())
+            {
+                foreach ($ids as $id)
+                {
+                    foreach ($items as $item)
+                    {
+                        if ($id != $item->entity_id)
+                        {
+                            continue;
+                        }
+
+                        /** @var $item EntityCache */
+                        $values[$id] = $item->compress();
+                    }
+                }
+
+                return $values;
+            }
+
+        }
+
+        $entityRepository = app()->make(EntityRepository::class);
+
+        $entities = $entityRepository->findWhereIn('id', $ids);
+
+        foreach ($ids as $id)
+        {
+            foreach ($entities as $entity)
+            {
+                if ($id != $entity->id)
+                {
+                    continue;
+                }
+                $page = new Page($entity);
+                $values[$id] = $page->compress();
+            }
+        }
+
+
+        return $values;
+    }
 }

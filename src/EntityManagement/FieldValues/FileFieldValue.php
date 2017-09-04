@@ -163,6 +163,13 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
     // TODO: trait
     public function toJson($options = 0)
     {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
+
+    // TODO: trait
+    public function compress()
+    {
         $values = [];
         $ids = [];
 
@@ -177,7 +184,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
 
         if ($values)
         {
-            return json_encode($values, $options);
+            return $values;
         }
 
         // Otherwise run query and build the output
@@ -198,6 +205,6 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
             $values[] = $item;
         }
 
-        return json_encode($values, $options);
+        return $values;
     }
 }

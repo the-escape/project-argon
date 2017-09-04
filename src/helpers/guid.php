@@ -38,6 +38,7 @@ function toArray($var)
         {
             $array[$key] = $value;
         }
+
         return $array;
     }
 

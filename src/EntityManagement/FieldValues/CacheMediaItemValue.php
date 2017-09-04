@@ -2,9 +2,12 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Contracts\Compressable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use RuntimeException;
 
-class CacheMediaItemValue
+class CacheMediaItemValue implements Compressable, Arrayable, Jsonable
 {
     protected $id;
     protected $url;
@@ -64,5 +67,20 @@ class CacheMediaItemValue
 
         // Perhaps better to silence the errors here...
         return "";
+    }
+
+    public function compress()
+    {
+        return $this->toArray();
+    }
+
+    public function toArray()
+    {
+        return toArray($this);
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
     }
 }

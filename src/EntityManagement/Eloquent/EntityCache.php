@@ -2,14 +2,20 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use Escape\Argon\EntityManagement\Contracts\Compressable;
+use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
+use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Media\Eloquent\MediaItem;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use stdClass;
 
-class EntityCache extends Model
+class EntityCache extends Model implements Compressable
 {
     use SoftDeletes;
 
@@ -365,7 +371,7 @@ class EntityCache extends Model
 
         if (isset($fields->{$fieldName}))
         {
-            return new ComboFieldValue($fields->{$fieldName}->value, []);
+            return new ComboFieldValue($fields->{$fieldName}->value);
         }
 
         return $default;
@@ -391,4 +397,39 @@ class EntityCache extends Model
         return $cache;
     }
 
+
+    public function compress(array $fieldNames=['*'])
+    {
+        $data = [];
+
+        if ($fieldNames == ['*'])
+        {
+            if ($this->cache)
+            {
+                $fields = (array)$this->cache;
+                $fieldNames = array_keys($fields);
+            }
+        }
+
+        foreach ($fieldNames as $fieldName)
+        {
+            $field = $this->field($fieldName);
+            if ($field instanceof AbstractFieldValue)
+            {
+                $data[$fieldName] = $field->compress();
+            }
+            elseif ($field instanceof CacheMediaItemValue)
+            {
+                $data[$fieldName] = $field->compress();
+            }
+        }
+
+        return $data;
+    }
+
+    public function toJson($options = 0)
+    {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
 }

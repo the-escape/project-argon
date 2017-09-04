@@ -5,6 +5,7 @@ namespace Escape\Argon\EntityManagement\FieldTypes;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class ComboFieldType extends AbstractFieldType
 {
@@ -31,6 +32,11 @@ class ComboFieldType extends AbstractFieldType
 
     public function getSubFields()
     {
+        if (!$this->field instanceof Model)
+        {
+            return new Collection();
+        }
+
         /** @var Collection $subFields */
         $subFields = $this->field->subfields;
         $subFields = $subFields->map(
