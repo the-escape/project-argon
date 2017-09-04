@@ -10,9 +10,9 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
 
 use \Auth;
-use \Slack;
+use \Mail;
 
-class Handler extends ExceptionHandler
+class EmailHandler extends ExceptionHandler
 {
     /**
      * A list of the exception types that should not be reported.
@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
 
         if (!$app->isLocal())
         {
-            $this->sendSlackMessage($e);
+            $this->sendEmailMessage($e);
         }
 
         return parent::report($e);
@@ -74,11 +74,11 @@ class Handler extends ExceptionHandler
         return parent::render($request, $e);
     }
 
-    public function sendSlackMessage($e)
+    public function sendEmailMessage($e)
     {
-        $dump = date('Y-m-d H:i:s'). "\n\n";
-        $dump .= Auth::user() ? 'User: ' . Auth::user()->name.' ('.Auth::user()->id.")\n":'Guest user';
-        $dump .= (Auth::user() ? 'Email: ' . Auth::user()->email:'')."\n\n";
+        $dump = date('Y-m-d H:i:s'). "<br><br>";
+        $dump .= Auth::user() ? 'User: ' . Auth::user()->name.' ('.Auth::user()->id.")<br>":'Guest user';
+        $dump .= (Auth::user() ? 'Email: ' . Auth::user()->email:'')."<br><br>";
 
         $dump_all = [
             'POST' => $_POST,
@@ -94,13 +94,13 @@ class Handler extends ExceptionHandler
             {
                 foreach($data as $k => $v)
                 {
-                    $dump .= $name." - ".$k.": ".$v."\n";
+                    $dump .= $name." - ".$k.": ".$v."<br>";
                 }
-                $dump .= "\n";
+                $dump .= "<br>";
             }
             else
             {
-                $dump .= $name." empty\n\n";
+                $dump .= $name." empty<br><br>";
             }
         }
 
@@ -142,24 +142,19 @@ class Handler extends ExceptionHandler
         foreach ($allowed_server_variables as $srv_var_name)
         {
             $srv_var_val = array_key_exists($srv_var_name, $_SERVER) ? $_SERVER[$srv_var_name] : null;
-            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$srv_var_val."\n" : '';
+            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$srv_var_val."<br>" : '';
         }
 
         $error_msg = "Exception was thrown in ".
             $e->getFile()." on line ".$e->getLine().
-            " with message \"".$e->getMessage()."\"\n".
-            "\n\nInfo about the request:\n".
-            "```".$dump."```";
+            " with message <br><pre>".$e->getMessage()."</pre>".
+            "<br><br>Info about the request:<br><br>".
+            "<pre>".$dump."</pre>";
 
 
-        $attachment = [
-            "color" => 'danger',
-            "title" => $e->getMessage().' on '.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https':'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
-            "title_link" => 'http://'.$_SERVER['HTTP_HOST'],
-            "text" => $error_msg,
-            "mrkdwn" => true
-        ];
-
-        Slack::attach($attachment)->send();
+        Mail::send('argon::emails.template', ['content' => $error_msg], function ($message) {
+            $message->to('digital@the-escape.co.uk');
+            $message->subject('Error - '.$_SERVER['HTTP_HOST']);
+        });
     }
 }
