@@ -17,7 +17,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         if ($data == null) {
             $d = [];
         } else {
-            $d = $data;
+            $d = (array)$data;
         }
 
         parent::__construct($d);
@@ -46,9 +46,9 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
             if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
             {
                 return new CacheMediaItemValue([
-                    'id' => $obj->id,
-                    'url' => $obj->url,
-                    'alt' => $obj->alt,
+                    'id' => $value->id,
+                    'url' => $value->url,
+                    'alt' => $value->alt,
                 ]);
             }
         }
@@ -112,6 +112,12 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    public function first()
+    {
+        $this->rewind();
+        return $this->current();
     }
 
     public function getUrl()
