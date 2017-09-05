@@ -21,9 +21,7 @@
     "autoload": {
         "psr-4": {
             "Escape\\Argon\\Tests\\": "Tests",
-            "Escape\\Argon\\": "src",
-            "Maknz\\Slack\\Laravel\\": "vendor/maknz/slack-laravel/src",
-            "Maknz\\Slack\\Laravel\\": "vendor/maknz/slack/src"
+            "Escape\\Argon\\": "src"
         },
         "files": [
             "src/helpers/guid.php",
