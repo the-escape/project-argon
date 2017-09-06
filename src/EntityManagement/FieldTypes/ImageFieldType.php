@@ -79,7 +79,8 @@ class ImageFieldType extends AbstractFieldType
         // if field is not multiple, get first key->value pair of value array
         if (!$this->allowMultiple() && !$value->isEmpty())
         {
-            $value = $value->first();
+//            $value = $value->first();
+            $value = $value->firstSlice();
         }
 
         $data = array_merge(

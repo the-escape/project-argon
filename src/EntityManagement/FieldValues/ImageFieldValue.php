@@ -35,15 +35,15 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
-//    public function first()
-//    {
-//        if (is_array($this->data) && (count($this->data) > 1)) {
-//            $this->data = array_slice($this->data, 0, 1);
-//            return $this;
-//        }
-//
-//        return $this;
-//    }
+    public function firstSlice()
+    {
+        if (is_array($this->data) && (count($this->data) > 1)) {
+            $this->data = array_slice($this->data, 0, 1);
+            return $this;
+        }
+
+        return $this;
+    }
 
     public function first()
     {
