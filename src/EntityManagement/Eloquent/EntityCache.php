@@ -8,11 +8,8 @@ use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Media\Eloquent\MediaItem;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use stdClass;
 
 class EntityCache extends Model implements Compressable
@@ -243,11 +240,9 @@ class EntityCache extends Model implements Compressable
     public function findByField($field, $value = null, $operator = '=', $columns = array('*'))
     {
         return $this->findByFields([
-            [$field, '=', $value],
-        ]);
+            [$field, $operator, $value],
+        ], $columns);
     }
-
-
 
     /**
      * Example calls:
@@ -366,7 +361,6 @@ class EntityCache extends Model implements Compressable
         return $cache;
     }
 
-
     public function compress(array $fieldNames=['*'])
     {
         $data = [];
@@ -400,5 +394,15 @@ class EntityCache extends Model implements Compressable
     {
         $values = $this->compress();
         return json_encode($values, $options);
+    }
+
+    public function block($slug)
+    {
+        $cache = $this
+            ->where('entity_slug', $slug)
+            ->where('entity_type_type', 'block')
+            ->first();
+
+        return $cache;
     }
 }
