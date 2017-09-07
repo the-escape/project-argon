@@ -26,6 +26,7 @@ class EntityCache extends Model implements Compressable
         'entity_localisation_id',
         'entity_locale_id',
         'entity_type_id',
+        'entity_type_type',
         'entity_parent_id',
         'entity_status',
         'entity_name',
@@ -58,6 +59,7 @@ class EntityCache extends Model implements Compressable
         $values['entity_localisation_id'] = $latestRevision->entity_localisation_id;
         $values['entity_locale_id'] = $localisation->locale_id;
         $values['entity_type_id'] = $entity->entity_type_id;
+        $values['entity_type_type'] = $entity->type->type;
         $values['entity_parent_id'] = $entity->parent_id;
         $values['entity_status'] = $entity->status;
         $values['entity_name'] = $entity->name;
