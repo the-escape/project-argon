@@ -58,7 +58,41 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
                 $data[$k] = [];
 
                 foreach ($v->fields as $id => $d) {
-                    $data[$k][$id] = $d;
+
+                    // check if handling cached combo
+                    if ($this->subfields->isEmpty() && $this->data)
+                    {
+                        if ($k)
+                        {
+                            if (array_key_exists($k, $this->data))
+                            {
+                                $currentIteration = $this->data[$k];
+                            }
+                            else
+                            {
+                                throw new \RuntimeException("Requested field '{$id}' doesn't have offset '{$k}'.");
+                            }
+                        }
+                        else
+                        {
+                            $currentIteration = @array_values($this->data)[0];
+                        }
+
+                        if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($id, $currentIteration->fields))
+                        {
+                            $value = $currentIteration->fields[$id]->value;
+                        }
+                        else
+                        {
+                            $value = null;
+                        }
+
+                        $fieldType = app('fieldTypes')->getType($currentIteration->fields[$id]->type);
+                        $fieldValue = $fieldType->parseData($value);
+                        $data[$k][$id] = $fieldValue;
+
+                        continue;
+                    }
 
                     // added to allow easy access while looping through multiple combos
                     $field = $this->subfields->first(
