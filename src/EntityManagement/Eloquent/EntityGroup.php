@@ -25,7 +25,8 @@ class EntityGroup extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'order', 'sortable', 'renderable', 'thumbnail', 'entity_type_id'];
+
+    protected $fillable = ['name', 'order','sortable', 'renderable', 'thumbnail', 'entity_type_id', 'settings',];
 
     protected $entity;
 
@@ -65,6 +66,7 @@ class EntityGroup extends Model
         return (bool)$this->renderable;
     }
 
+
     public function hasImage()
     {
         return (bool)$this->thumbnail;
@@ -83,6 +85,37 @@ class EntityGroup extends Model
 
             return false;
         }
+    }
 
+    /**
+     * Returns array from saved json value
+     * @param $value
+     * @return array
+     */
+    public function getSettingsAttribute($value)
+    {
+        $value = json_decode($value, true);
+        if ($value === null)
+        {
+            return [];
+        }
+        return $value;
+    }
+
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = json_encode($value);
+    }
+
+    public function getSetting($name, $default=null)
+    {
+        foreach ($this->settings as $k => $v)
+        {
+            if ($name == $k)
+            {
+                return $v;
+            }
+        }
+        return $default;
     }
 }

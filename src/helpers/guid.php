@@ -101,7 +101,7 @@ function email_submission($email, array $input, $subject='')
 
     foreach ($input as $k => $v)
     {
-        $msg .= "<p><strong>{$k}:</strong> $v</p>";
+        $msg .= "<p><strong>{$k}:</strong> ".nl2br($v, true)."</p>";
     }
 
     if (!$subject)

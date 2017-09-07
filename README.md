@@ -127,7 +127,18 @@ Add the ArgonServiceProvider to the providers array in **config/app.php** (Make 
     Escape\Argon\Core\ArgonServiceProvider::class,   
 ],
 ```
+If you want to utilize Slack Error handler then
+change the line in **app/Exceptions/Handler.php** 
+```
 
+// use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+ 
+use Escape\Argon\Core\Exceptions\SlackHandler as ExceptionHandler;
+```
+Or if you want to utilize an Email Error handler then change the line above to
+```
+use Escape\Argon\Core\Exceptions\EmailHandler as ExceptionHandler;
+```
 
 Change the Request class in **public/index.php** to Escape\Argon\Core\Http\Request
 ```
@@ -217,3 +228,11 @@ vendor/bin/phpunit
 ```
 
 Unit tests are located in the `Tests/Cases` folder.
+
+
+
+## Imporant Git changes notice:
+Branch medialib has been merged to master and should not be used from now on.
+The last commit on medialib was 3eef6e1.
+
+Branch oldmedialib has been created as a reference to the legacy media library but it should be maintained only to certain degree. 

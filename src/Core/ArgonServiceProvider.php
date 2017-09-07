@@ -14,6 +14,9 @@ use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
+use Maknz\Slack\Laravel\ServiceProvider as SlackServiceProvider;
+use Maknz\Slack\Facades\Slack;
+use Illuminate\Foundation\AliasLoader;
 
 class ArgonServiceProvider extends ServiceProvider
 {
@@ -35,30 +38,42 @@ class ArgonServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../../config/argon.php' => config_path('argon.php'),
+            __DIR__.'/../../config/solr.php' => config_path('solr.php'),
+            __DIR__.'/../../config/slack.php' => config_path('slack.php'),
         ], 'config');
 
-        $this->publishes([
-            __DIR__.'/../../config/solr.php' => config_path('solr.php'),
-        ], 'config');
     }
 
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/argon.php', 'argon');
         $this->mergeConfigFrom(__DIR__ . '/../../config/solr.php', 'solr');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/slack.php', 'slack');
 
         $this->app->alias('request', Request::class);
 
         $this->app->register(RepositoryServiceProvider::class);
+
         $this->app->register(AuthenticationServiceProvider::class);
+
         $this->app->register(PluginServiceProvider::class);
+
         $this->app->register(EntityManagementServiceProvider::class);
+
         $this->app->register(UserManagementServiceProvider::class);
+
         $this->app->register(LocalesServiceProvider::class);
+
         $this->app->register(ImageServiceProvider::class);
         class_alias(Image::class, 'Image');
+
         $this->app->register(MediaServiceProvider::class);
+
         $this->app->register(RedirectManagementServiceProvider::class);
 
+        $this->app->register(RedirectManagementServiceProvider::class);
+
+        $this->app->register(SlackServiceProvider::class);
+        class_alias(Slack::class, 'Maknz\Slack\Laravel\Facade');
     }
 }

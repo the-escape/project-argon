@@ -7294,6 +7294,9 @@ body.medialib.medialib-modal {
       .media-library-sidebar .buttons button:first-child {
         border-right: 1px solid #000; }
 
+.form-group .row {
+  margin-bottom: 1rem; }
+
 .field-boolean input[type=radio] {
   display: none; }
 

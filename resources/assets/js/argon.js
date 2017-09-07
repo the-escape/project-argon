@@ -198,3 +198,19 @@ $('form').submit(function(e) {
     }
 
 });
+
+$('#settings-add').on('click', function(e) {
+    e.preventDefault();
+
+    var $this = $(this);
+
+    $.post("/admin/group/settings/add")
+        .done(function(data) {
+
+            $this.before($(data));
+
+        })
+        .fail(function() {
+            console.error('Could not add setting.');
+        });
+});
