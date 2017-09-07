@@ -200,13 +200,13 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header">
-                            <div style="margin-left:80px;">{{ $group->name }}</div>
+                        <div class="card-header accordion-header clearfix">
+                            <div style="margin-left:80px;float:left;">{{ $group->name }}</div>
 
                             <div class="checkbox">
                                 @if($group->isRenderable())
                                     <label>
-                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0" >
                                         <input type="checkbox" name="group_render[{{$group->id}}]" value="1"
                                                @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
                                         Render?
