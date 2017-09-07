@@ -341,6 +341,19 @@ class EntityCache extends Model implements Compressable
         return $default;
     }
 
+    public function firstField($fieldName, $default = null)
+    {
+        if(($f = $this->field($fieldName)) && !$f->isEmpty())
+        {
+            $f = $f->first();
+
+            return $f;
+        }
+
+        return $default;
+    }
+
+
     public function getUrl()
     {
         return $this->entity_url;
