@@ -66,14 +66,14 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         }
 
         // TODO: REMOVE - just for testing
-        if (isset($_GET['cache']))
-        {
+//        if (isset($_GET['cache']))
+//        {
             $item = EntityCache::where('entity_id', $id)->first();
             if (!is_null($item))
             {
                 return $item;
             }
-        }
+//        }
 
 
         /** @var EntityRepository $repository */
@@ -146,8 +146,8 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         }
 
         // TODO: REMOVE - just for testing
-        if (isset($_GET['cache']))
-        {
+//        if (isset($_GET['cache']))
+//        {
             $items = EntityCache::whereIn('entity_id', $ids)->get();
             if (!$items->isEmpty())
             {
@@ -168,7 +168,7 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
                 return $values;
             }
 
-        }
+//        }
 
         $entityRepository = app()->make(EntityRepository::class);
 
