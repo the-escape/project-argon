@@ -10,6 +10,7 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use stdClass;
 
 class EntityCache extends Model implements Compressable
@@ -29,6 +30,8 @@ class EntityCache extends Model implements Compressable
         'entity_name',
         'entity_slug',
         'entity_url',
+        'entity_groups',
+        'entity_redirect',
         'entity_updated_at',
         'cache',
     ];
@@ -39,6 +42,26 @@ class EntityCache extends Model implements Compressable
     }
 
     public function getCacheAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setEntityGroupsAttribute($value)
+    {
+        $this->attributes['entity_groups'] = json_encode($value);
+    }
+
+    public function getEntityGroupsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setEntityRedirectAttribute($value)
+    {
+        $this->attributes['entity_redirect'] = json_encode($value);
+    }
+
+    public function getEntityRedirectAttribute($value)
     {
         return json_decode($value);
     }
@@ -133,6 +156,29 @@ class EntityCache extends Model implements Compressable
         }
 
         $values['cache'] = $cacheFields;
+        $values['entity_redirect'] = $entity->redirect_url;
+        $values['entity_groups']['group_order'] = $entity->group_order;
+        $values['entity_groups']['group_render'] = $entity->group_render;
+
+
+        $groups = $entity->getGroups($localisation->locale_id);
+
+        $g = [];
+        foreach ($groups as $group)
+        {
+            $grp = [];
+            $grp['id'] = $group->id;
+            $fillable = $group->getFillable();
+
+            foreach ($fillable as $attr)
+            {
+                $grp[$attr] = $group->getAttribute($attr);
+            }
+            $g[$group->id] = $grp;
+        }
+
+        $values['entity_groups']['groups'] = $g;
+
 
         $origin = $entity->type->type;
 
@@ -417,5 +463,107 @@ class EntityCache extends Model implements Compressable
             ->first();
 
         return $cache;
+    }
+
+    public function getGroups()
+    {
+        $groups = new Collection();
+
+        if (isset($this->entity_groups->groups))
+        {
+            foreach ($this->entity_groups->groups as $g)
+            {
+                $group = new EntityGroup();
+                foreach ($g as $k => $v)
+                {
+                    $group->$k = $v;
+                }
+                $groups->push($group);
+            }
+        }
+        return $groups;
+    }
+
+    public function getSortableGroups() {
+        return $this->getGroups()->filter(function ($group) {
+            return $group->isSortable();
+        });
+    }
+
+    public function getNonSortableGroups($locale_id) {
+        return $this->getGroups()->filter(function ($group) {
+            return !$group->isSortable();
+        });
+    }
+
+
+    public function getGroupOrder()
+    {
+        $order = [];
+        $groups = $this->getSortableGroups();
+        foreach ($groups as $group) {
+            $order[] = $group->id;
+        }
+        return $order;
+    }
+
+    public function getGroupOrderString()
+    {
+        return implode(',', $this->getGroupOrder());
+    }
+
+
+
+    public function getRenderableGroups() {
+        return $this->getGroups()->filter(function ($group) {
+            return $group->isRenderable();
+        });
+    }
+
+    public function getNonRenderableGroups() {
+        return $this->getGroups()->filter(function ($group) {
+            return !$group->isRenderable();
+        });
+    }
+
+
+    public function getRenderableGroupOrder()
+    {
+        $order = [];
+        $groups = $this->getRenderableGroups();
+        foreach ($groups as $group) {
+            $order[] = $group->id;
+        }
+        return $order;
+    }
+
+    public function getRenderableGroupOrderString()
+    {
+        return implode(',', $this->getRenderableGroupOrder());
+    }
+
+
+    public function isGroupRender($localeId, $groupId)
+    {
+        return (bool) @$this->entity_groups->group_render->{$localeId}->{$groupId};
+    }
+
+
+
+    public function getRenderedGroups()
+    {
+        $renderableGroups = $this->getRenderableGroupOrder();
+
+        $r = new Collection();
+
+        foreach ($renderableGroups as $renderableGroup)
+        {
+            if ($this->isGroupRender($this->entity_locale_id, $renderableGroup))
+            {
+                $r->push($renderableGroup);
+            }
+        }
+
+        return $r;
     }
 }
