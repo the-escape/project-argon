@@ -107,31 +107,34 @@ class EntityCache extends Model implements Compressable
 
                 $formattedValues = $field->value;
 
-                $subfields = $field->field->type->getSubFields();
-
-                foreach ($formattedValues as $formattedHash => $formattedSubfields)
+                if ($formattedValues)
                 {
-                    $formattedSubfields = (array)$formattedSubfields->fields;
+                    $subfields = $field->field->type->getSubFields();
 
-                    foreach ($formattedSubfields as $formattedSubfieldKey => $formattedSubfieldValue)
+                    foreach ($formattedValues as $formattedHash => $formattedSubfields)
                     {
-                        foreach ($subfields as $subfield)
+                        $formattedSubfields = (array)$formattedSubfields->fields;
+
+                        foreach ($formattedSubfields as $formattedSubfieldKey => $formattedSubfieldValue)
                         {
-                            if ($subfield->getId() != $formattedSubfieldKey)
+                            foreach ($subfields as $subfield)
                             {
-                                continue;
-                            }
+                                if ($subfield->getId() != $formattedSubfieldKey)
+                                {
+                                    continue;
+                                }
 
-                            if ($subfield->getKey() == 'image')
-                            {
-                                $formattedSubfieldValue = self::prepMediaItemValue($formattedSubfieldValue);
-                            }
+                                if ($subfield->getKey() == 'image')
+                                {
+                                    $formattedSubfieldValue = self::prepMediaItemValue($formattedSubfieldValue);
+                                }
 
-                            $fieldValue[$formattedHash]['fields'][$subfield->getFieldSlug()] = [
-                                'value' => $formattedSubfieldValue,
-                                'type' => $subfield->getKey(),
-                                'id' => $subfield->getId(),
-                            ];
+                                $fieldValue[$formattedHash]['fields'][$subfield->getFieldSlug()] = [
+                                    'value' => $formattedSubfieldValue,
+                                    'type' => $subfield->getKey(),
+                                    'id' => $subfield->getId(),
+                                ];
+                            }
                         }
                     }
                 }
