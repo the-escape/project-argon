@@ -364,7 +364,7 @@ class EntityCache extends Model implements Compressable
         return false;
     }
 
-    public function field($fieldName, $default = [])
+    public function field($fieldName, $default = [], $isEmptyCheck = false)
     {
         $fields = $this->cache;
 
@@ -372,7 +372,16 @@ class EntityCache extends Model implements Compressable
         {
             $fieldType = app('fieldTypes')->getType($fields->{$fieldName}->type);
             $fieldValue = $fieldType->parseData($fields->{$fieldName}->value);
-            return $fieldValue;
+
+            if (!$isEmptyCheck)
+            {
+                return $fieldValue;
+            }
+
+            if (!$fieldValue->isEmpty())
+            {
+                return $fieldValue;
+            }
         }
 
         return $default;
