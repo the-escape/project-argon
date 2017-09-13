@@ -62,7 +62,8 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         $id = @$this->data[$this->position];
         if (is_null($id))
         {
-            return $this;
+//            return $this;
+            return null;
         }
 
         // TODO: REMOVE - just for testing
