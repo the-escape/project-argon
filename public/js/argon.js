@@ -792,7 +792,15 @@ var WYSIWYG = {
         CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
         CKEDITOR.config.default_extraAllowedContent = 'iframe[*]';
 
-        CKEDITOR.config.toolbar = WYSIWYG.getToolbarOptions(el);
+        var toolOpts = WYSIWYG.getToolbarOptions(el);
+
+        if($.inArray("Styles", toolOpts[0]) !== -1){
+            CKEDITOR.config.extraPlugins = 'stylesheetparser';
+            CKEDITOR.config.stylesSet = [];
+            CKEDITOR.config.contentsCss = '/assets/css/typography.css';
+        }
+
+        CKEDITOR.config.toolbar = toolOpts;
         CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
         CKEDITOR.config.height = WYSIWYG.getHeight(el);
         CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
