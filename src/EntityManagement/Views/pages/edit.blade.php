@@ -200,15 +200,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                     <div class="card accordion">
 
                         <div class="card-header accordion-header">
-                            @if($group->hasImage() || $atleastOneGroupImage)
-                                <div class="thumbnail">
-                                    <a href="{{ $group->getImage() }}">
-                                        <img src="{{ $group->getImage() }}">
-                                    </a>
-                                    <input type="hidden" class="url" value="{{ $group->getImage() }}">
-                                </div>
-                                <?php $atleastOneGroupImage=true;?>
-                            @endif
+
                             {{ $group->name }}
 
                             @if($group->isRenderable())
