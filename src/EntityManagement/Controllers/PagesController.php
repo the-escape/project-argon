@@ -397,6 +397,7 @@ class PagesController extends BaseController
                 'localeId' => $localeId,
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
+                'atleastOneGroupImage' => false,
             ]
         );
     }

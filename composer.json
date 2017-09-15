@@ -30,7 +30,8 @@
     },
     "autoload-dev": {
         "classmap": [
-            "Tests/Cases/TestCase.php"
+            "Tests/Cases/TestCase.php",
+            "src/helpers/guid.php"
         ]
     },
     "config": {

@@ -164,8 +164,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
             <div class="card accordion">
 
-                <div class="card-header accordion-header "><div>301 Redirect</div></div>
-
+                <div class="card-header accordion-header">301 Redirect</div>
 
                 <div class="card-block accordion-body">
 
@@ -200,30 +199,27 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
                     <div class="card accordion">
 
-                        <div class="card-header accordion-header clearfix">
-                            <div style="margin-left:80px;float:left;">{{ $group->name }}</div>
-
-                            <div class="checkbox">
-                                @if($group->isRenderable())
-                                    <label>
-                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0" >
-                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1"
-                                               @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
-                                        Render?
-                                    </label>
-
-                                @endif
-                            </div>
-
-                            @if($group->hasImage())
+                        <div class="card-header accordion-header">
+                            @if($group->hasImage() || $atleastOneGroupImage)
                                 <div class="thumbnail">
-                                    <a href="{{ $group->getImage() }}" >
+                                    <a href="{{ $group->getImage() }}">
                                         <img src="{{ $group->getImage() }}">
                                     </a>
                                     <input type="hidden" class="url" value="{{ $group->getImage() }}">
                                 </div>
+                                <?php $atleastOneGroupImage=true;?>
                             @endif
+                            {{ $group->name }}
 
+                            @if($group->isRenderable())
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
+                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                        Render?
+                                    </label>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="card-block accordion-body">
@@ -244,7 +240,6 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                 @endforeach
 
                 @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
-
                     <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
                     <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
 
@@ -254,20 +249,20 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="card accordion">
 
-                                    <div class="card-header accordion-header">
-                                        <span class="sortable-handle">&#8645;</span>
-                                        <div class="leftPadding">{{ $group->name }}</div>
-
-                                        @if($group->hasImage())
+                                    <div class="card-header accordion-header" >
+                                        @if($group->hasImage() || $atleastOneGroupImage)
                                             <div class="thumbnail">
-                                                <a href="{{ $group->getImage() }}" >
-                                                    <img src="{{ $group->getImage() }}" >
+                                                <a href="{{ $group->getImage() }}">
+                                                    <img src="{{ $group->getImage() }}">
                                                 </a>
+                                                <input type="hidden" class="url" value="{{ $group->getImage() }}">
                                             </div>
+                                            <?php $atleastOneGroupImage=true;?>
                                         @endif
+                                        <span class="sortable-handle">&#8645;</span>
+                                        {{ $group->name }}
 
                                         @if($group->isRenderable())
-
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="hidden" name="group_render[{{$group->id}}]" value="0">
@@ -276,8 +271,6 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                                 </label>
                                             </div>
                                         @endif
-
-
 
                                     </div>
 
@@ -414,43 +407,22 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
 @stop
 
-<script>
-
-
-</script>
-
 <style>
     .thumbnail {
-        top: 0;
-        width: 60px;
-        max-width: 100px;
-        max-height: 100%;
-        height: 100%;
-        left: 20px;
-        position: absolute;
+        width:85px;
         display: inline-block;
         float:left;
-        background-size: cover;
-        background-position: left center;
-
         border: 2px solid #f5f5f5;
     }
-
     .thumbnail img {
         position: absolute;
+        max-width:60px;
         max-height: 100%;
         top: 50%;
-        left: 0;
+
         transform: translate(0%, -50%);
-    }
+        padding: 1px 0 1px 0;
+        border-radius: 10%;
 
-    .leftPadding {
-        margin-left: 20px;
-        display:inline;
-    }
-
-    body.dashboard .sortable-handle {
-        margin-left: 80px;
-
-    }
+        }
 </style>

@@ -73,6 +73,9 @@ class ArgonServiceProvider extends ServiceProvider
 
         $this->app->register(RedirectManagementServiceProvider::class);
 
+        //Register helper files
+        require_once __DIR__ . '/../helpers/guid.php';
+
         $this->app->register(SlackServiceProvider::class);
         class_alias(Slack::class, 'Maknz\Slack\Laravel\Facade');
     }

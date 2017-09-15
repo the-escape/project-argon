@@ -69,7 +69,7 @@ class EntityGroup extends Model
 
     public function hasImage()
     {
-        return (bool)$this->thumbnail;
+        return ($this->thumbnail != null)?true:false;
     }
 
     public function getImage()
@@ -79,7 +79,7 @@ class EntityGroup extends Model
 
             $image = $itemRepository->findWhere(['id' => $this->thumbnail])->first();
 
-            return (string)$image->getUrl();
+            return ($image!=null)?(string)$image->getUrl():false;
 
         } catch (\Exception $e) {
 
