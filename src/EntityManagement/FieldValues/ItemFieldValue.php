@@ -66,7 +66,7 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
             return null;
         }
 
-        // TODO: REMOVE - just for testing
+//        // TODO: REMOVE - just for testing
 //        if (isset($_GET['cache']))
 //        {
             $item = EntityCache::where('entity_id', $id)->first();
@@ -146,7 +146,7 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
             return $values;
         }
 
-        // TODO: REMOVE - just for testing
+//        // TODO: REMOVE - just for testing
 //        if (isset($_GET['cache']))
 //        {
             $items = EntityCache::whereIn('entity_id', $ids)->get();

@@ -204,6 +204,7 @@ class EntityCache extends Model implements Compressable
     public static function prepMediaItemValue($fieldValue)
     {
         $values = [];
+        $empty = [];
 
         foreach ($fieldValue as $key => $value)
         {
@@ -214,7 +215,14 @@ class EntityCache extends Model implements Compressable
                     'key' => $key,
                     'alt' => @$value->alt,
                 ];
+            } else {
+                $empty[$key] = null;
             }
+        }
+
+        if ($empty)
+        {
+            return $empty;
         }
 
         $mediaItems = MediaItem::withTrashed()->whereIn('id', array_keys($values))->get();
