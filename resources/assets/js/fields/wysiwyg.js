@@ -6,6 +6,12 @@ var WYSIWYG = {
             : [CKEDITOR.config.default_toolbar];
     },
 
+    getTypographyStyles: function(el) {
+        return (typeof el.dataset.wysiwyg_typography_styles !== 'undefined')
+            ? el.dataset.wysiwyg_typography_styles
+            : '/css/typography.css';
+    },
+
     getExtraAllowedContent: function(el) {
         return (typeof el.dataset.wysiwyg_extraAllowedContent !== 'undefined')
             ? [el.dataset.wysiwyg_extraAllowedContent.split(',')]
@@ -78,7 +84,7 @@ var WYSIWYG = {
         if($.inArray("Styles", toolOpts[0]) !== -1){
             CKEDITOR.config.extraPlugins = 'stylesheetparser';
             CKEDITOR.config.stylesSet = [];
-            CKEDITOR.config.contentsCss = '/assets/css/typography.css';
+            CKEDITOR.config.contentsCss = WYSIWYG.getTypographyStyles(el);
         }
 
         CKEDITOR.config.toolbar = toolOpts;
