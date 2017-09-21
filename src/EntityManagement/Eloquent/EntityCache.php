@@ -395,13 +395,23 @@ class EntityCache extends Model implements Compressable
         return $default;
     }
 
-    public function combo($fieldName, $default = [])
+    public function combo($fieldName, $default = [], $isEmptyCheck = false)
     {
         $fields = $this->cache;
 
         if (isset($fields->{$fieldName}))
         {
-            return new ComboFieldValue($fields->{$fieldName}->value);
+            $fieldValue = new ComboFieldValue($fields->{$fieldName}->value);
+
+            if (!$isEmptyCheck)
+            {
+                return $fieldValue;
+            }
+
+            if (!$fieldValue->isEmpty())
+            {
+                return $fieldValue;
+            }
         }
 
         return $default;
@@ -425,7 +435,7 @@ class EntityCache extends Model implements Compressable
         return $this->entity_url;
     }
 
-    public function findForPath($url=null, $status=1)
+    public function findForPath($url=null, $status=1, $trigger404=true)
     {
         if (is_null($url))
         {
@@ -436,6 +446,11 @@ class EntityCache extends Model implements Compressable
             ->where('entity_url', $url)
             ->where('entity_status', $status)
             ->first();
+
+        if (!$cache && $trigger404)
+        {
+            abort(404);
+        }
 
         return $cache;
     }
@@ -485,7 +500,7 @@ class EntityCache extends Model implements Compressable
         return $cache;
     }
 
-    public function getGroups()
+    public function getGroups(array $ids=null)
     {
         $groups = new Collection();
 
@@ -493,6 +508,14 @@ class EntityCache extends Model implements Compressable
         {
             foreach ($this->entity_groups->groups as $g)
             {
+                if (!is_null($ids))
+                {
+                    if (!in_array($g->id, $ids))
+                    {
+                        continue;
+                    }
+                }
+
                 $group = new EntityGroup();
                 foreach ($g as $k => $v)
                 {
@@ -582,6 +605,11 @@ class EntityCache extends Model implements Compressable
             {
                 $r->push($renderableGroup);
             }
+        }
+
+        if ($r->count())
+        {
+            $r = $this->getGroups($r->toArray())->keyBy('id');
         }
 
         return $r;
