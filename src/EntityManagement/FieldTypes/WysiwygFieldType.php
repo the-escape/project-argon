@@ -110,6 +110,13 @@ class WysiwygFieldType extends AbstractFieldType
                 ],
             ],
         ],
+        'styles' => [
+            'label' => 'Styles',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Enable 'Styles' option. Manually add a typography.css file to /public/assets/css folder, ie. 'strong.primary{color:yellow}'.",
+            'toolbar' => 'Styles',
+        ],
         'fontsize' => [
             'label' => 'Font Size',
             'type' => 'boolean',
