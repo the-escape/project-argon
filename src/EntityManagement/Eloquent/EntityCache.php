@@ -569,7 +569,6 @@ class EntityCache extends Model implements Compressable
         });
     }
 
-
     public function getRenderableGroupOrder()
     {
         $order = [];
@@ -591,9 +590,12 @@ class EntityCache extends Model implements Compressable
         return (bool) @$this->entity_groups->group_render->{$localeId}->{$groupId};
     }
 
-
-
-    public function getRenderedGroups()
+    /**
+     * Returns rendered and ordered groups.
+     * @param array/null $settings - optional key=>value settings based on which groups are filtered by
+     * @return Collection|static
+     */
+    public function getRenderedGroups(array $settings=null)
     {
         $renderableGroups = $this->getRenderableGroupOrder();
 
@@ -610,6 +612,20 @@ class EntityCache extends Model implements Compressable
         if ($r->count())
         {
             $r = $this->getGroups($r->toArray())->keyBy('id');
+
+            if (!is_null($settings))
+            {
+                foreach($r as $groupId => $group)
+                {
+                    foreach ($settings as $k => $v)
+                    {
+                        if(@$group->settings[$k] != $v)
+                        {
+                            $r->forget($groupId);
+                        }
+                    }
+                }
+            }
         }
 
         return $r;
