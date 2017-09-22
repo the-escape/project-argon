@@ -110,6 +110,13 @@ class WysiwygFieldType extends AbstractFieldType
                 ],
             ],
         ],
+        'styles' => [
+            'label' => 'Styles',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Enable 'Styles' option. Manually add a typography styles to a location specified in config/argon.php (default value for 'typography_styles' config is '/css/typography.css'), example style: 'strong.primary{color:yellow}'.",
+            'toolbar' => 'Styles',
+        ],
         'fontsize' => [
             'label' => 'Font Size',
             'type' => 'boolean',

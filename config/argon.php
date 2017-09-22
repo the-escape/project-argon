@@ -4,6 +4,7 @@ return [
     'admin_route_prefix' => '/admin',
     'client_logo_dark' => '/argon/images/logo.png',
     'client_logo_light' => '/argon/images/logo.png',
+    'typography_styles' => '/css/typography.css',
 
     'admin_css' => '
         .argon-login h1 { background-color: #fff; }
