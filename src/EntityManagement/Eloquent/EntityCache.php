@@ -429,6 +429,10 @@ class EntityCache extends Model implements Compressable
         return $default;
     }
 
+    public function getId()
+    {
+        return $this->entity_id;
+    }
 
     public function getUrl()
     {
