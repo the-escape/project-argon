@@ -34,6 +34,11 @@ class EntityRevision extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function userWithTrashed()
+    {
+        return $this->belongsTo(User::class, 'created_by')->withTrashed();
+    }
+
     public function newCollection(array $models = [])
     {
         return new RevisionsCollection($models);

@@ -90,7 +90,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                     <div class="card-block accordion-body">
 
                         <div class="alert alert-info" role="alert">
-                            Current published revision ID: {{ $latest->id }}, created at {{ $latest->created_at->format('d/m/Y H:i:s') }}, by user: {{ $latest->user->name }}.
+                            Current published revision ID: {{ $latest->id }}, created at {{ $latest->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$latest->userWithTrashed->name }}.
                         </div>
 
                         <table class="table table-striped">
