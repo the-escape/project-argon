@@ -932,16 +932,19 @@ class EntityTypeController extends BaseController
 
         $settings = $field->settings;
 
-        $option_name = @$settings->options[$optionId];
+        $o = @$settings->options[$optionId];
 
-        if (!$option_name) {
+        if (!$o) {
             return Redirect::route('cms:types:fields:edit', [$type->id, $field->id])
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
 
+        $o = (array)$o;
+
         $option = new \stdClass();
         $option->id = $optionId;
-        $option->name = $option_name;
+        $option->name = current($o);
+        $option->value = key($o);
 
         return View::make('argon::options.edit', [
             'type' => $type,
@@ -977,8 +980,9 @@ class EntityTypeController extends BaseController
         $option = new \stdClass();
         $option->id = $optionId;
         $option->name = Input::get('name');
+        $option->value = Input::get('value', $optionId);
 
-        $settings->options[$option->id] = $option->name;
+        $settings->options[$option->id] = [$option->value => $option->name];
 
         $field = $fieldRepository->update(['settings' => $settings], $field->id);
 

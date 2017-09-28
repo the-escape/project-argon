@@ -64,6 +64,7 @@
 
         @elseif ($property->type == 'select')
 
+            <?php xdebug_break(); ?>
             <div class="form-group {{$classes}}">
                 <label for="{{$name}}">{{$property->label}}</label>
 
@@ -88,28 +89,38 @@
             </div>
 
         @elseif ($property->type == 'options')
-
                 <input id="order-{{$field->type->getId()}}" type="hidden" name="options_order">
 
                 <table class="table">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Name</th>
+                        <th>Key</th>
+                        <th>Value</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody class="sortable" data-sortable_field="order-{{$field->type->getId()}}">
                         @foreach($field->type->getOptions() as $opt_id => $opt_value)
+                            <?php
+                            if (!is_array($opt_value))
+                            {
+                                $opt_value = (array)$opt_value;
+                            }
+                            ?>
+
                             <tr class="sortable-item" data-sortable_item="{{ $opt_id }}">
                                 <td>
                                     <span class="sortable-handle btn">&#8645;</span>
                                 </td>
                                 <td>
-                                    <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
+                                    {{ key($opt_value) }}
                                 </td>
                                 <td>
-                                    <input type="hidden" name="options[]" value="{{$opt_value}}">
+                                    <span>{{ current($opt_value) }}</span>
+                                </td>
+                                <td>
+                                    {{--<input type="hidden" name="options[]" value="{{current($opt_value)}}">--}}
                                     @if($field->type->getParentId())
                                         <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Edit</a>
                                         <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Remove</a>

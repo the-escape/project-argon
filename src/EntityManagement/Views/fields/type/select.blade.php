@@ -29,7 +29,18 @@
                 <option value="">Please select:</option>
 
                 @foreach($field->getOptions() as $optionId => $optionValue)
-                    <option value="{{ $optionValue }}" @if($optionValue === $v) selected @endif>{{ $optionValue }}</option>
+
+                    <?php
+                    if (!is_array($optionValue))
+                    {
+                        $optionValue = (array)$optionValue;
+                    }
+                    $key = key($optionValue);
+                    $value = current($optionValue)
+
+                    ?>
+
+                    <option value="{{ $key }}" @if($key === $v) selected @endif>{{ $value }}</option>
                 @endforeach
 
             </select>
