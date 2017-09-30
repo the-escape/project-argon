@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @return Escape\Argon\EntityManagement\Eloquent\EntityCache - registered as singleton in Escape\Argon\EntityManagement\EntityManagementServiceProvider
+ */
+function entityCache()
+{
+    return app()->make('entityCache');
+}
+
 function guid()
 {
     return sprintf(
