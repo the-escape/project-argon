@@ -429,10 +429,54 @@ class EntityCache extends Model implements Compressable
         return $default;
     }
 
+    public function getId()
+    {
+        return $this->entity_id;
+    }
 
     public function getUrl()
     {
         return $this->entity_url;
+    }
+
+    public function getName()
+    {
+        return $this->entity_name;
+    }
+
+    public function getSlug()
+    {
+        return $this->entity_slug;
+    }
+
+    public function getLocalisationId()
+    {
+        return $this->entity_localisation_id;
+    }
+
+    public function getLocaleId()
+    {
+        return $this->entity_locale_id;
+    }
+
+    public function getTypeId()
+    {
+        return $this->entity_type_id;
+    }
+
+    public function getTypeType()
+    {
+        return $this->entity_type_type;
+    }
+
+    public function getParentId()
+    {
+        return $this->entity_parent_id;
+    }
+
+    public function getStatus()
+    {
+        return $this->entity_status;
     }
 
     public function findForPath($url=null, $status=1, $trigger404=true)

@@ -7,6 +7,7 @@ use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\Controllers\SitemapController;
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
@@ -493,6 +494,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         });
 
         $this->app->bind(FieldTypesManager::class, 'fieldTypes');
+
+        $this->app->singleton('entityCache', function(){
+            return new EntityCache();
+        });
 
         parent::boot();
     }

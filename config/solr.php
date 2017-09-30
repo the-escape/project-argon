@@ -5,7 +5,7 @@
  */
 return [
 
-    'enable' => false,
+    'enable' => env('SOLR_ENABLE', false),
 
     'endpoint' => [
         'localhost' => [
