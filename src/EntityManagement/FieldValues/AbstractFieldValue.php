@@ -2,10 +2,13 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Contracts\Compressable;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\EntityManagement\FieldTypes\AbstractFieldType;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
-abstract class AbstractFieldValue
+abstract class AbstractFieldValue implements Jsonable, Arrayable, Compressable
 {
     protected $data;
 
@@ -23,6 +26,37 @@ abstract class AbstractFieldValue
         } else {
             return "";
         }
+    }
+
+    /**
+     * Convert the value to JSON.
+     *
+     * @param  int  $options
+     * @return string
+     */
+    public function toJson($options = 0)
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * Convert the value to flat associative array
+     *
+     * @return string
+     */
+    public function compress()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * Convert the value to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return toArray($this->getData());
     }
 
     public function getData()

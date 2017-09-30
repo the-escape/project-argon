@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\Frontend\Page;
 
@@ -61,8 +62,21 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
         $id = @$this->data[$this->position];
         if (is_null($id))
         {
-            return $this;
+//            return $this;
+            return null;
         }
+
+//        // TODO: REMOVE - just for testing
+//        if (isset($_GET['cache']))
+//        {
+            $item = EntityCache::where('entity_id', $id)->first();
+            if (!is_null($item))
+            {
+                return $item;
+            }
+//        }
+
+
         /** @var EntityRepository $repository */
         $repository = app()->make(EntityRepository::class);
 
@@ -120,5 +134,61 @@ class ItemFieldValue extends AbstractFieldValue implements \Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    public function compress()
+    {
+        $ids = $this->data;
+        $values = [];
+
+        if (!$ids)
+        {
+            return $values;
+        }
+
+//        // TODO: REMOVE - just for testing
+//        if (isset($_GET['cache']))
+//        {
+            $items = EntityCache::whereIn('entity_id', $ids)->get();
+            if (!$items->isEmpty())
+            {
+                foreach ($ids as $id)
+                {
+                    foreach ($items as $item)
+                    {
+                        if ($id != $item->entity_id)
+                        {
+                            continue;
+                        }
+
+                        /** @var $item EntityCache */
+                        $values[$id] = $item->compress();
+                    }
+                }
+
+                return $values;
+            }
+
+//        }
+
+        $entityRepository = app()->make(EntityRepository::class);
+
+        $entities = $entityRepository->findWhereIn('id', $ids);
+
+        foreach ($ids as $id)
+        {
+            foreach ($entities as $entity)
+            {
+                if ($id != $entity->id)
+                {
+                    continue;
+                }
+                $page = new Page($entity);
+                $values[$id] = $page->compress();
+            }
+        }
+
+
+        return $values;
     }
 }

@@ -219,7 +219,21 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="form-group sortable">
 
-                                    {!! $field->render($latest->getField($field->getId())) !!}
+                                    <?php
+                                    $fieldValue = $latest->getField($field->getId());
+                                    $event = event(new Escape\Argon\Events\RenderField($field, $fieldValue, $group, $page, $localisation)); ?>
+
+                                    @if(isset($event[0]->fieldHtml))
+
+                                        <div class="field-html">
+
+                                            {!! $event[0]->fieldHtml !!}
+
+                                        </div>
+
+                                    @endif
+
+                                    {!! $field->render($fieldValue) !!}
 
                                 </div>
 
@@ -261,6 +275,20 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                         @foreach ($group->getFields() as $field)
 
                                             <div class="form-group sortable">
+
+                                                <?php
+                                                $fieldValue = $latest->getField($field->getId());
+                                                $event = event(new Escape\Argon\Events\RenderField($field, $fieldValue, $group, $page, $localisation)); ?>
+
+                                                @if(isset($event[0]->fieldHtml))
+
+                                                    <div class="field-html">
+
+                                                        {!! $event[0]->fieldHtml !!}
+
+                                                    </div>
+
+                                                @endif
 
                                                 {!! $field->render($latest->getField($field->getId())) !!}
 

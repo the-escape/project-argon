@@ -2,10 +2,13 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
+use RuntimeException;
+use stdClass;
 
 class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countable
 {
@@ -32,7 +35,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
-    public function first()
+    public function firstSlice()
     {
         if (is_array($this->data) && (count($this->data) > 1)) {
             $this->data = array_slice($this->data, 0, 1);
@@ -40,6 +43,12 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         }
 
         return $this;
+    }
+
+    public function first()
+    {
+        $this->rewind();
+        return $this->current();
     }
 
     public function count()
@@ -57,21 +66,40 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
     {
         $key = @array_keys($this->data)[$this->position];
 
-        $obj = @$this->data[$key];
+        $value = @$this->data[$key];
 
-        if (@$obj->id) {
-            /** @var MediaItemRepository $itemRepository */
+        if (!is_object($value))
+        {
+            return null;
+        }
+
+        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+        {
+            return new CacheMediaItemValue([
+                'id' => $value->id,
+                'url' => $value->url,
+                'alt' => $value->alt,
+            ]);
+        }
+
+        if (@$value->id)
+        {
             $itemRepository = app()->make(MediaItemRepository::class);
-            $media_item = $itemRepository->findWhere(['id' => $obj->id])->first();
-            if (!$media_item) {
-                throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
+            $media_item = $itemRepository->findWhere(['id' => $value->id])->first();
+
+            if (!$media_item)
+            {
+                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value->id'.");
             }
+
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
             $media_item->meta = json_decode($media_item->meta);
-            $media_item->data = new \stdClass();
-            $media_item->data->alt = @$obj->alt;
+            $media_item->data = new stdClass();
+            $media_item->data->alt = @$value->alt;
+
             return $media_item;
         }
+
         return null;
     }
 
@@ -222,6 +250,55 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         }
 
         return json_encode($media_items);
+    }
 
+    // TODO: trait
+    public function toJson($options = 0)
+    {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
+
+    public function compress()
+    {
+        $values = [];
+        $ids = [];
+
+        // Check if value $value retrieved from cache
+        foreach ($this->data as $key => $value)
+        {
+            if (is_object($value))
+            {
+                if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+                {
+                    $values[] = $value;
+                }
+            }
+        }
+
+        if ($values)
+        {
+            return $values;
+        }
+
+        foreach ($this->data as $key => $value)
+        {
+
+            $ids[] = $value->id;
+        }
+
+        $mediaItems = MediaItem::withTrashed()->whereIn('id', $ids)->get();
+
+        foreach ($mediaItems as $mediaItem)
+        {
+            $item = new stdClass();
+            $item->id = $mediaItem->getId();
+            $item->url = $mediaItem->getUrl();
+            $item->alt = $mediaItem->getAlt();
+
+            $values[] = $item;
+        }
+
+        return $values;
     }
 }

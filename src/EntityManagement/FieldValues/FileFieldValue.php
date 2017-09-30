@@ -3,7 +3,10 @@
 namespace Escape\Argon\EntityManagement\FieldValues;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
+use RuntimeException;
+use stdClass;
 
 class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
 {
@@ -14,7 +17,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         if ($data == null) {
             $d = [];
         } else {
-            $d = $data;
+            $d = (array)$data;
         }
 
         parent::__construct($d);
@@ -36,20 +39,33 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
     {
         $key = @array_keys($this->data)[$this->position];
 
-        $id = array_key_exists($key, $this->data) ? $this->data[$key] : null;
+        $value = @$this->data[$key];
 
-        if ($id) {
+        if (is_object($value))
+        {
+            if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+            {
+                return new CacheMediaItemValue([
+                    'id' => $value->id,
+                    'url' => $value->url,
+                    'alt' => $value->alt,
+                ]);
+            }
+        }
+
+        if ($value) {
             /** @var MediaItemRepository $itemRepository */
             $itemRepository = app()->make(MediaItemRepository::class);
-            $media_item = $itemRepository->findWhere(['id' => $id])->first();
+            $media_item = $itemRepository->findWhere(['id' => $value])->first();
             if (!$media_item) {
-                throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$id'.");
+                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value'.");
             }
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
             $media_item->meta = json_decode($media_item->meta);
-            $media_item->data = new \stdClass();
+            $media_item->data = new stdClass();
             return $media_item;
         }
+
         return null;
     }
 
@@ -98,6 +114,12 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         $this->position = 0;
     }
 
+    public function first()
+    {
+        $this->rewind();
+        return $this->current();
+    }
+
     public function getUrl()
     {
         if ($this->current()) {
@@ -142,6 +164,53 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         }
 
         return json_encode($media_items);
+    }
 
+    // TODO: trait
+    public function toJson($options = 0)
+    {
+        $values = $this->compress();
+        return json_encode($values, $options);
+    }
+
+    // TODO: trait
+    public function compress()
+    {
+        $values = [];
+        $ids = [];
+
+        // Check if value $value retrieved from cache
+        foreach ($this->data as $key => $value)
+        {
+            if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+            {
+                $values[] = $value;
+            }
+        }
+
+        if ($values)
+        {
+            return $values;
+        }
+
+        // Otherwise run query and build the output
+        foreach ($this->data as $key => $value)
+        {
+            $ids[] = $value;
+        }
+
+        $mediaItems = MediaItem::withTrashed()->whereIn('id', $ids)->get();
+
+        foreach ($mediaItems as $mediaItem)
+        {
+            $item = new stdClass();
+            $item->id = $mediaItem->getId();
+            $item->url = $mediaItem->getUrl();
+            $item->alt = $mediaItem->getAlt();
+
+            $values[] = $item;
+        }
+
+        return $values;
     }
 }

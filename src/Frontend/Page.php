@@ -3,13 +3,14 @@
 namespace Escape\Argon\Frontend;
 
 use Escape\Argon\Core\Http\Request;
+use Escape\Argon\EntityManagement\Contracts\Compressable;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Illuminate\Support\Collection;
 use RuntimeException;
 
-class Page
+class Page implements Compressable
 {
     /** @var Entity */
     protected $entity;
@@ -335,4 +336,18 @@ class Page
         return $this->request;
     }
 
+    public function compress()
+    {
+        $values = [];
+
+        $fields = $this->fields();
+
+        foreach ($fields as $field)
+        {
+            $fieldValue = $this->field($field->field_slug);
+            $values[$field->field_slug] = $fieldValue->compress();
+        }
+
+        return $values;
+    }
 }
