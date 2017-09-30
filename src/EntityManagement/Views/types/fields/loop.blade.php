@@ -64,7 +64,6 @@
 
         @elseif ($property->type == 'select')
 
-            <?php xdebug_break(); ?>
             <div class="form-group {{$classes}}">
                 <label for="{{$name}}">{{$property->label}}</label>
 

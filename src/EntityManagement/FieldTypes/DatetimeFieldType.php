@@ -31,6 +31,12 @@ class DatetimeFieldType extends AbstractFieldType
             'default' => false,
             'help' => "",
         ],
+        'default' => [
+            'label' => 'Default to current time?',
+            'type' => 'boolean',
+            'default' => true,
+            'help' => "",
+        ],
     ];
 
     public function getFormFieldName($hash)
