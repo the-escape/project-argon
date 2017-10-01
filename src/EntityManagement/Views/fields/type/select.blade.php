@@ -31,16 +31,13 @@
                 @foreach($field->getOptions() as $optionId => $optionValue)
 
                     <?php
-                    if (!is_array($optionValue))
-                    {
-                        $optionValue = [$optionValue => $optionValue];
-                    }
+                    $optionValue = (is_object($optionValue)) ? (array)$optionValue : [$optionValue => $optionValue];
                     $key = key($optionValue);
                     $value = current($optionValue)
-
                     ?>
 
                     <option value="{{ $key }}" @if($key === $v) selected @endif>{{ $value }}</option>
+
                 @endforeach
 
             </select>

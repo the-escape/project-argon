@@ -117,10 +117,7 @@
                 <tbody class="sortable" data-sortable_field="order-{{$field->type->getId()}}">
                     @foreach($field->type->getOptions() as $opt_id => $opt_value)
                         <?php
-                        if (!is_array($opt_value))
-                        {
-                            $opt_value = [$opt_value => $opt_value];
-                        }
+                        $opt_value = (is_object($opt_value)) ? (array)$opt_value : [$opt_value => $opt_value];
                         ?>
 
                         <tr class="sortable-item" data-sortable_item="{{ $opt_id }}">
