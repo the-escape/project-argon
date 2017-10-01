@@ -28,9 +28,9 @@
                 <label>
                     <input type="hidden" value="0" name="{{$name}}">
                     @if($parent)
-                        <input type="checkbox" value="1" name="{{$name}}" class="parent" @if (@$field->settings->$name) checked @endif>
+                    <input type="checkbox" value="1" name="{{$name}}" class="parent" @if (@$field->settings->$name || $property->default === true) checked @endif>
                     @else
-                        <input type="checkbox" value="1" name="{{$name}}" class="child" @if (@$field->settings->$name) checked @endif>
+                    <input type="checkbox" value="1" name="{{$name}}" class="child" @if (@$field->settings->$name || $property->default === true) checked @endif>
                     @endif
                     {{ $property->label }}
                 </label>
