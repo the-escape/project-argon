@@ -24,13 +24,28 @@
 
         @if ($property->type == 'boolean')
 
+            <?php
+            $checked = $property->default;
+
+            if (property_exists($field->settings, $name))
+            {
+                if (in_array($field->settings->$name, [1, true, 'true'], true))
+                {
+                    $checked = true;
+                } else {
+
+                    $checked = false;
+                }
+            }
+            ?>
+
             <div class="checkbox {{$classes}}">
                 <label>
                     <input type="hidden" value="0" name="{{$name}}">
                     @if($parent)
-                    <input type="checkbox" value="1" name="{{$name}}" class="parent" @if (@$field->settings->$name || $property->default === true) checked @endif>
+                        <input type="checkbox" value="1" name="{{$name}}" class="parent" @if ($checked) checked @endif>
                     @else
-                    <input type="checkbox" value="1" name="{{$name}}" class="child" @if (@$field->settings->$name || $property->default === true) checked @endif>
+                        <input type="checkbox" value="1" name="{{$name}}" class="child" @if ($checked) checked @endif>
                     @endif
                     {{ $property->label }}
                 </label>
