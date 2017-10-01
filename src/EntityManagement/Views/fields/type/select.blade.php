@@ -33,7 +33,7 @@
                     <?php
                     if (!is_array($optionValue))
                     {
-                        $optionValue = (array)$optionValue;
+                        $optionValue = [$optionValue => $optionValue];
                     }
                     $key = key($optionValue);
                     $value = current($optionValue)

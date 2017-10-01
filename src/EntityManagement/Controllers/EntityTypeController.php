@@ -939,7 +939,10 @@ class EntityTypeController extends BaseController
                 ->with('errors', "Option ID: {$optionId} doesn't exist.");
         }
 
-        $o = (array)$o;
+        if (!is_array($o))
+        {
+            $o = [$o => $o];
+        }
 
         $option = new \stdClass();
         $option->id = $optionId;
