@@ -13,7 +13,11 @@
                 <div class="card-header">Details</div>
                 <div class="card-block">
                     <div class="form-group">
-                        <label for="name" class="required">Name</label>
+                        <label for="value" class="required">Value</label>
+                        <input type="text" class="form-control" id="value" name="value" placeholder="Defaults to option ID" value="{{ old('value', @$option->value) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="required">Name (label)</label>
                         <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name', $option->name) }}">
                     </div>
                 </div>
