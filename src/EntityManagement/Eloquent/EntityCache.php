@@ -534,14 +534,30 @@ class EntityCache extends Model implements Compressable
         return json_encode($values, $options);
     }
 
-    public function block($slug)
+    public function block($slug, array $where=null)
     {
         $cache = $this
             ->where('entity_slug', $slug)
-            ->where('entity_type_type', 'block')
-            ->first();
+            ->where('entity_type_type', 'block');
 
-        return $cache;
+        if (!is_null($where))
+        {
+            foreach ($where as $k => $v)
+            {
+                if (is_array($v))
+                {
+                    list($k, $operator, $v) = $v;
+
+                    $cache->where($k, $operator, $v);
+
+                    continue;
+                }
+
+                $cache->where($k, $v);
+            }
+        }
+
+        return $cache->first();
     }
 
     public function getGroups(array $ids=null)
