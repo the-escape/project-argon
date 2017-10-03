@@ -13,8 +13,6 @@ abstract class BaseController extends Controller
     use DispatchesJobs, ValidatesRequests;
 
     protected $request;
-    protected $pluginManager;
-    protected $currentUser;
 
     public function __construct(Request $request)
     {
@@ -23,8 +21,6 @@ abstract class BaseController extends Controller
         View::share('currentUser', $request->user());
         View::share('plugins', app('pluginManager'));
 
-        $this->currentUser = $request->user();
-        $this->pluginManager = app('pluginManager');
         $this->request = $request;
     }
 }
