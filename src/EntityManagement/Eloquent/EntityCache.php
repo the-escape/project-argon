@@ -203,12 +203,18 @@ class EntityCache extends Model implements Compressable
      */
     public static function prepMediaItemValue($fieldValue)
     {
+        if (is_null($fieldValue))
+        {
+            return null;
+        }
+
         $values = [];
         $empty = [];
 
         foreach ($fieldValue as $key => $value)
         {
             $id = is_object($value) ? $value->id : $value;
+
             if ($id)
             {
                 $values[$id] = [
@@ -517,7 +523,14 @@ class EntityCache extends Model implements Compressable
             $field = $this->field($fieldName);
             if ($field instanceof AbstractFieldValue)
             {
-                $data[$fieldName] = $field->compress();
+                if (array_key_exists($fieldName, $data))
+                {
+                    $data[$fieldName] = $field->compress();
+                }
+                else
+                {
+                    $data[$fieldName] = null;
+                }
             }
             elseif ($field instanceof CacheMediaItemValue)
             {
