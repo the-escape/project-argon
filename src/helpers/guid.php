@@ -355,6 +355,15 @@ function getUrlWithQueryStringNoEncoding(array $set=[], array $unset=[], $url=nu
     return getUrlWithQueryString($set, $unset, $url, false);
 }
 
+function getUrlNoQueryString($url=null)
+{
+    if (is_null($url))
+    {
+        $url = $_SERVER['REQUEST_URI'];
+    }
+
+    return parse_url($url, PHP_URL_PATH);
+}
 
 /**
  * Sorts collection looking at CMS field values

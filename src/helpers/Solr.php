@@ -61,6 +61,13 @@ class Solr
                 $doc->entity_created_at = $entity->created_at->format('Y-m-d H:i:s');
                 $doc->entity_created_at_dts = $entity->created_at->format('Y-m-d\TH:i:s\Z');
 
+                if ($entity->type->type == 'page')
+                {
+                    $p = $entity->toPage();
+                    $p->adjustLocale($localisation);
+                    $doc->entity_url = $p->getUrl();
+                }
+
                 $fields = $latestRevision->fields;
 
                 foreach ($fields as $field) {
@@ -217,8 +224,8 @@ class Solr
 
     public function unindexEntity($entityId)
     {
-        if ($this->isEnabled()) {
-
+        if ($this->isEnabled())
+        {
             $update = $this->client->createUpdate();
             $update->addDeleteQuery("entity_id:".$entityId);
             $update->addCommit();
@@ -266,8 +273,8 @@ class Solr
 
     public function unindex($field='id', $value='*')
     {
-        if ($this->isEnabled()) {
-
+        if ($this->isEnabled())
+        {
             $update = $this->client->createUpdate();
             $update->addDeleteQuery('%1%:%2%', [$field, $value]);
             $update->addCommit();
@@ -282,16 +289,18 @@ class Solr
     }
 
 
-    public static function buildQueryStringFromParams($field, $params, $glue="OR")
+    public static function buildQueryStringFromParams($field, $params, $glue="OR", $placeholder="P")
     {
-        if (!is_array($params)) {
+        if (!is_array($params))
+        {
             $params = [$params];
         }
 
         $query = [];
 
-        for ($i=1; $i<=count($params); $i++) {
-            $query[] = "{$field}:%P{$i}%";
+        for ($i=1; $i<=count($params); $i++)
+        {
+            $query[] = "{$field}:%{$placeholder}{$i}%";
         }
 
         $glue = trim($glue);
@@ -431,6 +440,12 @@ class Solr
         }
 
         return null;
+    }
+
+
+    public static function escapeLiteral($input)
+    {
+        return preg_replace('/("|\\\)/', '\\\$1', $input);
     }
 
 }

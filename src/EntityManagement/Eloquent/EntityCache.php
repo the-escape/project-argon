@@ -487,10 +487,7 @@ class EntityCache extends Model implements Compressable
 
     public function findForPath($url=null, $status=1, $trigger404=true)
     {
-        if (is_null($url))
-        {
-            $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        }
+        $url = getUrlNoQueryString($url);
 
         $cache = $this
             ->where('entity_url', $url)
@@ -549,9 +546,19 @@ class EntityCache extends Model implements Compressable
 
     public function block($slug, array $where=null)
     {
-        $cache = $this
-            ->where('entity_slug', $slug)
-            ->where('entity_type_type', 'block');
+        $whereArray = ['entity_slug' => $slug];
+
+        if (!is_null($where))
+        {
+            $whereArray = array_merge($whereArray, $where);
+        }
+
+        return $this->blocks($whereArray)->first();
+    }
+
+    public function blocks(array $where=null)
+    {
+        $cache = $this->where('entity_type_type', 'block');
 
         if (!is_null($where))
         {
@@ -570,7 +577,7 @@ class EntityCache extends Model implements Compressable
             }
         }
 
-        return $cache->first();
+        return $cache->get();
     }
 
     public function getGroups(array $ids=null)
