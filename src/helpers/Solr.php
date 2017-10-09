@@ -443,9 +443,14 @@ class Solr
     }
 
 
-    public static function escapeLiteral($input)
+    /**
+     * Escape like phrase, prepring value for solr wildcard query, like: entity_url:\/url-path
+     * @param $input
+     * @return mixed
+     */
+    public static function escape($input)
     {
-        return preg_replace('/("|\\\)/', '\\\$1', $input);
+        return preg_replace('/("|\\\|\/)/', '\\\$1', $input);
     }
 
 }
