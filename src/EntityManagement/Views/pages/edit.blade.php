@@ -3,6 +3,7 @@ $fronEndPage = $page->toPage();
 $defaultFronEndPageUrl = $fronEndPage->getUrl();
 $pageLocaleSlug = $localisation->getLocale()->getSlug();
 $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+$defaultLocalisation = $page->getDefaultLocalisation();
 ?>
 @extends('argon::layout.master')
 
@@ -61,6 +62,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
             </div>
 
             @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
+
                 <ul class="nav nav-tabs">
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
@@ -68,6 +70,9 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
                                 {{$l->getLocale()->getName()}}
                             </a>
+                            @if($defaultLocalisation->getLocaleId() !== $l->getLocaleId())
+                                <a href="{{ route('cms:pages:delete_locale', [$page->getId(), $l->getLocaleId()]) }}" class="locale-delete confirm" data-confirm="Are you sure you want to delete '{{$l->getLocale()->getName()}}' locale."><i class="fa fa-times" aria-hidden="true"></i></a>
+                            @endif
                         </li>
                     @endforeach
                     @if (!$locales->isEmpty())
@@ -111,6 +116,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                     <td>
                                         <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
                                         <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+                                        <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load revision from {{ $revision->created_at->format('d/m/Y H:i:s') }}\nsaved by user: {{ @$revision->userWithTrashed->name }} for editing.\nAre you sure you want to continue?">Load/Edit Revision</a>
                                     </td>
                                 </tr>
                             @endforeach

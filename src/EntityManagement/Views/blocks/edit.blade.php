@@ -32,24 +32,27 @@
                 </div>
             </div>
 
+            @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
 
-            <ul class="nav nav-tabs">
-                @foreach ($page->getLocalisations() as $l)
-                    <li class="nav-item">
-                        <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                           href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
-                            {{$l->getLocale()->getName()}}
-                        </a>
-                    </li>
-                @endforeach
-                @if (!$locales->isEmpty())
-                    <li class="nav-item">
-                        <a class="nav-link add-localisation" href="">+ Add Localisation</a>
-                    </li>
-                @endif
-            </ul>
+                <ul class="nav nav-tabs">
+                    @foreach ($page->getLocalisations() as $l)
+                        <li class="nav-item">
+                            <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
+                               href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                                {{$l->getLocale()->getName()}}
+                            </a>
+                        </li>
+                    @endforeach
+                    @if (!$locales->isEmpty())
+                        <li class="nav-item">
+                            <a class="nav-link add-localisation" href="">+ Add Localisation</a>
+                        </li>
+                    @endif
+                </ul>
 
-            <br>
+                <br>
+
+            @endif
 
             @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
