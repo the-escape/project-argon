@@ -259,6 +259,8 @@ class PagesController extends BaseController
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
+        
+        FieldsHelpers::uncacheFields($entity, $fields, $currentLocale);
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);

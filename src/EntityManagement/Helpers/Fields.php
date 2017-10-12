@@ -334,4 +334,20 @@ class Fields
             'value' => $value,
         ]);
     }
+
+
+    public static function uncacheFields($entity, $fields, Locale $locale=null)
+    {
+        if ($locale === null)
+        {
+            $localeRepository = app()->make(LocaleRepository::class);
+            $locale = $localeRepository->getDefault();
+        }
+
+        foreach ($fields as $field)
+        {
+            \Cache::forget("entity.{$entity->getId()}.locale.{$locale->getId()}.fields.{$field->field_slug}");
+        }
+    }
+
 }

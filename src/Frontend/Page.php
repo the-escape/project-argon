@@ -98,7 +98,14 @@ class Page
             $revision = $this->revisionId;
         }
 
-        return $this->getCurrentLocalisation()->publishedRevision($revision)->field($fieldName);
+        $field = \Cache::rememberForever("entity.{$this->entity->getId()}.locale.{$this->getLocale()->getId()}.fields.{$fieldName}", function() use ($revision, $fieldName) {
+            $f = $this->getCurrentLocalisation()->publishedRevision($revision)->field($fieldName);
+            return $f;
+        });
+
+        return $field;
+
+//        return $this->getCurrentLocalisation()->publishedRevision($revision)->field($fieldName);
     }
 
     public function combo($fieldName)
