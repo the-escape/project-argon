@@ -336,6 +336,7 @@
 
 
     $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 
 
     $('#locale-select').change(function () {

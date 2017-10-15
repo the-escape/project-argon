@@ -25,12 +25,39 @@ function guid()
 
 function toArray($var)
 {
-    $newVar = [];
-    foreach ($var as $key => $value) {
-        $newVar[$key] = $value;
+    if (is_array($var))
+    {
+        return $var;
     }
 
-    return $newVar;
+    $array = [];
+
+    if (is_object($var))
+    {
+        foreach ($var as $key => $value)
+        {
+            $array[$key] = $value;
+        }
+
+        return $array;
+    }
+
+    if (is_null($var))
+    {
+        return $array;
+    }
+
+    if (is_scalar($var))
+    {
+        return [$var];
+    }
+
+    if (is_resource($var))
+    {
+        return $array;
+    }
+
+    return $array;
 }
 
 function spam_check($input, $min_time_to_fill=2)
@@ -62,11 +89,59 @@ function email_submission($email, array $input, $subject='')
     // validate the email supplied to make sure we can send values without a fail
     $validator = \Validator::make(['email' => $email], ['email' => 'required|email']);
 
-    // log error and values, so we don't loose anything at all
+    $timestamp = date('Y-m-d H:i:s');
+
+    // log error and values, so we don't loose anything
     if ($validator->fails())
     {
-        $error = "Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
-        \Log::error($error." Submission details saved below.");
+        $error = [];
+        $error[] = "Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
+
+        alert_escape($error, $input, $timestamp);
+
+        return false;
+    }
+
+    try
+    {
+        if (!$subject)
+        {
+            $subject = "Form submission @ {$timestamp}";
+        }
+
+        \Mail::send('argon::emails.template', ['content'=>$input], function ($message) use ($email, $subject)
+        {
+            $message->to($email)->subject($subject);
+        });
+    }
+    catch (Exception $e)
+    {
+        $error = [];
+        $error[] = "Invalid attempt to send email to email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
+        $error[] = "Exception Message: {$e->getMessage()}";
+
+        alert_escape($error, $input, $timestamp);
+
+        return false;
+    }
+
+    return true;
+}
+
+function alert_escape(array $error, array $input=[], $timestamp=null)
+{
+    $data = [];
+
+    if (is_null($timestamp))
+    {
+        $timestamp = date('Y-m-d H:i:s');
+    }
+
+    if ($input)
+    {
+        \Log::error(format_message(array_merge($error, ["Submission details saved below."]), PHP_EOL));
+
+        $msg = [];
 
         $msg[] = "Submitted values:";
 
@@ -75,43 +150,62 @@ function email_submission($email, array $input, $subject='')
             $msg[] = "{$k}: $v";
         }
 
-        if ($msg = format_message($msg, PHP_EOL))
+        \Log::info(format_message($msg, PHP_EOL));
+
+        $data['error'] = format_message(array_merge($error, ["Submission details saved in error log"]), PHP_EOL);
+    }
+    else
+    {
+        \Log::error(format_message(array_merge($error), PHP_EOL));
+        $data['error'] = format_message($error, PHP_EOL);
+    }
+
+    $data['trace'] 		= '';
+    $data['line'] 		= __LINE__;
+    $data['file'] 		= __FILE__;
+    $data['timestamp'] 	= $timestamp;
+
+    email_escape($data);
+}
+
+function email_escape($data, $subject=null)
+{
+    try
+    {
+        if (is_null($subject))
         {
-            Log::info($msg);
+            $subject = "Error @ ".config('url', @$_SERVER['REQUEST_URI']);
         }
+        // Backup your default mailer
+        $backup = \Mail::getSwiftMailer();
 
-        $data['error'] 		= $error." Submission details saved in error log.";
-        $data['trace'] 		= '';
-        $data['line'] 		= __LINE__;
-        $data['file'] 		= __FILE__;
+        // Setup your mailer
+        $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587, 'tls');
+        $transport->setUsername('3e7b3aadf7e2be4d5b881c929ba0de87');
+        $transport->setPassword('1d111b1e6bf14be30ad1b7ef133d19e3');
+        // Any other mailer configuration stuff needed...
 
-        \Mail::send('argon::emails.error', $data, function($message)
+        $gmail = new Swift_Mailer($transport);
+
+        // Set the mailer as gmail
+        \Mail::setSwiftMailer($gmail);
+
+        // Send your message
+        \Mail::send('argon::emails.template', ['content'=>$data], function($message) use ($subject)
         {
             $message
                 ->to('pawel-nowak@the-escape.co.uk', 'Error reporting')
-                ->subject('Website - Error!');
+                ->subject($subject);
         });
 
+        // Restore your original mailer
+        \Mail::setSwiftMailer($backup);
+
+    }
+    catch (Exception $e)
+    {
         return false;
     }
-
-    // email address is OK, format a message and email it
-    $msg = "<h3>Submitted values</h3><br>";
-
-    foreach ($input as $k => $v)
-    {
-        $msg .= "<p><strong>{$k}:</strong> ".nl2br($v, true)."</p>";
-    }
-
-    if (!$subject)
-    {
-        $subject = "Form submission (".date('Y-m-d H:i:s').")";
-    }
-
-    \Mail::send('argon::emails.template', ['content'=>$msg], function ($message) use ($email, $subject)
-    {
-        $message->to($email)->subject($subject);
-    });
 
     return true;
 }
@@ -127,8 +221,11 @@ function format_message($message, $glue='<br>')
             // compress array to string format
             $message = implode($glue, $message);
         }
+
         return $message;
     }
+
+    return '';
 }
 
 

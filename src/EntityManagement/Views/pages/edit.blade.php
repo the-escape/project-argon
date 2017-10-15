@@ -241,7 +241,14 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                 <div class="card accordion">
 
                                     <div class="card-header accordion-header">
+
+
                                         <span class="sortable-handle">&#8645;</span>
+
+                                        <span class="grp-preview preview-popover" title="Block preview" data-container="body" data-content=""data-placement="right" data-trigger="hover" data-img="/media/6/1280x610.png">
+                                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                        </span>
+
                                         {{ $group->name }}
 
                                         @if($group->isRenderable())
