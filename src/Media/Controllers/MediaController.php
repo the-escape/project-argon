@@ -377,6 +377,11 @@ class MediaController extends BaseController
         {
             $query = $this->getOrder($query, $request);
         }
+        else
+        {
+            $request->merge(['dir'=>'desc', 'order'=>'uploaded_at']);
+            $query = $this->getOrder($query, $request);
+        }
 
         $perPage = $request->input('perpage', config('argon.medialibrary.perpage', 20));
 
@@ -399,6 +404,11 @@ class MediaController extends BaseController
 
         if ($request->has('order'))
         {
+            $query = $this->getOrder($query, $request);
+        }
+        else
+        {
+            $request->merge(['dir'=>'desc', 'order'=>'uploaded_at']);
             $query = $this->getOrder($query, $request);
         }
 
@@ -1027,12 +1037,12 @@ class MediaController extends BaseController
     public function modal_folderEdit($id, MediaFolderRepository $folderRepository)
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$id])->first();
-        
+
         if ($currentFolder === null)
         {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
-        
+
         if ($currentFolder->getid() === 1)
         {
             return redirect(route("cms:media:folders"))->with('message', "Root folder can't be changed!");
@@ -1097,7 +1107,7 @@ class MediaController extends BaseController
         {
             return redirect(route("cms:media:modal:folders:edit", $id))->with('message', "Folder name can't be empty");
         }
-        
+
         $currentFolder = $folderRepository->update(['name' => $name, 'parent'=>$parent], $id);
 
         return redirect(route("cms:media:modal:folders:edit", $id))->with('message', 'Folder updated!');

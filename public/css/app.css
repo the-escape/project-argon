@@ -6948,6 +6948,18 @@ select[multiple] {
   background-color: #fff;
   color: #373a3c; }
 
+.nav-tabs .nav-item {
+  position: relative; }
+
+.nav-tabs .nav-link {
+  padding-right: 25px; }
+
+.nav-tabs .locale-delete {
+  position: absolute;
+  top: 0px;
+  right: 6px;
+  color: #666; }
+
 .dashboard-actions::after {
   content: "";
   display: table;

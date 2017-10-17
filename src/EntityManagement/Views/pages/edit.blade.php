@@ -3,6 +3,7 @@ $fronEndPage = $page->toPage();
 $defaultFronEndPageUrl = $fronEndPage->getUrl();
 $pageLocaleSlug = $localisation->getLocale()->getSlug();
 $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+$defaultLocalisation = $page->getDefaultLocalisation();
 ?>
 @extends('argon::layout.master')
 
@@ -61,6 +62,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
             </div>
 
             @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
+
                 <ul class="nav nav-tabs">
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
@@ -68,6 +70,9 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
                                 {{$l->getLocale()->getName()}}
                             </a>
+                            @if($defaultLocalisation->getLocaleId() !== $l->getLocaleId())
+                                <a href="{{ route('cms:pages:delete_locale', [$page->getId(), $l->getLocaleId()]) }}" class="locale-delete confirm" data-confirm="Are you sure you want to delete '{{$l->getLocale()->getName()}}' locale."><i class="fa fa-times" aria-hidden="true"></i></a>
+                            @endif
                         </li>
                     @endforeach
                     @if (!$locales->isEmpty())
@@ -85,12 +90,34 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
             @if($revisionsTotal = $revisions->total())
                 <div class="card accordion">
 
-                    <div class="card-header accordion-header">Revisions ({{ $revisionsTotal }})</div>
+                    <div class="card-header accordion-header">
+                        Revisions ({{ $revisionsTotal }})
+
+                        @if($currentRevision->id != $publishedRevision->id)
+                            <span class="accordion-header-details" style="position: relative; top: -2px; float: right; font-size:83%;">
+                                You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.
+                                <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                            </span>
+                        @endif
+
+                    </div>
 
                     <div class="card-block accordion-body">
 
                         <div class="alert alert-info" role="alert">
-                            Current published revision ID: {{ $latest->id }}, created at {{ $latest->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$latest->userWithTrashed->name }}.
+                            @if($currentRevision->id != $publishedRevision->id)
+                                <p>You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.</p>
+                                <p>This is not currently published revision.</p>
+                            @endif
+
+                            <p>Currently published revision ID: {{ $publishedRevision->id }}, created at {{ $publishedRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$publishedRevision->userWithTrashed->name }}.</p>
+
+                            @if($currentRevision->id != $publishedRevision->id)
+                                <p>
+                                    <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                                </p>
+                            @endif
+
                         </div>
 
                         <table class="table table-striped">
@@ -110,7 +137,11 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                     <td>{{ $revision->user->name }}</td>
                                     <td>
                                         <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
-                                        <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+
+                                        <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
+
+                                        <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -219,7 +250,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                 <div class="form-group sortable">
 
-                                    {!! $field->render($latest->getField($field->getId())) !!}
+                                    {!! $field->render($currentRevision->getField($field->getId())) !!}
 
                                 </div>
 
@@ -262,7 +293,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
                                             <div class="form-group sortable">
 
-                                                {!! $field->render($latest->getField($field->getId())) !!}
+                                                {!! $field->render($currentRevision->getField($field->getId())) !!}
 
                                             </div>
 
@@ -283,7 +314,7 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
 
             <button type="submit" class="btn btn-primary save-publish">Save and Publish</button>
             <button type="submit" class="btn btn-primary-outline save-revision" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
-            <a href="#" class="btn btn-warning preview-page" data-preview-id="{{ $latest->id }}">Preview</a>
+            <a href="#" class="btn btn-warning preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
 
