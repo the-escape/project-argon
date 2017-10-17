@@ -344,6 +344,7 @@ class MediaController extends BaseController
             case 'uploaded_at':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('created_at', $dir);
+                $query = $query->orderBy('id', $dir);
                 break;
 
             case 'size':
