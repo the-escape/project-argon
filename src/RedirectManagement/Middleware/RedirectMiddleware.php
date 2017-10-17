@@ -19,7 +19,7 @@ class RedirectMiddleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  \Closure  $next you can also pass multiple parameters as a comma-separated list - avoid whitespace!
+     * @param  string $exclude - parameters as a comma-separated list - avoid whitespace!
      * @return mixed
      */
     public function handle($request, Closure $next, $exclude)
