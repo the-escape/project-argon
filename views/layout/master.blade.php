@@ -301,9 +301,9 @@
             e.stopPropagation();
         })
         .popover({
-        template: '<div class="popover" role="tooltip" style="max-width: 70%;"><div class="popover-arrow"></div><h3 class="popover-title"></h3><div class="popover-content"><div class="data-content"></div></div></div>',
+        template: '<div class="popover" role="tooltip" style="max-width: 400px;"><div class="popover-arrow"></div><h3 class="popover-title"></h3><div class="popover-content"><div class="data-content"></div></div></div>',
         html: true,
-        trigger: 'click',
+        trigger: 'hover',
         content: function () {
             return '<img src="'+$(this).data('img') + '" />';
         }
