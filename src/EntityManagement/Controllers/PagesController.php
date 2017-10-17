@@ -368,19 +368,22 @@ class PagesController extends BaseController
             $localisation = $page->getLocalisation($currentLocale);
 //        }
 
+        $currentRevision = null;
+        $publishedRevision = $localisation->publishedRevision();
+
         if ($revisionId)
         {
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
-            $latestRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
+            $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-            if ($latestRevision === null)
+            if ($currentRevision === null)
             {
                 return back()->with('message', 'Invalid revision.');
             }
         }
         else
         {
-            $latestRevision = $localisation->publishedRevision();
+            $currentRevision = $publishedRevision;
         }
 
         $revisions = $localisation->archivedRevisions(5, ['*'], 'revisions');
@@ -400,13 +403,14 @@ class PagesController extends BaseController
             [
                 'page' => $page,
                 'localisation' => $localisation,
-                'latest' => $latestRevision,
+                'publishedRevision' => $publishedRevision,
                 'root' => $folderRepository->root(),
                 'groups' => $groups,
                 'locales' => $locales,
                 'localeId' => $localeId,
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
+                'currentRevision' => $currentRevision,
             ]
         );
     }
