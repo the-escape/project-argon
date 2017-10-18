@@ -6,6 +6,8 @@ return [
     'client_logo_light' => '/argon/images/logo.png',
     'typography_styles' => '/css/typography.css',
 
+    'block_preview_popover_template' => '<div class="popover" role="tooltip" style="max-width: 600px;"><div class="popover-arrow"></div><h3 class="popover-title"></h3><div class="popover-content"><div class="data-content"></div></div></div>',
+
     'admin_css' => '
         .argon-login h1 { background-color: #fff; }
 
