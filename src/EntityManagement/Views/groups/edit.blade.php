@@ -38,48 +38,6 @@
                     <div class="form-group">
                         <label for="settings" class="required">Settings</label>
 
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="settings[slug][key]" placeholder="slug" value="slug">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ str_slug(old('name', $group->name)) }}" value="">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="settings[location][key]" placeholder="Key" value="location">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name="settings[location][value]" placeholder="i.e. sidebar" value="">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="settings[image][key]" placeholder="Key" value="image">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" name="settings[image][value]" placeholder="url string" value="">
-                            </div>
-                        </div>
-
                         @if($settings = old('settings'))
 
                             @foreach($settings as $setting)
@@ -91,6 +49,49 @@
                             @forelse ($group->settings as $key => $value)
                                 @include('argon::groups.setting')
                             @empty
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="settings[slug][key]" placeholder="slug" value="slug">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ str_slug(old('name', $group->name)) }}" value="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="settings[location][key]" placeholder="Key" value="location">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="settings[location][value]" placeholder="i.e. sidebar" value="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="settings[image][key]" placeholder="Key" value="image">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="settings[image][value]" placeholder="url string" value="">
+                                    </div>
+                                </div>
+
                                 @include('argon::groups.setting')
                             @endforelse
 
