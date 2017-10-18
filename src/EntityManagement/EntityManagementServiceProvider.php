@@ -57,7 +57,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'edit'
         );
         $this->addRoute(
-            'pages/{id}/edit/{locale}',
+            'pages/{id}/edit/{locale}/{revision?}',
             'cms:pages:edit_locale',
             PagesController::class,
             'editLocale'
@@ -93,10 +93,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'revisions'
         );
         $this->addRoute(
-            'restore/{revisionId}',
+            'revision/{revisionId}/restore',
             'cms:revisions:restore',
             PagesController::class,
-            'restore'
+            'revisionRestore'
         );
 
         $this->addRoute(

@@ -31,6 +31,24 @@ select[multiple] {
     color: $standard-color;
 }
 
+.nav-tabs {
+    .nav-item {
+        position: relative;
+    }
+
+    .nav-link {
+        padding-right: 25px;
+    }
+
+    .locale-delete {
+        position: absolute;
+        top: 0px;
+        right: 6px;
+        color: #666;
+    }
+}
+
+
 .dashboard-actions {
     @include clearfix;
 }

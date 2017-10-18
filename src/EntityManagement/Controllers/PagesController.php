@@ -359,7 +359,7 @@ class PagesController extends BaseController
     public function editLocale(
         $pageId,
         $localeId,
-        $clone=null
+        $revisionId=null
     ) {
         $entityRepository = app()->make(EntityRepository::class);
         $groupRepository = app()->make(EntityGroupRepository::class);
@@ -368,14 +368,30 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-        if ($clone) {
-            $localisation = $page->getDefaultLocalisation();
-        } else {
+//        if ($clone) {
+//            $localisation = $page->getDefaultLocalisation();
+//        } else {
             $currentLocale = Locale::find($localeId);
             $localisation = $page->getLocalisation($currentLocale);
-        }
+//        }
 
-        $latestRevision = $localisation->publishedRevision();
+        $currentRevision = null;
+        $publishedRevision = $localisation->publishedRevision();
+
+        if ($revisionId)
+        {
+            $revisionsRepository = app()->make(EntityRevisionRepository::class);
+            $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
+
+            if ($currentRevision === null)
+            {
+                return back()->with('message', 'Invalid revision.');
+            }
+        }
+        else
+        {
+            $currentRevision = $publishedRevision;
+        }
 
         $revisions = $localisation->archivedRevisions(5, ['*'], 'revisions');
 
@@ -394,13 +410,14 @@ class PagesController extends BaseController
             [
                 'page' => $page,
                 'localisation' => $localisation,
-                'latest' => $latestRevision,
+                'publishedRevision' => $publishedRevision,
                 'root' => $folderRepository->root(),
                 'groups' => $groups,
                 'locales' => $locales,
                 'localeId' => $localeId,
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
+                'currentRevision' => $currentRevision,
             ]
         );
     }
@@ -553,7 +570,7 @@ class PagesController extends BaseController
         return view('argon::pages.revisions')->with(compact('revisions'));
     }
 
-    public function restore($revisionId, Request $request)
+    public function revisionRestore($revisionId, Request $request)
     {
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
@@ -579,5 +596,4 @@ class PagesController extends BaseController
 
         return back()->with('message', 'Revision restored.');
     }
-
 }

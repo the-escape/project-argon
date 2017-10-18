@@ -311,6 +311,9 @@
 
 
 
+
+
+
     $('#locale-select').change(function () {
         var val = $(this).val();
         var url = "{!! route('cms:locales:set', ['_ID_']) !!}";
@@ -399,6 +402,20 @@
     }
 
     updateFieldTypeSettings();
+
+
+    $( ".accordion-header-details a" ).click(function(e){
+        e.stopPropagation();
+        e.preventDefault();
+
+        var $this = $(this);
+        var confirm = $this.attr('confirm');
+
+        if (confirm == 'true')
+        {
+            window.location.href = $this.attr("href");
+        }
+    });
 
 
 </script>
