@@ -22,7 +22,7 @@ class RedirectMiddleware
      * @param  string $exclude - parameters as a comma-separated list - avoid whitespace!
      * @return mixed
      */
-    public function handle($request, Closure $next, $exclude)
+    public function handle($request, Closure $next, $exclude=null)
     {
         $REQUEST_URI = filter_input(INPUT_SERVER, 'REQUEST_URI');
 
@@ -32,7 +32,13 @@ class RedirectMiddleware
         }
 
         $path = parse_url($REQUEST_URI, PHP_URL_PATH);
-        $excludes = array_filter(explode(',', $exclude), 'strlen');
+
+        $excludes = [];
+
+        if (!is_null($exclude))
+        {
+            $excludes = array_filter(explode(',', $exclude), 'strlen');
+        }
 
         foreach ($excludes as $exclude)
         {
