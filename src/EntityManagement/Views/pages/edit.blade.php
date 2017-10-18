@@ -200,6 +200,9 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                     <div class="card accordion">
 
                         <div class="card-header accordion-header">
+
+                            @include('argon::pages.partials.group-thumb')
+
                             {{ $group->name }}
 
                             @if($group->isRenderable())
@@ -255,7 +258,12 @@ $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
                                 <div class="card accordion">
 
                                     <div class="card-header accordion-header">
+
+
                                         <span class="sortable-handle">&#8645;</span>
+
+                                        @include('argon::pages.partials.group-thumb')
+
                                         {{ $group->name }}
 
                                         @if($group->isRenderable())

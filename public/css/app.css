@@ -7092,6 +7092,17 @@ body.dashboard {
     border-right: 0;
     border-bottom-right-radius: 0;
     border-top-right-radius: 0; }
+  body.dashboard .grp-preview {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1;
+    color: #373a3c;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem; }
   body.dashboard .ui-sortable-helper {
     display: table;
     /* sorts out width when sorting table rows */ }
