@@ -21,13 +21,6 @@ class DashboardController extends BaseController
 
     public function dashboard(Request $request)
     {
-        $event = event(new AdminAccess($request));
-
-        if(isset($event[0]->return))
-        {
-            return $event[0]->return;
-        }
-
         return View::make('argon::page.overview', []);
     }
 }

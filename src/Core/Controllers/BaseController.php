@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Core\Controllers;
 
+use Escape\Argon\Events\AdminAccess;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -22,5 +23,22 @@ abstract class BaseController extends Controller
         View::share('plugins', app('pluginManager'));
 
         $this->request = $request;
+
+        $this->adminAccessEvent($request);
+    }
+
+    public function adminAccessEvent(Request $request)
+    {
+        $event = event(new AdminAccess($request));
+
+        if(!empty($event[0]->middleware))
+        {
+            foreach ($event[0]->middleware as $middleware)
+            {
+                $this->middleware($middleware);
+            }
+        }
+
+        return;
     }
 }
