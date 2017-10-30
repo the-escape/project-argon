@@ -25,12 +25,39 @@ function guid()
 
 function toArray($var)
 {
-    $newVar = [];
-    foreach ($var as $key => $value) {
-        $newVar[$key] = $value;
+    if (is_array($var))
+    {
+        return $var;
     }
 
-    return $newVar;
+    $array = [];
+
+    if (is_object($var))
+    {
+        foreach ($var as $key => $value)
+        {
+            $array[$key] = $value;
+        }
+
+        return $array;
+    }
+
+    if (is_null($var))
+    {
+        return $array;
+    }
+
+    if (is_scalar($var))
+    {
+        return [$var];
+    }
+
+    if (is_resource($var))
+    {
+        return $array;
+    }
+
+    return $array;
 }
 
 function spam_check($input, $min_time_to_fill=2)
@@ -51,10 +78,11 @@ function spam_check($input, $min_time_to_fill=2)
 }
 
 /**
- * Validated provided email and submits to it provided values.
+ * Validate provided email and submits to it provided values.
  * In case email fails, logs values and emails digital team to handle the issue.
  * @param $email
  * @param array $input
+ * @param string $subject - optional
  * @return bool
  */
 function email_submission($email, array $input, $subject='')
@@ -62,56 +90,113 @@ function email_submission($email, array $input, $subject='')
     // validate the email supplied to make sure we can send values without a fail
     $validator = \Validator::make(['email' => $email], ['email' => 'required|email']);
 
-    // log error and values, so we don't loose anything at all
+    $timestamp = date('Y-m-d H:i:s');
+
     if ($validator->fails())
     {
-        $error = "Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
-        \Log::error($error." Submission details saved below.");
-
-        $msg[] = "Submitted values:";
-
-        foreach ($input as $k => $v)
-        {
-            $msg[] = "{$k}: $v";
-        }
-
-        if ($msg = format_message($msg, PHP_EOL))
-        {
-            Log::info($msg);
-        }
-
-        $data['error'] 		= $error." Submission details saved in error log.";
-        $data['trace'] 		= '';
-        $data['line'] 		= __LINE__;
-        $data['file'] 		= __FILE__;
-
-        \Mail::send('argon::emails.error', $data, function($message)
-        {
-            $message
-                ->to('pawel-nowak@the-escape.co.uk', 'Error reporting')
-                ->subject('Website - Error!');
-        });
-
+        $e = new Exception("Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__);
+        alert_escape($e, $timestamp);
         return false;
     }
 
-    // email address is OK, format a message and email it
-    $msg = "<h3>Submitted values</h3><br>";
-
-    foreach ($input as $k => $v)
+    try
     {
-        $msg .= "<p><strong>{$k}:</strong> ".nl2br($v, true)."</p>";
+        if (!$subject)
+        {
+            $subject = "Form submission @ {$timestamp}";
+        }
+
+        \Mail::send('argon::emails.template', ['content'=>$input], function ($message) use ($email, $subject)
+        {
+            $message->to($email)->subject($subject);
+        });
+    }
+    catch (Exception $e)
+    {
+        alert_escape($e, $timestamp);
+        return false;
     }
 
-    if (!$subject)
+    return true;
+}
+
+/**
+ * Log error and submitted input, then email Escape
+ * @param Exception $error
+ * @param string $timestamp - optional
+ */
+function alert_escape(Exception $e, $timestamp=null)
+{
+    if (is_null($timestamp))
     {
-        $subject = "Form submission (".date('Y-m-d H:i:s').")";
+        $timestamp = date('Y-m-d H:i:s');
     }
 
-    \Mail::send('argon::emails.template', ['content'=>$msg], function ($message) use ($email, $subject)
+    $error = format_error($e);
+    $error['timestamp'] = $timestamp;
+
+    \Log::error($error);
+
+    email_escape($error);
+}
+
+/**
+ * Email Escape using separate escape email config.
+ * This is useful and independent form clients mailjet.
+ * @param $data
+ * @param string $subject - optional
+ * @param string $template - optional
+ * @param string $fromAddress - optional
+ * @param string $fromName - optional
+ * @param array $recepients - optional
+ * @return bool
+ */
+function email_escape($data, $subject=null, $template='argon::emails.error', $fromAddress="error@the-escape.co.uk", $fromName="Error reporting", array $recepients=null)
+{
+    try
     {
-        $message->to($email)->subject($subject);
-    });
+        if (is_null($subject))
+        {
+            $subject = "Error @ ".url();
+        }
+
+        if (is_null($recepients))
+        {
+            $recepients = ['digital@the-escape.co.uk'];
+        }
+
+        // Backup your default mailer
+        $backup = \Mail::getSwiftMailer();
+
+        // Setup your mailer
+        $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587, 'tls');
+        $transport->setUsername('78de28444e70bc50ff74612ecc20caf5');
+        $transport->setPassword('b22630a1b942e81558b3e40c1dd3fec3');
+        // Any other mailer configuration stuff needed...
+
+        $gmail = new Swift_Mailer($transport);
+
+        // Set the mailer as gmail
+        \Mail::setSwiftMailer($gmail);
+
+        // Send your message
+        \Mail::send($template, ['content'=>$data], function($message) use ($subject, $fromAddress, $fromName, $recepients)
+        {
+            $message
+                ->from($fromAddress, $fromName)
+                ->to($recepients)
+                ->subject($subject);
+        });
+
+        // Restore your original mailer
+        \Mail::setSwiftMailer($backup);
+
+    }
+    catch (Exception $e)
+    {
+        \Log::error(format_message($e->getMessage(), PHP_EOL));
+        return false;
+    }
 
     return true;
 }
@@ -127,8 +212,75 @@ function format_message($message, $glue='<br>')
             // compress array to string format
             $message = implode($glue, $message);
         }
+
         return $message;
     }
+
+    return '';
+}
+
+/**
+ * Prepare error data array
+ * @param Exception $e
+ * @return array $data
+ */
+function format_error(Exception $e)
+{
+    $data['msg'] 	    = $e->getMessage();
+    $data['trace'] 		= $e->getTraceAsString();
+    $data['line'] 		= $e->getLine();
+    $data['file'] 		= $e->getFile();
+
+    $data['post']       = empty($_POST) ? request()->all() : $_POST;
+    $data['get']        = @$_GET;
+    $data['files']      = @$_FILES;
+    $data['session']    = @$_SESSION;
+    $data['cookie']     = @$_COOKIE;
+
+    $data['server']     = [];
+
+    // filer server var as they will contain sensitive details from .env file
+    $serverVariables = [
+        'argv',
+        'argc',
+        'GATEWAY_INTERFACE',
+        'SERVER_ADDR',
+        'SERVER_NAME',
+        'SERVER_SOFTWARE',
+        'SERVER_PROTOCOL',
+        'REQUEST_METHOD',
+        'REQUEST_TIME',
+        'REQUEST_TIME_FLOAT',
+        'QUERY_STRING',
+        'DOCUMENT_ROOT',
+        'HTTP_ACCEPT',
+        'HTTP_ACCEPT_CHARSET',
+        'HTTP_ACCEPT_ENCODING',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_CONNECTION',
+        'HTTP_HOST',
+        'HTTP_REFERER',
+        'HTTP_USER_AGENT',
+        'HTTPS',
+        'REMOTE_ADDR',
+        'REMOTE_HOST',
+        'REMOTE_PORT',
+        'REMOTE_USER',
+        'REDIRECT_REMOTE_USER',
+        'SCRIPT_FILENAME',
+        'SERVER_ADMIN',
+        'SERVER_PORT',
+        'SERVER_SIGNATURE',
+        'SCRIPT_NAME',
+        'REQUEST_URI',
+    ];
+
+    foreach ($serverVariables as $serverVariable)
+    {
+        $data['server'][$serverVariable] = array_key_exists($serverVariable, $_SERVER) ? $_SERVER[$serverVariable] : '';
+    }
+
+    return $data;
 }
 
 
@@ -320,6 +472,15 @@ function getUrlWithQueryStringNoEncoding(array $set=[], array $unset=[], $url=nu
     return getUrlWithQueryString($set, $unset, $url, false);
 }
 
+function getUrlNoQueryString($url=null)
+{
+    if (is_null($url))
+    {
+        $url = $_SERVER['REQUEST_URI'];
+    }
+
+    return parse_url($url, PHP_URL_PATH);
+}
 
 /**
  * Sorts collection looking at CMS field values
