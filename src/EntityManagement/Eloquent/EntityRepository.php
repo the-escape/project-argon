@@ -110,24 +110,21 @@ class EntityRepository extends BaseRepository
      */
     public function findByTypeId(array $typeIds, array $order=[], $paginate=null)
     {
-        $r = $this->model->whereIn('entity_type_id', $typeIds);
+        $r = $this->model->whereIn('entity_type_id', $typeIds)->with('type');
 
         foreach ($order as $o)
         {
-            if (!is_array($o)) {
-
+            if (!is_array($o))
+            {
                 $r->orderBy($o);
-
-            } else {
-
-                foreach($o as $column => $order) {
-
-                    $r->orderBy($column, $order);
-
-                }
-
             }
-
+            else
+            {
+                foreach($o as $column => $order)
+                {
+                    $r->orderBy($column, $order);
+                }
+            }
         }
 
         return ($paginate)

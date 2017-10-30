@@ -100,14 +100,10 @@ function email_submission($email, array $input, $subject='')
 
     $timestamp = date('Y-m-d H:i:s');
 
-    // log error and values, so we don't loose anything
     if ($validator->fails())
     {
-        $error = [];
-        $error[] = "Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
-
-        alert_escape($error, $input, $timestamp);
-
+        $e = new Exception("Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__);
+        alert_escape($e, $timestamp);
         return false;
     }
 
@@ -125,12 +121,7 @@ function email_submission($email, array $input, $subject='')
     }
     catch (Exception $e)
     {
-        $error = [];
-        $error[] = "Invalid attempt to send email to email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
-        $error[] = "Exception Message: {$e->getMessage()}";
-
-        alert_escape($error, $input, $timestamp);
-
+        alert_escape($e, $timestamp);
         return false;
     }
 
@@ -138,49 +129,23 @@ function email_submission($email, array $input, $subject='')
 }
 
 /**
- * Log error and submitted input if provided, then email Escape
- * @param array $error
- * @param array $input - optional key => value array
+ * Log error and submitted input, then email Escape
+ * @param Exception $error
  * @param string $timestamp - optional
  */
-function alert_escape(array $error, array $input=[], $timestamp=null)
+function alert_escape(Exception $e, $timestamp=null)
 {
-    $data = [];
-
     if (is_null($timestamp))
     {
         $timestamp = date('Y-m-d H:i:s');
     }
 
-    if ($input)
-    {
-        \Log::error(format_message(array_merge($error, ["Submission details saved below."]), PHP_EOL));
+    $error = format_error($e);
+    $error['timestamp'] = $timestamp;
 
-        $msg = [];
+    \Log::error($error);
 
-        $msg[] = "Submitted values:";
-
-        foreach ($input as $k => $v)
-        {
-            $msg[] = "{$k}: $v";
-        }
-
-        \Log::info(format_message($msg, PHP_EOL));
-
-        $data['error'] = format_message(array_merge($error, ["Submission details saved in error log"]), PHP_EOL);
-    }
-    else
-    {
-        \Log::error(format_message(array_merge($error), PHP_EOL));
-        $data['error'] = format_message($error, PHP_EOL);
-    }
-
-    $data['trace'] 		= '';
-    $data['line'] 		= __LINE__;
-    $data['file'] 		= __FILE__;
-    $data['timestamp'] 	= $timestamp;
-
-    email_escape($data);
+    email_escape($error);
 }
 
 /**
@@ -188,23 +153,33 @@ function alert_escape(array $error, array $input=[], $timestamp=null)
  * This is useful and independent form clients mailjet.
  * @param $data
  * @param string $subject - optional
+ * @param string $template - optional
+ * @param string $fromAddress - optional
+ * @param string $fromName - optional
+ * @param array $recepients - optional
  * @return bool
  */
-function email_escape($data, $subject=null)
+function email_escape($data, $subject=null, $template='argon::emails.error', $fromAddress="error@the-escape.co.uk", $fromName="Error reporting", array $recepients=null)
 {
     try
     {
         if (is_null($subject))
         {
-            $subject = "Error @ ".config('url', @$_SERVER['REQUEST_URI']);
+            $subject = "Error @ ".url();
         }
+
+        if (is_null($recepients))
+        {
+            $recepients = ['digital@the-escape.co.uk'];
+        }
+
         // Backup your default mailer
         $backup = \Mail::getSwiftMailer();
 
         // Setup your mailer
         $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587, 'tls');
-        $transport->setUsername('3e7b3aadf7e2be4d5b881c929ba0de87');
-        $transport->setPassword('1d111b1e6bf14be30ad1b7ef133d19e3');
+        $transport->setUsername('78de28444e70bc50ff74612ecc20caf5');
+        $transport->setPassword('b22630a1b942e81558b3e40c1dd3fec3');
         // Any other mailer configuration stuff needed...
 
         $gmail = new Swift_Mailer($transport);
@@ -213,10 +188,11 @@ function email_escape($data, $subject=null)
         \Mail::setSwiftMailer($gmail);
 
         // Send your message
-        \Mail::send('argon::emails.template', ['content'=>$data], function($message) use ($subject)
+        \Mail::send($template, ['content'=>$data], function($message) use ($subject, $fromAddress, $fromName, $recepients)
         {
             $message
-                ->to('digital@the-escape.co.uk', 'Error reporting')
+                ->from($fromAddress, $fromName)
+                ->to($recepients)
                 ->subject($subject);
         });
 
@@ -226,6 +202,7 @@ function email_escape($data, $subject=null)
     }
     catch (Exception $e)
     {
+        \Log::error(format_message($e->getMessage(), PHP_EOL));
         return false;
     }
 
@@ -248,6 +225,70 @@ function format_message($message, $glue='<br>')
     }
 
     return '';
+}
+
+/**
+ * Prepare error data array
+ * @param Exception $e
+ * @return array $data
+ */
+function format_error(Exception $e)
+{
+    $data['msg'] 	    = $e->getMessage();
+    $data['trace'] 		= $e->getTraceAsString();
+    $data['line'] 		= $e->getLine();
+    $data['file'] 		= $e->getFile();
+
+    $data['post']       = empty($_POST) ? request()->all() : $_POST;
+    $data['get']        = @$_GET;
+    $data['files']      = @$_FILES;
+    $data['session']    = @$_SESSION;
+    $data['cookie']     = @$_COOKIE;
+
+    $data['server']     = [];
+
+    // filer server var as they will contain sensitive details from .env file
+    $serverVariables = [
+        'argv',
+        'argc',
+        'GATEWAY_INTERFACE',
+        'SERVER_ADDR',
+        'SERVER_NAME',
+        'SERVER_SOFTWARE',
+        'SERVER_PROTOCOL',
+        'REQUEST_METHOD',
+        'REQUEST_TIME',
+        'REQUEST_TIME_FLOAT',
+        'QUERY_STRING',
+        'DOCUMENT_ROOT',
+        'HTTP_ACCEPT',
+        'HTTP_ACCEPT_CHARSET',
+        'HTTP_ACCEPT_ENCODING',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_CONNECTION',
+        'HTTP_HOST',
+        'HTTP_REFERER',
+        'HTTP_USER_AGENT',
+        'HTTPS',
+        'REMOTE_ADDR',
+        'REMOTE_HOST',
+        'REMOTE_PORT',
+        'REMOTE_USER',
+        'REDIRECT_REMOTE_USER',
+        'SCRIPT_FILENAME',
+        'SERVER_ADMIN',
+        'SERVER_PORT',
+        'SERVER_SIGNATURE',
+        'SCRIPT_NAME',
+        'REQUEST_URI',
+    ];
+
+    foreach ($serverVariables as $serverVariable)
+    {
+        $data['server'][$serverVariable] = array_key_exists($serverVariable, $_SERVER) ? $_SERVER[$serverVariable] : '';
+    }
+
+    return $data;
 }
 
 
