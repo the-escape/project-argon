@@ -197,6 +197,21 @@ class EntityCache extends Model implements Compressable
         return $entityCache;
     }
 
+    public static function uncache($entityId, $localeId=null)
+    {
+        $query = static::where('entity_id', $entityId);
+
+        if (!is_null($localeId))
+        {
+            $query->where('entity_locale_id', $localeId);
+        }
+
+        $result = $query->delete();
+
+        return $result;
+    }
+
+
     /**
      * @param $fieldValue
      * @return null|stdClass

@@ -58,6 +58,8 @@ class PagesController extends BaseController
     {
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
+        EntityCache::uncache($pageId);
+
 
         return Redirect::route('cms:pages:manage');
     }
@@ -528,6 +530,7 @@ class PagesController extends BaseController
         $localisation = $page->getLocalisation($currentLocale);
 
         $localisation->delete();
+        EntityCache::uncache($pageId, $localeId);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
     }
