@@ -59,8 +59,6 @@ class PagesController extends BaseController
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
-
-
         return Redirect::route('cms:pages:manage');
     }
 
