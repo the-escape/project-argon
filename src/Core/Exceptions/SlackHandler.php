@@ -80,6 +80,7 @@ class SlackHandler extends ExceptionHandler
         $dump .= Auth::user() ? 'User: ' . Auth::user()->name.' ('.Auth::user()->id.")\n":'Guest user';
         $dump .= (Auth::user() ? 'Email: ' . Auth::user()->email:'')."\n\n";
 
+
         $dump_all = [
             'POST' => $_POST,
             'GET' => $_GET,
@@ -103,6 +104,7 @@ class SlackHandler extends ExceptionHandler
                 $dump .= $name." empty\n\n";
             }
         }
+
 
         $allowed_server_variables = [
             'argv',
@@ -142,7 +144,8 @@ class SlackHandler extends ExceptionHandler
         foreach ($allowed_server_variables as $srv_var_name)
         {
             $srv_var_val = array_key_exists($srv_var_name, $_SERVER) ? $_SERVER[$srv_var_name] : null;
-            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$srv_var_val."\n" : '';
+            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".print_r($srv_var_val, 1)."\n" : '';
+
         }
 
         $error_msg = "Exception was thrown in ".

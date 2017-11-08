@@ -142,7 +142,7 @@ class EmailHandler extends ExceptionHandler
         foreach ($allowed_server_variables as $srv_var_name)
         {
             $srv_var_val = array_key_exists($srv_var_name, $_SERVER) ? $_SERVER[$srv_var_name] : null;
-            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".$srv_var_val."<br>" : '';
+            $dump .= $srv_var_val ? "SERVER - ".$srv_var_name.": ".print_r($srv_var_val, 1)."<br>" : '';
         }
 
         $error_msg = "Exception was thrown in ".
