@@ -72,6 +72,7 @@ class EntityCache extends Model implements Compressable
             $localisation = $entity->getDefaultLocalisation();
         }
 
+        // TODO: pass revision from PageController@revisionRestore:601
         $latestRevision = $localisation->latestRevision();
 
         $values = [];

@@ -545,8 +545,10 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
-        foreach ($localisations as $localisation) {
+        foreach ($localisations as $localisation)
+        {
             $solr->indexEntity($page, $localisation);
+            EntityCache::cache($page, $localisation);
         }
 
         return json_encode(['success' => $result]);
@@ -593,7 +595,10 @@ class PagesController extends BaseController
         event(new PageSaved($entity, $localisation, $request));
 
         $solr = app()->make(Solr::class);
+
         $solr->indexEntity($entity, $localisation);
+
+        EntityCache::cache($entity, $localisation);
 
         return back()->with('message', 'Revision restored.');
     }
