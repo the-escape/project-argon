@@ -277,7 +277,7 @@ class PagesController extends BaseController
         {
             $solr->indexEntity($entity, $localisation);
 
-            EntityCache::cache($entity, $localisation, $request);
+            EntityCache::cache($entity, $localisation);
         }
 
         event(new PageSaved($entity, $currentLocalisation, $request));
@@ -598,7 +598,7 @@ class PagesController extends BaseController
 
         $solr->indexEntity($entity, $localisation);
 
-        EntityCache::cache($entity, $localisation);
+        EntityCache::cache($entity, $localisation, $revision);
 
         return back()->with('message', 'Revision restored.');
     }

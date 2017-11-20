@@ -66,18 +66,19 @@ class EntityCache extends Model implements Compressable
         return json_decode($value);
     }
 
-    public static function cache(Entity $entity, Localisation $localisation = null)
+    public static function cache(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
     {
         if ($localisation === null) {
             $localisation = $entity->getDefaultLocalisation();
         }
 
-        // TODO: pass revision from PageController@revisionRestore:601
-        $latestRevision = $localisation->latestRevision();
+        if ($revision === null) {
+            $revision = $localisation->latestRevision();
+        }
 
         $values = [];
         $values['entity_id'] = $entity->id;
-        $values['entity_localisation_id'] = $latestRevision->entity_localisation_id;
+        $values['entity_localisation_id'] = $revision->entity_localisation_id;
         $values['entity_locale_id'] = $localisation->locale_id;
         $values['entity_type_id'] = $entity->entity_type_id;
         $values['entity_type_type'] = $entity->type->type;
@@ -88,7 +89,7 @@ class EntityCache extends Model implements Compressable
         $values['entity_url'] = null;
         $values['entity_updated_at'] = $entity->updated_at->format('Y-m-d H:i:s');
 
-        $fields = $latestRevision->fields;
+        $fields = $revision->fields;
 
         $cacheFields = [];
 
