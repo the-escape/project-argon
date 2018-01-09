@@ -74,6 +74,9 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(RedirectManagementServiceProvider::class);
 
         $this->app->register(SlackServiceProvider::class);
-        class_alias(Slack::class, 'Maknz\Slack\Laravel\Facade');
+
+        // this is how we load the facade in the service provider
+        $loader = AliasLoader::getInstance();
+        $loader->alias('Slack', 'Maknz\Slack\Laravel\Facade');
     }
 }
