@@ -24,7 +24,9 @@ class SitemapController extends Controller
     public function xml()
     {
         // Get all published pages.
-        $pages = $this->entityRepository->pages();
+        $pages = $this->entityRepository->pages([], [
+            'status' => "1"
+        ]);
 
         // Initial XML element.
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" />');
@@ -33,8 +35,8 @@ class SitemapController extends Controller
         $headers['Content-Type'] = 'application/xml';
 
         // Loop through all the pages and attach the relevent XML object.
-        foreach ($pages as $page) {
-
+        foreach ($pages as $page)
+        {
             $urlRaw = $page->toPage()->getUrl();
 
             $url = $xml->addChild('url');
@@ -58,7 +60,8 @@ class SitemapController extends Controller
             }
 
             // If the page has an updated date, include it.
-            if (!is_null($page->updated_at)) {
+            if (!is_null($page->updated_at))
+            {
                 $url->addChild('lastmod', $page->updated_at->format('Y-m-d'));
             }
         }
