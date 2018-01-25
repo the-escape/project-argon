@@ -10,6 +10,7 @@ use Escape\Argon\EntityManagement\Controllers\SitemapController;
 use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
+use Escape\Argon\EntityManagement\FieldTypes\NavTreeFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\TextFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ImageFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\FileFieldType;
@@ -539,5 +540,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 //        $this->fieldTypesManager->registerFieldType(new ColourpickerFieldType());
         $this->fieldTypesManager->registerFieldType(new LocationFieldType());
 //        $this->fieldTypesManager->registerFieldType(new UserFieldType());
+        $this->fieldTypesManager->registerFieldType(new NavTreeFieldType());
     }
 }
