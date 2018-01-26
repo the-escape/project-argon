@@ -4,6 +4,7 @@ namespace Escape\Argon\Navigation;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Navigation\Controllers\NavigationController;
+use Illuminate\Http\Request;
 
 class NavigationServiceProvider extends AbstractPluginServiceProvider
 {
@@ -11,7 +12,8 @@ class NavigationServiceProvider extends AbstractPluginServiceProvider
 
     protected function registerRoutes()
     {
-        $this->addRoute('navigation', 'cms:navigation:manage', NavigationController::class, 'manage');
+        $this->addRoute('navigation', 'cms:navigation:manage', NavigationController::class, 'manage', Request::METHOD_GET);
+        $this->addRoute('/navigation/save', 'cms:navigation:save', NavigationController::class, 'save', Request::METHOD_POST);
     }
 
 //    public function boot()
