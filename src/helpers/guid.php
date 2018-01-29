@@ -549,3 +549,16 @@ function sortByField($collection, $field, $direction='asc')
 
     return $collection;
 }
+
+
+function isJson($value)
+{
+    if (!is_string($value))
+    {
+        return false;
+    }
+
+    json_decode($value);
+
+    return (json_last_error() == JSON_ERROR_NONE);
+}

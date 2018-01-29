@@ -2,46 +2,71 @@
 
 @section('content')
 
-
     <div class="main">
-        <h1>Navigation</h1>
+        <h1>Menu</h1>
 
-        <div id="navtree"></div>
+        <form action="{{ route('cms:menus:create') }}" method="POST">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+            <div class="card">
 
-        <div class="card" id="navtree-form">
+                <div class="card-header">Menu details</div>
 
-            <div class="card-header" id="navtree-header">Edit item</div>
+                <div class="card-block">
 
-            <div class="card-block">
+                    <div class="form-group">
+                        <label for="name" class="required">Name</label>
+                        <input type="text" class="form-control required" id="name" name="name" placeholder="Name">
+                    </div>
 
-                <div class="form-group">
-                    <label for="item_label" class="required">Label</label>
-                    <input type="text" class="form-control required" id="item_label" name="item_label" placeholder="Label">
-                </div>
+                    <div class="form-group">
+                        <label for="slug" class="required">Slug</label>
+                        <input type="text" class="form-control required " id="slug" name="slug" placeholder="slug">
+                    </div>
 
-                <div class="form-group">
-                    <label for="item_url" class="required">URL</label>
-                    <input type="text" class="form-control required " id="item_url" name="item_url" placeholder="URL">
-                </div>
-
-                <div>
-                    <button id="navtree-update" class="btn btn-primary-outline btn-sm">Update item</button>
-                    <button id="navtree-deselect" class="btn btn-primary-outline btn-sm">Deselect</button>
                 </div>
 
             </div>
 
-        </div>
+            <div id="navtree"></div>
 
-        <div>
-            <button id="navtree-add" class="btn btn-primary-outline btn-sm">Add new item</button>
-            <button id="navtree-save" class="btn btn-primary-outline btn-sm">Save all</button>
-        </div>
 
-        <div id="navtree-output" class="form-control">
+            <div class="card" id="navtree-form">
 
-        </div>
+                <div class="card-header" id="navtree-header">Edit item</div>
+
+                <div class="card-block">
+
+                    <div class="form-group">
+                        <label for="item_label" class="required">Label</label>
+                        <input type="text" class="form-control required" id="item_label" name="item_label" placeholder="Label">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item_url" class="required">URL</label>
+                        <input type="text" class="form-control required " id="item_url" name="item_url" placeholder="URL">
+                    </div>
+
+                    <div>
+                        <button id="navtree-update" class="btn btn-primary-outline btn-sm">Update item</button>
+                        <button id="navtree-deselect" class="btn btn-primary-outline btn-sm">Deselect</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div>
+                <button id="navtree-add" class="btn btn-primary-outline btn-sm">Add new item</button>
+                <button id="navtree-save" class="btn btn-primary-outline btn-sm">Save all</button>
+            </div>
+
+
+            <textarea id="navtree-output" class="form-control"></textarea>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </form>
 
     </div>
 @stop
@@ -140,9 +165,13 @@
                 navtreeInstance().deselect_node(selected[0]);
             }
 
+            unfocus();
+
         });
 
         $navtreeAdd.on("click",function(e) {
+
+            e.preventDefault();
 
             var parentId = null;
             var selected = navtreeInstance().get_selected(true);
@@ -158,12 +187,11 @@
 
         $navtreeSave.on("click", function(e) {
             navtreeForm.save();
-//            var v = navtreeInstance().get_json('#', {flat:false});
-//            var output = JSON.stringify(v);
-//            $navtreeOutput.text(output).show();
         });
 
         $navtreeUpdate.on("click", function(e){
+            e.preventDefault();
+
             var selected = navtreeInstance().get_selected(true);
 
             if (selected && selected.length) {
@@ -178,33 +206,39 @@
             }
         });
 
+        $navtreeUpdate.on("click blur", function(e){
+            unfocus();
+        });
 
-//        $( "input[type='text']" ).change(function() {
-//           console.log("change event: " + this.value);
-//        });
+        function unfocus() {
+            if (!$navtreeUpdate.hasClass("btn-primary-outline")) {
+                $navtreeUpdate.addClass("btn-primary-outline");
+            }
 
-        $( "input[type='text']" ).on('keyup', function(e) {
+            if ($navtreeUpdate.hasClass("btn-primary")) {
+                $navtreeUpdate.removeClass("btn-primary");
+            }
+        }
+
+        $("input[type='text']").on('keyup', function(e) {
 
             var initial_value = $(this).data("initial_value");
 
             if (this.value != initial_value) {
-                $navtreeUpdate.removeClass("btn-primary-outline");
-                $navtreeUpdate.addClass("btn-primary");
-            } else {
-                $navtreeUpdate.addClass("btn-primary-outline");
-                $navtreeUpdate.removeClass("btn-primary");
+
+                if ($navtreeUpdate.hasClass("btn-primary-outline")) {
+                    $navtreeUpdate.removeClass("btn-primary-outline");
+                }
+
+                if (!$navtreeUpdate.hasClass("btn-primary")) {
+                    $navtreeUpdate.addClass("btn-primary");
+                }
+
+                return;
             }
 
-
+            unfocus();
         });
-
-//        $.ajaxSetup({
-//            headers: {
-//                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//            }
-//        });
-
-        console.log($('meta[name="csrf-token"]').attr('content'));
 
         var navtreeForm = (function() {
 
@@ -237,30 +271,28 @@
             }
 
             function saveData() {
-                var v = navtreeInstance().get_json('#', {flat:false});
-                var json_output = JSON.stringify(v);
+                var data = navtreeInstance().get_json('#', {flat:false});
+                var json = JSON.stringify(data);
 
-                $.post("/admin/navigation/save", json_output, function() {
-                    if(window.console) console.log('Getting location details...');
-                }, "json")
-                .done(function(data) {
-                    if(window.console) console.log('Location details:');
-                    if(window.console) console.log(data);
-                    // Reload the page
-
-                    if (data && data == "us")
-                    {
-                        window.location.href = window.location.pathname;
-                    }
-                })
-                .fail(function() {
-                    if(window.console) console.log('Failed while getting location details.');
-                })
-                .always(function() {
-                    if(window.console) console.log("Finished getting location details.");
-                });
-
-                return json_output;
+//                var postdata = {
+//                    "json": json
+//                };
+//
+//                $.post("/admin/menus/create", postdata, function() {
+//                    console.log("Request sent...");
+//                }, "json")
+//                .done(function(data) {
+//                    console.log('Request response data:');
+//                    console.log(data);
+//                })
+//                .fail(function() {
+//                    console.log('Request failed.');
+//                })
+//                .always(function() {
+//                    console.log("Request finished.");
+//                });
+//
+//                return json;
             }
 
             function Save() {
