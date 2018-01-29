@@ -37,15 +37,22 @@ class MenusController extends BaseController
     public function save(Request $request)
     {
 
-        $this->validate($this->request, [
+        $rules = [
             'name' => 'required',
             'slug' => 'required',
-        ]);
+            'menu' => 'required',
+        ];
 
+        $validator = $this->getValidationFactory()->make($request->all(), $rules, $messages=[], $customAttributes=[]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->messages()->all(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
 
-        $jsonMenu = $request->get('json');
-
+        $jsonMenu = $request->get('menu');
 
         // json key is required
         if (is_null($jsonMenu))
@@ -56,9 +63,7 @@ class MenusController extends BaseController
         }
 
         // save menu
-        $menu = Menu::create([
-            'menu' => $jsonMenu,
-        ]);
+        $menu = Menu::create($request->all());
 
         if (!$menu)
         {
@@ -67,9 +72,6 @@ class MenusController extends BaseController
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        $json = json_decode($jsonMenu);
-
-        $data = json_encode($json);
 
         return response()->json([
             'success'=> true,

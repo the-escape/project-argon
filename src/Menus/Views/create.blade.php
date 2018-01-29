@@ -62,7 +62,7 @@
             </div>
 
 
-            <textarea id="navtree-output" class="form-control"></textarea>
+            <textarea id="navtree-output" class="form-control" name="menu"></textarea>
 
             <button type="submit" class="btn btn-primary">Save</button>
 
@@ -158,6 +158,7 @@
         });
 
         $navtreeDeselect.on("click",function(e) {
+            e.preventDefault();
 
             var selected = navtreeInstance().get_selected(true);
 
@@ -186,6 +187,7 @@
         });
 
         $navtreeSave.on("click", function(e) {
+            e.preventDefault();
             navtreeForm.save();
         });
 
@@ -273,31 +275,33 @@
             function saveData() {
                 var data = navtreeInstance().get_json('#', {flat:false});
                 var json = JSON.stringify(data);
+                $navtreeOutput.val(json);
 
-//                var postdata = {
-//                    "json": json
-//                };
-//
-//                $.post("/admin/menus/create", postdata, function() {
-//                    console.log("Request sent...");
-//                }, "json")
-//                .done(function(data) {
-//                    console.log('Request response data:');
-//                    console.log(data);
-//                })
-//                .fail(function() {
-//                    console.log('Request failed.');
-//                })
-//                .always(function() {
-//                    console.log("Request finished.");
-//                });
-//
-//                return json;
+                var postdata = $('form').serialize();
+
+                $.post("/admin/menus/create", postdata, function() {
+                    console.log("Request sent...");
+                }, "json")
+                .done(function(data) {
+                    console.log('Request response data:');
+                    console.log(data);
+                    if (data.success)
+                    {
+                        $navtreeOutput.show();
+                    }
+                })
+                .fail(function() {
+                    console.log('Request failed.');
+                })
+                .always(function() {
+                    console.log("Request finished.");
+                });
+
+                return json;
             }
 
             function Save() {
                 var json_output = saveData();
-                $navtreeOutput.text(json_output).show();
             }
 
             return {
