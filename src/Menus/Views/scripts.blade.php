@@ -35,6 +35,10 @@
             SetUrl('');
         }
 
+        function Hide() {
+            $navtreeForm.hide();
+        }
+
         function Edit() {
             $navtreeForm.show()
         }
@@ -87,6 +91,7 @@
             setUrl: SetUrl,
             getUrl: GetUrl,
             clear: Clear,
+            hide: Hide,
             edit: Edit,
             save: Save,
             getData:GetData,
@@ -118,6 +123,7 @@
 
     $navtree.on('deselect_node.jstree', function(e, data) {
         navtreeForm.clear();
+        navtreeForm.hide();
     });
 
     $navtree.on('changed.jstree', function (e, data) {
