@@ -12,10 +12,6 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
 
     protected function registerRoutes()
     {
-//        $this->addRoute('menus', 'cms:menus:manage', MenusController::class, 'manage', Request::METHOD_GET);
-//        $this->addRoute('menus/save', 'cms:menus:save', MenusController::class, 'save', Request::METHOD_POST);
-
-
         $this->addRoute(
             'menus',
             'cms:menus:manage',
@@ -30,7 +26,7 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'menus/create',
-            'cms:menus:create',
+            'cms:menus:save',
             MenusController::class,
             'save',
             Request::METHOD_POST
@@ -43,7 +39,7 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'menus/{id}/edit',
-            'cms:menus:edit',
+            'cms:menus:update',
             MenusController::class,
             'update',
             Request::METHOD_POST
@@ -56,10 +52,10 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
         );
     }
 
-//    public function boot()
-//    {
-//        parent::boot();
-//    }
+    public function boot()
+    {
+        parent::boot();
+    }
 
     public function startup()
     {

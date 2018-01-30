@@ -13,12 +13,17 @@ class Menu extends Model
 
     protected $fillable = ["menu", "slug", "name", ];
 
-    public function getMenusAttribute($value)
+    public function getMenuAttribute($value)
     {
+        if (!$value)
+        {
+            return [];
+        }
+
         return json_decode($value);
     }
 
-    public function setMenusAttribute($value)
+    public function setMenuAttribute($value)
     {
         if (!isJson($value))
         {
@@ -26,5 +31,10 @@ class Menu extends Model
         }
 
         $this->attributes['menu'] = $value;
+    }
+
+    public function json()
+    {
+        return $this->attributes['menu'];
     }
 }
