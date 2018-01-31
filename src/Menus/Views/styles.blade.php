@@ -10,14 +10,15 @@
     }
 
     #navtree-output {
-        display: none;
+        /*display: none;*/
         font-family: monospace;
         margin: 20px 0;
         min-height: 400px;
         height: auto;
     }
 
-    #navtree-add-child {
+    #navtree-add-child,
+    #navtree-remove {
         display: none;
     }
 

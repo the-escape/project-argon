@@ -4,6 +4,7 @@
     var $navtree =  $('#navtree'),
         $navtreeAddRoot = $("#navtree-add-root"),
         $navtreeAddChild = $("#navtree-add-child"),
+        $navtreeRemove = $("#navtree-remove"),
         $navtreeForm = $("#navtree-form"),
         $navtreeUpdate = $("#navtree-update"),
         $navtreeDeselect = $("#navtree-deselect"),
@@ -133,10 +134,8 @@
         if (selected && selected.length) {
 
             var node = data.instance.get_node(data.selected[0]);
-            var node_id   = (node.id);
-            var $node = $("#"+node_id);
             var item_label = node.text;
-            var item_url = $node.attr("item_url");
+            var item_url = node.data.url;
 
             navtreeForm.setLabel(item_label);
             navtreeForm.setUrl(item_url);
@@ -146,13 +145,19 @@
             navtreeForm.edit();
 
             $navtreeAddChild.show()
+            $navtreeRemove.show()
 
         } else {
 
             $navtreeAddChild.hide()
+            $navtreeRemove.hide()
 
         }
 
+        navtreeForm.save();
+    });
+
+    $navtree.on('move_node.jstree', function (e, data) {
         navtreeForm.save();
     });
 
@@ -172,7 +177,7 @@
 
         e.preventDefault();
 
-        navtreeInstance().create_node(null ,  {"text" : "New element", "li_attr" : {"item_label" : "New element", "item_url":"#" } }, "last", function(){
+        navtreeInstance().create_node(null ,  {"text" : "New element", "data":{"label" : "New element", "url":"#" } }, "last", function(){
             $navtree.jstree("deselect_all");
         });
     });
@@ -188,9 +193,22 @@
             parentId = selected[0].id;
         }
 
-        navtreeInstance().create_node(parentId ,  {"text" : "New element", "li_attr" : {"item_label" : "New element", "item_url":"#" } }, "last", function(){
+        navtreeInstance().create_node(parentId ,  {"text" : "New element", "data":{"label" : "New element", "url":"#" }  }, "last", function(){
             $navtree.jstree("deselect_all");
         });
+    });
+
+
+    $navtreeRemove.on("click", function(e){
+        e.preventDefault();
+
+        var selected = navtreeInstance().get_selected(true);
+
+        if (selected && selected.length) {
+            var node = selected[0];
+            navtreeInstance().delete_node(node)
+            navtreeForm.save();
+        }
     });
 
     $navtreeUpdate.on("click", function(e){
@@ -204,9 +222,12 @@
             var item_label = navtreeForm.getLabel();
             var item_url = navtreeForm.getUrl();
 
-            node.li_attr["item_url"] =  item_url;
+            node.data["label"] = item_label;
+            node.data["url"] = item_url;
 
             $navtree.jstree('rename_node', node , item_label );
+
+            navtreeForm.save();
         }
     });
 
@@ -221,10 +242,7 @@
         var initial_value = $(this).data("initial_value");
 
         if (this.value != initial_value) {
-
-
             navtreeForm.focusUpdateBtn();
-
             return;
         }
 

@@ -41,6 +41,7 @@
                     <div>
                         <button id="navtree-add-root" class="btn btn-primary-outline btn-sm">Add new item</button>
                         <button id="navtree-add-child" class="btn btn-primary-outline btn-sm">Add child item</button>
+                        <button id="navtree-remove" class="btn btn-primary-outline btn-sm">Remove item</button>
                     </div>
                 </div>
 
