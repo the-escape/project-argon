@@ -13,7 +13,10 @@
     var navtreeForm = (function() {
 
         var $item_label = $("#item_label"),
-            $item_url = $("#item_url");
+            $item_url = $("#item_url"),
+            $item_class = $("#item_class"),
+            $item_id = $("#item_id"),
+            $item_target = $("#item_target");
 
         function SetLabel(value) {
             return $item_label.val(value);
@@ -31,9 +34,36 @@
             return $item_url.val();
         }
 
+        function SetClass(value) {
+            return $item_class.val(value);
+        }
+
+        function GetClass() {
+            return $item_class.val();
+        }
+
+        function SetId(value) {
+            return $item_id.val(value);
+        }
+
+        function GetId() {
+            return $item_id.val();
+        }
+
+        function SetTarget(value) {
+            return $item_target.val(value);
+        }
+
+        function GetTarget() {
+            return $item_target.val();
+        }
+
         function Clear() {
             SetLabel('');
             SetUrl('');
+            SetClass('');
+            SetId('');
+            SetTarget('');
         }
 
         function Hide() {
@@ -91,6 +121,12 @@
             getLabel: GetLabel,
             setUrl: SetUrl,
             getUrl: GetUrl,
+            setClass: SetClass,
+            getClass: GetClass,
+            setId: SetId,
+            getId: GetId,
+            setTarget: SetTarget,
+            getTarget: GetTarget,
             clear: Clear,
             hide: Hide,
             edit: Edit,
@@ -99,6 +135,7 @@
             unfocusUpdateBtn:UnfocusUpdateBtn,
             focusUpdateBtn:FocusUpdateBtn
         };
+
     })();
 
     $navtree.jstree({
@@ -136,9 +173,15 @@
             var node = data.instance.get_node(data.selected[0]);
             var item_label = node.text;
             var item_url = node.data.url;
+            var item_class = node.data.class;
+            var item_id = node.data.id;
+            var item_target = node.data.target;
 
             navtreeForm.setLabel(item_label);
             navtreeForm.setUrl(item_url);
+            navtreeForm.setClass(item_class);
+            navtreeForm.setId(item_id);
+            navtreeForm.setTarget(item_target);
 
             $("#item_label").data('initial_value', item_label);
 
@@ -177,7 +220,7 @@
 
         e.preventDefault();
 
-        navtreeInstance().create_node(null ,  {"text" : "New element", "data":{"label" : "New element", "url":"#" } }, "last", function(){
+        navtreeInstance().create_node(null ,  {"text" : "New element", "data":{"label" : "New element", "url":"#", "class": "", "id": "", "target": "" } }, "last", function(){
             $navtree.jstree("deselect_all");
         });
     });
@@ -193,7 +236,7 @@
             parentId = selected[0].id;
         }
 
-        navtreeInstance().create_node(parentId ,  {"text" : "New element", "data":{"label" : "New element", "url":"#" }  }, "last", function(){
+        navtreeInstance().create_node(parentId ,  {"text" : "New element", "data":{"label" : "New element", "url":"#", "class": "", "id": "", "target": "" }  }, "last", function(){
             $navtree.jstree("deselect_all");
         });
     });
@@ -221,9 +264,15 @@
 
             var item_label = navtreeForm.getLabel();
             var item_url = navtreeForm.getUrl();
+            var item_class = navtreeForm.getClass();
+            var item_id = navtreeForm.getId();
+            var item_target = navtreeForm.getTarget();
 
             node.data["label"] = item_label;
             node.data["url"] = item_url;
+            node.data["class"] = item_class;
+            node.data["id"] = item_id;
+            node.data["target"] = item_target;
 
             $navtree.jstree('rename_node', node , item_label );
 

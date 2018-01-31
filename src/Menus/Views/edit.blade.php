@@ -47,7 +47,6 @@
 
             </div>
 
-
             <div class="card" id="navtree-form">
 
                 <div class="card-header" id="navtree-header">Edit item</div>
@@ -64,6 +63,21 @@
                         <input type="text" class="form-control required " id="item_url" name="item_url" placeholder="URL">
                     </div>
 
+                    <div class="form-group">
+                        <label for="item_class" class="required">Class(es)</label>
+                        <input type="text" class="form-control required " id="item_class" name="item_class" placeholder="Class(es)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item_id" class="required">ID</label>
+                        <input type="text" class="form-control required " id="item_id" name="item_id" placeholder="ID">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item_target" class="required">Target</label>
+                        <input type="text" class="form-control required " id="item_target" name="item_target" placeholder="Target">
+                    </div>
+
                     <div>
                         <button id="navtree-update" class="btn btn-primary-outline btn-sm">Update item</button>
                         <button id="navtree-deselect" class="btn btn-primary-outline btn-sm">Deselect</button>
@@ -72,9 +86,6 @@
                 </div>
 
             </div>
-
-
-
 
             <textarea id="navtree-output" class="form-control" name="menu">{{ old('menu', $menu->json()) }}</textarea>
 
