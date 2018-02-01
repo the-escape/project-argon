@@ -8,6 +8,44 @@ function entityCache()
     return app()->make('entityCache');
 }
 
+/**
+ * Attach all menus to app for further sharing to avoid querying same stuff again.
+ * @param null $slug
+ * @param null $default
+ * @return mixed $menu or $menus
+ */
+function menuCache($slug=null, $default=null)
+{
+    $bound = app()->bound('menus');
+
+    if (!$bound)
+    {
+        app()->singleton('menus', function()
+        {
+            $menuRepository = app()->make(MenuRepository::class);
+            $menus = $menuRepository->all();
+            return $menus;
+        });
+    }
+
+    $menus = app()->make("menus");
+
+    if (!is_null($slug))
+    {
+        foreach ($menus as $menu)
+        {
+            if ($menu->slug == $slug)
+            {
+                return $menu;
+            }
+        }
+
+        return $default;
+    }
+
+    return $menus;
+}
+
 function guid()
 {
     return sprintf(
