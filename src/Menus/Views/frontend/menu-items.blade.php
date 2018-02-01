@@ -10,7 +10,7 @@
 
             @foreach($menu->children as $child)
 
-                @include("agron_menus::frontend.menu-items", ["menu" => $child])
+                @include("argon_menus::frontend.menu-items", ["menu" => $child])
 
             @endforeach
 
