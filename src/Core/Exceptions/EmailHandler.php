@@ -151,10 +151,11 @@ class EmailHandler extends ExceptionHandler
             "<br><br>Info about the request:<br><br>".
             "<pre>".$dump."</pre>";
 
+        $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : config('app.url');
 
-        Mail::send('argon::emails.template', ['content' => $error_msg], function ($message) {
+        Mail::send('argon::emails.template', ['content' => $error_msg], function ($message) use ($host) {
             $message->to('digital@the-escape.co.uk');
-            $message->subject('Error - '.$_SERVER['HTTP_HOST']);
+            $message->subject('Error - '.$host);
         });
     }
 }
