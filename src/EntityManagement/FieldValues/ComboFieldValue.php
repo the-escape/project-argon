@@ -211,6 +211,18 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
     public function fieldExists($field_slug)
     {
+        // check if handling cached combo
+        if ($this->subfields->isEmpty() && $this->data)
+        {
+            $currentIteration = @array_values($this->data)[0];
+            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($field_slug, $currentIteration->fields))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        // legacy check if handling page combo
         $fields = $field = $this->subfields;
         foreach ($fields as $field) {
             $fs = $field->getField()->field_slug;
@@ -220,7 +232,6 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         }
         return false;
     }
-
 
 
     public function __toString()
