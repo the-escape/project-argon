@@ -573,7 +573,7 @@ class EntityCache extends Model implements Compressable
         return $this->blocks($whereArray)->first();
     }
 
-    public function blocks(array $where=null)
+    public function blocks(array $where=null, array $order=null)
     {
         $cache = $this->where('entity_type_type', 'block');
 
@@ -592,6 +592,15 @@ class EntityCache extends Model implements Compressable
 
                 $cache->where($k, $v);
             }
+        }
+
+        if (!is_null($order))
+        {
+            foreach ($order as $column => $dir)
+            {
+                $cache->orderBy($column, $dir);
+            }
+
         }
 
         return $cache->get();
