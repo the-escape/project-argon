@@ -29,7 +29,7 @@
 
             if (property_exists($field->settings, $name))
             {
-                if (in_array($field->settings->$name, [1, true, 'true'], true))
+                if (in_array($field->settings->$name, [1, '1', true, 'true'], true))
                 {
                     $checked = true;
                 } else {
