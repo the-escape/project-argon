@@ -148,6 +148,11 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         $this->position = 0;
     }
 
+    public function getId()
+    {
+        return$this->current()->getId();
+    }
+
     /**
      * @deprecated
      * Legacy method not recommended. Will be removed at some point.
