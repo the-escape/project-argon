@@ -131,7 +131,7 @@
                                 <span>{{ current($opt_value) }}</span>
                             </td>
                             <td>
-                                {{--<input type="hidden" name="options[]" value="{{current($opt_value)}}">--}}
+                                <input type="hidden" name="options[][{{ key($opt_value) }}]" value="{{current($opt_value)}}">
                                 @if($field->type->getParentId())
                                     <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:fields:options:edit', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Edit</a>
                                     <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:combos:fields:options:delete', [$type->getId(), $field->type->getParentId(), $field->type->getId(), $opt_id]) }}">Remove</a>
