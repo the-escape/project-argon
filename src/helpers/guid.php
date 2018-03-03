@@ -107,6 +107,12 @@ function toArray($var)
     return $array;
 }
 
+/**
+ * @deprecated Not recommended. Use \Escape\Argon\EntityManagement\Helpers\Validation::spamCheck instead.
+ * @param $input
+ * @param int $min_time_to_fill
+ * @return bool
+ */
 function spam_check($input, $min_time_to_fill=2)
 {
     // If the bot catcher field is populated or the form was loaded and submitted in under $min_time_to_fill seconds
