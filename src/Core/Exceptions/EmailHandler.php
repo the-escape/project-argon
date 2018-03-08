@@ -94,7 +94,7 @@ class EmailHandler extends ExceptionHandler
             {
                 foreach($data as $k => $v)
                 {
-                    $dump .= $name." - ".$k.": ".$v."<br>";
+                    $dump .= $name." - ".$k.": ".print_r($v, 1)."<br>";
                 }
                 $dump .= "<br>";
             }

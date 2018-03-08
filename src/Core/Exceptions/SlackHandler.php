@@ -95,7 +95,7 @@ class SlackHandler extends ExceptionHandler
             {
                 foreach($data as $k => $v)
                 {
-                    $dump .= $name." - ".$k.": ".$v."\n";
+                    $dump .= $name." - ".$k.": ".print_r($v, 1)."\n";
                 }
                 $dump .= "\n";
             }
