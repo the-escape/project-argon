@@ -66,6 +66,12 @@ class Validation
         }
 
         $sessionTimestamp = $request->session()->get('_timestamp');
+
+        if (is_null($sessionTimestamp))
+        {
+            throw new SpamException("Spam prevented, undefined session field `_timestamp`.");
+        }
+
         $requestTimestamp = $request->input('_timestamp');
 
         if ($sessionTimestamp != $requestTimestamp)
