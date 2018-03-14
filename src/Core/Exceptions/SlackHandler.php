@@ -43,7 +43,7 @@ class SlackHandler extends ExceptionHandler
             ? $e->getStatusCode()
             : $e->getCode();
 
-        if (in_array($errorCode, [404, 405]))
+        if (in_array($errorCode, [404, 405, 503]))
         {
             return;
         }
@@ -95,7 +95,7 @@ class SlackHandler extends ExceptionHandler
             {
                 foreach($data as $k => $v)
                 {
-                    $dump .= $name." - ".$k.": ".$v."\n";
+                    $dump .= $name." - ".$k.": ".print_r($v, 1)."\n";
                 }
                 $dump .= "\n";
             }

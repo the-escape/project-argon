@@ -218,13 +218,22 @@ function email_escape($data, $subject=null, $template='argon::emails.error', $fr
             $recepients = ['digital@the-escape.co.uk'];
         }
 
+        $ERROR_MAIL_HOST = env("ERROR_MAIL_HOST", 'in-v3.mailjet.com');
+        $ERROR_MAIL_PORT = env("ERROR_MAIL_PORT", 587);
+        $ERROR_MAIL_ENCRYPTION = env("ERROR_MAIL_ENCRYPTION", 'tls');
+        $ERROR_MAIL_USERNAME = env("ERROR_MAIL_USERNAME", '78de28444e70bc50ff74612ecc20caf5');
+        $ERROR_MAIL_PASSWORD = env("ERROR_MAIL_PASSWORD", 'b22630a1b942e81558b3e40c1dd3fec3');
+        $ERROR_MAIL_FROM_ADDRESS = env("ERROR_MAIL_FROM_ADDRESS", $fromAddress);
+        $ERROR_MAIL_FROM_NAME = env("ERROR_MAIL_FROM_NAME", $fromName);
+
+
         // Backup your default mailer
         $backup = \Mail::getSwiftMailer();
 
         // Setup your mailer
-        $transport = Swift_SmtpTransport::newInstance('in-v3.mailjet.com', 587, 'tls');
-        $transport->setUsername('78de28444e70bc50ff74612ecc20caf5');
-        $transport->setPassword('b22630a1b942e81558b3e40c1dd3fec3');
+        $transport = Swift_SmtpTransport::newInstance($ERROR_MAIL_HOST, $ERROR_MAIL_PORT, $ERROR_MAIL_ENCRYPTION);
+        $transport->setUsername($ERROR_MAIL_USERNAME);
+        $transport->setPassword($ERROR_MAIL_PASSWORD);
         // Any other mailer configuration stuff needed...
 
         $gmail = new Swift_Mailer($transport);
@@ -233,10 +242,10 @@ function email_escape($data, $subject=null, $template='argon::emails.error', $fr
         \Mail::setSwiftMailer($gmail);
 
         // Send your message
-        \Mail::send($template, ['content'=>$data], function($message) use ($subject, $fromAddress, $fromName, $recepients)
+        \Mail::send($template, ['content'=>$data], function($message) use ($subject, $ERROR_MAIL_FROM_ADDRESS, $ERROR_MAIL_FROM_NAME, $recepients)
         {
             $message
-                ->from($fromAddress, $fromName)
+                ->from($ERROR_MAIL_FROM_ADDRESS, $ERROR_MAIL_FROM_NAME)
                 ->to($recepients)
                 ->subject($subject);
         });
