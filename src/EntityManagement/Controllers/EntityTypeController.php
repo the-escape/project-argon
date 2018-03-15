@@ -248,16 +248,24 @@ class EntityTypeController extends BaseController
 
         $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
 
-        $defaultSettings = $fieldType->getDefaultSettings();
+        $settings = $fieldType->getDefaultSettings();
 
-        // if field type has changed, reset settings
-        if ($field->field_type != $fieldType->getKey()) {
-            $settings = $defaultSettings;
-        } else {
-            // otherwise update setting
-            $settings = $field->settings;
-            foreach ($defaultSettings as $k => $v) {
-                $settings->{$k} = $request->input($k, $v);
+        if ($field->field_type == $fieldType->getKey())
+        {
+            $fieldSettings = $field->settings;
+
+            foreach ($settings as $settingKey => &$settingValue)
+            {
+                foreach ($fieldSettings as $fieldSettingKey => &$fieldSettingValue)
+                {
+                    if ($settingKey != $fieldSettingKey)
+                    {
+                        continue;
+                    }
+
+                    $settingValue = Input::get($settingKey, $fieldSettingValue);
+                    break;
+                }
             }
         }
 
@@ -797,17 +805,26 @@ class EntityTypeController extends BaseController
 
         $combo = $fieldRepository->find($comboId);
 
-        $defaultSettings = $fieldType->getDefaultSettings();
-
         $field = $fieldRepository->find($fieldId);
 
-        // if field type has changed, reset settings
-        if ($field->field_type != $fieldType->getKey()) {
-            $settings = $defaultSettings;
-        } else { // otherwise update setting
-            $settings = $field->settings;
-            foreach ($settings as $k => &$v) {
-                $v = Input::get($k, $v);
+        $settings = $fieldType->getDefaultSettings();
+
+        if ($field->field_type == $fieldType->getKey())
+        {
+            $fieldSettings = $field->settings;
+
+            foreach ($settings as $settingKey => &$settingValue)
+            {
+                foreach ($fieldSettings as $fieldSettingKey => &$fieldSettingValue)
+                {
+                    if ($settingKey != $fieldSettingKey)
+                    {
+                        continue;
+                    }
+
+                    $settingValue = Input::get($settingKey, $fieldSettingValue);
+                    break;
+                }
             }
         }
 

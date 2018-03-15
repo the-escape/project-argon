@@ -24,6 +24,7 @@ elixir(function(mix) {
             'fields/combo.js',
             'fields/datetime.js',
             'fields/file.js',
+            'fields/item.js',
             'fields/select.js',
             'fields/text.js',
             'fields/wysiwyg.js',
