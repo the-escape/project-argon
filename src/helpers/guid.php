@@ -616,3 +616,62 @@ function isJson($value)
 
     return (json_last_error() == JSON_ERROR_NONE);
 }
+
+
+/**
+ * Unified way of presenting messages regardless if the value passes was a string, array or validator object.
+ *
+ * @param $message
+ * @param null $default
+ * @return array|null
+ */
+function getMessage($message, $default=null)
+{
+    if (is_null($message))
+    {
+        return $default;
+    }
+
+    if (is_scalar($message))
+    {
+        return [$message];
+    }
+
+    if (is_array($message))
+    {
+        return $message;
+    }
+
+    if (is_object($message))
+    {
+        if ($message instanceof Illuminate\Support\MessageBag)
+        {
+            return $message->all();
+        }
+
+        if ($message instanceof Illuminate\Support\ViewErrorBag)
+        {
+            $bags = $message->getBags();
+            $msg = [];
+
+            foreach ($bags as $bag)
+            {
+                $msg = array_merge($msg, $bag->all());
+            }
+
+            if ($msg)
+            {
+                return $msg;
+            }
+        }
+
+        if (method_exists($message, "all"))
+        {
+            return $message->all();
+        }
+
+        return toArray($message);
+    }
+
+    return $default;
+}
