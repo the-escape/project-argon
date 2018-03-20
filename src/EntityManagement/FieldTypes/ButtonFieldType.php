@@ -3,15 +3,14 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
-use Escape\Argon\EntityManagement\FieldValues\TextFieldValue;
+use Escape\Argon\EntityManagement\FieldValues\ButtonFieldValue;
 
-class NavTreeFieldType extends AbstractFieldType
+
+class ButtonFieldType extends AbstractFieldType
 {
-    protected $name = 'Nav Tree';
+    protected $name = 'Button';
 
-    protected $key = 'navtree';
-
-    protected $group;
+    protected $key = 'button';
 
     protected $properties = [
         'required' => [
@@ -20,26 +19,31 @@ class NavTreeFieldType extends AbstractFieldType
             'default' => false,
             'help' => null,
         ],
+        'multiple' => [
+            'label' => 'Multiple',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Allow multiple instances of a field (cloning).",
+        ],
     ];
 
     public function parseData($data = null)
     {
         if ($data instanceof FieldData)
         {
-            return new TextFieldValue($data->value);
+            return new ButtonFieldValue($data->value);
         }
 
-        return new TextFieldValue($data);
-    }
-
-    public function isMultiline()
-    {
-        return (bool)$this->getSetting('multiline');
+        return new ButtonFieldValue($data);
     }
 
     public function getFormFieldName($hash)
     {
-        return parent::getFormFieldName($hash) . '[]';
+        if ($this->isInCombo()) {
+            return "combo[{$this->getParentId()}][$hash][fields][{$this->getId()}]";
+        } else {
+            return "fields[{$this->getId()}][$hash]";
+        }
     }
 
     public function render($value = null, $data = [])
@@ -47,12 +51,12 @@ class NavTreeFieldType extends AbstractFieldType
         if (!$this->isInCombo()) {
             $submitted = old('fields.' . $this->getId());
             if ($submitted !== null) {
-                $value = new TextFieldValue($submitted);
+                $value = new ButtonFieldValue($submitted);
             }
         }
 
         if ($value === null) {
-            $value = new TextFieldValue();
+            $value = new ButtonFieldValue();
         }
 
         // if field is not multiple, get first key->value pair of value array
@@ -67,10 +71,6 @@ class NavTreeFieldType extends AbstractFieldType
             ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
         );
 
-        if ($this->isMultiline()) {
-            return view('argon::fields.type.textarea', $data)->render();
-        } else {
-            return view('argon::fields.type.text', $data)->render();
-        }
+        return view('argon::fields.type.button', $data)->render();
     }
 }

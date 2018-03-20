@@ -10358,6 +10358,12 @@ body.medialib.medialib-modal .main {
   margin-bottom: 1rem;
 }
 
+* + .field--options-controls,
+* + .field--options {
+  padding-top: 0.75rem;
+  clear: both;
+}
+
 .field-boolean input[type=radio] {
   display: none;
 }

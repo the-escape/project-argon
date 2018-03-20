@@ -8,6 +8,15 @@ $(document).on('click', '.field .field-clone', function(e) {
     $(this).closest('.field').trigger('clone');
 })
 
+$(document).on('click', '.field--options-toggle', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var $options = $this.parents('.field--options-parent').find(".field--options");
+    if ($options.length) {
+        $options.slideToggle();
+    }
+});
+
 argon.fields = {};
 
 argon.fields.clone = function(field) {
