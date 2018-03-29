@@ -26,9 +26,45 @@ class UserController extends BaseController
         parent::__construct($request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return View::make('argon::user.users', ['users' => $this->userRepository]);
+        $roles = $this->roleRepository->all();
+
+        $perPage = $request->input('perpage', 20);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $this->userRepository->model();
+        $query = $model::orderBy($orderBy, $orderDir);
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('email', 'LIKE', "%{$search}%")
+                    ->orWhere('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($role = $request->input('role'))
+        {
+            $query = $query->whereHas('roles', function($q) use ($role) {
+                $q->where('role_id','=',$role);
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $users = $query->paginate($perPage);
+
+        return View::make('argon::user.users', [
+            'users' => $users,
+            'roles' => $roles,
+            'request' => $request
+        ]);
     }
 
     public function profile()
@@ -99,5 +135,35 @@ class UserController extends BaseController
         $this->userRepository->create(Input::all());
 
         return Redirect::route('cms:user:manage')->with('message', Lang::get('argon-users::user.created'));
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'email':
+                $query = $query->orderBy('email', $dir);
+                break;
+
+            case 'created_at':
+                $query = $query->orderBy('created_at', $dir);
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }
