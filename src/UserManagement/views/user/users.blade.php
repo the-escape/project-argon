@@ -106,19 +106,45 @@
                 </tbody>
             </table>
 
-            <div class="pagination pagination-media">
+            @if($users->lastPage() > 1)
 
-                <a href="{{ $users->previousPageUrl() }}" class="btn btn-sm btn-secondary">Previous</a>
+                <?php
+                $pagination = easyPagination(range(1, $users->total()), $users->perPage(), $users->currentPage());
+                $presenter = paginationPresenter($pagination, '...', 1, 2, function($element, $hellip, $current_page_number)
+                {
+                    if ($element != $hellip)
+                    {
+                        return '<li class="page-item class="'.(($element == $current_page_number) ? "active" : "").'"><a class="page-link" href="'.getUrlWithQueryString(['page'=>$element]).'">'.$element.'</a></li>';
+                    }
+                    return '<li class="page-item"><span class="page-link">'.$element.'</span></li>';
+                });
+                ?>
 
-                @for($i=1; $i<=$users->lastPage(); $i++)
+                <nav>
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item @if(!$pagination['page_prev']) disabled @endif">
+                            @if($pagination['page_prev'])
+                                <a class="page-link" href="{{ getUrlWithQueryString(['page'=>$pagination['page_prev']])  }}" tabindex="-1">Previous</a>
+                            @else
+                                <span class="page-link">Previous</span>
+                            @endif
+                        </li>
 
-                    <a href="{{ getUrlWithQueryString(['page'=>$i]) }}" class="btn btn-sm btn-secondary @if($i == $users->currentPage()) active @endif">{{ $i }}</a>
+                        @foreach ($presenter as $li)
+                            {!! $li !!}
+                        @endforeach
 
-                @endfor
+                        <li class="page-item @if(!$pagination['page_next']) disabled @endif">
+                            @if($pagination['page_next'])
+                                <a class="page-link" href=" {{ getUrlWithQueryString(['page'=>$pagination['page_next']])  }}">Next</a>
+                            @else
+                                <span class="page-link">Next</span>
+                            @endif
+                        </li>
+                    </ul>
+                </nav>
 
-                <a href="{{ $users->nextPageUrl() }}" class="btn btn-sm btn-secondary">Next</a>
-
-            </div>
+            @endif
         </div>
     </div>
 @stop

@@ -30,7 +30,7 @@ class UserController extends BaseController
     {
         $roles = $this->roleRepository->all();
 
-        $perPage = $request->input('perpage', 20);
+        $perPage = $request->input('perpage', 25);
         $orderBy = $request->input('order', 'id');
         $orderDir = $request->input('dir', 'asc');
 
