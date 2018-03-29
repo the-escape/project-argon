@@ -145,6 +145,11 @@ abstract class AbstractFieldType
         return (bool)$this->getSetting('multiple');
     }
 
+    public function allowMultipleInstances()
+    {
+        return (bool)$this->getSetting('multiple_instances');
+    }
+
     public function isRequired()
     {
         return (bool)$this->getSetting('required');

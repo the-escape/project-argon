@@ -606,7 +606,7 @@ class EntityCache extends Model implements Compressable
         return $cache->get();
     }
 
-    public function getGroups(array $ids=null)
+    public function getGroups(array $ids=null, array $settings=null)
     {
         $groups = new Collection();
 
@@ -630,6 +630,21 @@ class EntityCache extends Model implements Compressable
                 $groups->push($group);
             }
         }
+
+        if (!is_null($settings))
+        {
+            foreach($groups as $groupId => $group)
+            {
+                foreach ($settings as $k => $v)
+                {
+                    if(@$group->settings[$k] != $v)
+                    {
+                        $groups->forget($groupId);
+                    }
+                }
+            }
+        }
+
         return $groups;
     }
 

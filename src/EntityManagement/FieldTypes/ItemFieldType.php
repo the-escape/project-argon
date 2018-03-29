@@ -20,10 +20,16 @@ class ItemFieldType extends AbstractFieldType
             'help' => null,
         ],
         'multiple' => [
-            'label' => 'Multiple',
+            'label' => 'Multiple select dropdown',
             'type' => 'boolean',
             'default' => false,
-            'help' => "Allow selecting multiple items.",
+            'help' => "Allow selecting multiple items through one dropdown.",
+        ],
+        'multiple_instances' => [
+            'label' => 'Standard select field - multiple instances.',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Single selection multiple times.",
         ],
         'items' => [
             'label' => 'Items',
