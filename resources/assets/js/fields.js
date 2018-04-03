@@ -11,7 +11,7 @@ $(document).on('click', '.field .field-clone', function(e) {
 $(document).on('click', '.field--options-toggle', function(e) {
     e.preventDefault();
     var $this = $(this);
-    var $options = $this.parents('.field--options-parent').find(".field--options");
+    var $options = $this.closest('.field--options-parent').find(".field--options");
     if ($options.length) {
         $options.slideToggle();
     }

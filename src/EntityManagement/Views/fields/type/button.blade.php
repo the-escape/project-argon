@@ -45,7 +45,7 @@
             @if(!$isCloning)
         </div>
         @if ($field->allowMultiple())
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
+            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}">Add Field</a>
         @endif
     </div>
 @endif
