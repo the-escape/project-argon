@@ -21,6 +21,7 @@ elixir(function(mix) {
             'argon.js',
             'fields.js',
             'fields/boolean.js',
+            'fields/button.js',
             'fields/combo.js',
             'fields/datetime.js',
             'fields/file.js',

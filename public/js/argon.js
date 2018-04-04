@@ -224,6 +224,15 @@ $(document).on('click', '.field .field-clone', function(e) {
     $(this).closest('.field').trigger('clone');
 })
 
+$(document).on('click', '.field--options-toggle', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    var $options = $this.closest('.field--options-parent').find(".field--options");
+    if ($options.length) {
+        $options.slideToggle();
+    }
+});
+
 argon.fields = {};
 
 argon.fields.clone = function(field) {
@@ -267,6 +276,12 @@ $(document).on('click', '.boolean-on', function(){
 $(document).on('click', '.boolean-off', function(){
     $(this).siblings('.boolean-radio-off').trigger( "click" );
 });
+$(document).on('clone', '.field-button', function(e) {
+    if (e.target == this) {
+	    argon.fields.clone(this);
+    }
+});
+
 $(document).on('clone', '.field-combo', function(e) {
     if (e.target == this) {
 	    argon.fields.clone(this);
