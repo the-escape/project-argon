@@ -233,6 +233,31 @@ class Solr
         }
     }
 
+    /**
+     * de-index a solr document by entity_id and locale_id
+     *
+     * @param $entityId
+     * @param $localeId
+     * @return array
+     */
+    public function deIndexByEntityIdAndLocaleId($entityId, $localeId)
+    {
+        if ($this->isEnabled()) {
+
+            $update = $this->client->createUpdate();
+            $update->addDeleteQuery("entity_id:" . $entityId . " AND locale_id:" . $localeId);
+            $update->addCommit();
+
+            $response = $this->client->update($update);
+
+            return [
+                'action'      => 'unindexing',
+                'entity_id'   => $entityId,
+                'solr_status' => $response->getResponse()->getStatusMessage(),
+            ];
+        }
+    }
+
 
     public function reindex()
     {

@@ -164,6 +164,7 @@ class PagesController extends BaseController
 
         event(new PageSaved($entity, $localisation, $request));
 
+        $solr->deIndexByEntityIdAndLocaleId($entity->id, $localisation->locale_id);
         $solr->indexEntity($entity, $localisation);
 
         return Redirect::route(
@@ -270,6 +271,7 @@ class PagesController extends BaseController
 
         $localisations = $entity->localisations;
         foreach ($localisations as $localisation) {
+            $solr->deIndexByEntityIdAndLocaleId($entity->id, $localisation->locale_id);
             $solr->indexEntity($entity, $localisation);
         }
 
@@ -504,13 +506,15 @@ class PagesController extends BaseController
             }
         }
 
+        $solr->deIndexByEntityIdAndLocaleId($page->id, $localisation->locale_id);
+
         $solr->indexEntity($page, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
     }
 
 
-    public function deleteLocale($pageId, $localeId)
+    public function deleteLocale($pageId, $localeId, Solr $solr)
     {
         $entityRepository = app()->make(EntityRepository::class);
         $page = $entityRepository->find($pageId);
@@ -519,6 +523,8 @@ class PagesController extends BaseController
         $localisation = $page->getLocalisation($currentLocale);
 
         $localisation->delete();
+
+        $solr->deIndexByEntityIdAndLocaleId($pageId, $localeId);
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
     }
