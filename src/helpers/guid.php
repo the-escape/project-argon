@@ -361,7 +361,7 @@ function format_error(Exception $e)
  *  'page_items_from' => number of item being returned from total items that is the first within current 'page' items,
  *  'page_items_to' => number of item being returned from total items that is the last within current 'page' items array,
  * ]
- * Return null if no items, or requested page number less than 1 to greater than 'pages_count'.
+ * Return null if no items, or requested page number less than 1 or greater than 'pages_count'.
  *
  * @param array $items
  * @param int $per_page (-1 or any positive int, not 0)
@@ -370,57 +370,58 @@ function format_error(Exception $e)
  */
 function easyPagination(array $items, $per_page=10, $current_page_number=null)
 {
-    if ($items)
+    if (!$items)
     {
-        $pagination['items_count'] = count($items);
-        $pagination['per_page'] = (preg_match('/^-1|[1-9][0-9]*$/', $per_page))
-            ? (int) $per_page
-            : trigger_error("Invalid 'per_page' argument supplied '{$per_page}'.", E_USER_ERROR);
-        $pagination['pages'] = ($pagination['per_page']  > 0) ? array_chunk($items, $pagination['per_page']) : array_chunk($items, count($items));
-        $pagination['pages_count'] = count($pagination['pages']);
-
-        // get the integer value of a variable
-        $current_page_number = ($current_page_number)
-            ? $current_page_number
-            : (isset($_GET['page']) ? $_GET['page'] : 1);
-
-        // valid page can only be a non-negative integer
-        $pagination['current_page_number'] = (preg_match('/^[1-9][0-9]*$/', $current_page_number)) ? (int) $current_page_number : null;
-
-        if ($pagination['current_page_number'] > $pagination['pages_count'])
-        {
-            return null;
-        }
-        if ($pagination['current_page_number'] < 1)
-        {
-            return null;
-        }
-
-        // since arrays indexes are 0 based subscribe 1 from current page
-        // and see if corresponding index exists in pages array
-        // valid page can only be a non-negative integer
-        $pagination['page'] = isset($pagination['pages'][$pagination['current_page_number']-1]) ? $pagination['pages'][$pagination['current_page_number']-1] : null;
-
-        $pagination['page_count'] = count($pagination['page']);
-
-        $pagination['page_prev'] = (($pagination_previous = $pagination['current_page_number'] - 1) < 1)
-            ? null
-            : $pagination_previous;
-
-        $pagination['page_next'] = (($pagination_next = $pagination['current_page_number'] + 1) > $pagination['pages_count'])
-            ? null
-            : $pagination_next;
-
-        $page_offset = ($pagination['current_page_number'] * $pagination['per_page']) - $pagination['per_page'];
-
-        $pagination['page_items_from'] = $page_offset + 1;
-
-        $pagination['page_items_to'] = $page_offset + $pagination['page_count'];
-
-        return $pagination;
+        return null;
     }
 
-    return null;
+    $pagination['items_count'] = count($items);
+    $pagination['per_page'] = (preg_match('/^-1|[1-9][0-9]*$/', $per_page))
+        ? (int) $per_page
+        : 10;
+    $pagination['pages'] = ($pagination['per_page']  > 0) ? array_chunk($items, $pagination['per_page']) : array_chunk($items, count($items));
+    $pagination['pages_count'] = count($pagination['pages']);
+
+    // get the integer value of a variable
+    $current_page_number = ($current_page_number)
+        ? $current_page_number
+        : (isset($_GET['page']) ? $_GET['page'] : 1);
+
+    // valid page can only be a non-negative integer
+    $pagination['current_page_number'] = (preg_match('/^[1-9][0-9]*$/', $current_page_number)) ? (int) $current_page_number : null;
+
+    if ($pagination['current_page_number'] > $pagination['pages_count'])
+    {
+        return null;
+    }
+
+    if ($pagination['current_page_number'] < 1)
+    {
+        return null;
+    }
+
+    // since arrays indexes are 0 based subscribe 1 from current page
+    // and see if corresponding index exists in pages array
+    // valid page can only be a non-negative integer
+    $pagination['page'] = isset($pagination['pages'][$pagination['current_page_number']-1]) ? $pagination['pages'][$pagination['current_page_number']-1] : null;
+
+    $pagination['page_count'] = count($pagination['page']);
+
+    $pagination['page_prev'] = (($pagination_previous = $pagination['current_page_number'] - 1) < 1)
+        ? null
+        : $pagination_previous;
+
+    $pagination['page_next'] = (($pagination_next = $pagination['current_page_number'] + 1) > $pagination['pages_count'])
+        ? null
+        : $pagination_next;
+
+    $page_offset = ($pagination['current_page_number'] * $pagination['per_page']) - $pagination['per_page'];
+
+    $pagination['page_items_from'] = $page_offset + 1;
+
+    $pagination['page_items_to'] = $page_offset + $pagination['page_count'];
+
+    return $pagination;
 }
 
 
