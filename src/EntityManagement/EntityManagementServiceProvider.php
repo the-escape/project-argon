@@ -325,6 +325,25 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
 
+        /*
+         * import json
+         */
+        $this->addRoute(
+            'types/{typeId}/groups/import',
+            'cms:types:groups:import-json',
+            EntityTypeController::class,
+            'importGroupJson'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/import',
+            'cms:types:groups:post-import-json',
+            EntityTypeController::class,
+            'postImportGroupJson',
+            Request::METHOD_POST
+        );
+
+
         $this->addRoute(
             'types/{typeId}/groups/{groupId}/edit',
             'cms:types:groups:edit',
@@ -346,6 +365,26 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'deleteGroup'
         );
+
+
+        /*
+         * import from other type
+         */
+        $this->addRoute(
+            'types/{typeId}/groups/{groupId}/import',
+            'cms:types:groups:import',
+            EntityTypeController::class,
+            'importGroup'
+        );
+
+        $this->addRoute(
+            'types/{typeId}/groups/{groupId}/export',
+            'cms:types:groups:export',
+            EntityTypeController::class,
+            'exportGroup'
+        );
+
+
 
         // Combo
         $this->addRoute(

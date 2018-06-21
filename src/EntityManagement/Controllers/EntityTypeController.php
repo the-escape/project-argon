@@ -1191,4 +1191,38 @@ class EntityTypeController extends BaseController
     {
         return view('argon::groups.setting')->render();
     }
+
+    public function importGroupJson($typeId, EntityTypeRepository $typeRepository)
+    {
+        $type = $typeRepository->find($typeId);
+
+        $types = $typeRepository->all();
+
+        return view('argon::groups.import', compact('type', 'types'))->render();
+    }
+
+    public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository)
+    {
+        $type = $typeRepository->find($typeId);
+
+
+    }
+
+    public function importGroup($typeId, $groupId)
+    {
+
+    }
+
+    public function exportGroup($typeId, $groupId, EntityGroupRepository $groupRepository, Request $request)
+    {
+        $group = $groupRepository->find($groupId);
+        $result = $group->exportJson();
+
+        if($request->get('json',false))
+        {
+            return response()->json($result);
+        }
+
+        return view('argon::groups.export', compact('result'))->render();
+    }
 }

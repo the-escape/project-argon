@@ -95,4 +95,66 @@ class EntityGroup extends Model
         return $default;
 
     }
+
+    public function exportJson()
+    {
+        $fields = $this->fields;
+
+        $excludeGroupAttributes = [
+            'id',
+            'entity_type_id',
+            'order',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+            'fields',
+        ];
+
+        $excludeFieldAttributes = [
+            'id',
+            'entity_type_id',
+            'entity_group_id',
+            'parent_field_id',
+            'created_at',
+            'updated_at',
+            'deleted_at',
+        ];
+
+        foreach($this->toArray() as $attrKey => $attrValue)
+        {
+            if (!in_array($attrKey, $excludeGroupAttributes))
+            {
+                $result[$attrKey] = $attrValue;
+            }
+        }
+
+        foreach($fields as $key => $field)
+        {
+            foreach($field->toArray() as $fieldAttrKey => $fieldAttrValue)
+            {
+                if (!in_array($fieldAttrKey, $excludeFieldAttributes))
+                {
+                    $result['fields'][$key][$fieldAttrKey] = $fieldAttrValue;
+                }
+            }
+
+            if ($field->field_type === 'combo')
+            {
+                $subFields = $field->subfields;
+
+                foreach($subFields as $subKey => $subField)
+                {
+                    foreach ($subField->toArray() as $subFieldAttrKey => $subFieldAttrValue)
+                    {
+                        if (!in_array($subFieldAttrKey, $excludeFieldAttributes))
+                        {
+                            $result['fields'][$key]['fields'][$subKey][$subFieldAttrKey] = $subFieldAttrValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 }

@@ -184,6 +184,11 @@ Remove the 'auth' route Middleware from **app/Http/Kernel.php** file (again, Arg
 
 These steps are only required if developing Argon itself, and not if using it to build a site.
 
+```
+mv vendor/escape/argon workbench
+cd workbench
+```
+
 PHP dependencies are installed with composer:
 
 ```
