@@ -125,6 +125,11 @@ class EntityGroup extends Model
             if (!in_array($attrKey, $excludeGroupAttributes))
             {
                 $result[$attrKey] = $attrValue;
+
+                if($attrKey == 'settings' && !is_array($attrValue))
+                {
+                    $result[$attrKey] = json_decode($attrValue,true);
+                }
             }
         }
 

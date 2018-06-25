@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Import Group</h1>
+        <h1 class="page-header">Import Group Beta*</h1>
 
         @include('argon::inc.alerts', compact($errors))
 
@@ -17,14 +17,14 @@
                         <span class="expand fa fa-expand"></span>
                         <span class="collapse fa fa-compress"></span>
                     </div>
-                    <textarea class="form-control hidden" id="json-textarea" name="json" value="{{ old('json') }}"></textarea>
+                    <textarea class="form-control hidden" id="json-textarea" name="json">{{ old('json') }}</textarea>
                     <div id="json-editor"></div>
 
                     <div class="settings-wrapper">
                         <div class="form-group">
                             <label>Settings</label>
                             <div>
-                                <label class="checkbox-inline"><input type="checkbox" class="" name="smart_import" value="1">
+                                <label class="checkbox-inline"><input type="checkbox" class="" name="smart_import" value="1" {{ session()->get('smartImportFieldGroups') ? 'checked="checked"' : '' }}>
                                     Smart Import
                                     <small class="text-muted">If the fields already exist append number at the end of the field name and carry on with the import</small>
                                 </label>
@@ -55,6 +55,8 @@
                     </div>
                 </div>
             </div>
+
+            <p class="text-muted">* This functionality is still being tested and is not meant to be used in Production yet. Use with caution and please report all the bugs.</p>
 
             <button type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-link" href="{{route('cms:types:edit',[$type->id])}}">Back to edit type</a>
@@ -175,7 +177,7 @@
         .json-editor-wrapper #json-editor{
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 350px;
         }
 
         .json-editor-wrapper.expanded #json-editor {
