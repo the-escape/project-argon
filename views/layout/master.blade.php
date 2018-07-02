@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<div class="modals"></div>
+<div class="modals">@yield('modals')</div>
 
 <script src="/argon/js/jquery.min.js"></script>
 <script src="/argon/js/core.js"></script>

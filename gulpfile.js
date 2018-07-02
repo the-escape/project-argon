@@ -52,6 +52,7 @@ elixir(function(mix) {
 
     mix.copy('bower_components/jstree/dist/themes/default', 'public/js/jstree');
     mix.copy('bower_components/ckeditor', 'public/js/ckeditor');
+    mix.copy('bower_components/ace-builds/src-min', 'public/js/ace');
 
     mix.copy('bower_components/dropzone/dist/min/dropzone.min.js', 'public/js');
 

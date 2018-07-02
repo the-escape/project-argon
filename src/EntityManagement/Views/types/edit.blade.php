@@ -65,6 +65,11 @@
                                     </td>
                                     <td>
                                         {{ @$field->group->name }}
+
+                                        @if(empty($lastGroup) || $lastGroup !== $field->group->id)
+                                            <a class="js-export-json text-muted" data-toggle="tooltip" data-placement="top" title="Export Field Group" href="{{ route('cms:types:groups:export', [$type->id,$field->group->id]) }}"><span class="fa fa-files-o"></span></a>
+                                            <?php $lastGroup = $field->group->id; ?>
+                                        @endif
                                     </td>
                                     <td>
                                         @if($field->field_type == $comboFieldType->getKey())
@@ -93,7 +98,18 @@
                         </ul>
                     </div>
 
-                    <a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>
+                    {{--<a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>--}}
+
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manage Groups
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-block">Show All Groups</a></li>
+                            <li><a href="{{ route('cms:types:groups:import-json', [$type->id]) }}" class="btn btn-block">Import Group</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -101,4 +117,56 @@
             <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
         </form>
     </div>
+@endsection
+
+@section('footer')
+    @parent
+
+    <script>
+        $(function(){
+            $('.js-export-json').on('click' ,function(e){
+                e.preventDefault();
+
+                var $btn = $(this),
+                    url = $btn.attr('href');
+
+                $.ajax(url).done(function(r){
+
+                    if ($('.modals').find('#groupExport').length){
+                        $('.modals').find('#groupExport .modal-content').html($(r).find('.modal-content').html());
+                    } else {
+                        $('.modals').append($(r));
+                    }
+
+                    $('#groupExport').modal('show');
+                });
+            });
+
+            $('.modals').on('click','.js-copy-to-clip', function(e){
+
+                $('[name=group-export-json]').select()
+                    .on("focus", function() {
+                        document.execCommand('selectAll',false,null)
+                    })
+                    .focus();
+
+                var success = document.execCommand("copy");
+
+                if(success){
+                    $(this).html('Copied!').addClass('btn-success').removeClass('btn-primary').prop('disabled',true);
+                }
+
+                setTimeout(function(){
+                    $('#groupExport').modal('hide');
+                }, 300);
+
+            })
+        });
+    </script>
+@endsection
+
+@section('footer')
+
+
+
 @endsection

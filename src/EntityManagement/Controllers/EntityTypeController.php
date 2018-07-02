@@ -11,10 +11,12 @@ use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
 use Illuminate\Http\Request;
+use Validator;
 use Input;
 use Lang;
 use Redirect;
 use View;
+use DB;
 
 class EntityTypeController extends BaseController
 {
@@ -1190,5 +1192,252 @@ class EntityTypeController extends BaseController
     public function groupSettingsAdd()
     {
         return view('argon::groups.setting')->render();
+    }
+
+    public function importGroupJson($typeId, EntityTypeRepository $typeRepository)
+    {
+        $type = $typeRepository->find($typeId);
+
+        $types = $typeRepository->all();
+
+        return view('argon::groups.import', compact('type', 'types'))->render();
+    }
+
+    public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository, FieldTypesManager $fieldTypesManager, EntityFieldRepository $fieldRepository, ComboFieldType $comboFieldType, Request $request)
+    {
+        $type = $typeRepository->find($typeId);
+
+        $smartImport = $request->get('smart_import', false);
+
+        // remember last smartImport setting for next updates
+        session()->put('smartImportFieldGroups', $smartImport);
+
+        $data = json_decode($request->get('json', '{}'), true);
+        $data = is_array($data) ? $data : [];
+
+        $validator = Validator::make($data, [
+            'name' => 'required',
+            'fields' => 'required|array'
+        ],
+        [
+            'name.required' => 'Group name is missing.',
+            'fields.required' => 'Fields list is missing',
+            'fields.array' => 'Fields list should be an array'
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // prepare default settings for the group
+        $defaultGroupSettings = [
+            'slug' => str_slug($data['name']),
+            'location' => 'main',
+            'image' => '/images/blocks/'.str_slug($data['name']).'.png',
+        ];
+
+        $checkName = $data['name'];
+        $appendNum = 1;
+
+
+        // check if the group with this name already exist and keep appending next number
+        while($exist = $groupRepository->findWhere(['name'=>$checkName, 'entity_type_id' => $typeId])->count())
+        {
+            $appendNum++;
+            $checkName = $data['name'].' '.$appendNum;
+        }
+
+
+        if($appendNum > 1)
+        {
+            if (!$smartImport)
+            {
+                return redirect()->back()
+                    ->withErrors(['json'=>'Field group "'.$data['name'].'" already exists.'])
+                    ->withInput();
+            }
+
+            if (!empty($data['settings']))
+            {
+                if(!is_array($data['settings']))
+                {
+                    $data['settings'] = json_decode($data['settings'],true);
+                }
+
+                if (json_last_error() !== JSON_ERROR_NONE)
+                {
+                    return redirect()->back()
+                        ->withErrors(['json'=>'Settings field should be the array.'])
+                        ->withInput();
+                }
+
+                $data['settings']['appendix'] = '_'.$appendNum;
+            }
+            else
+            {
+                $defaultGroupSettings['appendix'] = '_'.$appendNum;
+            }
+        }
+
+        $groupData = [
+            'name' => $checkName,
+            'renderable' => !empty($data['renderable']) ? $data['renderable'] : "0",
+            'sortable' => !empty($data['sortable']) ? $data['sortable'] : "0",
+            'settings' => !empty($data['settings']) ? $data['settings'] : $defaultGroupSettings,
+            'entity_type_id' => $typeId,
+            'order' => 0,
+        ];
+
+//        prepare groupData but add later when we know if there are no duplicated fields in it.
+//        we will then have a chanse to add a different appendix to the group
+
+        DB::beginTransaction();
+
+        $group = $groupRepository->create($groupData);
+
+        $comboSettings = $comboFieldType->getDefaultSettings();
+
+        try {
+
+            if (!empty($data['fields']))
+            {
+                foreach ($data['fields'] as $i => $fieldData)
+                {
+                    $fieldNum = $i+1;
+
+                    if($appendNum > 1)
+                    {
+                        $fieldData['field_slug'] = $fieldData['field_slug'].'_'.$appendNum;
+                    }
+
+                    $validator = Validator::make($fieldData, [
+                        'name' => 'required',
+                        'field_type' => 'required',
+                        'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,0,deleted_at,NULL"
+                    ],
+                    [
+                        'name.required' => 'Name is missing in field number .'.$fieldNum,
+                        'field_type.required' => 'Type is missing in field number '.$fieldNum,
+                        'field_slug.required' => 'Slug is missing in field number '.$fieldNum,
+                        'field_slug.unique' => 'Slug of the field "'. $fieldData['name']. '" has already been used on this Entity Type.',
+                    ]);
+
+                    if ($validator->fails())
+                    {
+                        DB::rollBack();
+
+                        return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
+                    }
+
+                    $fieldData['entity_type_id'] = $typeId;
+                    $fieldData['entity_group_id'] = $group->id;
+                    $fieldData['parent_field_id'] = 0;
+                    
+
+
+                    $fieldType = $fieldTypesManager->getType($fieldData['field_type']);
+                    $settings = $fieldData['field_type'] == 'combo' ? $comboSettings : $fieldType->getDefaultSettings();
+
+                    if (isset($fieldData['settings']))
+                    {
+                        $fieldData['settings'] = (object)array_merge((array)$settings, $fieldData['settings']);
+                    }
+                    else
+                    {
+                        $fieldData['settings'] = $settings;
+                    }
+
+                    $field = $fieldRepository->create($fieldData);
+
+                    if ($fieldData['field_type'] == 'combo' && !empty($fieldData['fields']))
+                    {
+                        foreach($fieldData['fields'] as $k => $subFieldData)
+                        {
+                            $subFieldNum = $k+1;
+
+                            $validator = Validator::make($fieldData, [
+                                'name' => 'required',
+                                'field_type' => 'required',
+                                'field_slug' => 'required',
+                            ],
+                            [
+                                'name.required' => 'Name is missing in the subfield number '.$subFieldNum.' of '. $fieldData['name'],
+                                'field_type.required' => 'Type is missing in the subfield number '.$subFieldNum.' of '. $fieldData['name'],
+                                'field_slug.required' => 'Slug is missing in the subfield number '.$subFieldNum.' of '. $fieldData['name']
+                            ]);
+
+                            if ($validator->fails())
+                            {
+                                DB::rollBack();
+
+                                return redirect()->back()
+                                    ->withErrors($validator)
+                                    ->withInput();
+                            }
+
+                            $subFieldData['entity_type_id'] = $typeId;
+                            $subFieldData['entity_group_id'] = 0;
+                            $subFieldData['parent_field_id'] = $field->id;
+
+                            $subFieldType = $fieldTypesManager->getType($subFieldData['field_type']);
+                            $settings = $subFieldType->getDefaultSettings();
+
+                            if (isset($subFieldData['settings']))
+                            {
+                                $subFieldData['settings'] = (object) array_merge((array)$settings, $subFieldData['settings']);
+                            }
+                            else
+                            {
+                                $subFieldData['settings'] = $settings;
+                            }
+
+                            $subField = $fieldRepository->create($subFieldData);
+                        }
+                    }
+                }
+            }
+
+//            var_dump($request->all());
+//            var_dump($type);
+//            exit;
+
+            DB::commit();
+
+            return Redirect::route('cms:types:groups:import-json', [$typeId])
+                ->with('message', 'Field group have been successfully imported.');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollBack();
+
+            throw $e;
+
+            return redirect()->back()
+                ->withErrors(['json'=>$e->getMessage()])
+                ->withInput();
+        }
+    }
+
+    public function importGroup($typeId, $groupId)
+    {
+
+    }
+
+    public function exportGroup($typeId, $groupId, EntityGroupRepository $groupRepository, Request $request)
+    {
+        $group = $groupRepository->find($groupId);
+        $result = $group->exportJson();
+
+        if($request->get('json',false))
+        {
+            return response()->json($result);
+        }
+
+        return view('argon::groups.export', compact('result'))->render();
     }
 }
