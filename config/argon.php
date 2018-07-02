@@ -75,5 +75,10 @@ return [
 
     'medialibrary' => [
         'perpage' => 20,
-    ]
+    ],
+
+    'delete_user_from' => [
+        'profile_values' => []
+    ],
+
 ];

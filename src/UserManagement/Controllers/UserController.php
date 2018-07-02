@@ -106,6 +106,24 @@ class UserController extends BaseController
 
     public function delete($userId)
     {
+        $user = $this->userRepository->find($userId);
+        if (!$user) {
+            return \Redirect::route('cms:user:manage');
+        }
+
+        $roles = [];
+        foreach($this->roleRepository->all() as $r)
+        {
+            if($user->hasRole($r->name))
+            {
+                $roles[] = $r->name;
+            }
+        }
+
+        return View::make('argon::user.delete', compact('user', 'roles'));
+
+
+        /*
         if ($userId == 1) {
             return Redirect::route('cms:user:manage')->with('error', 'Not allowed');
         }
@@ -117,6 +135,7 @@ class UserController extends BaseController
         $this->userRepository->delete($userId);
 
         return Redirect::route('cms:user:manage')->with('message', Lang::get('argon-users::user.deleted'));
+        */
     }
 
     public function create()
