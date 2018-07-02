@@ -818,7 +818,7 @@ var WYSIWYG = {
 
         CKEDITOR.config.default_height = 150;
         CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
-        CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
+        CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
         CKEDITOR.config.default_extraAllowedContent = 'iframe[*]';
 
         var toolOpts = WYSIWYG.getToolbarOptions(el);
@@ -829,7 +829,13 @@ var WYSIWYG = {
             CKEDITOR.config.contentsCss = WYSIWYG.getTypographyStyles(el);
         }
 
+        toolOpts[0].splice(2, 0, 'JustifyLeft', 'JustifyCenter', 'JustifyRight');
+        toolOpts[0] = toolOpts[0].filter(function(el){
+            return el !== "";
+        });
+
         CKEDITOR.config.toolbar = toolOpts;
+
         CKEDITOR.config.extraAllowedContent = WYSIWYG.getExtraAllowedContent(el);
         CKEDITOR.config.height = WYSIWYG.getHeight(el);
         CKEDITOR.config.format_tags = WYSIWYG.getFormatTagsOptions(el);
