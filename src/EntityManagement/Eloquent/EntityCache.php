@@ -66,7 +66,14 @@ class EntityCache extends Model implements Compressable
         return json_decode($value);
     }
 
-    public static function cache(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
+    /**
+     * Prepares values to create instance of EntityCache object.
+     * @param Entity $entity
+     * @param Localisation|null $localisation
+     * @param EntityRevision|null $revision
+     * @return array
+     */
+    private static function setCacheValues(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
     {
         if ($localisation === null) {
             $localisation = $entity->getDefaultLocalisation();
@@ -189,6 +196,13 @@ class EntityCache extends Model implements Compressable
 
         $values['entity_url'] = ($origin == 'page') ? static::getPageUrl($entity, $localisation) : null;
 
+        return $values;
+    }
+
+    public static function cache(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
+    {
+        $values = self::setCacheValues($entity, $localisation, $revision);
+
         $attributes = [
             'entity_id' => $values['entity_id'],
             'entity_localisation_id' => $values['entity_localisation_id'],
@@ -198,6 +212,16 @@ class EntityCache extends Model implements Compressable
 
         return $entityCache;
     }
+
+    public static function preview(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
+    {
+        $values = self::setCacheValues($entity, $localisation, $revision);
+
+        $entityCache = new self($values);
+
+        return $entityCache;
+    }
+
 
     public static function uncache($entityId, $localeId=null)
     {
@@ -504,6 +528,34 @@ class EntityCache extends Model implements Compressable
 
     public function findForPath($url=null, $status=1, $trigger404=true)
     {
+        $preview = request()->query->get("preview_page");
+
+        if($preview)
+        {
+            $entityRepository = app()->make(EntityRepository::class);
+
+            $entity = $entityRepository->findForPath(request());
+
+            if (!$entity)
+            {
+                abort(404);
+            }
+
+            $revisionsRepository = app()->make(EntityRevisionRepository::class);
+            $revision = $revisionsRepository->findByField("id", $preview)->first();
+
+            if (!$revision)
+            {
+                abort(404);
+            }
+
+            $localisation = $revision->localisation;
+
+            $cache = entityCache()->preview($entity, $localisation, $revision);
+
+            return $cache;
+        }
+
         $url = getUrlNoQueryString($url);
 
         $cache = $this

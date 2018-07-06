@@ -7,12 +7,22 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     public function __construct($data = null)
     {
         // make data consistently object
-        if ($data) {
-            if (is_object($data)) {
+        if ($data)
+        {
+            if (isJson($data))
+            {
+                $data = json_decode($data);
+            }
+
+            if (is_object($data))
+            {
                 $data = (array)$data;
             }
-            foreach ($data as $k => &$v) {
-                if (is_array($v)) {
+
+            foreach ($data as $k => &$v)
+            {
+                if (is_array($v))
+                {
                     $v = (object)$v;
                 }
             }
