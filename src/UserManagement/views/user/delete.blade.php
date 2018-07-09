@@ -29,6 +29,46 @@
                 <div class="card-header">Delete Well and Truly <sup>TM</sup></div>
                 <div class="card-block">
 
+                    <div class="form-group">
+                        <div class="field field-boolean field-delete_well_truly">
+                            <label>Delete all user data well and truly.</label>
+
+                            <div>
+                                <input type="radio" class="boolean-radio-off" id="field-delete_well_truly-off" name="delete_well_truly" value="0" checked>
+                                <input type="radio" class="boolean-radio-on" id="field-delete_well_truly-on" name="delete_well_truly" value="1">
+                                <button type="button" class="boolean-on">On</button><button type="button" class="boolean-off">Off</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <table class="table table-striped table-bordered">
+
+                        <tr>
+                            <th>Tables with related user content</th>
+                            <th>Found user data</th>
+                        </tr>
+
+                        @forelse(Escape\Argon\Helpers\GDPR::getAllTablesWithUserData($user) as $table => $exists)
+                            <tr>
+                                <td>{{ $table }}</td>
+                                <td>
+                                    @if($exists)
+                                        <span class="text-success">&#x2714;</span>
+                                    @else
+                                        <span class="text-danger">&#x1F6AB;</span>
+                                    @endif
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2">No tables with related user data found.</td>
+                            </tr>
+                        @endforelse
+                    </table>
+
+
+                    <?php /*
                     @if(empty(config('argon.delete_user_from', false)))
                         @if(auth()->user()->id == 1)
                             <p class="alert alert-warning">
@@ -44,16 +84,19 @@
                         @endif
                     @else
 
-                        <h6>Check these tables:</h6>
+                        <h6>Records to delete:</h6>
 
-                        @foreach(config('argon.delete_user_from', []) as $table => $options)
-                            <p>{{ $table }}</p>
-                        @endforeach
-
-
-                        options.. tables list etc.
+                        <p>
+                            @foreach(config('argon.delete_user_from', []) as $table => $options)
+                                <pre>
+                                    <?php var_dump(DB::table($table)->where('user_id',$user->id)->get()) ?>
+                                </pre>
+                                <span data-toggle="tooltip" title="{{ '' }}">{{ $table }}</span><br>
+                            @endforeach
+                        </p>
 
                     @endif
+                    */ ?>
 
                     <div class="clearfix"></div>
                 </div>

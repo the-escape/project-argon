@@ -77,8 +77,14 @@ return [
         'perpage' => 20,
     ],
 
-    'delete_user_from' => [
-        'profile_values' => []
-    ],
+    /*
+     * Options for deleting users
+     * possible values:
+     * 'event' - subscribe to UserDelete event and provide a custom delete function
+     * 'auto' - automatically scan tables for 'user_id' foreign key and delete existing related records
+     *  null - just soft deleting records from users table and blank out names and emails
+     *
+    */
+    'delete_user_option' => null,
 
 ];
