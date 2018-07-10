@@ -53,46 +53,34 @@ abstract class Controller extends CmsController
 Create **app/Http/Controllers/ContentController.php** and add:
 ```
 <?php
-
+    
 namespace App\Http\Controllers;
-
+    
 use App\Helpers\ThemeHelper;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\Frontend\Page;
-
+    
 class ContentController extends Controller
 {
     public function page(Request $request, EntityRepository $entityRepository)
     {
-        $node = $entityRepository->findForPath($request);
-
-        if (!$node) {
-            abort(404);
-        }
-
-        $page = new Page($node, $request);
-
-        if ($redirect = $page->getRedirect()) {
-            return redirect($redirect, 301);
-        }
-
-        $viewName = $this->getViewNameForType($node->entity_type_id);
-
-        return view($viewName, [
-            'page' => $page,
-        ]);
+        $cache = entityCache()->findForPath();
+    
+        $viewName = $this->getViewNameForType($cache->entity_type_id);
+    
+        return view($viewName, compact('cache'));
     }
 }
 ```
 Replace content in **/app/Http/routes.php** with:
 ```
 <?php
-
+    
 Route::get('404', function() {
     abort(404);
 });
-
+    
 // This should be the last route defined.
 Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 ```
@@ -113,17 +101,17 @@ Add the ArgonServiceProvider to the providers array in **config/app.php** (Make 
 
 ```
 'providers' => [
-
+    
     /*
      * Laravel Framework Service Providers...
      */
     ...
-
+    
     /*
      * Application Service Providers...
      */
     ...
-
+    
     Escape\Argon\Core\ArgonServiceProvider::class,   
 ],
 ```
@@ -162,12 +150,44 @@ php artisan migrate
 
 ### Assets
 
-Use artisan to publish the admin assets.
+Use artisan to publish the admin assets, config files and event listeners.
 
 ```
-php artisan vendor:publish --tag=public
+php artisan vendor:publish --tag=public --force
 php artisan vendor:publish --tag=config --force
 ```
+
+### Event Listeners
+
+```
+php artisan vendor:publish --tag=listeners --force
+```
+
+Add mapping to your EventServiceProvider.php
+ 
+ ```
+protected $listen = [
+        'Escape\Argon\Events\AdminAccess' =>[
+            'App\Listeners\OnAdminAccess',
+        ],
+        'Escape\Argon\Events\BeforePageSaved' =>[
+            'App\Listeners\OnBeforePageSave',
+        ],
+        'Escape\Argon\Events\PageSaved' =>[
+            'App\Listeners\OnPageSave',
+        ],
+        'Escape\Argon\Events\RenderField' =>[
+            'App\Listeners\OnRenderField',
+        ],
+        'Escape\Argon\Events\BeforeUserDelete' => [
+            'App\Listeners\OnBeforeUserDelete',
+        ],
+        'Escape\Argon\Events\UserDelete' => [
+            'App\Listeners\OnUserDelete',
+        ],
+    ];
+```
+
 
 ### Tidy Up
 

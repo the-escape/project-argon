@@ -29,6 +29,10 @@ class AuthenticationServiceProvider extends ServiceProvider
         $permissions->register('cms:login');
 
         $this->loadTranslationsFrom(__DIR__ . '/lang/', 'argon-auth');
+
+        $this->publishes([
+            __DIR__ . '/Listeners' => app_path('Listeners'),
+        ], 'listeners');
     }
 
     public function register()
