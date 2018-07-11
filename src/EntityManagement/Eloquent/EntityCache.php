@@ -526,6 +526,26 @@ class EntityCache extends Model implements Compressable
         return $this->entity_status;
     }
 
+    public function getRedirect($localeId=null)
+    {
+        $redirects = $this->entity_redirect;
+
+        if (is_null($localeId))
+        {
+            $localeId = $this->getLocaleId();
+        }
+
+        if (isset($redirects->{$localeId}))
+        {
+            if ($trim = trim($redirects->{$localeId}))
+            {
+                return $trim;
+            }
+        }
+
+        return null;
+    }
+
     public function findForPath($url=null, $status=1, $trigger404=true)
     {
         $preview = request()->query->get("preview_page");
