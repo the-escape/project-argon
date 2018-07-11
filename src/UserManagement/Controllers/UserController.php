@@ -116,9 +116,14 @@ class UserController extends BaseController
 
         $result = event(new BeforeUserDelete($user, $request));
 
-        if (isset($result->request))
+        if (!empty($result[0]->errors))
         {
-            $request = $result->request;
+            return Redirect::route('cms:user:manage')->with('errors', $result[0]->errors);
+        }
+
+        if (isset($result[0]->request))
+        {
+            $request = $result[0]->request;
         }
 
         $user->roles()->sync([]);

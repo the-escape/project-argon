@@ -6,11 +6,7 @@
     <div class="main">
         <h1 class="page-header">Users</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
+        @include('argon::inc.alerts')
 
         <div class="dashboard-actions dashboard-actions--top">
 
