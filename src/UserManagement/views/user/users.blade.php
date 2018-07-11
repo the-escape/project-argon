@@ -95,7 +95,7 @@
                             <td>{{$user->created_at}}</td>
                             <td class="actions">
                                 <a href="{{ route('cms:user:edit', ['userId' => $user->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                                <a href="{{ route('cms:user:delete', ['userId' => $user->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
+                                <a href="{{ route('cms:user:delete', ['userId' => $user->id]) }}" onclick="return confirm('Are you sure you want to delete this user?');" class="btn btn-danger-outline btn-sm">Delete</a>
                             </td>
                         </tr>
                     @endforeach
