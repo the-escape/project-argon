@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\Eloquent;
 
 use Escape\Argon\EntityManagement\Contracts\Compressable;
+use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
 use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
@@ -423,20 +424,25 @@ class EntityCache extends Model implements Compressable
     {
         $fields = $this->cache;
 
-        if (isset($fields->{$fieldName}))
+        if (!isset($fields->{$fieldName}))
         {
-            $fieldType = app('fieldTypes')->getType($fields->{$fieldName}->type);
-            $fieldValue = $fieldType->parseData($fields->{$fieldName}->value);
+            return $default;
+        }
 
-            if (!$isEmptyCheck)
-            {
-                return $fieldValue;
-            }
+        $fieldType = app('fieldTypes')->getType($fields->{$fieldName}->type);
 
-            if (!$fieldValue->isEmpty())
-            {
-                return $fieldValue;
-            }
+        $fieldValue = ($fieldType instanceof ComboFieldType)
+            ? $fieldValue = new ComboFieldValue($fields->{$fieldName}->value)
+            : $fieldType->parseData($fields->{$fieldName}->value);
+
+        if (!$isEmptyCheck)
+        {
+            return $fieldValue;
+        }
+
+        if (!$fieldValue->isEmpty())
+        {
+            return $fieldValue;
         }
 
         return $default;
@@ -446,19 +452,21 @@ class EntityCache extends Model implements Compressable
     {
         $fields = $this->cache;
 
-        if (isset($fields->{$fieldName}))
+        if (!isset($fields->{$fieldName}))
         {
-            $fieldValue = new ComboFieldValue($fields->{$fieldName}->value);
+            return $default;
+        }
 
-            if (!$isEmptyCheck)
-            {
-                return $fieldValue;
-            }
+        $fieldValue = new ComboFieldValue($fields->{$fieldName}->value);
 
-            if (!$fieldValue->isEmpty())
-            {
-                return $fieldValue;
-            }
+        if (!$isEmptyCheck)
+        {
+            return $fieldValue;
+        }
+
+        if (!$fieldValue->isEmpty())
+        {
+            return $fieldValue;
         }
 
         return $default;
