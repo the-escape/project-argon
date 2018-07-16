@@ -108,6 +108,10 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Listeners' => app_path('Listeners'),
         ], 'listeners');
 
+        $this->publishes([
+            __DIR__ . '/Commands' => app_path('Console/Commands'),
+        ], 'commands');
+
         $this->pluginManager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage');
         $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage');
 
