@@ -53,7 +53,23 @@ class SkynetConnect extends Command
             ]
         ]);
 
+        if ($response->getStatusCode() == 206)
+        {
+            $code = $this->ask('Authentication code required...');
 
+            $response = $client->post($endpoint, [
+                'headers' => [
+                    'key' => $code
+                ]
+            ]);
+
+
+            if ($response->getStatusCode() !== 201)
+            {
+                $this->warn('Authentication code is invalid.');
+                return false;
+            }
+        }
 
         $json = json_decode($response->getBody());
 

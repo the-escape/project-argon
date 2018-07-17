@@ -5,11 +5,14 @@ namespace App\Console\Commands;
 use Escape\Argon\Authentication\UserRepository;
 use Escape\Argon\Events\BeforeUserDelete;
 use Escape\Argon\Events\UserDelete;
+use Escape\Argon\Helpers\Skynet;
 use Illuminate\Console\Command;
 use Illuminate\Encryption\Encrypter;
 
 class SkynetTerminate extends Command
 {
+
+
     /**
      * The name and signature of the console command.
      *
@@ -29,37 +32,24 @@ class SkynetTerminate extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(Skynet $skynet)
     {
-        $url = env('SKYNET_URL');
-        $apiKey = env('SKYNET_API_KEY');
-        $secretKey = env('SKYNET_SECRET_KEY');
-        $endpoint = $url."/api/deleted_users";
-
-        if(empty($url) || empty($apiKey) || empty($secretKey))
+        if(!$skynet->isConnected())
         {
             $this->warning('Skynet configuration has not been found in your .env file. Run "php artisan skynet:connect".');
 
             return false;
         }
 
-        $encrypter = new Encrypter($secretKey, 'AES-256-CBC');
-        $token = $encrypter->encrypt(time(), false);
+        $json = $skynet->getRememberedUsers();
 
-
-        $client = new \GuzzleHttp\Client();
-        $response = $client->get($endpoint, [
-            'headers' => [
-                'key' => $apiKey,
-                'token' => $token
-            ]
-        ]);
-        
-        $json = json_decode($response->getBody());
-
-        if(!isset($json->deleted_users) || !is_array($json->deleted_users))
+        if (!isset($json->deleted_users) || !is_array($json->deleted_users))
         {
-            $this->info('No users to terminate.');
+            $this->info('Something went wrong, try again later.');
+        }
+        elseif (!count($json->deleted_users))
+        {
+            $this->info('No users to delete.');
         }
         else
         {
