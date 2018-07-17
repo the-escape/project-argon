@@ -46,9 +46,9 @@ class CacheMediaItemValue implements Compressable, Arrayable, Jsonable
         $this->url = $url;
     }
 
-    public function getAlt()
+    public function getAlt($default="")
     {
-        return $this->alt;
+        return ($this->alt != "") ? $this->alt : $default;
     }
 
     public function setAlt($alt)
