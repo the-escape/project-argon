@@ -1,7 +1,7 @@
 <?php namespace Escape\Argon\Helpers;
 
-use Carbon\Carbon;
 use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\Facades\Log;
 
 class Skynet
 {
@@ -30,27 +30,41 @@ class Skynet
     {
         if(!$this->isConnected())
         {
+            Log::error('Skynet delete user failed. Not connected to Skynet.', ['user_id' => $userId]);
             return false;
         }
 
-        $endpoint = $this->url."/api/deleted_users/create";
+        try
+        {
+            $endpoint = $this->url."/api/deleted_users/create";
 
-        $encrypter = new Encrypter($this->secretKey, 'AES-256-CBC');
-        $token = $encrypter->encrypt($this->apiKey, false);
+            $encrypter = new Encrypter($this->secretKey, 'AES-256-CBC');
+            $token = $encrypter->encrypt($this->apiKey, false);
 
 
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post($endpoint, [
-            'headers' => [
-                'key' => $this->apiKey,
-                'token' => $token
-            ],
-            'form_params' => [
-                'user_id' => $userId
-            ]
-        ]);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post($endpoint, [
+                'headers' => [
+                    'key' => $this->apiKey,
+                    'token' => $token
+                ],
+                'form_params' => [
+                    'user_id' => $userId
+                ]
+            ]);
 
-        return $response;
+            if ($response->getStatusCode() !== 200)
+            {
+                Log::error('Skynet delete user failed.', ['user_id' => $userId]);
+                return false;
+            }
+        }
+        catch (\Exception $e)
+        {
+            Log::error('Skynet delete user failed with code: ' . $e->getCode(), ['user_id' => $userId]);
+            return false;
+        }
+        return true;
     }
 
     public function getRememberedUsers()

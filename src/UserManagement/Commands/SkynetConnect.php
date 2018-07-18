@@ -63,7 +63,6 @@ class SkynetConnect extends Command
                 ]
             ]);
 
-
             if ($response->getStatusCode() !== 201)
             {
                 $this->warn('Authentication code is invalid.');

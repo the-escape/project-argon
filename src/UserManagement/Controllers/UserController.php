@@ -136,7 +136,6 @@ class UserController extends BaseController
             'email' => $user->id."@deleted.user",
         ]);
 
-
         $this->userRepository->delete($userId);
 
         event(new UserDelete($userId, $request));
