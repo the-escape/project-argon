@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}">
     <title>CMS Admin Area</title>
-    <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
-    <link rel="stylesheet" href="/argon/css/app.css">
+    <link rel="stylesheet" href="/argon/css/old-cms.css">
+    <link rel="stylesheet" href="/argon/css/main.css">
     <link rel="adminroot" href="/admin">
     @foreach ($assetsManager->outputStyles() as $styles)
         <link rel="stylesheet" href="{{$styles}}">
@@ -78,15 +78,48 @@
 
 <div class="modals"></div>
 
-<script src="/argon/js/jquery.min.js"></script>
+<script src="/argon/vendor/ckeditor/ckeditor.js"></script>
+<script src="/argon/vendor/jquery.min.js"></script>
+<script src="/argon/vendor/jstree.min.js"></script>
 <script src="/argon/js/bootstrap.min.js"></script>
-<script src="/argon/js/ckeditor/ckeditor.js"></script>
-<script src="/argon/js/jstree.min.js"></script>
 <script src="/argon/js/argon.js"></script>
 
 @foreach($assetsManager->outputScripts() as $script)
     <script src="{{$script}}"></script>
 @endforeach
+
+<script src="/argon/vendor/libs.js"></script>
+<script>
+    function fetchJs() {
+            fetch('/argon/js/manifest.json')
+                .then(function (data) {
+                    return data.json();
+                })
+                .then(function (manifestfiles) {
+                    if (!loadjs.isDefined('js')) {
+                        var files = []
+
+                        files.push('/argon' + manifestfiles['main.js'])
+
+                        if(manifestfiles['vendor.js']){
+                            files.push('/argon' + manifestfiles['vendor.js'])
+                        }
+
+                        loadjs(files, 'js', {
+                            async: false
+                        });
+                    }
+                });
+        }
+
+        if (typeof window.fetch === "undefined") {
+            loadjs(['/argon/vendor/promise.min.js', '/argon/vendor/fetch.js'], {
+                success: fetchJs
+            });
+        } else {
+            fetchJs();
+        }
+</script>
 
 @section('footer')
 @show

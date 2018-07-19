@@ -1,0 +1,68 @@
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#{$nameSpace} #{$typegraphyClass} {
+    ul,
+    ol {
+        padding: 0;
+        margin-left: 1.2em;
+
+        ul,
+        ol {
+            margin-left: 1.5em;
+        }
+
+        + * {
+            margin-top: $paragraphSpace;
+        }
+    }
+
+    ul,
+    ol {
+        list-style: none;
+    }
+
+    li {
+        line-height: $p-line-height;
+
+        + * {
+            margin-top: 4px;
+        }
+    }
+
+    ul li {
+        position: relative;
+
+        &:before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: $primary;
+            position: absolute;
+            top: 0.7em;
+            left: -0.85em;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    ol {
+        counter-reset: orderedList;
+    }
+
+    ol li {
+        position: relative;
+        margin-left: -0.75em;
+
+        &:before {
+            counter-increment: orderedList;
+            content: counter(orderedList) ".";
+            color: $primary;
+            margin-right: 0.5em;
+        }
+    }
+}

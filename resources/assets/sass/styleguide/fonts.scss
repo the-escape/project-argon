@@ -1,0 +1,71 @@
+.font {
+    font-size: font-size(p);
+    margin-bottom: 10px;
+    font-family: $font-family;
+
+    &:after {
+        content: '" - #{$font-family} "';
+    }
+
+    &-serif {
+        margin-bottom: 10px;
+        font-family: $header-font-family;
+
+        &:after {
+            content: '" - #{$header-font-family} "';
+        }
+    }
+
+    &-mono {
+        margin-bottom: 10px;
+        font-family: $font-mono;
+
+        &:after {
+            content: '" - #{$font-mono} "';
+        }
+    }
+
+    &-norm {
+        font-style: normal;
+    }
+
+    &-italic {
+        font-style: italic;
+    }
+
+    &-100 {
+        font-weight: 100;
+    }
+
+    &-200 {
+        font-weight: 200;
+    }
+
+    &-300 {
+        font-weight: 300;
+    }
+
+    &-400 {
+        font-weight: 400;
+    }
+
+    &-500 {
+        font-weight: 500;
+    }
+
+    &-600 {
+        font-weight: 600;
+    }
+
+    &-700 {
+        font-weight: 700;
+    }
+
+    &-800 {
+        font-weight: 800;
+    }
+
+    &-900 {
+        font-weight: 900;
+    }
+}

@@ -1,0 +1,440 @@
+<div class="o-combo__item">
+    <div class="o-combo__header">
+        <button class="o-combo__drag-handle js-combo-drag">
+            <div class="o-combo__drag-wrap">
+                <svg>
+                    <use xlink:href="/images/svgicons.svg#reorder"></use>
+                </svg>
+            </div>
+        </button>
+        <div class="o-combo__title js-combo-title">Combo Item</div>
+        <div class="o-combo__actions">
+            {{> elements-confirm-button}}
+        </div>
+    </div>
+    <div class="o-combo__body">
+        <div class="o-combo__form">
+
+            <div class="o-form__group {{field1-error}}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][1]">Title</label>
+                        <input type="text" id="{comboName}[field][1]" name="{comboName}[field][1][]" data-name="field1-value" value="{field1-value}">
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][1]">{field1-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+            field1-error
+            field1-value
+            field1-errorMessage }}
+
+            <div class="o-form__group {field2-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][2][link]">link</label>
+
+                        <div class="o-form-icon">
+                            <div class="o-form-icon__icon">
+                                <svg>
+                                    <use xlink:href="/images/svgicons.svg#link"></use>
+                                </svg>
+                            </div>
+                            <input type="url" id="{comboName}[field][2][link]" name="{comboName}[field][2][link][]" data-name="field2-value" placeholder="eg: /contact" value="{field2-value}">
+                        </div>
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][2][link]">{field2-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o-form__text-option o-checkbox">
+                    <input type="hidden" name="{comboName}[field][2][isExternalLink][]" data-name="field2-toggleValue" class="js-toggle-value" value="{field2-toggleValue}">
+                    <label><input type="checkbox" id="external" class="js-toggle-input" {field2-toggleChecked}><span><svg><use xlink:href="/images/svgicons.svg#tick"></use></svg></span></label>
+                    <label for="external">External Link</label>
+                </div>
+            </div>
+
+            {{! comboName
+                field2-error
+                field2-errorMessage
+                field2-value
+                field2-toggleValue
+                field2-toggleChecked
+            }}
+
+            <div class="o-form__group {field3-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][3]">Content</label>
+                        <textarea name="{comboName}[field][3][]" id="{comboName}[field][3]" data-name="field3-value" class="js-wysiwyg">{field3-value}</textarea>
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][3]">{field3-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+                field3-error
+                field3-errorMessage
+                field3-value
+            }}
+
+            <div class="o-form__group {field4-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][4]">Choose Color</label>
+                        <div class="o-item-picker o-item-picker--no-edit o-item-picker--color js-item-picker" data-color="true">
+                            <button class="o-item-picker__btn js-item-picker-btn"></button>
+                            <input type="text" name="{comboName}[field][4][]" id="{comboName}[field][4]" data-name="field4-value" value="{field4-value}" class="o-item-picker__input js-item-picker-input">
+                            <output class="o-item-picker__output js-item-picker-output">{{color}}</output>
+                            <button class="o-item-picker__dropdown-btn js-item-picker-drop-btn">
+                                <svg><use xlink:href="/images/svgicons.svg#select"></use></svg>
+                            </button>
+
+                            <div class="o-item-picker__window js-item-picker-window">
+                                <button class="o-item-picker__close js-item-picker-close"></button>
+                                <div class="o-item-picker__vignette"></div>
+                                <div class="o-item-picker__list js-item-picker-list">
+                                    <button class="o-item-picker__item" data-value="#888888">#888888</button>
+                                    <button class="o-item-picker__item" data-value="#bfb">#bfb</button>
+                                    <button class="o-item-picker__item" data-value="#bbf">#bbf</button>
+                                    <button class="o-item-picker__item" data-value="#add">#add</button>
+                                    <button class="o-item-picker__item" data-value="#fbb">#fbb</button>
+                                    <button class="o-item-picker__item" data-value="#bfb">#bfb</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="{comboName}[field][4]">{field4-errorMessage}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+                field4-error
+                field4-errorMessage
+                field4-value
+            }}
+
+            <div class="o-form__group {field5-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][5]">Today</label>
+                        <input type="text" id="{comboName}[field][5]" name="{comboName}[field][5][]" class="js-date" data-name="field5-value" value="{field5-value}" data-time="true" data-default-today="true">
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][5]">{field5-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{! comboName
+                field5-error
+                field5-errorMessage
+                field5-value
+            }}
+
+            <div class="o-form__group {field6-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <div class="o-drag-select js-drag">
+                            <input type="hidden" name="{comboName}[field][6][]" class="js-drag-input" data-name="field6-value" value='{field6-value}'>
+                            <div class="o-drag-select__column-wrap">
+                                <div class="o-drag-select__title">Items</div>
+                                <div class="o-drag-select__column o-drag-select__column--inactive js-drag-inactive">
+                                    <div class="o-drag-select__item" data-value="1">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 1</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-drag-select__item" data-value="2">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 2</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-drag-select__item" data-value="3">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 3</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-drag-select__item" data-value="4">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 4</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-drag-select__item" data-value="5">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 5</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-drag-select__item" data-value="6">
+                                        <div class="o-drag-select__item-wrap">
+                                            <span>Item 6</span>
+                                            <svg>
+                                                <use xlink:href="/images/svgicons.svg#move"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o-drag-select__arrow">
+                                <svg>
+                                    <use xlink:href="/images/svgicons.svg#arrow-right"></use>
+                                </svg>
+                            </div>
+                            <div class="o-drag-select__column-wrap">
+                                <div class="o-drag-select__title">Selected Items</div>
+                                <div class="o-drag-select__column o-drag-select__column--active js-drag-active"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label>{field6-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+                field6-error
+                field6-errorMessage
+                field6-value
+            }}
+
+            <div class="o-form__group {field7-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][7]">Grouped MultiSelect</label>
+                        <select name="{comboName}[field][7][]" id="{comboName}[field][7]" data-value='{field7-value}' data-name="field7-value" multiple class="js-select">
+                            <optgroup label="Group1">
+                                <option value="1">item 1</option>
+                                <option value="2">item 2</option>
+                                <option value="3">item 3</option>
+                            </optgroup>
+                            <optgroup label="Group2">
+                                <option value="4">item 4</option>
+                                <option value="5">item 5</option>
+                                <option value="6">item 6</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][7]">{field7-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{! comboName
+                field7-error
+                field7-errorMessage
+                field7-value
+
+                TODO: set value through choices api
+            }}
+
+            <div class="o-form__group {field8-error}">
+                <div class="o-form-status">
+                    <div class="o-form-status__input">
+                        <label for="{comboName}[field][8]">Choose Icon</label>
+                        <div class="o-item-picker o-item-picker--no-edit js-item-picker" data-path="/images/svgicons.svg">
+                            <button class="o-item-picker__btn js-item-picker-btn">
+                                <svg>
+                                    <use xlink:href="/images/svgicons.svg{field8-value}"></use>
+                                </svg>
+                            </button>
+                            <input type="text" name="{comboName}[field][8][]" id="{comboName}[field][8]" data-name="field8-value" value="{field8-value}" class="o-item-picker__input js-item-picker-input">
+                            <output class="o-item-picker__output js-item-picker-output">{svgicon}</output>
+                            <button class="o-item-picker__dropdown-btn js-item-picker-drop-btn">
+                                <svg><use xlink:href="/images/svgicons.svg#select"></use></svg>
+                            </button>
+
+                            <div class="o-item-picker__window js-item-picker-window">
+                                <button class="o-item-picker__close js-item-picker-close"></button>
+                                <div class="o-item-picker__vignette"></div>
+                                <div class="o-item-picker__list js-item-picker-list">
+                                    <button class="o-item-picker__item" data-value="#arrow-up">#arrow-up</button>
+                                    <button class="o-item-picker__item" data-value="#arrow-left">#arrow-left</button>
+                                    <button class="o-item-picker__item" data-value="#arrow-right">#arrow-right</button>
+                                    <button class="o-item-picker__item" data-value="#arrow-down">#arrow-down</button>
+                                    <button class="o-item-picker__item" data-value="#add">#add</button>
+                                    <button class="o-item-picker__item" data-value="#success">#success</button>
+                                    <button class="o-item-picker__item" data-value="#alert">#alert</button>
+                                    <button class="o-item-picker__item" data-value="#blocks">#blocks</button>
+                                    <button class="o-item-picker__item" data-value="#dashboard">#dashboard</button>
+                                    <button class="o-item-picker__item" data-value="#delete">#delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="{comboName}[field][8]">{field8-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+                field8-error
+                field8-errorMessage
+                field8-value
+            }}
+
+            <div class="o-form__group {field9-error}">
+                <div class="o-form-status">
+                    <div class="o-form__list">
+                        <div class="o-switch">
+                            <label>
+                                <input type="hidden" name="{comboName}[field][9][]" class="js-toggle-value" data-name="field9-toggleValue" value="{field9-toggleValue}">
+                                <input type="checkbox" id="{comboName}[field][9]" {field9-toggleChecked} class="js-toggle-input">
+                                <label>
+                                    <div class="o-switch__text" data-yes="on" data-no="off"></div>
+                                </label>
+                            </label>
+                            <label for="{comboName}[field][9]">Switch</label>
+                        </div>
+                    </div>
+
+                    <div class="o-form-status__message">
+                        <div class="o-form-status__icon">
+                            <div class="o-form-status__icon--error">
+                                <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                            </div>
+                            <div class="o-form-status__icon--success">
+                                <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                            </div>
+                        </div>
+                        <div class="o-form-status__message-bar">
+                            <label for="title">{field9-errorMessage}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="o-form__help-text l-full">
+                    <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                </div>
+            </div>
+
+            {{! comboName
+                field9-error
+                field9-errorMessage
+                field9-toggleValue
+                field9-toggleChecked
+            }}
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+.o-icon-btn {
+    display: inline-block;
+    position: relative;
+    width: 35px;
+    height: 35px;
+    text-decoration: none;
+    color: $grey;
+    background-color: transparent;
+    border: 0;
+    transition: color $userInactive $easeOut;
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 24px;
+        height: 24px;
+        transform: translate(-50%, -50%);
+    }
+
+    > * {
+        pointer-events: none;
+    }
+
+    &:hover {
+        transition-duration: $userActive;
+        color: $black-light;
+    }
+
+    #{$typegraphyClass} & {
+        margin-top: $paragraphSpace * 2;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}

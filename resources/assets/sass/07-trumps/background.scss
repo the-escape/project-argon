@@ -1,0 +1,71 @@
+// colours
+//===============
+.h-background {
+    &--primary {
+        background-color: $primary !important;
+    }
+
+    &--primary-dark {
+        background-color: $primary-dark !important;
+    }
+
+    &--primary-light {
+        background-color: $primary-light !important;
+    }
+
+    &--primary-offwhite {
+        background-color: $primary-offwhite !important;
+    }
+
+    &--danger {
+        background-color: $danger !important;
+    }
+
+    &--success {
+        background-color: $success !important;
+    }
+
+    &--active {
+        background-color: $active !important;
+    }
+
+    &--inactive {
+        background-color: $inactive !important;
+    }
+
+    &--grey {
+        background-color: $grey !important;
+    }
+
+    &--grey-light {
+        background-color: $grey-light !important;
+    }
+
+    &--grey-dark {
+        background-color: $grey-dark !important;
+    }
+
+    &--grey-offwhite {
+        background-color: $grey-offwhite !important;
+    }
+
+    &--grey-white {
+        background-color: $grey-white !important;
+    }
+
+    &--black {
+        background-color: $black !important;
+    }
+
+    &--black-light {
+        background-color: $black-light !important;
+    }
+
+    &--white {
+        background-color: #fff !important;
+    }
+
+    &--transparent {
+        background-color: transparent !important;
+    }
+}

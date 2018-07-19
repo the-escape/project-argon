@@ -1,0 +1,71 @@
+//====================
+// Typography
+//====================
+
+$typegraphyClass: ".typography";
+
+// Font Families
+//====================
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+$font-family: "fira sans", $font-family-sans-serif;
+$header-font-family: $font-family;
+$font-mono: "fira code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+    Courier, monospace;
+
+// weights
+//====================
+$font-weight: 400;
+$strong-weight: 500;
+$header-weight: 500;
+$header-bold-weight: 700;
+
+// lineHeight
+//====================
+$base-font-size: 1.6rem;
+$header-line-height: 1.35;
+$p-line-height: 1.6;
+
+// spacing
+//====================
+$paragraphSpace: 18px;
+$subHeaderSpace: 5px;
+$headerSpace: 15px;
+$paragraphHeaderSpace: 40px;
+
+// header styles
+//====================
+$baseHeaderStyles: (
+    line-height: $header-line-height,
+    color: $header-color,
+    space: $headerSpace,
+    font-weight: $header-weight,
+    font-family: $header-font-family
+);
+
+// each header map can take custom styles, if they are different
+// from the base header styles it will be added, e.g. letting spacing in h1
+$headerStyles: (
+    h1: (
+        font-size: 4rem
+        // text-transform: uppercase
+        // letter-spacing: 0.05em
+    ),
+    h2: (
+        font-size: 3.2rem
+    ),
+    h3: (
+        font-size: 2.4rem
+    ),
+    h4: (
+        font-size: 1.8rem
+    )
+);
+
+// links
+//====================
+$link-color: $text-color;
+$link-hover: $primary;
+$link-decoration: none;
+$link-hover-decoration: none;
+

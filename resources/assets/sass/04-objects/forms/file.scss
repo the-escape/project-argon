@@ -1,0 +1,64 @@
+.o-file {
+    display: flex;
+
+    &__preview {
+        flex: 0 0 120px;
+        width: 120px;
+        margin-right: 20px;
+        color: $grey-dark;
+
+        &-wrap {
+            position: relative;
+            padding-bottom: 100%;
+            height: 0;
+
+            > img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                transform: translate(-50%, -50%);
+            }
+
+            > svg {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    &__help-text {
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+
+        > *:nth-last-child(2) {
+            margin-bottom: 15px;
+        }
+    }
+
+    &__btn {
+        margin-top: auto;
+    }
+}
+
+.has-error .o-file__preview {
+    fill: $danger;
+}
+
+@supports (object-fit: cover) {
+    .o-file {
+        &__preview-wrap {
+            > img {
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: none;
+                object-fit: cover;
+            }
+        }
+    }
+}

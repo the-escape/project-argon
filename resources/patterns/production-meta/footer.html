@@ -1,0 +1,37 @@
+
+    <script src="/vendor/libs.js"></script>
+    <script>
+        function fetchJs() {
+                fetch('/js/manifest.json')
+                    .then(function (data) {
+                        return data.json();
+                    })
+                    .then(function (manifestfiles) {
+                        if (!loadjs.isDefined('js')) {
+                            var files = []
+
+                            files.push(manifestfiles['main.js'])
+
+                            if(manifestfiles['vendor.js']){
+                               files.push(manifestfiles['vendor.js'])
+                            }
+
+                            files.push('//maps.googleapis.com/maps/api/js?callback=initMap')
+
+                            loadjs(files, 'js', {
+                                async: false
+                            });
+                        }
+                    });
+            }
+
+            if (typeof window.fetch === "undefined") {
+                loadjs(['/vendor/promise.min.js', '/vendor/fetch.js'], {
+                    success: fetchJs
+                });
+            } else {
+                fetchJs();
+            }
+    </script>
+</body>
+</html>

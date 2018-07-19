@@ -1,0 +1,20 @@
+/* jsTree default theme */
+$theme-name: default;
+$hovered-bg-color: $primary-offwhite;
+$hovered-shadow-color: #ccc;
+$disabled-color: #666;
+$disabled-bg-color: #efefef;
+$clicked-bg-color: $primary-light;
+$clicked-shadow-color: #999;
+$search-result-color: #8b0000;
+$mobile-wholerow-bg-color: #ebebeb;
+$mobile-wholerow-shadow: #666;
+$mobile-wholerow-bordert: rgba(255, 255, 255, 0.7);
+$mobile-wholerow-borderb: rgba(64, 64, 64, 0.2);
+$responsive: true;
+$image-path: "/argon/images/tree/";
+$base-height: 40px;
+
+@import "partials/mixins";
+@import "partials/base";
+@import "partials/main";

@@ -1,0 +1,28 @@
+.c-line-anim {
+    > * {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity $scrollIn $easeOut, transform $scrollIn $easeOut;
+    }
+
+    &.scroll-active > * {
+        opacity: 1;
+        transform: none;
+
+        @for $i from 1 through 10 {
+            $delay: $scrollInitialDelay + $scrollDelayInc * ($i - 1);
+
+            &:nth-child(#{$i}) {
+                transition: opacity $scrollIn $easeOut $delay,
+                    transform $scrollIn $easeOut $delay;
+            }
+        }
+
+        &:nth-child(10) ~ * {
+            $delay: $scrollInitialDelay + $scrollDelayInc * (9);
+
+            transition: opacity $scrollIn $easeOut $delay,
+                transform $scrollIn $easeOut $delay;
+        }
+    }
+}

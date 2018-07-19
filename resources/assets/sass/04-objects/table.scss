@@ -1,0 +1,55 @@
+.o-table {
+    display: grid;
+
+    @for $i from 1 through 15 {
+        &--#{$i} {
+            grid-template-columns:
+                minmax(400px, 1fr) repeat(#{$i - 1}, minmax(min-content, 250px))
+                115px 125px;
+        }
+    }
+
+    &__dropdown {
+        height: 0;
+        will-change: height;
+        overflow: hidden;
+        transition: height $userInactive $easeOut;
+        grid-column: 1 / -1;
+
+        &-wrap {
+            border-top: 1px solid $grey;
+            background-color: $primary-offwhite;
+            padding: 10px 15px;
+        }
+
+        &.is-active {
+            height: auto;
+            transition: height $userActive $easeOut;
+        }
+
+        .o-form {
+            margin-left: auto;
+            max-width: 65%;
+        }
+    }
+
+    &__header,
+    &__data {
+        padding: 10px 0;
+    }
+
+    &__header {
+        font-size: 1.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: $black-light;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+    &__data {
+        display: flex;
+        align-items: center;
+        border-top: 1px solid $grey;
+    }
+}

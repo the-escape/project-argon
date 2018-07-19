@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+    font-family: $font-family;
+    font-size: unit(strip-unit($base-font-size), em);
+    font-weight: $font-weight;
+    line-height: $p-line-height;
+    color: $text-color;
+    background-color: $body-background-color;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-kerning: normal;
+    overflow-x: hidden;
+    font-variant-ligatures: contextual;
+}

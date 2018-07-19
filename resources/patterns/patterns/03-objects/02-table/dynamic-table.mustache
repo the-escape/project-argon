@@ -1,0 +1,103 @@
+<div class="l-container js-table">
+    <div class="o-table l-full js-table-container">
+        {{! <div class="o-table__header">Title</div>
+        <div class="o-table__header">Author</div>
+        <div class="o-table__header">Date Created</div>
+        <div class="o-table__header">Status</div>
+        <div class="o-table__header">Actions</div>
+        <div class="o-table__header"></div>
+
+        <div class="o-table__data">Title to go here</div>
+        <div class="o-table__data">Joseph</div>
+        <div class="o-table__data">01 Nov 2017</div> }}
+
+    </div>
+    <script>
+        window.tableData = {
+            headers: {
+                title: "Title",
+                author: "Author",
+                dateCreated: "Date Created",
+                status: "Status"
+            },
+            rows: [
+                {
+                    id: 1,
+                    title: "Title to go here",
+                    author: "Joseph",
+                    dateCreated: '2017-11-01 00:00:00',
+                    status: 1
+                },
+                {
+                    id: 2,
+                    title: "Title to go here",
+                    author: "Jephrey",
+                    dateCreated: '2017-04-02 00:00:00',
+                    status: 0
+                },
+                {
+                    id: 3,
+                    title: "Title to go here",
+                    author: "Jimmy",
+                    dateCreated: '2017-08-12 00:00:00',
+                    status: 1
+                }
+            ],
+            formats: {
+                dateCreated: 'DD MMM YYYY',
+                status: {
+                    0: '<div class="o-status o-status--inactive"></div> Not Published',
+                    1: '<div class="o-status o-status--active"></div> Published'
+                }
+            },
+            dataTypes: {
+                dateCreated: 'date',
+                status: 'boolean'
+            }
+        }
+    </script>
+    <script type="text/template" class="js-tale-action-template">
+        <div class="o-table__data">
+            <div class="o-confirm-btn__container js-table-actions">
+                <div class="o-confirm-btn__questions">
+                    <button class="o-confirm-btn" data-question="duplicate" title="Duplicate">
+                        <svg>
+                            <use xlink:href="/images/svgicons.svg#duplicate"></use>
+                        </svg>
+                    </button>
+                    <button class="o-confirm-btn" data-question="delete" title="Delete">
+                        <svg>
+                            <use xlink:href="/images/svgicons.svg#delete"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="o-confirm-btn__decline">
+                    <button class="o-confirm-btn o-confirm-btn--danger js-confirm-decline">
+                        <svg>
+                            <use xlink:href="/images/svgicons.svg#cross"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="o-confirm-btn__accept">
+                    <button class="o-confirm-btn o-confirm-btn--success js-confirm-accept">
+                        <svg>
+                            <use xlink:href="/images/svgicons.svg#tick"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="o-table__data"><button class="o-btn o-btn--xs">edit post</button></div>
+        <div class="o-table__dropdown js-table-actions-dropdown">
+            <div class="o-table__dropdown-wrap">
+                <div class="o-form">
+                    <div class="o-form__inline">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name">
+                        <button class="o-btn o-btn--sm o-btn--square o-btn--primary">Duplicate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>

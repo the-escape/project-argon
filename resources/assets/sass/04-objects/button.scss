@@ -1,0 +1,100 @@
+a.o-btn,
+button.o-btn {
+    display: inline-block;
+}
+
+.o-btn {
+    display: inline-block;
+    min-width: 210px;
+    padding: 16px 35px;
+    font-size: 1.6rem;
+    line-height: 1.65;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: $grey;
+    border: 1px solid $grey;
+    transition: background-color $userInactive $easeOut,
+        color $userInactive $easeOut, border-color $userInactive $easeOut;
+    border-radius: 30px;
+
+    > * {
+        pointer-events: none;
+    }
+
+    &:hover {
+        transition: background-color $userActive $easeOut,
+            color $userActive $easeOut, border-color $userActive $easeOut;
+        text-decoration: none;
+        background-color: transparent;
+        color: $grey-dark;
+    }
+
+    #{$typegraphyClass} & {
+        margin-top: $paragraphSpace * 2;
+    }
+
+    &--sm {
+        min-width: 150px;
+        padding: 9px 15px;
+        font-size: 1.6rem;
+        line-height: 1.6;
+        border-radius: 22px;
+    }
+
+    &--xs {
+        min-width: 125px;
+        padding: 4px 8px;
+        font-size: 1.6rem;
+        line-height: 1.65;
+        border-radius: 22px;
+    }
+
+    &--square {
+        border-radius: 0;
+    }
+
+    &--primary {
+        background-color: $primary;
+        border-color: $primary;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+
+    &--danger {
+        background-color: $danger;
+        border-color: $danger;
+
+        &:hover {
+            color: $danger;
+        }
+    }
+
+    &--success {
+        background-color: $active;
+        border-color: $active;
+
+        &:hover {
+            color: $active;
+        }
+    }
+
+    &--light-grey {
+        background-color: $grey-light;
+        border-color: $grey-light;
+
+        &:hover {
+            color: $grey;
+        }
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}

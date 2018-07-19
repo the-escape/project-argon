@@ -1,0 +1,97 @@
+.o-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 940px;
+    width: 100%;
+    background-color: transparent;
+    padding: 25px 15px;
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 20px));
+    transition: transform $userIn $easeOut, opacity $userIn $easeOut;
+    pointer-events: none;
+
+    @media (min-width: $sm) {
+        padding: 60px 30px 90px;
+    }
+
+    @media (min-width: $md) {
+        padding: 60px 75px 90px;
+    }
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: #fff;
+        border-radius: 6px;
+    }
+
+    &.active {
+        transition: transform $userOut $easeOut 150ms,
+            opacity $userOut $easeOut 150ms;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &__container {
+        opacity: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        overflow: auto;
+        transition: opacity $userIn $easeOut;
+        background-color: rgba($grey, 0.8);
+        margin-top: 0 !important;
+
+        &.active {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+            transition-duration: $userOut;
+            z-index: 1099;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 20px;
+        color: $grey;
+        transition: color $userIn $easeOut;
+
+        svg {
+            fill: currentColor;
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            color: $grey;
+            transition-duration: $userOut;
+        }
+    }
+
+    &__content {
+        position: relative;
+        z-index: 1;
+    }
+
+    &__btn-list {
+        display: flex;
+        justify-content: center;
+
+        > * + * {
+            margin-left: 10px;
+        }
+    }
+}

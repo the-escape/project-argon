@@ -1,0 +1,105 @@
+//====================
+//	Font Families
+//====================
+
+// Fira sans
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-Light.woff2") format("woff2"),
+        url("../fonts/FiraSans-Light.woff") format("woff"),
+        url("../fonts/FiraSans-Light.otf") format("opentype");
+    font-display: swap;
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-LightItalic.woff2") format("woff2"),
+        url("../fonts/FiraSans-LightItalic.woff") format("woff"),
+        url("../fonts/FiraSans-LightItalic.otf") format("opentype");
+    font-display: swap;
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-Regular.woff2") format("woff2"),
+        url("../fonts/FiraSans-Regular.woff") format("woff"),
+        url("../fonts/FiraSans-Regular.otf") format("opentype");
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-Italic.woff2") format("woff2"),
+        url("../fonts/FiraSans-Italic.woff") format("woff"),
+        url("../fonts/FiraSans-Italic.otf") format("opentype");
+    font-display: swap;
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-Medium.woff2") format("woff2"),
+        url("../fonts/FiraSans-Medium.woff") format("woff"),
+        url("../fonts/FiraSans-Medium.otf") format("opentype");
+    font-display: swap;
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-MediumItalic.woff2") format("woff2"),
+        url("../fonts/FiraSans-MediumItalic.woff") format("woff"),
+        url("../fonts/FiraSans-MediumItalic.otf") format("opentype");
+    font-display: swap;
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-Bold.woff2") format("woff2"),
+        url("../fonts/FiraSans-Bold.woff") format("woff"),
+        url("../fonts/FiraSans-Bold.otf") format("opentype");
+    font-display: swap;
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fira sans";
+    src: url("../fonts/FiraSans-BoldItalic.woff2") format("woff2"),
+        url("../fonts/FiraSans-BoldItalic.woff") format("woff"),
+        url("../fonts/FiraSans-BoldItalic.otf") format("opentype");
+    font-display: swap;
+    font-weight: 700;
+    font-style: italic;
+}
+
+// Fira Mono
+@font-face {
+    font-family: "fira code";
+    src: url("../fonts/FiraCode-Regular.woff2") format("woff2"),
+        url("../fonts/FiraCode-Regular.woff") format("woff"),
+        url("../fonts/FiraCode-Regular.otf") format("opentype");
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fira code";
+    src: url("../fonts/FiraCode-Bold.woff2") format("woff2"),
+        url("../fonts/FiraCode-Bold.woff") format("woff"),
+        url("../fonts/FiraCode-Bold.otf") format("opentype");
+    font-display: swap;
+    font-weight: 700;
+    font-style: normal;
+}

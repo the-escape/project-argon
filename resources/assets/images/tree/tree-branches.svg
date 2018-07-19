@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 65">
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M32 17h-.5"/>
+    <path stroke-dasharray=".009 0 0 0" d="M29.652 17h-.009"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M29.643 17H18.5"/>
+    <path d="M18.5 17H18v-.5"/>
+    <path stroke-dasharray=".011 0 0 0" d="M18 14.368v-.011"/>
+    <path stroke-dasharray="1.071 2.132 .011 0 0 0" d="M18 14.357V1.5"/>
+    <path d="M18 1.5V1"/>
+  </g>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M63.999 17.141l-.5-.01"/>
+    <path stroke-dasharray=".009 0 0 0" d="M61.651 17.093h-.009"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M61.642 17.093l-11.141-.227"/>
+    <path d="M50.501 16.866l-.5-.01.011-.5"/>
+    <path stroke-dasharray=".011 0 0 0" d="M50.055 14.224v-.011"/>
+    <path stroke-dasharray="1.071 2.132 .011 0 0 0" d="M50.055 14.213l.262-12.854"/>
+    <path d="M50.317 1.359l.011-.5"/>
+  </g>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M96.013 17h-.5"/>
+    <path stroke-dasharray=".009 0 0 0" d="M93.665 17h-.01"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M93.655 17H82.513"/>
+    <path d="M82.513 17h-.5v-.5"/>
+    <path stroke-dasharray=".011 0 0 0" d="M82.013 14.368v-.011"/>
+    <path stroke-dasharray="1.071 2.132 .011 0 0 0" d="M82.013 14.357V1.5"/>
+    <path d="M82.013 1.5V1"/>
+  </g>
+  <path fill="#FFF" stroke="#1f1f1f" stroke-miterlimit="10" d="M52.832 16.982c0-.11-.055-.256-.139-.293l-4.444-3.66a.203.203 0 0 0-.278 0c-.083.037-.139.147-.139.294v7.318c0 .146.056.256.14.33a.203.203 0 0 0 .277 0l4.444-3.66a.485.485 0 0 0 .14-.33z"/>
+  <path stroke="#1f1f1f" stroke-miterlimit="10" d="M82.03 19.5c.11 0 .257-.056.294-.139l3.659-4.444a.203.203 0 0 0 0-.278c-.037-.083-.147-.139-.293-.139h-7.318a.422.422 0 0 0-.33.139.203.203 0 0 0 0 .278l3.66 4.444c.073.083.219.139.329.139z"/>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M114 64v-.5"/>
+    <path stroke-dasharray=".01 0 0 0" d="M114 61.51v-.01"/>
+    <path stroke-dasharray="1 1.99 .01 0 0 0" d="M114 61.5v-60"/>
+    <path d="M114 1.5V1"/>
+  </g>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M32 49h-.5"/>
+    <path stroke-dasharray=".009 0 0 0" d="M29.652 49h-.009"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M29.643 49H18.5"/>
+    <path d="M18.5 49H18"/>
+  </g>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M64 49h-.5"/>
+    <path stroke-dasharray=".009 0 0 0" d="M61.652 49h-.009"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M61.643 49H50.5"/>
+    <path d="M50.5 49H50"/>
+  </g>
+  <g fill="none" stroke="#1f1f1f" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M96.013 49h-.5"/>
+    <path stroke-dasharray=".009 0 0 0" d="M93.665 49h-.01"/>
+    <path stroke-dasharray=".929 1.848 .009 0 0 0" d="M93.655 49H82.513"/>
+    <path d="M82.513 49h-.5"/>
+  </g>
+  <path fill="#FFF" stroke="#1f1f1f" stroke-miterlimit="10" d="M52.861 48.689l-4.444-3.66a.203.203 0 0 0-.278 0 .422.422 0 0 0-.139.33v7.318c0 .147.056.257.139.293a.203.203 0 0 0 .278 0l4.444-3.659c.083-.037.139-.183.139-.293s-.056-.256-.139-.329z"/>
+  <path stroke="#1f1f1f" stroke-miterlimit="10" d="M82.324 51.361l3.659-4.444a.203.203 0 0 0 0-.278.422.422 0 0 0-.33-.139h-7.318c-.146 0-.256.056-.293.139a.203.203 0 0 0 0 .278l3.66 4.444c.036.083.182.139.292.139s.256-.056.33-.139z"/>
+</svg>

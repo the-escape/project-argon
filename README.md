@@ -157,6 +157,7 @@ php artisan vendor:publish --tag=public --force
 php artisan vendor:publish --tag=config --force
 ```
 
+
 ### Event Listeners
 
 ```
@@ -165,7 +166,7 @@ php artisan vendor:publish --tag=listeners --force
 
 Add mapping to your EventServiceProvider.php
  
- ```
+```
 protected $listen = [
         'Escape\Argon\Events\AdminAccess' =>[
             'App\Listeners\OnAdminAccess',
@@ -186,6 +187,7 @@ protected $listen = [
             'App\Listeners\OnUserDelete',
         ],
     ];
+    
 ```
 
 

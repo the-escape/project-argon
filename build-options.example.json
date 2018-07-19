@@ -1,0 +1,11 @@
+{
+    "backendDevelopment": false,
+    "patternlabDevelopment": true,
+    "demoHtmlDevelopment": false,
+    "productionReady": false,
+    "servBackend": false,
+    "backendServUrl": "http://base.local",
+    "pageExports": [
+        "pages-index"
+    ]
+}

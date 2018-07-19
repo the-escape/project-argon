@@ -1,0 +1,154 @@
+<script>
+    window.wysiwygConfig = {
+        contentCss: '',
+        stylesSet: [
+            { name: 'Strong', element: 'strong' },
+        ],
+        colorButton_colors: '12a3c7,0d718a,14b6de',
+        format_tags: 'p;h1;h2;h3;h4',
+        toolbar: [
+            [
+                'Format',
+                'Styles',
+                'TextColor',
+                '-',
+                'Bold',
+                'Italic',
+                'RemoveFormat',
+                '-',
+                'NumberedList',
+                'BulletedList',
+                '-',
+                'Link',
+                'Unlink',
+                '-',
+                'JustifyLeft',
+                'JustifyCenter',
+                'JustifyRight',
+                '-',
+                'Image',
+                'Blockquote',
+                '-',
+                'Source',
+                'Maximize'
+            ]
+        ],
+        height: 150
+    }
+</script>
+
+<div class="o-form l-container">
+    <div class="o-form__group has-error">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="js-wysiwyg"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo ea, obcaecati perspiciatis qui voluptatibus quis nesciunt cumque modi delectus tempora illo alias at minus officiis veritatis quod quidem id itaque?</p></textarea>
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="content">Error Message</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        </div>
+    </div>
+
+    <div class="o-form__group has-success">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="js-wysiwyg" data-format-tags="p;h1" data-colors="f00,0f0,00f"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo ea, obcaecati perspiciatis qui voluptatibus quis nesciunt cumque modi delectus tempora illo alias at minus officiis veritatis quod quidem id itaque?</p></textarea>
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="content">Error Message</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        </div>
+    </div>
+
+    <div class="o-form__group">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="js-wysiwyg" data-format-tags="p;h1" data-colors="false" data-styles-set="false"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo ea, obcaecati perspiciatis qui voluptatibus quis nesciunt cumque modi delectus tempora illo alias at minus officiis veritatis quod quidem id itaque?</p></textarea>
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="content">Error Message</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        </div>
+    </div>
+
+    <div class="o-form__group">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="js-wysiwyg" data-format-tags="p;h1" data-colors="false" data-toolbar='[
+                    [
+                        "Format",
+                        "Styles",
+                        "Bold",
+                        "Italic",
+                        "Link",
+                        "RemoveFormat",
+                        "Source"
+                    ]
+                ]' data-styles-set='[
+                    { "name": "Strong", "element": "strong" },
+                    { "name": "Text Primary", "element": "span", "attributes": { "class": "h-text--primary" } },
+                    { "name": "Button", "element": "a", "attributes": { "class": "o-btn o-btn--sm" } }
+                ]'><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo ea, obcaecati perspiciatis qui voluptatibus quis nesciunt cumque modi delectus tempora illo alias at minus officiis veritatis quod quidem id itaque?</p></textarea>
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="content">Error Message</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        </div>
+    </div>
+</div>
