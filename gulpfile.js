@@ -1,3 +1,5 @@
+const { exec } = require('child_process')
+
 const gulp = require('gulp')
 const { existsSync } = require('fs')
 const fancyLog = require('fancy-log')
@@ -44,9 +46,26 @@ if (config.patternlabDevelopment) {
     browserSync.create('patternLab')
 }
 
+function publishArtisan(done){
+    if (config.backendDevelopment) {
+        exec('php ../artisan vendor:publish --tag=public --force', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`)
+            }else{
+                console.log(`stdout: ${stdout}`)
+                console.log(`stderr: ${stderr}`)
+            }
+        })
+
+        done && done()
+    }
+}
+
 const reload = function (done) {
     fancyLog('-> Reloading Browser')
     fancyLog(' ')
+
+    publishArtisan()
 
     if (config.backendDevelopment && config.servBackend) {
         browserSync.get('backend').reload()
@@ -1041,13 +1060,14 @@ gulp.task(
         patternLabBuild(),
         buildDemo(),
         copyCmsAssets(),
-        doneSeries
+        doneSeries,
+        publishArtisan
     )
 )
-gulp.task('js', gulp.series(buildJS(), doneSeries))
-gulp.task('css', gulp.series(buildCss(), doneSeries))
-gulp.task('demoHtml', gulp.series(patternLabBuild(), buildDemo(), doneSeries))
-gulp.task('old-cms', gulp.series(copyCmsAssets(), doneSeries))
+gulp.task('js', gulp.series(buildJS(), doneSeries, publishArtisan))
+gulp.task('css', gulp.series(buildCss(), doneSeries, publishArtisan))
+gulp.task('demoHtml', gulp.series(patternLabBuild(), buildDemo(), doneSeries, publishArtisan))
+gulp.task('old-cms', gulp.series(copyCmsAssets(), doneSeries, publishArtisan))
 gulp.task(
     'watch',
     gulp.series(

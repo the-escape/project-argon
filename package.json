@@ -103,7 +103,8 @@
         "distCss": [
             "./build/css/*.css",
             "./resources/assets/sass/*.css",
-            "!./build/css/typography.css"
+            "!./build/css/typography.css",
+            "!./build/css/old-cms.css"
         ],
         "distJs": [
             "./build/production/js/*.*"
@@ -111,6 +112,7 @@
         "prodDistCss": [
             "./build/css/*.css",
             "!./build/css/typography.css",
+            "!./build/css/old-cms.css",
             "!./build/css/styleguide.css",
             "!./resources/assets/sass/pattern-scaffolding.css"
         ],
