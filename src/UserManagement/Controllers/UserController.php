@@ -7,6 +7,7 @@ use Escape\Argon\Authentication\UserRepository;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Events\BeforeUserDelete;
 use Escape\Argon\Events\UserDelete;
+use Escape\Argon\Helpers\Skynet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use Input;
@@ -106,7 +107,7 @@ class UserController extends BaseController
         return Redirect::route('cms:user:edit', [$userId])->with('message', Lang::get('argon-users::user.saved'));
     }
 
-    public function delete($userId, Request $request)
+    public function delete($userId, Request $request, Skynet $skynet)
     {
         if ($userId == 1) {
             return Redirect::route('cms:user:manage')->with('error', 'Not allowed');
@@ -116,10 +117,17 @@ class UserController extends BaseController
 
         $result = event(new BeforeUserDelete($user, $request));
 
-        if (isset($result->request))
+        if (!empty($result[0]->errors))
         {
-            $request = $result->request;
+            return Redirect::route('cms:user:manage')->with('errors', $result[0]->errors);
         }
+
+        if (isset($result[0]->request))
+        {
+            $request = $result[0]->request;
+        }
+
+        $skynet->rememberUser($user->id);
 
         $user->roles()->sync([]);
 

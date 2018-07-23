@@ -122,7 +122,7 @@ class MediaItem extends Model implements Arrayable
 
     public function getAlt($default='')
     {
-        return isset($this->data->alt) ? $this->data->alt : $default;
+        return (isset($this->data->alt) && $this->data->alt != "") ? $this->data->alt : $default;
     }
 
     public function getFriendlyFilesize()

@@ -16,10 +16,11 @@ class BeforeUserDelete extends Event
      *
      * @return void
      */
-    public function __construct(User $user, Request $request)
+    public function __construct(User $user, Request $request, $errors = [])
     {
         $this->user = $user;
         $this->request = $request;
+        $this->errors = $errors;
     }
 
     /**
