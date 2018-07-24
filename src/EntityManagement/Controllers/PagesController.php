@@ -14,6 +14,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Events\BeforePageSaved;
+use Escape\Argon\Frontend\Page;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
@@ -43,6 +44,9 @@ class PagesController extends BaseController
         EntityRepository $entityRepository
     ) {
         $types = $typeRepository->page();
+        $typesJson = $types->map(function($item) {
+            return array_only($item->toArray(), ['id','name']);
+        })->toJson();
 
         $locales = $localeRepository->all();
 
@@ -60,7 +64,7 @@ class PagesController extends BaseController
             return $entity->parent_id == null;
         });
 
-        return view('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
+        return view('argon::pages.manage', ['types' => $types, 'typesJson' => $typesJson, 'entities' => $entities, 'locales' => $locales]);
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
@@ -68,6 +72,14 @@ class PagesController extends BaseController
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
+
+        if (request()->ajax())
+        {
+            return response()->json([
+                'success' => true
+            ]);
+        }
+
         return Redirect::route('cms:pages:manage');
     }
 
@@ -191,6 +203,15 @@ class PagesController extends BaseController
         $locale = $page->getDefaultLocalisation();
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+    }
+
+    public function preview($pageId, EntityRepository $entityRepository)
+    {
+        /** @var Entity $page */
+        $entity = $entityRepository->find($pageId);
+        $page = new Page($entity, request());
+        $revision = $page->getCurrentLocalisation()->publishedRevision();
+        return redirect()->to($page->getUrl().'?preview_page='.$revision->id);
     }
 
     public function update(

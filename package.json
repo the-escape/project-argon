@@ -45,10 +45,10 @@
         "plPublic": {
             "base": "./patternlab/public/",
             "css": "./patternlab/public/css/",
-            "fonts": "./patternlab/public/fonts/",
+            "fonts": "./patternlab/public/argon/fonts/",
             "js": "./patternlab/public/js/",
             "vendorjs": "./patternlab/public/vendor/",
-            "img": "./patternlab/public/images/",
+            "img": "./patternlab/public/argon/images/",
             "patterns": "./patternlab/public/patterns/",
             "data": "./patternlab/public/styleguide/data/",
             "annotations": "./patternlab/public/annotations/",

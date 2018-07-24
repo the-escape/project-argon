@@ -6903,6 +6903,12 @@ body.dashboard .help-block {
   font-size: 1.4rem;
   margin-bottom: 1.2rem; }
 
+input,
+button,
+select,
+textarea {
+  line-height: 1; }
+
 .argon-login h1 {
   margin-top: 0; }
 

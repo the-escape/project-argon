@@ -3580,9 +3580,9 @@ button.o-btn {
     background-position: center;
     background-size: contain; }
   .o-tree__icon--edit:after {
-    background-image: url("/images/edit.svg"); }
+    background-image: url("/argon/images/edit.svg"); }
   .o-tree__icon--view:after {
-    background-image: url("/images/see.svg"); }
+    background-image: url("/argon/images/see.svg"); }
 
 .o-icon-btn {
   display: inline-block;
@@ -4372,4 +4372,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-9fac12c442.css.map
+//# sourceMappingURL=main-96be3847f2.css.map

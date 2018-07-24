@@ -58,6 +58,12 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'edit'
         );
         $this->addRoute(
+            'pages/{id}/preview',
+            'cms:pages:preview',
+            PagesController::class,
+            'preview'
+        );
+        $this->addRoute(
             'pages/{id}/edit/{locale}/{revision?}',
             'cms:pages:edit_locale',
             PagesController::class,

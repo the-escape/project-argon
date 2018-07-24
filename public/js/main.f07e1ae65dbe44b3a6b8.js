@@ -34150,6 +34150,7 @@ function addRowEvents() {
 
 
 
+
 var Tree = {
     el: null,
     input: null,
@@ -34158,7 +34159,8 @@ var Tree = {
     id: 0,
     viewItem: function viewItem(_) {},
     editItem: function editItem(_) {},
-    addItem: function addItem(_) {}
+    addItem: function addItem(_) {},
+    deleteItem: function deleteItem(_) {}
 };
 
 var tree_count = 0;
@@ -34167,12 +34169,12 @@ function trees() {
     var treeEls = document.querySelectorAll('.js-tree');
     var trees = Array.from(treeEls);
     trees = trees.map(function (el) {
-        return tree(el);
+        return tree_tree(el);
     });
     return trees;
 }
 
-function tree(el) {
+function tree_tree(el) {
     var Obj = Object.create(Tree);
     tree_count++;
     tree_init.call(Obj, el, tree_count);
@@ -34191,6 +34193,8 @@ function tree_init(el, id) {
     this.viewItem = viewItem.bind(this);
     this.editItem = editItem.bind(this);
     this.addItem = tree_addItem.bind(this);
+    this.deleteItem = deleteItem.bind(this);
+    this.typesSubMenu = setupTypesSubMenu.call(this);
 
     createTree.call(this);
     tree_setupEvents.call(this);
@@ -34228,8 +34232,20 @@ function createTree() {
                     _disabled: false,
                     label: 'Add new page',
                     title: 'Add new page beneath',
-                    icon: 'o-tree__icon o-tree__icon--view',
-                    action: this.addItem
+                    icon: 'o-tree__icon o-tree__icon--children',
+                    submenu: this.typesSubMenu
+                    // action: this.addItem
+                },
+                remove: {
+                    _disabled: function _disabled(el) {
+                        // TODO TomH please refactor :)
+                        return !el.reference.parent()[0].dataset.deletable;
+                    },
+                    label: 'Delete',
+                    title: 'Delete Page',
+                    icon: 'o-tree__icon o-tree__icon--delete',
+                    action: this.deleteItem,
+                    separator_before: true
                 }
             }
         },
@@ -34245,24 +34261,101 @@ function createTree() {
 
 function editItem(data) {
     var obj = this.tree.jstree(true).get_node(data.reference);
+    var id = argon.helpers.getIdFromNodeIdString(obj.id);
     console.log(obj, 'edit page');
+
+    window.location.href = argon.root() + '/pages/' + id + '/edit';
 }
 
 function viewItem(data) {
     var obj = this.tree.jstree(true).get_node(data.reference);
+    var id = argon.helpers.getIdFromNodeIdString(obj.id);
     console.log(obj, 'view page');
+
+    window.open(argon.root() + '/pages/' + id + '/preview', '_blank').focus();
 }
 
-function tree_addItem(data) {
-    var obj = this.tree.jstree(true).get_node(data.reference);
-    console.log(obj, 'add page');
+function tree_addItem(typeId) {
+    var _this = this;
+
+    return function (data) {
+        var obj = _this.tree.jstree(true).get_node(data.reference);
+        var id = argon.helpers.getIdFromNodeIdString(obj.id);
+        console.log(obj, 'add page');
+
+        window.location.href = argon.root() + '/pages/' + id + '/addchild/' + typeId;
+    };
+}
+
+function deleteItem(data) {
+    var tree = this.tree.jstree(true);
+    var obj = tree.get_node(data.reference);
+    var id = argon.helpers.getIdFromNodeIdString(obj.id);
+    console.log(obj, 'delete page');
+
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    if (confirm('Are you sure you want to delete this page?')) {
+        post(argon.root() + '/pages/' + id, {
+            '_token': token,
+            '_method': 'DELETE'
+        }).then(function (data) {
+            return JSON.parse(data);
+        }).then(function (data) {
+            if (data.success) {
+                tree.delete_node(obj);
+            } else {
+                alert('Page could not be deleted...');
+            }
+        }).catch(function (error) {
+            return console.log(error);
+        });
+    }
+}
+
+function setupTypesSubMenu() {
+    var typesList = JSON.parse(this.el.dataset.types);
+    var types = {};
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = typesList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var type = _step.value;
+
+            types[type.id] = {
+                _disabled: false,
+                label: type.name,
+                title: 'Create new page of type ' + type.name,
+                icon: 'o-tree__icon o-tree__icon--add',
+                action: this.addItem(type.id)
+            };
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+                _iterator.return();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+
+    return types;
 }
 
 function tree_setupEvents() {
-    var _this = this;
+    var _this2 = this;
 
     fromEvent(this.input, 'input').pipe(debounceTime(100)).subscribe(function () {
-        _this.tree.jstree(true).search(_this.input.value);
+        _this2.tree.jstree(true).search(_this2.input.value);
     });
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/index.js
@@ -34300,4 +34393,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8c11467925ffae5f547c.js.map
+//# sourceMappingURL=main.f07e1ae65dbe44b3a6b8.js.map
