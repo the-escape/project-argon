@@ -2825,7 +2825,8 @@ button.o-btn {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #d8d8d8; }
+  background-color: #d8d8d8;
+  height: 45px; }
 
 .o-combo__title {
   font-size: 1.8rem;
@@ -4372,4 +4373,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-96be3847f2.css.map
+//# sourceMappingURL=main-98e35eafbe.css.map

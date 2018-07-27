@@ -23,7 +23,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST" id="pageEditForm">
+        <form class="o-form" action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST" id="pageEditForm">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">
@@ -299,11 +299,12 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         {{ $group->name }}
 
                                         @if($group->isRenderable())
-                                            <div class="checkbox">
+                                            <div class="o-checkbox checkbox">
                                                 <label>
-                                                    <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                                    <input type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
-                                                    Render?
+                                                    <input type="hidden" name="group_render[{{$group->id}}]" value="0" class="js-toggle-value">
+                                                    <input class="js-toggle-input" type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                                    <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                                    <label>Render?</label>
                                                 </label>
                                             </div>
                                         @endif

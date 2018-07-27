@@ -36,7 +36,8 @@ export const CKEDITOR_CONFIG = {
     colorButton_enableAutomatic: false,
     colorButton_enableMore: false,
     contentCss: '', // iframe styles
-    stylesSet: false
+    stylesSet: [],
+    extraPlugins: 'stylesheetparser'
 }
 
 let textareas = []

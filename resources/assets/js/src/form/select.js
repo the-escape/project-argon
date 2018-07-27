@@ -30,7 +30,7 @@ export function createSelect (el) {
                     template(`
                     <div class="${classNames.containerInner}">
                         <div class="choices__btn">
-                            <svg><use xlink:href="/images/svgicons.svg#select"></use></svg>
+                            <svg><use xlink:href="/argon/images/svgicons.svg#select"></use></svg>
                         </div>
                     </div>
                 `)
