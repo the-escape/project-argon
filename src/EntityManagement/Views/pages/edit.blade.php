@@ -313,6 +313,20 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                     <div class="card-block accordion-body">
 
+
+                                        <div data-group-id="testing-group"></div>
+
+                                        <!-- @section('footer')
+                                            @parent
+
+                                            <script>
+                                                window.fieldGroups = window.fieldGroups || {}
+                                                window.fieldGroups['{{$group->getId()}}'] =
+                                                {{ $group->getFieldsWithValuesArray($group, $page, $localisation) }}
+                                                // event to be done inside getFieldsWithValuesArray with the html returned inside json
+                                            </script>
+                                        @stop -->
+
                                         @foreach ($group->getFields() as $field)
 
                                             <div class="form-group sortable">

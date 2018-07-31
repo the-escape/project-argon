@@ -76,6 +76,7 @@ class ComboFieldType extends AbstractFieldType
         }
 
         $data = array_merge($data, ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]);
+
         return view('argon::fields.type.combo', $data)->render();
     }
 }

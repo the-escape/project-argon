@@ -10,6 +10,7 @@ import { confirm } from './confirm-btns'
 import { combos } from './combo'
 import { tableAction } from './table-actions'
 import { tables } from './table'
+import { createMultiple } from './multi'
 
 export {
     Accordion,
@@ -24,5 +25,6 @@ export {
     confirm,
     combos,
     tableAction,
-    tables
+    tables,
+    createMultiple
 }

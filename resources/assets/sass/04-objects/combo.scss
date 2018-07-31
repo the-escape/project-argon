@@ -53,7 +53,10 @@
     }
 
     &__drag-handle {
+        width: 45px;
+        height: 45px;
         flex: 0 0 45px;
+        padding: 0;
         color: $black-light;
         cursor: pointer;
         background-color: $grey;

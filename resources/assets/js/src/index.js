@@ -8,7 +8,8 @@ import {
     confirm,
     combos,
     Jump,
-    tables
+    tables,
+    createMultiple
 } from './ui'
 import { initialiseFormElements } from './form'
 import { trees } from './ui/tree'
@@ -27,6 +28,9 @@ function init () {
     trees()
     combos()
     tables()
+
+    const multi = document.querySelector('.js-multi')
+    createMultiple(multi, ['2017/04/10', '2017/04/25', '2018/06/10'])
 }
 
 if (document.readyState !== 'loading') {
