@@ -1,0 +1,30 @@
+export let areTemplatesSet = false
+export let templates = {
+    combo: '.tp-combo',
+    comboItemTop: '.tp-combo-item-top',
+    comboItemBot: '.tp-combo-item-bot',
+    multiTop: '.tp-multi-top',
+    multiBot: '.tp-multi-bottom',
+    group: '.tp-group',
+    description: '.tp-description',
+    text: '.tp-text',
+    textarea: '.tp-textarea'
+}
+
+export function setupTemplates () {
+    if (areTemplatesSet) {
+        return
+    }
+
+    const templateKeys = Object.keys(templates)
+    templateKeys.forEach(key => {
+        const templateEl = document.querySelector(templates[key])
+        if (!templateEl) {
+            // console.warn('Cannot find template: ' + key)
+            return
+        }
+        templates[key] = templateEl.innerHTML
+    })
+
+    areTemplatesSet = true
+}

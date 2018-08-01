@@ -1,0 +1,26 @@
+<script type="text/template" class="tp-group">
+    <div class="o-form__group {statusClass}" data-input-id="{dataName}">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="{inputName}">{name}</label>
+                {input}
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="{inputName}">{errorMessage}</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            {helpText}
+        </div>
+    </div>
+</script>

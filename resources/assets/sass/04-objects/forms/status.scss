@@ -23,11 +23,15 @@
     &__message-bar {
         flex: 1 1 auto;
         display: none;
-        padding: 6px 16px;
+        padding: 7px 16px;
         line-height: 1.65;
         color: #fff;
         border: 1px solid $danger;
         background-color: $danger;
+
+        label {
+            margin-bottom: 0;
+        }
     }
 
     .has-error &__message-bar {

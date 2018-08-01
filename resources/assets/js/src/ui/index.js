@@ -7,10 +7,11 @@ import StickyBars from './sticky-bars'
 import Video from './video'
 import map from './map'
 import { confirm } from './confirm-btns'
-import { combos } from './combo'
+import { combos } from './templates/combo'
 import { tableAction } from './table-actions'
 import { tables } from './table'
-import { createMultiple } from './multi'
+import { createMultiple } from './templates/multi'
+import { createTemplateForms } from './templates/template-forms'
 
 export {
     Accordion,
@@ -26,5 +27,6 @@ export {
     combos,
     tableAction,
     tables,
-    createMultiple
+    createMultiple,
+    createTemplateForms
 }

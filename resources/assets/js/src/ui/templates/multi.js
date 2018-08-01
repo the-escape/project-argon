@@ -1,12 +1,12 @@
 import { fromEvent } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { confirm } from './confirm-btns'
+import { confirm } from '../confirm-btns'
 import dragula from 'dragula'
 
 import {
     initialiseFormElementsForNewElement,
     refreshFromElements
-} from '../form'
+} from '../../form'
 
 const Multiple = {
     el: null,
@@ -72,6 +72,10 @@ function setupItems (data) {
     data.forEach(values => {
         addItem.call(this, values)
     })
+
+    if (!data.length) {
+        addItem.call(this)
+    }
 }
 
 function addItem (value = '') {
@@ -91,7 +95,9 @@ function getTemplateHtml () {
 
     // to remove
     const input = div.querySelector('input, textarea')
-    input.classList.add(input.dataset.class)
+    if (input.dataset.class) {
+        input.classList.add(input.dataset.class)
+    }
 
     return div.firstElementChild
 }

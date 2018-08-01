@@ -1,0 +1,157 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['testing-group'] = [
+        {
+            id: '392',
+            options: {
+                typeKey: 'text',
+                name: 'Titles',
+                settings: {
+                    required: 0,
+                    multiline: 0,
+                    multiple: 1,
+                    minlength: null,
+                    maxlength: null,
+                    url: 0,
+                    integer: 0,
+                    float: 0,
+                    email: 0,
+                    phone: 0
+                }
+            },
+            values: [
+                'First Title',
+                'My Second Title',
+                'Hello Thirds'
+            ],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        },
+
+        {
+            id: '393',
+            options: {
+                typeKey: 'description',
+                name: 'desc1',
+                settings: {
+                    content: "<p><strong class=\"h-text--primary-dark\">Description Block</strong><br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur tenetur tempora ab amet corrupti animi. Quae enim harum impedit a omnis porro magni laudantium, culpa perspiciatis iusto consequuntur saepe soluta!</p>"
+                }
+            }
+        },
+
+        {
+            id: '398',
+            options: {
+                typeKey: 'text',
+                name: 'Error Test',
+                settings: {
+                    required: 0,
+                    multiline: 1,
+                    multiple: 0,
+                    minlength: null,
+                    maxlength: null,
+                    url: 0,
+                    integer: 0,
+                    float: 0,
+                    email: 0,
+                    phone: 0
+                }
+            },
+            values: [],
+            errors: ['Field is required'],
+            message: '',
+            helpText: '<p>Some help text</p>', //new
+        },
+
+        {
+            id: '402',
+            options: {
+                typeKey: 'combo',
+                name: 'Combo Test',
+                comboAddName: 'Item',
+                settings: {
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    '395': [
+                        'test 1',
+                        'test 2'
+                    ],
+                    '396': [
+                        '/contact'
+                    ]
+                },
+                {
+                    '395': [
+                        'test 4',
+                        'test 5'
+                    ],
+                    '396': [
+                        '/about'
+                    ]
+                }
+            ],
+            errors: [],
+            fields: [
+                {
+                    id: '395',
+                    options: {
+                        typeKey: 'text',
+                        name: 'Text Stuff',
+                        settings: {
+                            required: 0,
+                            multiline: 0,
+                            multiple: 1,
+                            minlength: null,
+                            maxlength: null,
+                            url: 0,
+                            integer: 0,
+                            float: 0,
+                            email: 0,
+                            phone: 0
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                },
+                {
+                    id: '396',
+                    options: {
+                        typeKey: 'text',
+                        name: 'Url',
+                        settings: {
+                            required: 0,
+                            multiline: 0,
+                            multiple: 0,
+                            minlength: null,
+                            maxlength: null,
+                            url: 1,
+                            integer: 0,
+                            float: 0,
+                            email: 0,
+                            phone: 0
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                }
+            ]
+        }
+    ]
+</script>
+<div class="o-form l-container js-temple-forms" data-group-id="testing-group">
+</div>
+
+{{> forms-multi-templates}}
+{{> forms-combo-template}}
+{{> forms-group-template}}
+{{> forms-description-template}}
+{{> forms-text-template}}
+{{> forms-textarea-template}}
+
+
