@@ -1,0 +1,144 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['testing-group'] = [
+        {
+            id: '100',
+            options: {
+                typeKey: 'select',
+                name: 'Select Test 1',
+                settings: {
+                    required: 0,
+                    multiple: 0,
+                    options: [
+                        {'op 1': 'op 1'},
+                        {'op 2': 'op 2'},
+                        {'op 3': 'op 3'}
+                    ]
+                }
+            },
+            values: ['op 1'],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        },
+
+        {
+            id: '101',
+            options: {
+                typeKey: 'select',
+                name: 'Select Test 2',
+                settings: {
+                    required: 0,
+                    multiple: 1,
+                    options: [
+                        {'op 1': 'op 1'},
+                        {'op 2': 'op 2'},
+                        {'op 3': 'op 3'},
+                        {'op 4': 'op 4'},
+                        {'op 5': 'op 5'},
+                        {'op 6': 'op 6'}
+                    ]
+                }
+            },
+            values: ['op 1', 'op 3'],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "",
+            messageAfter: ""
+        },
+
+        {
+            id: '102',
+            options: {
+                typeKey: 'select',
+                name: 'Select Error Test',
+                settings: {
+                    required: 0,
+                    multiple: 0,
+                    options: [
+                        {'op 1': 'op 1'},
+                        {'op 2': 'op 2'},
+                        {'op 3': 'op 3'},
+                        {'op 4': 'op 4'},
+                        {'op 5': 'op 5'},
+                        {'op 6': 'op 6'}
+                    ]
+                }
+            },
+            values: ['op 1'],
+            errors: ['Field is required'],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "",
+            messageAfter: ""
+        },
+
+        {
+            id: '103',
+            options: {
+                typeKey: 'combo',
+                name: 'Combo Test',
+                comboAddName: 'Select Item',
+                settings: {
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    '200': ['op 1'],
+                    '201': ['op 1', 'op 3']
+                }
+            ],
+            errors: [],
+            fields: [
+                {
+                    id: '200',
+                    options: {
+                        typeKey: 'select',
+                        name: 'Select Combo 1',
+                        settings: {
+                            required: 0,
+                            multiple: 0,
+                            options: [
+                                {'op 1': 'op 1'},
+                                {'op 2': 'op 2'},
+                                {'op 3': 'op 3'}
+                            ]
+                        }
+                    },
+                    helpText: '<p>Some help text</p>'
+                },
+                {
+                    id: '201',
+                    options: {
+                        typeKey: 'select',
+                        name: 'Select Combo 2',
+                        settings: {
+                            required: 0,
+                            multiple: 1,
+                            options: [
+                                {'op 1': 'op 1'},
+                                {'op 2': 'op 2'},
+                                {'op 3': 'op 3'},
+                                {'op 4': 'op 4'},
+                                {'op 5': 'op 5'},
+                                {'op 6': 'op 6'}
+                            ]
+                        }
+                    },
+                    helpText: '<p>Some help text</p>'
+                }
+            ],
+            helpText: '<p>Some help text</p>',
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        }
+    ]
+</script>
+<div class="o-form l-container js-temple-forms" data-group-id="testing-group">
+</div>
+
+{{> forms-combined-templates}}

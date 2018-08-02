@@ -16,6 +16,7 @@ function text (data, templates) {
 
     if (data.multiline) {
         data.input = templates.textarea
+        data.multi = true
     } else {
         data.input = templates.text
     }
@@ -27,11 +28,75 @@ function text (data, templates) {
     return data
 }
 
+function select (data, templates) {
+    if (data.multiple) {
+        data.label = ''
+        data.input = templates.selectMultiple
+        data.options = data.options.reduce((acc, keyVal) => {
+            const keys = Object.keys(keyVal)
+            keys.forEach(key => {
+                acc += selectOption(data, key, keyVal[key], true, templates)
+            })
+            return acc
+        }, '')
+        data.value = JSON.stringify(data.values)
+    } else {
+        data.input = templates.select
+        data.options = data.options.reduce((acc, keyVal) => {
+            const keys = Object.keys(keyVal)
+            keys.forEach(key => {
+                acc += selectOption(data, key, keyVal[key])
+            })
+            return acc
+        }, '<option>&nbsp;</option>')
+    }
+
+    return data
+}
+
+function selectOption (data, key, value, isMultiple = false, templates = null) {
+    if (!isMultiple) {
+        let selected = ''
+        if (data.value === key) {
+            selected = ' selected'
+        }
+        return `<option value="${value}"${selected}>${key}</option>`
+    }
+
+    const optionHtml = templates.selectMultipleOption
+    return optionHtml.replace(/{key}|{value}/g, match => {
+        if (match === '{key}') {
+            return key
+        }
+
+        if (match === '{value}') {
+            return value
+        }
+    })
+}
+
+function boolean (data, templates) {
+    data.label = ''
+    data.input = templates.switch
+
+    if (!data.values.length) {
+        data.value = data['initial_value']
+    }
+
+    data.value = parseInt(data.value)
+
+    data.checked = ''
+    if (data.value) {
+        data.checked = 'checked'
+    }
+    return data
+}
+
 // ==================
 // Common Template functions
 // ==================
 
-export function setInputTypeData (field, templates) {
+export function setInputTypeData (field, templates, comboValues = null) {
     if (!field.errors) {
         field.errors = []
     }
@@ -47,22 +112,34 @@ export function setInputTypeData (field, templates) {
         dataName: slugify(field.options.name, field.id),
         helpText: field.helpText,
         errors: field.errors,
+        multi: false,
         multiTop: '',
         multiBot: '',
         message: field.message,
         messageAfter: field.messageAfter,
         value: '',
+        values: field.values,
         errorMessage: field.errors.length ? field.errors[0] : '',
         html: templates.group,
         comboAddName: field.options.comboAddName || 'Item'
     }
 
+    if (comboValues) {
+        data.values = comboValues
+    }
+
+    data.label = `<label for="${data.inputName}">${data.name}</label>`
+
     data = Object.assign(data, field.options.settings)
 
     if (data.multiple) {
         data.inputName = data.inputName + '[]'
-    } else if (field.values.length) {
-        data.value = field.values[0]
+    } else {
+        if (comboValues) {
+            data.value = comboValues[0]
+        } else if (field.values.length) {
+            data.value = field.values[0]
+        }
     }
 
     switch (field.options.typeKey) {
@@ -74,6 +151,12 @@ export function setInputTypeData (field, templates) {
         break
     case 'combo':
         data.html = templates.combo
+        break
+    case 'select':
+        data = select(data, templates)
+        break
+    case 'boolean':
+        data = boolean(data, templates)
         break
     }
 

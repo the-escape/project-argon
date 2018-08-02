@@ -99,8 +99,8 @@ function setupIntialValues () {
         this.inactiveColumn.appendChild(el)
     })
 
-    this.value = JSON.parse(this.input.value)
-    this.value.forEach(activeValue => {
+    this.values = JSON.parse(this.input.value)
+    this.values.forEach(activeValue => {
         const item = this.inactiveColumn.querySelector(
             `[data-value="${activeValue}"]`
         )

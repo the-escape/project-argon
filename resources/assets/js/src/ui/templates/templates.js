@@ -8,7 +8,11 @@ export let templates = {
     group: '.tp-group',
     description: '.tp-description',
     text: '.tp-text',
-    textarea: '.tp-textarea'
+    textarea: '.tp-textarea',
+    select: '.tp-select',
+    selectMultiple: '.tp-select-multiple',
+    selectMultipleOption: '.tp-select-multiple-option',
+    switch: '.tp-switch'
 }
 
 export function setupTemplates () {

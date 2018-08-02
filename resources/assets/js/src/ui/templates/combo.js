@@ -167,14 +167,12 @@ function getComboHtml (values) {
     let hash = createUniqueHash()
 
     html = this.data.fields.reduce((acc, field) => {
-        const templateData = setInputTypeData(field, this.templates)
+        let fieldValue
         if (values) {
-            templateData.values = values[field.id]
-
-            if (!templateData.multiple) {
-                templateData.value = values[field.id][0]
-            }
+            fieldValue = values[field.id]
         }
+
+        const templateData = setInputTypeData(field, this.templates, fieldValue)
 
         templateData.inputName = `combo[${this.id}][${hash}]${
             templateData.inputName
@@ -227,6 +225,10 @@ function getComboItemValues (comboEl) {
             let value
             value = el.value
 
+            if (typeof el.dataset.jsonValue !== 'undefined') {
+                value = JSON.parse(value)
+            }
+
             // if (el.tagName === 'SELECT') {
             //     value = [...el.options]
             //         .filter(option => option.selected)
@@ -243,9 +245,12 @@ function getComboItemValues (comboEl) {
             //     inputAcc[name] = value
             // }
 
-            inputAcc.push(value)
-
-            return inputAcc
+            if (Array.isArray(value)) {
+                return [...inputAcc, ...value]
+            } else {
+                inputAcc.push(value)
+                return inputAcc
+            }
         }, [])
 
         acc[inputID] = inputs

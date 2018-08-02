@@ -129,7 +129,7 @@ function htmlStrToDom (str) {
 
 function setupMultiAndCombo () {
     this.data.forEach(el => {
-        if (el.options.settings.multiple && el.options.typeKey !== 'combo') {
+        if (el.data.multi && el.options.typeKey !== 'combo') {
             const dataName = el.data.dataName
             const multiEl = this.el.querySelector(`[data-input-id=${dataName}]`)
             el.multi = createMultiple(multiEl, el.values)

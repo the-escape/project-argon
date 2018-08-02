@@ -1,0 +1,89 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['testing-group'] = [
+        {
+            id: '100',
+            options: {
+                typeKey: 'boolean',
+                name: 'Boolean',
+                settings: {
+                    initial_value: 1
+                }
+            },
+            values: [0],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        },
+
+        {
+            id: '101',
+            options: {
+                typeKey: 'boolean',
+                name: 'Boolean 2',
+                settings: {
+                    initial_value: 1
+                }
+            },
+            values: [1],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "",
+            messageAfter: ""
+        },
+
+        {
+            id: '103',
+            options: {
+                typeKey: 'combo',
+                name: 'Combo Test',
+                comboAddName: 'Select Item',
+                settings: {
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    '200': [],
+                    '201': [0]
+                }
+            ],
+            errors: [],
+            fields: [
+                {
+                    id: '200',
+                    options: {
+                        typeKey: 'boolean',
+                        name: 'Boolean 1',
+                        settings: {
+                            initial_value: 1
+                        }
+                    },
+                    helpText: '<p>Some help text</p>'
+                },
+                {
+                    id: '201',
+                    options: {
+                        typeKey: 'boolean',
+                        name: 'Boolean 2',
+                        settings: {
+                            initial_value: 1
+                        }
+                    },
+                    helpText: '<p>Some help text</p>'
+                }
+            ],
+            helpText: '<p>Some help text</p>',
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        }
+
+    ]
+</script>
+<div class="o-form l-container js-temple-forms" data-group-id="testing-group">
+</div>
+
+{{> forms-combined-templates}}

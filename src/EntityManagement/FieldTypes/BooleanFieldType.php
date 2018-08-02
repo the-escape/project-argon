@@ -57,7 +57,7 @@ class BooleanFieldType extends AbstractFieldType
             $data,
             ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
         );
-
+        dd($data);
         return view('argon::fields.type.boolean', $data)->render();
     }
 }
