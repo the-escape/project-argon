@@ -132,7 +132,7 @@ function setupMultiAndCombo () {
         if (el.data.multi && el.options.typeKey !== 'combo') {
             const dataName = el.data.dataName
             const multiEl = this.el.querySelector(`[data-input-id=${dataName}]`)
-            el.multi = createMultiple(multiEl, el.values)
+            el.multi = createMultiple(multiEl, el.data.values)
         }
 
         if (el.options.typeKey === 'combo') {

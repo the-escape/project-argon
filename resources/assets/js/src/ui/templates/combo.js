@@ -12,7 +12,11 @@ import { Jump } from '..'
 
 import { templates, areTemplatesSet, setupTemplates } from './templates'
 
-import { setInputTypeData, parseTemplate } from './template-input-types'
+import {
+    setInputTypeData,
+    parseTemplate,
+    slugify
+} from './template-input-types'
 
 const Combo = {
     el: null,
@@ -219,45 +223,80 @@ function getComboItemValues (comboEl) {
 
     const values = groups.reduce((acc, group) => {
         const inputID = group.dataset.inputId
-        const inputEls = group.querySelectorAll('[data-name]')
-        let inputs = Array.from(inputEls)
-        inputs = inputs.reduce((inputAcc, el) => {
-            let value
-            value = el.value
+        const multiTrack = group.querySelector('.js-multi-track')
+        const multiInputItems = group.querySelectorAll('[data-input-item-name]')
+        let values
 
-            if (typeof el.dataset.jsonValue !== 'undefined') {
-                value = JSON.parse(value)
-            }
+        if (multiTrack) {
+            values = getMultiTrackValues(multiTrack)
+        } else if (multiInputItems.length) {
+            const inputs = Array.from(multiInputItems)
+            values = inputs.reduce((inputAcc, input) => {
+                const name = input.dataset.inputItemName
+                let value = parseInputValue(input)
 
-            // if (el.tagName === 'SELECT') {
-            //     value = [...el.options]
-            //         .filter(option => option.selected)
-            //         .map(option => option.value)
-            //     value = JSON.stringify(value)
-            // } else {
-            //     value = el.value
-            // }
-
-            // const nameParts = el.name.split('-')
-            // if (nameParts[1] === 'toggleValue' && el.value === '1') {
-            //     inputAcc[nameParts[0] + '-toggleChecked'] = 'checked'
-            // } else {
-            //     inputAcc[name] = value
-            // }
-
-            if (Array.isArray(value)) {
-                return [...inputAcc, ...value]
-            } else {
-                inputAcc.push(value)
+                inputAcc[name] = value
                 return inputAcc
-            }
-        }, [])
+            }, {})
+            values = [values]
+        } else {
+            const inputEls = group.querySelectorAll('[data-name]')
+            const inputs = Array.from(inputEls)
+            values = inputs.reduce((inputAcc, el) => {
+                let value = parseInputValue(el)
 
-        acc[inputID] = inputs
+                if (Array.isArray(value)) {
+                    return [...inputAcc, ...value]
+                } else {
+                    inputAcc.push(value)
+                    return inputAcc
+                }
+            }, [])
+        }
+
+        acc[inputID] = values
         return acc
     }, {})
 
     return values
+}
+
+function getMultiTrackValues (track) {
+    const items = Array.from(track.children)
+    return items.reduce((acc, item) => {
+        let inputs = item.querySelectorAll('[data-name]')
+        inputs = Array.from(inputs)
+
+        if (inputs.length === 1) {
+            acc.push(inputs[0].value)
+            return acc
+        }
+
+        const values = inputs.reduce((inputAcc, input) => {
+            const name = input.dataset.name
+            inputAcc[name] = input.value
+            return inputAcc
+        }, {})
+
+        acc.push(values)
+        return acc
+    }, [])
+}
+
+function parseInputValue (input) {
+    let value = input.value
+
+    if (typeof input.dataset.jsonValue !== 'undefined') {
+        value = JSON.parse(value)
+    }
+
+    if (input.tagName === 'SELECT') {
+        value = [...input.options]
+            .filter(option => option.selected)
+            .map(option => option.value)
+    }
+
+    return value
 }
 
 function getformElementsFromComboEl (combo) {
@@ -288,7 +327,28 @@ function setupMulti (newComboItem, comboValues) {
         let values = []
         if (comboValues && comboValues[field.id]) {
             values = comboValues[field.id]
+            values = parseMultiValues(values, field)
         }
         createMultiple(multiEl, values)
+    })
+}
+
+function parseMultiValues (values, field) {
+    if (typeof values[0] !== 'object') {
+        return values
+    }
+
+    const dataName = slugify(field.options.name, field.id) + '-'
+
+    return values.map(value => {
+        const keys = Object.keys(value)
+        return keys.reduce((acc, key) => {
+            if (~key.indexOf(dataName)) {
+                acc[key] = value[key]
+            } else {
+                acc[dataName + key] = value[key]
+            }
+            return acc
+        }, {})
     })
 }

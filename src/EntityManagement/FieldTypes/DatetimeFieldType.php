@@ -82,6 +82,7 @@ class DatetimeFieldType extends AbstractFieldType
             $data,
             ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
         );
+
         return view('argon::fields.type.datetime', $data)->render();
     }
 }

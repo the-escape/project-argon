@@ -82,9 +82,18 @@ function addItem (value = '') {
     const html = getTemplateHtml.call(this)
     let newItem = this.track.appendChild(html)
 
-    if (value) {
+    if (typeof value === 'object') {
+        const dataNames = Object.keys(value)
+        if (dataNames.length) {
+            dataNames.forEach(dataName => {
+                newItem.querySelector(`[data-name="${dataName}"]`).value =
+                    value[dataName]
+            })
+        }
+    } else {
         newItem.querySelector('input, textarea').value = value
     }
+
     newItem = initialiseItem.call(this, newItem)
     this.items.push(newItem)
 }
@@ -114,8 +123,19 @@ function initialiseItem (item) {
 
 function duplicateItem (item) {
     return () => {
-        const value = item.querySelector('input, textarea').value
-        addItem.call(this, value)
+        const inputs = item.querySelectorAll('input, textarea')
+        let inputValues
+
+        if (inputs.length === 1) {
+            inputValues = inputs[0].value
+        } else {
+            inputValues = Array.from(inputs).reduce((acc, input) => {
+                const name = input.dataset.name
+                acc[name] = input.value
+                return acc
+            }, {})
+        }
+        addItem.call(this, inputValues)
     }
 }
 

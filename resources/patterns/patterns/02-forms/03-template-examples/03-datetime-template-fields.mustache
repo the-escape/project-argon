@@ -4,13 +4,17 @@
         {
             id: '100',
             options: {
-                typeKey: 'boolean',
-                name: 'Boolean',
+                typeKey: 'datetime',
+                name: 'Date Time 1',
                 settings: {
-                    initial_value: 1
+                    required: 0,
+                    time: 1,
+                    seconds: 0,
+                    default: 1,
+                    range: 0 // new
                 }
             },
-            values: [0],
+            values: ['2017-06-03 14:23:44'],
             errors: [],
             helpText: '<p>Some help text</p>', //new
             // for message before input using description type, for event html return
@@ -21,34 +25,38 @@
         {
             id: '101',
             options: {
-                typeKey: 'boolean',
-                name: 'Boolean 2',
+                typeKey: 'datetime',
+                name: 'Date Time 2',
                 settings: {
-                    initial_value: 1
+                    required: 0,
+                    time: 0,
+                    seconds: 0,
+                    default: 0,
+                    range: 1 // new
                 }
             },
-            values: [1],
+            values: [],
             errors: [],
-            helpText: '<p>Some help text</p>', //new
+            helpText: '<p>Date Range, click start and end dates</p>', //new
             // for message before input using description type, for event html return
             message: "",
             messageAfter: ""
         },
 
         {
-            id: '103',
+            id: '102',
             options: {
                 typeKey: 'combo',
                 name: 'Combo Test',
-                comboAddName: 'Select Item',
+                comboAddName: 'Date Item',
                 settings: {
                     multiple: 1
                 }
             },
             values: [
                 {
-                    '200': [],
-                    '201': [0]
+                    '200': ['2017-06-03 14:23:44'],
+                    '201': ['2018-02-03 08:13:56']
                 }
             ],
             errors: [],
@@ -56,10 +64,14 @@
                 {
                     id: '200',
                     options: {
-                        typeKey: 'boolean',
-                        name: 'Boolean 1',
+                        typeKey: 'datetime',
+                        name: 'datetime 1',
                         settings: {
-                            initial_value: 1
+                            required: 0,
+                            time: 1,
+                            seconds: 0,
+                            default: 1,
+                            range: 0 // new
                         }
                     },
                     helpText: '<p>Some help text</p>'
@@ -67,10 +79,14 @@
                 {
                     id: '201',
                     options: {
-                        typeKey: 'boolean',
-                        name: 'Boolean 2',
+                        typeKey: 'datetime',
+                        name: 'datetime 2',
                         settings: {
-                            initial_value: 1
+                            required: 0,
+                            time: 0,
+                            seconds: 0,
+                            default: 1,
+                            range: 0 // new
                         }
                     },
                     helpText: '<p>Some help text</p>'
@@ -80,7 +96,6 @@
             message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
             messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
         }
-
     ]
 </script>
 <div class="o-form l-container js-temple-forms" data-group-id="testing-group">

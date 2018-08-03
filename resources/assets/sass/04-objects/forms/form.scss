@@ -46,6 +46,12 @@
         }
     }
 
+    &__vertical-list {
+        > * + * {
+            margin-top: 15px;
+        }
+    }
+
     &__grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(0, 250px));

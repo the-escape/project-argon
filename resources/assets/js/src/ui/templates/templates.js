@@ -12,7 +12,9 @@ export let templates = {
     select: '.tp-select',
     selectMultiple: '.tp-select-multiple',
     selectMultipleOption: '.tp-select-multiple-option',
-    switch: '.tp-switch'
+    switch: '.tp-switch',
+    datetime: '.tp-datetime',
+    location: '.tp-location'
 }
 
 export function setupTemplates () {

@@ -1,0 +1,139 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['testing-group'] = [
+        {
+            id: '100',
+            options: {
+                typeKey: 'location',
+                name: 'location',
+                settings: {
+                    required: 0,
+                    float: 0,
+                    multiple: 0
+                }
+            },
+            values: [
+                {
+                    latitude: 123,
+                    longitude: 321
+                }
+            ],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+        },
+
+        {
+            id: '101',
+            options: {
+                typeKey: 'location',
+                name: 'location 2',
+                settings: {
+                    required: 0,
+                    float: 0,
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    latitude: 123,
+                    longitude: 321
+                },
+                {
+                    latitude: 'ads',
+                    longitude: 'ghj'
+                }
+            ],
+            errors: [],
+            message: '',
+            helpText: '<p>Some help text</p>', //new
+        },
+
+        {
+            id: '200',
+            options: {
+                typeKey: 'combo',
+                name: 'Combo Test',
+                comboAddName: 'Item',
+                settings: {
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    '201': [
+                        {
+                            latitude: 123,
+                            longitude: 321
+                        }
+                    ],
+                    '202': [
+                        {
+                            latitude: 123,
+                            longitude: 321
+                        },
+                        {
+                            latitude: 'ads',
+                            longitude: 'ghj'
+                        }
+                    ]
+                },
+                {
+                    '201': [
+                        {
+                            latitude: 890890,
+                            longitude: '876uyj'
+                        }
+                    ],
+                    '202': [
+                        {
+                            latitude: 'sdghjn',
+                            longitude: 'Tom'
+                        },
+                        {
+                            latitude: 'pims',
+                            longitude: 'bud'
+                        }
+                    ]
+                }
+            ],
+            errors: [],
+            fields: [
+                {
+                    id: '201',
+                    options: {
+                        typeKey: 'location',
+                        name: 'location',
+                       settings: {
+                            required: 0,
+                            float: 0,
+                            multiple: 0
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                },
+                {
+                    id: '202',
+                    options: {
+                        typeKey: 'location',
+                        name: 'location 2',
+                        settings: {
+                            required: 0,
+                            float: 0,
+                            multiple: 1
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                }
+            ]
+        }
+    ]
+</script>
+<div class="o-form l-container js-temple-forms" data-group-id="testing-group">
+</div>
+
+{{> forms-combined-templates}}

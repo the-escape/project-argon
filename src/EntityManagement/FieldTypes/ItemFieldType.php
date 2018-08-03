@@ -84,6 +84,7 @@ class ItemFieldType extends AbstractFieldType
             $data,
             ['field' => $this, 'value' => $value, 'isCloning' => $this->isCloning]
         );
+
         return view('argon::fields.type.item', $data)->render();
     }
 }

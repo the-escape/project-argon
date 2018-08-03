@@ -16,12 +16,12 @@ function text (data, templates) {
 
     if (data.multiline) {
         data.input = templates.textarea
-        data.multi = true
     } else {
         data.input = templates.text
     }
 
     if (data.multiple) {
+        data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
     }
@@ -41,6 +41,7 @@ function select (data, templates) {
         }, '')
         data.value = JSON.stringify(data.values)
     } else {
+        data.isMultiple = ''
         data.input = templates.select
         data.options = data.options.reduce((acc, keyVal) => {
             const keys = Object.keys(keyVal)
@@ -57,7 +58,7 @@ function select (data, templates) {
 function selectOption (data, key, value, isMultiple = false, templates = null) {
     if (!isMultiple) {
         let selected = ''
-        if (data.value === key) {
+        if (~data.values.indexOf(value)) {
             selected = ' selected'
         }
         return `<option value="${value}"${selected}>${key}</option>`
@@ -89,6 +90,75 @@ function boolean (data, templates) {
     if (data.value) {
         data.checked = 'checked'
     }
+    return data
+}
+
+function datetime (data, templates) {
+    data.input = templates.datetime
+    data.time = data.time ? 'true' : 'false'
+    data.default = data.default ? 'true' : 'false'
+    data.range = data.range ? 'true' : 'false'
+    return data
+}
+
+function item (data, templates) {
+    if (data.multiple_instances) {
+        data.label = ''
+        data.input = templates.selectMultiple
+        data.options = data.options.reduce((acc, keyVal) => {
+            const keys = Object.keys(keyVal)
+            keys.forEach(key => {
+                acc += selectOption(data, key, keyVal[key], true, templates)
+            })
+            return acc
+        }, '')
+        data.value = JSON.stringify(data.values)
+        return data
+    }
+
+    data.isMultiple = ''
+    if (data.multiple) {
+        data.isMultiple = 'multiple'
+    }
+
+    data.input = templates.select
+    data.options = data.options.reduce((acc, keyVal) => {
+        const keys = Object.keys(keyVal)
+        keys.forEach(key => {
+            acc += selectOption(data, key, keyVal[key])
+        })
+        return acc
+    }, '<option>&nbsp;</option>')
+
+    return data
+}
+
+function location (data, templates) {
+    data.input = templates.location
+    data.latInputName = data.inputName + '[latitude]'
+    data.lngInputName = data.inputName + '[longitude]'
+    data.latDataName = data.dataName + '-latitude'
+    data.lngDataName = data.dataName + '-longitude'
+    data.latValue = data.value.latitude || ''
+    data.lngValue = data.value.longitude || ''
+
+    if (data.multiple) {
+        data.multi = true
+        data.multiTop = templates.multiTop
+        data.multiBot = templates.multiBot
+        data.latInputName += '[]'
+        data.lngInputName += '[]'
+        data.values = data.values.reduce((acc, value) => {
+            const keys = Object.keys(value)
+            const newValue = {}
+            keys.forEach(key => {
+                newValue[data.dataName + '-' + key] = value[key]
+            })
+            acc.push(newValue)
+            return acc
+        }, [])
+    }
+
     return data
 }
 
@@ -126,6 +196,10 @@ export function setInputTypeData (field, templates, comboValues = null) {
 
     if (comboValues) {
         data.values = comboValues
+
+        if (!data.multiple) {
+            data.value = comboValues[0]
+        }
     }
 
     data.label = `<label for="${data.inputName}">${data.name}</label>`
@@ -135,9 +209,7 @@ export function setInputTypeData (field, templates, comboValues = null) {
     if (data.multiple) {
         data.inputName = data.inputName + '[]'
     } else {
-        if (comboValues) {
-            data.value = comboValues[0]
-        } else if (field.values.length) {
+        if (!comboValues) {
             data.value = field.values[0]
         }
     }
@@ -157,6 +229,15 @@ export function setInputTypeData (field, templates, comboValues = null) {
         break
     case 'boolean':
         data = boolean(data, templates)
+        break
+    case 'datetime':
+        data = datetime(data, templates)
+        break
+    case 'item':
+        data = item(data, templates)
+        break
+    case 'location':
+        data = location(data, templates)
         break
     }
 
@@ -200,6 +281,6 @@ export function parseTemplate (html, data, templates, skipDataParse = false) {
     return parsedHtml
 }
 
-function slugify (str, id) {
+export function slugify (str, id) {
     return str.toLowerCase().replace(/\s/g, '-') + `${id}`
 }
