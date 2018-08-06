@@ -10,6 +10,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
+use Escape\Argon\Helpers\BlocksLibrary;
 use Illuminate\Http\Request;
 use Validator;
 use Input;
@@ -1194,13 +1195,15 @@ class EntityTypeController extends BaseController
         return view('argon::groups.setting')->render();
     }
 
-    public function importGroupJson($typeId, EntityTypeRepository $typeRepository)
+    public function importGroupJson($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
     {
         $type = $typeRepository->find($typeId);
 
         $types = $typeRepository->all();
 
-        return view('argon::groups.import', compact('type', 'types'))->render();
+        $blocks = $blocksLibrary->getBlocks();
+
+        return view('argon::groups.import', compact('type', 'types', 'blocks'))->render();
     }
 
     public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository, FieldTypesManager $fieldTypesManager, EntityFieldRepository $fieldRepository, ComboFieldType $comboFieldType, Request $request)

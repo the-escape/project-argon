@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Import Group Beta*</h1>
+        <h1 class="page-header">Import Group*</h1>
 
         @include('argon::inc.alerts', compact($errors))
 
@@ -10,14 +10,35 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="card">
-                <div class="card-header">Json Editor</div>
+                <div class="card-header js-editor-title">Json Editor</div>
                 <div class="card-block json-editor-wrapper">
+                    <div class="loading-overlay js-loading-block"></div>
                     <div class="editor-tools">
                         <span class="settings fa fa-cog"></span>
                         <span class="expand fa fa-expand"></span>
                         <span class="collapse fa fa-compress"></span>
                     </div>
-                    <textarea class="form-control hidden" id="json-textarea" name="json">{{ old('json') }}</textarea>
+
+                    <div class="c-library-tools library-tools js-library-tools">
+                        <span class="c-library-tools__button c-library-tools__create create fa fa-plus"></span>
+                        <span class="c-library-tools__button c-library-tools__save save fa fa-save"></span>
+                        <span class="c-library-tools__button c-library-tools__input"><input type="text" name="lib_block_name"></span>
+                        <label class="">
+                            <span class="c-library-tools__button c-library-tools__image image fa fa-image"></span>
+                            <input type="file" name="lib_block_image_tmp" style="display:none;">
+                            <input type="hidden" name="lib_block_image">
+                        </label>
+                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-json active" data-mode="json">json</span>
+                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-blade" data-mode="blade">blade</span>
+                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-mappers" data-mode="mappers">php</span>
+                        <span class="c-library-tools__button c-library-tools__delete delete fa fa-trash"></span>
+                        <span class="c-library-tools__button c-library-tools__close  js-library-close-block fa fa-close"></span>
+                    </div>
+
+                    <textarea class="form-control hidden js-block-lib-data" id="json-textarea" name="json">{{ old('json') }}</textarea>
+                    <textarea class="form-control hidden js-block-lib-data" id="blade-textarea" name="blade"></textarea>
+                    <textarea class="form-control hidden js-block-lib-data" id="mappers-textarea" name="mappers"></textarea>
+
                     <div id="json-editor"></div>
 
                     <div class="settings-wrapper">
@@ -34,8 +55,29 @@
                 </div>
             </div>
 
+            @if(!empty($blocks))
+                <div class="card accordion">
+                    <div class="card-header accordion-header">Blocks Library</div>
+                    <div class="card-block accordion-body">
+                        <div class="c-blocks-library">
+
+                            @foreach($blocks as $b)
+                                <div class="c-blocks-library__item js-get-library-block" data-block-id="{{$b->id}}" data-block-url="{{ route('cms:blockslibrary:get',[$b->id]) }}" >
+                                    <div class="c-blocks-library__item-name">{{ $b->name }}</div>
+                                    <div class="c-blocks-library__item-image" style="background-image: url('{{ $b->image }}')"></div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="c-blocks-library__item-template js-block-template">
+                            <div class="c-blocks-library__item-name"></div>
+                            <div class="c-blocks-library__item-image" style="background-image: url()"></div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div class="card accordion">
-                <div class="card-header accordion-header">Browse Field Groups</div>
+                <div class="card-header accordion-header">Local Field Groups</div>
                 <div class="card-block accordion-body">
                     <div id="navtree">
                         <ul>
@@ -56,7 +98,9 @@
                 </div>
             </div>
 
-            <p class="text-muted">* This functionality is still being tested and is not meant to be used in Production yet. Use with caution and please report all the bugs.</p>
+
+
+            <p class="text-muted">* Use with caution when on production.</p>
 
             <button type="submit" class="btn btn-primary">Save</button>
             <a class="btn btn-link" href="{{route('cms:types:edit',[$type->id])}}">Back to edit type</a>
@@ -70,19 +114,39 @@
     <script src="/argon/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/argon/js/ace/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
     <script src="/argon/js/ace/mode-json.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/argon/js/ace/mode-php.js" type="text/javascript" charset="utf-8"></script>
     <script src="/argon/js/jstree.min.js"></script>
 
     <script>
         $(function(){
             var editor = ace.edit("json-editor"),
-                textarea = $('#json-textarea').hide(),
-                JsonMode = ace.require("ace/mode/json").Mode;
+                jsonTextarea = $('#json-textarea').hide(),
+                bladeTextarea = $('#blade-textarea').hide(),
+                mappersTextarea = $('#mappers-textarea').hide(),
+                JsonMode = ace.require("ace/mode/json").Mode,
+                PhpMode = ace.require("ace/mode/php").Mode,
+                mode = 'json',
+                blockNameInput = $('[name=lib_block_name]'),
+                selectedBlock = null;
 
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode(new JsonMode());
-            editor.getSession().setValue(textarea.val());
+
+            editor.getSession().setValue(jsonTextarea.val());
             editor.getSession().on('change', function(){
-                textarea.val(editor.getSession().getValue());
+
+                switch(mode){
+                    case 'blade':
+                        bladeTextarea.val(editor.getSession().getValue());
+                        break;
+                    case 'mappers':
+                        mappersTextarea.val(editor.getSession().getValue());
+                        break;
+                    case 'json':
+                    default:
+                        jsonTextarea.val(editor.getSession().getValue());
+                        break;
+                }
             });
 
             $('.editor-tools').on('click', '.expand, .collapse', function(){
@@ -99,9 +163,11 @@
                     var el = $('#navtree').jstree().get_selected(true);
                         target = el[0].data.exportTarget;
 
-                    if(target){
+                    $('.js-loading-block').addClass('show');
 
-                        console.log('loading');
+                    unsetBlock();
+
+                    if(target){
 
                         $.ajax({
                             url: target,
@@ -112,7 +178,11 @@
 
                             var json = JSON.stringify(r, null, 4);
 
-                            editor.getSession().setValue(json);
+                            jsonTextarea.val(json);
+//                            editor.getSession().setValue(json);
+                            changeEditorMode('json');
+                            $('.js-loading-block').removeClass('show');
+
 
                         });
                     }
@@ -160,7 +230,225 @@
                     $('#groupExport').modal('hide');
                 }, 300);
 
-            })
+            });
+
+            $('.js-get-library-block').on('dblclick', function(e) {
+                e.preventDefault();
+
+                if ($(this).hasClass('editing'))
+                {
+                    unsetBlock();
+                    changeEditorMode('json');
+                    editor.getSession().setValue('');
+                }
+                else
+                {
+                    var url = $(this).data('blockUrl');
+
+                    $(this).siblings().removeClass('editing');
+                    $(this).addClass('editing');
+
+                    $('.js-loading-block').addClass('show');
+
+                    $.ajax(url).done(function(r) {
+
+                        if(r.json !== undefined){
+
+                            r.json = r.json || {};
+                            var json = JSON.stringify(r.json, null, 4);
+
+                            selectedBlock = r.id;
+                            $('.js-lib-block').val(selectedBlock);
+                            jsonTextarea.val(json);
+                            bladeTextarea.val(r.blade);
+                            mappersTextarea.val(r.mappers);
+                            blockNameInput.val(r.name);
+
+                            $('.js-loading-block').removeClass('show');
+
+                            changeEditorMode('json');
+                        }
+                    });
+                }
+            });
+
+            $('.js-library-close-block').on('click', function(){
+//                editor.getSession().setValue('');
+
+                unsetBlock();
+                changeEditorMode('json');
+            });
+
+            $('.js-library-tools').on('click', '.toggle', function(){
+                var mode = $(this).data('mode');
+                changeEditorMode(mode);
+            }).on('click', '.save', function() {
+                saveBlock();
+            }).on('click', '.delete', function() {
+                deleteBlock();
+            }).on('click', '.create', function() {
+                createBlock();
+            });
+
+            $('[name=lib_block_image_tmp]').on('change', function(){
+                encodeImagetoBase64(this);
+            });
+
+            function changeEditorMode(selectedMode){
+
+                mode = selectedMode || mode;
+
+                var activeToggle = $('.js-library-tools .toggle.active'),
+                    currentMode = activeToggle.data('mode'),
+                    currentData = editor.getSession().getValue();
+
+                activeToggle.removeClass('active');
+
+                if (selectedBlock != null){
+
+                    $('.js-library-tools').addClass('show');
+
+                    switch(mode){
+                        case 'blade':
+                            $('.js-library-tools .toggle-blade').addClass('active');
+
+                            editor.getSession().setValue(bladeTextarea.val());
+                            editor.session.setMode(new PhpMode());
+
+                            break;
+                        case 'mappers':
+                            $('.js-library-tools .toggle-mappers').addClass('active');
+
+                            editor.getSession().setValue(mappersTextarea.val());
+                            editor.session.setMode(new PhpMode());
+                            break;
+                        case 'json':
+                        default:
+                            $('.js-library-tools .toggle-json').addClass('active');
+
+                            editor.getSession().setValue(jsonTextarea.val());
+                            editor.session.setMode(new JsonMode());
+                            break;
+                    }
+
+
+                } else {
+
+                    $('.js-library-tools .toggle-json').addClass('active');
+
+                    editor.getSession().setValue(jsonTextarea.val());
+                    editor.session.setMode(new JsonMode());
+
+                    $('.js-library-tools').removeClass('show');
+
+                }
+            }
+
+            function deleteBlock(){
+                var url = '/admin/blockslibrary/delete/'+selectedBlock;
+
+                $.ajax({
+                    url: url,
+                    type: 'post'
+                }).done(function(r){
+                    if(r.success){
+                        $('.js-get-library-block[data-block-id='+selectedBlock+']').remove();
+                        editor.getSession().setValue('');
+
+                        unsetBlock();
+                        changeEditorMode('json');
+                    }
+                });
+            }
+
+            function createBlock(){
+                selectedBlock = 'new';
+                changeEditorMode('json');
+            }
+
+            function saveBlock(){
+                var url = '/admin/blockslibrary';
+
+                blockNameInput.parent().removeClass('error');
+
+                if(blockNameInput.val() === '')
+                {
+                    blockNameInput.parent().addClass('error');
+                    return false;
+                }
+
+                if(selectedBlock && selectedBlock != 'new')
+                {
+                    url += '/' + selectedBlock;
+                }
+
+                var data = {
+                    name: blockNameInput.val(),
+                    json: jsonTextarea.val(),
+                    blade: bladeTextarea.val(),
+                    mappers: mappersTextarea.val(),
+                };
+
+                if($('[name=lib_block_image]').val() !== '')
+                {
+                    data.image = $('[name=lib_block_image]').val();
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: data
+                }).done(function(r){
+                    if(r.success){
+                        var blockItem = $('.js-get-library-block[data-block-id='+selectedBlock+']');
+
+                        blockItem.find('.c-blocks-library__item-name').text(data.name);
+                        if(data.image){
+                            blockItem.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
+                        }
+
+                        if(selectedBlock != 'new' && r.block){
+                            selectedBlock = r.block.id;
+
+                            var newBlock = $('.js-block-template').clone();
+
+                            newBlock.removeClass('js-block-template').removeClass('c-blocks-library__item-template');
+                            newBlock.addClass('c-blocks-library__item').addClass('js-get-library-block');
+                            newBlock.data('blockId', r.block.id);
+                            newBlock.data('blockUrl', '/admin/blockslibrary/'+r.block.id);
+                            newBlock.find('.c-blocks-library__item-name').text(data.name);
+                            newBlock.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
+
+                            $('.c-blocks-library').append(newBlock);
+                        }
+                    }
+                    else{
+                        blockNameInput.parent().addClass('error');
+                    }
+                });
+            }
+
+
+            function unsetBlock(){
+
+                $('.js-get-library-block.editing').removeClass('editing');
+
+                selectedBlock = null;
+                $('.js-lib-block').val();
+                bladeTextarea.val('');
+                mappersTextarea.val('');
+                blockNameInput.val('');
+            }
+
+            function encodeImagetoBase64(element) {
+                var file = element.files[0];
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    $("[name=lib_block_image]").val(reader.result);
+                }
+                reader.readAsDataURL(file);
+
+            }
         });
     </script>
 @endsection
@@ -199,7 +487,7 @@
         .json-editor-wrapper.expanded .editor-tools {
             position: fixed;
             top: 10px;
-            right: 10px;
+            right: 20px;
         }
 
         .json-editor-wrapper .editor-tools > *{
@@ -222,6 +510,85 @@
             display: inline-block;
         }
 
+        .c-library-tools{
+            position: absolute;
+            bottom: 25px;
+            right: 40px;
+            z-index: 2999;
+            display: flex;
+            height: 30px;
+        }
+
+        .json-editor-wrapper.expanded .c-library-tools {
+            position: fixed;
+            bottom: 10px;
+            right: 20px;
+        }
+
+        /*.c-library-tools.show{*/
+            /*display: flex;*/
+        /*}*/
+
+        .c-library-tools__button{
+            background-color: white;
+            padding: 7px 8px;
+            margin-right: 10px;
+            cursor: pointer;
+            min-width: 30px;
+            text-align: center;
+
+            display: none;
+        }
+
+        .c-library-tools.show .c-library-tools__button{
+            display: block;
+        }
+
+        .c-library-tools__create{
+            display: block;
+            margin-right: 0;
+        }
+
+        .c-library-tools.show .c-library-tools__create{
+            display: none;
+        }
+
+        .c-library-tools__input.error {
+            background-color: rgb(255, 150, 150)
+        }
+
+        .c-library-tools__delete{
+            margin-left: 10px;
+        }
+
+        .c-library-tools__close{
+            margin-right: 0;
+        }
+
+        .c-library-tools__toggle{
+            padding: 3px 8px;
+            margin-right: 1px;
+        }
+
+        .c-library-tools__toggle.active{
+            background-color: #cdcdcd;
+        }
+
+        .c-library-tools__input{
+            padding: 0;
+        }
+
+        .c-library-tools__input input {
+            background-color: transparent;
+            border: 0 none;
+            outline: 0 none;
+            padding: 2px 10px;
+        }
+
+        .c-library-tools__input input:active {
+            outline: 0 none
+        }
+
         .settings-wrapper{
             padding: 20px 30px 10px;
             display: none;
@@ -238,6 +605,95 @@
 
         .card-block {
             padding: 0;
+        }
+
+        .loading-overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 99;
+
+            display: none;
+        }
+
+        .loading-overlay.show{
+            display: flex;
+        }
+
+        .loading-overlay:after{
+            content: "loading...";
+            display: block;
+            text-align: center;
+            color: white;
+        }
+
+        .c-blocks-library{
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .c-blocks-library__item{
+            flex: 0 0 220px;
+            width: 220px;
+            min-height: 200px;
+            margin: 5px;
+
+            transition: opacity linear 200ms;
+            opacity: .7;
+            cursor: pointer;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .c-blocks-library__item-template{
+            display: none;
+        }
+
+        .c-blocks-library__item:hover {
+            opacity: 1;
+        }
+
+        .c-blocks-library__item-name{
+            flex: 1 1 10%;
+            text-align: center;
+            background-color: black;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .c-blocks-library__item-image{
+            flex: 1 1 90%;
+            width: 100%;
+
+            /*background-color: #cdcdcd;*/
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid black;
+            border-top: 0 none;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .c-blocks-library__item.editing{
+            opacity: 1;
+        }
+
+        .c-blocks-library__item.editing .c-blocks-library__item-name{
+            background-color: #0275d8;
+
+        }
+
+        .c-blocks-library__item.editing .c-blocks-library__item-image{
+            border-color: #0275d8;
+
         }
     </style>
 
