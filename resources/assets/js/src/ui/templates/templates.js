@@ -14,7 +14,11 @@ export let templates = {
     selectMultipleOption: '.tp-select-multiple-option',
     switch: '.tp-switch',
     datetime: '.tp-datetime',
-    location: '.tp-location'
+    location: '.tp-location',
+    wysiwyg: '.tp-wysiwyg',
+    button: '.tp-button',
+    file: '.tp-file',
+    image: '.tp-image'
 }
 
 export function setupTemplates () {

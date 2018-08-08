@@ -61,7 +61,7 @@ function selectOption (data, key, value, isMultiple = false, templates = null) {
         if (~data.values.indexOf(value)) {
             selected = ' selected'
         }
-        return `<option value="${value}"${selected}>${key}</option>`
+        return `<option value="${key}"${selected}>${value}</option>`
     }
 
     const optionHtml = templates.selectMultipleOption
@@ -146,8 +146,8 @@ function location (data, templates) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
-        data.latInputName += '[]'
-        data.lngInputName += '[]'
+        // data.latInputName += '[]'
+        // data.lngInputName += '[]'
         data.values = data.values.reduce((acc, value) => {
             const keys = Object.keys(value)
             const newValue = {}
@@ -162,11 +162,65 @@ function location (data, templates) {
     return data
 }
 
+function button (data, templates) {
+    data.input = templates.button
+    data.labelInputName = data.inputName + '[label]'
+    data.urlInputName = data.inputName + '[url]'
+    data.classInputName = data.inputName + '[class]'
+    data.idInputName = data.inputName + '[id]'
+    data.targetInputName = data.inputName + '[target]'
+
+    data.labelDataName = data.dataName + '-label'
+    data.urlDataName = data.dataName + '-url'
+    data.classDataName = data.dataName + '-class'
+    data.idDataName = data.dataName + '-id'
+    data.targetDataName = data.dataName + '-target'
+
+    data.labelValue = data.value.label || ''
+    data.urlValue = data.value.url || ''
+    data.classValue = data.value.class || ''
+    data.idValue = data.value.id || ''
+    data.targetValue = data.value.target || ''
+
+    if (data.multiple) {
+        data.multi = true
+        data.multiTop = templates.multiTop
+        data.multiBot = templates.multiBot
+        // data.labelInputName += '[]'
+        // data.urlInputName += '[]'
+        // data.classInputName += '[]'
+        // data.idInputName += '[]'
+        // data.targetInputName += '[]'
+        data.values = data.values.reduce((acc, value) => {
+            const keys = Object.keys(value)
+            const newValue = {}
+            keys.forEach(key => {
+                newValue[data.dataName + '-' + key] = value[key]
+            })
+            acc.push(newValue)
+            return acc
+        }, [])
+    }
+
+    return data
+}
+
+function wysiwyg (data, templates) {
+    data.input = templates.wysiwyg
+
+    if (data.multiple) {
+        data.multi = true
+        data.multiTop = templates.multiTop
+        data.multiBot = templates.multiBot
+    }
+    return data
+}
+
 // ==================
 // Common Template functions
 // ==================
 
-export function setInputTypeData (field, templates, comboValues = null) {
+export function setInputTypeData (field, templates, comboValues = null, comboInputName = null) {
     if (!field.errors) {
         field.errors = []
     }
@@ -194,6 +248,10 @@ export function setInputTypeData (field, templates, comboValues = null) {
         comboAddName: field.options.comboAddName || 'Item'
     }
 
+    if(comboInputName){
+        data.inputName = comboInputName + `[${field.id}]`
+    }
+
     if (comboValues) {
         data.values = comboValues
 
@@ -207,7 +265,7 @@ export function setInputTypeData (field, templates, comboValues = null) {
     data = Object.assign(data, field.options.settings)
 
     if (data.multiple) {
-        data.inputName = data.inputName + '[]'
+        data.inputName += '[{multiHash}]'
     } else {
         if (!comboValues) {
             data.value = field.values[0]
@@ -238,6 +296,12 @@ export function setInputTypeData (field, templates, comboValues = null) {
         break
     case 'location':
         data = location(data, templates)
+        break
+    case 'wysiwyg':
+        data = wysiwyg(data, templates)
+        break
+    case 'button':
+        data = button(data, templates)
         break
     }
 

@@ -199,6 +199,98 @@ abstract class AbstractFieldType
         return $this->field;
     }
 
+    public function getFieldWithValues($group, $page, $localisation, $currentRevision, $isSubField = false)
+    {
+        $data = [
+            'id' => $this->getId(),
+            'options' => [
+                'typeKey' => $this->getKey(),
+                'name' => $this->getName(),
+                'settings' => $this->getSettings()
+            ],
+            'helpText' => '',
+            'message' => '',
+            'messageAfter' => '',
+        ];
+
+        if ($this->getKey() === 'combo')
+        {
+            $subfields = [];
+
+            foreach($this->getSubFields() as $subfield)
+            {
+                $subfields[] = $subfield->getFieldWithValues($group, $page, $localisation, $currentRevision, true);
+            }
+
+            $data['fields'] = $subfields;
+        }
+
+        if(!$isSubField)
+        {
+            $data['values'] = [];
+            $data['errors'] = [];
+        }
+
+        $values = $currentRevision->getField($this->getId());
+
+        $event = event(new \Escape\Argon\Events\RenderField($this, $values, $group, $page, $localisation));
+
+        if(!empty($values))
+        {
+            switch($this->getKey())
+            {
+                case 'combo':
+                    $tmpValues = (array) $values->getData();
+                    foreach($tmpValues as $tmpVal)
+                    {
+                        $tmpArr = [];
+                        foreach((array) $tmpVal->fields as $k => $v)
+                        {
+                            $tmpArr[$k] = array_values((array)$v);
+                        }
+                        $data['values'][] = $tmpArr;
+                    }
+                    break;
+//                case 'location':
+//                    $tmpValues = (array) $values->getData();
+//                    foreach($tmpValues as $tmpVal)
+//                    {
+//                        $data['values'][] = [
+//                            'latitude' => $tmpVal->getLatitude(),
+//                            'longitute' => $tmpVal->getLongitude(),
+//                        ];
+//                    }
+//                    break;
+//                    break;
+//                case 'button':
+//                    break;
+                default:
+                    $data['values'] = (array) $values->getData();
+                    break;
+            }
+        }
+
+        $message = null;
+        $messageAfter = null;
+
+        if(isset($event[0]->fieldHtml))
+        {
+            $data['message'] = $event[0]->fieldHtml;
+        }
+        elseif (isset($event[0]->message))
+        {
+            $data['message'] = $event[0]->message;
+        }
+
+        if (isset($event[0]->messageAfter))
+        {
+            $data['messageAfter'] = $event[0]->messageAfter;
+        }
+
+
+        return $data;
+    }
+
     abstract public function parseData($data);
 
     abstract public function render($value = null, $data = []);

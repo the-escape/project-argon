@@ -39,6 +39,25 @@ class ItemFieldType extends AbstractFieldType
         ],
     ];
 
+    public function getSettings()
+    {
+        $settings = parent::getSettings();
+
+        $items = is_array($settings->items) ? $settings->items : [$settings->items];
+        $entityRepository = app()->make(EntityRepository::class);
+        $options = $entityRepository->findWhereIn('entity_type_id', $items);
+
+        $opts = [];
+        foreach($options->sortBy('name')->lists('name','id') as $k => $v)
+        {
+            $opts[] = (object) [$k => $v];
+        }
+
+        $settings->options =  $opts;
+
+        return $settings;
+    }
+
     public function parseData($data = null)
     {
         if ($data instanceof FieldData)
@@ -48,6 +67,7 @@ class ItemFieldType extends AbstractFieldType
 
         return new ItemFieldValue($data);
     }
+
 
     public function getOptions()
     {
@@ -65,6 +85,7 @@ class ItemFieldType extends AbstractFieldType
     {
         return parent::getFormFieldName($hash) . '[]';
     }
+
 
     public function render($value = null, $data = [])
     {

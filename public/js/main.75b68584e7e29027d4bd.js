@@ -22541,7 +22541,7 @@ module.exports = function (module) {
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 230 modules ***!
+  !*** ./resources/assets/js/src/index.js + 234 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -22755,7 +22755,24 @@ var post = function post(url, data) {
         xhr.send(data);
     });
 };
+// CONCATENATED MODULE: ./resources/assets/js/src/util/hash.js
+var hashes = [];
+
+function createUniqueHash() {
+    var newHash = createHash();
+    while (~hashes.indexOf(newHash)) {
+        newHash = createHash();
+    }
+
+    hashes.push(newHash);
+    return newHash;
+}
+
+function createHash() {
+    return Math.random().toString(36).substr(2, 9);
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/util/index.js
+
 
 
 
@@ -32710,6 +32727,8 @@ function setupEvents() {
     this.events.question = click.pipe(filter(function (evt) {
         return evt.target.dataset.question;
     }), map(function (evt) {
+        return evt.preventDefault(), evt;
+    }), map(function (evt) {
         return evt.target.dataset.question;
     })).subscribe(function (question) {
         _this.currentQuestion = question;
@@ -32722,12 +32741,16 @@ function setupEvents() {
 
     var accept = click.pipe(filter(function (evt) {
         return evt.target.classList.contains('js-confirm-accept');
+    }), map(function (evt) {
+        return evt.preventDefault(), evt;
     }), map(function (_) {
         return true;
     }));
 
     var decline = click.pipe(filter(function (evt) {
         return evt.target.classList.contains('js-confirm-decline');
+    }), map(function (evt) {
+        return evt.preventDefault(), evt;
     }), map(function (_) {
         return false;
     }));
@@ -33500,8 +33523,8 @@ function setupIntialValues() {
         _this2.inactiveColumn.appendChild(el);
     });
 
-    this.value = JSON.parse(this.input.value);
-    this.value.forEach(function (activeValue) {
+    this.values = JSON.parse(this.input.value);
+    this.values.forEach(function (activeValue) {
         var item = _this2.inactiveColumn.querySelector('[data-value="' + activeValue + '"]');
         if (!item) {
             return;
@@ -33570,8 +33593,590 @@ function refreshFromElements(el, formElements) {
 }
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/combo.js
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/multi.js
+var multi_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+
+
+
+
+
+
+
+
+var Multiple = {
+    el: null,
+    track: null,
+    itemTemplate: null,
+
+    items: null,
+    drag: null
+};
+
+function createMultiples() {
+    var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
+
+    var multipleEls = context.querySelectorAll('.js-multi');
+    var multiples = Array.from(multipleEls);
+    multiples = multiples.map(function (el) {
+        return createMultiple(el);
+    });
+    return multiples;
+}
+
+function createMultiple(el) {
+    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    var Obj = Object.create(Multiple);
+    multi_init.call(Obj, el, data);
+    return Obj;
+}
+
+function multi_init(el, data) {
+    if (typeof el === 'string') {
+        this.el = document.querySelector(el);
+    } else {
+        this.el = el;
+    }
+
+    if (!this.el) {
+        return;
+    }
+
+    this.track = this.el.querySelector('.js-multi-track');
+    this.itemTemplate = this.track.innerHTML;
+    this.track.innerHTML = '';
+    this.items = [];
+
+    multi_setupEvents.call(this);
+    multi_setupItems.call(this, data);
+}
+
+function multi_setupEvents() {
+    var _this = this;
+
+    fromEvent(this.el, 'click').pipe(filter(function (evt) {
+        return evt.target.classList.contains('js-multi-add');
+    }), map(function (evt) {
+        evt.preventDefault();
+        return evt;
+    })).subscribe(function () {
+        return multi_addItem.call(_this);
+    });
+
+    this.drag = dragula_default()([this.track], {
+        revertOnSpill: true,
+        removeOnSpill: false,
+        moves: function moves(el, container, handle) {
+            return handle.classList.contains('js-multi-drag');
+        }
+    });
+
+    this.drag.on('drop', function (el) {
+        var formElements = getformElementsFromMultiEl.call(_this, el);
+        refreshFromElements(el, formElements);
+    });
+}
+
+function multi_setupItems(data) {
+    var _this2 = this;
+
+    data.forEach(function (values) {
+        multi_addItem.call(_this2, values);
+    });
+
+    if (!data.length) {
+        multi_addItem.call(this);
+    }
+}
+
+function multi_addItem() {
+    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    var html = getTemplateHtml.call(this);
+    var newItem = this.track.appendChild(html);
+
+    if ((typeof value === 'undefined' ? 'undefined' : multi_typeof(value)) === 'object') {
+        var dataNames = Object.keys(value);
+        if (dataNames.length) {
+            dataNames.forEach(function (dataName) {
+                newItem.querySelector('[data-name="' + dataName + '"]').value = value[dataName];
+            });
+        }
+    } else {
+        newItem.querySelector('input, textarea').value = value;
+    }
+
+    newItem = initialiseItem.call(this, newItem);
+    this.items.push(newItem);
+}
+
+function getTemplateHtml() {
+    var div = document.createElement('div');
+    var hash = createUniqueHash();
+    var html = this.itemTemplate.replace(/{multiHash}/g, hash);
+    div.innerHTML = html;
+
+    // to remove
+    var input = div.querySelector('input, textarea');
+    if (input.dataset.class) {
+        input.classList.add(input.dataset.class);
+    }
+
+    return div.firstElementChild;
+}
+
+function initialiseItem(item) {
+    var comfirmBtns = item.querySelector('.js-confirm');
+    confirm_btns_confirm(comfirmBtns, duplicateItem.call(this, item), multi_removeItem.call(this, item));
+    return initialiseFormElementsForNewElement(item);
+}
+
+function duplicateItem(item) {
+    var _this3 = this;
+
+    return function () {
+        var inputs = item.querySelectorAll('input, textarea');
+        var inputValues = void 0;
+
+        if (inputs.length === 1) {
+            inputValues = inputs[0].value;
+        } else {
+            inputValues = Array.from(inputs).reduce(function (acc, input) {
+                var name = input.dataset.name;
+                acc[name] = input.value;
+                return acc;
+            }, {});
+        }
+        multi_addItem.call(_this3, inputValues);
+    };
+}
+
+function multi_removeItem(item) {
+    var _this4 = this;
+
+    return function () {
+        _this4.items = _this4.items.filter(function (multiItem) {
+            return multiItem !== item;
+        });
+        item.remove();
+    };
+}
+
+function getformElementsFromMultiEl(item) {
+    var multiItem = this.items.filter(function (multiItem) {
+        return multiItem.el === item;
+    });
+    if (!multiItem.length) {
+        return;
+    }
+
+    return multiItem[0].formElements;
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/templates.js
+var areTemplatesSet = false;
+var templates = {
+    combo: '.tp-combo',
+    comboItemTop: '.tp-combo-item-top',
+    comboItemBot: '.tp-combo-item-bot',
+    multiTop: '.tp-multi-top',
+    multiBot: '.tp-multi-bottom',
+    group: '.tp-group',
+    description: '.tp-description',
+    text: '.tp-text',
+    textarea: '.tp-textarea',
+    select: '.tp-select',
+    selectMultiple: '.tp-select-multiple',
+    selectMultipleOption: '.tp-select-multiple-option',
+    switch: '.tp-switch',
+    datetime: '.tp-datetime',
+    location: '.tp-location',
+    wysiwyg: '.tp-wysiwyg',
+    button: '.tp-button',
+    file: '.tp-file',
+    image: '.tp-image'
+};
+
+function setupTemplates() {
+    if (areTemplatesSet) {
+        return;
+    }
+
+    var templateKeys = Object.keys(templates);
+    templateKeys.forEach(function (key) {
+        var templateEl = document.querySelector(templates[key]);
+        if (!templateEl) {
+            // console.warn('Cannot find template: ' + key)
+            return;
+        }
+        templates[key] = templateEl.innerHTML;
+    });
+
+    areTemplatesSet = true;
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/template-input-types.js
+// ==================
+// Type Options
+// ==================
+
+function template_input_types_text(data, templates) {
+    // TODO: sort out text icons
+    // options to account for
+    // url: 0,
+    // integer: 0,
+    // float: 0,
+    // email: 0,
+    // phone: 0
+
+    data.inputIconBefore = '';
+    data.inputIconAfter = '';
+
+    if (data.multiline) {
+        data.input = templates.textarea;
+    } else {
+        data.input = templates.text;
+    }
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+    }
+    return data;
+}
+
+function template_input_types_select(data, templates) {
+    if (data.multiple) {
+        data.label = '';
+        data.input = templates.selectMultiple;
+        data.options = data.options.reduce(function (acc, keyVal) {
+            var keys = Object.keys(keyVal);
+            keys.forEach(function (key) {
+                acc += selectOption(data, key, keyVal[key], true, templates);
+            });
+            return acc;
+        }, '');
+        data.value = JSON.stringify(data.values);
+    } else {
+        data.isMultiple = '';
+        data.input = templates.select;
+        data.options = data.options.reduce(function (acc, keyVal) {
+            var keys = Object.keys(keyVal);
+            keys.forEach(function (key) {
+                acc += selectOption(data, key, keyVal[key]);
+            });
+            return acc;
+        }, '<option>&nbsp;</option>');
+    }
+
+    return data;
+}
+
+function selectOption(data, key, value) {
+    var isMultiple = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var templates = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+    if (!isMultiple) {
+        var selected = '';
+        if (~data.values.indexOf(value)) {
+            selected = ' selected';
+        }
+        return '<option value="' + key + '"' + selected + '>' + value + '</option>';
+    }
+
+    var optionHtml = templates.selectMultipleOption;
+    return optionHtml.replace(/{key}|{value}/g, function (match) {
+        if (match === '{key}') {
+            return key;
+        }
+
+        if (match === '{value}') {
+            return value;
+        }
+    });
+}
+
+function template_input_types_boolean(data, templates) {
+    data.label = '';
+    data.input = templates.switch;
+
+    if (!data.values.length) {
+        data.value = data['initial_value'];
+    }
+
+    data.value = parseInt(data.value);
+
+    data.checked = '';
+    if (data.value) {
+        data.checked = 'checked';
+    }
+    return data;
+}
+
+function datetime(data, templates) {
+    data.input = templates.datetime;
+    data.time = data.time ? 'true' : 'false';
+    data.default = data.default ? 'true' : 'false';
+    data.range = data.range ? 'true' : 'false';
+    return data;
+}
+
+function template_input_types_item(data, templates) {
+    if (data.multiple_instances) {
+        data.label = '';
+        data.input = templates.selectMultiple;
+        data.options = data.options.reduce(function (acc, keyVal) {
+            var keys = Object.keys(keyVal);
+            keys.forEach(function (key) {
+                acc += selectOption(data, key, keyVal[key], true, templates);
+            });
+            return acc;
+        }, '');
+        data.value = JSON.stringify(data.values);
+        return data;
+    }
+
+    data.isMultiple = '';
+    if (data.multiple) {
+        data.isMultiple = 'multiple';
+    }
+
+    data.input = templates.select;
+    data.options = data.options.reduce(function (acc, keyVal) {
+        var keys = Object.keys(keyVal);
+        keys.forEach(function (key) {
+            acc += selectOption(data, key, keyVal[key]);
+        });
+        return acc;
+    }, '<option>&nbsp;</option>');
+
+    return data;
+}
+
+function template_input_types_location(data, templates) {
+    data.input = templates.location;
+    data.latInputName = data.inputName + '[latitude]';
+    data.lngInputName = data.inputName + '[longitude]';
+    data.latDataName = data.dataName + '-latitude';
+    data.lngDataName = data.dataName + '-longitude';
+    data.latValue = data.value.latitude || '';
+    data.lngValue = data.value.longitude || '';
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+        // data.latInputName += '[]'
+        // data.lngInputName += '[]'
+        data.values = data.values.reduce(function (acc, value) {
+            var keys = Object.keys(value);
+            var newValue = {};
+            keys.forEach(function (key) {
+                newValue[data.dataName + '-' + key] = value[key];
+            });
+            acc.push(newValue);
+            return acc;
+        }, []);
+    }
+
+    return data;
+}
+
+function template_input_types_button(data, templates) {
+    data.input = templates.button;
+    data.labelInputName = data.inputName + '[label]';
+    data.urlInputName = data.inputName + '[url]';
+    data.classInputName = data.inputName + '[class]';
+    data.idInputName = data.inputName + '[id]';
+    data.targetInputName = data.inputName + '[target]';
+
+    data.labelDataName = data.dataName + '-label';
+    data.urlDataName = data.dataName + '-url';
+    data.classDataName = data.dataName + '-class';
+    data.idDataName = data.dataName + '-id';
+    data.targetDataName = data.dataName + '-target';
+
+    data.labelValue = data.value.label || '';
+    data.urlValue = data.value.url || '';
+    data.classValue = data.value.class || '';
+    data.idValue = data.value.id || '';
+    data.targetValue = data.value.target || '';
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+        // data.labelInputName += '[]'
+        // data.urlInputName += '[]'
+        // data.classInputName += '[]'
+        // data.idInputName += '[]'
+        // data.targetInputName += '[]'
+        data.values = data.values.reduce(function (acc, value) {
+            var keys = Object.keys(value);
+            var newValue = {};
+            keys.forEach(function (key) {
+                newValue[data.dataName + '-' + key] = value[key];
+            });
+            acc.push(newValue);
+            return acc;
+        }, []);
+    }
+
+    return data;
+}
+
+function wysiwyg(data, templates) {
+    data.input = templates.wysiwyg;
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+    }
+    return data;
+}
+
+// ==================
+// Common Template functions
+// ==================
+
+function setInputTypeData(field, templates) {
+    var comboValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    var comboInputName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+    if (!field.errors) {
+        field.errors = [];
+    }
+
+    if (!field.values) {
+        field.values = [];
+    }
+
+    var data = {
+        statusClass: field.errors.length ? 'has-error' : '',
+        inputName: 'field[' + field.id + ']',
+        name: field.options.name,
+        dataName: slugify(field.options.name, field.id),
+        helpText: field.helpText,
+        errors: field.errors,
+        multi: false,
+        multiTop: '',
+        multiBot: '',
+        message: field.message,
+        messageAfter: field.messageAfter,
+        value: '',
+        values: field.values,
+        errorMessage: field.errors.length ? field.errors[0] : '',
+        html: templates.group,
+        comboAddName: field.options.comboAddName || 'Item'
+    };
+
+    if (comboInputName) {
+        data.inputName = comboInputName + ('[' + field.id + ']');
+    }
+
+    if (comboValues) {
+        data.values = comboValues;
+
+        if (!data.multiple) {
+            data.value = comboValues[0];
+        }
+    }
+
+    data.label = '<label for="' + data.inputName + '">' + data.name + '</label>';
+
+    data = Object.assign(data, field.options.settings);
+
+    if (data.multiple) {
+        data.inputName += '[{multiHash}]';
+    } else {
+        if (!comboValues) {
+            data.value = field.values[0];
+        }
+    }
+
+    switch (field.options.typeKey) {
+        case 'text':
+            data = template_input_types_text(data, templates);
+            break;
+        case 'description':
+            data.html = templates.description;
+            break;
+        case 'combo':
+            data.html = templates.combo;
+            break;
+        case 'select':
+            data = template_input_types_select(data, templates);
+            break;
+        case 'boolean':
+            data = template_input_types_boolean(data, templates);
+            break;
+        case 'datetime':
+            data = datetime(data, templates);
+            break;
+        case 'item':
+            data = template_input_types_item(data, templates);
+            break;
+        case 'location':
+            data = template_input_types_location(data, templates);
+            break;
+        case 'wysiwyg':
+            data = wysiwyg(data, templates);
+            break;
+        case 'button':
+            data = template_input_types_button(data, templates);
+            break;
+    }
+
+    return data;
+}
+
+function parseTemplate(html, data, templates) {
+    var skipDataParse = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+    var dataKeys = Object.keys(data);
+    var dataRegex = new RegExp(dataKeys.map(function (str) {
+        return '{' + str + '}';
+    }).join('|'), 'gm');
+
+    // add input to html before parsing rest
+    var parsedHtml = html.replace(/{input}/g, function () {
+        return data.input;
+    });
+
+    if (data.message) {
+        parsedHtml = templates.description.replace(/{content}/g, data.message) + parsedHtml;
+    }
+
+    if (data.messageAfter) {
+        parsedHtml += templates.description.replace(/{content}/g, data.messageAfter);
+    }
+
+    // skip for combo to handle data parse step
+    if (skipDataParse) {
+        return parsedHtml;
+    }
+
+    parsedHtml = parsedHtml.replace(dataRegex, function (match) {
+        return data[match.substr(1, match.length - 2)];
+    });
+
+    return parsedHtml;
+}
+
+function slugify(str, id) {
+    return str.toLowerCase().replace(/\s/g, '-') + ('' + id);
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/combo.js
+var combo_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+
+
+
+
+
 
 
 
@@ -33583,18 +34188,21 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var Combo = {
     el: null,
-    template: null,
+    templates: null,
     track: null,
 
     id: null,
+    data: null,
     orderNum: null, // part of the name combo[${orderNum}]
     items: null,
     drag: null,
-    moving: false
+    moving: false,
+    isMultiple: true,
+    name: null,
+    comboName: null
 };
 
 var comboCount = 0;
-var hashes = [];
 
 function combos() {
     var comboEls = document.querySelectorAll('.js-combo');
@@ -33606,26 +34214,49 @@ function combos() {
 }
 
 function combo(el) {
+    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var template = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
     var Obj = Object.create(Combo);
-    combo_init.call(Obj, el, comboCount);
+    if (!areTemplatesSet) {
+        setupTemplates();
+    }
+    combo_init.call(Obj, el, comboCount, data, templates);
     comboCount += 1;
     return Obj;
 }
 
 function combo_init(el, comboNumber) {
+    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    var templates = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
     if (!el) {
         return;
     }
 
     this.el = el;
-    this.id = this.el.dataset.id;
-    this.template = this.el.querySelector('.js-combo-template');
-    this.template = this.template.innerHTML;
+    if (data) {
+        this.id = data.id;
+        this.data = data;
+    } else {
+        this.id = this.el.dataset.id;
+
+        if (!window.combos || !window.combos[this.id]) {
+            return;
+        }
+
+        this.data = window.combos[this.id];
+    }
+
+    this.name = this.data.options.name;
+    this.comboName = this.data.options.comboAddName || 'Item';
+    this.isMultiple = this.data.options.settings.multiple;
+    this.templates = templates;
     this.track = this.el.querySelector('.js-combo-track');
     this.orderNum = comboNumber;
     this.items = [];
 
-    if (this.el.classList.contains('js-combo-drag')) {
+    if (this.el.classList.contains('o-combo--moving')) {
         this.moving = true;
     }
 
@@ -33640,12 +34271,18 @@ function combo_setupEvents() {
 
     click.pipe(filter(function (evt) {
         return evt.target.classList.contains('js-combo-add');
+    }), map(function (evt) {
+        evt.preventDefault();
+        return evt;
     })).subscribe(function () {
         return combo_addItem.call(_this);
     });
 
     click.pipe(filter(function (evt) {
         return evt.target.classList.contains('js-combo-drag');
+    }), map(function (evt) {
+        evt.preventDefault();
+        return evt;
     })).subscribe(function (evt) {
         if (_this.el.classList.contains('o-combo--moving')) {
             _this.el.classList.remove('o-combo--moving');
@@ -33674,25 +34311,20 @@ function combo_setupEvents() {
 function combo_setupItems() {
     var _this2 = this;
 
-    if (!window.combos || !window.combos[this.id]) {
-        return;
-    }
-
-    window.combos[this.id].forEach(function (itemValues) {
-        combo_addItem.call(_this2, itemValues);
+    this.data.values.forEach(function (comboValues) {
+        combo_addItem.call(_this2, comboValues);
     });
 }
 
 function combo_addItem(values) {
-    var flattenValues = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    var _getComboHtml$call = getComboHtml.call(this, values, flattenValues),
+    var _getComboHtml$call = getComboHtml.call(this, values),
         el = _getComboHtml$call.el,
         hash = _getComboHtml$call.hash;
 
     var newComboItem = this.track.appendChild(el);
+    setupMulti.call(this, newComboItem, values);
     newComboItem.querySelector('.js-combo-title').dataset.no = this.items.length + 1;
-    var formElements = initialiseItem.call(this, newComboItem, hash);
+    var formElements = combo_initialiseItem.call(this, newComboItem, hash);
     this.items.push({
         el: newComboItem,
         hash: hash,
@@ -33711,58 +34343,46 @@ function combo_removeItem(combo) {
     };
 }
 
-function duplicateItem(combo, hash) {
+function combo_duplicateItem(combo, hash) {
     var _this4 = this;
 
     return function () {
         var comboValues = getComboItemValues(combo);
-        comboValues.hashID = createUniqueHash();
-
-        combo_addItem.call(_this4, comboValues, false);
+        combo_addItem.call(_this4, comboValues);
     };
 }
 
-function initialiseItem(item, hash) {
+function combo_initialiseItem(item, hash) {
     var comfirmBtns = item.querySelector('.js-confirm');
-    confirm_btns_confirm(comfirmBtns, duplicateItem.call(this, item, hash), combo_removeItem.call(this, item));
+    confirm_btns_confirm(comfirmBtns, combo_duplicateItem.call(this, item, hash), combo_removeItem.call(this, item));
     return initialiseFormElementsForNewElement(item);
 }
 
 function getComboHtml(values) {
-    var flattenValues = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var _this5 = this;
 
     var html = void 0;
+    var hash = createUniqueHash();
 
-    var hash = void 0;
-    if (values && values.hashID) {
-        hash = values.hashID;
-    } else {
-        hash = createUniqueHash();
-    }
-
-    html = this.template.replace(/{comboName}/g, 'combo[' + this.orderNum + '][' + hash + ']');
-
-    if (values) {
-        var flatValues = void 0;
-        if (flattenValues) {
-            flatValues = flattenValueArray(values);
-        } else {
-            flatValues = values;
+    html = this.data.fields.reduce(function (acc, field) {
+        var fieldValue = void 0;
+        if (values) {
+            fieldValue = values[field.id];
         }
 
-        var valueKeys = Object.keys(flatValues).filter(function (key) {
-            return key !== 'hashID';
-        });
-        html = html.replace(/{\S+}/g, function (match) {
-            match = match.replace(/{|}/g, '');
-            if (~valueKeys.indexOf(match)) {
-                return flatValues[match];
-            }
-            return '';
-        });
-    } else {
-        html = html.replace(/{\S+}/g, '');
-    }
+        var templateData = setInputTypeData(field, _this5.templates, fieldValue, 'combo[' + _this5.id + '][' + hash + ']');
+
+        //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
+
+        templateData.dataName = field.id;
+
+        html = parseTemplate(templateData.html, templateData, _this5.templates);
+
+        acc += html;
+        return acc;
+    }, '');
+
+    html = this.templates.comboItemTop + html + this.templates.comboItemBot;
 
     var div = document.createElement('div');
     div.innerHTML = html;
@@ -33773,68 +34393,88 @@ function getComboHtml(values) {
     };
 }
 
-function createUniqueHash() {
-    var newHash = createHash();
-    while (~hashes.indexOf(newHash)) {
-        newHash = createHash();
-    }
-
-    hashes.push(newHash);
-    return newHash;
-}
-
-function createHash() {
-    return Math.random().toString(36).substr(2, 9);
-}
-
-function flattenValueArray(values) {
-    var valueKeys = Object.keys(values);
-    return valueKeys.reduce(function (valuesAcc, valueKey) {
-        if (valueKey === 'hashID') {
-            return valuesAcc;
-        }
-
-        var fieldKeys = Object.keys(values[valueKey]);
-
-        valuesAcc = fieldKeys.reduce(function (fieldAcc, fieldKey) {
-            fieldAcc[valueKey + '-' + fieldKey] = values[valueKey][fieldKey];
-            return fieldAcc;
-        }, valuesAcc);
-
-        return valuesAcc;
-    }, {});
-}
-
 function getComboItemValues(comboEl) {
-    var inputEls = comboEl.querySelectorAll('[data-name]');
-    var inputs = Array.from(inputEls);
+    var groupEls = comboEl.querySelectorAll('[data-input-id]');
+    var groups = Array.from(groupEls);
 
-    var values = inputs.reduce(function (acc, el) {
-        var name = el.dataset.name;
+    var values = groups.reduce(function (acc, group) {
+        var inputID = group.dataset.inputId;
+        var multiTrack = group.querySelector('.js-multi-track');
+        var multiInputItems = group.querySelectorAll('[data-input-item-name]');
+        var values = void 0;
 
+        if (multiTrack) {
+            values = getMultiTrackValues(multiTrack);
+        } else if (multiInputItems.length) {
+            var inputs = Array.from(multiInputItems);
+            values = inputs.reduce(function (inputAcc, input) {
+                var name = input.dataset.inputItemName;
+                var value = parseInputValue(input);
 
-        var value = void 0;
-        if (el.tagName === 'SELECT') {
-            value = [].concat(_toConsumableArray(el.options)).filter(function (option) {
-                return option.selected;
-            }).map(function (option) {
-                return option.value;
-            });
-            value = JSON.stringify(value);
+                inputAcc[name] = value;
+                return inputAcc;
+            }, {});
+            values = [values];
         } else {
-            value = el.value;
+            var inputEls = group.querySelectorAll('[data-name]');
+            var _inputs = Array.from(inputEls);
+            values = _inputs.reduce(function (inputAcc, el) {
+                var value = parseInputValue(el);
+
+                if (Array.isArray(value)) {
+                    return [].concat(_toConsumableArray(inputAcc), _toConsumableArray(value));
+                } else {
+                    inputAcc.push(value);
+                    return inputAcc;
+                }
+            }, []);
         }
 
-        acc[name] = value;
-
-        var nameParts = name.split('-');
-        if (nameParts[1] === 'toggleValue' && el.value === '1') {
-            acc[nameParts[0] + '-toggleChecked'] = 'checked';
-        }
+        acc[inputID] = values;
         return acc;
     }, {});
 
     return values;
+}
+
+function getMultiTrackValues(track) {
+    var items = Array.from(track.children);
+    return items.reduce(function (acc, item) {
+        var inputs = item.querySelectorAll('[data-name]');
+        inputs = Array.from(inputs);
+
+        if (inputs.length === 1) {
+            acc.push(inputs[0].value);
+            return acc;
+        }
+
+        var values = inputs.reduce(function (inputAcc, input) {
+            var name = input.dataset.name;
+            inputAcc[name] = input.value;
+            return inputAcc;
+        }, {});
+
+        acc.push(values);
+        return acc;
+    }, []);
+}
+
+function parseInputValue(input) {
+    var value = input.value;
+
+    if (typeof input.dataset.jsonValue !== 'undefined') {
+        value = JSON.parse(value);
+    }
+
+    if (input.tagName === 'SELECT') {
+        value = [].concat(_toConsumableArray(input.options)).filter(function (option) {
+            return option.selected;
+        }).map(function (option) {
+            return option.value;
+        });
+    }
+
+    return value;
 }
 
 function getformElementsFromComboEl(combo) {
@@ -33851,6 +34491,43 @@ function getformElementsFromComboEl(combo) {
 function scrollToComboItem(el) {
     requestAnimationFrame(function () {
         ui_jump.jump(el);
+    });
+}
+
+function setupMulti(newComboItem, comboValues) {
+    this.data.fields.forEach(function (field) {
+        if (!field.options.settings.multiple) {
+            return;
+        }
+
+        var group = newComboItem.querySelector('[data-input-id="' + field.id + '"]');
+        var multiEl = group.querySelector('.js-multi');
+        var values = [];
+        if (comboValues && comboValues[field.id]) {
+            values = comboValues[field.id];
+            values = parseMultiValues(values, field);
+        }
+        createMultiple(multiEl, values);
+    });
+}
+
+function parseMultiValues(values, field) {
+    if (combo_typeof(values[0]) !== 'object') {
+        return values;
+    }
+
+    var dataName = slugify(field.options.name, field.id) + '-';
+
+    return values.map(function (value) {
+        var keys = Object.keys(value);
+        return keys.reduce(function (acc, key) {
+            if (~key.indexOf(dataName)) {
+                acc[key] = value[key];
+            } else {
+                acc[dataName + key] = value[key];
+            }
+            return acc;
+        }, {});
     });
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/table-actions.js
@@ -34132,78 +34809,167 @@ function addRowEvents() {
         return tableAction(action, dropdown, row.duplicate, row.delete);
     });
 }
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/multi.js
-var Multiple = {
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/template-forms.js
+
+
+
+
+
+
+var TemplateForms = {
     el: null,
-    track: null,
-    itemTemplate: null,
+    groupID: null,
+    data: null,
+    templates: null
+};
 
-    items: null,
-    drag: null,
-    moving: false
+function createTemplateForms() {
+    var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
 
-    // export function createMultiples (context = document) {
-    //     const multipleEls = context.querySelectorAll('.js-multi')
-    //     let multiples = Array.from(multipleEls)
-    //     multiples = multiples.map(el => createMultiple(el))
-    //     return multiples
-    // }
+    var templateFormEls = context.querySelectorAll('.js-temple-forms');
+    var templateForms = Array.from(templateFormEls);
+    setupTemplates();
+    templateForms = templateForms.map(function (el) {
+        return createTemplateForm(el);
+    });
+    return templateForms;
+}
 
-};function createMultiple(el, data) {
-    var Obj = Object.create(Multiple);
-    multi_init.call(Obj, el, data);
+function createTemplateForm(el) {
+    var Obj = Object.create(TemplateForms);
+    if (!areTemplatesSet) {
+        setupTemplates();
+    }
+    template_forms_init.call(Obj, el, templates);
     return Obj;
 }
 
-function multi_init(el, data) {
-    if (typeof el === 'string') {
-        this.el = document.querySelector(el);
-    } else {
-        this.el = el;
-    }
-
-    if (!this.el) {
+function template_forms_init(el, templates) {
+    if (!el) {
         return;
     }
 
-    this.track = this.el.querySelector('.js-multi-track');
-    this.itemTemplate = this.track.innerHTML;
-    this.track.innerHTML = '';
-    this.items = [];
-
-    if (this.el.classList.contains('js-combo-drag')) {
-        this.moving = true;
+    if (!window.fieldGroups) {
+        return;
     }
 
-    multi_setupItems.call(this, data);
+    this.el = el;
+    this.groupID = this.el.dataset.groupId;
+    this.templates = templates;
+
+    if (!window.fieldGroups[this.groupID]) {
+        return;
+    }
+
+    this.data = window.fieldGroups[this.groupID];
+
+    setTemplates.call(this);
+    appendTemplates.call(this);
+    setupMultiAndCombo.call(this);
 }
 
-function multi_setupItems(data) {
-    data.forEach(function (values) {
-        multi_addItem.call(values);
+function setTemplates() {
+    var _this = this;
+
+    this.data.forEach(function (el, index) {
+        if (_this.data[index].options.typeKey !== 'combo') {
+            setDataForTemplate.call(_this, index);
+            setFieldTemplate.call(_this, index);
+        } else {
+            setDataForTemplate.call(_this, index);
+            setFieldTemplate.call(_this, index);
+
+            // this.data[index].fields.forEach((el, comboIndex) => {
+            //     setDataForTemplate.call(this, index, comboIndex)
+            //     setFieldTemplate.call(this, index, comboIndex)
+            // })
+
+            // this.data[index].fieldTemplates =
+            //     this.templates.comboItemTop +
+            //     this.data[index].fields.reduce((acc, el) => {
+            //         acc += el.template
+            //         return acc
+            //     }, '') +
+            //     this.templates.comboItemBot
+        }
     });
 }
 
-function multi_addItem() {
-    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+function setDataForTemplate(index) {
+    var comboIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
 
-    var html = getTemplateHtml.call(this);
-    var newItem = this.track.appendChild(html);
-
-    if (value) {
-        newItem.querySelector('input').value = value;
+    var field = this.data[index];
+    if (~comboIndex) {
+        field = this.data[index].fields[comboIndex];
     }
 
-    this.items.push(value);
+    var data = setInputTypeData(field, this.templates);
+
+    if (~comboIndex) {
+        this.data[index].fields[comboIndex].data = data;
+    } else {
+        this.data[index].data = data;
+    }
 }
 
-function getTemplateHtml() {
-    var div = document.createElement('div');
-    div.innerHTML = this.itemTemplate;
+function setFieldTemplate(index) {
+    var comboIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
 
+    var html = '';
+    var data = void 0;
+    if (~comboIndex) {
+        html = this.data[index].fields[comboIndex].data.html;
+        data = this.data[index].fields[comboIndex].data;
+    } else {
+        html = this.data[index].data.html;
+        data = this.data[index].data;
+    }
+
+    html = parseTemplate(html, data, this.templates, !!~comboIndex);
+
+    if (~comboIndex) {
+        this.data[index].fields[comboIndex].template = html;
+        return;
+    }
+
+    this.data[index].template = html;
+}
+
+function appendTemplates() {
+    var groupHtml = this.data.map(function (el) {
+        return el.template;
+    });
+    groupHtml = '<div>' + groupHtml.join('') + '</div>';
+
+    var newGroupHtml = this.el.appendChild(htmlStrToDom(groupHtml));
+    initialiseFormElementsForNewElement(newGroupHtml);
+}
+
+function htmlStrToDom(str) {
+    var div = document.createElement('div');
+    div.innerHTML = str;
     return div.firstElementChild;
 }
+
+function setupMultiAndCombo() {
+    var _this2 = this;
+
+    this.data.forEach(function (el) {
+        if (el.data.multi && el.options.typeKey !== 'combo') {
+            var dataName = el.data.dataName;
+            var multiEl = _this2.el.querySelector('[data-input-id=' + dataName + ']');
+            el.multi = createMultiple(multiEl, el.data.values);
+        }
+
+        if (el.options.typeKey === 'combo') {
+            var _dataName = el.data.dataName;
+            var comboEl = _this2.el.querySelector('[data-input-id=' + _dataName + ']');
+            combo(comboEl, el, _this2.templates);
+        }
+    });
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
+
 
 
 
@@ -34453,11 +35219,9 @@ function src_init() {
         return console.log('delete');
     });
     trees();
-    combos();
+    // combos()
     tables();
-
-    var multi = document.querySelector('.js-multi');
-    createMultiple(multi, ['First Title', 'My Second Title', 'Hello Thirds']);
+    createTemplateForms();
 }
 
 if (document.readyState !== 'loading') {
@@ -34469,4 +35233,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c41ac091f0cd7688f1d2.js.map
+//# sourceMappingURL=main.75b68584e7e29027d4bd.js.map

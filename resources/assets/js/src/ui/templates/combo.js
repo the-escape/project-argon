@@ -1,7 +1,8 @@
 import { fromEvent } from 'rxjs'
-import { filter } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 import dragula from 'dragula'
 import { createMultiple } from './multi'
+import { createUniqueHash } from '../../util'
 
 import {
     initialiseFormElementsForNewElement,
@@ -35,7 +36,6 @@ const Combo = {
 }
 
 let comboCount = 0
-let hashes = []
 
 export function combos () {
     const comboEls = document.querySelectorAll('.js-combo')
@@ -93,11 +93,23 @@ function setupEvents () {
     const click = fromEvent(this.el, 'click')
 
     click
-        .pipe(filter(evt => evt.target.classList.contains('js-combo-add')))
+        .pipe(
+            filter(evt => evt.target.classList.contains('js-combo-add')),
+            map(evt => {
+                evt.preventDefault()
+                return evt
+            })
+        )
         .subscribe(() => addItem.call(this))
 
     click
-        .pipe(filter(evt => evt.target.classList.contains('js-combo-drag')))
+        .pipe(
+            filter(evt => evt.target.classList.contains('js-combo-drag')),
+            map(evt => {
+                evt.preventDefault()
+                return evt
+            })
+        )
         .subscribe(evt => {
             if (this.el.classList.contains('o-combo--moving')) {
                 this.el.classList.remove('o-combo--moving')
@@ -176,11 +188,9 @@ function getComboHtml (values) {
             fieldValue = values[field.id]
         }
 
-        const templateData = setInputTypeData(field, this.templates, fieldValue)
+        const templateData = setInputTypeData(field, this.templates, fieldValue, `combo[${this.id}][${hash}]`)
 
-        templateData.inputName = `combo[${this.id}][${hash}]${
-            templateData.inputName
-        }`
+        //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
 
         templateData.dataName = field.id
 
@@ -199,22 +209,6 @@ function getComboHtml (values) {
         el: div.firstElementChild,
         hash
     }
-}
-
-function createUniqueHash () {
-    let newHash = createHash()
-    while (~hashes.indexOf(newHash)) {
-        newHash = createHash()
-    }
-
-    hashes.push(newHash)
-    return newHash
-}
-
-function createHash () {
-    return Math.random()
-        .toString(36)
-        .substr(2, 9)
 }
 
 function getComboItemValues (comboEl) {

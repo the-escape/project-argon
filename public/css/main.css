@@ -457,7 +457,8 @@ q {
   display: inline-block;
   font-size: 1.8rem; }
   .o-form label + *,
-  .o-form label ~ .cke {
+  .o-form label ~ .cke,
+  .o-form label ~ .flatpickr-input {
     margin-top: 10px; }
 
 .o-form select[multiple],
@@ -496,6 +497,7 @@ q {
   display: block;
   width: 100%;
   padding: 12px 16px;
+  height: 45px;
   color: #000;
   border: 1px solid #b6b6b6;
   background-color: #fff;
@@ -708,6 +710,9 @@ q {
     margin-left: 15px;
     margin-right: 15px;
     padding: 5px 0; }
+
+.o-form__vertical-list > * + * {
+  margin-top: 15px; }
 
 .o-form__grid {
   display: grid;
@@ -1193,11 +1198,13 @@ q {
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: none;
-    padding: 6px 16px;
+    padding: 7px 16px;
     line-height: 1.65;
     color: #fff;
     border: 1px solid #f66956;
     background-color: #f66956; }
+    .o-form-status__message-bar label {
+      margin-bottom: 0; }
   .has-error .o-form-status__message-bar {
     display: block; }
   .o-form-status__input-container {
@@ -1235,10 +1242,11 @@ q {
   display: flex; }
   .o-form-icon__icon {
     -webkit-box-flex: 0;
-        -ms-flex: 0 0 48px;
-            flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    padding: 0 10px;
+    min-width: 45px;
+    height: 45px;
     background-color: #1f1f1f;
     color: #d8d8d8;
     display: -webkit-box;
@@ -1252,7 +1260,6 @@ q {
             align-items: center; }
     .o-form-icon__icon span {
       font-size: 1.4rem;
-      text-transform: uppercase;
       font-weight: 500; }
     .o-form-icon__icon svg {
       width: 24px;
@@ -2842,9 +2849,12 @@ button.o-btn {
   margin-left: auto; }
 
 .o-combo__drag-handle {
+  width: 45px;
+  height: 45px;
   -webkit-box-flex: 0;
       -ms-flex: 0 0 45px;
           flex: 0 0 45px;
+  padding: 0;
   color: #1f1f1f;
   cursor: pointer;
   background-color: #b6b6b6;
@@ -3715,21 +3725,25 @@ button.o-btn {
             align-items: center;
     border-top: 1px solid #b6b6b6; }
 
-.o-multi__item {
+.o-multi__item + * {
+  margin-top: 15px; }
+
+.o-multi__item-wrap {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
-  .o-multi__item > * {
+  .o-multi__item-wrap > * {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto; }
-  .o-multi__item + * {
-    margin-top: 15px; }
 
 .o-multi__drag-handle {
+  height: 45px;
+  width: 45px;
   -webkit-box-flex: 0;
       -ms-flex: 0 0 45px;
           flex: 0 0 45px;
+  padding: 0;
   color: #1f1f1f;
   cursor: pointer;
   background-color: #b6b6b6;

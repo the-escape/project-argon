@@ -1,6 +1,7 @@
 import { fromEvent } from 'rxjs'
-import { filter } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 import { confirm } from '../confirm-btns'
+import { createUniqueHash } from '../../util'
 import dragula from 'dragula'
 
 import {
@@ -52,7 +53,13 @@ function init (el, data) {
 
 function setupEvents () {
     fromEvent(this.el, 'click')
-        .pipe(filter(evt => evt.target.classList.contains('js-multi-add')))
+        .pipe(
+            filter(evt => evt.target.classList.contains('js-multi-add')),
+            map(evt => {
+                evt.preventDefault()
+                return evt
+            })
+        )
         .subscribe(() => addItem.call(this))
 
     this.drag = dragula([this.track], {
@@ -100,7 +107,9 @@ function addItem (value = '') {
 
 function getTemplateHtml () {
     const div = document.createElement('div')
-    div.innerHTML = this.itemTemplate
+    const hash = createUniqueHash()
+    const html = this.itemTemplate.replace(/{multiHash}/g, hash)
+    div.innerHTML = html
 
     // to remove
     const input = div.querySelector('input, textarea')

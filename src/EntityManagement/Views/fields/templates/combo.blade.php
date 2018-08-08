@@ -1,0 +1,38 @@
+<script type="text/template" class="tp-combo">
+    <div class="o-combo o-form__group l-full js-combo" data-input-id="{dataName}">
+        <div class="o-combo__head">
+            <div class="o-combo__label">{name}</div>
+            <button class="o-btn o-btn--sm o-btn--primary js-combo-add">Add {comboAddName}</button>
+        </div>
+        <div class="o-combo__track js-combo-track">
+        </div>
+        <div class="o-combo__foot">
+            <button class="o-btn o-btn--sm o-btn--primary js-combo-add">Add {comboAddName}</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" class="tp-combo-item-top">
+    <div class="o-combo__item">
+        <div class="o-combo__header">
+            <button class="o-combo__drag-handle js-combo-drag">
+                <div class="o-combo__drag-wrap">
+                    <svg>
+                        <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
+                    </svg>
+                </div>
+            </button>
+            <div class="o-combo__title js-combo-title">Combo Item</div>
+            <div class="o-combo__actions">
+                @include('argon::fields.templates.partials.confirm-button')
+            </div>
+        </div>
+        <div class="o-combo__body">
+            <div class="o-combo__form">
+</script>
+
+<script type="text/template" class="tp-combo-item-bot">
+            </div>
+        </div>
+    </div>
+</script>

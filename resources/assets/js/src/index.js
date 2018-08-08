@@ -26,7 +26,7 @@ function init () {
     const basicConfirm = document.querySelector('.js-confirm')
     confirm(basicConfirm, () => console.log('dup'), () => console.log('delete'))
     trees()
-    combos()
+    // combos()
     tables()
     createTemplateForms()
 }

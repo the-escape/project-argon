@@ -249,8 +249,17 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                         <div class="card-block accordion-body">
 
-                            @foreach ($group->getFields() as $field)
 
+
+                                <script>
+                                    window.fieldGroups = window.fieldGroups || {}
+                                    window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
+                                    // event to be done inside getFieldsWithValuesArray with the html returned inside json
+                                </script>
+
+                                <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
+
+                            <?php /*
                                 <div class="form-group sortable">
 
                                     <?php
@@ -272,7 +281,8 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                 </div>
 
-                            @endforeach
+ */ ?>
+
 
                         </div>
 
@@ -313,20 +323,15 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                     <div class="card-block accordion-body">
 
+                                        <script>
+                                            window.fieldGroups = window.fieldGroups || {}
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
+                                            // event to be done inside getFieldsWithValuesArray with the html returned inside json
+                                        </script>
 
-                                        <div data-group-id="testing-group"></div>
+                                        <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
 
-                                        <!-- @section('footer')
-                                            @parent
-
-                                            <script>
-                                                window.fieldGroups = window.fieldGroups || {}
-                                                window.fieldGroups['{{$group->getId()}}'] =
-                                                {{ $group->getFieldsWithValuesArray($group, $page, $localisation) }}
-                                                // event to be done inside getFieldsWithValuesArray with the html returned inside json
-                                            </script>
-                                        @stop -->
-
+                                        <?php /*
                                         @foreach ($group->getFields() as $field)
 
                                             <div class="form-group sortable">
@@ -350,6 +355,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             </div>
 
                                         @endforeach
+                                        */ ?>
 
                                     </div>
 
@@ -470,4 +476,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+@stop
+
+@section('footer')
+    @parent
+
+    @include('argon::fields.templates')
 @stop

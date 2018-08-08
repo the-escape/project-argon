@@ -35,6 +35,7 @@ function setupEvents () {
     this.events.question = click
         .pipe(
             filter(evt => evt.target.dataset.question),
+            map(evt => (evt.preventDefault(), evt)),
             map(evt => evt.target.dataset.question)
         )
         .subscribe(question => {
@@ -48,11 +49,13 @@ function setupEvents () {
 
     const accept = click.pipe(
         filter(evt => evt.target.classList.contains('js-confirm-accept')),
+        map(evt => (evt.preventDefault(), evt)),
         map(_ => true)
     )
 
     const decline = click.pipe(
         filter(evt => evt.target.classList.contains('js-confirm-decline')),
+        map(evt => (evt.preventDefault(), evt)),
         map(_ => false)
     )
 
