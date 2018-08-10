@@ -139,15 +139,13 @@ function location (data, templates) {
     data.lngInputName = data.inputName + '[longitude]'
     data.latDataName = data.dataName + '-latitude'
     data.lngDataName = data.dataName + '-longitude'
-    data.latValue = data.value.latitude || ''
-    data.lngValue = data.value.longitude || ''
+    data.latValue = data.value && data.value.latitude ? data.value.latitude : ''
+    data.lngValue = data.value && data.value.longitude ? data.value.longitude : ''
 
     if (data.multiple) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
-        // data.latInputName += '[]'
-        // data.lngInputName += '[]'
         data.values = data.values.reduce((acc, value) => {
             const keys = Object.keys(value)
             const newValue = {}
@@ -176,21 +174,16 @@ function button (data, templates) {
     data.idDataName = data.dataName + '-id'
     data.targetDataName = data.dataName + '-target'
 
-    data.labelValue = data.value.label || ''
-    data.urlValue = data.value.url || ''
-    data.classValue = data.value.class || ''
-    data.idValue = data.value.id || ''
-    data.targetValue = data.value.target || ''
+    data.labelValue = data.value && data.value.label ? data.value.label : ''
+    data.urlValue = data.value && data.value.url ? data.value.url : ''
+    data.classValue = data.value && data.value.class ? data.value.class : ''
+    data.idValue = data.value && data.value.id ? data.value.id : ''
+    data.targetValue = data.value && data.value.target ? data.value.target : ''
 
     if (data.multiple) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
-        // data.labelInputName += '[]'
-        // data.urlInputName += '[]'
-        // data.classInputName += '[]'
-        // data.idInputName += '[]'
-        // data.targetInputName += '[]'
         data.values = data.values.reduce((acc, value) => {
             const keys = Object.keys(value)
             const newValue = {}
@@ -215,6 +208,46 @@ function wysiwyg (data, templates) {
     }
     return data
 }
+
+function image (data, templates) {
+    data.input = templates.image
+
+    data.idInputName = data.inputName + '[id]'
+    data.widthInputName = data.inputName + '[width]'
+    data.heightInputName = data.inputName + '[height]'
+    data.altInputName = data.inputName + '[alt]'
+    data.urlInputName = data.inputName + '[url]'
+
+    data.idDataName = data.dataName + '-id'
+    data.widthDataName = data.dataName + '-width'
+    data.heightDataName = data.dataName + '-height'
+    data.altDataName = data.dataName + '-alt'
+    data.urlDataName = data.dataName + '-url'
+
+    data.urlValue = data.value && data.value.url ? data.value.url : ''
+    data.idValue = data.value && data.value.id ? data.value.id : ''
+    data.widthValue = data.value && data.value.width ? data.value.width : ''
+    data.heightValue = data.value && data.value.height ? data.value.height : ''
+    data.altValue = data.value && data.value.alt ? data.value.alt : ''
+
+    if (data.multiple) {
+        data.multi = true
+        data.multiTop = templates.multiTop
+        data.multiBot = templates.multiBot
+        data.values = data.values.reduce((acc, value) => {
+            const keys = Object.keys(value)
+            const newValue = {}
+            keys.forEach(key => {
+                newValue[data.dataName + '-' + key] = value[key]
+            })
+            acc.push(newValue)
+            return acc
+        }, [])
+    }
+
+    return data
+}
+
 
 // ==================
 // Common Template functions
@@ -302,6 +335,9 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
         break
     case 'button':
         data = button(data, templates)
+        break
+    case 'image':
+        data = image(data, templates)
         break
     }
 

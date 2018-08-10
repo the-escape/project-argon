@@ -7,6 +7,7 @@ import { createDates, createDate } from './date'
 import { createTimes, createTime } from './time'
 import { createEditors, removeEditor } from './wysiwyg'
 import { createDragSelects, createDragSelect } from './drag-select'
+import { createMediaInputs, createMediaInput } from './media-input'
 
 function initialiseFormElements () {
     toggle()
@@ -16,6 +17,7 @@ function initialiseFormElements () {
     const editors = createEditors()
     const times = createTimes()
     const dragSelects = createDragSelects()
+    const mediaItems = createMediaInputs()
 
     return {
         selects,
@@ -23,7 +25,8 @@ function initialiseFormElements () {
         dates,
         editors,
         times,
-        dragSelects
+        dragSelects,
+        mediaItems
     }
 }
 
@@ -34,6 +37,7 @@ function initialiseFormElementsForNewElement (el) {
     const editors = createEditors(el)
     const times = createTimes(el)
     const dragSelects = createDragSelects(el)
+    const mediaItems = createMediaInputs()
 
     return {
         selects,
@@ -41,7 +45,8 @@ function initialiseFormElementsForNewElement (el) {
         dates,
         editors,
         times,
-        dragSelects
+        dragSelects,
+        mediaItems
     }
 }
 

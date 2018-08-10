@@ -20,9 +20,9 @@
 </script>
 
 <script type="text/template" class="tp-select-multiple-option">
-    <div class="o-drag-select__item" data-value="{value}">
+    <div class="o-drag-select__item" data-value="{key}">
         <div class="o-drag-select__item-wrap">
-            <span>{key}</span>
+            <span>{value}</span>
             <svg>
                 <use xlink:href="/argon/images/svgicons.svg#move"></use>
             </svg>

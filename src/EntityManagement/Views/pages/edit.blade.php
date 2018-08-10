@@ -249,40 +249,11 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                         <div class="card-block accordion-body">
 
-
-
-                                <script>
-                                    window.fieldGroups = window.fieldGroups || {}
-                                    window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
-                                    // event to be done inside getFieldsWithValuesArray with the html returned inside json
-                                </script>
-
-                                <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
-
-                            <?php /*
-                                <div class="form-group sortable">
-
-                                    <?php
-                                    $fieldValue = $currentRevision->getField($field->getId());
-                                    $event = event(new Escape\Argon\Events\RenderField($field, $fieldValue, $group, $page, $localisation)); ?>
-
-                                    @if(isset($event[0]->fieldHtml))
-
-                                        <div class="field-html">
-
-                                            {!! $event[0]->fieldHtml !!}
-
-                                        </div>
-
-                                    @endif
-
-                                    {!! $field->render($fieldValue) !!}
-
-
-                                </div>
-
- */ ?>
-
+                            <script>
+                                window.fieldGroups = window.fieldGroups || {}
+                                window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
+                            </script>
+                            <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
 
                         </div>
 
@@ -326,36 +297,8 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         <script>
                                             window.fieldGroups = window.fieldGroups || {}
                                             window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
-                                            // event to be done inside getFieldsWithValuesArray with the html returned inside json
                                         </script>
-
                                         <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
-
-                                        <?php /*
-                                        @foreach ($group->getFields() as $field)
-
-                                            <div class="form-group sortable">
-
-                                                <?php
-                                                $fieldValue = $currentRevision->getField($field->getId());
-                                                $event = event(new Escape\Argon\Events\RenderField($field, $fieldValue, $group, $page, $localisation)); ?>
-
-                                                @if(isset($event[0]->fieldHtml))
-
-                                                    <div class="field-html">
-
-                                                        {!! $event[0]->fieldHtml !!}
-
-                                                    </div>
-
-                                                @endif
-
-                                                {!! $field->render($currentRevision->getField($field->getId())) !!}
-
-                                            </div>
-
-                                        @endforeach
-                                        */ ?>
 
                                     </div>
 

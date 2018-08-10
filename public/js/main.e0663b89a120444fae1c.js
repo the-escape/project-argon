@@ -22541,7 +22541,7 @@ module.exports = function (module) {
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 234 modules ***!
+  !*** ./resources/assets/js/src/index.js + 235 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -33533,7 +33533,23 @@ function setupIntialValues() {
         _this2.activeColumn.appendChild(item);
     });
 }
+// CONCATENATED MODULE: ./resources/assets/js/src/form/media-input.js
+function createMediaInputs() {
+    var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
+
+    var mediaInputEls = context.querySelectorAll('.js-media-input');
+    var mediaInputs = Array.from(mediaInputEls);
+    mediaInputs.forEach(function (input) {
+        return createMediaInput(input);
+    });
+}
+
+function createMediaInput(input) {
+    var thumb = input.querySelector('img');
+    var url = input.querySelector('[data-input-item-name=url]');
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/form/index.js
+
 
 
 
@@ -33552,6 +33568,7 @@ function initialiseFormElements() {
     var editors = createEditors();
     var times = createTimes();
     var dragSelects = createDragSelects();
+    var mediaItems = createMediaInputs();
 
     return {
         selects: selects,
@@ -33559,7 +33576,8 @@ function initialiseFormElements() {
         dates: dates,
         editors: editors,
         times: times,
-        dragSelects: dragSelects
+        dragSelects: dragSelects,
+        mediaItems: mediaItems
     };
 }
 
@@ -33570,6 +33588,7 @@ function initialiseFormElementsForNewElement(el) {
     var editors = createEditors(el);
     var times = createTimes(el);
     var dragSelects = createDragSelects(el);
+    var mediaItems = createMediaInputs();
 
     return {
         selects: selects,
@@ -33577,7 +33596,8 @@ function initialiseFormElementsForNewElement(el) {
         dates: dates,
         editors: editors,
         times: times,
-        dragSelects: dragSelects
+        dragSelects: dragSelects,
+        mediaItems: mediaItems
     };
 }
 
@@ -33959,15 +33979,13 @@ function template_input_types_location(data, templates) {
     data.lngInputName = data.inputName + '[longitude]';
     data.latDataName = data.dataName + '-latitude';
     data.lngDataName = data.dataName + '-longitude';
-    data.latValue = data.value.latitude || '';
-    data.lngValue = data.value.longitude || '';
+    data.latValue = data.value && data.value.latitude ? data.value.latitude : '';
+    data.lngValue = data.value && data.value.longitude ? data.value.longitude : '';
 
     if (data.multiple) {
         data.multi = true;
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
-        // data.latInputName += '[]'
-        // data.lngInputName += '[]'
         data.values = data.values.reduce(function (acc, value) {
             var keys = Object.keys(value);
             var newValue = {};
@@ -33996,21 +34014,16 @@ function template_input_types_button(data, templates) {
     data.idDataName = data.dataName + '-id';
     data.targetDataName = data.dataName + '-target';
 
-    data.labelValue = data.value.label || '';
-    data.urlValue = data.value.url || '';
-    data.classValue = data.value.class || '';
-    data.idValue = data.value.id || '';
-    data.targetValue = data.value.target || '';
+    data.labelValue = data.value && data.value.label ? data.value.label : '';
+    data.urlValue = data.value && data.value.url ? data.value.url : '';
+    data.classValue = data.value && data.value.class ? data.value.class : '';
+    data.idValue = data.value && data.value.id ? data.value.id : '';
+    data.targetValue = data.value && data.value.target ? data.value.target : '';
 
     if (data.multiple) {
         data.multi = true;
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
-        // data.labelInputName += '[]'
-        // data.urlInputName += '[]'
-        // data.classInputName += '[]'
-        // data.idInputName += '[]'
-        // data.targetInputName += '[]'
         data.values = data.values.reduce(function (acc, value) {
             var keys = Object.keys(value);
             var newValue = {};
@@ -34033,6 +34046,45 @@ function wysiwyg(data, templates) {
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
     }
+    return data;
+}
+
+function template_input_types_image(data, templates) {
+    data.input = templates.image;
+
+    data.idInputName = data.inputName + '[id]';
+    data.widthInputName = data.inputName + '[width]';
+    data.heightInputName = data.inputName + '[height]';
+    data.altInputName = data.inputName + '[alt]';
+    data.urlInputName = data.inputName + '[url]';
+
+    data.idDataName = data.dataName + '-id';
+    data.widthDataName = data.dataName + '-width';
+    data.heightDataName = data.dataName + '-height';
+    data.altDataName = data.dataName + '-alt';
+    data.urlDataName = data.dataName + '-url';
+
+    data.urlValue = data.value && data.value.url ? data.value.url : '';
+    data.idValue = data.value && data.value.id ? data.value.id : '';
+    data.widthValue = data.value && data.value.width ? data.value.width : '';
+    data.heightValue = data.value && data.value.height ? data.value.height : '';
+    data.altValue = data.value && data.value.alt ? data.value.alt : '';
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+        data.values = data.values.reduce(function (acc, value) {
+            var keys = Object.keys(value);
+            var newValue = {};
+            keys.forEach(function (key) {
+                newValue[data.dataName + '-' + key] = value[key];
+            });
+            acc.push(newValue);
+            return acc;
+        }, []);
+    }
+
     return data;
 }
 
@@ -34125,6 +34177,9 @@ function setInputTypeData(field, templates) {
             break;
         case 'button':
             data = template_input_types_button(data, templates);
+            break;
+        case 'image':
+            data = template_input_types_image(data, templates);
             break;
     }
 
@@ -35233,4 +35288,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.75b68584e7e29027d4bd.js.map
+//# sourceMappingURL=main.e0663b89a120444fae1c.js.map

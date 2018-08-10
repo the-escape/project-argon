@@ -44,11 +44,6 @@ class SelectFieldType extends AbstractFieldType
             }
         }
 
-//        if($this->field->id == 36)
-//        {
-//            print_r($settings); exit;
-//        }
-
         return $settings;
     }
 
