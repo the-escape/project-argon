@@ -264,7 +264,7 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
 
     let data = {
         statusClass: field.errors.length ? 'has-error' : '',
-        inputName: `field[${field.id}]`,
+        inputName: `fields[${field.id}]`,
         name: field.options.name,
         dataName: slugify(field.options.name, field.id),
         helpText: field.helpText,

@@ -1,3 +1,4 @@
+import { fromEvent } from 'rxjs'
 import { createFileInputs, createFileInput } from './file-input'
 import controller from './controller'
 import toggle from './toggle'
@@ -5,9 +6,21 @@ import { createSelects, createSelect } from './select'
 import { createItemPickers, createItemPicker } from './item-picker'
 import { createDates, createDate } from './date'
 import { createTimes, createTime } from './time'
-import { createEditors, removeEditor } from './wysiwyg'
+import { createEditors, removeEditor, processWysiwygEditors } from './wysiwyg'
 import { createDragSelects, createDragSelect } from './drag-select'
 import { createMediaInputs, createMediaInput } from './media-input'
+
+function registerFormSaveEvents() {
+    const savePublishBtn = document.querySelector(".js-save")
+    if (!savePublishBtn) {
+        console.log("No js-save button!");
+        return
+    }
+
+    fromEvent(savePublishBtn, 'click').subscribe(el => {
+        processWysiwygEditors()
+    })
+}
 
 function initialiseFormElements () {
     toggle()
@@ -62,7 +75,8 @@ function refreshFromElements (el, formElements) {
 export {
     initialiseFormElements,
     initialiseFormElementsForNewElement,
-    refreshFromElements
+    refreshFromElements,
+    registerFormSaveEvents
     // createFileInputs,
     // createFileInput,
     // controller,
