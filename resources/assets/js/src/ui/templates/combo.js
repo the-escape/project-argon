@@ -188,7 +188,7 @@ function getComboHtml (values) {
             fieldValue = values[field.id]
         }
 
-        const templateData = setInputTypeData(field, this.templates, fieldValue, `combo[${this.id}][${hash}]`)
+        const templateData = setInputTypeData(field, this.templates, fieldValue, )
 
         //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
 
@@ -323,7 +323,7 @@ function setupMulti (newComboItem, comboValues) {
             values = comboValues[field.id]
             values = parseMultiValues(values, field)
         }
-        createMultiple(multiEl, values)
+        createMultiple(multiEl, values, field)
     })
 }
 

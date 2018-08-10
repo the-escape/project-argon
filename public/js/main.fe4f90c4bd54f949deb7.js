@@ -33534,6 +33534,17 @@ function setupIntialValues() {
     });
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/media-input.js
+
+
+
+var MediaInput = {
+    el: null,
+    thumb: null,
+    src: null,
+    alt: null,
+    selectBtn: null
+};
+
 function createMediaInputs() {
     var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
 
@@ -33545,8 +33556,77 @@ function createMediaInputs() {
 }
 
 function createMediaInput(input) {
-    var thumb = input.querySelector('img');
-    var url = input.querySelector('[data-input-item-name=url]');
+    var Obj = Object.create(MediaInput);
+    media_input_init.call(Obj, input);
+    return Obj;
+}
+
+function media_input_init(input) {
+    var _this = this;
+
+    if (!input) {
+        return;
+    }
+
+    this.thumb = input.querySelector('.js-media-input-preview');
+    this.id = input.querySelector('[data-input-item-name=id]');
+    this.url = input.querySelector('[data-input-item-name=url]');
+    this.width = input.querySelector('[data-input-item-name=width]');
+    this.height = input.querySelector('[data-input-item-name=height]');
+    var alt = input.querySelector('[data-input-item-name=alt]').value;
+    this.selectBtn = input.querySelector('.js-media-input-select');
+
+    updateThumb.call(this);
+
+    // this.thumb.src = this.url.value
+    // this.thumb.alt = alt
+
+    fromEvent(this.selectBtn, 'click').pipe(map(function (evt) {
+        evt.preventDefault();
+        return evt;
+    })).subscribe(function () {
+        spawnMediaLibModal().then(setValues.bind(_this));
+    });
+}
+
+function setValues(values) {
+    this.id.value = values.id;
+    this.url.value = values.url;
+    this.width.value = values.width;
+    this.height.value = values.height;
+
+    updateThumb.call(this);
+}
+
+function updateThumb() {
+    this.thumb.src = this.url.value;
+    this.thumb.alt = '';
+}
+
+function spawnMediaLibModal() {
+    return new Promise(function (res) {
+        $('#medialib').off('hidden.bs.modal');
+        $('#medialib').on('hidden.bs.modal', function () {
+            var id = $(this).data('mlselect');
+            var mediaValueObj = void 0;
+            // data.values
+
+            $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
+
+                mediaValueObj = {
+                    id: r.id,
+                    url: r.url,
+                    width: r.meta.width,
+                    height: r.meta.height,
+                    alt: ''
+                };
+
+                res(mediaValueObj);
+            });
+        });
+
+        $('#medialib').modal();
+    });
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/index.js
 
@@ -33628,10 +33708,19 @@ var Multiple = {
     el: null,
     track: null,
     itemTemplate: null,
+    addItemCB: null,
+    data: null,
 
     items: null,
     drag: null
 };
+
+function exampleCB() {
+    return new Promise(function (resolve) {
+        // spawn modal
+        resolve('resolved value');
+    });
+}
 
 function createMultiples() {
     var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
@@ -33645,14 +33734,15 @@ function createMultiples() {
 }
 
 function createMultiple(el) {
-    var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var values = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
     var Obj = Object.create(Multiple);
-    multi_init.call(Obj, el, data);
+    multi_init.call(Obj, el, values, data);
     return Obj;
 }
 
-function multi_init(el, data) {
+function multi_init(el, values, data) {
     if (typeof el === 'string') {
         this.el = document.querySelector(el);
     } else {
@@ -33667,9 +33757,11 @@ function multi_init(el, data) {
     this.itemTemplate = this.track.innerHTML;
     this.track.innerHTML = '';
     this.items = [];
+    this.data = data;
+    this.addItemCB = data.addItemCB;
 
     multi_setupEvents.call(this);
-    multi_setupItems.call(this, data);
+    multi_setupItems.call(this, values);
 }
 
 function multi_setupEvents() {
@@ -33681,7 +33773,7 @@ function multi_setupEvents() {
         evt.preventDefault();
         return evt;
     })).subscribe(function () {
-        return multi_addItem.call(_this);
+        return addItemCB.call(_this, '');
     });
 
     this.drag = dragula_default()([this.track], {
@@ -33708,6 +33800,26 @@ function multi_setupItems(data) {
     if (!data.length) {
         multi_addItem.call(this);
     }
+}
+
+function addItemCB() {
+    var _this3 = this;
+
+    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+    if (!this.addItemCB) {
+        multi_addItem.call(this, value);
+        return;
+    }
+
+    this.addItemCB().then(function (values) {
+        var valueKeys = Object.keys(values);
+        var dataName = _this3.data.dataName;
+        return valueKeys.reduce(function (acc, key) {
+            acc[dataName + '-' + key] = values[key];
+            return acc;
+        }, {});
+    }).then(multi_addItem.bind(this));
 }
 
 function multi_addItem() {
@@ -33753,7 +33865,7 @@ function initialiseItem(item) {
 }
 
 function duplicateItem(item) {
-    var _this3 = this;
+    var _this4 = this;
 
     return function () {
         var inputs = item.querySelectorAll('input, textarea');
@@ -33768,15 +33880,15 @@ function duplicateItem(item) {
                 return acc;
             }, {});
         }
-        multi_addItem.call(_this3, inputValues);
+        multi_addItem.call(_this4, inputValues);
     };
 }
 
 function multi_removeItem(item) {
-    var _this4 = this;
+    var _this5 = this;
 
     return function () {
-        _this4.items = _this4.items.filter(function (multiItem) {
+        _this5.items = _this5.items.filter(function (multiItem) {
             return multiItem !== item;
         });
         item.remove();
@@ -33795,7 +33907,7 @@ function getformElementsFromMultiEl(item) {
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/templates.js
 var areTemplatesSet = false;
-var templates = {
+var templates_templates = {
     combo: '.tp-combo',
     comboItemTop: '.tp-combo-item-top',
     comboItemBot: '.tp-combo-item-bot',
@@ -33822,19 +33934,22 @@ function setupTemplates() {
         return;
     }
 
-    var templateKeys = Object.keys(templates);
+    var templateKeys = Object.keys(templates_templates);
     templateKeys.forEach(function (key) {
-        var templateEl = document.querySelector(templates[key]);
+        var templateEl = document.querySelector(templates_templates[key]);
         if (!templateEl) {
             // console.warn('Cannot find template: ' + key)
             return;
         }
-        templates[key] = templateEl.innerHTML;
+        templates_templates[key] = templateEl.innerHTML;
     });
 
     areTemplatesSet = true;
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/template-input-types.js
+
+
+
 // ==================
 // Type Options
 // ==================
@@ -34052,11 +34167,18 @@ function wysiwyg(data, templates) {
 function template_input_types_image(data, templates) {
     data.input = templates.image;
 
-    data.idInputName = data.inputName + '[id]';
-    data.widthInputName = data.inputName + '[width]';
-    data.heightInputName = data.inputName + '[height]';
-    data.altInputName = data.inputName + '[alt]';
-    data.urlInputName = data.inputName + '[url]';
+    var hash = '';
+
+    if (!data.multiple) {
+        hash = createUniqueHash();
+        hash = '[' + hash + ']';
+    }
+
+    data.idInputName = data.inputName + (hash + '[id]');
+    data.widthInputName = data.inputName + (hash + '[width]');
+    data.heightInputName = data.inputName + (hash + '[height]');
+    data.altInputName = data.inputName + (hash + '[alt]');
+    data.urlInputName = data.inputName + (hash + '[url]');
 
     data.idDataName = data.dataName + '-id';
     data.widthDataName = data.dataName + '-width';
@@ -34085,6 +34207,8 @@ function template_input_types_image(data, templates) {
         }, []);
     }
 
+    data.addItemCB = spawnMediaLibModal;
+
     return data;
 }
 
@@ -34106,7 +34230,7 @@ function setInputTypeData(field, templates) {
 
     var data = {
         statusClass: field.errors.length ? 'has-error' : '',
-        inputName: 'field[' + field.id + ']',
+        inputName: 'fields[' + field.id + ']',
         name: field.options.name,
         dataName: slugify(field.options.name, field.id),
         helpText: field.helpText,
@@ -34276,7 +34400,7 @@ function combo(el) {
     if (!areTemplatesSet) {
         setupTemplates();
     }
-    combo_init.call(Obj, el, comboCount, data, templates);
+    combo_init.call(Obj, el, comboCount, data, templates_templates);
     comboCount += 1;
     return Obj;
 }
@@ -34425,7 +34549,7 @@ function getComboHtml(values) {
             fieldValue = values[field.id];
         }
 
-        var templateData = setInputTypeData(field, _this5.templates, fieldValue, 'combo[' + _this5.id + '][' + hash + ']');
+        var templateData = setInputTypeData(field, _this5.templates, fieldValue);
 
         //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
 
@@ -34562,7 +34686,7 @@ function setupMulti(newComboItem, comboValues) {
             values = comboValues[field.id];
             values = parseMultiValues(values, field);
         }
-        createMultiple(multiEl, values);
+        createMultiple(multiEl, values, field);
     });
 }
 
@@ -34895,7 +35019,7 @@ function createTemplateForm(el) {
     if (!areTemplatesSet) {
         setupTemplates();
     }
-    template_forms_init.call(Obj, el, templates);
+    template_forms_init.call(Obj, el, templates_templates);
     return Obj;
 }
 
@@ -35013,7 +35137,7 @@ function setupMultiAndCombo() {
         if (el.data.multi && el.options.typeKey !== 'combo') {
             var dataName = el.data.dataName;
             var multiEl = _this2.el.querySelector('[data-input-id=' + dataName + ']');
-            el.multi = createMultiple(multiEl, el.data.values);
+            el.multi = createMultiple(multiEl, el.data.values, el.data);
         }
 
         if (el.options.typeKey === 'combo') {
@@ -35288,4 +35412,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.e0663b89a120444fae1c.js.map
+//# sourceMappingURL=main.fe4f90c4bd54f949deb7.js.map

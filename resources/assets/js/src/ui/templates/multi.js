@@ -13,9 +13,18 @@ const Multiple = {
     el: null,
     track: null,
     itemTemplate: null,
+    addItemCB: null,
+    data: null,
 
     items: null,
     drag: null
+}
+
+function exampleCB() {
+    return new Promise(resolve => {
+        // spawn modal
+        resolve('resolved value');
+    })
 }
 
 export function createMultiples (context = document) {
@@ -25,13 +34,13 @@ export function createMultiples (context = document) {
     return multiples
 }
 
-export function createMultiple (el, data = []) {
+export function createMultiple (el, values = [], data = {}) {
     const Obj = Object.create(Multiple)
-    init.call(Obj, el, data)
+    init.call(Obj, el, values, data)
     return Obj
 }
 
-function init (el, data) {
+function init (el, values, data) {
     if (typeof el === 'string') {
         this.el = document.querySelector(el)
     } else {
@@ -46,10 +55,14 @@ function init (el, data) {
     this.itemTemplate = this.track.innerHTML
     this.track.innerHTML = ''
     this.items = []
+    this.data = data
+    this.addItemCB = data.addItemCB
 
     setupEvents.call(this)
-    setupItems.call(this, data)
+    setupItems.call(this, values)
 }
+
+
 
 function setupEvents () {
     fromEvent(this.el, 'click')
@@ -60,7 +73,7 @@ function setupEvents () {
                 return evt
             })
         )
-        .subscribe(() => addItem.call(this))
+        .subscribe(() => addItemCB.call(this, ''))
 
     this.drag = dragula([this.track], {
         revertOnSpill: true,
@@ -83,6 +96,24 @@ function setupItems (data) {
     if (!data.length) {
         addItem.call(this)
     }
+}
+
+function addItemCB(value = ''){
+    if(!this.addItemCB){
+        addItem.call(this, value)
+        return
+    }
+
+    this.addItemCB()
+        .then(values => {
+            const valueKeys = Object.keys(values)
+            const dataName = this.data.dataName
+            return valueKeys.reduce((acc, key) => {
+                acc[dataName + '-' + key] = values[key]
+                return acc
+            }, {})
+        })
+        .then(addItem.bind(this))
 }
 
 function addItem (value = '') {

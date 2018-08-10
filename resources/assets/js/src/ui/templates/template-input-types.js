@@ -1,3 +1,6 @@
+import { spawnMediaLibModal } from '../../form/media-input'
+import { createUniqueHash } from '../../util'
+
 // ==================
 // Type Options
 // ==================
@@ -212,11 +215,18 @@ function wysiwyg (data, templates) {
 function image (data, templates) {
     data.input = templates.image
 
-    data.idInputName = data.inputName + '[id]'
-    data.widthInputName = data.inputName + '[width]'
-    data.heightInputName = data.inputName + '[height]'
-    data.altInputName = data.inputName + '[alt]'
-    data.urlInputName = data.inputName + '[url]'
+    let hash = ''
+
+    if (!data.multiple) {
+        hash = createUniqueHash()
+        hash = `[${hash}]`
+    }
+
+    data.idInputName = data.inputName + `${hash}[id]`
+    data.widthInputName = data.inputName + `${hash}[width]`
+    data.heightInputName = data.inputName + `${hash}[height]`
+    data.altInputName = data.inputName + `${hash}[alt]`
+    data.urlInputName = data.inputName + `${hash}[url]`
 
     data.idDataName = data.dataName + '-id'
     data.widthDataName = data.dataName + '-width'
@@ -245,6 +255,8 @@ function image (data, templates) {
         }, [])
     }
 
+    data.addItemCB = spawnMediaLibModal
+
     return data
 }
 
@@ -264,7 +276,7 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
 
     let data = {
         statusClass: field.errors.length ? 'has-error' : '',
-        inputName: `field[${field.id}]`,
+        inputName: `fields[${field.id}]`,
         name: field.options.name,
         dataName: slugify(field.options.name, field.id),
         helpText: field.helpText,
