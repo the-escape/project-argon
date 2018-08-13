@@ -130,7 +130,7 @@ export function processWysiwygEditors() {
     for (let i in cke) {
         cke[i].updateElement()
         if (i.indexOf('wysiwyg-') !== -1){
-            let field = document.querySelector('[name="' + i + '"]')[0] || null
+            let field = document.querySelector('[name="' + i + '"]')
             if (field) {
                 field.name = field.name.replace(/wysiwyg-[^\]]*/, '')
             }

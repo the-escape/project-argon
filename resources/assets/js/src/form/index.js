@@ -13,7 +13,6 @@ import { createMediaInputs, createMediaInput } from './media-input'
 function registerFormSaveEvents() {
     const savePublishBtn = document.querySelector(".js-save")
     if (!savePublishBtn) {
-        console.log("No js-save button!");
         return
     }
 
