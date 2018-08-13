@@ -30,7 +30,7 @@ export function setupTemplates () {
     templateKeys.forEach(key => {
         const templateEl = document.querySelector(templates[key])
         if (!templateEl) {
-            // console.warn('Cannot find template: ' + key)
+            console.warn('Cannot find template: ' + key)
             return
         }
         templates[key] = templateEl.innerHTML

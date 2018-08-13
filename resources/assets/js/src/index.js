@@ -11,7 +11,7 @@ import {
     tables,
     createTemplateForms
 } from './ui'
-import { initialiseFormElements } from './form'
+import { initialiseFormElements, registerFormSaveEvents } from './form'
 import { trees } from './ui/tree'
 
 function init () {
@@ -29,6 +29,7 @@ function init () {
     // combos()
     tables()
     createTemplateForms()
+    registerFormSaveEvents()
 }
 
 if (document.readyState !== 'loading') {

@@ -313,8 +313,8 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
             @endif
 
-            <button type="submit" class="btn btn-primary save-publish">Save and Publish</button>
-            <button type="submit" class="btn btn-primary-outline save-revision" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
+            <button type="submit" class="btn btn-primary save-publish js-save">Save and Publish</button>
+            <button type="submit" class="btn btn-primary-outline save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
             <a href="#" class="btn btn-warning preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
