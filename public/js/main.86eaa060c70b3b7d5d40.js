@@ -33305,6 +33305,8 @@ function cleanContainerTime(el) {
     el.querySelector('.cke').remove();
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/wysiwyg.js
+
+
 var CKEDITOR_CONFIG = {
     language: 'en-gb',
     customConfig: '',
@@ -33408,6 +33410,19 @@ function removeEditor(el) {
         return editor !== el;
     });
     el.destroy();
+}
+
+function processWysiwygEditors() {
+    var cke = CKEDITOR.instances;
+    for (var i in cke) {
+        cke[i].updateElement();
+        if (i.indexOf('wysiwyg-') !== -1) {
+            var field = document.querySelector('[name="' + i + '"]');
+            if (field) {
+                field.name = field.name.replace(/wysiwyg-[^\]]*/, '');
+            }
+        }
+    }
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/drag-select.js
 
@@ -33639,6 +33654,18 @@ function spawnMediaLibModal() {
 
 
 
+
+
+function registerFormSaveEvents() {
+    var savePublishBtn = document.querySelector(".js-save");
+    if (!savePublishBtn) {
+        return;
+    }
+
+    fromEvent(savePublishBtn, 'click').subscribe(function (el) {
+        processWysiwygEditors();
+    });
+}
 
 function initialiseFormElements() {
     toggle_init();
@@ -33938,7 +33965,7 @@ function setupTemplates() {
     templateKeys.forEach(function (key) {
         var templateEl = document.querySelector(templates_templates[key]);
         if (!templateEl) {
-            // console.warn('Cannot find template: ' + key)
+            console.warn('Cannot find template: ' + key);
             return;
         }
         templates_templates[key] = templateEl.innerHTML;
@@ -35401,6 +35428,7 @@ function src_init() {
     // combos()
     tables();
     createTemplateForms();
+    registerFormSaveEvents();
 }
 
 if (document.readyState !== 'loading') {
@@ -35412,4 +35440,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3ab733ac093369ba72d7.js.map
+//# sourceMappingURL=main.86eaa060c70b3b7d5d40.js.map

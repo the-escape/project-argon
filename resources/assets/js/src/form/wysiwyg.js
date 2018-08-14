@@ -1,3 +1,5 @@
+import { fromEvent } from 'rxjs'
+
 export const CKEDITOR_CONFIG = {
     language: 'en-gb',
     customConfig: '',
@@ -121,4 +123,17 @@ function setupGlobalConfig () {
 export function removeEditor (el) {
     textareas = textareas.filter(editor => editor !== el)
     el.destroy()
+}
+
+export function processWysiwygEditors() {
+    let cke = CKEDITOR.instances;
+    for (let i in cke) {
+        cke[i].updateElement()
+        if (i.indexOf('wysiwyg-') !== -1){
+            let field = document.querySelector('[name="' + i + '"]')
+            if (field) {
+                field.name = field.name.replace(/wysiwyg-[^\]]*/, '')
+            }
+        }
+    }
 }
