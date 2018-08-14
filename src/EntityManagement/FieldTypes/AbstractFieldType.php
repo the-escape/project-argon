@@ -235,79 +235,10 @@ abstract class AbstractFieldType
 
         $event = event(new \Escape\Argon\Events\RenderField($this, $values, $group, $page, $localisation));
 
-        if(!empty($values))
+//        print_r($values); exit;
+        if ($values)
         {
-            switch($this->getKey())
-            {
-                case 'combo':
-                    $tmpValues = (array) $values->getData();
-                    foreach($tmpValues as $tmpVal)
-                    {
-                        $tmpArr = [];
-                        foreach((array) $tmpVal->fields as $k => $v)
-                        {
-                            $tmpArr[$k] = array_values((array)$v);
-                        }
-                        $data['values'][] = $tmpArr;
-                    }
-                    break;
-                case 'location':
-                    $tmpValues = (array) $values->getData();
-                    foreach($tmpValues as $tmpVal)
-                    {
-                        $data['values'][] = [
-                            'latitude' => $tmpVal->getLatitude(),
-                            'longitute' => $tmpVal->getLongitude(),
-                        ];
-                    }
-                    break;
-                case 'button':
-                    $tmpValues = (array) $values->getData();
-                    foreach($tmpValues as $tmpVal)
-                    {
-                        $data['values'][] = [
-                            'label' => $tmpVal->label,
-                            'url' => $tmpVal->url,
-                            'class' => $tmpVal->class,
-                            'id' => $tmpVal->id,
-                            'target' => $tmpVal->target,
-                        ];
-                    }
-                    break;
-                case 'image':
-//                    $tmpValues = $values->getData();
-//                    print_r($values); exit;
-                    foreach($values as $tmpVal)
-                    {
-//                        print_r($tmpVal); exit;
-                        if($tmpVal)
-                        {
-                            $data['values'][] = [
-                                'id' => $tmpVal->getId(),
-                                'width' => $tmpVal->getWidth(),
-                                'height' => $tmpVal->getHeight(),
-                                'alt' => $tmpVal->getAlt(),
-                                'url' => $tmpVal->getUrl(),
-//                                'size' => $tmpVal->getFriendlyFilesize(),
-                            ];
-                        }
-                        else
-                        {
-                            $data['values'][] = [
-                                'id' => '',
-                                'width' => '',
-                                'height' => '',
-                                'alt' => '',
-                                'url' => '',
-                                'size' => '',
-                            ];
-                        }
-                    }
-                    break;
-                default:
-                    $data['values'] = (array) $values->getData();
-                    break;
-            }
+            $data['values'] = $this->prepareValuesForForm($values);
         }
 
         $message = null;
@@ -329,6 +260,89 @@ abstract class AbstractFieldType
 
 
         return $data;
+    }
+
+    public function prepareValuesForForm($values)
+    {
+        $returnValues = [];
+
+        switch($this->getKey())
+        {
+            case 'location':
+                $tmpValues = (array) $values->getData();
+                foreach($tmpValues as $tmpVal)
+                {
+                    $returnValues[] = [
+                        'latitude' => $tmpVal->getLatitude(),
+                        'longitute' => $tmpVal->getLongitude(),
+                    ];
+                }
+                break;
+            case 'button':
+                $tmpValues = (array) $values->getData();
+                foreach($tmpValues as $tmpVal)
+                {
+                    $returnValues[] = [
+                        'label' => $tmpVal->label,
+                        'url' => $tmpVal->url,
+                        'class' => $tmpVal->class,
+                        'id' => $tmpVal->id,
+                        'target' => $tmpVal->target,
+                    ];
+                }
+                break;
+            case 'image':
+                foreach($values as $tmpVal)
+                {
+                    if($tmpVal)
+                    {
+                        $returnValues[] = [
+                            'id' => $tmpVal->getId(),
+                            'width' => $tmpVal->getWidth(),
+                            'height' => $tmpVal->getHeight(),
+                            'alt' => $tmpVal->getAlt(),
+                            'url' => $tmpVal->getUrl(),
+                        ];
+                    }
+                    else
+                    {
+                        $returnValues[] = [
+                            'id' => '',
+                            'width' => '',
+                            'height' => '',
+                            'alt' => '',
+                            'url' => '',
+                            'size' => '',
+                        ];
+                    }
+                }
+                break;
+            case 'combo':
+                $tmpValues = (array) $values->getData();
+
+                foreach($tmpValues as $tmpVal)
+                {
+                    $tmpArr = [];
+
+                    foreach ($this->getSubfields() as $subfield)
+                    {
+                        $subId = $subfield->getField()->id;
+                        $vals = !empty($tmpVal->fields) && array_key_exists($subId, $tmpVal->fields) ? $tmpVal->fields[$subId] : [];
+                        $sf = $subfield->parseData($vals);
+
+                        $tmpArr[$subId] = $subfield->prepareValuesForForm($sf);
+                    }
+
+                    $returnValues[] = $tmpArr;
+                }
+
+                break;
+            default:
+                $returnValues = (array) $values->getData();
+                break;
+        }
+
+        return $returnValues;
     }
 
     abstract public function parseData($data);

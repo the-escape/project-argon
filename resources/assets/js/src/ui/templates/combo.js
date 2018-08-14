@@ -188,9 +188,9 @@ function getComboHtml (values) {
             fieldValue = values[field.id]
         }
 
-        const templateData = setInputTypeData(field, this.templates, fieldValue, )
+        const templateData = setInputTypeData(field, this.templates, fieldValue, `combo[${this.id}][${hash}][fields]`)
 
-        //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
+        // templateData.inputName = templateData.inputName.replace(/field/g,'')
 
         templateData.dataName = field.id
 

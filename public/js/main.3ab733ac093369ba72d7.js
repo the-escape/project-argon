@@ -33718,7 +33718,7 @@ var Multiple = {
 function exampleCB() {
     return new Promise(function (resolve) {
         // spawn modal
-        resolve('resolved value');
+        resolve('resolved value');ƒ;
     });
 }
 
@@ -34549,9 +34549,9 @@ function getComboHtml(values) {
             fieldValue = values[field.id];
         }
 
-        var templateData = setInputTypeData(field, _this5.templates, fieldValue);
+        var templateData = setInputTypeData(field, _this5.templates, fieldValue, 'combo[' + _this5.id + '][' + hash + '][fields]');
 
-        //templateData.inputName = `combo[${this.id}][${hash}][${field.id}]`
+        // templateData.inputName = templateData.inputName.replace(/field/g,'')
 
         templateData.dataName = field.id;
 
@@ -35412,4 +35412,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.fe4f90c4bd54f949deb7.js.map
+//# sourceMappingURL=main.3ab733ac093369ba72d7.js.map

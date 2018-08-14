@@ -23,7 +23,7 @@ const Multiple = {
 function exampleCB() {
     return new Promise(resolve => {
         // spawn modal
-        resolve('resolved value');
+        resolve('resolved value');ƒ
     })
 }
 
