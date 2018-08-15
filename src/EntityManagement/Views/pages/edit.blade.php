@@ -456,3 +456,68 @@ $defaultLocalisation = $page->getDefaultLocalisation();
     </div><!-- /.modal -->
 
 @stop
+
+@section('footer')
+    <script src="/argon/js/jstree.min.js"></script>
+    <script>
+
+        (function() {
+
+            var $sitetree = $("#sitetree");
+            var $entity_pointer_label = $('#entity_pointer_label');
+            var $entity_pointer = $('#entity_pointer');
+            var $entity_pointer_clear = $("#entity_pointer_clear");
+
+            function trim(value) {
+                return value.replace(/^\s+|\s+$/g, '');
+            }
+
+            $sitetree.jstree({
+                plugins: [
+                    'dnd',
+                    'search'
+                ],
+                "core" : {
+                    // so that create works
+                    "check_callback" : true,
+                    "multiple": false
+                }
+            }).jstree({!! config('argon.jstree.load.open', 'open_all') !!});
+
+
+            var sitetreeInstance = function(){
+                return $sitetree.jstree(true);
+            };
+
+            $sitetree.on("changed.jstree", function (e, data) {
+                var selected = data.selected;
+
+                if (selected && selected.length) {
+                    var id = argon.helpers.getIdFromNodeIdString(data.selected[0]);
+                    //var name = argon.helpers.trim(data.node.text);
+                    var name = trim(data.node.text);
+                    console.log("Sitetree selection (id => label): %d => %s", id, name);
+                    $entity_pointer.val(id);
+                    $entity_pointer_label.val(name);
+
+                }
+            });
+
+            $sitetree.on('deselect_node.jstree', function(e, data) {
+                //
+            });
+
+            $entity_pointer_clear.on("click", function (e) {
+                e.preventDefault();
+                $entity_pointer.val('');
+                $entity_pointer_label.val('');
+                var selected = sitetreeInstance().get_selected(true);
+                if (selected && selected.length) {
+                    sitetreeInstance().deselect_node(selected[0]);
+                }
+            });
+
+        })();
+
+    </script>
+@stop

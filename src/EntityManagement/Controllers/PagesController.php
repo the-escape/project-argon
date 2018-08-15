@@ -260,8 +260,16 @@ class PagesController extends BaseController
         $group_render->{$localeId} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
+        $settings = ($entity->settings instanceof stdClass) ? $entity->settings : new stdClass();
+        if (!isset($settings->{$localeId}))
+        {
+            $settings->{$localeId} = new stdClass();
+        }
+        $settings->{$localeId}->pointer = $request->has('entity_pointer') ? $request->has('entity_pointer') : null;
+        $request->merge(['settings' => $settings]);
+
         if (!$preview) {
-            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render', 'settings']));
         }
 
         $revision = $revisionsRepository->create([
@@ -380,8 +388,8 @@ class PagesController extends BaseController
 //        if ($clone) {
 //            $localisation = $page->getDefaultLocalisation();
 //        } else {
-            $currentLocale = Locale::find($localeId);
-            $localisation = $page->getLocalisation($currentLocale);
+        $currentLocale = Locale::find($localeId);
+        $localisation = $page->getLocalisation($currentLocale);
 //        }
 
         $currentRevision = null;
@@ -414,6 +422,28 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
+
+
+
+        $settings = $page->settings;
+        $pointer = $page->getSetting($localeId, "pointer");
+
+
+
+        $entities = $entityRepository->pages()->keyBy('id');
+
+        foreach ($entities as $id => $entity) {
+            if ($entity->parent_id) {
+                $entities[$entity->parent_id]->addChild($entity);
+            }
+        }
+
+        $tree = $entities->filter(function ($entity) {
+            return $entity->parent_id == null;
+        });
+
+
+
         return view(
             'argon::pages.edit',
             [
@@ -427,6 +457,7 @@ class PagesController extends BaseController
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
                 'currentRevision' => $currentRevision,
+                'tree' => $tree,
             ]
         );
     }

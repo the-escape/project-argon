@@ -40,7 +40,7 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render', 'settings'];
 
     public function addChild(Entity $child)
     {
@@ -246,6 +246,44 @@ class Entity extends Model
     public function getGroupRenderAttribute($value)
     {
         return json_decode($value);
+    }
+
+    /**
+     * Returns array from saved json value
+     * @param $value
+     * @return array
+     */
+    public function getSettingsAttribute($value)
+    {
+        $value = json_decode($value, true);
+
+        if ($value === null)
+        {
+            return [];
+        }
+
+        return $value;
+    }
+
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = json_encode($value);
+    }
+
+    public function getSetting($locale, $name, $default=null)
+    {
+        if (is_array($this->settings[$locale]))
+        {
+            foreach ($this->settings[$locale] as $k => $v)
+            {
+                if ($name == $k)
+                {
+                    return $v;
+                }
+            }
+        }
+
+        return $default;
     }
 
 }
