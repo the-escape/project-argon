@@ -272,7 +272,7 @@ class Entity extends Model
 
     public function getSetting($locale, $name, $default=null)
     {
-        if (is_array($this->settings[$locale]))
+        if (isset($this->settings[$locale]))
         {
             foreach ($this->settings[$locale] as $k => $v)
             {

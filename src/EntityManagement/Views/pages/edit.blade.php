@@ -225,6 +225,30 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
             </div>
 
+
+            <div class="card accordion">
+
+                <div class="card-header accordion-header">Pointer</div>
+
+                <div class="card-block accordion-body">
+
+                    <div id="sitetree">
+                        <ul>
+                            @each('argon::pages.tree.item', $tree, 'entity')
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="entity_pointer_label" class="required">Select poiter from the site tree.</label>
+                        <input type="text" id="entity_pointer_label" class="form-control" name="entity_pointer_label" value="{{ old('entity_pointer_label') }}" disabled>
+                        <input type="hidden" id="entity_pointer" class="form-control" name="entity_pointer" value="{{ old('entity_pointer', $page->getSetting($localeId, "pointer")) }}">
+
+                    </div>
+                    <button id="entity_pointer_clear" class="btn btn-primary-outline btn-sm">Clear selection</button>
+                </div>
+
+            </div>
+
             @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
@@ -468,10 +492,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             var $entity_pointer = $('#entity_pointer');
             var $entity_pointer_clear = $("#entity_pointer_clear");
 
-            function trim(value) {
-                return value.replace(/^\s+|\s+$/g, '');
-            }
-
             $sitetree.jstree({
                 plugins: [
                     'dnd',
@@ -484,27 +504,26 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                 }
             }).jstree({!! config('argon.jstree.load.open', 'open_all') !!});
 
-
             var sitetreeInstance = function(){
                 return $sitetree.jstree(true);
             };
+
+            function trim(value) {
+                return value.replace(/^\s+|\s+$/g, '');
+            }
 
             $sitetree.on("changed.jstree", function (e, data) {
                 var selected = data.selected;
 
                 if (selected && selected.length) {
-                    var id = argon.helpers.getIdFromNodeIdString(data.selected[0]);
-                    //var name = argon.helpers.trim(data.node.text);
-                    var name = trim(data.node.text);
-                    console.log("Sitetree selection (id => label): %d => %s", id, name);
-                    $entity_pointer.val(id);
-                    $entity_pointer_label.val(name);
-
+                    if (data.node) {
+                        var id = argon.helpers.getIdFromNodeIdString(data.selected[0]);
+                        var name = argon.helpers.trim(data.node.text);
+                        console.log("Sitetree selection (id => label): %d => %s", id, name);
+                        $entity_pointer.val(id);
+                        $entity_pointer_label.val(name);
+                    }
                 }
-            });
-
-            $sitetree.on('deselect_node.jstree', function(e, data) {
-                //
             });
 
             $entity_pointer_clear.on("click", function (e) {
@@ -516,6 +535,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     sitetreeInstance().deselect_node(selected[0]);
                 }
             });
+
+            @if($page->getSetting($localeId, "pointer"))
+                sitetreeInstance().select_node("node-{{ $page->getSetting($localeId, "pointer") }}");
+            @endif
 
         })();
 

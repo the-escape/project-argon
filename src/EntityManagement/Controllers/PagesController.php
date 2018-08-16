@@ -265,7 +265,7 @@ class PagesController extends BaseController
         {
             $settings->{$localeId} = new stdClass();
         }
-        $settings->{$localeId}->pointer = $request->has('entity_pointer') ? $request->has('entity_pointer') : null;
+        $settings->{$localeId}->pointer = $request->has('entity_pointer') ? $request->input('entity_pointer') : null;
         $request->merge(['settings' => $settings]);
 
         if (!$preview) {
