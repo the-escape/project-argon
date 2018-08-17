@@ -33,6 +33,7 @@ class EntityCache extends Model implements Compressable
         'entity_url',
         'entity_groups',
         'entity_redirect',
+        'entity_settings',
         'entity_updated_at',
         'cache',
     ];
@@ -66,6 +67,45 @@ class EntityCache extends Model implements Compressable
     {
         return json_decode($value);
     }
+
+    /**
+     * Returns array from saved json value
+     * @param $value
+     * @return array
+     */
+    public function getEntitySettingsAttribute($value)
+    {
+        $value = json_decode($value, true);
+
+        if ($value === null)
+        {
+            return [];
+        }
+
+        return $value;
+    }
+
+    public function setEntitySettingsAttribute($value)
+    {
+        $this->attributes['entity_settings'] = json_encode($value);
+    }
+
+    public function getEntitySetting($locale, $name, $default=null)
+    {
+        if (isset($this->entity_settings[$locale]))
+        {
+            foreach ($this->entity_settings[$locale] as $k => $v)
+            {
+                if ($name == $k)
+                {
+                    return $v;
+                }
+            }
+        }
+
+        return $default;
+    }
+
 
     /**
      * Prepares values to create instance of EntityCache object.
@@ -170,6 +210,7 @@ class EntityCache extends Model implements Compressable
 
         $values['cache'] = $cacheFields;
         $values['entity_redirect'] = $entity->redirect_url;
+        $values['entity_settings'] = $entity->settings;
         $values['entity_groups']['group_order'] = $entity->group_order;
         $values['entity_groups']['group_render'] = $entity->group_render;
 
