@@ -595,6 +595,29 @@ class EntityCache extends Model implements Compressable
         return null;
     }
 
+    /**
+     * Returns poiter entity as EntityCache object.
+     * @param null $localeId
+     * @return null | EntityCache $cache
+     */
+    public function getPointer($localeId=null)
+    {
+        if (is_null($localeId))
+        {
+            $localeId = $this->getLocaleId();
+        }
+
+        if ($pointerId = $this->getEntitySetting($localeId, "pointer"))
+        {
+            return entityCache()
+                ->where('entity_id', $pointerId)
+                ->where('entity_status', 1)
+                ->first();
+        }
+
+        return null;
+    }
+
     public function findForPath($url=null, $status=1, $trigger404=true)
     {
         $preview = request()->query->get("preview_page");
