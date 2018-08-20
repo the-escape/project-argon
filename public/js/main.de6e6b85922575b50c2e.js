@@ -33430,10 +33430,12 @@ function processWysiwygEditors() {
 var DragSelect = {
     el: null,
     input: null,
+    select: null,
     inactiveColumn: null,
     activeColumn: null,
     drag: null,
     values: null
+
 };
 
 function createDragSelects() {
@@ -33465,6 +33467,7 @@ function drag_select_init(el) {
     }
 
     this.input = this.el.querySelector('.js-drag-input');
+    this.select = this.el.querySelector('.js-drag-select');
     this.inactiveColumn = this.el.querySelector('.js-drag-inactive');
     this.activeColumn = this.el.querySelector('.js-drag-active');
     this.values = [];
@@ -33524,29 +33527,42 @@ function removeItem(value) {
 }
 
 function updateValues() {
-    this.input.value = JSON.stringify(this.values);
+    var _this2 = this;
+
+    var optionsLength = this.select.options.length;
+    if (optionsLength) {
+        for (var i = 0; i < optionsLength; i++) {
+            this.select.remove(0);
+        }
+    }
+
+    this.values.forEach(function (value) {
+        _this2.select.add(new Option(value, value, true, true));
+    });
 }
 
 function setupIntialValues() {
-    var _this2 = this;
+    var _this3 = this;
 
     if (!this.input.value) {
         return;
     }
 
     Array.from(this.activeColumn.children).forEach(function (el) {
-        _this2.inactiveColumn.appendChild(el);
+        _this3.inactiveColumn.appendChild(el);
     });
 
     this.values = JSON.parse(this.input.value);
     this.values.forEach(function (activeValue) {
-        var item = _this2.inactiveColumn.querySelector('[data-value="' + activeValue + '"]');
+        var item = _this3.inactiveColumn.querySelector('[data-value="' + activeValue + '"]');
         if (!item) {
             return;
         }
 
-        _this2.activeColumn.appendChild(item);
+        _this3.activeColumn.appendChild(item);
     });
+
+    updateValues.call(this);
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/media-input.js
 
@@ -33554,47 +33570,58 @@ function setupIntialValues() {
 
 var MediaInput = {
     el: null,
+    type: null,
     thumb: null,
+    // filepath: null,
     src: null,
     alt: null,
+    width: null,
+    height: null,
     selectBtn: null
 };
 
 function createMediaInputs() {
     var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
 
-    var mediaInputEls = context.querySelectorAll('.js-media-input');
-    var mediaInputs = Array.from(mediaInputEls);
-    mediaInputs.forEach(function (input) {
-        return createMediaInput(input);
+    var mediaImageEls = context.querySelectorAll('.js-media-image');
+    var mediaFileEls = context.querySelectorAll('.js-media-file');
+    var mediaImages = Array.from(mediaImageEls);
+    var mediaFiles = Array.from(mediaFileEls);
+    mediaImages.forEach(function (input) {
+        return createMediaInput(input, 'image');
+    });
+    mediaFiles.forEach(function (input) {
+        return createMediaInput(input, 'file');
     });
 }
 
-function createMediaInput(input) {
+function createMediaInput(input, type) {
     var Obj = Object.create(MediaInput);
-    media_input_init.call(Obj, input);
+    media_input_init.call(Obj, input, type);
     return Obj;
 }
 
-function media_input_init(input) {
+function media_input_init(input, type) {
     var _this = this;
 
     if (!input) {
         return;
     }
 
-    this.thumb = input.querySelector('.js-media-input-preview');
     this.id = input.querySelector('[data-input-item-name=id]');
     this.url = input.querySelector('[data-input-item-name=url]');
-    this.width = input.querySelector('[data-input-item-name=width]');
-    this.height = input.querySelector('[data-input-item-name=height]');
-    var alt = input.querySelector('[data-input-item-name=alt]').value;
+    // this.filepath = input.querySelector('.js-media-input-filepath')
     this.selectBtn = input.querySelector('.js-media-input-select');
+    this.type = type;
+
+    if (type === 'image') {
+        this.thumb = input.querySelector('.js-media-input-preview');
+        this.width = input.querySelector('[data-input-item-name=width]');
+        this.height = input.querySelector('[data-input-item-name=height]');
+        var alt = input.querySelector('[data-input-item-name=alt]').value;
+    }
 
     updateThumb.call(this);
-
-    // this.thumb.src = this.url.value
-    // this.thumb.alt = alt
 
     fromEvent(this.selectBtn, 'click').pipe(map(function (evt) {
         evt.preventDefault();
@@ -33607,18 +33634,35 @@ function media_input_init(input) {
 function setValues(values) {
     this.id.value = values.id;
     this.url.value = values.url;
-    this.width.value = values.width;
-    this.height.value = values.height;
+
+    if (this.type === 'image') {
+
+        this.width.value = values.width;
+        this.height.value = values.height;
+    }
 
     updateThumb.call(this);
 }
 
 function updateThumb() {
-    this.thumb.src = this.url.value;
-    this.thumb.alt = '';
+    if (this.type === 'image') {
+        this.thumb.src = this.url.value;
+        this.thumb.alt = '';
+    }
+    // else {
+    //     this.filepath.innerHTML = this.url.value
+    // }
 }
 
-function spawnMediaLibModal() {
+function spawnMediaLibModalForFile() {
+    return spawnMediaLibModal('file');
+}
+
+function spawnMediaLibModalForImage() {
+    return spawnMediaLibModal('image');
+}
+
+function spawnMediaLibModal(type) {
     return new Promise(function (res) {
         $('#medialib').off('hidden.bs.modal');
         $('#medialib').on('hidden.bs.modal', function () {
@@ -33628,13 +33672,20 @@ function spawnMediaLibModal() {
 
             $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
 
-                mediaValueObj = {
-                    id: r.id,
-                    url: r.url,
-                    width: r.meta.width,
-                    height: r.meta.height,
-                    alt: ''
-                };
+                if (type === 'image') {
+                    mediaValueObj = {
+                        id: r.id,
+                        url: r.url,
+                        width: r.meta.width,
+                        height: r.meta.height,
+                        alt: ''
+                    };
+                } else {
+                    mediaValueObj = {
+                        id: r.id,
+                        url: r.url
+                    };
+                }
 
                 res(mediaValueObj);
             });
@@ -34003,7 +34054,10 @@ function template_input_types_text(data, templates) {
         data.multi = true;
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
+    } else {
+        data.inputName += '[]';
     }
+
     return data;
 }
 
@@ -34021,6 +34075,7 @@ function template_input_types_select(data, templates) {
         data.value = JSON.stringify(data.values);
     } else {
         data.isMultiple = '';
+        data.inputName += '[]';
         data.input = templates.select;
         data.options = data.options.reduce(function (acc, keyVal) {
             var keys = Object.keys(keyVal);
@@ -34040,7 +34095,7 @@ function selectOption(data, key, value) {
 
     if (!isMultiple) {
         var selected = '';
-        if (~data.values.indexOf(value)) {
+        if (~data.values.indexOf(key)) {
             selected = ' selected';
         }
         return '<option value="' + key + '"' + selected + '>' + value + '</option>';
@@ -34080,11 +34135,14 @@ function datetime(data, templates) {
     data.time = data.time ? 'true' : 'false';
     data.default = data.default ? 'true' : 'false';
     data.range = data.range ? 'true' : 'false';
+
+    data.value = data.values[0] || '';
     return data;
 }
 
 function template_input_types_item(data, templates) {
     if (data.multiple_instances) {
+        data.inputName += '[]';
         data.label = '';
         data.input = templates.selectMultiple;
         data.options = data.options.reduce(function (acc, keyVal) {
@@ -34101,6 +34159,8 @@ function template_input_types_item(data, templates) {
     data.isMultiple = '';
     if (data.multiple) {
         data.isMultiple = 'multiple';
+    } else {
+        data.inputName += '[]';
     }
 
     data.input = templates.select;
@@ -34117,8 +34177,16 @@ function template_input_types_item(data, templates) {
 
 function template_input_types_location(data, templates) {
     data.input = templates.location;
-    data.latInputName = data.inputName + '[latitude]';
-    data.lngInputName = data.inputName + '[longitude]';
+
+    var hash = '';
+
+    if (!data.multiple) {
+        hash = createUniqueHash();
+        hash = '[' + hash + ']';
+    }
+
+    data.latInputName = data.inputName + (hash + '[latitude]');
+    data.lngInputName = data.inputName + (hash + '[longitude]');
     data.latDataName = data.dataName + '-latitude';
     data.lngDataName = data.dataName + '-longitude';
     data.latValue = data.value && data.value.latitude ? data.value.latitude : '';
@@ -34143,12 +34211,20 @@ function template_input_types_location(data, templates) {
 }
 
 function template_input_types_button(data, templates) {
+
+    var hash = '';
+
+    if (!data.multiple) {
+        hash = createUniqueHash();
+        hash = '[' + hash + ']';
+    }
+
     data.input = templates.button;
-    data.labelInputName = data.inputName + '[label]';
-    data.urlInputName = data.inputName + '[url]';
-    data.classInputName = data.inputName + '[class]';
-    data.idInputName = data.inputName + '[id]';
-    data.targetInputName = data.inputName + '[target]';
+    data.labelInputName = data.inputName + (hash + '[label]');
+    data.urlInputName = data.inputName + (hash + '[url]');
+    data.classInputName = data.inputName + (hash + '[class]');
+    data.idInputName = data.inputName + (hash + '[id]');
+    data.targetInputName = data.inputName + (hash + '[target]');
 
     data.labelDataName = data.dataName + '-label';
     data.urlDataName = data.dataName + '-url';
@@ -34187,7 +34263,41 @@ function wysiwyg(data, templates) {
         data.multi = true;
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
+    } else {
+        data.inputName += '[]';
     }
+
+    return data;
+}
+
+function file(data, templates) {
+    data.input = templates.file;
+
+    data.addItemCB = spawnMediaLibModalForFile;
+
+    data.idDataName = data.dataName + '-id';
+    data.urlDataName = data.dataName + '-url';
+
+    data.urlValue = data.value && data.value.url ? data.value.url : '';
+    data.idValue = data.value && data.value.id ? data.value.id : '';
+
+    if (data.multiple) {
+        data.multi = true;
+        data.multiTop = templates.multiTop;
+        data.multiBot = templates.multiBot;
+        data.values = data.values.reduce(function (acc, value) {
+            var keys = Object.keys(value);
+            var newValue = {};
+            keys.forEach(function (key) {
+                newValue[data.dataName + '-' + key] = value[key];
+            });
+            acc.push(newValue);
+            return acc;
+        }, []);
+    } else {
+        data.inputName += '[]';
+    }
+
     return data;
 }
 
@@ -34234,7 +34344,7 @@ function template_input_types_image(data, templates) {
         }, []);
     }
 
-    data.addItemCB = spawnMediaLibModal;
+    data.addItemCB = spawnMediaLibModalForImage;
 
     return data;
 }
@@ -34291,7 +34401,11 @@ function setInputTypeData(field, templates) {
     data = Object.assign(data, field.options.settings);
 
     if (data.multiple) {
-        data.inputName += '[{multiHash}]';
+        if (~['image', 'location', 'button'].indexOf(field.options.typeKey)) {
+            data.inputName += '[{multiHash}]';
+        } else {
+            data.inputName += '[]';
+        }
     } else {
         if (!comboValues) {
             data.value = field.values[0];
@@ -34331,6 +34445,9 @@ function setInputTypeData(field, templates) {
             break;
         case 'image':
             data = template_input_types_image(data, templates);
+            break;
+        case 'file':
+            data = file(data, templates);
             break;
     }
 
@@ -35440,4 +35557,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.86eaa060c70b3b7d5d40.js.map
+//# sourceMappingURL=main.de6e6b85922575b50c2e.js.map

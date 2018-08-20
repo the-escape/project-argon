@@ -1,6 +1,6 @@
 <script type="text/template" class="tp-image">
     {multiTop}
-    <div class="o-file js-media-input">
+    <div class="o-file js-media-image">
         <div class="o-file__preview">
             <div class="o-file__preview-wrap">
                 <img class="js-media-input-preview">

@@ -3,10 +3,12 @@ import dragula from 'dragula'
 const DragSelect = {
     el: null,
     input: null,
+    select: null,
     inactiveColumn: null,
     activeColumn: null,
     drag: null,
-    values: null
+    values: null,
+
 }
 
 export function createDragSelects (context = document) {
@@ -34,6 +36,7 @@ function init (el) {
     }
 
     this.input = this.el.querySelector('.js-drag-input')
+    this.select = this.el.querySelector('.js-drag-select')
     this.inactiveColumn = this.el.querySelector('.js-drag-inactive')
     this.activeColumn = this.el.querySelector('.js-drag-active')
     this.values = []
@@ -87,7 +90,16 @@ function removeItem (value) {
 }
 
 function updateValues () {
-    this.input.value = JSON.stringify(this.values)
+    const optionsLength = this.select.options.length
+    if (optionsLength) {
+        for(let i = 0; i < optionsLength; i++) {
+            this.select.remove(0)
+        }
+    }
+
+    this.values.forEach(value => {
+        this.select.add(new Option(value, value, true, true))
+    })
 }
 
 function setupIntialValues () {
@@ -110,4 +122,6 @@ function setupIntialValues () {
 
         this.activeColumn.appendChild(item)
     })
+
+    updateValues.call(this)
 }

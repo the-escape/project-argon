@@ -1,4 +1,4 @@
-import { spawnMediaLibModal } from '../../form/media-input'
+import { spawnMediaLibModalForFile, spawnMediaLibModalForImage } from '../../form/media-input'
 import { createUniqueHash } from '../../util'
 
 // ==================
@@ -27,7 +27,10 @@ function text (data, templates) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
+    } else {
+        data.inputName += '[]'
     }
+
     return data
 }
 
@@ -45,6 +48,7 @@ function select (data, templates) {
         data.value = JSON.stringify(data.values)
     } else {
         data.isMultiple = ''
+        data.inputName += '[]'
         data.input = templates.select
         data.options = data.options.reduce((acc, keyVal) => {
             const keys = Object.keys(keyVal)
@@ -61,7 +65,7 @@ function select (data, templates) {
 function selectOption (data, key, value, isMultiple = false, templates = null) {
     if (!isMultiple) {
         let selected = ''
-        if (~data.values.indexOf(value)) {
+        if (~data.values.indexOf(key)) {
             selected = ' selected'
         }
         return `<option value="${key}"${selected}>${value}</option>`
@@ -101,11 +105,14 @@ function datetime (data, templates) {
     data.time = data.time ? 'true' : 'false'
     data.default = data.default ? 'true' : 'false'
     data.range = data.range ? 'true' : 'false'
+
+    data.value = data.values[0] || ''
     return data
 }
 
 function item (data, templates) {
     if (data.multiple_instances) {
+        data.inputName += '[]'
         data.label = ''
         data.input = templates.selectMultiple
         data.options = data.options.reduce((acc, keyVal) => {
@@ -122,6 +129,8 @@ function item (data, templates) {
     data.isMultiple = ''
     if (data.multiple) {
         data.isMultiple = 'multiple'
+    } else {
+        data.inputName += '[]'
     }
 
     data.input = templates.select
@@ -138,8 +147,16 @@ function item (data, templates) {
 
 function location (data, templates) {
     data.input = templates.location
-    data.latInputName = data.inputName + '[latitude]'
-    data.lngInputName = data.inputName + '[longitude]'
+
+    let hash = ''
+
+    if (!data.multiple) {
+        hash = createUniqueHash()
+        hash = `[${hash}]`
+    }
+
+    data.latInputName = data.inputName + `${hash}[latitude]`
+    data.lngInputName = data.inputName + `${hash}[longitude]`
     data.latDataName = data.dataName + '-latitude'
     data.lngDataName = data.dataName + '-longitude'
     data.latValue = data.value && data.value.latitude ? data.value.latitude : ''
@@ -164,12 +181,20 @@ function location (data, templates) {
 }
 
 function button (data, templates) {
+
+    let hash = ''
+
+    if (!data.multiple) {
+        hash = createUniqueHash()
+        hash = `[${hash}]`
+    }
+
     data.input = templates.button
-    data.labelInputName = data.inputName + '[label]'
-    data.urlInputName = data.inputName + '[url]'
-    data.classInputName = data.inputName + '[class]'
-    data.idInputName = data.inputName + '[id]'
-    data.targetInputName = data.inputName + '[target]'
+    data.labelInputName = data.inputName + `${hash}[label]`
+    data.urlInputName = data.inputName + `${hash}[url]`
+    data.classInputName = data.inputName + `${hash}[class]`
+    data.idInputName = data.inputName + `${hash}[id]`
+    data.targetInputName = data.inputName + `${hash}[target]`
 
     data.labelDataName = data.dataName + '-label'
     data.urlDataName = data.dataName + '-url'
@@ -208,7 +233,41 @@ function wysiwyg (data, templates) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
+    } else {
+        data.inputName += '[]'
     }
+
+    return data
+}
+
+function file (data, templates) {
+    data.input = templates.file
+
+    data.addItemCB = spawnMediaLibModalForFile
+
+    data.idDataName = data.dataName + '-id'
+    data.urlDataName = data.dataName + '-url'
+
+    data.urlValue = data.value && data.value.url ? data.value.url : ''
+    data.idValue = data.value && data.value.id ? data.value.id : ''
+
+    if (data.multiple) {
+        data.multi = true
+        data.multiTop = templates.multiTop
+        data.multiBot = templates.multiBot
+        data.values = data.values.reduce((acc, value) => {
+            const keys = Object.keys(value)
+            const newValue = {}
+            keys.forEach(key => {
+                newValue[data.dataName + '-' + key] = value[key]
+            })
+            acc.push(newValue)
+            return acc
+        }, [])
+    } else {
+        data.inputName += '[]'
+    }
+
     return data
 }
 
@@ -255,7 +314,7 @@ function image (data, templates) {
         }, [])
     }
 
-    data.addItemCB = spawnMediaLibModal
+    data.addItemCB = spawnMediaLibModalForImage
 
     return data
 }
@@ -310,7 +369,11 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
     data = Object.assign(data, field.options.settings)
 
     if (data.multiple) {
-        data.inputName += '[{multiHash}]'
+        if (~['image','location','button'].indexOf(field.options.typeKey)) {
+            data.inputName += '[{multiHash}]'
+        } else {
+            data.inputName += '[]'
+        }
     } else {
         if (!comboValues) {
             data.value = field.values[0]
@@ -318,39 +381,42 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
     }
 
     switch (field.options.typeKey) {
-    case 'text':
-        data = text(data, templates)
-        break
-    case 'description':
-        data.html = templates.description
-        break
-    case 'combo':
-        data.html = templates.combo
-        break
-    case 'select':
-        data = select(data, templates)
-        break
-    case 'boolean':
-        data = boolean(data, templates)
-        break
-    case 'datetime':
-        data = datetime(data, templates)
-        break
-    case 'item':
-        data = item(data, templates)
-        break
-    case 'location':
-        data = location(data, templates)
-        break
-    case 'wysiwyg':
-        data = wysiwyg(data, templates)
-        break
-    case 'button':
-        data = button(data, templates)
-        break
-    case 'image':
-        data = image(data, templates)
-        break
+        case 'text':
+            data = text(data, templates)
+            break
+        case 'description':
+            data.html = templates.description
+            break
+        case 'combo':
+            data.html = templates.combo
+            break
+        case 'select':
+            data = select(data, templates)
+            break
+        case 'boolean':
+            data = boolean(data, templates)
+            break
+        case 'datetime':
+            data = datetime(data, templates)
+            break
+        case 'item':
+            data = item(data, templates)
+            break
+        case 'location':
+            data = location(data, templates)
+            break
+        case 'wysiwyg':
+            data = wysiwyg(data, templates)
+            break
+        case 'button':
+            data = button(data, templates)
+            break
+        case 'image':
+            data = image(data, templates)
+            break
+        case 'file':
+            data = file(data, templates)
+            break
     }
 
     return data

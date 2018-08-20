@@ -205,7 +205,7 @@ abstract class AbstractFieldType
             'id' => $this->getId(),
             'options' => [
                 'typeKey' => $this->getKey(),
-                'name' => $this->getName(),
+                'name' => $this->getFieldName(),
                 'settings' => $this->getSettings()
             ],
             'helpText' => '',
@@ -270,12 +270,26 @@ abstract class AbstractFieldType
         {
             case 'location':
                 $tmpValues = (array) $values->getData();
+
+//                print_r($tmpValues); exit;
+
                 foreach($tmpValues as $tmpVal)
                 {
-                    $returnValues[] = [
-                        'latitude' => $tmpVal->getLatitude(),
-                        'longitute' => $tmpVal->getLongitude(),
-                    ];
+                    if ($tmpVal instanceof \stdClass)
+                    {
+                        $returnValues[] = [
+                            'latitude' => $tmpVal->latitude,
+                            'longitude' => $tmpVal->longitude,
+                        ];
+                    }
+                    else
+                    {
+                        $returnValues[] = [
+                            'latitude' => $tmpVal->getLatitude(),
+                            'longitute' => $tmpVal->getLongitude(),
+                        ];
+
+                    }
                 }
                 break;
             case 'button':
@@ -312,9 +326,28 @@ abstract class AbstractFieldType
                             'height' => '',
                             'alt' => '',
                             'url' => '',
-                            'size' => '',
                         ];
                     }
+                }
+                break;
+            case 'file':
+                foreach($values as $tmpVal)
+                {
+                    if($tmpVal)
+                    {
+                        $returnValues[] = [
+                            'id' => $tmpVal->getId(),
+                            'url' => $tmpVal->getUrl(),
+                        ];
+                    }
+                    else
+                    {
+                        $returnValues[] = [
+                            'id' => '',
+                            'url' => '',
+                        ];
+                    }
+
                 }
                 break;
             case 'combo':
@@ -334,6 +367,15 @@ abstract class AbstractFieldType
                     }
 
                     $returnValues[] = $tmpArr;
+                }
+
+                break;
+            case 'item':
+                $tmpValues = (array) $values->getData();
+
+                foreach($tmpValues as $tmpVal)
+                {
+                    $returnValues[] = (string) $tmpVal;
                 }
 
                 break;
