@@ -9846,6 +9846,10 @@ select[multiple] {
   color: #666;
 }
 
+#sitetree {
+  margin-bottom: 2rem;
+}
+
 .pointer {
   float: right;
   color: #999;

@@ -48,6 +48,9 @@ select[multiple] {
     }
 }
 
+#sitetree {
+    margin-bottom: $spacer-y *2;
+}
 .pointer {
     float: right;
     color: #999;
