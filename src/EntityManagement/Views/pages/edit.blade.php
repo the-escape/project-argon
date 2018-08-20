@@ -225,29 +225,54 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
             </div>
 
+            @if($page->type->getSetting("pointer"))
 
-            <div class="card accordion">
+                <div class="card accordion">
 
-                <div class="card-header accordion-header">Pointer</div>
+                    <?php
+                    $pointer = $page->getSetting($localeId, "pointer");
+                    ?>
 
-                <div class="card-block accordion-body">
+                    <div class="card-header accordion-header">
+                        Pointer / Page reference
 
-                    <div id="sitetree">
-                        <ul>
-                            @each('argon::pages.tree.item', $tree, 'entity')
-                        </ul>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="entity_pointer_label" class="required">Select poiter from the site tree.</label>
-                        <input type="text" id="entity_pointer_label" class="form-control" name="entity_pointer_label" value="{{ old('entity_pointer_label') }}" disabled>
-                        <input type="hidden" id="entity_pointer" class="form-control" name="entity_pointer" value="{{ old('entity_pointer', $page->getSetting($localeId, "pointer")) }}">
+                        <span class="pointer">
+                            <span class="pointer--on @if($pointer) pointer--active @endif">On</span> | <span class="pointer--off @if(!$pointer) pointer--active @endif">Off</span>
+                        </span>
 
                     </div>
-                    <button id="entity_pointer_clear" class="btn btn-primary-outline btn-sm">Clear selection</button>
+
+                    <div class="card-block accordion-body">
+
+                        @if($pointer)
+                            <div class="alert alert-warning">
+                                <p><strong>Warning:</strong> this page is currently referencing another page and uses it's content for rendering etc.</p>
+                            </div>
+                        @else
+                            <div class="alert alert-info">
+                                <p><strong>Heads up!</strong> Selecting a page from the site tree below will instruct to use it's content instead of content stored here.</p>
+                            </div>
+                        @endif
+
+                        <div id="sitetree">
+                            <ul>
+                                @each('argon::pages.tree.item', $tree, 'entity')
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="entity_pointer_label" class="required">Select poiter from the site tree.</label>
+                            <input type="text" id="entity_pointer_label" class="form-control" name="entity_pointer_label" value="{{ old('entity_pointer_label') }}" disabled>
+                            <input type="hidden" id="entity_pointer" class="form-control" name="entity_pointer" value="{{ old('entity_pointer', $page->getSetting($localeId, "pointer")) }}">
+
+                        </div>
+                        <button id="entity_pointer_clear" class="btn btn-primary-outline btn-sm">Clear selection</button>
+                    </div>
+
                 </div>
 
-            </div>
+            @endif
 
             @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
@@ -292,7 +317,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     @endif
 
                                     {!! $field->render($fieldValue) !!}
-
 
                                 </div>
 

@@ -48,6 +48,17 @@ select[multiple] {
     }
 }
 
+.pointer {
+    float: right;
+    color: #999;
+
+    &--active {
+        color: $standard-color;
+    }
+    &--off {
+    }
+}
+
 
 .dashboard-actions {
     @include clearfix;

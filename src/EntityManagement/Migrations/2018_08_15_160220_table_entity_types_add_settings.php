@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class TableEntityCacheAddEntitySettings extends Migration
+class TableEntityTypesAddSettings extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class TableEntityCacheAddEntitySettings extends Migration
      */
     public function up()
     {
-        Schema::table('entity_cache', function (Blueprint $table) {
-            $table->longText('entity_settings')->after('entity_redirect');
+        Schema::table('entity_types', function (Blueprint $table) {
+            $table->longText('settings')->after('type');
         });
     }
 
@@ -24,8 +24,8 @@ class TableEntityCacheAddEntitySettings extends Migration
      */
     public function down()
     {
-        Schema::table('entity_cache', function(Blueprint $table) {
-            $table->dropColumn('entity_settings');
+        Schema::table('entity_types', function(Blueprint $table) {
+            $table->dropColumn('settings');
         });
     }
 }

@@ -1337,7 +1337,7 @@ class EntityTypeController extends BaseController
                     $fieldData['entity_type_id'] = $typeId;
                     $fieldData['entity_group_id'] = $group->id;
                     $fieldData['parent_field_id'] = 0;
-                    
+
 
 
                     $fieldType = $fieldTypesManager->getType($fieldData['field_type']);
