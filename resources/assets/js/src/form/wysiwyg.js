@@ -66,7 +66,8 @@ function getElementConfig (el, config) {
         colors,
         stylesSet,
         extraAllowedContent,
-        toolbar
+        toolbar,
+        height
     } = el.dataset
 
     const removeToolbarItems = []
@@ -95,8 +96,12 @@ function getElementConfig (el, config) {
         elConfig.extraAllowedContent = extraAllowedContent
     }
 
+    if (height) {
+        elConfig.height = height
+    }
+
     if (toolbar) {
-        elConfig.toolbar = JSON.parse(toolbar)
+        elConfig.toolbar = [toolbar.split(',')]
     }
 
     config = Object.assign(config, elConfig)
@@ -129,11 +134,20 @@ export function processWysiwygEditors() {
     let cke = CKEDITOR.instances;
     for (let i in cke) {
         cke[i].updateElement()
-        if (i.indexOf('wysiwyg-') !== -1){
+        if (i.indexOf('[]') === -1){
             let field = document.querySelector('[name="' + i + '"]')
             if (field) {
-                field.name = field.name.replace(/wysiwyg-[^\]]*/, '')
+                field.name = field.name.replace(/[^\[]*(?:\]$)/, ']')
             }
         }
     }
+    // for (let i in cke) {
+    //     cke[i].updateElement()
+    //     if (i.indexOf('wysiwyg-') !== -1){
+    //         let field = document.querySelector('[name="' + i + '"]')
+    //         if (field) {
+    //             field.name = field.name.replace(/wysiwyg-[^\]]*/, '')
+    //         }
+    //     }
+    // }
 }

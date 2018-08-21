@@ -226,15 +226,28 @@ function button (data, templates) {
     return data
 }
 
-function wysiwyg (data, templates) {
+function wysiwyg (data, templates, fieldSettings) {
     data.input = templates.wysiwyg
+
+    let editorSettings = ''
+
+    Object.keys(fieldSettings.editor_options).forEach(function (key) {
+        let val = fieldSettings.editor_options[key]
+        editorSettings += `data-${key}="${val}" `
+    })
+
+    data.inlineProperties = editorSettings;
+
 
     if (data.multiple) {
         data.multi = true
         data.multiTop = templates.multiTop
         data.multiBot = templates.multiBot
     } else {
-        data.inputName += '[]'
+        let hash = createUniqueHash()
+        data.inputName += `[${hash}]`
+        data.input = data.input.replace('data-class', 'class')
+        data.value = data.values[0] || ''
     }
 
     return data
@@ -349,10 +362,10 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
         values: field.values,
         errorMessage: field.errors.length ? field.errors[0] : '',
         html: templates.group,
-        comboAddName: field.options.comboAddName || 'Item'
+        comboAddName: field.options.comboAddName || 'Item',
     }
 
-    if(comboInputName){
+    if(comboInputName) {
         data.inputName = comboInputName + `[${field.id}]`
     }
 
@@ -369,7 +382,7 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
     data = Object.assign(data, field.options.settings)
 
     if (data.multiple) {
-        if (~['image','location','button'].indexOf(field.options.typeKey)) {
+        if (~['image','location','button','wysiwyg'].indexOf(field.options.typeKey)) {
             data.inputName += '[{multiHash}]'
         } else {
             data.inputName += '[]'
@@ -406,7 +419,7 @@ export function setInputTypeData (field, templates, comboValues = null, comboInp
             data = location(data, templates)
             break
         case 'wysiwyg':
-            data = wysiwyg(data, templates)
+            data = wysiwyg(data, templates, field.options.settings)
             break
         case 'button':
             data = button(data, templates)

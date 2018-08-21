@@ -33351,7 +33351,8 @@ function getElementConfig(el, config) {
         colors = _el$dataset.colors,
         stylesSet = _el$dataset.stylesSet,
         extraAllowedContent = _el$dataset.extraAllowedContent,
-        toolbar = _el$dataset.toolbar;
+        toolbar = _el$dataset.toolbar,
+        height = _el$dataset.height;
 
 
     var removeToolbarItems = [];
@@ -33380,8 +33381,12 @@ function getElementConfig(el, config) {
         elConfig.extraAllowedContent = extraAllowedContent;
     }
 
+    if (height) {
+        elConfig.height = height;
+    }
+
     if (toolbar) {
-        elConfig.toolbar = JSON.parse(toolbar);
+        elConfig.toolbar = [toolbar.split(',')];
     }
 
     config = Object.assign(config, elConfig);
@@ -33416,13 +33421,22 @@ function processWysiwygEditors() {
     var cke = CKEDITOR.instances;
     for (var i in cke) {
         cke[i].updateElement();
-        if (i.indexOf('wysiwyg-') !== -1) {
+        if (i.indexOf('[]') === -1) {
             var field = document.querySelector('[name="' + i + '"]');
             if (field) {
-                field.name = field.name.replace(/wysiwyg-[^\]]*/, '');
+                field.name = field.name.replace(/[^\[]*(?:\]$)/, ']');
             }
         }
     }
+    // for (let i in cke) {
+    //     cke[i].updateElement()
+    //     if (i.indexOf('wysiwyg-') !== -1){
+    //         let field = document.querySelector('[name="' + i + '"]')
+    //         if (field) {
+    //             field.name = field.name.replace(/wysiwyg-[^\]]*/, '')
+    //         }
+    //     }
+    // }
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/drag-select.js
 
@@ -33927,7 +33941,6 @@ function getTemplateHtml() {
     var html = this.itemTemplate.replace(/{multiHash}/g, hash);
     div.innerHTML = html;
 
-    // to remove
     var input = div.querySelector('input, textarea');
     if (input.dataset.class) {
         input.classList.add(input.dataset.class);
@@ -34256,15 +34269,27 @@ function template_input_types_button(data, templates) {
     return data;
 }
 
-function wysiwyg(data, templates) {
+function wysiwyg(data, templates, fieldSettings) {
     data.input = templates.wysiwyg;
+
+    var editorSettings = '';
+
+    Object.keys(fieldSettings.editor_options).forEach(function (key) {
+        var val = fieldSettings.editor_options[key];
+        editorSettings += 'data-' + key + '="' + val + '" ';
+    });
+
+    data.inlineProperties = editorSettings;
 
     if (data.multiple) {
         data.multi = true;
         data.multiTop = templates.multiTop;
         data.multiBot = templates.multiBot;
     } else {
-        data.inputName += '[]';
+        var hash = createUniqueHash();
+        data.inputName += '[' + hash + ']';
+        data.input = data.input.replace('data-class', 'class');
+        data.value = data.values[0] || '';
     }
 
     return data;
@@ -34401,7 +34426,7 @@ function setInputTypeData(field, templates) {
     data = Object.assign(data, field.options.settings);
 
     if (data.multiple) {
-        if (~['image', 'location', 'button'].indexOf(field.options.typeKey)) {
+        if (~['image', 'location', 'button', 'wysiwyg'].indexOf(field.options.typeKey)) {
             data.inputName += '[{multiHash}]';
         } else {
             data.inputName += '[]';
@@ -34438,7 +34463,7 @@ function setInputTypeData(field, templates) {
             data = template_input_types_location(data, templates);
             break;
         case 'wysiwyg':
-            data = wysiwyg(data, templates);
+            data = wysiwyg(data, templates, field.options.settings);
             break;
         case 'button':
             data = template_input_types_button(data, templates);
@@ -34645,9 +34670,9 @@ function combo_addItem(values) {
         hash = _getComboHtml$call.hash;
 
     var newComboItem = this.track.appendChild(el);
-    setupMulti.call(this, newComboItem, values);
     newComboItem.querySelector('.js-combo-title').dataset.no = this.items.length + 1;
     var formElements = combo_initialiseItem.call(this, newComboItem, hash);
+    setupMulti.call(this, newComboItem, values);
     this.items.push({
         el: newComboItem,
         hash: hash,
@@ -35545,6 +35570,7 @@ function src_init() {
     // combos()
     tables();
     createTemplateForms();
+    // initialiseFormElements()
     registerFormSaveEvents();
 }
 
@@ -35557,4 +35583,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.de6e6b85922575b50c2e.js.map
+//# sourceMappingURL=main.43a0ead4bcb108138f39.js.map

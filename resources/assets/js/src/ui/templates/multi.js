@@ -142,7 +142,6 @@ function getTemplateHtml () {
     const html = this.itemTemplate.replace(/{multiHash}/g, hash)
     div.innerHTML = html
 
-    // to remove
     const input = div.querySelector('input, textarea')
     if (input.dataset.class) {
         input.classList.add(input.dataset.class)

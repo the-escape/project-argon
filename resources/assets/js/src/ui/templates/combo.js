@@ -143,10 +143,10 @@ function setupItems () {
 function addItem (values) {
     const { el, hash } = getComboHtml.call(this, values)
     const newComboItem = this.track.appendChild(el)
-    setupMulti.call(this, newComboItem, values)
     newComboItem.querySelector('.js-combo-title').dataset.no =
         this.items.length + 1
     const formElements = initialiseItem.call(this, newComboItem, hash)
+    setupMulti.call(this, newComboItem, values)
     this.items.push({
         el: newComboItem,
         hash,

@@ -225,6 +225,47 @@ abstract class AbstractFieldType
             $data['fields'] = $subfields;
         }
 
+        if ($this->getKey() === 'wysiwyg')
+        {
+            $toolbar = $format_tags = [];
+            foreach($this->getProperties() as $name => $property)
+            {
+                if (property_exists($this->getSettings(), $name) && property_exists($property, 'toolbar'))
+                {
+                    if ($this->getSetting($name))
+                    {
+                        $toolbar[] = $property->toolbar;
+                    }
+
+                    if (($name == 'format') && $property->children)
+                    {
+                        foreach($property->children as $child_name => $child_propery)
+                        {
+                            if ($this->getSetting($child_name))
+                            {
+                                $format_tags[] = $child_name;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $typographyStyles = config('argon.typography_styles','/css/typography.css');
+            if (in_array('Styles', $toolbar) && !file_exists(public_path($typographyStyles)))
+            {
+                $key = array_search('Styles', $toolbar);
+                unset($toolbar[$key]);
+            }
+
+            $data['options']['settings']->editor_options = [
+                'toolbar' => implode(',',$toolbar),
+                'format-tags' => implode(';', $format_tags),
+                'height' => $this->getSetting('height'),
+                'extra-allowed-content' => $this->getSetting('iframe'),
+                'typography-styles' => $typographyStyles
+            ];
+        }
+
         if(!$isSubField)
         {
             $data['values'] = [];
