@@ -72,7 +72,7 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
 
         $this->permissionsManager->register('cms:redirects:manage');
 
-        $this->pluginManager->registerNavLink('Redirect Manager', route('cms:redirects:manage'), 'cms:redirects:manage');
+        $this->pluginManager->registerNavLink('Redirect Manager', route('cms:redirects:manage'), 'cms:redirects:manage', 'pages');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

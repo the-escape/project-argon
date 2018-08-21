@@ -572,10 +572,10 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Listeners' => app_path('Listeners'),
         ], 'listeners');
 
-        $this->pluginManager->registerNavLink('Content', route('cms:pages:manage'), 'cms:content:manage');
-        $this->pluginManager->registerNavLink('Blocks', route('cms:blocks:manage'), 'cms:content:manage');
+        $this->pluginManager->registerNavLink('Content', route('cms:pages:manage'), 'cms:content:manage', 'pages');
+        $this->pluginManager->registerNavLink('Blocks', route('cms:blocks:manage'), 'cms:content:manage', 'pages');
 //        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');
-        $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage');
+        $this->pluginManager->registerNavLink('Content Types', route('cms:types:manage'), 'cms:entity:type:manage', 'pages');
 
         $this->fieldTypesManager->registerFieldType(new TextFieldType());
         $this->fieldTypesManager->registerFieldType(new FileFieldType());

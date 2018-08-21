@@ -21,36 +21,12 @@
 
 <body class="@yield('body-class', 'dashboard')">
 
-<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <ul class="nav navbar-nav pull-xs-right">
-        @if($currentUser->hasPermission('cms:settings'))
-            <li class="nav-item"><a class="nav-link" href="{{ route('settings') }}">Settings</a></li>
-        @endif
-        <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
-    </ul>
-    <a class="navbar-brand" href="{{ route('dashboard') }}"><img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
-</nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            @foreach ($plugins->getNavLinksForUser($currentUser) as $group)
-                <ul class="nav nav-pills nav-stacked">
-                    @foreach ($group as $plugin)
-                        @if($currentUser->hasPermission($plugin->access))
-                            <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
-                        @endif
-                    @endforeach
-                </ul>
-            @endforeach
-        </div>
+@include('argon::inc.nav')
 
-        <div class="col-sm-9 offset-sm-3 col-md-10 col-md-offset-2">
-            @yield('content')
-        </div>
-    </div>
-</div>
+<main class="c-container c-container--main">
+    @yield('content')
+</main>
 
 <div class="modals">@yield('modals')</div>
 

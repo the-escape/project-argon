@@ -8,6 +8,7 @@
 //	Client colours
 //====================
 $client-primary: #12a3c7;
+$client-primary-acc: #0d728b;
 $client-dark: darken($client-primary, 13%);
 $client-light: lighten($client-primary, 5%);
 $client-offwhite: lighten(desaturate($client-primary, 30%), 55%);
@@ -17,10 +18,19 @@ $primary-dark: $client-dark;
 $primary-light: $client-light;
 $primary-offwhite: $client-offwhite;
 
+$secondary: 			#b6b6b6;
+$secondary-light: 		#d8d8d8;
+$secondary-highlight: 	#f0f0f0;
+$secondary-acc: 		#808080;
+
+$tertiary:				#2a2a2a;
+$tertiary-dark: 		#1f1f1f;
+
 $danger: #f66956;
 $danger-dark: darken($danger, 13%);
 $success: #51b989;
 $success-dark: darken($success, 13%);
+$success-acc: #51b989;
 $active: #7acf47;
 $active-dark: darken($active, 13%);
 $inactive: #cf4747;

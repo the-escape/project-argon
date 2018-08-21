@@ -4329,6 +4329,251 @@ button.o-btn {
         -ms-flex: 1 1 100%;
             flex: 1 1 100%; }
 
+.c-sidebar {
+  z-index: 20;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 100%;
+  color: #fff; }
+  .c-sidebar__overlay {
+    z-index: 21;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    pointer-events: none;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms; }
+  .c-sidebar.active .c-sidebar__overlay {
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    opacity: 1; }
+  .c-sidebar__container {
+    z-index: 22;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2a2a2a;
+    -webkit-transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    overflow-x: hidden; }
+  .c-sidebar.active .c-sidebar__container {
+    -webkit-transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    width: 210px; }
+  .c-sidebar__logo {
+    margin-top: auto;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start; }
+    .c-sidebar__logo img {
+      width: 19px; }
+
+.c-user {
+  height: 150px;
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  .c-user > * {
+    z-index: 23; }
+  .c-user:before {
+    content: '';
+    z-index: 21;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url("/argon/images/sidebar/user-bg.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms; }
+  .active .c-user:before {
+    opacity: 1;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+  .c-user__img {
+    width: 36px;
+    margin: 10px 6px;
+    border-radius: 50%;
+    overflow: hidden;
+    -webkit-transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 250ms; }
+  .active .c-user__img {
+    width: 60px;
+    -webkit-transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: width cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+  .c-user__name {
+    color: #fff;
+    font-size: 1.8rem;
+    opacity: 0;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 150ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 150ms;
+    white-space: nowrap; }
+  .active .c-user__name {
+    opacity: 1;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+  .c-user__logout {
+    position: absolute;
+    top: 10px;
+    left: 175px;
+    color: #fff;
+    opacity: 0;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 150ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 150ms;
+    white-space: nowrap; }
+    .c-user__logout svg {
+      width: 24px;
+      height: 24px;
+      stroke-width: 1px; }
+    .c-user__logout:hover {
+      color: #fff; }
+      .c-user__logout:hover svg {
+        stroke-width: 3px; }
+  .active .c-user__logout {
+    opacity: 1;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+
+.c-navigation {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 1.6rem; }
+  .c-navigation__item {
+    width: 100%;
+    height: 48px;
+    margin-bottom: 0; }
+  .c-navigation__link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 100%;
+    width: 100%;
+    color: inherit;
+    white-space: nowrap;
+    text-decoration: none;
+    -webkit-transition: background-color cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: background-color cubic-bezier(0.3, 0.15, 0.18, 1) 250ms; }
+    .c-navigation__link:hover, .c-navigation__link.active {
+      background-color: #12a3c7;
+      color: inherit;
+      -webkit-transition: background-color cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+      transition: background-color cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+  .c-navigation__item:not(:last-child) .c-navigation__link {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .c-navigation__icon {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 48px;
+            flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    position: relative; }
+    .c-navigation__icon:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat; }
+  .c-navigation__text {
+    opacity: 0;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms; }
+  .active .c-navigation__text {
+    opacity: 1;
+    -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms;
+    transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 400ms; }
+  .c-navigation__link-alert {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-left: auto;
+    margin-right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #0d728b; }
+  .c-navigation__icon--dashboard:before {
+    background-image: url("/argon/images/sidebar/dashboard.png"); }
+  .c-navigation__icon--pages:before {
+    background-image: url("/argon/images/sidebar/sitemap.png"); }
+  .c-navigation__icon--posts:before {
+    background-image: url("/argon/images/sidebar/posts.png"); }
+  .c-navigation__icon--media:before {
+    background-image: url("/argon/images/sidebar/media-library.png"); }
+  .c-navigation__icon--block:before {
+    background-image: url("/argon/images/sidebar/forms.png"); }
+  .c-navigation__icon--forms:before {
+    background-image: url("/argon/images/sidebar/forms.png"); }
+  .c-navigation__icon--redirects:before {
+    background-image: url("/argon/images/sidebar/redirects.png"); }
+  .c-navigation__icon--users:before {
+    background-image: url("/argon/images/sidebar/users.png"); }
+
+.c-container {
+  padding-left: 10%;
+  padding-right: 10%; }
+  .c-container--main {
+    padding-top: space(6); }
+
 .c-scroll-anim--fade-up {
   opacity: 0;
   -webkit-transform: translateY(20px);

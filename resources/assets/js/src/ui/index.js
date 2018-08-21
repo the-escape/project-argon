@@ -6,6 +6,7 @@ import SmoothScroll from './smoothscroll'
 import StickyBars from './sticky-bars'
 import Video from './video'
 import map from './map'
+import Sidebar from './sidebar'
 import { confirm } from './confirm-btns'
 import { combos } from './templates/combo'
 import { tableAction } from './table-actions'
@@ -28,5 +29,6 @@ export {
     tableAction,
     tables,
     createMultiple,
-    createTemplateForms
+    createTemplateForms,
+    Sidebar
 }

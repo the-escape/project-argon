@@ -9,7 +9,8 @@ import {
     combos,
     Jump,
     tables,
-    createTemplateForms
+    createTemplateForms,
+    Sidebar
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import { trees } from './ui/tree'
@@ -17,6 +18,7 @@ import { trees } from './ui/tree'
 function init () {
     polyfill()
     Jump.init(650, 150)
+    Sidebar()
     Accordion()
     Video()
     map()

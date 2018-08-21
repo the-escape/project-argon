@@ -33,12 +33,13 @@ class PluginManager
         return $filteredLinks;
     }
 
-    public function registerNavLink($name, $url, $access = '', $group = 'default')
+    public function registerNavLink($name, $url, $access = '', $icon = 'pages', $group = 'default')
     {
         $this->navLinks[$group][$name] = (object)[
             'name' => $name,
             'url' => $url,
             'access' => $access,
+            'icon' => $icon,
             'group' => $group
         ];
     }
