@@ -34069,6 +34069,7 @@ function template_input_types_text(data, templates) {
         data.multiBot = templates.multiBot;
     } else {
         data.inputName += '[]';
+        data.value = data.values[0] || '';
     }
 
     return data;
@@ -35583,4 +35584,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.43a0ead4bcb108138f39.js.map
+//# sourceMappingURL=main.60d00fd4ebba7ecdc114.js.map

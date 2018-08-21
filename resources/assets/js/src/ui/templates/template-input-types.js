@@ -29,6 +29,7 @@ function text (data, templates) {
         data.multiBot = templates.multiBot
     } else {
         data.inputName += '[]'
+        data.value = data.values[0] || ''
     }
 
     return data

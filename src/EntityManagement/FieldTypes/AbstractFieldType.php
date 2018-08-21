@@ -199,7 +199,7 @@ abstract class AbstractFieldType
         return $this->field;
     }
 
-    public function getFieldWithValues($group, $page, $localisation, $currentRevision, $isSubField = false)
+    public function getFieldWithValues($group, $page = null , $localisation = null, $currentRevision = null, $isSubField = false)
     {
         $data = [
             'id' => $this->getId(),
@@ -272,11 +272,24 @@ abstract class AbstractFieldType
             $data['errors'] = [];
         }
 
-        $values = $currentRevision->getField($this->getId());
+        if ($currentRevision)
+        {
+            $values = $currentRevision->getField($this->getId());
+        }
+        else
+        {
+            // TODO: get old / submitted values
 
-        $event = event(new \Escape\Argon\Events\RenderField($this, $values, $group, $page, $localisation));
+            $fieldArray = $this->getKey() === 'combo' ? 'combo' : 'fields';
+            $submitted = old($fieldArray.'.' . $this->getId());
+            $values = $this->parseData($submitted);
+        }
 
-//        print_r($values); exit;
+        if ($page && $localisation)
+        {
+            $event = event(new \Escape\Argon\Events\RenderField($this, $values, $group, $page, $localisation));
+        }
+
         if ($values)
         {
             $data['values'] = $this->prepareValuesForForm($values);

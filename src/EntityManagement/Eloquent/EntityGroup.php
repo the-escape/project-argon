@@ -43,7 +43,7 @@ class EntityGroup extends Model
         return $fields;
     }
 
-    public function getFieldsWithValues($page, $localisation, $currentRevision)
+    public function getFieldsWithValues($page = null , $localisation = null, $currentRevision = null)
     {
         $fields = [];
 

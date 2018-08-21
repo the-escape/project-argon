@@ -89,6 +89,13 @@
 
                             <div class="card-block accordion-body">
 
+                                <script>
+                                    window.fieldGroups = window.fieldGroups || {}
+                                    window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                </script>
+                                <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
+
+                                <?php /*
                                 @foreach ($group->getFields() as $field)
 
                                     <div class="form-group sortable">
@@ -98,6 +105,7 @@
                                     </div>
 
                                 @endforeach
+                                */ ?>
 
                             </div>
 
@@ -138,6 +146,13 @@
 
                                         <div class="card-block accordion-body">
 
+                                            <script>
+                                                window.fieldGroups = window.fieldGroups || {}
+                                                window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                            </script>
+                                            <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
+
+                                            <?php /*
                                             @foreach ($group->getFields() as $field)
 
                                                 <div class="form-group sortable">
@@ -147,6 +162,7 @@
                                                 </div>
 
                                             @endforeach
+                                            */ ?>
 
                                         </div>
 
@@ -223,6 +239,12 @@
             <progress class="progress" value="25" max="100"></progress>
         </div>
     </div>
+@stop
+
+@section('footer')
+    @parent
+
+    @include('argon::fields.templates')
 @stop
 
 

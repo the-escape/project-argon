@@ -6,7 +6,6 @@
     }
 ?>
 
-<?php /*
 @if (!$isCloning)
     <div class="field field-select field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
         data-field="{{$field->getId()}}"
@@ -55,53 +54,5 @@
         @if ($field->allowMultiple())
             <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
         @endif
-    </div>
-@endif
-*/ ?>
-
-
-<div class="o-form-status">
-    <div class="o-form-status__input">
-        <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
-
-        @foreach($value as $k => $v)
-
-            <select name="{{ $field->getFormFieldName($hash) }}" id="fields-{{ $field->getId() }}-0" class="js-select">
-
-                @foreach($field->getOptions() as $optionId => $optionValue)
-
-                    <?php
-                    $optionValue = (is_object($optionValue)) ? (array)$optionValue : [$optionValue => $optionValue];
-                    $key = key($optionValue);
-                    $value = current($optionValue)
-                    ?>
-
-                    <option value="{{ $key }}" @if($key === $v) selected @endif>{{ $value }}</option>
-
-                @endforeach
-
-            </select>
-
-        @endforeach
-
-    </div>
-
-    <div class="o-form-status__message">
-        <div class="o-form-status__icon">
-            <div class="o-form-status__icon--error">
-                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-            </div>
-            <div class="o-form-status__icon--success">
-                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-            </div>
-        </div>
-        <div class="o-form-status__message-bar">
-            <label for="fields-{{ $field->getId() }}-0">Error Message</label>
-        </div>
-    </div>
-</div>
-@if(false)
-    <div class="o-form__help-text l-full">
-        <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
     </div>
 @endif

@@ -1,4 +1,3 @@
-<?php /*
 @if(!$isCloning)
     <div class="field field-text field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
          data-field="{{$field->getId()}}"
@@ -31,40 +30,5 @@
         @if ($field->allowMultiple())
             <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone">Add Field</a>
         @endif
-    </div>
-@endif
-*/ ?>
-
-<div class="o-form-status">
-    <div class="o-form-status__input">
-
-        <label for="fields-{{ $field->getId() }}-0">{{ $field->getFieldName() }}</label>
-
-        @foreach($value as $k => $v)
-
-            <textarea id="fields-{{ $field->getId() }}-0"
-                   name="{{ $field->getFormFieldName($hash) }}"
-                   placeholder="{{ $field->getFieldName() }}">{{ $v }}</textarea>
-
-        @endforeach
-
-    </div>
-    <div class="o-form-status__message">
-        <div class="o-form-status__icon">
-            <div class="o-form-status__icon--error">
-                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-            </div>
-            <div class="o-form-status__icon--success">
-                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-            </div>
-        </div>
-        <div class="o-form-status__message-bar">
-            <label for="fields-{{ $field->getId() }}-0">Error Message</label>
-        </div>
-    </div>
-</div>
-@if(false)
-    <div class="o-form__help-text l-full">
-        <p>{{ 'help text' }}</p>
     </div>
 @endif
