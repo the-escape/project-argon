@@ -6,6 +6,50 @@ namespace Escape\Argon\EntityManagement\DataMappers;
 use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
 
+/**
+ * Class DataMapper
+ * @package Escape\Argon\EntityManagement\DataMappers
+ *
+ * Extend this class to conveniently map the data, in most cases AbstractFieldValue,
+ * into more friendly and specific objects with specialised methods.
+ *
+ * DataMapper class provides basic getters, setters, hasProperty, isEmpty methods.
+ * These are generic methods, more specific implementation should be applied
+ * on final objects extending DataMapper.
+ *
+ * Field mapping is based on class properties, like so:
+ *
+ * class SocialLinks extends DataMapper
+ * {
+ *     protected $facebook;
+ *     protected $linkedin;
+ *     protected $pinterest;
+ *     protected $twitter;
+ *     protected $instagram;
+ *     protected $youtube;
+ *
+ *     public function __construct($data)
+ *     {
+ *         if ($data instanceof ComboFieldValue)
+ *         {
+ *             foreach ($data as $array)
+ *             {
+ *                 $this->mapArray($array);
+ *                 return;
+ *             }
+ *         }
+ *
+ *         if (is_array($data))
+ *         {
+ *             $this->mapArray($data);
+ *             return;
+ *         }
+ *     }
+ * }
+ *
+ *
+ *
+ */
 class DataMapper
 {
     /**
@@ -78,7 +122,8 @@ class DataMapper
     }
 
     /**
-     * Prepare hasProperty label from given property used to assert if property has value.
+     * Prepare hasProperty label from given property.
+     * Used to assert if property has value, like $object->hasImage() etc.
      * @param $property
      * @return string
      */
