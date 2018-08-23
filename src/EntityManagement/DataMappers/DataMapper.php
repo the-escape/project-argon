@@ -53,7 +53,8 @@ use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
 class DataMapper
 {
     /**
-     * Maps $cache fields to class properties.
+     * Maps $cache fields/combos to class properties.
+     * For more effective combo mapping see Combo class and MultiCombo class.
      * @param EntityCache $cache
      */
     public function map(EntityCache $cache)
