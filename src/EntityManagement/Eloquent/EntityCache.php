@@ -312,10 +312,13 @@ class EntityCache extends Model implements Compressable
         $segments = [];
         $parent = $entity;
 
-        while ($parent->parent)
+        while ($parent)
         {
-            $segments[] = $parent->slug;
-            $parent = $parent->parent;
+            if($parent->slug !== '/')
+            {
+                $segments[] = $parent->slug;
+            }
+            $parent = $parent->parent ? $parent->parent : false;
         }
 
         $locale = Locale::where('id', $localisation->locale_id)->first();

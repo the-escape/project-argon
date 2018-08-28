@@ -3,3 +3,4 @@ coverage
 composer.lock
 bower_components
 node_modules
+.idea
