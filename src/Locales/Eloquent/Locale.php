@@ -14,23 +14,35 @@ class Locale extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'languageCode', 'region', 'locale_slug'];
+    protected $fillable = ['name', 'language_id', 'country_id', 'locale_slug'];
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSlug()
     {
         return $this->locale_slug;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLanguageCode()
     {
         return $this->languageCode;

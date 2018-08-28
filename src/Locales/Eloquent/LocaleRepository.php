@@ -16,6 +16,10 @@ class LocaleRepository extends BaseRepository
         return Locale::class;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|null|static
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function primary()
     {
         $this->resetModel();
@@ -34,6 +38,10 @@ class LocaleRepository extends BaseRepository
         return $this->findWhere(['locale_slug' => $slug])->first();
     }
 
+    /**
+     * @return mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
     public function getDefault()
     {
         return $this->makeModel()->orderBy('created_at')->limit(1)->get()->first();

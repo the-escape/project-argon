@@ -10,6 +10,9 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
 {
     protected $name = 'Locales';
 
+    /**
+     * @throws \Exception
+     */
     public function registerRoutes()
     {
         $this->addRoute(
