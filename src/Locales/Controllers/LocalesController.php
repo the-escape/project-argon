@@ -40,6 +40,8 @@ class LocalesController extends BaseController
      */
     public function create()
     {
+
+
         return View::make('argon::locales.create');
     }
 

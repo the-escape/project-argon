@@ -5,16 +5,21 @@ namespace Escape\Argon\Locales\Eloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Locale extends Model
+class Language extends Model
 {
     use SoftDeletes;
+
+    /**
+     * @var string
+     */
+    protected $table = 'languages';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'language_id', 'country_id', 'locale_slug'];
+    protected $fillable = ['language_code', 'language_name', 'country_native_name', 'language_flow'];
 
     /**
      * @return mixed
@@ -27,32 +32,32 @@ class Locale extends Model
     /**
      * @return mixed
      */
+    public function getLanguageCode()
+    {
+        return $this->language_code;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getName()
     {
-        return $this->name;
+        return $this->language_name;
     }
 
     /**
      * @return mixed
      */
-    public function getSlug()
+    public function getNativeName()
     {
-        return $this->locale_slug;
+        return $this->language_native_name;
     }
 
     /**
      * @return mixed
      */
-    public function getLanguageId()
+    public function getTextDirection()
     {
-        return $this->language_id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCountryId()
-    {
-        return $this->country_id;
+        return $this->language_flow;
     }
 }
