@@ -9,18 +9,7 @@ class CountrySeeder extends Seeder
 {
     public function run()
     {
-        $this->call('CountryTableSeeder');
-
-        $this->command->info('Country table seeded!');
-    }
-
-}
-
-class CountryTableSeeder extends Seeder
-{
-    public function run()
-    {
-        DB::table('countries')->delete();
+        DB::table('countries')->truncate();
 
         $countries = [
             ["iso_code" => "AD", "iso_code_3" => "AND", "iso_numeric" => "020", "fips_code" => "AN", "country_name" => "Andorra", "country_capital" => "Andorra la Vella", "continent_code" => "EU", "top_level_domain" => ".ad", "currency_code" => "EUR", "currency_name" => "Euro", "telephone_code" => "376", "postal_code_format" => "AD###", "postal_code_regex" => "^(?:AD)*(\d{3})$", "languages" => "ca", "neighbours" => "ES,FR"],
@@ -281,5 +270,8 @@ class CountryTableSeeder extends Seeder
         {
             Country::create($country);
         }
+
+        $this->command->info('Country table seeded!');
     }
+
 }

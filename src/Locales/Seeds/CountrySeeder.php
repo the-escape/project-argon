@@ -9,17 +9,7 @@ class LanguageSeeder extends Seeder
 {
     public function run()
     {
-        $this->call('LanguageTableSeeder');
-
-        $this->command->info('Language table seeded!');
-    }
-}
-
-class LanguageTableSeeder extends Seeder
-{
-    public function run()
-    {
-        DB::table('languages')->delete();
+        DB::table('languages')->truncate();
 
         $languages = [
             ["language_name" => "Abkhazian", "language_native_name" => "аҧсуа бызшәа, аҧсшәа", "language_code" => "ab", "language_flow" => "ltr"],
@@ -213,5 +203,7 @@ class LanguageTableSeeder extends Seeder
         {
             Language::create($language);
         }
+
+        $this->command->info('Language table seeded!');
     }
 }
