@@ -3,6 +3,8 @@
 namespace Escape\Argon\Locales\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Locales\Eloquent\CountryRepository;
+use Escape\Argon\Locales\Eloquent\LanguageRepository;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
 use Input;
@@ -38,11 +40,12 @@ class LocalesController extends BaseController
     /**
      * @return mixed
      */
-    public function create()
+    public function create(CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
+        $countries = $countryRepository->all();
+        $languages = $languageRepository->all();
 
-
-        return View::make('argon::locales.create');
+        return View::make('argon::locales.create', ['countries' => $countries, 'languages' => $languages]);
     }
 
     /**
