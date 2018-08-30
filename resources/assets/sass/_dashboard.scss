@@ -48,6 +48,20 @@ select[multiple] {
     }
 }
 
+#sitetree {
+    margin-bottom: $spacer-y *2;
+}
+.pointer {
+    float: right;
+    color: #999;
+
+    &--active {
+        color: $standard-color;
+    }
+    &--off {
+    }
+}
+
 
 .dashboard-actions {
     @include clearfix;

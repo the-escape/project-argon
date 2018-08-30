@@ -29,6 +29,22 @@
             </div>
 
             <div class="card">
+                <div class="card-header">Settings</div>
+                <div class="card-block">
+
+                    <div class="form-group">
+                        <div>
+                            <label class="checkbox-inline">
+                                <input type="hidden" name="settings[pointer]" value="0">
+                                <input type="checkbox" name="settings[pointer]" value="1" @if($type->getSetting("pointer"))) checked @endif> Enable pointer field
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
                 <div class="card-header">Fields</div>
                 <div class="card-block">
 

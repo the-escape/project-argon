@@ -23,7 +23,7 @@ class EntityType extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['name', 'type', 'settings'];
 
     // Get all fields except combo subfields.
     // Combo field should be pulled here as a top level (standard) field, not its children.
@@ -85,5 +85,40 @@ class EntityType extends Model
     public function isEmail()
     {
         return $this->type == 'email';
+    }
+
+    /**
+     * Returns array from saved json value
+     * @param $value
+     * @return array
+     */
+    public function getSettingsAttribute($value)
+    {
+        $value = json_decode($value, true);
+
+        if ($value === null)
+        {
+            return [];
+        }
+
+        return $value;
+    }
+
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = json_encode($value);
+    }
+
+    public function getSetting($name, $default=null)
+    {
+        foreach ($this->settings as $k => $v)
+        {
+            if ($name == $k)
+            {
+                return $v;
+            }
+        }
+
+        return $default;
     }
 }

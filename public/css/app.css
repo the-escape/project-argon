@@ -9846,6 +9846,19 @@ select[multiple] {
   color: #666;
 }
 
+#sitetree {
+  margin-bottom: 2rem;
+}
+
+.pointer {
+  float: right;
+  color: #999;
+}
+
+.pointer--active {
+  color: #373a3c;
+}
+
 .dashboard-actions::after {
   content: "";
   display: table;

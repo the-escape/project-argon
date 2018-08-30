@@ -56,6 +56,10 @@ var argon = {
         // JSTree helper
         getIdFromNodeIdString: function(nodeIdString) {
             return parseInt(nodeIdString.split('-')[1], 10);
+        },
+
+        trim: function (value) {
+            return value.replace(/^\s+|\s+$/g,'');
         }
     },
 
@@ -179,7 +183,7 @@ $('.save-revision').on('click', function(e) {
 $('form').submit(function(e) {
     var $form = $(this);
     var $ckeditor = $form.find('.ckeditor');
-    
+
     if ($ckeditor && $ckeditor.length)
     {
         for (var i in CKEDITOR.instances)

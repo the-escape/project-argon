@@ -225,6 +225,55 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
             </div>
 
+            @if($page->type->getSetting("pointer"))
+
+                <div class="card accordion">
+
+                    <?php
+                    $pointer = $page->getSetting($localeId, "pointer");
+                    ?>
+
+                    <div class="card-header accordion-header">
+                        Pointer / Page reference
+
+
+                        <span class="pointer">
+                            <span class="pointer--on @if($pointer) pointer--active @endif">On</span> | <span class="pointer--off @if(!$pointer) pointer--active @endif">Off</span>
+                        </span>
+
+                    </div>
+
+                    <div class="card-block accordion-body">
+
+                        @if($pointer)
+                            <div class="alert alert-warning">
+                                <p><strong>Warning:</strong> this page is currently referencing another page and uses it's content for rendering etc.</p>
+                            </div>
+                        @else
+                            <div class="alert alert-info">
+                                <p><strong>Heads up!</strong> Selecting a page from the site tree below will instruct to use it's content instead of content stored here.</p>
+                            </div>
+                        @endif
+
+                        <div id="sitetree">
+                            <ul>
+                                @each('argon::pages.tree.item', $tree, 'entity')
+                            </ul>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="entity_pointer_label" class="required">Select poiter from the site tree.</label>
+                            <input type="text" id="entity_pointer_label" class="form-control" name="entity_pointer_label" value="{{ old('entity_pointer_label') }}" disabled>
+                            <input type="hidden" id="entity_pointer" class="form-control" name="entity_pointer" value="{{ old('entity_pointer', $page->getSetting($localeId, "pointer")) }}">
+
+                        </div>
+                        <button id="entity_pointer_clear" class="btn btn-primary-outline btn-sm">Clear selection</button>
+                    </div>
+
+                </div>
+
+            @endif
+
             @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
 
                 @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
@@ -268,7 +317,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     @endif
 
                                     {!! $field->render($fieldValue) !!}
-
 
                                 </div>
 
@@ -455,4 +503,68 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+@stop
+
+@section('footer')
+    <script src="/argon/js/jstree.min.js"></script>
+    <script>
+
+        (function() {
+
+            var $sitetree = $("#sitetree");
+            var $entity_pointer_label = $('#entity_pointer_label');
+            var $entity_pointer = $('#entity_pointer');
+            var $entity_pointer_clear = $("#entity_pointer_clear");
+
+            $sitetree.jstree({
+                plugins: [
+                    'dnd',
+                    'search'
+                ],
+                "core" : {
+                    // so that create works
+                    "check_callback" : true,
+                    "multiple": false
+                }
+            }).jstree({!! config('argon.jstree.load.open', 'open_all') !!});
+
+            var sitetreeInstance = function(){
+                return $sitetree.jstree(true);
+            };
+
+            function trim(value) {
+                return value.replace(/^\s+|\s+$/g, '');
+            }
+
+            $sitetree.on("changed.jstree", function (e, data) {
+                var selected = data.selected;
+
+                if (selected && selected.length) {
+                    if (data.node) {
+                        var id = argon.helpers.getIdFromNodeIdString(data.selected[0]);
+                        var name = argon.helpers.trim(data.node.text);
+                        console.log("Sitetree selection (id => label): %d => %s", id, name);
+                        $entity_pointer.val(id);
+                        $entity_pointer_label.val(name);
+                    }
+                }
+            });
+
+            $entity_pointer_clear.on("click", function (e) {
+                e.preventDefault();
+                $entity_pointer.val('');
+                $entity_pointer_label.val('');
+                var selected = sitetreeInstance().get_selected(true);
+                if (selected && selected.length) {
+                    sitetreeInstance().deselect_node(selected[0]);
+                }
+            });
+
+            @if($page->getSetting($localeId, "pointer"))
+                sitetreeInstance().select_node("node-{{ $page->getSetting($localeId, "pointer") }}");
+            @endif
+
+        })();
+
+    </script>
 @stop
