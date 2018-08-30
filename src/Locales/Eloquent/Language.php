@@ -60,4 +60,12 @@ class Language extends Model
     {
         return $this->language_flow;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function locale()
+    {
+        return $this->hasMany('Escape\Argon\Locales\Eloquent\Locale', 'id', 'language_id');
+    }
 }

@@ -20,7 +20,6 @@
                                 <option value="{{ $language->id }}"{{ (old("language_id") == $language->id ? "selected":"") }}>{{ $language->language_name }} ({{ $language->language_code }})</option>
                             @endforeach
                         </select>
-                        {{--<input type="text" class="form-control" id="language_id" name="language_id" placeholder="Language" value="{{ old('languageCode') }}">--}}
                     </div>
                     <div class="form-group">
                         <label for="country_id">Country</label>
@@ -29,7 +28,6 @@
                                 <option value="{{ $country->id }}"{{ (old("country_id") == $country->id ? "selected":"") }}>{{ $country->country_name }} ({{ $country->iso_code }})</option>
                             @endforeach
                         </select>
-                        {{--<input type="text" class="form-control" id="country_id" name="country_id" placeholder="Country" value="{{ old('region') }}">--}}
                     </div>
                     <div class="form-group">
                         <label for="region">Slug</label>

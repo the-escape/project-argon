@@ -150,4 +150,12 @@ class Country extends Model
     {
         return $this->neighbours;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function locale()
+    {
+        return $this->hasMany('Escape\Argon\Locales\Eloquent\Locale', 'id', 'country_id');
+    }
 }

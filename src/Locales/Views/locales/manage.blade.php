@@ -20,7 +20,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Language</th>
-                    <th>Region</th>
+                    <th>Country</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -28,8 +28,8 @@
                 @foreach ($locales->all() as $locale)
                     <tr>
                         <td>{{$locale->name}}</td>
-                        <td>{{$locale->languageCode}}</td>
-                        <td>{{$locale->region}}</td>
+                        <td>{{$locale->language->language_name}} ({{ $locale->language->language_code }})</td>
+                        <td>{{$locale->country->country_name}} ({{ $locale->country->iso_code }})</td>
                         <td>
                             <a href="{{ route('cms:locales:edit', ['localeId' => $locale->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             @if (count($locales) > 1)

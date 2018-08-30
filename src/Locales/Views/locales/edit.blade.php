@@ -14,12 +14,20 @@
                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $locale->name) }}">
                     </div>
                     <div class="form-group">
-                        <label for="languageCode">Language</label>
-                        <input type="text" class="form-control" id="languageCode" name="languageCode" placeholder="Language" value="{{ old('languageCode', $locale->languageCode) }}">
+                        <label for="language_id">Language</label>
+                        <select class="form-control" id="language_id" name="language_id" placeholder="Language">
+                            @foreach($languages as $language)
+                                <option value="{{ $language->id }}"{{ (old("language_id") == $locale->id ? "selected":"") }}>{{ $language->language_name }} ({{ $language->language_code }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="region">Region</label>
-                        <input type="text" class="form-control" id="region" name="region" placeholder="Region" value="{{ old('region', $locale->region) }}">
+                        <label for="country_id">Country</label>
+                        <select class="form-control" id="country_id" name="country_id" placeholder="Country">
+                            @foreach($countries as $country)
+                                <option value="{{ $country->id }}"{{ (old("country_id") == $locale->id ? "selected":"") }}>{{ $country->country_name }} ({{ $country->iso_code }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="region">Slug</label>

@@ -33,7 +33,10 @@ class LocalesController extends BaseController
      */
     public function manage(LocaleRepository $localeRepository)
     {
-        $locales = $localeRepository->all();
+        $locales = $localeRepository->with(
+            ['language', 'country']
+        )->all();
+
         return View::make('argon::locales.manage', ['locales' => $locales]);
     }
 

@@ -55,4 +55,20 @@ class Locale extends Model
     {
         return $this->country_id;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function language()
+    {
+        return $this->hasOne('Escape\Argon\Locales\Eloquent\Language', 'id', 'language_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function country()
+    {
+        return $this->hasOne('Escape\Argon\Locales\Eloquent\Country', 'id', 'country_id');
+    }
 }
