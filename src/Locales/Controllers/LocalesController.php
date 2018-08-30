@@ -82,11 +82,13 @@ class LocalesController extends BaseController
      * @param LocaleRepository $localesRepository
      * @return mixed
      */
-    public function edit($localeId, LocaleRepository $localesRepository)
+    public function edit($localeId, LocaleRepository $localesRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
     {
         $locale = $localesRepository->find($localeId);
+        $countries = $countryRepository->all();
+        $languages = $languageRepository->all();
 
-        return View::make('argon::locales.edit', ['locale' => $locale]);
+        return View::make('argon::locales.edit', ['locale' => $locale, 'countries' => $countries, 'languages' => $languages]);
     }
 
     /**
