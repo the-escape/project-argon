@@ -9,7 +9,7 @@ class MenuFieldType extends AbstractFieldType
 {
     protected $name = 'Menu';
 
-    protected $key = 'manu';
+    protected $key = 'menu';
 
     protected $properties = [
         'required' => [
