@@ -39,6 +39,15 @@ class LocaleRepository extends BaseRepository
     }
 
     /**
+     * @param string $localeId
+     * @return Locale
+     */
+    public function getFullLocaleById($localeId)
+    {
+        return $this->findWhere(['id' => $localeId])->width(['language', 'country'])->first();
+    }
+
+    /**
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
