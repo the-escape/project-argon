@@ -23,6 +23,7 @@ use Escape\Argon\EntityManagement\FieldTypes\ColourpickerFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\LocationFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\SelectFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\UserFieldType;
+use Escape\Argon\EntityManagement\FieldTypes\MenuFieldType;
 use Illuminate\Http\Request;
 
 class EntityManagementServiceProvider extends AbstractPluginServiceProvider
@@ -585,5 +586,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         $this->fieldTypesManager->registerFieldType(new LocationFieldType());
 //        $this->fieldTypesManager->registerFieldType(new UserFieldType());
         $this->fieldTypesManager->registerFieldType(new ButtonFieldType());
+        $this->fieldTypesManager->registerFieldType(new MenuFieldType());
     }
 }
