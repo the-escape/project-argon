@@ -44,7 +44,7 @@ class LocaleRepository extends BaseRepository
      */
     public function getFullLocaleById($localeId)
     {
-        return $this->findWhere(['id' => $localeId])->with(['language', 'country'])->first();
+        return $this->findWhere(['id' => $localeId])->first();
     }
 
     /**
