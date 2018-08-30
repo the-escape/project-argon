@@ -17,7 +17,7 @@
                         <label for="language_id">Language</label>
                         <select class="form-control" id="language_id" name="language_id" placeholder="Language">
                             @foreach($languages as $language)
-                                <option value="{{ $language->id }}"{{ ($language->id == $locale->id ? "selected":"") }}>{{ $language->language_name }} ({{ $language->language_code }})</option>
+                                <option value="{{ $language->id }}"{{ ($language->id == $locale->language_id ? "selected":"") }}>{{ $language->language_name }} ({{ $language->language_code }})</option>
                             @endforeach
                         </select>
                     </div>
@@ -25,7 +25,7 @@
                         <label for="country_id">Country</label>
                         <select class="form-control" id="country_id" name="country_id" placeholder="Country">
                             @foreach($countries as $country)
-                                <option value="{{ $country->id }}"{{ ($country->id == $locale->id ? "selected":"") }}>{{ $country->country_name }} ({{ $country->iso_code }})</option>
+                                <option value="{{ $country->id }}"{{ ($country->id == $locale->country_id ? "selected":"") }}>{{ $country->country_name }} ({{ $country->iso_code }})</option>
                             @endforeach
                         </select>
                     </div>
