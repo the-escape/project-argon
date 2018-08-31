@@ -325,7 +325,7 @@ class Fields
 
         $language = ($locale === null)
             ? null
-            : $locale->getLanguageCode();
+            : $locale->language->getLanguageCode();
 
         $fieldData = $fieldDataRepository->create([
             'field_id' => $field->id,

@@ -52,7 +52,7 @@ class SitemapController extends Controller
                     $locale = $localisation->getLocale();
                     $link = $url->addChild('xhtml:link', null, 'xhtml');
                     $link->addAttribute('rel', 'alternate');
-                    $link->addAttribute('hreflang', $locale->getLanguageCode());
+                    $link->addAttribute('hreflang', $locale->language->getLanguageCode());
                     // workaround to limit db quiries, since and issue on large sites
                     // $link->addAttribute('href', url($localisation->entity->toPage()->getUrl($locale)));
                     $link->addAttribute('href', url($locale->getSlug().$urlRaw));
