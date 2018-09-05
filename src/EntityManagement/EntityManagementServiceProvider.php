@@ -52,6 +52,19 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
+            'pages/addroot/{typeId}',
+            'cms:content:createroot',
+            PagesController::class,
+            'createRoot'
+        );
+        $this->addRoute(
+            'pages/addroot/{typeId}',
+            'cms:content:saveroot',
+            PagesController::class,
+            'saveRoot',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
             'pages/{id}/edit',
             'cms:pages:edit',
             PagesController::class,

@@ -177,6 +177,147 @@ class PagesController extends BaseController
         ])->with('message', Lang::get('argon-entities::page.created'));
     }
 
+    /**
+     * create a new root node in the site tree
+     *
+     * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityGroupRepository $groupRepository
+     * @param MediaFolderRepository $folderRepository
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function createRoot(
+        $typeId,
+        EntityTypeRepository $typeRepository,
+        EntityGroupRepository $groupRepository,
+        MediaFolderRepository $folderRepository
+    ) {
+        $type = $typeRepository->find($typeId);
+        $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
+        $tree = Pages::sitetree();
+
+        return view('argon::pages.create-root', [
+            'type' => $type,
+            'parentId' => null,
+            'groups' => $groups,
+            'root' => $folderRepository->root(),
+            'tree' => $tree,
+        ]);
+    }
+
+    /**
+     * save new root node in the site tree
+     *
+     * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityRepository $entityRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param FieldDataRepository $fieldDataRepository
+     * @param LocalisationRepository $localisationRepository
+     * @param LocaleRepository $localeRepository
+     * @param Request $request
+     * @param Solr $solr
+     * @return mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
+    public function saveRoot(
+        $typeId,
+        EntityTypeRepository $typeRepository,
+        EntityRepository $entityRepository,
+        EntityRevisionRepository $revisionRepository,
+        FieldDataRepository $fieldDataRepository,
+        LocalisationRepository $localisationRepository,
+        LocaleRepository $localeRepository,
+        Request $request,
+        Solr $solr
+    ) {
+        $type = $typeRepository->find($typeId);
+
+        $fields = $type->fields;
+
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
+
+        // use submitted slug or auto-generate from name
+        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+
+        // update input slug value to reflect str_slug, then validate it
+        $request->merge(array('slug' => $slug));
+
+        $rules = [
+            'name' => "required",
+            'slug' => "required|unique:entities,slug,NULL,id,deleted_at,NULL",
+        ];
+
+        list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
+
+        $this->validate($request, $rules, [], $niceNames);
+
+        $entity = $entityRepository->create([
+            'name' => $request->input('name'),
+            'entity_type_id' => $type->id,
+            'owner_id' => $request->user()->id,
+            'parent_id' => null,
+            'slug' => $slug,
+            'status' => $request->input('status'),
+        ]);
+
+        $locale = $localeRepository->getDefault();
+
+        $localisation = $localisationRepository->create([
+            'entity_id' => $entity->getId(),
+            'locale_id' => $locale->getId(),
+        ]);
+
+        $result = event(new BeforePageSaved($entity, $localisation, $request));
+
+        if (isset($result->request))
+        {
+            $request = $result->request;
+        }
+
+        $revision = $revisionRepository->create([
+            'entity_localisation_id' => $localisation->getId(),
+            'status' => RevisionStatus::PUBLISHED,
+            'created_by' => $request->user()->id
+        ]);
+
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
+
+        $redirect_url = new stdClass();
+        $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
+
+        $group_order = new stdClass();
+        $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
+        $request->merge(['group_order' => $group_order]);
+
+        $group_render = new stdClass();
+        $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
+        $request->merge(['group_render' => $group_render]);
+
+        $settings = new stdClass();
+        $settings->{$localisation->getLocaleId()} = new stdClass();
+        $settings->{$localisation->getLocaleId()}->pointer = $request->has('entity_pointer') ? $request->input('entity_pointer') : null;
+        $request->merge(['settings' => $settings]);
+
+        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render', 'settings']), $entity->id);
+
+        $solr->indexEntity($entity, $localisation);
+
+        EntityCache::cache($entity, $localisation);
+
+        event(new PageSaved($entity, $localisation, $request));
+
+        return Redirect::route('cms:pages:edit_locale',[
+            'page' => $entity->id,
+            'locale' => $localisation->getLocaleId(),
+        ])->with('message', Lang::get('argon-entities::page.created'));
+    }
+
     public function edit($pageId, EntityRepository $entityRepository)
     {
         /** @var Entity $page */

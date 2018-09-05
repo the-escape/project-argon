@@ -23,6 +23,14 @@
                 @endforeach
             </div>
         </div>
+        <div class="btn-group add-root-dropdown">
+            <button type="button" class="btn btn-primary-outline btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Root Node</button>
+            <div class="dropdown-menu">
+                @foreach ($types as $type)
+                    <a class="dropdown-item" data-type="{{$type->id}}" href="">{{ $type->name }}</a>
+                @endforeach
+            </div>
+        </div>
         <form id="delete-form" style="display: inline" method="POST" action="" class="confirm">
             {{csrf_field()}}
             {{method_field('DELETE')}}
@@ -80,6 +88,11 @@
                 });
                 $('.add-child-dropdown button').prop('disabled', false);
             }
+        });
+
+        $('.add-root-dropdown a').each(function (index, element) {
+            var type = $(element).attr('data-type');
+            $(element).attr('href', 'pages/addroot/' + type);
         });
 
         $('#site-structure').on("move_node.jstree", function (e, data, foo) {
