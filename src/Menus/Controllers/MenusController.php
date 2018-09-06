@@ -3,6 +3,7 @@
 namespace Escape\Argon\Menus\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Menus\Eloquent\Menu;
 use Escape\Argon\Menus\Eloquent\MenuRepository;
 use Illuminate\Http\Request;
@@ -19,15 +20,19 @@ class MenusController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage(MenuRepository $menuRepository)
+    public function manage(MenuRepository $menuRepository, LocaleRepository $localeRepository)
     {
         $menus = $menuRepository->all();
-        return view('argon_menus::manage', ['menus' => $menus]);
+        $locales = $localeRepository->all();
+
+        return view('argon_menus::manage', ['menus' => $menus, 'locales' => $locales]);
     }
 
-    public function create()
+    public function create(LocaleRepository $localeRepository)
     {
-        return view('argon_menus::create');
+        $locales = $localeRepository->all();
+
+        return view('argon_menus::create', ['locales' => $locales]);
     }
 
     public function save(Request $request)
@@ -39,7 +44,7 @@ class MenusController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:menus,slug,NULL,id,deleted_at,NULL",
+            'slug' => "required|unique:menus,slug,NULL,id,deleted_at,NULL,locale_id",
             'menu' => 'required', // perhaps validate json?
         ];
 
@@ -71,7 +76,7 @@ class MenusController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:menus,slug,{$id},id,deleted_at,NULL",
+            'slug' => "required|unique:menus,slug,{$id},id,deleted_at,NULL,locale_id",
             'menu' => 'required', // perhaps validate json?
         ];
 

@@ -11,7 +11,12 @@ class Menu extends Model
 
     protected $table = 'menus';
 
-    protected $fillable = ["menu", "slug", "name", ];
+    protected $fillable = ["menu", "slug", "name", "locale_id"];
+
+    public function locale()
+    {
+        return $this->hasOne('Escape\Argon\Locales\Eloquent\Locale', 'id', 'locale_id');
+    }
 
     public function getMenuAttribute($value)
     {

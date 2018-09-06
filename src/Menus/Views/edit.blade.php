@@ -23,7 +23,16 @@
 
                     <div class="form-group">
                         <label for="slug" class="required">Slug</label>
-                        <input type="text" class="form-control required " id="slug" name="slug" placeholder="slug" value="{{ old('slug', $menu->slug) }}">
+                        <input type="text" class="form-control required " id="slug" name="slug" placeholder="Slug" value="{{ old('slug', $menu->slug) }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="locale" class="required">Locale</label>
+                        <select class="form-control" id="locale" name="locale" placeholder="Locale">
+                            @foreach($locales as $locale)
+                                <option value="{{ $locale->id }}"{{ ($locale->id == $menu->locale_id ? " selected":"") }}>{{ $locale->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                 </div>
