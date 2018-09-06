@@ -27,8 +27,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="locale" class="required">Locale</label>
-                        <select class="form-control" id="locale" name="locale" placeholder="Locale">
+                        <label for="locale_id" class="required">Locale</label>
+                        <select class="form-control" id="locale_id" name="_idlocale" placeholder="Locale">
                             @foreach($locales as $locale)
                                 <option value="{{ $locale->id }}"{{ ($locale->id == $menu->locale_id ? " selected":"") }}>{{ $locale->name }}</option>
                             @endforeach
