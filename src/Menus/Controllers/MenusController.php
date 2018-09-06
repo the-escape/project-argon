@@ -66,7 +66,7 @@ class MenusController extends BaseController
         $menu = $menuRepository->find($id);
         $locales = $localeRepository->all();
 
-        return view('argon_menus::edit', ['menu' => $menu, 'locales', $locales]);
+        return view('argon_menus::edit', ['menu' => $menu, 'locales' => $locales]);
     }
 
     public function update($id, Request $request, MenuRepository $menuRepository)
