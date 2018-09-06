@@ -376,7 +376,14 @@ class PagesController extends BaseController
         if ($entity->parent_id != null) {
             $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
         } else {
-            $request->merge(['slug' => '/']);
+            if (empty($entity->slug) || $entity->slug == '/')
+            {
+                $request->merge(['slug' => '/']);
+            }
+            else
+            {
+                $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,NULL,deleted_at,NULL";
+            }
         }
 
         $messages = [];
