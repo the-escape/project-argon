@@ -30,7 +30,7 @@
                         <label for="locale" class="required">Locale</label>
                         <select class="form-control" id="locale" name="locale" placeholder="Locale">
                             @foreach($locales as $locale)
-                                <option value="{{ $locale->id }}"{{ (old("locale_id") == $menu->locale_id ? " selected":"") }}>{{ $locale->name }}</option>
+                                <option value="{{ $locale->id }}"{{ (old("locale_id") == $locale->id ? " selected":"") }}>{{ $locale->name }}</option>
                             @endforeach
                         </select>
                     </div>

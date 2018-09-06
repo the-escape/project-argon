@@ -61,10 +61,12 @@ class MenusController extends BaseController
         return redirect(route('cms:menus:edit', ["id" => $menu->id]));
     }
 
-    public function edit($id, MenuRepository $menuRepository)
+    public function edit($id, MenuRepository $menuRepository, LocaleRepository $localeRepository)
     {
         $menu = $menuRepository->find($id);
-        return view('argon_menus::edit', ['menu' => $menu]);
+        $locales = $localeRepository->all();
+
+        return view('argon_menus::edit', ['menu' => $menu, 'locales', $locales]);
     }
 
     public function update($id, Request $request, MenuRepository $menuRepository)
