@@ -14,7 +14,7 @@ class AddLocaleToMenusTable extends Migration
     {
         Schema::table('menus', function (Blueprint $table)
         {
-            $table->unsignedInteger('locale_id', 3)->after('slug');
+            $table->unsignedInteger('locale_id')->after('slug');
         });
     }
 
