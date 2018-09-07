@@ -44,7 +44,7 @@ class MenusController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:menus,slug,NULL,id,deleted_at,NULL",
+            'slug' => "required|unique:menus,slug,NULL,id,deleted_at,NULL,locale_id,{$request->input('locale_id')}",
             'menu' => 'required', // perhaps validate json?
         ];
 
@@ -78,7 +78,7 @@ class MenusController extends BaseController
 
         $rules = [
             'name' => "required",
-            'slug' => "required|unique:menus,slug,{$id},id,deleted_at,NULL",
+            'slug' => "required|unique:menus,slug,{$id},id,deleted_at,NULL,{$request->input('locale_id')}",
             'menu' => 'required', // perhaps validate json?
         ];
 

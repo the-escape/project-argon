@@ -12,11 +12,11 @@ function entityCache()
 /**
  * Attach all menus to app for further sharing to avoid querying same stuff again.
  * @param null $slug
- * @param null $locale_id
  * @param null $default
+ * @param null $locale_id
  * @return mixed $menu or $menus
  */
-function menuCache($slug=null, $localeId=null, $default=null)
+function menuCache($slug=null, $default=null, $localeId=null)
 {
     $bound = app()->bound('menus');
 
