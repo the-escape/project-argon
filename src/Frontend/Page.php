@@ -115,9 +115,18 @@ class Page implements Compressable
         }
         $segments = [];
         $parent = $this->entity;
-        while ($parent->parent) {
-            $segments[] = $parent->slug;
-            $parent = $parent->parent;
+        if($parent->parent) {
+            while ($parent->parent) {
+                $segments[] = $parent->slug;
+                $parent = $parent->parent;
+            }
+        }
+        else
+        {
+            if($this->entity->slug !== '/')#
+            {
+                $segments[] = $this->entity->slug;
+            }
         }
 
         $locale = $locale ? $locale : $this->getLocale();
