@@ -72,7 +72,7 @@
                             @endif
                         </th>
                         <th>
-                            @if($request->input('order') == 'email')
+                            @if($request->input('order') == 'created_at')
                                 @if($request->input('dir') == 'asc')
                                     <a href="{{ $request->has('role') ? '?order=created_at&dir=desc&role='.$request->input('role') : '?order=created_at&dir=desc' }}">Created at <i class="fa fa-caret-down" aria-hidden="true"></i></a>
                                 @elseif($request->input('dir') == 'desc')
