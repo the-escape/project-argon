@@ -33,7 +33,7 @@
                         <label for="region_id">Region</label>
                         <select class="form-control" id="region_id" name="region_id" placeholder="Region">
                             @foreach($regions as $region)
-                                <option value="{{ $region->id }}"{{ ($region->id == $locale->region_id ? "selected":"") }}>{{ $region->region_name }} ({{ $region->display_name }})</option>
+                                <option value="{{ $region->id }}"{{ ($region->id == $locale->region_id ? "selected":"") }}>{{ $region->region_name }}</option>
                             @endforeach
                         </select>
                     </div>

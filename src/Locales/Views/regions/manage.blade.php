@@ -19,15 +19,15 @@
                 <thead>
                 <tr>
                     <th>Region Name</th>
-                    <th>Display Name</th>
+                    <th>Locales Assigned</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($regions->all() as $region)
                     <tr>
-                        <td>{{$region->region_name}}</td>
-                        <td>{{$region->display_name}}</td>
+                        <td>{{ $region->region_name }}</td>
+                        <td>@if($region->locale){{ $region->locale->ccount() }}@else 0 @endif</td>
                         <td>
                             <a href="{{ route('cms:regions:edit', ['regionId' => $region->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             @if (count($regions) > 1)

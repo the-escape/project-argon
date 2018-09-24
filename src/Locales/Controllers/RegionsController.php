@@ -9,6 +9,7 @@ use Escape\Argon\Locales\Eloquent\RegionRepository;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
+use League\Flysystem\Adapter\Local;
 use Redirect;
 use View;
 
@@ -80,10 +81,11 @@ class RegionsController extends BaseController
      */
     public function edit($regionId, RegionRepository $regionRepository, CountryRepository $countryRepository)
     {
-        $region = $regionRepository->find($regionId);
-        $locales = $countryRepository->all();
+        $region = $regionRepository->find($regionId)->with([
+            'locale'
+        ]);
 
-        return View::make('argon::regions.edit', ['locales' => $locales, 'region' => $region]);
+        return View::make('argon::regions.edit', ['region' => $region]);
     }
 
     /**

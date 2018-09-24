@@ -13,10 +13,6 @@
                         <label for="region_name">Region Name</label>
                         <input type="text" class="form-control" id="region_name" name="region_name" placeholder="Region Name" value="{{ old('region_name') }}">
                     </div>
-                    <div class="form-group">
-                        <label for="display_name">Display Name</label>
-                        <input type="text" class="form-control" id="display_name" name="diaplay_name" placeholder="Display Name" value="{{ old('display_name') }}">
-                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
