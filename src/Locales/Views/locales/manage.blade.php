@@ -29,6 +29,7 @@
                 @foreach ($locales->all() as $locale)
                     <tr>
                         <td>{{$locale->name}}</td>
+                        <td>{{$locale->region->region_name}} ({{ $locale->region->display_name }})</td>
                         <td>{{$locale->language->language_name}} ({{ $locale->language->language_code }})</td>
                         <td>{{$locale->country->country_name}} ({{ $locale->country->iso_code }})</td>
                         <td>{{$locale->locale_slug}}</td>

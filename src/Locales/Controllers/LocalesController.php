@@ -6,6 +6,7 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Locales\Eloquent\CountryRepository;
 use Escape\Argon\Locales\Eloquent\LanguageRepository;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
+use Escape\Argon\Locales\Eloquent\RegionRepository;
 use Illuminate\Http\Request;
 use Input;
 use Lang;
@@ -34,7 +35,7 @@ class LocalesController extends BaseController
     public function manage(LocaleRepository $localeRepository)
     {
         $locales = $localeRepository->with(
-            ['language', 'country']
+            ['language', 'country', 'region']
         )->all();
 
         return View::make('argon::locales.manage', ['locales' => $locales]);
@@ -43,12 +44,13 @@ class LocalesController extends BaseController
     /**
      * @return mixed
      */
-    public function create(CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function create(CountryRepository $countryRepository, LanguageRepository $languageRepository, RegionRepository $regionRepository)
     {
         $countries = $countryRepository->all();
         $languages = $languageRepository->all();
+        $regions = $regionRepository->all();
 
-        return View::make('argon::locales.create', ['countries' => $countries, 'languages' => $languages]);
+        return View::make('argon::locales.create', ['countries' => $countries, 'languages' => $languages, 'regions' => $regions]);
     }
 
     /**
@@ -82,13 +84,14 @@ class LocalesController extends BaseController
      * @param LocaleRepository $localesRepository
      * @return mixed
      */
-    public function edit($localeId, LocaleRepository $localesRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository)
+    public function edit($localeId, LocaleRepository $localesRepository, CountryRepository $countryRepository, LanguageRepository $languageRepository, RegionRepository $regionRepository)
     {
         $locale = $localesRepository->find($localeId);
         $countries = $countryRepository->all();
         $languages = $languageRepository->all();
+        $regions = $regionRepository->all();
 
-        return View::make('argon::locales.edit', ['locale' => $locale, 'countries' => $countries, 'languages' => $languages]);
+        return View::make('argon::locales.edit', ['locale' => $locale, 'countries' => $countries, 'languages' => $languages, 'regions' => $regions]);
     }
 
     /**

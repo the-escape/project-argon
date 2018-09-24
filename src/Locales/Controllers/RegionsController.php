@@ -33,6 +33,10 @@ class RegionsController extends BaseController
      */
     public function manage(RegionRepository $regionRepository)
     {
+        $regions = $regionRepository->with(
+            ['language', 'country', 'locale']
+        )->all();
+
         return View::make('argon::regions.manage');
     }
 

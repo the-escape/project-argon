@@ -30,6 +30,14 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="region_id">Region</label>
+                        <select class="form-control" id="region_id" name="region_id" placeholder="Region">
+                            @foreach($regions as $region)
+                                <option value="{{ $region->id }}"{{ ($region->id == $locale->region_id ? "selected":"") }}>{{ $region->region_name }} ({{ $region->display_name }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="region">Slug</label>
                         <input type="text" class="form-control" id="slug" name="locale_slug" placeholder="Slug" value="{{ old('locale_slug', $locale->locale_slug) }}">
                     </div>
