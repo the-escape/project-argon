@@ -27,12 +27,10 @@
                 @foreach ($regions->all() as $region)
                     <tr>
                         <td>{{ $region->region_name }}</td>
-                        <td>@if($region->locale){{ $region->locale->ccount() }}@else 0 @endif</td>
+                        <td>@if($region->locale){{ count($region->locale) }}@else 0 @endif</td>
                         <td>
                             <a href="{{ route('cms:regions:edit', ['regionId' => $region->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                            @if (count($regions) > 1)
-                                <a href="{{ route('cms:regions:delete', ['regionId' => $region->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
-                            @endif
+                            <a href="{{ route('cms:regions:delete', ['regionId' => $region->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
                         </td>
                     </tr>
                 @endforeach
