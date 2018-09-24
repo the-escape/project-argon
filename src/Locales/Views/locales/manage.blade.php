@@ -35,7 +35,7 @@
                         <td>{{$locale->locale_slug}}</td>
                         <td>
                             @if($locale->region)
-                                {{$locale->region->region_name}} ({{ $locale->region->display_name }})
+                                {{$locale->region->region_name}}
                             @endif
                         </td>
                         <td>

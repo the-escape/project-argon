@@ -18,7 +18,7 @@ class Region extends Model
      * @var array
      */
     protected $fillable = [
-        'region_name', 'display_name'
+        'region_name'
     ];
 
     /**
@@ -50,6 +50,6 @@ class Region extends Model
      */
     public function locale()
     {
-        return $this->hasMany('Escape\Argon\Locales\Eloquent\Locale', 'id', 'region_id');
+        return $this->hasMany('Escape\Argon\Locales\Eloquent\Locale', 'region_id', 'id');
     }
 }

@@ -83,7 +83,7 @@ class RegionsController extends BaseController
     {
         $region = $regionRepository->find($regionId)->with([
             'locale'
-        ]);
+        ])->first();
 
         return View::make('argon::regions.edit', ['region' => $region]);
     }
