@@ -22,7 +22,7 @@
                     <th>Language</th>
                     <th>Country</th>
                     <th>Code</th>
-                    <td>Region</td>
+                    <th>Region</th>
                     <th></th>
                 </tr>
                 </thead>

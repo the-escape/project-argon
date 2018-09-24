@@ -33,9 +33,7 @@ class RegionsController extends BaseController
      */
     public function manage(RegionRepository $regionRepository)
     {
-        $regions = $regionRepository->with(
-            ['language', 'country', 'locale']
-        )->all();
+        $regions = $regionRepository->all();
 
         return View::make('argon::regions.manage', ['regions' => $regions]);
     }
@@ -46,11 +44,7 @@ class RegionsController extends BaseController
      */
     public function create(LocaleRepository $localeRepository)
     {
-        $locales = $localeRepository->with([
-            'language', 'country'
-        ])->all();
-
-        return View::make('argon::regions.create', ['locales' => $locales]);
+        return View::make('argon::regions.create');
     }
 
     /**
@@ -60,7 +54,7 @@ class RegionsController extends BaseController
      */
     public function save(RegionRepository $regionRepository)
     {
-        $locale = $regionRepository->create(
+        $regionRepository->create(
             Input::all()
         );
 

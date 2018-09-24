@@ -17,14 +17,6 @@
                         <label for="name">Display Name</label>
                         <input type="text" class="form-control" id="display_name" name="display_name" placeholder="Display Name" value="{{ old('display_name', $region->display_name) }}">
                     </div>
-                    <div class="form-group">
-                        <label for="language_id">Locales</label>
-                        <select class="form-control" id="locale_id" name="locale_id[]" placeholder="Language" multiple="multiple">
-                            @foreach($locales as $locale)
-                                <option value="{{ $locale->id }}"{{ ($locale->id == $region->locale ? "selected":"") }}>{{ $language->language_name }} ({{ $language->language_code }})</option>
-                            @endforeach
-                        </select>
-                    </div>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
