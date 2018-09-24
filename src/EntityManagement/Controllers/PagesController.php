@@ -59,6 +59,17 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:manage');
     }
 
+    /**
+     * create a new child node in the site tree
+     *
+     * @param $parentId
+     * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityGroupRepository $groupRepository
+     * @param MediaFolderRepository $folderRepository
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create(
         $parentId,
         $typeId,
@@ -79,6 +90,25 @@ class PagesController extends BaseController
         ]);
     }
 
+    /**
+     * save new child node in the site tree
+     *
+     * @param $parentId
+     * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityRepository $entityRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param FieldDataRepository $fieldDataRepository
+     * @param LocalisationRepository $localisationRepository
+     * @param LocaleRepository $localeRepository
+     * @param Request $request
+     * @param Solr $solr
+     *
+     * @return mixed
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function save(
         $parentId,
         $typeId,
@@ -124,7 +154,8 @@ class PagesController extends BaseController
             'status' => $request->input('status'),
         ]);
 
-        $locale = $localeRepository->getDefault();
+        $parentEntity = $entityRepository->where('id', $parentId)->first();
+        $locale = $localeRepository->getFullLocaleById($parentEntity->getId());
 
         $localisation = $localisationRepository->create([
             'entity_id' => $entity->getId(),
@@ -184,6 +215,7 @@ class PagesController extends BaseController
      * @param EntityTypeRepository $typeRepository
      * @param EntityGroupRepository $groupRepository
      * @param MediaFolderRepository $folderRepository
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function createRoot(
@@ -217,7 +249,9 @@ class PagesController extends BaseController
      * @param LocaleRepository $localeRepository
      * @param Request $request
      * @param Solr $solr
+     *
      * @return mixed
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
@@ -527,6 +561,17 @@ class PagesController extends BaseController
         ])->with('message', "Revision has been saved.");
     }
 
+    /**
+     * edit the details of an existing locale (country / language)
+     *
+     * @param $pageId
+     * @param $localeId
+     * @param null $revisionId
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     *
+     * @throws \Exception
+     */
     public function editLocale(
         $pageId,
         $localeId,
@@ -593,6 +638,20 @@ class PagesController extends BaseController
         ]);
     }
 
+    /**
+     * create a new locale (country / language)
+     *
+     * @param $pageId
+     * @param Request $request
+     * @param LocalisationRepository $localisationRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param EntityRepository $entityRepository
+     * @param Solr $solr
+     *
+     * @return mixed
+     *
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     */
     public function createLocale(
         $pageId,
         Request $request,
@@ -692,7 +751,14 @@ class PagesController extends BaseController
         ]);
     }
 
-
+    /**
+     * delete an existing locale
+     *
+     * @param $pageId
+     * @param $localeId
+     *
+     * @return mixed
+     */
     public function deleteLocale($pageId, $localeId)
     {
         $entityRepository = app()->make(EntityRepository::class);
@@ -735,6 +801,7 @@ class PagesController extends BaseController
      * Deprecated, as revisions handled within page edit view.
      * @param $pageId
      * @param $localeId
+     *
      * @return mixed
      */
     public function revisions($pageId, $localeId)

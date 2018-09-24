@@ -1,0 +1,33 @@
+@extends('argon::layout.master')
+
+@section('content')
+    <div class="main">
+        <h1 class="page-header">Create Region</h1>
+
+        <form action="{{ route('cms:regions:create') }}" method="POST">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <div class="card">
+                <div class="card-header">Details</div>
+                <div class="card-block">
+                    <div class="form-group">
+                        <label for="name">Region Name</label>
+                        <input type="text" class="form-control" id="region_name" name="region_name" placeholder="Region Name" value="{{ old('region_name') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Display Name</label>
+                        <input type="text" class="form-control" id="display_name" name="diaplay_name" placeholder="Display Name" value="{{ old('display_name') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="language_id">Locales</label>
+                        <select class="form-control" id="locale_id" name="locale_id[]" placeholder="Locales" multiple="multiple">
+                            @foreach($locales as $locale)
+                                <option value="{{ $locale->id }}"{{ (in_array(old("locale_id"), $locale->id) ? "selected":"") }}>{{ $lcoale->name }} ({{ $locale->language->language_name . " / " . $locale->country->country_name }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+@endsection

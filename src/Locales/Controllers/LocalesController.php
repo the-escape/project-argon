@@ -118,4 +118,6 @@ class LocalesController extends BaseController
 
         return Redirect::to($returnUrl);
     }
+
+
 }

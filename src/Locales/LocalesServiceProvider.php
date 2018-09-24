@@ -4,6 +4,7 @@ namespace Escape\Argon\Locales;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Locales\Controllers\LocalesController;
+use Escape\Argon\Locales\Controllers\RegionsController;
 use Illuminate\Http\Request;
 
 class LocalesServiceProvider extends AbstractPluginServiceProvider
@@ -15,6 +16,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
      */
     public function registerRoutes()
     {
+        // LOCALES
         $this->addRoute(
             'locales',
             'cms:locales:manage',
@@ -59,6 +61,46 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
             LocalesController::class,
             'set'
         );
+
+        // REGIONS
+        $this->addRoute(
+            'regions',
+            'cms:regions:manage',
+            RegionsController::class,
+            'manage'
+        );
+        $this->addRoute(
+            'regions/create',
+            'cms:regions:create',
+            RegionsController::class,
+            'create'
+        );
+        $this->addRoute(
+            'regions/create',
+            'cms:regions:create',
+            RegionsController::class,
+            'save',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'regions/{regionId}/edit',
+            'cms:regions:edit',
+            RegionsController::class,
+            'edit'
+        );
+        $this->addRoute(
+            'regions/{regionId}/edit',
+            'cms:regions:edit',
+            RegionsController::class,
+            'update',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'regions/{regionId}/delete',
+            'cms:regions:delete',
+            RegionsController::class,
+            'delete'
+        );
     }
 
     public function startup()
@@ -68,6 +110,10 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         $this->permissionsManager->register('cms:locale:manage');
 
         $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:locale:manage');
+
+        $this->permissionsManager->register('cms:regions:manage');
+
+        $this->pluginManager->registerNavLink('Regions', route('cms:regions:manage'), 'cms:region:manage');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

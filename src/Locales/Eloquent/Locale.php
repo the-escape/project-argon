@@ -14,7 +14,7 @@ class Locale extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'language_id', 'country_id', 'locale_slug'];
+    protected $fillable = ['name', 'language_id', 'country_id', 'region_id', 'locale_slug'];
 
     /**
      * @return mixed
@@ -57,6 +57,14 @@ class Locale extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getRegionId()
+    {
+        return $this->region_id;
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function language()
@@ -70,5 +78,13 @@ class Locale extends Model
     public function country()
     {
         return $this->hasOne('Escape\Argon\Locales\Eloquent\Country', 'id', 'country_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function region()
+    {
+        return $this->hasOne('Escape\Argon\Locales\Eloquent\Region', 'id', 'region_id');
     }
 }
