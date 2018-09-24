@@ -37,7 +37,7 @@ class RegionsController extends BaseController
             ['language', 'country', 'locale']
         )->all();
 
-        return View::make('argon::regions.manage');
+        return View::make('argon::regions.manage', ['regions' => $regions]);
     }
 
     /**
