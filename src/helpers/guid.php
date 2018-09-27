@@ -66,7 +66,11 @@ function localisationCache()
             $regionRepository = app()->make(RegionRepository::class);
             $localisation = $regionRepository->with([
                 'locale.language',
-                'locale.country'
+                'locale.country',
+                'locale.entityCache' => function($query) {
+                    $query->where('entity_parent_id', null)
+                        ->where('deleted_at', null);
+                }
             ])->all();
 
             return $localisation;

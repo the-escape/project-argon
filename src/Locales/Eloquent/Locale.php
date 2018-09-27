@@ -87,4 +87,12 @@ class Locale extends Model
     {
         return $this->hasOne('Escape\Argon\Locales\Eloquent\Region', 'id', 'region_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function entityCache()
+    {
+        return $this->belongsTo('Escape\Argon\EntityManagement\EntityCache', 'entity_locale_id', 'id');
+    }
 }
