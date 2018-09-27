@@ -68,6 +68,10 @@ else
 
         @include('argon::fields.type.item')
 
+    @elseif($field instanceof \Escape\Argon\EntityManagement\FieldTypes\MenuFieldType)
+
+        @include('argon::fields.type.menu')
+
     {{--@elseif($field->field_type == 'colourpicker')--}}
 
         {{--@include('argon::fields.type.colourpicker')--}}
