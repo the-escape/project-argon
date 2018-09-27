@@ -38,14 +38,6 @@ class Region extends Model
     }
 
     /**
-     * @return mixed
-     */
-    public function getDisplayName()
-    {
-        return $this->region_name;
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function locale()
