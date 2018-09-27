@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Input;
 use Redirect;
 use stdClass;
+use RuntimeException;
 use View;
 use Lang;
 
@@ -36,14 +37,51 @@ class BlocksController extends BaseController
     }
 
     public function manage(
+        Request $request,
         EntityTypeRepository $typeRepository,
-        LocaleRepository $localeRepository,
+//        LocaleRepository $localeRepository,
         EntityRepository $entityRepository
     ) {
         $types = $typeRepository->block();
-        $locales = $localeRepository->all();
-        $blocks = $entityRepository->blocks();
-        return view('argon::blocks.manage', ['types' => $types, 'blocks' => $blocks, 'locales' => $locales]);
+//        $locales = $localeRepository->all();
+
+        $perPage = $request->input('perpage', 25);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $entityRepository->model();
+        $query = $model::whereHas('type', function($q){
+            $q->where('type','=','block');
+        });
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('slug', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($role = $request->input('type'))
+        {
+            $query = $query->where('entity_type_id','=',$role);
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $blocks = $query->paginate($perPage);
+//        $blocks = $entityRepository->blocks();
+
+        return view('argon::blocks.manage', [
+            'types' => $types,
+            'blocks' => $blocks,
+            'request' => $request,
+//            'locales' => $locales
+        ]);
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
@@ -347,5 +385,35 @@ class BlocksController extends BaseController
         EntityCache::cache($page, $localisation);
 
         return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'type':
+                $query = $query->join('entity_types', 'entities.entity_type_id','=','entity_types.id')->orderBy('entity_types.name', $dir)->select('entities.*');
+                break;
+
+            case 'created_at':
+                $query = $query->orderBy('created_at', $dir);
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }
