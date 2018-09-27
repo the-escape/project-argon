@@ -1,4 +1,6 @@
 <?php
+
+use Escape\Argon\Locales\Eloquent\RegionRepository;
 use Escape\Argon\Menus\Eloquent\MenuRepository;
 
 /**
@@ -46,6 +48,34 @@ function menuCache($slug=null, $default=null, $localeId=null)
     }
 
     return $menus;
+}
+
+/**
+ * use region table to get locales assigned to each region - denotes country and language per locale
+ *
+ * @return mixed
+ */
+function localisationCache()
+{
+    $bound = app()->bound('localisation');
+
+    if (!$bound)
+    {
+        app()->singleton('localisation', function()
+        {
+            $regionRepository = app()->make(RegionRepository::class);
+            $localisation = $regionRepository->with([
+                'locale.language',
+                'locale.country'
+            ])->all();
+
+            return $localisation;
+        });
+    }
+
+    $localisation = app()->make("localisation");
+
+    return $localisation;
 }
 
 function guid()
