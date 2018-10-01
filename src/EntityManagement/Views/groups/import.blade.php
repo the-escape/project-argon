@@ -2,9 +2,11 @@
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Import Group*</h1>
+        <h1 class="page-header">Import Field Group</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        <div class="js-alerts">
+            @include('argon::inc.alerts', compact($errors))
+        </div>
 
         <form action="{{ route('cms:types:groups:post-import-json', [$type->id]) }}" method="POST" autocomplete="false">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -19,21 +21,23 @@
                         <span class="collapse fa fa-compress"></span>
                     </div>
 
-                    <div class="c-library-tools library-tools js-library-tools">
-                        <span class="c-library-tools__button c-library-tools__create create fa fa-plus"></span>
-                        <span class="c-library-tools__button c-library-tools__save save fa fa-save"></span>
-                        <span class="c-library-tools__button c-library-tools__input"><input type="text" name="lib_block_name"></span>
-                        <label class="">
-                            <span class="c-library-tools__button c-library-tools__image image fa fa-image"></span>
-                            <input type="file" name="lib_block_image_tmp" style="display:none;">
-                            <input type="hidden" name="lib_block_image">
-                        </label>
-                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-json active" data-mode="json">json</span>
-                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-blade" data-mode="blade">blade</span>
-                        <span class="c-library-tools__button c-library-tools__toggle toggle toggle-mappers" data-mode="mappers">php</span>
-                        <span class="c-library-tools__button c-library-tools__delete delete fa fa-trash"></span>
-                        <span class="c-library-tools__button c-library-tools__close  js-library-close-block fa fa-close"></span>
-                    </div>
+                    @if(env('BLOCKS_LIB_URL', false))
+                        <div class="c-library-tools library-tools js-library-tools">
+                            <span class="c-library-tools__button c-library-tools__create create fa fa-plus"></span>
+                            <span class="c-library-tools__button c-library-tools__save save fa fa-save"></span>
+                            <span class="c-library-tools__button c-library-tools__input"><input type="text" name="lib_block_name"></span>
+                            <label class="">
+                                <span class="c-library-tools__button c-library-tools__image image fa fa-image"></span>
+                                <input type="file" name="lib_block_image_tmp" style="display:none;">
+                                <input type="hidden" name="lib_block_image">
+                            </label>
+                            <span class="c-library-tools__button c-library-tools__toggle toggle toggle-json active" data-mode="json">json</span>
+                            <span class="c-library-tools__button c-library-tools__toggle toggle toggle-blade" data-mode="blade">blade</span>
+                            <span class="c-library-tools__button c-library-tools__toggle toggle toggle-mappers" data-mode="mappers">php</span>
+                            <span class="c-library-tools__button c-library-tools__delete delete fa fa-trash"></span>
+                            <span class="c-library-tools__button c-library-tools__close  js-library-close-block fa fa-close"></span>
+                        </div>
+                    @endif
 
                     <textarea class="form-control hidden js-block-lib-data" id="json-textarea" name="json">{{ old('json') }}</textarea>
                     <textarea class="form-control hidden js-block-lib-data" id="blade-textarea" name="blade"></textarea>
@@ -41,25 +45,31 @@
 
                     <div id="json-editor"></div>
 
-                    <div class="settings-wrapper">
-                        <div class="form-group">
-                            <label>Settings</label>
-                            <div>
-                                <label class="checkbox-inline"><input type="checkbox" class="" name="smart_import" value="1" {{ session()->get('smartImportFieldGroups') ? 'checked="checked"' : '' }}>
-                                    Smart Import
-                                    <small class="text-muted">If the fields already exist append number at the end of the field name and carry on with the import</small>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
-            @if(!empty($blocks))
+            <div class="card c-blocks-library__settings-wrapper js-settings-wrapper">
+                <div class="card-block">
+
+                    <div class="form-group">
+                        <label>Settings</label>
+                        <div>
+                            <label class="checkbox-inline"><input type="checkbox" class="" name="smart_import" value="1" {{ session()->get('smartImportFieldGroups') ? 'checked="checked"' : '' }}>
+                                Smart Import
+                                <small class="text-muted">If the fields already exist append number at the end of the field name and carry on with the import</small>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            @if(env('BLOCKS_LIB_URL', false))
                 <div class="card accordion">
                     <div class="card-header accordion-header">Blocks Library</div>
                     <div class="card-block accordion-body">
-                        <div class="c-blocks-library">
+                        <div class="c-blocks-library js-blocks-library">
 
                             @foreach($blocks as $b)
                                 <div class="c-blocks-library__item js-get-library-block" data-block-id="{{$b->id}}" data-block-url="{{ route('cms:blockslibrary:get',[$b->id]) }}" >
@@ -67,8 +77,12 @@
                                     <div class="c-blocks-library__item-image" style="background-image: url('{{ $b->image }}')"></div>
                                 </div>
                             @endforeach
+
+                            @if(empty($blocks))
+                                <p class="text-muted">No blocks in the library.</p>
+                            @endif
                         </div>
-                        <div class="c-blocks-library__item-template js-block-template">
+                        <div class="c-blocks-library__item--template js-block-template">
                             <div class="c-blocks-library__item-name"></div>
                             <div class="c-blocks-library__item-image" style="background-image: url()"></div>
                         </div>
@@ -99,10 +113,7 @@
             </div>
 
 
-
-            <p class="text-muted">* Use with caution when on production.</p>
-
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary js-import">Save</button>
             <a class="btn btn-link" href="{{route('cms:types:edit',[$type->id])}}">Back to edit type</a>
         </form>
     </div>
@@ -118,16 +129,21 @@
     <script src="/argon/js/jstree.min.js"></script>
 
     <script>
+
+        var BlocksLib = {};
+
         $(function(){
+
             var editor = ace.edit("json-editor"),
                 jsonTextarea = $('#json-textarea').hide(),
                 bladeTextarea = $('#blade-textarea').hide(),
                 mappersTextarea = $('#mappers-textarea').hide(),
                 JsonMode = ace.require("ace/mode/json").Mode,
                 PhpMode = ace.require("ace/mode/php").Mode,
-                mode = 'json',
-                blockNameInput = $('[name=lib_block_name]'),
-                selectedBlock = null;
+                blockNameInput = $('[name=lib_block_name]');
+
+            BlocksLib.mode = 'json';
+            BlocksLib.selectedBlock = null;
 
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode(new JsonMode());
@@ -153,46 +169,9 @@
                 $('.json-editor-wrapper').toggleClass('expanded');
                 editor.resize();
             }).on('click', '.settings', function(){
-                $('.settings-wrapper').toggleClass('expanded');
+                $('.js-settings-wrapper').toggleClass('expanded');
             });
 
-
-            $('#navtree')
-                .on('dblclick.jstree', function(e){
-
-                    var el = $('#navtree').jstree().get_selected(true);
-                        target = el[0].data.exportTarget;
-
-                    $('.js-loading-block').addClass('show');
-
-                    unsetBlock();
-
-                    if(target){
-
-                        $.ajax({
-                            url: target,
-                            data: {
-                                json: true
-                            }
-                        }).done(function(r){
-
-                            var json = JSON.stringify(r, null, 4);
-
-                            jsonTextarea.val(json);
-//                            editor.getSession().setValue(json);
-                            changeEditorMode('json');
-                            $('.js-loading-block').removeClass('show');
-
-
-                        });
-                    }
-                })
-                .jstree({
-                    "core": {
-                        "multiple": false,
-                        "dblclick_toggle": false
-                    }
-            });
 
 
             $('.js-export-json').on('click' ,function(e){
@@ -211,6 +190,8 @@
                     $('#groupExport').modal('show');
                 });
             });
+
+
 
             $('.modals').on('click','.js-copy-to-clip', function(e){
 
@@ -232,7 +213,9 @@
 
             });
 
-            $('.js-get-library-block').on('dblclick', function(e) {
+
+
+            $('.js-blocks-library').on('dblclick', '.js-get-library-block', function(e) {
                 e.preventDefault();
 
                 if ($(this).hasClass('editing'))
@@ -257,8 +240,8 @@
                             r.json = r.json || {};
                             var json = JSON.stringify(r.json, null, 4);
 
-                            selectedBlock = r.id;
-                            $('.js-lib-block').val(selectedBlock);
+                            BlocksLib.selectedBlock = r.id;
+                            $('.js-lib-block').val(r.id);
                             jsonTextarea.val(json);
                             bladeTextarea.val(r.blade);
                             mappersTextarea.val(r.mappers);
@@ -272,12 +255,14 @@
                 }
             });
 
-            $('.js-library-close-block').on('click', function(){
-//                editor.getSession().setValue('');
 
+
+            $('.js-library-close-block').on('click', function(){
                 unsetBlock();
                 changeEditorMode('json');
             });
+
+
 
             $('.js-library-tools').on('click', '.toggle', function(){
                 var mode = $(this).data('mode');
@@ -290,13 +275,101 @@
                 createBlock();
             });
 
+
+
             $('[name=lib_block_image_tmp]').on('change', function(){
                 encodeImagetoBase64(this);
             });
 
+
+
+            $('#navtree')
+                .on('dblclick.jstree', function(e){
+
+                    var el = $('#navtree').jstree().get_selected(true);
+                    target = el[0].data.exportTarget;
+
+                    $('.js-loading-block').addClass('show');
+
+                    unsetBlock();
+
+                    if(target){
+
+                        $.ajax({
+                            url: target,
+                            data: {
+                                json: true
+                            }
+                        }).done(function(r){
+
+                            var json = JSON.stringify(r, null, 4);
+
+                            jsonTextarea.val(json);
+                            changeEditorMode('json');
+                            $('.js-loading-block').removeClass('show');
+
+
+                        });
+                    }
+                })
+                .jstree({
+                    "core": {
+                        "multiple": false,
+                        "dblclick_toggle": false
+                    }
+                });
+
+            $('.js-import').on('click', function(e) {
+                e.preventDefault();
+
+                var btn = $(this),
+                    form = btn.closest('form'),
+                    action = form.attr('action'),
+                    data = form.serializeArray(),
+                    alerts = $('.js-alerts');
+
+                alerts.html('');
+                btn.prop('disabled',true).html('Saving...');
+
+                $.ajax({
+                    url: action,
+                    type: 'post',
+                    data: data
+                }).done(function(r) {
+                    var msg = '',
+                        closeBtn = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+
+                    btn.prop('disabled',false).html('Save');
+
+                    if(r.success)
+                    {
+                        var message = r.msg ? r.msg : 'Field group has been successfully imported.';
+                        msg += '<div class="alert alert-success">'+closeBtn+'<p>'+message+'</p>';
+                    }
+                    else
+                    {
+                        msg += '<div class="alert alert-danger">'+closeBtn+'<p><strong>Submission failed</strong></p>';
+
+                        if (r.error) {
+                            msg += "<ul>";
+                            $.each(r.error, function(k, v) {
+                                msg += "<li>" + v + "</li>";
+                            });
+                            msg += "</ul>";
+                        }
+                    }
+
+                    msg += '</div>';
+                    alerts.html(msg);
+
+                });
+
+            });
+
+
             function changeEditorMode(selectedMode){
 
-                mode = selectedMode || mode;
+                mode = selectedMode || BlocksLib.mode;
 
                 var activeToggle = $('.js-library-tools .toggle.active'),
                     currentMode = activeToggle.data('mode'),
@@ -304,7 +377,7 @@
 
                 activeToggle.removeClass('active');
 
-                if (selectedBlock != null){
+                if (BlocksLib.selectedBlock !== null){
 
                     $('.js-library-tools').addClass('show');
 
@@ -345,14 +418,14 @@
             }
 
             function deleteBlock(){
-                var url = '/admin/blockslibrary/delete/'+selectedBlock;
+                var url = '/admin/blockslibrary/delete/'+BlocksLib.selectedBlock;
 
                 $.ajax({
                     url: url,
                     type: 'post'
                 }).done(function(r){
                     if(r.success){
-                        $('.js-get-library-block[data-block-id='+selectedBlock+']').remove();
+                        $('.js-get-library-block[data-block-id='+BlocksLib.selectedBlock+']').remove();
                         editor.getSession().setValue('');
 
                         unsetBlock();
@@ -362,7 +435,7 @@
             }
 
             function createBlock(){
-                selectedBlock = 'new';
+                BlocksLib.selectedBlock = 'new';
                 changeEditorMode('json');
             }
 
@@ -377,9 +450,9 @@
                     return false;
                 }
 
-                if(selectedBlock && selectedBlock != 'new')
+                if(BlocksLib.selectedBlock && BlocksLib.selectedBlock != 'new')
                 {
-                    url += '/' + selectedBlock;
+                    url += '/' + BlocksLib.selectedBlock;
                 }
 
                 var data = {
@@ -400,26 +473,33 @@
                     data: data
                 }).done(function(r){
                     if(r.success){
-                        var blockItem = $('.js-get-library-block[data-block-id='+selectedBlock+']');
 
-                        blockItem.find('.c-blocks-library__item-name').text(data.name);
-                        if(data.image){
-                            blockItem.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
-                        }
+                        if(BlocksLib.selectedBlock === 'new' && r.block){
 
-                        if(selectedBlock != 'new' && r.block){
-                            selectedBlock = r.block.id;
+                            BlocksLib.selectedBlock = r.block.id;
 
                             var newBlock = $('.js-block-template').clone();
 
-                            newBlock.removeClass('js-block-template').removeClass('c-blocks-library__item-template');
-                            newBlock.addClass('c-blocks-library__item').addClass('js-get-library-block');
+                            newBlock.removeClass('js-block-template').removeClass('c-blocks-library__item--template');
+                            newBlock.addClass('c-blocks-library__item').addClass('js-get-library-block editing');
                             newBlock.data('blockId', r.block.id);
+                            newBlock.attr('data-block-id', r.block.id);
                             newBlock.data('blockUrl', '/admin/blockslibrary/'+r.block.id);
                             newBlock.find('.c-blocks-library__item-name').text(data.name);
                             newBlock.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
 
-                            $('.c-blocks-library').append(newBlock);
+
+                            $('.c-blocks-library').prepend(newBlock);
+
+                        } else {
+
+                            var blockItem = $('.js-get-library-block[data-block-id='+BlocksLib.selectedBlock+']');
+
+                            blockItem.find('.c-blocks-library__item-name').text(data.name);
+                            if(data.image){
+                                blockItem.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
+                            }
+
                         }
                     }
                     else{
@@ -430,15 +510,16 @@
 
 
             function unsetBlock(){
-
                 $('.js-get-library-block.editing').removeClass('editing');
 
-                selectedBlock = null;
+                BlocksLib.selectedBlock = null;
                 $('.js-lib-block').val();
                 bladeTextarea.val('');
                 mappersTextarea.val('');
                 blockNameInput.val('');
             }
+
+
 
             function encodeImagetoBase64(element) {
                 var file = element.files[0];
@@ -447,8 +528,10 @@
                     $("[name=lib_block_image]").val(reader.result);
                 }
                 reader.readAsDataURL(file);
-
             }
+
+
+
         });
     </script>
 @endsection
@@ -589,12 +672,12 @@
             outline: 0 none
         }
 
-        .settings-wrapper{
+        .c-blocks-library__settings-wrapper {
             padding: 20px 30px 10px;
             display: none;
         }
 
-        .settings-wrapper.expanded{
+        .c-blocks-library__settings-wrapper.expanded{
             display: block;
         }
 
@@ -634,26 +717,28 @@
 
         .c-blocks-library{
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             overflow-y: auto;
             padding: 5px;
+            width: 100%;
+            max-height: 450px;
         }
 
-        .c-blocks-library__item{
-            flex: 0 0 220px;
-            width: 220px;
-            min-height: 200px;
+        .c-blocks-library__item {
+            flex: 0 0 400px;
+            width: 400px;
+            min-height: 70px;
             margin: 5px;
-
             transition: opacity linear 200ms;
             opacity: .7;
             cursor: pointer;
-
             display: flex;
-            flex-direction: column;
+            flex-direction: row-reverse;
+            border: 1px solid #c1c1c1;
+            box-sizing: border-box;
         }
 
-        .c-blocks-library__item-template{
+        .c-blocks-library__item--template{
             display: none;
         }
 
@@ -662,38 +747,45 @@
         }
 
         .c-blocks-library__item-name{
-            flex: 1 1 10%;
-            text-align: center;
-            background-color: black;
-            color: white;
-            border-radius: 5px 5px 0 0;
+            flex: 0 1 300px;
+            text-align: left;
+            align-self: center;
+            padding: 5px 15px;
+            /*background-color: black;*/
+            /*color: white;*/
+            /*border-radius: 5px 5px 0 0;*/
+        }
+
+        .c-blocks-library__item-name::selection {
+            background-color: transparent;
         }
 
         .c-blocks-library__item-image{
-            flex: 1 1 90%;
-            width: 100%;
+            flex: 0 0 100px;
+            width: 100px;
+            height: 70px;
 
             /*background-color: #cdcdcd;*/
-            background-size: contain;
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
-            border: 1px solid black;
-            border-top: 0 none;
-            border-radius: 0 0 5px 5px;
+            border-right: 1px solid #c1c1c1;
+
+            /*border-top: 0 none;*/
+            /*border-radius: 0 0 5px 5px;*/
         }
 
         .c-blocks-library__item.editing{
             opacity: 1;
+            border-color: #0275d8;
         }
 
         .c-blocks-library__item.editing .c-blocks-library__item-name{
-            background-color: #0275d8;
 
         }
 
         .c-blocks-library__item.editing .c-blocks-library__item-image{
             border-color: #0275d8;
-
         }
     </style>
 
