@@ -69,9 +69,10 @@ function localisationCache()
                 'locale.country',
                 'locale.entityCache' => function($query) {
                     $query->where('entity_parent_id', null)
-                        ->where('deleted_at', null);
+                        ->where('deleted_at', null)
+                        ->where('entity_type_type', '=', 'page');
                 }
-            ])->all();
+            ])->get();
 
             return $localisation;
         });

@@ -95,4 +95,18 @@ class Locale extends Model
     {
         return $this->belongsTo('Escape\Argon\EntityManagement\EntityCache', 'entity_locale_id', 'id');
     }
+
+    /**
+     * @param $query
+     */
+    public function scopeEntityCacheRootElements($query)
+    {
+        $query->with(
+            ['entityCache' => function($query) {
+                $query->where('entity_parent_id', null)
+                    ->where('deleted_at', null)
+                    ->where('entity_type_type', '=', 'page');
+            }]
+        );
+    }
 }
