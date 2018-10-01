@@ -93,7 +93,7 @@ class Locale extends Model
      */
     public function entityCache()
     {
-        return $this->belongsTo('Escape\Argon\EntityManagement\EntityCache', 'entity_locale_id', 'id');
+        return $this->belongsTo('Escape\Argon\EntityManagement\Eloquent\EntityCache', 'id', 'entity_locale_id');
     }
 
     /**
