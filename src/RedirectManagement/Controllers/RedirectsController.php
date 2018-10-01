@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\View;
 
 class RedirectsController extends BaseController
 {
+    public function __construct(Request $request)
+    {
+        $this->middleware('auth');
+        $this->middleware('perm:cms:login');
+        $this->middleware('perm:cms:content:manage');
+
+        parent::__construct($request);
+    }
 
     public function manage(RedirectRepository $redirectRepository)
     {

@@ -10,6 +10,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
+use Escape\Argon\Helpers\BlocksLibrary;
 use Illuminate\Http\Request;
 use Validator;
 use Input;
@@ -1194,17 +1195,20 @@ class EntityTypeController extends BaseController
         return view('argon::groups.setting')->render();
     }
 
-    public function importGroupJson($typeId, EntityTypeRepository $typeRepository)
+    public function importGroupJson($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
     {
         $type = $typeRepository->find($typeId);
 
         $types = $typeRepository->all();
 
-        return view('argon::groups.import', compact('type', 'types'))->render();
+        $blocks = $blocksLibrary->getBlocks();
+
+        return view('argon::groups.import', compact('type', 'types', 'blocks'))->render();
     }
 
     public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository, FieldTypesManager $fieldTypesManager, EntityFieldRepository $fieldRepository, ComboFieldType $comboFieldType, Request $request)
     {
+
         $type = $typeRepository->find($typeId);
 
         $smartImport = $request->get('smart_import', false);
@@ -1227,6 +1231,14 @@ class EntityTypeController extends BaseController
 
         if ($validator->fails())
         {
+            if (request()->ajax())
+            {
+                return response()->json([
+                    'success' => false,
+                    'error' => $validator
+                ]);
+            }
+
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -1255,6 +1267,14 @@ class EntityTypeController extends BaseController
         {
             if (!$smartImport)
             {
+                if (request()->ajax())
+                {
+                    return response()->json([
+                        'success' => false,
+                        'error' => ['json'=>'Field group "'.$data['name'].'" already exists.']
+                    ]);
+                }
+
                 return redirect()->back()
                     ->withErrors(['json'=>'Field group "'.$data['name'].'" already exists.'])
                     ->withInput();
@@ -1269,6 +1289,14 @@ class EntityTypeController extends BaseController
 
                 if (json_last_error() !== JSON_ERROR_NONE)
                 {
+                    if (request()->ajax())
+                    {
+                        return response()->json([
+                            'success' => false,
+                            'error' => ['json'=>'Settings field should be the array.']
+                        ]);
+                    }
+
                     return redirect()->back()
                         ->withErrors(['json'=>'Settings field should be the array.'])
                         ->withInput();
@@ -1329,6 +1357,14 @@ class EntityTypeController extends BaseController
                     {
                         DB::rollBack();
 
+                        if (request()->ajax())
+                        {
+                            return response()->json([
+                                'success' => false,
+                                'error' => $validator->errors()
+                            ]);
+                        }
+
                         return redirect()->back()
                             ->withErrors($validator)
                             ->withInput();
@@ -1373,6 +1409,14 @@ class EntityTypeController extends BaseController
 
                             if ($validator->fails())
                             {
+                                if (request()->ajax())
+                                {
+                                    return response()->json([
+                                        'success' => false,
+                                        'error' => $validator-errors()
+                                    ]);
+                                }
+
                                 DB::rollBack();
 
                                 return redirect()->back()
@@ -1402,20 +1446,30 @@ class EntityTypeController extends BaseController
                 }
             }
 
-//            var_dump($request->all());
-//            var_dump($type);
-//            exit;
-
             DB::commit();
 
+            if (request()->ajax())
+            {
+                return response()->json([
+                    'success' => true,
+                    'msg' => 'Field group ('.$checkName.') has been successfully imported.'
+                ]);
+            }
+
             return Redirect::route('cms:types:groups:import-json', [$typeId])
-                ->with('message', 'Field group have been successfully imported.');
+                ->with('message', 'Field group ('.$checkName.') has been successfully imported.');
         }
         catch(\Exception $e)
         {
             DB::rollBack();
 
-            throw $e;
+            if (request()->ajax())
+            {
+                return response()->json([
+                    'success' => false,
+                    'error' => ['json'=>$e->getMessage()]
+                ]);
+            }
 
             return redirect()->back()
                 ->withErrors(['json'=>$e->getMessage()])

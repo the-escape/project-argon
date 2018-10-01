@@ -4,6 +4,7 @@ namespace Escape\Argon\EntityManagement;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
+use Escape\Argon\EntityManagement\Controllers\BlocksLibraryController;
 use Escape\Argon\EntityManagement\Controllers\PagesController;
 use Escape\Argon\EntityManagement\Controllers\EntityTypeController;
 use Escape\Argon\EntityManagement\Controllers\SitemapController;
@@ -390,6 +391,47 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'exportGroup'
         );
+
+
+
+        /*
+         * blocks library links
+         */
+
+        $this->addRoute(
+            'blockslibrary/{blockId}',
+            'cms:blockslibrary:get',
+            BlocksLibraryController::class,
+            'getBlock'
+        );
+
+        $this->addRoute(
+            'blockslibrary',
+            'cms:blockslibrary:create',
+            BlocksLibraryController::class,
+            'createBlock',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'blockslibrary/{blockId}',
+            'cms:blockslibrary:update',
+            BlocksLibraryController::class,
+            'updateBlock',
+            Request::METHOD_POST
+        );
+
+        $this->addRoute(
+            'blockslibrary/delete/{blockId}',
+            'cms:blockslibrary:delete',
+            BlocksLibraryController::class,
+            'deleteBlock',
+            Request::METHOD_POST
+        );
+
+        // TODO create, edit, delete
+
+
 
 
 
