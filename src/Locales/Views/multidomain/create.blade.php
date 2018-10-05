@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Create Multi-Region</h1>
+        <h1 class="page-header">Add Referring Domain</h1>
 
         <form action="{{ route('cms:multiDomain:create') }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -17,7 +17,7 @@
                         <label for="locale_id">Locale</label>
                         <select class="form-control" id="locale_id" name="locale_id" placeholder="Locale">
                             @foreach($locales as $locale)
-                                <option value="{{ $locale->id }}"{{ (old("locale_id") == $locale->id ? "selected":"") }}>{{ $locale->locale_name }}</option>
+                                <option value="{{ $locale->id }}"{{ (old("locale_id") == $locale->id ? "selected":"") }}>{{ $locale->name }}</option>
                             @endforeach
                         </select>
                     </div>
