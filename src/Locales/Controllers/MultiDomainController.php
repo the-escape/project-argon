@@ -3,17 +3,19 @@
 namespace Escape\Argon\Locales\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Locales\Eloquent\MultiDomainRepository;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Input;
 use Lang;
 use Redirect;
+use View;
 
 class MultiDomainController extends BaseController
 {
     /**
      * LocalesController constructor.
+     *
      * @param Request $request
      */
     public function __construct(Request $request)
@@ -27,27 +29,34 @@ class MultiDomainController extends BaseController
 
     /**
      * @param MultiDomainRepository $multiDomainRepository
+     *
      * @return mixed
      */
     public function manage(MultiDomainRepository $multiDomainRepository)
     {
-        $multiDomain = $multiDomainRepository->all();
+        $domain = $multiDomainRepository->all();
 
-        return View::make('argon::multiDomain.manage', ['multiDomain' => $multiDomain]);
+        return View::make('argon::multidomain.manage', ['domains' => $domain]);
     }
 
-    /**
-     * @param MultiDomainRepository $multiDomainRepository
-     * @return mixed
-     */
-    public function create(MultiDomainRepository $multiDomainRepository)
+  /**
+   * @param MultiDomainRepository $multiDomainRepository
+   * @param LocaleRepository $localeRepository
+   *
+   * @return mixed
+   */
+    public function create(MultiDomainRepository $multiDomainRepository, LocaleRepository $localeRepository)
     {
-        return View::make('argon::multiDomain.create');
+        $locales = $localeRepository->all();
+
+        return View::make('argon::multidomain.create', ['locales' => $locales]);
     }
 
     /**
      * @param MultiDomainRepository $multiDomainRepository
+     *
      * @return mixed
+     *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function save(MultiDomainRepository $multiDomainRepository)
@@ -62,46 +71,54 @@ class MultiDomainController extends BaseController
     /**
      * @param $regionId
      * @param MultiDomainRepository $multiDomainRepository
+     *
      * @return mixed
      */
     public function delete($regionId, MultiDomainRepository $multiDomainRepository)
     {
-      $multiDomainRepository->delete($regionId);
+        $multiDomainRepository->delete($regionId);
 
         return Redirect::route('cms:multiDomain:manage');
     }
 
-    /**
-     * @param $regionId
-     * @param MultiDomainRepository $multiDomainRepository
-     * @return mixed
-     */
-    public function edit($regionId, MultiDomainRepository $multiDomainRepository)
+  /**
+   * @param $regionId
+   * @param MultiDomainRepository $multiDomainRepository
+   * @param LocaleRepository $localeRepository
+   *
+   * @return mixed
+   */
+    public function edit($regionId, MultiDomainRepository $multiDomainRepository, LocaleRepository $localeRepository)
     {
-        $region = $multiDomainRepository->find($regionId)->with([
+        $domain = $multiDomainRepository->find($regionId)->with([
             'locale'
         ])->first();
 
-        return View::make('argon::multiDomain.edit', ['region' => $region]);
+        $locales = $localeRepository->all();
+
+        return View::make('argon::multidomain.edit', ['domain' => $domain, 'locales' => $locales]);
     }
 
     /**
      * @param $regionId
      * @param MultiDomainRepository $multiDomainRepository
+     *
      * @return mixed
+     *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update($regionId, MultiDomainRepository $multiDomainRepository)
     {
       $multiDomainRepository->update(Input::all(), $regionId);
 
-        return Redirect::route('cms:multiDomain:manage')
-            ->with('message', Lang::get('argon-locales::multiDomain.saved'));
+          return Redirect::route('cms:multiDomain:manage')
+              ->with('message', Lang::get('argon-locales::multiDomain.saved'));
     }
 
     /**
      * @param $regionId
      * @param Request $request
+     *
      * @return mixed
      */
     public function set($regionId, Request $request)
@@ -112,6 +129,4 @@ class MultiDomainController extends BaseController
 
         return Redirect::to($returnUrl);
     }
-
-
 }

@@ -32,7 +32,7 @@ class MultiDomain extends Model
     /**
      * @return mixed
      */
-    public function getUrl()
+    public function getDomainUrl()
     {
         return $this->domain_url;
     }
