@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRegionsTable extends Migration
+class CreateMultiDomainTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,10 @@ class CreateRegionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('multidomain', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('region_name');
+            $table->string('domain_url');
+            $table->unsignedInteger('locale_id');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +28,6 @@ class CreateRegionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('regions');
+        Schema::drop('multidomain');
     }
 }

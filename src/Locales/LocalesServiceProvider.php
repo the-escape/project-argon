@@ -4,6 +4,7 @@ namespace Escape\Argon\Locales;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Locales\Controllers\LocalesController;
+use Escape\Argon\Locales\Controllers\MultiDomainController;
 use Escape\Argon\Locales\Controllers\RegionsController;
 use Illuminate\Http\Request;
 
@@ -101,6 +102,46 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
             RegionsController::class,
             'delete'
         );
+
+        // MULTI-DOMAIN
+        $this->addRoute(
+            'multidomain',
+            'cms:multiDomain:manage',
+            MultiDomainController::class,
+            'manage'
+        );
+        $this->addRoute(
+            'multidomain/create',
+            'cms:multiDomain:create',
+            MultiDomainController::class,
+            'create'
+        );
+        $this->addRoute(
+            'multidomain/create',
+            'cms:multiDomain:create',
+            MultiDomainController::class,
+            'save',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'multidomain/{regionId}/edit',
+            'cms:multiDomain:edit',
+            MultiDomainController::class,
+            'edit'
+        );
+        $this->addRoute(
+            'multidomain/{multiDomainId}/edit',
+            'cms:multiDomain:edit',
+            MultiDomainController::class,
+            'update',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'multidomain/{multiDomainId}/delete',
+            'cms:multiDomain:delete',
+            MultiDomainController::class,
+            'delete'
+        );
     }
 
     public function startup()
@@ -112,6 +153,9 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
 
         $this->permissionsManager->register('cms:regions:manage');
         $this->pluginManager->registerNavLink('Regions', route('cms:regions:manage'), 'cms:region:manage');
+
+        $this->permissionsManager->register('cms:multiDomain:manage');
+        $this->pluginManager->registerNavLink('Multi Domain', route('cms:multiDomain:manage'), 'cms:multiDomain:manage');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),
