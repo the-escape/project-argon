@@ -17,7 +17,7 @@
                         <label for="locale_id">Locale</label>
                         <select class="form-control" id="locale_id" name="locale_id" placeholder="Locale">
                             @foreach($locales as $locale)
-                                <option value="{{ $locale->id }}"{{ ($locale->id == $locale->locale_id ? "selected":"") }}>{{ $locale->locale_name }}</option>
+                                <option value="{{ $locale->id }}"{{ ($locale->id == $domain->locale->id ? "selected":"") }}>{{ $locale->name }}</option>
                             @endforeach
                         </select>
                     </div>

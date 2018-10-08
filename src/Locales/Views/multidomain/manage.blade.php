@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="main">
-        <h1 class="page-header">Regions</h1>
+        <h1 class="page-header">Multi Domain</h1>
 
         @if (session('message'))
             <div class="alert alert-success" role="alert">
@@ -27,7 +27,7 @@
                 @foreach ($domains->all() as $domain)
                     <tr>
                         <td>{{ $domain->domain_url }}</td>
-                        <td>{{ $domain->locale->locale_name }}</td>
+                        <td>{{ $domain->locale->name }}</td>
                         <td>
                             <a href="{{ route('cms:multiDomain:edit', ['domainId' => $domain->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             <a href="{{ route('cms:multiDomain:delete', ['domainId' => $domain->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>

@@ -152,7 +152,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:locale:manage');
 
         $this->permissionsManager->register('cms:regions:manage');
-        $this->pluginManager->registerNavLink('Regions', route('cms:regions:manage'), 'cms:region:manage');
+        $this->pluginManager->registerNavLink('Regions', route('cms:regions:manage'), 'cms:regions:manage');
 
         $this->permissionsManager->register('cms:multiDomain:manage');
         $this->pluginManager->registerNavLink('Multi Domain', route('cms:multiDomain:manage'), 'cms:multiDomain:manage');
