@@ -64,7 +64,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
 
         $this->permissionsManager->register('cms:locale:manage');
 
-        $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:locale:manage', 'pages');
+        $this->pluginManager->registerNavLink('Locales', route('cms:locales:manage'), 'cms:locale:manage', '');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

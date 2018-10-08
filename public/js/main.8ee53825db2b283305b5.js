@@ -22541,7 +22541,7 @@ module.exports = function (module) {
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 236 modules ***!
+  !*** ./resources/assets/js/src/index.js + 237 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -32838,6 +32838,8 @@ function createFileInput(input) {
 
 
 
+
+
 var Controller = {
     el: null,
     inputs: [],
@@ -32854,7 +32856,7 @@ var Controller = {
     onSucccess: null,
 
     init: controller_init,
-    resetForm: resetForm
+    resetFormErrors: resetFormErrors
 };
 
 function createController(selector, onSucccess, onError) {
@@ -32896,14 +32898,20 @@ function controller_init(selector, onSucccess, onError) {
     this.onSucccess = onSucccess || handleReturn;
     this.onError = this.onError.bind(this);
     this.onSucccess = this.onSucccess.bind(this);
-    this.resetForm = this.resetForm.bind(this);
+    this.resetFormErrors = this.resetFormErrors.bind(this);
 
     this.onErrorEvent.subscribe(this.onError);
     this.onSucccessEvent.subscribe(this.onSucccess);
 
     this.el.addEventListener('submit', handleSubmit.bind(this));
 
-    resetForm.call(this);
+    resetFormErrors.call(this);
+
+    fromEvent(document, 'click').pipe(filter(function (el) {
+        return el.target.classList.contains('js-form-reset');
+    }), map(function (evt) {
+        return evt.stopPropagation(), evt;
+    })).subscribe(resetForm.bind(this));
 }
 
 function handleSubmit(evt) {
@@ -32933,7 +32941,7 @@ function handleReturn(_ref) {
 
     if (data.success) {
         modalController.openModal('ThankYou');
-        resetForm.call(this);
+        resetFormErrors.call(this);
         return;
     }
 
@@ -32969,7 +32977,7 @@ function handleError() {
     });
 }
 
-function resetForm() {
+function resetFormErrors() {
     var _this3 = this;
 
     this.isFormDirty = false;
@@ -32989,6 +32997,10 @@ function resetForm() {
 
         formGroupEl.classList.remove('error');
     });
+}
+
+function resetForm() {
+    this.el.reset();
 }
 
 function getFormValueObj() {
@@ -33073,6 +33085,7 @@ function createSelect(el) {
         }
     });
 
+    el.choices = select;
     select.setValueByChoice(items);
     return select;
 }
@@ -35358,6 +35371,35 @@ function setupMultiAndCombo() {
 
 
 
+// CONCATENATED MODULE: ./resources/assets/js/src/form/reset-form.js
+
+
+
+function reset_form_init() {
+    fromEvent(document, 'click').pipe(filter(function (el) {
+        return el.target.classList.contains('js-form-reset');
+    }), map(function (evt) {
+        return evt.preventDefault(), evt;
+    })).subscribe(findAndReset);
+}
+
+function findAndReset(e) {
+    var form = e.target.closest('.js-form'),
+        inputs = form.querySelectorAll('[name]');
+
+    Array.from(inputs).forEach(function (el) {
+        if (el.classList.contains('js-select')) {
+            var choices = el.choices;
+            choices.setValueByChoice('');
+        } else if (el.hasAttribute('checked')) {
+            el.checked = false;
+        } else {
+            el.value = '';
+        }
+    });
+
+    form.submit();
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/tree.js
 
 
@@ -35576,6 +35618,7 @@ function tree_setupEvents() {
 
 
 
+
 function src_init() {
     init();
     ui_jump.init(650, 150);
@@ -35598,6 +35641,7 @@ function src_init() {
     createTemplateForms();
     // initialiseFormElements()
     registerFormSaveEvents();
+    reset_form_init();
 }
 
 if (document.readyState !== 'loading') {
@@ -35609,4 +35653,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.5a97cad1ff7115fc14ea.js.map
+//# sourceMappingURL=main.8ee53825db2b283305b5.js.map

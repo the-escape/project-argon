@@ -18,7 +18,7 @@
     <div class="c-sidebar__container">
 		<div class="c-user">
             <div class="c-user__img">
-                <img src="/argon/images/user.png" alt="Hannah Blue">
+                <img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
             </div>
             <span class="c-user__name">{{ $currentUser->name }}</span>
             <a href="{{ route('logout') }}" class="c-user__logout">
@@ -32,7 +32,7 @@
                     @foreach ($group as $plugin)
                         @if($currentUser->hasPermission($plugin->access))
                             <li class="c-navigation__item">
-                                <a class="c-navigation__link" href="{{ $plugin->url }}">
+                                <a class="c-navigation__link {{ $plugin->active ? 'active' : '' }}" href="{{ $plugin->url }}">
                                     <div class="c-navigation__icon c-navigation__icon--{{ $plugin->icon }}"></div>
                                     <div class="c-navigation__text">{{ $plugin->name }}</div>
                                 </a>
@@ -43,7 +43,7 @@
             @endforeach
         </nav>
 
-		<a class="c-sidebar__logo" ng-reflect-router-link="dashboard" href="/dashboard">
+		<a class="c-sidebar__logo" href="/dashboard">
 			<img alt="logo" src="/argon/images/e.png">
 		</a>
 	</div>

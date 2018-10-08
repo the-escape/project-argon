@@ -40,7 +40,8 @@ class PluginManager
             'url' => $url,
             'access' => $access,
             'icon' => $icon,
-            'group' => $group
+            'group' => $group,
+            'active' => strpos(request()->url(), $url) !== false
         ];
     }
 }

@@ -13,6 +13,7 @@ import {
     Sidebar
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
+import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
 
 function init () {
@@ -33,6 +34,7 @@ function init () {
     createTemplateForms()
     // initialiseFormElements()
     registerFormSaveEvents()
+    resetForm()
 }
 
 if (document.readyState !== 'loading') {

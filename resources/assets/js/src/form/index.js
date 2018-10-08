@@ -75,7 +75,7 @@ export {
     initialiseFormElements,
     initialiseFormElementsForNewElement,
     refreshFromElements,
-    registerFormSaveEvents
+    registerFormSaveEvents,
     // createFileInputs,
     // createFileInput,
     // controller,

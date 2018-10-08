@@ -1,11 +1,19 @@
 .o-table {
     display: grid;
 
+    > * {
+        padding-right: 15px;
+    }
+
     @for $i from 1 through 15 {
         &--#{$i} {
             grid-template-columns:
-                minmax(400px, 1fr) repeat(#{$i - 1}, minmax(min-content, 250px))
+                repeat(#{$i}, minmax(min-content, 700px))
                 115px 125px;
+
+            > *:nth-child(#{$i + 2}n) {
+                padding-right: 0;
+            }
         }
     }
 
@@ -35,7 +43,8 @@
 
     &__header,
     &__data {
-        padding: 10px 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
     &__header {
@@ -45,6 +54,10 @@
         color: $black-light;
         padding-right: 10px;
         white-space: nowrap;
+
+        a {
+            color: $black-light;
+        }
     }
 
     &__data {

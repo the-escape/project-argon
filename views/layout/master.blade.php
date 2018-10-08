@@ -19,14 +19,14 @@
     </style>
 </head>
 
-<body class="@yield('body-class', 'dashboard')">
-
+<body id="@yield('body-id','')" class="@yield('body-class', 'dashboard')">
 
 @include('argon::inc.nav')
 
-<main class="c-container c-container--main">
-    @yield('content')
-</main>
+@section('header')
+@show
+
+@yield('content')
 
 <div class="modals">@yield('modals')</div>
 

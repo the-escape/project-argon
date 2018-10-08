@@ -1,0 +1,31 @@
+.c-footer {
+	//display: flex;
+	//flex-direction: column;
+	//justify-content: space-between;
+	//height: 192px;
+	//height: 15vmin;
+	//min-height: 140px;
+
+	width: 100%;
+	background-color: $body-background-color;
+
+	&__wrapper {
+		min-height: 150px;
+	}
+
+	&__container {
+		border-top: 1px solid $tertiary-dark;
+		padding: 40px 0 30px;
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&--fixed {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+}

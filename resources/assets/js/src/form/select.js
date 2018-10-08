@@ -38,6 +38,7 @@ export function createSelect (el) {
         }
     })
 
+    el.choices = select
     select.setValueByChoice(items)
     return select
 }

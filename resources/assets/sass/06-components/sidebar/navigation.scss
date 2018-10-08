@@ -86,16 +86,16 @@ $color-sidebar-divider: rgba(255, 255, 255, 0.1);
 			background-image: url('/argon/images/sidebar/sitemap.png');
 		}
 
+		&--blocks:before{
+			background-image: url('/argon/images/sidebar/blocks.png');
+		}
+
 		&--posts:before{
 			background-image: url('/argon/images/sidebar/posts.png');
 		}
 
 		&--media:before{
 			background-image: url('/argon/images/sidebar/media-library.png');
-		}
-
-		&--block:before{
-			background-image: url('/argon/images/sidebar/forms.png');
 		}
 
 		&--forms:before{

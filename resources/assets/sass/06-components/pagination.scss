@@ -1,0 +1,77 @@
+.c-pagination {
+	position: relative;
+	display: flex;
+	justify-content: flex-end;
+
+	&__container {
+		display: flex;
+	}
+
+	&__spacer {
+		padding: 10px 5px;
+	}
+
+	&__link {
+		position: relative;
+		padding: 10px 15px;
+		color: $tertiary-dark;
+		transition: color $userActive $easeOut;
+
+		&:hover {
+			color: $client-light;
+		}
+
+		&.active {
+			color: #fff;
+			background-color: $client-primary;
+		}
+	}
+
+	&__item {
+		position: relative;
+		padding: 10px 15px;
+		color: $tertiary-dark;
+		transition: background-color $userActive $easeOut;
+		background-color: transparent;
+
+		&:hover {
+			color: $tertiary-dark;
+			transition: background-color $userActive $easeOut;
+			background-color: $secondary-light;
+		}
+
+		&.active {
+			color: #fff;
+			background-color: $client-primary;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	//&__item {
+	//	padding: 10px 15px;
+	//	color: $tertiary-dark;
+	//	background-color: transparent;
+	//	transition: background-color $userActive $easeOut, color $userInactive $easeOut;
+	//
+	//	&:hover {
+	//		color: #fff;
+	//		background-color: $grey;
+	//	}
+	//
+	//	&.active {
+	//		color: #fff;
+	//		background-color: $client-primary;
+	//	}
+	//
+	//}
+}

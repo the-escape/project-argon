@@ -113,7 +113,7 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
         ], 'commands');
 
         $this->pluginManager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage', 'users');
-        $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage', 'users');
+        $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage', '');
 
         $this->loadViewsFrom(__DIR__ . '/views', 'argon');
 

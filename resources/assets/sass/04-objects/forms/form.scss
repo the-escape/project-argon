@@ -19,6 +19,32 @@
         &.has-error > label {
             color: $error;
         }
+
+        &--icon-btn {
+
+            input {
+                padding-right: 45px !important;
+            }
+
+            svg {
+                width: 44px;
+                height: 44px;
+
+                padding: 15px;
+            }
+
+            button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
+                color: $secondary;
+
+                &:hover{
+                    color: $tertiary-dark;
+                }
+            }
+        }
     }
 
     &--sm &__group {
@@ -101,4 +127,15 @@
             margin-top: 0;
         }
     }
+
+    &__inline &__group {
+        position: relative;
+
+        + * {
+            margin-top: 0;
+            margin-right: 15px;
+        }
+    }
+
+
 }
