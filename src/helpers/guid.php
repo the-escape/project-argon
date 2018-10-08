@@ -72,7 +72,10 @@ function localisationCache()
                         ->where('deleted_at', null)
                         ->where('entity_type_type', '=', 'page');
                 }
-            ])->get();
+            ])->where('deleted_at', 'not', 'null')
+                ->where('active', true)
+                ->orderBy('display_order', 'ASC')
+                ->get();
 
             return $localisation;
         });

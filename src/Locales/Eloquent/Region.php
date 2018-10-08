@@ -18,7 +18,7 @@ class Region extends Model
      * @var array
      */
     protected $fillable = [
-        'region_name'
+        'region_name', 'display_order', 'active'
     ];
 
     /**

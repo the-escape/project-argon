@@ -16,6 +16,11 @@ class RegionRepository extends BaseRepository
         return Region::class;
     }
 
+    public function getActive()
+    {
+        return $this->findWhere(['active' => true])->andWhere('deleted_at', 'not', null)->get();
+    }
+
     /**
      * @param string $languageCode
      * @return Language
