@@ -43,22 +43,11 @@ $color-sidebar-divider: rgba(255, 255, 255, 0.1);
 		height: $linkItemHeight;
 		position: relative;
 
-		//&:before{
-		//	content: '';
-		//	position: absolute;
-		//	top: 0;
-		//	left: 0;
-		//	width: 100%;
-		//	height: 100%;
-		//	background-position: center;
-		//	background-repeat: no-repeat;
-		//}
-
 		svg {
 			color: inherit;
-			width: 100%;
-			height: 100%;
-			padding: 16px;
+			width: 16px;
+			height: 16px;
+			margin: 16px;
 		}
 	}
 
@@ -82,46 +71,5 @@ $color-sidebar-divider: rgba(255, 255, 255, 0.1);
 		height: 24px;
 		border-radius: 50%;
 		background-color: $client-primary-acc;
-	}
-
-	&__icon{
-
-
-
-		//&--dashboard:before{
-		//	background-image: url('/argon/images/sidebar/dashboard.png');
-		//}
-		//
-		//&--pages:before{
-		//	background-image: url('/argon/images/sidebar/sitemap.png');
-		//}
-		//
-		//&--blocks:before{
-		//	background-image: url('/argon/images/sidebar/blocks.png');
-		//}
-		//
-		//&--posts:before{
-		//	background-image: url('/argon/images/sidebar/posts.png');
-		//}
-		//
-		//&--media:before{
-		//	background-image: url('/argon/images/sidebar/media-library.png');
-		//}
-		//
-		//&--forms:before{
-		//	background-image: url('/argon/images/sidebar/forms.png');
-		//}
-		//
-		//&--redirects:before{
-		//	background-image: url('/argon/images/sidebar/redirects.png');
-		//}
-		//
-		//&--users:before{
-		//	background-image: url('/argon/images/sidebar/users.png');
-		//}
-		//
-		//&--globe:before{
-		//	background-image: url('/argon/images/sidebar/globe.png');
-		//}
 	}
 }

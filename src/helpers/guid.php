@@ -1,6 +1,6 @@
 <?php
 use Escape\Argon\Menus\Eloquent\MenuRepository;
-
+use Illuminate\Support\ViewErrorBag;
 /**
  * @return Escape\Argon\EntityManagement\Eloquent\EntityCache - registered as singleton in Escape\Argon\EntityManagement\EntityManagementServiceProvider
  */
@@ -618,6 +618,22 @@ function isJson($value)
     return (json_last_error() == JSON_ERROR_NONE);
 }
 
+
+function hasError($errors, $field_name)
+{
+    return (is_object($errors) && ($errors instanceof ViewErrorBag && $errors->has($field_name)));
+
+}
+
+function getError($errors, $field_name)
+{
+    if(is_object($errors) && ($errors instanceof ViewErrorBag && $errors->has($field_name)))
+    {
+        return $errors->get($field_name);
+    }
+
+    return '';
+}
 
 /**
  * Unified way of presenting messages regardless if the value passes was a string, array or validator object.

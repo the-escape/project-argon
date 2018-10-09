@@ -1,7 +1,7 @@
-@if($users->lastPage() > 1)
+@if($items->lastPage() > 1)
 
     <?php
-    $pagination = easyPagination(range(1, $users->total()), $users->perPage(), $users->currentPage());
+    $pagination = easyPagination(range(1, $items->total()), $items->perPage(), $items->currentPage());
     $presenter = paginationPresenter($pagination, '...', 1, 2, function($element, $hellip, $current_page_number)
     {
         if ($element != $hellip)

@@ -11,6 +11,9 @@
     </head>
     <body class="c-login__bg">
 
+        @section('header')
+        @show
+
         @yield('content')
 
         <div class="modals">@yield('modals')</div>

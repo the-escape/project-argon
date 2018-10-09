@@ -1,37 +1,70 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Menus</h1>
 
-        @include('argon::inc.alerts', compact($errors))
-
-        <div class="dashboard-actions dashboard-actions--top">
-            <a href="{{ route('cms:menus:create') }}" class="btn btn-primary">Create</a>
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Menus</h1>
         </div>
-
-        <div class="dashboard-content">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Slug</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($menus->all() as $menu)
-                    <tr>
-                        <td>{{$menu->name}}</td>
-                        <td>{{$menu->slug}}</td>
-                        <td>
-                            <a href="{{ route('cms:menus:edit', ['id' => $menu->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                            <a href="{{ route('cms:menus:delete', ['id' => $menu->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+        <div class="c-tab__nav">
+            <ul>
+                <li>
+                    <a class="c-tab__btn active" href="{{ route('cms:menus:manage') }}">
+                        <div class="c-tab__btn-container">
+                            <span>All Menus</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:menus:create') }}">
+                        <div class="c-tab__btn-container">
+                            <span>New Menu</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
+    </header>
+
+    <main class="c-container c-container--main">
+        {{-- this needs changing --}}
+        @include('argon::inc.new-alerts')
+
+        @include('argon::inc.listing.filters', [
+            'createLink' => [
+                'url' => route('cms:menus:create'),
+                'label' => 'Create Menu'
+            ],
+            'filters' => [],
+            'resetLinkUrl' => route('cms:menus:manage')
+        ])
+
+        <div class="o-table o-table--2 l-full">
+
+            @include('argon::inc.listing.table-headers', ['headers' => ['name', 'slug', '', '']])
+
+            @foreach ($menus->all() as $i => $menu)
+                <div class="o-table__data">{{ $menu->name }}</div>
+                <div class="o-table__data">{{ $menu->slug }}</div>
+                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    <a href="{{ route('cms:menus:edit', ['userId' => $menu->id]) }}" class="o-btn o-btn--xs">edit menu</a>
+                </div>
+            @endforeach
+
+        </div>
+    </main>
+
+    <footer class="c-footer__wrapper">
+        <div class="c-footer c-container"><!-- .c-footer--fixed -->
+            <div class="c-footer__container ">
+                @include('argon::inc.listing.pagination', ['items' => $menus])
+            </div>
+        </div>
+    </footer>
+
 @stop

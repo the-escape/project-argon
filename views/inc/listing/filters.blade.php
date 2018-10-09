@@ -2,13 +2,13 @@
     <form class="o-form c-list-filters__form js-form">
         @if(empty($hideSearch))
             <?php
-                if (!empty($request->input('keywords',false)))
+                if (!empty(request('keywords',false)))
                 {
                     $showReset = true;
                 }
             ?>
             <div class="o-form__group o-form__group--icon-btn">
-                <input type="text" name="keywords" placeholder="Search by keyword" value="{{ $request->input('keywords') }}">
+                <input type="text" name="keywords" placeholder="Search by keyword" value="{{ request('keywords') }}">
                 <button>
                     <svg>
                         <use xlink:href="/argon/images/svgicons.svg#search"></use>

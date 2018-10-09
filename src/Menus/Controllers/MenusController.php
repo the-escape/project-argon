@@ -19,9 +19,31 @@ class MenusController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage(MenuRepository $menuRepository)
+    public function manage(Request $request, MenuRepository $menuRepository)
     {
-        $menus = $menuRepository->all();
+        $perPage = $request->input('perpage', 25);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $menuRepository->model();
+        $query = $model::orderBy($orderBy, $orderDir);
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('slug', 'LIKE', "%{$search}%")
+                    ->orWhere('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $menus = $query->paginate($perPage);
+
         return view('argon_menus::manage', ['menus' => $menus]);
     }
 
@@ -87,5 +109,26 @@ class MenusController extends BaseController
         $menuRepository->delete($id);
 
         return redirect(route('cms:menus:manage'), Response::HTTP_NO_CONTENT);
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'slug':
+                $query = $query->orderBy('slug', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }

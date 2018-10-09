@@ -1,7 +1,9 @@
-@extends('argon::layout.master')
+@extends('argon::layout.login')
+
+@section('header')
+    @include('argon::inc.nav')
+@stop
 
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Dashboard</h1>
-    </div>
+
 @stop

@@ -12,9 +12,9 @@
                         'dir' => 'asc',
                     ]);
                     $sortIcon = 'fa-sort';
-                    if($request->input('order') == $header) {
+                    if(request('order') == $header) {
 
-                        if($request->input('dir', 'asc') == 'asc') {
+                        if(request('dir', 'asc') == 'asc') {
                             $sortIcon = 'fa-caret-down';
                             $urlData['dir'] = 'desc';
                         } else {

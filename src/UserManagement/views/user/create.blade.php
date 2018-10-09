@@ -116,6 +116,7 @@
                         <div></div>
                         <div>
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                             <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--sm">Cancel</a>
                             <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
                         </div>
