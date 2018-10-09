@@ -60,7 +60,7 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
     public function startup()
     {
         $this->permissionsManager->register('cms:menus:manage');
-        $this->pluginManager->registerNavLink('Menus', route('cms:menus:manage'), 'cms:menus:manage', '');
+        $this->pluginManager->registerNavLink('Menus', route('cms:menus:manage'), 'cms:menus:manage', 'blocks');
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon_menus');
         $this->loadTranslationsFrom(__DIR__ . '/lang', 'argon-menus');
 

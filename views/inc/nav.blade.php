@@ -33,7 +33,9 @@
                         @if($currentUser->hasPermission($plugin->access))
                             <li class="c-navigation__item">
                                 <a class="c-navigation__link {{ $plugin->active ? 'active' : '' }}" href="{{ $plugin->url }}">
-                                    <div class="c-navigation__icon c-navigation__icon--{{ $plugin->icon }}"></div>
+                                    <div class="c-navigation__icon c-navigation__icon--{{ $plugin->icon }}">
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#{{ $plugin->icon }}"></use></svg>
+                                    </div>
                                     <div class="c-navigation__text">{{ $plugin->name }}</div>
                                 </a>
                             </li>
