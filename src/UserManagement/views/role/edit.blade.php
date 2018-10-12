@@ -1,44 +1,132 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Edit User</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
-            </div>
-        @endif
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Role</h1>
+        </div>
+        <div class="c-tab__nav">
+            <ul>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:role:manage') }}">
+                        <div class="c-tab__btn-container">
+                            <span>All Roles</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:role:create') }}">
+                        <div class="c-tab__btn-container">
+                            <span>New role</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn active" href="{{ route('cms:role:edit', [$role->id]) }}">
+                        <div class="c-tab__btn-container">
+                            <span>Edit {{ $role->name }}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
 
-        <form action="{{ route('cms:role:update', [$role->id]) }}" method="POST">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="name" class="form-control" id="name" name="name" placeholder="Name" value="{{ old('name', $role->name) }}">
-                    </div>
-                </div>
-            </div>
+    <form action="{{ route('cms:role:update', [$role->id]) }}" method="POST" autocomplete="false">
 
-            <div class="card">
-                <div class="card-header">Permissions</div>
-                <div class="card-block">
-                    @foreach ($permissions->getDefinedPermissions() as $permission)
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="permissions[]" value="{{$permission}}" @if ($role->hasPermission($permission))checked="checked"@endif> {{$permission}}
-                                </label>
+        <main class="c-container c-container--main">
+
+            @include('argon::inc.new-alerts')
+
+            <div class="o-form">
+                <div class="o-form__title">Edit role</div>
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="name">Name*</label>
+                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $role->name) }}">
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="name">Error Message</label>
                             </div>
                         </div>
-                    @endforeach
-                        <div class="clearfix"></div>
+                    </div>
                 </div>
+
+                <div class="o-form__title">Permissions</div>
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form__vertical-list">
+                            @foreach ($permissions->getDefinedPermissions() as $permission)
+                                <div class="o-checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                               {{ $role->hasPermission($permission) ? 'checked="checked"' : '' }}
+                                               name="permissions[]"
+                                               id="role{{$permission}}"
+                                               value="{{$permission}}">
+                                        <span>
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg>
+                                        </span>
+                                    </label>
+                                    <label for="role{{ $permission }}">{{ $permission }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="permissions">Error Message</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
-    </div>
+
+        </main>
+
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
+
+                    <div class="c-footer__buttons">
+                        <div>
+                            <a href="{{ route('cms:role:delete', ['id' => $role->id]) }}" onclick="return confirm('Are you sure you want to delete this role?');" class="o-btn o-btn--sm o-btn--danger">Delete</a>
+                        </div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <a href="{{ route('cms:role:manage') }}" class="o-btn o-btn--sm">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+    </form>
+
 @endsection

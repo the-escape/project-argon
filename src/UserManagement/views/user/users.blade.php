@@ -8,7 +8,7 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
-            <h1>User</h1>
+            <h1>Users</h1>
         </div>
         <div class="c-tab__nav">
             <ul>
@@ -31,7 +31,7 @@
     </header>
 
     <main class="c-container c-container--main">
-        {{-- this needs changing --}}
+
         @include('argon::inc.new-alerts')
 
         @include('argon::inc.listing.filters', [
@@ -62,13 +62,15 @@
         </div>
     </main>
 
-    <footer class="c-footer__wrapper">
-        <div class="c-footer c-container"><!-- .c-footer--fixed -->
-            <div class="c-footer__container ">
-                @include('argon::inc.listing.pagination', ['items' => $users])
+    @if($users->lastPage() > 1)
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container"><!-- .c-footer--fixed -->
+                <div class="c-footer__container ">
+                    @include('argon::inc.listing.pagination', ['items' => $users])
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    @endif
 
 @stop
 

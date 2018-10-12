@@ -1,101 +1,166 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
 
-    <div class="main">
-        <h1>Menu</h1>
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Menu</h1>
+        </div>
+        <div class="c-tab__nav">
+            <ul>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:menus:manage') }}">
+                        <div class="c-tab__btn-container">
+                            <span>All Menus</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn active" href="{{ route('cms:menus:create') }}">
+                        <div class="c-tab__btn-container">
+                            <span>New menu</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
 
-        @include('argon::inc.alerts', compact($errors))
+    <form action="{{ route('cms:menus:update', [$menu->id]) }}" method="POST">
 
-        <form action="{{ route('cms:menus:update', [$menu->id]) }}" method="POST">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <main class="c-container c-container--main">
 
-            <div class="card">
+            @include('argon::inc.new-alerts')
 
-                <div class="card-header">Menu details</div>
-
-                <div class="card-block">
-
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" class="form-control required" id="name" name="name" placeholder="Name" value="{{ old('name', $menu->name) }}">
+            <div class="o-form">
+                <div class="o-form__title">Edit menu</div>
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="name">Name*</label>
+                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $menu->name) }}">
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="name">Error Message</label>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="slug" class="required">Slug</label>
-                        <input type="text" class="form-control required " id="slug" name="slug" placeholder="slug" value="{{ old('slug', $menu->slug) }}">
+                </div>
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="slug">Slug*</label>
+                            <input type="text" id="slug" name="slug" placeholder="Slug..." value="{{ old('slug', $menu->slug) }}">
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="slug">Error Message</label>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
 
+
             </div>
+            <div class="c-menus-form">
 
-            <div class="card">
-
-                <div class="card-header">Menu tree</div>
-
-                <div class="card-block">
-
+                <div>
+                    <div class="o-form__title">Menu tree</div>
                     <div id="navtree"></div>
-
                     <div>
-                        <button id="navtree-add-root" class="btn btn-primary-outline btn-sm">Add new item</button>
-                        <button id="navtree-add-child" class="btn btn-primary-outline btn-sm">Add child item</button>
-                        <button id="navtree-remove" class="btn btn-primary-outline btn-sm">Remove item</button>
+                        <button id="navtree-add-root" class="o-btn o-btn--sm">Add new item</button>
+                        <button id="navtree-add-child" class="o-btn o-btn--sm">Add child item</button>
+                        <button id="navtree-remove" class="o-btn o-btn--sm">Remove item</button>
                     </div>
                 </div>
 
+                <div>
+                    <div id="navtree-form">
+
+                        <div class="o-form__title">Edit item</div>
+
+
+                        <div class="form-group">
+                            <label for="item_label" class="required">Label</label>
+                            <input type="text" class="form-control required" id="item_label" name="item_label" placeholder="Label">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="item_url" class="required">URL</label>
+                            <input type="text" class="form-control required " id="item_url" name="item_url" placeholder="URL">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="item_class" class="required">Class(es)</label>
+                            <input type="text" class="form-control required " id="item_class" name="item_class" placeholder="Class(es)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="item_id" class="required">ID</label>
+                            <input type="text" class="form-control required " id="item_id" name="item_id" placeholder="ID">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="item_target" class="required">Target</label>
+                            <input type="text" class="form-control required " id="item_target" name="item_target" placeholder="Target">
+                        </div>
+
+                        <div>
+                            <button id="navtree-update" class="o-btn o-btn--sm">Update item</button>
+                            <button id="navtree-deselect" class="o-btn o-btn--sm">Deselect</button>
+                        </div>
+
+
+                    </div>
+
+                    <textarea id="navtree-output" class="form-control" name="menu">{{ old('menu', $menu->json()) }}</textarea>
+
+                </div>
             </div>
 
-            <div class="card" id="navtree-form">
+        </main>
 
-                <div class="card-header" id="navtree-header">Edit item</div>
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
 
-                <div class="card-block">
-
-                    <div class="form-group">
-                        <label for="item_label" class="required">Label</label>
-                        <input type="text" class="form-control required" id="item_label" name="item_label" placeholder="Label">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="item_url" class="required">URL</label>
-                        <input type="text" class="form-control required " id="item_url" name="item_url" placeholder="URL">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="item_class" class="required">Class(es)</label>
-                        <input type="text" class="form-control required " id="item_class" name="item_class" placeholder="Class(es)">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="item_id" class="required">ID</label>
-                        <input type="text" class="form-control required " id="item_id" name="item_id" placeholder="ID">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="item_target" class="required">Target</label>
-                        <input type="text" class="form-control required " id="item_target" name="item_target" placeholder="Target">
-                    </div>
-
-                    <div>
-                        <button id="navtree-update" class="btn btn-primary-outline btn-sm">Update item</button>
-                        <button id="navtree-deselect" class="btn btn-primary-outline btn-sm">Deselect</button>
+                    <div class="c-footer__buttons">
+                        <div>
+                        </div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--sm">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
+                        </div>
                     </div>
 
                 </div>
-
             </div>
+        </footer>
 
-            <textarea id="navtree-output" class="form-control" name="menu">{{ old('menu', $menu->json()) }}</textarea>
+    </form>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-
-        </form>
-
-    </div>
 
 @stop
 

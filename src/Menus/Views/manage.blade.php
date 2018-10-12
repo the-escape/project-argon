@@ -31,7 +31,7 @@
     </header>
 
     <main class="c-container c-container--main">
-        {{-- this needs changing --}}
+
         @include('argon::inc.new-alerts')
 
         @include('argon::inc.listing.filters', [
