@@ -93,13 +93,20 @@ class BlocksController extends BaseController
     }
 
     public function create(
-        $typeId,
         EntityTypeRepository $typeRepository,
         EntityGroupRepository $groupRepository,
-        MediaFolderRepository $folderRepository
+        MediaFolderRepository $folderRepository,
+        $typeId = null
     ) {
-        $type = $typeRepository->find($typeId);
+        if (is_null($typeId))
+        {
+            $types = $typeRepository->block();
+            return view('argon::blocks.type-select', ['types' => $types]);
+        }
+
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
+        $type = $typeRepository->find($typeId);
+
         return view(
             'argon::blocks.create',
             [

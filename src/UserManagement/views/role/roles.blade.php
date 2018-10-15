@@ -3,7 +3,7 @@
 @section('body-class', 'medialib medialib-all')
 
 @section('body-id', 'argon-ui')
-    
+
 @section('content')
 
     <header class="c-header c-container">
