@@ -1,62 +1,82 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Manage Type Groups</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Field Groups</h1>
+        </div>
+    </header>
 
-        <form action="{{ route('cms:types:groups', [$type->id]) }}" method="POST" autocomplete="false">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form action="{{ route('cms:types:groups', [$type->id]) }}" method="POST" autocomplete="false">
 
-            <div class="card">
+        <main class="c-container c-container--main">
 
-                <div class="card-header">Groups</div>
+            @include('argon::inc.new-alerts')
 
-                <div class="card-block">
+            <div class="o-form">
 
-                    @if(($groups = $type->groups) && (!$groups->isEmpty()))
+                <div class="o-form__title">Manage field groups</div>
 
-                        <input id="order-{{$type->id}}" type="hidden" name="order">
+                @if(($groups = $type->groups) && (!$groups->isEmpty()))
 
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th></th>
+                    <input id="order-{{$type->id}}" type="hidden" name="order">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody class="sortable" data-sortable_field="order-{{$type->id}}">
+                        @foreach ($groups as $group)
+                            <tr class="sortable-item" data-sortable_item="{{$group->id}}">
+                                <td>
+                                    <span class="sortable-handle btn">&#8645;</span>
+                                </td>
+                                <td>
+                                    <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $group->id }}">{{ $group->name }}</span>
+                                </td>
+                                <td>
+                                    <a class="o-btn o-btn--xs" href="{{route('cms:types:groups:edit', [$type->id, $group->id])}}">Edit</a>
+                                    <a class="o-btn o-btn--xs o-btn--danger confirm" href="{{route('cms:types:groups:delete', [$type->id, $group->id])}}">Remove</a>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody class="sortable" data-sortable_field="order-{{$type->id}}">
-                                @foreach ($groups as $group)
-                                    <tr class="sortable-item" data-sortable_item="{{$group->id}}">
-                                        <td>
-                                            <span class="sortable-handle btn">&#8645;</span>
-                                        </td>
-                                        <td>
-                                            <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $group->id }}">{{ $group->name }}</span>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-secondary-outline btn-sm" href="{{route('cms:types:groups:edit', [$type->id, $group->id])}}">Edit</a>
-                                            <a class="btn btn-link btn-sm confirm" href="{{route('cms:types:groups:delete', [$type->id, $group->id])}}">Remove</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        @endforeach
+                        </tbody>
+                    </table>
 
-                    @endif
+                @endif
 
-                    <a href="{{ route('cms:types:groups:create', [$type->id]) }}" class="btn btn-primary-outline">Add Group</a>
-                </div>
+                <a href="{{ route('cms:types:groups:create', [$type->id]) }}" class="o-btn o-btn--sm">Add Field Group</a>
 
             </div>
+        </main>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
-            <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
 
-        </form>
+                    <div class="c-footer__buttons">
+                        <div></div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-    </div>
+                            <a class="o-btn o-btn--sm" href="{{route('cms:types:edit', [$type->id])}}">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+    </form>
+
 @endsection

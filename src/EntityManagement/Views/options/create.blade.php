@@ -1,28 +1,92 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Create Option</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Option</h1>
+        </div>
+    </header>
 
-        <form action="{{ route('cms:types:fields:options:save', [$type->id, $field->id]) }}" method="POST" autocomplete="false">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form action="{{ route('cms:types:fields:options:save', [$type->id, $field->id]) }}" method="POST" autocomplete="false">
 
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name') }}">
+        <main class="c-container c-container--main">
+
+            @include('argon::inc.new-alerts')
+
+            <div class="o-form">
+
+                <div class="o-form__title">Create new option</div>
+
+                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="name">Name (Label)*</label>
+                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name') }}">
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="name">{{ getError($errors, 'name') }}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-link" href="{{route('cms:types:fields:edit', [$type->id, $field->id])}}">Back to field options</a>
-            <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
-            <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
-        </form>
-    </div>
+                <div class="o-form__group {{ hasError($errors, 'value') ? 'has-error' : '' }}">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="value">Value*</label>
+                            <input type="text" id="value" name="value" placeholder="Value..." value="{{ old('value') }}">
+                        </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="value">{{ getError($errors, 'value') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
+
+                    <div class="c-footer__buttons">
+                        <div></div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                            <a class="o-btn o-btn--sm" href="{{route('cms:types:fields:edit', [$type->id, $field->id])}}">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+    </form>
 @endsection

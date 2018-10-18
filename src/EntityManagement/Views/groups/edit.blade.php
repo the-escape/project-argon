@@ -1,112 +1,173 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Edit Group</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Field Group</h1>
+        </div>
+    </header>
 
-        <form action="{{ route('cms:types:groups:update', [$type->id, $group->id]) }}" method="POST" autocomplete="false">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <form action="{{ route('cms:types:groups:update', [$type->id, $group->id]) }}" method="POST" autocomplete="false">
 
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name', $group->name) }}">
-                    </div>
+        <main class="c-container c-container--main">
 
-                    <div class="form-group">
-                        <label for="sortable">
-                            <input type="hidden" value="0" name="sortable">
-                            <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'sortable') }}" @if($group->sortable) checked @endif id="sortable" name="sortable" value="1">
-                            Sortable
-                        </label>
-                    </div>
+            @include('argon::inc.new-alerts')
 
-                    @if($type->isPage())
-                        <div class="form-group">
-                            <label for="renderable">
-                                <input type="hidden" value="0" name="renderable">
-                                <input type="checkbox" class="{{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'renderable') }}" @if($group->renderable) checked @endif id="renderable" name="renderable" value="1">
-                                Renderable
-                            </label>
+            <div class="o-form">
+
+                <div class="o-form__title">Edit field group</div>
+
+                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="name">Name*</label>
+                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $group->name) }}">
                         </div>
+                        <div class="o-form-status__message">
+                            <div class="o-form-status__icon">
+                                <div class="o-form-status__icon--error">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                </div>
+                                <div class="o-form-status__icon--success">
+                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                </div>
+                            </div>
+                            <div class="o-form-status__message-bar">
+                                <label for="name">{{ getError($errors, 'name') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form__list">
+                            <div class="o-checkbox">
+                                <input type="hidden" name="sortable" class="js-toggle-value" value="0">
+                                <label>
+                                    <input type="checkbox" value="1" id="sortable" class="js-toggle-input" {{ $group->sortable ? 'checked' : '' }}>
+                                    <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                </label>
+                                <label for="sortable">Sortable</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form__list">
+                            <div class="o-checkbox">
+                                <input type="hidden" name="renderable" class="js-toggle-value" value="0">
+                                <label>
+                                    <input type="checkbox" value="1" id="renderable" class="js-toggle-input" {{ $group->renderable ? 'checked' : '' }}>
+                                    <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                </label>
+                                <label for="renderable">Renderable</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o-form__title">Settings</div>
+
+
+
+
+                <div class="form-group">
+
+                    @if($settings = old('settings'))
+
+                        @foreach($settings as $setting)
+                            @include('argon::groups.setting', ['key'=>$setting['key'], 'value'=>$setting['value']])
+                        @endforeach
+
+                    @else
+
+                        @forelse ($group->settings as $key => $value)
+                            @include('argon::groups.setting')
+                        @empty
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="settings[slug][key]" placeholder="slug" value="slug">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ str_slug(old('name', $group->name)) }}" value="">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="settings[location][key]" placeholder="Key" value="location">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="settings[location][value]" placeholder="i.e. sidebar" value="">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="settings[image][key]" placeholder="Key" value="image">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="settings[image][value]" placeholder="url string" value="">
+                                </div>
+                            </div>
+
+                            @include('argon::groups.setting')
+                        @endforelse
+
                     @endif
 
-                    <div class="form-group">
-                        <label for="settings" class="required">Settings</label>
+                    <a href="#" class="o-btn o-btn--sm" id="settings-add">Add Option</a>
+                </div>
 
-                        @if($settings = old('settings'))
 
-                            @foreach($settings as $setting)
-                                @include('argon::groups.setting', ['key'=>$setting['key'], 'value'=>$setting['value']])
-                            @endforeach
 
-                        @else
 
-                            @forelse ($group->settings as $key => $value)
-                                @include('argon::groups.setting')
-                            @empty
 
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="settings[slug][key]" placeholder="slug" value="slug">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ str_slug(old('name', $group->name)) }}" value="">
-                                    </div>
-                                </div>
+            </div>
+        </main>
 
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="settings[location][key]" placeholder="Key" value="location">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[location][value]" placeholder="i.e. sidebar" value="">
-                                    </div>
-                                </div>
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
 
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" name="settings[image][key]" placeholder="Key" value="image">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[image][value]" placeholder="url string" value="">
-                                    </div>
-                                </div>
+                    <div class="c-footer__buttons">
+                        <div></div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                                @include('argon::groups.setting')
-                            @endforelse
-
-                        @endif
-
-                        <button class="btn btn-secondary-outline btn-sm" id="settings-add">Add New</button>
+                            <a class="o-btn o-btn--sm" href="{{route('cms:types:groups', [$type->id])}}">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
+                        </div>
                     </div>
 
                 </div>
             </div>
+        </footer>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-link" href="{{route('cms:types:groups', [$type->id])}}">Back to manage groups</a>
-            <a class="btn btn-link" href="{{route('cms:types:edit', [$type->id])}}">Back to edit type</a>
-            <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
-        </form>
-    </div>
+    </form>
+
 @endsection

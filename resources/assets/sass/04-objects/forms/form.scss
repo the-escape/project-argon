@@ -45,6 +45,10 @@
                 }
             }
         }
+
+        &--indent {
+            margin-left: $full-gutter;
+        }
     }
 
     &--sm &__group {

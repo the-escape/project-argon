@@ -403,7 +403,8 @@ class EntityTypeController extends BaseController
             'entity_type_id'=>$typeId,
         ]);
 
-        return Redirect::route('cms:types:groups', [$typeId])
+//        return Redirect::route('cms:types:groups', [$typeId])
+        return Redirect::route('cms:types:groups:edit', [$typeId, $group->id])
             ->with('message', Lang::get('argon-entities::group.created'));
     }
 
@@ -931,7 +932,10 @@ class EntityTypeController extends BaseController
 
 
         $settings = $field->settings;
-        $settings->options[] = Input::get('name');
+        $name = Input::get('name');
+        $value = Input::get('value', $name);
+
+        $settings->options[] = [$value => $name];
 
         $field = $fieldRepository->update(['settings' => $settings], $field->id);
 
@@ -1071,7 +1075,10 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->find($fieldId);
 
         $settings = $field->settings;
-        $settings->options[] = Input::get('name');
+        $name = Input::get('name');
+        $value = Input::get('value', $name);
+
+        $settings->options[] = [$value => $name];
 
         $field = $fieldRepository->update(['settings' => $settings], $field->id);
 

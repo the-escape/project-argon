@@ -45,7 +45,7 @@
             @endforeach
         </nav>
 
-		<a class="c-sidebar__logo" href="/dashboard">
+		<a class="c-sidebar__logo" href="/">
 			<img alt="logo" src="/argon/images/e.png">
 		</a>
 	</div>

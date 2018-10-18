@@ -2,12 +2,13 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 192px;
-	height: 15vmin;
-	min-height: 140px;
+	//height: 192px;
+	//height: 15vmin;
+	//min-height: 140px;
 	background-color: $secondary-highlight;
 
 	&__title{
+		min-height: 150px;
 		display: flex;
 		align-items: center;
 		flex: 1 0 auto;
