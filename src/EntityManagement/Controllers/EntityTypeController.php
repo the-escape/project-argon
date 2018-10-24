@@ -36,11 +36,34 @@ class EntityTypeController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage(EntityTypeRepository $typeRepository)
+    public function manage(
+        Request $request,
+        EntityTypeRepository $typeRepository)
     {
-        $types = $typeRepository->getOrdered();
+        $model = $typeRepository->model();
+        $query = $model::where('system', '=', 0);
 
-        return View::make('argon::types.manage', ['types' => $types]);
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('type', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $types = $query->get();
+//        $types = $typeRepository->getOrdered();
+
+        return View::make('argon::types.manage', [
+            'types' => $types,
+            'request' => $request]
+        );
     }
 
     public function create()
@@ -1500,5 +1523,35 @@ class EntityTypeController extends BaseController
         }
 
         return view('argon::groups.export', compact('result'))->render();
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'type':
+                $query = $query->orderBy('type', $dir);
+                break;
+
+            case 'created_at':
+                $query = $query->orderBy('created_at', $dir);
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }

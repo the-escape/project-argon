@@ -38,6 +38,10 @@
 		}
 	}
 
+	&__item + &__no-blocks-message {
+		display: none;
+	}
+
 	&__item-name{
 		flex: 1 1 300px;
 		text-align: left;
@@ -64,6 +68,7 @@
 		border-right: 1px solid #c1c1c1;
 
 		.editing &{
+			background-color: white;
 			border-color: $primary;
 		}
 	}
@@ -75,5 +80,23 @@
 		&.expanded{
 			display: block;
 		}
+	}
+
+	&__img-preview {
+		position: absolute;
+		bottom: 65px;
+		right: 120px;
+		width: 195px;
+		//background-color: white;
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	&__no-blocks-message {
+		padding: 15px;
+		color: $grey;
 	}
 }

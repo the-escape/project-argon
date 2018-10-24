@@ -1,18 +1,18 @@
-.c-import-field-groups{
+.c-import-field-groups {
 	margin-top: 48px;
 
-	&__title{
+	&__title {
 		p {
 			margin-top: 0 !important;
 			font-size: 1.4rem !important;
 		}
 	}
 
-	&__search{
+	&__search {
 		margin-top: 15px;
 	}
 
-	&__column{
+	&__column {
 		border-left: 1px solid $grey-light;
 		border-right: 1px solid $grey-light;
 		border-bottom: 1px solid $grey-light;
@@ -20,7 +20,7 @@
 		overflow-y: auto;
 	}
 
-	&__navtree{
+	&__navtree {
 		margin: 0 0 10px;
 		padding: 0 20px 10px;
 	}

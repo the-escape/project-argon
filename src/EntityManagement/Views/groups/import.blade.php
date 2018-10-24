@@ -39,7 +39,7 @@
                             <span class="c-library-tools__button c-library-tools__create create fa fa-plus"></span>
                             <span class="c-library-tools__button c-library-tools__save save fa fa-save"></span>
                             <span class="c-library-tools__button c-library-tools__input"><input type="text" name="lib_block_name"></span>
-                            <label class="">
+                            <label class="js-select-image">
                                 <span class="c-library-tools__button c-library-tools__image image fa fa-image"></span>
                                 <input type="file" name="lib_block_image_tmp" style="display:none;">
                                 <input type="hidden" name="lib_block_image">
@@ -147,9 +147,7 @@
                                         </div>
                                     @endforeach
 
-                                    @if(empty($blocks))
-                                        <p class="text-muted">No blocks in the library.</p>
-                                    @endif
+                                    <div class="c-blocks-library__no-blocks-message">No blocks in the library.</div>
                                 </div>
                                 <div class="c-blocks-library__item--template js-block-template">
                                     <div class="c-blocks-library__item-name"></div>
@@ -161,9 +159,6 @@
 
 
                 </div>
-
-
-
 
             </div>
         </main>
@@ -178,7 +173,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                             <a class="o-btn o-btn--sm" href="{{route('cms:types:edit', [$type->id])}}">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Save">
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import">
                         </div>
                     </div>
 
@@ -203,7 +198,13 @@
 
     <script>
 
-        var BlocksLib = {};
+        var BlocksLib = {
+            mode: 'json',
+            json: null,
+            mappers: null,
+            blade: null,
+            selectedBlock: null
+        };
 
         $(function(){
 
@@ -213,6 +214,8 @@
                 mappersTextarea = $('#mappers-textarea').hide(),
                 JsonMode = ace.require("ace/mode/json").Mode,
                 PhpMode = ace.require("ace/mode/php").Mode,
+                blockImageInput = $('[name=lib_block_image]'),
+                blockImageBtn = $('.js-select-image'),
                 blockNameInput = $('[name=lib_block_name]');
 
             BlocksLib.mode = 'json';
@@ -221,19 +224,27 @@
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode(new JsonMode());
 
-            editor.getSession().setValue(jsonTextarea.val());
+//            editor.getSession().setValue(jsonTextarea.val());
+            BlocksLib.blade = bladeTextarea.val();
+            BlocksLib.mappers = mappersTextarea.val();
+            BlocksLib.json = jsonTextarea.val();
+
             editor.getSession().on('change', function(){
+                console.log('change');
 
                 switch(BlocksLib.mode){
                     case 'blade':
-                        bladeTextarea.val(editor.getSession().getValue());
+                        BlocksLib.blade = editor.getSession().getValue();
+//                        bladeTextarea.val(editor.getSession().getValue());
                         break;
                     case 'mappers':
-                        mappersTextarea.val(editor.getSession().getValue());
+                        BlocksLib.mappers = editor.getSession().getValue();
+//                        mappersTextarea.val(editor.getSession().getValue());
                         break;
                     case 'json':
                     default:
-                        jsonTextarea.val(editor.getSession().getValue());
+                        BlocksLib.json = editor.getSession().getValue();
+//                        jsonTextarea.val(editor.getSession().getValue());
                         break;
                 }
             });
@@ -315,10 +326,24 @@
 
                             BlocksLib.selectedBlock = r.id;
                             $('.js-lib-block').val(r.id);
-                            jsonTextarea.val(json);
-                            bladeTextarea.val(r.blade);
-                            mappersTextarea.val(r.mappers);
+
+                            BlocksLib.json = json;
+                            BlocksLib.mappers = r.mappers;
+                            BlocksLib.blade = r.blade;
+
+
+//                            jsonTextarea.val(json);
+//                            bladeTextarea.val(r.blade);
+//                            mappersTextarea.val(r.mappers);
+
                             blockNameInput.val(r.name);
+
+                            if (r.image) {
+                                blockImageInput.val(r.image);
+                                blockImageBtn.addClass('selected');
+                            } else {
+                                unsetImage();
+                            }
 
                             $('.js-loading-block').removeClass('show');
 
@@ -346,12 +371,29 @@
                 deleteBlock();
             }).on('click', '.create', function() {
                 createBlock();
+            }).on('click', '.js-select-image.selected', function(e) {
+                e.preventDefault();
+                unsetImage();
+            }).on('mouseover', '.js-select-image.selected', function() {
+                var src = blockImageInput.val(),
+                    el = $('<div class="c-blocks-library__img-preview"><img src="'+src+'"></div>');
+                $('.c-json-editor').append(el);
+            }).on('mouseout', '.js-select-image.selected', function() {
+                $('.c-json-editor').find('.c-blocks-library__img-preview').remove();
             });
+
+
+            $('.js-alerts').on('click', '.js-close-alert', function(e) {
+                e.preventDefault();
+                $(this).parent().remove();
+            })
 
 
 
             $('[name=lib_block_image_tmp]').on('change', function(){
                 encodeImagetoBase64(this);
+                console.log('selected image');
+                $('.js-select-image').addClass('selected');
             });
 
 
@@ -377,7 +419,12 @@
 
                             var json = JSON.stringify(r, null, 4);
 
-                            jsonTextarea.val(json);
+                            BlocksLib.json = json;
+                            BlocksLib.mappers = '';
+                            BlocksLib.blade = '';
+
+//                            jsonTextarea.val(json);
+
                             changeEditorMode('json');
                             $('.js-loading-block').removeClass('show');
 
@@ -417,6 +464,10 @@
             $('.js-import').on('click', function(e) {
                 e.preventDefault();
 
+                jsonTextarea.val(BlocksLib.json);
+                bladeTextarea.val(BlocksLib.blade);
+                mappersTextarea.val(BlocksLib.mappers);
+
                 var btn = $(this),
                     form = btn.closest('form'),
                     action = form.attr('action'),
@@ -432,7 +483,7 @@
                     data: data
                 }).done(function(r) {
                     var msg = '',
-                        closeBtn = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                        closeBtn = '<button type="button" class="close js-close-alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 
                     btn.prop('disabled',false).html('Save');
 
@@ -487,9 +538,9 @@
 
                 mode = selectedMode || BlocksLib.mode;
 
-                var activeToggle = $('.js-library-tools .toggle.active'),
-                    currentMode = activeToggle.data('mode'),
-                    currentData = editor.getSession().getValue();
+                BlocksLib.mode = mode;
+
+                var activeToggle = $('.js-library-tools .toggle.active');
 
                 activeToggle.removeClass('active');
 
@@ -501,22 +552,25 @@
                         case 'blade':
                             $('.js-library-tools .toggle-blade').addClass('active');
 
-                            editor.getSession().setValue(bladeTextarea.val());
+//                            editor.getSession().setValue(bladeTextarea.val());
                             editor.session.setMode(new PhpMode());
+                            editor.getSession().setValue(BlocksLib.blade);
 
                             break;
                         case 'mappers':
                             $('.js-library-tools .toggle-mappers').addClass('active');
 
-                            editor.getSession().setValue(mappersTextarea.val());
+//                            editor.getSession().setValue(mappersTextarea.val());
                             editor.session.setMode(new PhpMode());
+                            editor.getSession().setValue(BlocksLib.mappers);
                             break;
                         case 'json':
                         default:
                             $('.js-library-tools .toggle-json').addClass('active');
 
-                            editor.getSession().setValue(jsonTextarea.val());
+//                            editor.getSession().setValue(jsonTextarea.val());
                             editor.session.setMode(new JsonMode());
+                            editor.getSession().setValue(BlocksLib.json);
                             break;
                     }
 
@@ -525,8 +579,9 @@
 
                     $('.js-library-tools .toggle-json').addClass('active');
 
-                    editor.getSession().setValue(jsonTextarea.val());
+//                    editor.getSession().setValue(jsonTextarea.val());
                     editor.session.setMode(new JsonMode());
+                    editor.getSession().setValue(BlocksLib.json);
 
                     $('.js-library-tools').removeClass('show');
 
@@ -571,11 +626,18 @@
                     url += '/' + BlocksLib.selectedBlock;
                 }
 
+//                var data = {
+//                    name: blockNameInput.val(),
+//                    json: jsonTextarea.val(),
+//                    blade: bladeTextarea.val(),
+//                    mappers: mappersTextarea.val(),
+//                };
+
                 var data = {
                     name: blockNameInput.val(),
-                    json: jsonTextarea.val(),
-                    blade: bladeTextarea.val(),
-                    mappers: mappersTextarea.val(),
+                    json: BlocksLib.json,
+                    blade: BlocksLib.blade,
+                    mappers: BlocksLib.mappers,
                 };
 
                 if($('[name=lib_block_image]').val() !== '')
@@ -596,8 +658,8 @@
 
                             var newBlock = $('.js-block-template').clone();
 
-                            newBlock.removeClass('js-block-template').removeClass('c-blocks-library__item--template');
-                            newBlock.addClass('c-blocks-library__item').addClass('js-get-library-block editing');
+                            newBlock.removeClass('js-block-template c-blocks-library__item--template');
+                            newBlock.addClass('c-blocks-library__item js-get-library-block editing show');
                             newBlock.data('blockId', r.block.id);
                             newBlock.attr('data-block-id', r.block.id);
                             newBlock.data('blockUrl', '/admin/blockslibrary/'+r.block.id);
@@ -605,7 +667,7 @@
                             newBlock.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
 
 
-                            $('.c-blocks-library').prepend(newBlock);
+                            $('.js-blocks-library').prepend(newBlock);
 
                         } else {
 
@@ -630,8 +692,7 @@
 
                 BlocksLib.selectedBlock = null;
                 $('.js-lib-block').val();
-                bladeTextarea.val('');
-                mappersTextarea.val('');
+
                 blockNameInput.val('');
             }
 
@@ -644,6 +705,13 @@
                     $("[name=lib_block_image]").val(reader.result);
                 }
                 reader.readAsDataURL(file);
+            }
+
+            function unsetImage() {
+                blockImageBtn.removeClass('selected');
+                blockImageBtn.find('[name=lib_block_image_tmp]').val('');
+                blockImageInput.val('');
+                $('.c-json-editor').find('.c-blocks-library__img-preview').remove();
             }
 
 

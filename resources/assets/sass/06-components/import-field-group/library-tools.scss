@@ -53,33 +53,37 @@
 		}
 
 		&.error {
-			background-color: rgb(255, 150, 150)
+			input {
+				background-color: $danger;
+			}
 		}
 	}
 
 	&__image{
 		height: 30px !important;
-	}
 
-	&__delete{
-		margin-left: 10px;
-	}
-
-	&__close{
-		margin-right: 0;
-	}
-
-	&__toggle{
-		padding: 3px 8px;
-		margin-right: 1px;
-
-		&.active{
+		.selected & {
 			color: $grey-white;
 			background-color: $primary;
 		}
 	}
 
+	&__delete {
+		margin-left: 10px;
+	}
 
+	&__close {
+		margin-right: 0;
+	}
 
+	&__toggle {
+		padding: 3px 8px;
+		margin-right: 1px;
+
+		&.active {
+			color: $grey-white;
+			background-color: $primary;
+		}
+	}
 
 }
