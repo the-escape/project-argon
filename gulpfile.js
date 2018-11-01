@@ -46,16 +46,19 @@ if (config.patternlabDevelopment) {
     browserSync.create('patternLab')
 }
 
-function publishArtisan(done){
+function publishArtisan (done) {
     if (config.backendDevelopment) {
-        exec('php ../artisan vendor:publish --tag=public --force', (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`)
-            }else{
-                console.log(`stdout: ${stdout}`)
-                console.log(`stderr: ${stderr}`)
+        exec(
+            'php ../artisan vendor:publish --tag=public --force',
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`exec error: ${error}`)
+                } else {
+                    console.log(`stdout: ${stdout}`)
+                    console.log(`stderr: ${stderr}`)
+                }
             }
-        })
+        )
 
         done && done()
     }
@@ -287,6 +290,7 @@ function buildJS (done) {
     const { buildPaths, pathsDemoHtml, pathsBackend } = setupJsPaths()
 
     const tasks = []
+
     if (config.backendDevelopment || config.demoHtmlDevelopment) {
         tasks.push(cleanJS(buildPaths, 'Build JS'))
         tasks.push(
@@ -1066,7 +1070,10 @@ gulp.task(
 )
 gulp.task('js', gulp.series(buildJS(), doneSeries, publishArtisan))
 gulp.task('css', gulp.series(buildCss(), doneSeries, publishArtisan))
-gulp.task('demoHtml', gulp.series(patternLabBuild(), buildDemo(), doneSeries, publishArtisan))
+gulp.task(
+    'demoHtml',
+    gulp.series(patternLabBuild(), buildDemo(), doneSeries, publishArtisan)
+)
 gulp.task('old-cms', gulp.series(copyCmsAssets(), doneSeries, publishArtisan))
 gulp.task(
     'watch',

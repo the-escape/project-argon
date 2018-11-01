@@ -32,7 +32,7 @@ function scss (paths) {
                 }).on('error', sass.logError)
             )
             .pipe(cached('sass_compiler'))
-            .pipe(sourcemaps.write('./'))
+            .pipe(sourcemaps.write('./', {}))
             .pipe(size({ gzip: true, showFiles: true }))
             .pipe(gulp.dest(paths.dest))
     }

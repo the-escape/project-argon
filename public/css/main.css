@@ -526,23 +526,6 @@ q {
   .o-form input[type="tel"] ::-webkit-input-placeholder,
   .o-form input[type="color"] ::-webkit-input-placeholder {
     color: #d8d8d8; }
-  .o-form select :-ms-input-placeholder,
-  .o-form textarea :-ms-input-placeholder,
-  .o-form input[type="text"] :-ms-input-placeholder,
-  .o-form input[type="password"] :-ms-input-placeholder,
-  .o-form input[type="datetime"] :-ms-input-placeholder,
-  .o-form input[type="datetime-local"] :-ms-input-placeholder,
-  .o-form input[type="date"] :-ms-input-placeholder,
-  .o-form input[type="month"] :-ms-input-placeholder,
-  .o-form input[type="time"] :-ms-input-placeholder,
-  .o-form input[type="week"] :-ms-input-placeholder,
-  .o-form input[type="number"] :-ms-input-placeholder,
-  .o-form input[type="email"] :-ms-input-placeholder,
-  .o-form input[type="url"] :-ms-input-placeholder,
-  .o-form input[type="search"] :-ms-input-placeholder,
-  .o-form input[type="tel"] :-ms-input-placeholder,
-  .o-form input[type="color"] :-ms-input-placeholder {
-    color: #d8d8d8; }
   .o-form select ::-ms-input-placeholder,
   .o-form textarea ::-ms-input-placeholder,
   .o-form input[type="text"] ::-ms-input-placeholder,

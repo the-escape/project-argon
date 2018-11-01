@@ -11,6 +11,8 @@ const WebpackDevMiddleware = require('webpack-dev-middleware')
 const rimraf = require('rimraf')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const { onError } = require('./util')
 const banner = require('../banner')
@@ -30,19 +32,35 @@ function setupWebackConfig (
             publicPath: paths.public,
             pathinfo: true
         },
-        mode: 'none',
+        mode: 'development',
         devtool: 'source-map',
         module: {
             rules: [
                 {
+                    test: /\.vue$/,
+                    loader: 'vue-loader'
+                },
+                {
                     test: /\.js$/,
-                    use: {
-                        loader: 'babel-loader'
-                    }
+                    loader: 'babel-loader'
+                },
+                {
+                    test: /\.css$/,
+                    use: [
+                        process.env.NODE_ENV !== 'production'
+                            ? 'vue-style-loader'
+                            : MiniCssExtractPlugin.loader,
+                        'css-loader'
+                    ]
                 }
             ]
         },
-        plugins: [],
+        plugins: [
+            new VueLoaderPlugin(),
+            new MiniCssExtractPlugin({
+                filename: 'vue.css'
+            })
+        ],
         optimization: {
             namedModules: true,
             concatenateModules: true,
@@ -51,15 +69,15 @@ function setupWebackConfig (
     }
 
     if (!isDevMiddleware) {
-        // config.optimization.splitChunks = {
-        //     cacheGroups: {
-        //         vendors: {
-        //             test: /[\\/]node_modules[\\/]/,
-        //             name: 'vendor',
-        //             chunks: 'all'
-        //         }
-        //     }
-        // }
+        config.optimization.splitChunks = {
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all'
+                }
+            }
+        }
 
         config.plugins.push(
             new ManifestPlugin({
@@ -75,6 +93,7 @@ function setupWebackConfig (
 
     if (productionBuild) {
         config.devtool = ''
+        config.mode = 'production'
         config.optimization.namedModules = false
         config.optimization.concatenateModules = true
         config.optimization.minimize = true
@@ -93,8 +112,8 @@ function setupWebackConfig (
                 banner: banner,
                 raw: true,
                 entryOnly: true
-            }),
-            new BundleAnalyzerPlugin()
+            })
+            // new BundleAnalyzerPlugin()
         ]
 
         config.plugins = config.plugins.concat(productionPlugins)
