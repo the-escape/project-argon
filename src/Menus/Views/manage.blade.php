@@ -25,7 +25,13 @@
                     <tr>
                         <td>{{$menu->name}}</td>
                         <td>{{$menu->slug}}</td>
-                        <td>{{$menu->locale->name}}</td>
+                        <td>
+                            @foreach($locales as $locale)
+                                @if($locale->id == $menu->locale_id)
+                                    {{ $locale->name }}
+                                @endif
+                            @endforeach
+                        </td>
                         <td>
                             <a href="{{ route('cms:menus:edit', ['id' => $menu->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                             <a href="{{ route('cms:menus:delete', ['id' => $menu->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
