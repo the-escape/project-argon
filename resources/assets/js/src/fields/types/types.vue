@@ -1,0 +1,50 @@
+<template>
+    <component
+    v-bind:is="type"
+    :field="field"
+    :input-name="inputName"
+    ></component>
+</template>
+
+<script>
+import Text from './text.vue'
+import Email from './email.vue'
+import Phone from './phone.vue'
+
+const typeMap = {
+    'text': 'text-input',
+    'email': 'email-input',
+    'phone': 'phone-input'
+}
+
+export default {
+    props: ['field'],
+    components: {
+        'text-input': Text,
+        'email-input': Email,
+        'phone-input': Phone
+    },
+    data() {
+        return {
+            input: {
+                inputName: 'name',
+                value: 'My Name',
+                label: 'Name',
+
+                error: true,
+                isDirty: true,
+                statusMsg: 'testing'
+            }
+        }
+    },
+    computed: {
+        type: function() {
+            const type = typeMap[this.field.options.typeKey]
+            return type || 'text-input'
+        },
+        inputName: function() {
+            return `field[${this.field.id}]`
+        }
+    }
+}
+</script>

@@ -1,0 +1,52 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['testing-group'] = [
+        {
+            id: '392',
+            options: {
+                typeKey: 'text',
+                name: 'Title',
+                settings: {
+                    required: 0,
+                    multiline: 0,
+                    multiple: 0,
+                    minlength: null,
+                    maxlength: null,
+                    url: 0,
+                    integer: 0,
+                    float: 0,
+                    email: 0,
+                    phone: 0
+                }
+            },
+            values: [],
+            errors: ['Field is required'],
+            helpText: '<p>Some help text</p>', //new
+        },
+        {
+            id: '401',
+            options: {
+                typeKey: 'email',
+                name: 'Email',
+                settings: {
+                    required: 0,
+                    multiline: 0,
+                    multiple: 0,
+                    minlength: null,
+                    maxlength: null,
+                    url: 0,
+                    integer: 0,
+                    float: 0,
+                    email: 0,
+                    phone: 0
+                }
+            },
+            values: [
+                'tom@tom-hopkins.co.uk'
+            ],
+            errors: [],
+            helpText: '<p>Some help text</p>', //new
+        }
+    ]
+</script>
+<div class="js-fields" data-name="testing-group"></div>

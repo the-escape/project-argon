@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <div class="example">{{ msg }}</div>
-        <child test-msg="testing prop"></child>
+    <div class="o-form l-container">
+        <types v-for="field in fieldGroups" :key="field.id" :field="field"></types>
     </div>
 </template>
 
 <script>
-import child from './child.vue'
+import types from './types/types.vue'
 
 export default {
     components: {
-        child
+        types
     },
-    data () {
+    data() {
         return {
-            msg: 'Hello world!'
+            fieldGroups: window.fieldGroups[this.$root.$options.fieldGroupName]
         }
     }
 }
