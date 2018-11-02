@@ -24,19 +24,6 @@ export default {
         'email-input': Email,
         'phone-input': Phone
     },
-    data() {
-        return {
-            input: {
-                inputName: 'name',
-                value: 'My Name',
-                label: 'Name',
-
-                error: true,
-                isDirty: true,
-                statusMsg: 'testing'
-            }
-        }
-    },
     computed: {
         type: function() {
             const type = typeMap[this.field.options.typeKey]

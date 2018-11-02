@@ -3,7 +3,7 @@
     :options="field.options"
     :errors="field.errors"
     :help-text="field.helpText"
-    :value="value"
+    :values="field.values"
     :icons="icons"
     :input-name="inputName"
     type="tel"
@@ -26,9 +26,6 @@ export default {
                 },
                 postIcon: this.field.options.postIcon || false
             }
-        },
-        value: function() {
-            return this.field.values[0]
         }
     }
 }
