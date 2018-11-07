@@ -1,8 +1,7 @@
 <template>
     <component
     v-bind:is="type"
-    :field="field"
-    :input-name="inputName"
+    :field-id="field.id"
     ></component>
 </template>
 
@@ -28,9 +27,6 @@ export default {
         type: function() {
             const type = typeMap[this.field.options.typeKey]
             return type || 'text-input'
-        },
-        inputName: function() {
-            return `field[${this.field.id}]`
         }
     }
 }

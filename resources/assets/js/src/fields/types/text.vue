@@ -1,11 +1,7 @@
 <template>
     <base-input
-    :options="field.options"
-    :errors="field.errors"
-    :help-text="field.helpText"
-    :values="field.values"
+    :field-id="fieldId"
     :icons="icons"
-    :input-name="inputName"
     type="text"
     ></base-input>
 </template>
@@ -14,15 +10,17 @@
 import base from './base.vue'
 
 export default {
-    props: ['field', 'inputName'],
+    props: ['fieldId'],
     components: {
         'base-input': base
     },
     computed: {
-        icons: function(){
+        icons: function () {
+            const field = this.$store.getters.getField(this.fieldId)
+
             return {
-                preIcon: this.field.options.preIcon || false,
-                postIcon: this.field.options.postIcon || false
+                preIcon: (field && field.options.preIcon) || false,
+                postIcon: (field && field.options.postIcon) || false
             }
         }
     }

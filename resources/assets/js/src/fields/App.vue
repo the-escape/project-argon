@@ -1,6 +1,6 @@
 <template>
     <div class="o-form l-container">
-        <types v-for="field in fieldGroups" :key="field.id" :field="field"></types>
+        <types v-for="field in fields" :key="field.id" :field="field"></types>
     </div>
 </template>
 
@@ -11,16 +11,10 @@ export default {
     components: {
         types
     },
-    data() {
-        return {
-            fieldGroups: window.fieldGroups[this.$root.$options.fieldGroupName]
+    computed: {
+        fields: function() {
+            return this.$store.state.fields
         }
     }
 }
 </script>
-
-<style>
-.example {
-    color: red;
-}
-</style>
