@@ -4,8 +4,9 @@ import Vuex from 'vuex'
 import App from './App.vue'
 
 Vue.config.productionTip = false
-// https://ypereirareis.github.io/blog/2017/04/25/vuejs-two-way-data-binding-state-management-vuex-strict-mode/
+// https://github.com/SortableJS/Vue.Draggable/issues/381
 const store = new Vuex.Store({
+    strict: true,
     state: {
         fields: [
             {
@@ -36,8 +37,32 @@ const store = new Vuex.Store({
         ]
     },
     mutations: {
-        updateUser: function (state, user) {
-            Object.assign(state.user, user)
+        updateUser: function (state, payload) {
+            state.fields = state.fields.map(field => {
+                if (field.id !== payload.fieldID) {
+                    return field
+                }
+
+                field.users = field.users.map(user => {
+                    if (user.id !== payload.userID) {
+                        return user
+                    }
+                    user = Object.assign(user, payload.user)
+                    return user
+                })
+                return field
+            })
+        },
+        addUser: function (state, payload) {
+            state.fields = state.fields.map(field => {
+                if (field.id !== payload.fieldID) {
+                    return field
+                }
+
+                payload.user.id = field.users.length
+                field.users.push(payload.user)
+                return field
+            })
         }
     }
 })
