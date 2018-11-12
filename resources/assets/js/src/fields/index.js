@@ -19,14 +19,14 @@ export function Fields () {
 
         let fieldGroups = window.fieldGroups[name]
         fieldGroups = fieldGroups.map(field => {
-            field.values = field.values.map((val, id) => ({
-                val,
+            field.values = field.values.map((value, id) => ({
+                value,
                 id
             }))
             return field
         })
 
-        store.commit('setFields', fieldGroups)
+        store.commit('setFields', { fields: fieldGroups })
 
         return new Vue({
             store,

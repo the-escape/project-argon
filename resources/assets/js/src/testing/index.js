@@ -63,6 +63,16 @@ const store = new Vuex.Store({
                 field.users.push(payload.user)
                 return field
             })
+        },
+        updateUsers: function (state, payload) {
+            state.fields = state.fields.map(field => {
+                if (field.id !== payload.fieldID) {
+                    return field
+                }
+
+                field.users = payload.users
+                return field
+            })
         }
     }
 })

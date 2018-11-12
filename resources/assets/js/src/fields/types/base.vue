@@ -3,9 +3,9 @@
         <validation :status-error="field.errors" :input-name="inputName">
             <label :for="inputName">{{ name }}</label>
             <multi :field-id="fieldId" :input-name="inputName">
-                <template slot-scope="{ value }">
+                <template slot-scope="{ valueObj }">
                     <input-icon :pre-icon="icons.preIcon" :post-icon="icons.postIcon">
-                        <input :type="type" :id="inputName" :name="inputName" v-model="value">
+                        <input :type="type" :id="inputName" :name="inputName" :value="valueObj.value" v-on:keyup.stop="updateValue(valueObj, $event.target.value)">
                     </input-icon>
                 </template>
             </multi>
@@ -27,6 +27,16 @@ export default {
         'input-icon': InputIcon,
         'validation': Validation,
         'multi': Multi
+    },
+    methods: {
+        updateValue: function(valueObj, newValue) {
+            valueObj.value = newValue
+
+            this.$store.commit('updateValue', {
+                fieldID: this.fieldId,
+                newValue: valueObj
+            })
+        }
     },
     computed: {
         field: function () {

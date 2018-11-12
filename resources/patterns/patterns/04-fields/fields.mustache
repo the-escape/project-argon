@@ -19,7 +19,7 @@
                     phone: 0
                 }
             },
-            values: [],
+            values: [''],
             errors: ['Field is required'],
             helpText: '<p>Some help text</p>', //new
         },
@@ -47,6 +47,82 @@
             ],
             errors: [],
             helpText: '<p>Some help text</p>', //new
+        },
+        {
+            id: '402',
+            options: {
+                typeKey: 'combo',
+                name: 'Combo Test',
+                comboAddName: 'Item',
+                settings: {
+                    multiple: 1
+                }
+            },
+            values: [
+                {
+                    '395': [
+                        'test 1',
+                        'test 2'
+                    ],
+                    '396': [
+                        '/contact'
+                    ]
+                },
+                {
+                    '395': [
+                        'test 4',
+                        'test 5'
+                    ],
+                    '396': [
+                        '/about'
+                    ]
+                }
+            ],
+            errors: [],
+            fields: [
+                {
+                    id: '395',
+                    options: {
+                        typeKey: 'text',
+                        name: 'Text Stuff',
+                        settings: {
+                            required: 0,
+                            multiline: 0,
+                            multiple: 1,
+                            minlength: null,
+                            maxlength: null,
+                            url: 0,
+                            integer: 0,
+                            float: 0,
+                            email: 0,
+                            phone: 0
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                },
+                {
+                    id: '396',
+                    options: {
+                        typeKey: 'text',
+                        name: 'Url',
+                        settings: {
+                            required: 0,
+                            multiline: 0,
+                            multiple: 0,
+                            minlength: null,
+                            maxlength: null,
+                            url: 1,
+                            integer: 0,
+                            float: 0,
+                            email: 0,
+                            phone: 0
+                        }
+                    },
+                    message: '',
+                    helpText: '<p>Some help text</p>'
+                }
+            ]
         }
     ]
 </script>

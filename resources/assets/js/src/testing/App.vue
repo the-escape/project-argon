@@ -2,7 +2,7 @@
     <div class="l-container l-full o-form">
         <pre>{{ fields }}</pre>
         <div v-for="field in fields" :key="field.id">
-            <users :users="field.users" :fieldid="field.id" />
+            <users :fieldid="field.id" />
         </div>
     </div>
 </template>
