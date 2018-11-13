@@ -2,10 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
 import draggable from '../../vendor/vuedraggable'
+import types from './types/types.vue'
 import { getStore } from './store'
 
 Vue.config.productionTip = false
 Vue.component('draggable', draggable)
+Vue.component('types', types)
 Vue.use(Vuex)
 
 export function Fields () {
@@ -18,13 +20,7 @@ export function Fields () {
         const store = getStore()
 
         let fieldGroups = window.fieldGroups[name]
-        fieldGroups = fieldGroups.map(field => {
-            field.values = field.values.map((value, id) => ({
-                value,
-                id
-            }))
-            return field
-        })
+        fieldGroups = processFields(fieldGroups)
 
         store.commit('setFields', { fields: fieldGroups })
 
@@ -33,4 +29,35 @@ export function Fields () {
             render: h => h(App)
         }).$mount(el)
     })
+}
+
+function processFields (fields) {
+    return fields.map(field => {
+        if (field.options.typeKey === 'combo') {
+            field = processCombo(field)
+        } else {
+            field.values = processValues(field.values)
+        }
+        return field
+    })
+}
+
+function processValues (values) {
+    return values.map((value, id) => ({
+        value,
+        id
+    }))
+}
+
+function processCombo (combo) {
+    combo.values = combo.values.map((comboItemValues, index) => {
+        const fieldIds = Object.keys(comboItemValues)
+        const values = fieldIds.reduce((acc, fieldID) => {
+            acc[fieldID] = processValues(comboItemValues[fieldID])
+            return acc
+        }, {})
+        values.id = index
+        return values
+    })
+    return combo
 }

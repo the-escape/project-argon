@@ -36,24 +36,45 @@
 import ConfirmBtn from './confirm-btn.vue'
 
 export default {
+    name: 'multi',
     components:{
         'confirm-btn': ConfirmBtn
     },
-    props: ['inputName', 'fieldId'],
+    props: ['inputName', 'fieldId', 'comboId', 'comboValueId'],
     methods: {
         addEmptyValue: function (){
-            this.$store.commit('addValue', {
-                fieldID: this.fieldId,
-                valueObj: {
-                    value: ''
-                }
-            })
+            if(this.comboId){
+                this.$store.commit('addComboItemValue', {
+                    fieldID: this.fieldId,
+                    comboID: this.comboId,
+                    comboValueId: this.comboValueId,
+                    valueObj: {
+                        value: ''
+                    }
+                })
+            }else{
+                this.$store.commit('addValue', {
+                    fieldID: this.fieldId,
+                    valueObj: {
+                        value: ''
+                    }
+                })
+            }
         },
         deleteValue: function(valueID) {
-            this.$store.commit('removeValue', {
-                fieldID: this.fieldId,
-                valueID
-            })
+            if(this.comboId){
+                this.$store.commit('removeComboItemValue', {
+                    fieldID: this.fieldId,
+                    comboID: this.comboId,
+                    comboValueId: this.comboValueId,
+                    valueID
+                })
+            } else {
+                this.$store.commit('removeValue', {
+                    fieldID: this.fieldId,
+                    valueID
+                })
+            }
         },
         duplicateValue: function(valueID) {
             const val = this.values.filter(value => value.id === valueID)
@@ -62,26 +83,61 @@ export default {
                 duplicateVal = Object.assign({}, val[0])
             }
 
-            this.$store.commit('addValue', {
-                fieldID: this.fieldId,
-                valueObj: duplicateVal
-            })
+            if(this.comboId){
+                this.$store.commit('addComboItemValue', {
+                    fieldID: this.fieldId,
+                    comboID: this.comboId,
+                    comboValueId: this.comboValueId,
+                    valueObj: duplicateVal
+                })
+            }else{
+                this.$store.commit('addValue', {
+                    fieldID: this.fieldId,
+                    valueObj: duplicateVal
+                })
+            }
         }
     },
     computed: {
         isMultiple: function () {
-            const field = this.$store.getters.getField(this.fieldId)
+            let field
+            if(this.comboId){
+                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+            } else {
+                field = this.$store.getters.getField(this.fieldId)
+            }
             return field.options.settings.multiple
         },
         singleValue: function() {
+            if(this.comboId){
+                const comboField = this.$store.getters.getField(this.comboId)
+                if(comboField && comboField.values.length){
+                    const values = comboField.values.filter(value => value.id === this.comboValueId)
+                    if(values.length && values[0][this.fieldId] && values[0][this.fieldId][0]){
+                        return values[0][this.fieldId][0]
+                    }
+                }
+            }
+
             const field = this.$store.getters.getField(this.fieldId)
             if(field && field.values[0]){
                 return field.values[0]
             }
+
             return ''
         },
         values: {
             get() {
+                if(this.comboId){
+                    const comboField = this.$store.getters.getField(this.comboId)
+                    if(comboField && comboField.values.length){
+                        const values = comboField.values.filter(value => value.id === this.comboValueId)
+                        if(values.length && values[0][this.fieldId]){
+                            return values[0][this.fieldId]
+                        }
+                    }
+                }
+
                 const field = this.$store.getters.getField(this.fieldId)
                 if(field){
                     return field.values
@@ -89,10 +145,22 @@ export default {
                 return []
             },
             set(values) {
-                this.$store.commit('updateValues', {
-                    fieldID: this.fieldId,
-                    newVales: values
-                })
+                if(this.comboId){
+                    this.$store.commit('updateComboItemValues', {
+                        fieldID: this.fieldId,
+                        comboID: this.comboId,
+                        comboValueId: this.comboValueId,
+                        newValues: values
+                    })
+                }else{
+                    this.$store.commit('updateValues', {
+                        fieldID: this.fieldId,
+                        comboID: this.comboId,
+                        comboValueId: this.comboValueId,
+                        newValues: values
+                    })
+                }
+
             }
         }
     }

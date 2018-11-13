@@ -1,8 +1,8 @@
 <template>
     <div class="o-form__group">
-        <validation :status-error="field.errors" :input-name="inputName">
+        <validation :status-error="errors" :input-name="inputName">
             <label :for="inputName">{{ name }}</label>
-            <multi :field-id="fieldId" :input-name="inputName">
+            <multi :field-id="fieldId" :combo-id="comboId" :combo-value-id="comboValueId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
                     <input-icon :pre-icon="icons.preIcon" :post-icon="icons.postIcon">
                         <input :type="type" :id="inputName" :name="inputName" :value="valueObj.value" v-on:keyup.stop="updateValue(valueObj, $event.target.value)">
@@ -22,7 +22,7 @@ import Multi from './util/multi.vue'
 import { mapGetters } from 'vuex'
 
 export default {
-    props: ['fieldId', 'icons', 'type'],
+    props: ['fieldId', 'icons', 'type', 'comboId', 'comboValueId'],
     components: {
         'input-icon': InputIcon,
         'validation': Validation,
@@ -32,22 +32,55 @@ export default {
         updateValue: function(valueObj, newValue) {
             valueObj.value = newValue
 
-            this.$store.commit('updateValue', {
-                fieldID: this.fieldId,
-                newValue: valueObj
-            })
+            if(this.comboId){
+                this.$store.commit('updateComboItemValue', {
+                    fieldID: this.fieldId,
+                    comboID: this.comboId,
+                    comboValueId: this.comboValueId,
+                    newValue: valueObj
+                })
+            } else {
+                this.$store.commit('updateValue', {
+                    fieldID: this.fieldId,
+                    newValue: valueObj
+                })
+            }
         }
     },
     computed: {
         field: function () {
+            if(this.comboId){
+                return this.$store.getters.getComboField(this.comboId, this.fieldId)
+            }
             return this.$store.getters.getField(this.fieldId)
         },
         inputName: function () {
             return `field[${this.fieldId}]`
         },
         name: function () {
+            let field
+            if (this.comboId) {
+                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+            } else {
+                field = this.$store.getters.getField(this.fieldId)
+            }
+            if(field){
+                return field.options.name
+            }
+        },
+        errors: function() {
+            if(this.comboId){
+                const comboItem = this.$store.getters.getField(this.comboId)
+                if(comboItem.errors.length){
+                    if(comboItem.errors[this.comboIndex] && comboItem.errors[this.comboIndex][this.fieldId]){
+                        return comboItem.errors[this.comboIndex][this.fieldId]
+                    }
+                }
+                return []
+            }
+
             const field = this.$store.getters.getField(this.fieldId)
-            return field.options.name
+            return field.errors
         }
     }
 }

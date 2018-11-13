@@ -1,6 +1,8 @@
 <template>
     <base-input
     :field-id="fieldId"
+    :combo-id="comboId"
+    :combo-value-id="comboValueId"
     :icons="icons"
     type="email"
     ></base-input>
@@ -10,7 +12,7 @@
 import base from './base.vue'
 
 export default {
-    props: ['fieldId'],
+    props: ['fieldId', 'comboId', 'comboValueId'],
     components: {
         'base-input': base
     },
