@@ -1,0 +1,25 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['select-test-group'] = [
+        {
+            id: '100',
+            options: {
+                typeKey: 'select',
+                name: 'Select Test 1',
+                settings: {
+                    required: 0,
+                    multiple: 0,
+                    options: [
+                        {'op 1': 'op 1'},
+                        {'op 2': 'op 2'},
+                        {'op 3': 'op 3'}
+                    ]
+                }
+            },
+            values: ['op 1'],
+            errors: [],
+            helpText: '<p>Some help text</p>'
+        },
+    ]
+</script>
+<div class="js-fields" data-name="select-test-group"></div>

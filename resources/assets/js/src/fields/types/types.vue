@@ -3,7 +3,7 @@
     v-bind:is="type"
     :field-id="field.id"
     :combo-id="comboId"
-    :combo-value-id="comboValueId"
+    :combo-item-id="comboItemId"
     ></component>
 </template>
 
@@ -12,22 +12,25 @@ import Text from './text.vue'
 import Email from './email.vue'
 import Phone from './phone.vue'
 import combo from './combo.vue'
+import select from './select.vue'
 
 const typeMap = {
     'text': 'text-input',
     'email': 'email-input',
     'phone': 'phone-input',
-    'combo': 'combo'
+    'combo': 'combo',
+    'select': 'select-input'
 }
 
 export default {
     name: 'types',
-    props: ['field', 'comboId', 'comboValueId'],
+    props: ['field', 'comboId', 'comboItemId'],
     components: {
         'text-input': Text,
         'email-input': Email,
         'phone-input': Phone,
-        combo
+        combo,
+        'select-input': select
     },
     computed: {
         type: function () {

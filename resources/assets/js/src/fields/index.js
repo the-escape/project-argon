@@ -37,6 +37,7 @@ function processFields (fields) {
             field = processCombo(field)
         } else {
             field.values = processValues(field.values)
+            field.emptyValue = createEmptyValueObj(field)
         }
         return field
     })
@@ -49,6 +50,23 @@ function processValues (values) {
     }))
 }
 
+function createEmptyValueObj (field) {
+    let emptyValue
+
+    switch (field.options.typeKey) {
+    case 'checkbox':
+        emptyValue = 0
+        break
+    default:
+        emptyValue = ''
+        break
+    }
+
+    return {
+        value: emptyValue
+    }
+}
+
 function processCombo (combo) {
     combo.values = combo.values.map((comboItemValues, index) => {
         const fieldIds = Object.keys(comboItemValues)
@@ -59,5 +77,20 @@ function processCombo (combo) {
         values.id = index
         return values
     })
+
+    combo.errros = combo.errors.map((comboItemErrors, index) => {
+        comboItemErrors.id = index
+        return comboItemErrors
+    })
+
+    combo.fields = combo.fields.map(field => {
+        field.emptyValue = createEmptyValueObj(field)
+        return field
+    })
+
+    combo.emptyValue = combo.fields.reduce((acc, field) => {
+        acc[field.id] = [field.emptyValue]
+        return acc
+    }, {})
     return combo
 }

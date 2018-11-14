@@ -1,33 +1,11 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['testing-group'] = [
+    window.fieldGroups['text-test-group'] = [
         {
             id: '392',
             options: {
                 typeKey: 'text',
-                name: 'Title',
-                settings: {
-                    required: 0,
-                    multiline: 0,
-                    multiple: 0,
-                    minlength: null,
-                    maxlength: null,
-                    url: 0,
-                    integer: 0,
-                    float: 0,
-                    email: 0,
-                    phone: 0
-                }
-            },
-            values: [''],
-            errors: ['Field is required'],
-            helpText: '<p>Some help text</p>', //new
-        },
-        {
-            id: '401',
-            options: {
-                typeKey: 'email',
-                name: 'Email',
+                name: 'Titles',
                 settings: {
                     required: 0,
                     multiline: 0,
@@ -42,12 +20,41 @@
                 }
             },
             values: [
-                'tom@tom-hopkins.co.uk',
-                'test@test.com'
+                'First Title',
+                'My Second Title',
+                'Hello Thirds'
             ],
             errors: [],
             helpText: '<p>Some help text</p>', //new
+            // for message before input using description type, for event html return
+            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
+            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
         },
+
+        {
+            id: '398',
+            options: {
+                typeKey: 'text',
+                name: 'Error Test',
+                settings: {
+                    required: 0,
+                    multiline: 1,
+                    multiple: 0,
+                    minlength: null,
+                    maxlength: null,
+                    url: 0,
+                    integer: 0,
+                    float: 0,
+                    email: 0,
+                    phone: 0
+                }
+            },
+            values: [],
+            errors: ['Field is required'],
+            message: '',
+            helpText: '<p>Some help text</p>', //new
+        },
+
         {
             id: '402',
             options: {
@@ -78,7 +85,16 @@
                     ]
                 }
             ],
-            errors: [],
+            errors: [
+                {
+                    '395': [],
+                    '396': []
+                },
+                {
+                    '395': ['Required'],
+                    '396': ['Required']
+                }
+            ],
             fields: [
                 {
                     id: '395',
@@ -126,4 +142,4 @@
         }
     ]
 </script>
-<div class="js-fields" data-name="testing-group"></div>
+<div class="js-fields" data-name="text-test-group"></div>

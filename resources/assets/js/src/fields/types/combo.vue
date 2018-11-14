@@ -5,24 +5,24 @@
             <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" v-on:click="addEmptyItem()">Add {{comboField.options.comboAddName}}</button>
         </div>
         <div class="o-combo__track">
-            <draggable v-model="values" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
-                <div class="o-combo__item" v-for="value in values" :key="value.id">
+            <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
+                <div class="o-combo__item" v-for="item in items" :key="item.id">
                     <div class="o-combo__header">
-                        <button class="o-combo__drag-handle js-combo-drag">
+                        <button class="o-combo__drag-handle js-combo-drag" v-on:click="toggleBodyHide()">
                             <div class="o-combo__drag-wrap">
                                 <svg>
                                     <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
                                 </svg>
                             </div>
                         </button>
-                        <div class="o-combo__title js-combo-title">Combo Item</div>
+                        <div class="o-combo__title js-combo-title">Item {{ item.id + 1 }}</div>
                         <div class="o-combo__actions">
-                            <confirm-btn v-on:delete="deleteValue()" v-on:duplicate="duplicateValue()"></confirm-btn>
+                            <confirm-btn v-on:delete="deleteItem(item.id)" v-on:duplicate="duplicateItem(item.id)"></confirm-btn>
                         </div>
                     </div>
-                    <div class="o-combo__body">
+                    <div class="o-combo__body" v-if="!isHidingBody">
                         <div class="o-combo__form">
-                            <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-value-id="value.id"></types>
+                            <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
                         </div>
                     </div>
                 </div>
@@ -35,23 +35,51 @@
 </template>
 
 <script>
+import { deepClone } from '../../util'
 import ComfirmBtn from './util/confirm-btn.vue'
 
 export default {
     name: 'combo',
     props: ['fieldId'],
+    data() {
+        return {
+            isHidingBody: false
+        }
+    },
     components: {
         'confirm-btn': ComfirmBtn
     },
-    mothods: {
-        deleteItem: function () {
-            console.log('delete item')
+    methods: {
+        toggleBodyHide: function() {
+            this.isHidingBody = !this.isHidingBody
         },
-        duplicateItem: function () {
-            console.log('duplicate item')
+        deleteItem: function (comboItemID) {
+            this.$store.commit('removeComboItem', {
+                comboID: this.fieldId,
+                comboItemID
+            })
+        },
+        duplicateItem: function (comboItemID) {
+            const comboField = this.$store.getters.getField(this.fieldId)
+            const val = comboField.values.filter(comboValueObj => comboValueObj.id === comboItemID)
+            if(!val.length){
+                console.warn('could not find value to duplicate')
+                return
+            }
+
+            const duplicate = deepClone(val[0])
+            this.$store.commit('addComboItemValue', {
+                comboID: this.fieldId,
+                newValueObj: duplicate
+            })
         },
         addEmptyItem: function () {
-            console.log('add empty item')
+            const comboField = this.$store.getters.getField(this.fieldId)
+            const emptyValue = deepClone(comboField.emptyValue)
+            this.$store.commit('addComboItemValue', {
+                comboID: this.fieldId,
+                newValueObj: emptyValue
+            })
         }
     },
     computed: {
@@ -66,13 +94,13 @@ export default {
             const comboField = this.$store.getters.getField(this.fieldId)
             return comboField.options.settings.multiple
         },
-        values: {
+        items: {
             get () {
                 const comboField = this.$store.getters.getField(this.fieldId)
                 return comboField.values
             },
             set (values) {
-                this.$store.commit('updateComboValues', {
+                this.$store.commit('updateComboItemValues', {
                     comboID: this.fieldId,
                     newValues: values
                 })

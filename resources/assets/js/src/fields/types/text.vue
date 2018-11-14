@@ -2,7 +2,7 @@
     <base-input
     :field-id="fieldId"
     :combo-id="comboId"
-    :combo-value-id="comboValueId"
+    :combo-item-id="comboItemId"
     :icons="icons"
     type="text"
     ></base-input>
@@ -12,7 +12,7 @@
 import base from './base.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboValueId'],
+    props: ['fieldId', 'comboId', 'comboItemId'],
     components: {
         'base-input': base
     },

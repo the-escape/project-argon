@@ -40,33 +40,31 @@ export default {
     components:{
         'confirm-btn': ConfirmBtn
     },
-    props: ['inputName', 'fieldId', 'comboId', 'comboValueId'],
+    props: ['inputName', 'fieldId', 'comboId', 'comboItemId'],
     methods: {
         addEmptyValue: function (){
             if(this.comboId){
-                this.$store.commit('addComboItemValue', {
+                const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                this.$store.commit('addComboFieldValue', {
                     fieldID: this.fieldId,
                     comboID: this.comboId,
-                    comboValueId: this.comboValueId,
-                    valueObj: {
-                        value: ''
-                    }
+                    comboItemId: this.comboItemId,
+                    valueObj: field.emptyValue
                 })
             }else{
+                const field = this.$store.getters.getField(this.fieldId)
                 this.$store.commit('addValue', {
                     fieldID: this.fieldId,
-                    valueObj: {
-                        value: ''
-                    }
+                    valueObj: field.emptyValue
                 })
             }
         },
         deleteValue: function(valueID) {
             if(this.comboId){
-                this.$store.commit('removeComboItemValue', {
+                this.$store.commit('removeComboFieldValue', {
                     fieldID: this.fieldId,
                     comboID: this.comboId,
-                    comboValueId: this.comboValueId,
+                    comboItemId: this.comboItemId,
                     valueID
                 })
             } else {
@@ -84,10 +82,10 @@ export default {
             }
 
             if(this.comboId){
-                this.$store.commit('addComboItemValue', {
+                this.$store.commit('addComboFieldValue', {
                     fieldID: this.fieldId,
                     comboID: this.comboId,
-                    comboValueId: this.comboValueId,
+                    comboItemId: this.comboItemId,
                     valueObj: duplicateVal
                 })
             }else{
@@ -112,7 +110,7 @@ export default {
             if(this.comboId){
                 const comboField = this.$store.getters.getField(this.comboId)
                 if(comboField && comboField.values.length){
-                    const values = comboField.values.filter(value => value.id === this.comboValueId)
+                    const values = comboField.values.filter(value => value.id === this.comboItemId)
                     if(values.length && values[0][this.fieldId] && values[0][this.fieldId][0]){
                         return values[0][this.fieldId][0]
                     }
@@ -131,7 +129,7 @@ export default {
                 if(this.comboId){
                     const comboField = this.$store.getters.getField(this.comboId)
                     if(comboField && comboField.values.length){
-                        const values = comboField.values.filter(value => value.id === this.comboValueId)
+                        const values = comboField.values.filter(value => value.id === this.comboItemId)
                         if(values.length && values[0][this.fieldId]){
                             return values[0][this.fieldId]
                         }
@@ -146,17 +144,17 @@ export default {
             },
             set(values) {
                 if(this.comboId){
-                    this.$store.commit('updateComboItemValues', {
+                    this.$store.commit('updateComboFieldValues', {
                         fieldID: this.fieldId,
                         comboID: this.comboId,
-                        comboValueId: this.comboValueId,
+                        comboItemId: this.comboItemId,
                         newValues: values
                     })
                 }else{
                     this.$store.commit('updateValues', {
                         fieldID: this.fieldId,
                         comboID: this.comboId,
-                        comboValueId: this.comboValueId,
+                        comboItemId: this.comboItemId,
                         newValues: values
                     })
                 }
