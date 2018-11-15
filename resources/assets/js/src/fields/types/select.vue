@@ -72,17 +72,28 @@ export default {
             get() {
                 let field
                 if(this.comboId){
-                    field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                    const combo = this.$store.getters.getField(this.comboId)
+                    const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                    if(combo && combo.values.length){
+                        const values = combo.values.filter(value => value.id === this.comboItemId)
+
+                        if(values.length && values[0][this.fieldId]){
+                            if(combo.options.settings.multiple){
+                                return values[0][this.fieldId]
+                            }else if(values[0][this.fieldId][0]){
+                                return values[0][this.fieldId][0]
+                            }
+                        }
+                    }
                 }else{
                     field = this.$store.getters.getField(this.fieldId)
-                }
+                    if(field.options.settings.multiple){
+                        return field.values.map(value => value.value)
+                    }
 
-                if(field.options.settings.multiple){
-                    return field.values.map(value => value.value)
-                }
-
-                if(field.values.length){
-                    return field.values.map(value => value.value)[0]
+                    if(field.values.length){
+                        return field.values.map(value => value.value)[0]
+                    }
                 }
 
                 return ''

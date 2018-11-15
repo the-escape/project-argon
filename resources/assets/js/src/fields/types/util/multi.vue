@@ -34,6 +34,7 @@
 
 <script>
 import ConfirmBtn from './confirm-btn.vue'
+import { deepClone } from '../../../util'
 
 export default {
     name: 'multi',
@@ -45,11 +46,12 @@ export default {
         addEmptyValue: function (){
             if(this.comboId){
                 const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                const newEmptyValue = deepClone(field.emptyValue)
                 this.$store.commit('addComboFieldValue', {
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
-                    valueObj: field.emptyValue
+                    valueObj: newEmptyValue
                 })
             }else{
                 const field = this.$store.getters.getField(this.fieldId)
