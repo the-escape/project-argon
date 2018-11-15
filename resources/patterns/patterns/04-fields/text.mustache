@@ -2,142 +2,84 @@
     window.fieldGroups = window.fieldGroups || {}
     window.fieldGroups['text-test-group'] = [
         {
-            id: '392',
-            options: {
-                typeKey: 'text',
-                name: 'Titles',
-                settings: {
-                    required: 0,
-                    multiline: 0,
-                    multiple: 1,
-                    minlength: null,
-                    maxlength: null,
-                    url: 0,
-                    integer: 0,
-                    float: 0,
-                    email: 0,
-                    phone: 0
+            "id": 2,
+            "options": {
+                "typeKey": "text",
+                "name": "multi text",
+                "settings": {
+                    "required": false,
+                    "multiline": false,
+                    "multiple": true,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
                 }
             },
-            values: [
-                'First Title',
-                'My Second Title',
-                'Hello Thirds'
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "text",
+                "text 2"
             ],
-            errors: [],
-            helpText: '<p>Some help text</p>', //new
-            // for message before input using description type, for event html return
-            message: "<p><strong class=\"h-text--primary-dark\">Title Here</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>",
-            messageAfter: "<p><strong class=\"h-text--primary-dark\">After message</strong><br>here is a <a href=\"www.the-escape.co.uk\" target=\"_blank\">link</a></p>"
+            "errors": []
         },
-
         {
-            id: '398',
-            options: {
-                typeKey: 'text',
-                name: 'Error Test',
-                settings: {
-                    required: 0,
-                    multiline: 1,
-                    multiple: 0,
-                    minlength: null,
-                    maxlength: null,
-                    url: 0,
-                    integer: 0,
-                    float: 0,
-                    email: 0,
-                    phone: 0
+            "id": 1,
+            "options": {
+                "typeKey": "text",
+                "name": "single text",
+                "settings": {
+                    "required": false,
+                    "multiline": false,
+                    "multiple": false,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
                 }
             },
-            values: [],
-            errors: ['Field is required'],
-            message: '',
-            helpText: '<p>Some help text</p>', //new
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "one"
+            ],
+            "errors": []
         },
-
         {
-            id: '402',
-            options: {
-                typeKey: 'combo',
-                name: 'Combo Test',
-                comboAddName: 'Item',
-                settings: {
-                    multiple: 1
+            "id": 3,
+            "options": {
+                "typeKey": "text",
+                "name": "textarea",
+                "settings": {
+                    "required": false,
+                    "multiline": true,
+                    "multiple": true,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
                 }
             },
-            values: [
-                {
-                    '395': [
-                        'test 1',
-                        'test 2'
-                    ],
-                    '396': [
-                        '/contact'
-                    ]
-                },
-                {
-                    '395': [
-                        'test 4',
-                        'test 5'
-                    ],
-                    '396': [
-                        '/about'
-                    ]
-                }
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "two"
             ],
-            errors: [
-                {
-                    '395': [],
-                    '396': []
-                },
-                {
-                    '395': ['Required'],
-                    '396': ['Required']
-                }
-            ],
-            fields: [
-                {
-                    id: '395',
-                    options: {
-                        typeKey: 'text',
-                        name: 'Text Stuff',
-                        settings: {
-                            required: 0,
-                            multiline: 0,
-                            multiple: 1,
-                            minlength: null,
-                            maxlength: null,
-                            url: 0,
-                            integer: 0,
-                            float: 0,
-                            email: 0,
-                            phone: 0
-                        }
-                    },
-                    message: '',
-                    helpText: '<p>Some help text</p>'
-                },
-                {
-                    id: '396',
-                    options: {
-                        typeKey: 'text',
-                        name: 'Url',
-                        settings: {
-                            required: 0,
-                            multiline: 0,
-                            multiple: 0,
-                            minlength: null,
-                            maxlength: null,
-                            url: 1,
-                            integer: 0,
-                            float: 0,
-                            email: 0,
-                            phone: 0
-                        }
-                    },
-                    message: '',
-                    helpText: '<p>Some help text</p>'
-                }
+            "errors": [
+                "required"
             ]
         }
     ]

@@ -4,6 +4,7 @@ import App from './App.vue'
 import draggable from '../../vendor/vuedraggable'
 import types from './types/types.vue'
 import { getStore } from './store'
+import { deepClone } from '../util'
 
 Vue.config.productionTip = false
 Vue.component('draggable', draggable)
@@ -78,7 +79,7 @@ function processCombo (combo) {
         return values
     })
 
-    combo.errros = combo.errors.map((comboItemErrors, index) => {
+    combo.errors = combo.errors.map((comboItemErrors, index) => {
         comboItemErrors.id = index
         return comboItemErrors
     })
@@ -92,5 +93,6 @@ function processCombo (combo) {
         acc[field.id] = [field.emptyValue]
         return acc
     }, {})
+
     return combo
 }

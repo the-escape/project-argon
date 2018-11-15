@@ -6,10 +6,10 @@
         <div class="o-form-status__message">
             <div class="o-form-status__icon">
                 <div class="o-form-status__icon--error" v-if="hasError">
-                    <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
                 </div>
                 <div class="o-form-status__icon--success" v-if="success">
-                    <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
                 </div>
             </div>
             <div class="o-form-status__message-bar">

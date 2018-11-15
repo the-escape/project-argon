@@ -18,7 +18,12 @@ export default {
     },
     computed: {
         icons: function(){
-            const field = this.$store.getters.getField(this.fieldId)
+            let field
+            if(this.comboId){
+                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+            }else{
+                field = this.$store.getters.getField(this.fieldId)
+            }
 
             return {
                 preIcon: (field && field.options.preIcon) || {

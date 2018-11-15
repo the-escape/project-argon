@@ -49,6 +49,11 @@ export default {
     components: {
         'confirm-btn': ComfirmBtn
     },
+    created: function () {
+        if(!this.items.length){
+            this.addEmptyItem()
+        }
+    },
     methods: {
         toggleBodyHide: function() {
             this.isHidingBody = !this.isHidingBody

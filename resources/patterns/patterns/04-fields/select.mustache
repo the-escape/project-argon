@@ -1,25 +1,136 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
     window.fieldGroups['select-test-group'] = [
-        {
-            id: '100',
-            options: {
-                typeKey: 'select',
-                name: 'Select Test 1',
-                settings: {
-                    required: 0,
-                    multiple: 0,
-                    options: [
-                        {'op 1': 'op 1'},
-                        {'op 2': 'op 2'},
-                        {'op 3': 'op 3'}
+        {{! {
+            "id": 7,
+            "options": {
+                "typeKey": "item",
+                "name": "item multi select",
+                "settings": {
+                    "required": false,
+                    "multiple": true,
+                    "multiple_instances": false,
+                    "items": [
+                        "2",
+                        "3"
+                    ],
+                    "options": [
+                        {
+                            "2": "sub page"
+                        },
+                        {
+                            "3": "test fields"
+                        }
                     ]
                 }
             },
-            values: ['op 1'],
-            errors: [],
-            helpText: '<p>Some help text</p>'
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [],
+            "errors": []
         },
+        {
+            "id": 6,
+            "options": {
+                "typeKey": "item",
+                "name": "item select",
+                "settings": {
+                    "required": false,
+                    "multiple": false,
+                    "multiple_instances": false,
+                    "items": [
+                        "2",
+                        "3"
+                    ],
+                    "options": [
+                        {
+                            "2": "sub page"
+                        },
+                        {
+                            "3": "test fields"
+                        }
+                    ]
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [],
+            "errors": []
+        },
+        {
+            "id": 5,
+            "options": {
+                "typeKey": "select",
+                "name": "multi select",
+                "settings": {
+                    "required": false,
+                    "multiple": true,
+                    "options": [
+                        {
+                            "1": "item 1"
+                        },
+                        {
+                            "2": "item 2"
+                        },
+                        {
+                            "3": "item 3"
+                        },
+                        {
+                            "4": "item 4"
+                        },
+                        {
+                            "5": "item 5"
+                        },
+                        {
+                            "6": "item 6"
+                        }
+                    ]
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                ""
+            ],
+            "errors": []
+        }, }}
+        {
+            "id": 4,
+            "options": {
+                "typeKey": "select",
+                "name": "single select",
+                "settings": {
+                    "required": false,
+                    "multiple": false,
+                    "options": [
+                        {
+                            "1": "item 1"
+                        },
+                        {
+                            "2": "item 2"
+                        },
+                        {
+                            "3": "item 3"
+                        },
+                        {
+                            "4": "item 4"
+                        }
+                    ]
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                ""
+            ],
+            "errors": [
+                "required"
+            ]
+        }
     ]
 </script>
 <div class="js-fields" data-name="select-test-group"></div>
