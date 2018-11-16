@@ -109,6 +109,10 @@
                     </div>
                 </div>
 
+                <div class="o-form__title">Details</div>
+
+                @include('argon::types.fields.loop', ['field'=>$combo, 'items'=>$combo->type->getProperties()])
+
                 <div class="o-form__title">Subfields</div>
 
                 @if(($subfields = $combo->subfields) && (!$subfields->isEmpty()))
