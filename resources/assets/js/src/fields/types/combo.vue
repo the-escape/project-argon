@@ -8,15 +8,15 @@
             <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
                 <div class="o-combo__item" v-for="item in items" :key="item.id">
                     <div class="o-combo__header">
-                        <button class="o-combo__drag-handle js-combo-drag" v-on:click="toggleBodyHide()">
+                        <button class="o-combo__drag-handle js-combo-drag" v-if="isMultiple" v-on:click="toggleBodyHide()">
                             <div class="o-combo__drag-wrap">
                                 <svg>
                                     <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
                                 </svg>
                             </div>
                         </button>
-                        <div class="o-combo__title js-combo-title">Item {{ item.id + 1 }}</div>
-                        <div class="o-combo__actions">
+                        <div class="o-combo__title js-combo-title" v-if="isMultiple">Item {{ item.id + 1 }}</div>
+                        <div class="o-combo__actions" v-if="isMultiple">
                             <confirm-btn v-on:delete="deleteItem(item.id)" v-on:duplicate="duplicateItem(item.id)"></confirm-btn>
                         </div>
                     </div>
