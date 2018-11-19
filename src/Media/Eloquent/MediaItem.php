@@ -224,7 +224,7 @@ class MediaItem extends Model implements Arrayable
         if (!file_exists($folder_path.$file))
         {
             $old_file = sprintf('/%s/%s.thumb.%s', $this->id, $this->id, $this->extension);
-            if (file_exists($old_file))
+            if (file_exists($folder_path.$old_file))
             {
                 Storage::disk('media')->move($old_file, $file);
             }
