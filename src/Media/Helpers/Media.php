@@ -60,7 +60,7 @@ class Media
             "image/jpg",
             "image/jpeg",
             "image/png",
-            "image/gif"
+            "image/gif",
         ];
 
         $mimeTypes = array_merge($defaultImageMimeTypes, $imageMimeTypes);

@@ -28,6 +28,7 @@ class ImageOptim
                 'execute_only_first_png_optimizer' => false,
                 'jpegoptim_options' => ['--strip-all', '--all-progressive', '-m70'],
                 'optipng_options' => ['-i0', '-o2', '-strip all', '-quiet'],
+                'gifsicle_options' => ['-b', '-O5'],
             ]);
         }
     }
