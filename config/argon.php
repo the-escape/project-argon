@@ -75,5 +75,9 @@ return [
 
     'medialibrary' => [
         'perpage' => 20,
+        'optimize' => [
+            'enable' => env('IMAGE_OPTIM_ENABLE', true),
+        ],
+        'fix_thumbs' => false, // set to true on existing projects to update the thumb file name
     ]
 ];

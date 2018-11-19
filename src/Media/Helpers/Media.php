@@ -89,7 +89,7 @@ class Media
      * @param string $storageDisk
      * @return mixed
      */
-    public static function saveUploadedFile($file, $folderId, $userId, MediaItemRepository $mediaRepository=null, $storageDisk='media')
+    public static function saveUploadedFile($file, $folderId, $userId, MediaItemRepository $mediaRepository=null, $storageDisk='media', $optimize = true)
     {
         if ($mediaRepository === null)
         {
@@ -146,12 +146,18 @@ class Media
         );
         fclose($fileHandle);
 
-        // Thumbnail images
+
+        // create humbnail + optimize original
         if ($isImage)
         {
+            if ($optimize)
+            {
+                $mediaItem->optimize();
+            }
+
             $thumb = Image::make($file)->fit(100, 100);
             Storage::disk($storageDisk)->put(
-                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
+                "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
                 $thumb->encode()
             );
 

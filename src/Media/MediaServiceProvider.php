@@ -4,6 +4,7 @@ namespace Escape\Argon\Media;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Media\Controllers\MediaController;
+use Escape\Argon\Media\Helpers\ImageOptim;
 use Illuminate\Http\Request;
 
 class MediaServiceProvider extends AbstractPluginServiceProvider
@@ -281,6 +282,15 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
 
+    }
+
+    public function boot()
+    {
+        $this->app->singleton('imageOptim', function(){
+            return new ImageOptim();
+        });
+
+        parent::boot();
     }
 
     public function startup()

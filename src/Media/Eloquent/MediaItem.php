@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 /**
@@ -20,6 +21,7 @@ use stdClass;
  * @property string mimetype
  * @property stdClass meta
  * @property boolean hasThumb
+ * @property boolean optimized
  */
 class MediaItem extends Model implements Arrayable
 {
@@ -34,7 +36,8 @@ class MediaItem extends Model implements Arrayable
         'mimetype',
         'meta',
         'uploaded_by',
-        'hasThumb'
+        'hasThumb',
+        'optimized',
     ];
 
     public function mediaFolder()
@@ -46,7 +49,7 @@ class MediaItem extends Model implements Arrayable
     {
         $item = parent::toArray();
         if ($this->hasThumb) {
-            $item['thumbUrl'] = "/media/{$this->id}/{$this->id}.thumb.{$this->extension}";
+            $item['thumbUrl'] = $this->getThumb();
         } else {
             $item['thumbUrl'] = '/argon/images/file-info-icon.png';
         }
@@ -70,10 +73,12 @@ class MediaItem extends Model implements Arrayable
     /**
      * Generates URL to asset.
      * Accepts args formatted as query string key=value pairs separated by & symbol.
+     * Accpets option string: thumb, original or custom WxH size.
      * @param array $args
+     * @param string $option
      * @return string $url
      */
-    public function getUrl(array $args=[])
+    public function getUrl(array $args=[], $option = '')
     {
         $properties = [
             'updatedAt' => true,
@@ -84,7 +89,12 @@ class MediaItem extends Model implements Arrayable
             $properties = array_merge($properties, $args);
         }
 
-        $url = "/media/{$this->id}/{$this->getSlug()}.{$this->extension}";
+        $url = sprintf("/media/%s/%s", $this->id, $this->getSlug());
+        if(!empty($option))
+        {
+            $url .= sprintf(".%s", $option);
+        }
+        $url .= sprintf( ".%s", $this->extension);
 
         if (in_array($properties['updatedAt'], ['1', 'true', true], true))
         {
@@ -156,8 +166,120 @@ class MediaItem extends Model implements Arrayable
     {
         return $this->folder;
     }
+
     public function getSlug()
     {
         return empty($this->slug) ? "{$this->id}.original" : $this->slug;
+    }
+
+    /**
+     * Generates URL to thumbnail.
+     * If argon.medialibrary.fix_thumbs config is set to true it will rename
+     * the thumbnail file to contain slug instead of ID.
+     * @return string $url
+     */
+    public function getThumb()
+    {
+        if($this->hasThumb)
+        {
+            if(config('argon.medialibrary.fix_thumbs', false))
+            {
+                $this->fixThumb();
+            }
+
+            return $this->getUrl([], 'thumb');
+        }
+        else
+        {
+            return $this->getUrl();
+        }
+    }
+
+    /**
+     * Generates URL to original file if optimization is enabled.
+     * @return string $url
+     */
+    public function getUnoptimized()
+    {
+        if ($this->optimized)
+        {
+            return $this->getUrl([], 'original');
+        }
+        else
+        {
+            return $this->getUrl();
+        }
+    }
+
+    /**
+     * Renames the thumbnail file to contain slug instead of ID.
+     * @return void
+     */
+    public function fixThumb()
+    {
+        $folder_path = config('filesystems.disks.media.root');
+        $file = sprintf('/%s/%s.thumb.%s', $this->id, $this->getSlug(), $this->extension);
+
+        if (!file_exists($folder_path.$file))
+        {
+            $old_file = sprintf('/%s/%s.thumb.%s', $this->id, $this->id, $this->extension);
+            if (file_exists($old_file))
+            {
+                Storage::disk('media')->move($old_file, $file);
+            }
+        }
+    }
+
+    /**
+     * Optimizes the asset using ImageOptim helper.
+     * Will create a copy of the original file for further manipulation.
+     * @return boolean
+     */
+    public function optimize()
+    {
+        if ($this->optimized)
+        {
+            return false;
+        }
+
+        if (!$this->copyOriginal())
+        {
+            return false;
+        }
+
+        $filepath = $this->getPath();
+
+        if (imageOptim()->optimize($filepath))
+        {
+            $this->update([
+                'optimized' => 1
+            ]);
+
+            return true;
+        }
+    }
+
+    /**
+     * Creates a copy of the original asset.
+     * @return boolean
+     */
+    private function copyOriginal()
+    {
+        $folder_path = config('filesystems.disks.media.root');
+        $original_file = sprintf('/%s/%s.original.%s', $this->id, $this->getSlug(), $this->extension);
+
+        if (file_exists($folder_path.$original_file))
+        {
+            return true;
+        }
+
+        $file = sprintf('/%s/%s.%s', $this->id, $this->getSlug(), $this->extension);
+
+        if(!file_exists($folder_path.$file))
+        {
+            return false;
+        }
+
+        return File::copy($folder_path.$file, $folder_path.$original_file);
     }
 }

@@ -10,6 +10,14 @@ function entityCache()
 }
 
 /**
+ * @return Escape\Argon\Media\Helpers\ImageOptim - registered as singleton in Escape\Argon\Media\MediaServiceProvider
+ */
+function imageOptim()
+{
+    return app()->make('imageOptim');
+}
+
+/**
  * Attach all menus to app for further sharing to avoid querying same stuff again.
  * @param null $slug
  * @param null $default
