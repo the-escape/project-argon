@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Media\Eloquent;
 
+use Escape\Argon\Media\Contracts\ImageInterface;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,7 +25,7 @@ use stdClass;
  * @property boolean hasThumb
  * @property boolean optimized
  */
-class MediaItem extends Model implements Arrayable
+class MediaItem extends Model implements Arrayable, ImageInterface
 {
     use SoftDeletes;
 
@@ -79,7 +80,7 @@ class MediaItem extends Model implements Arrayable
      * @param string $option
      * @return string $url
      */
-    public function getUrl(array $args=[], $option = '')
+    public function getUrl(array $args=[])
     {
         $properties = [
             'updatedAt' => true,
@@ -90,12 +91,17 @@ class MediaItem extends Model implements Arrayable
             $properties = array_merge($properties, $args);
         }
 
-        $url = sprintf("/media/%s/%s", $this->id, $this->getSlug());
-        if(!empty($option))
+        $url = sprintf("/media/%s/%s.%s", $this->id, $this->getSlug(), $this->extension);
+
+        if (!empty($properties['option']))
         {
-            $url .= sprintf(".%s", $option);
+            $tmpUrl = sprintf("/media/%s/%s.%s.%s", $this->id, $this->getSlug(), $properties['option'], $this->extension);
+
+            if (public_path($tmpUrl))
+            {
+                $url = $tmpUrl;
+            }
         }
-        $url .= sprintf( ".%s", $this->extension);
 
         if (in_array($properties['updatedAt'], ['1', 'true', true], true))
         {
@@ -109,10 +115,13 @@ class MediaItem extends Model implements Arrayable
     {
         $dimensions = new stdClass();
 
-        if (@$this->meta->width && @$this->meta->height) {
+        if (!empty($this->meta->width) && !empty($this->meta->height))
+        {
             $dimensions->width = $this->meta->width;
             $dimensions->height = $this->meta->height;
-        } else {
+        }
+        else
+        {
             list($width, $height) = @getimagesize($this->getPath());
             $dimensions->width = @$width;
             $dimensions->height = @$height;
@@ -205,6 +214,20 @@ class MediaItem extends Model implements Arrayable
         if ($this->optimized)
         {
             return $this->getUrl([], 'original');
+        }
+        else
+        {
+            return $this->getUrl();
+        }
+    }
+
+    public function getCustomOption($option = '')
+    {
+        if (!empty($option))
+        {
+            return $this->getUrl([
+                'option' => $option
+            ]);
         }
         else
         {

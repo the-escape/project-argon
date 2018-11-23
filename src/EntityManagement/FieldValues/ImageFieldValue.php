@@ -2,17 +2,16 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
-use Escape\Argon\EntityManagement\Eloquent\EntityCache;
-use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\Media\Contracts\ImageInterface;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
-use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
 use RuntimeException;
 use stdClass;
 
-class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countable
+class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countable, ImageInterface
 {
     private $position;
+    private $current;
 
     public function __construct($data = null)
     {
@@ -177,7 +176,64 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return $this->current()->getUrl($args);
         }
 
-        return null;
+        return '';
+    }
+
+    public function getCurrentMediaItem()
+    {
+        if ($this->isEmpty())
+        {
+            return null;
+        }
+
+        if (!$this->current())
+        {
+            return null;
+        }
+
+        if (empty($this->current) || $this->current->id != $this->current()->getId())
+        {
+            $itemRepository = app()->make(MediaItemRepository::class);
+            $this->current = $itemRepository->findWhere(['id' => $this->current()->getId()])->first();
+        }
+
+        return $this->current;
+    }
+
+    public function getUnoptimized()
+    {
+        $mediaItem = $this->getCurrentMediaItem();
+
+        if ($mediaItem)
+        {
+            return $mediaItem->getUnoptimized();
+        }
+
+        return $this->getUrl();
+    }
+
+    public function getThumb()
+    {
+        $mediaItem = $this->getCurrentMediaItem();
+
+        if ($mediaItem)
+        {
+            return $mediaItem->getThumb();
+        }
+
+        return $this->getUrl();
+    }
+
+    public function getCustomOption($option = '')
+    {
+        $args = compact('option');
+
+        if ($mediaItem = $this->getCurrentMediaItem())
+        {
+            return $mediaItem->getUrl($args);
+        }
+
+        return $this->getUrl($args);
     }
 
     public function getWidth()
@@ -186,7 +242,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return $this->current()->getWidth();
         }
 
-        return null;
+        return '';
     }
 
     public function getHeight()
@@ -195,7 +251,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return $this->current()->getHeight();
         }
 
-        return null;
+        return '';
     }
 
     /**
