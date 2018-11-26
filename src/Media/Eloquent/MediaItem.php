@@ -266,12 +266,18 @@ class MediaItem extends Model implements Arrayable, ImageInterface
             return false;
         }
 
+        if (!imageOptim()->isEnabled())
+        {
+            return false;
+        }
+
         if (!$this->copyOriginal())
         {
             return false;
         }
 
         $filepath = $this->getPath();
+
 
         if (imageOptim()->optimize($filepath))
         {
