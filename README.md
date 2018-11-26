@@ -199,6 +199,35 @@ Delete the **app/User.php** file (ditto).
 
 Remove the 'auth' route Middleware from **app/Http/Kernel.php** file (again, Argon has it's own).
 
+## Enabling Image Optimization
+
+### System requirements 
+
+```bash
+sudo apt-get install jpegoptim
+sudo apt-get install libjpeg-progs
+sudo apt-get install optipng
+sudo apt-get install pngquant
+sudo npm install -g svgo
+sudo apt-get install gifsicle
+```
+
+### Config changes
+
+Include this in the config/argon.php
+
+```php
+...
+'medialibrary' => [
+    'perpage' => 20,
+    'optimize' => [
+        'enable' => env('IMAGE_OPTIM_ENABLE', true),
+    ],
+    'fix_thumbs' => false, // set to true on existing projects to automatically update the thumb file name
+]
+...
+```
+
 
 ## Development
 
