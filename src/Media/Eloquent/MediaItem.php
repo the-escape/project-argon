@@ -237,7 +237,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
 
     /**
      * Renames the thumbnail file to contain slug instead of ID.
-     * @return void
+     * @return boolean
      */
     public function fixThumb()
     {
@@ -250,8 +250,11 @@ class MediaItem extends Model implements Arrayable, ImageInterface
             if (file_exists($folder_path.$old_file))
             {
                 Storage::disk('media')->move($old_file, $file);
+                return true;
             }
         }
+
+        return false;
     }
 
     /**

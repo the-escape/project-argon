@@ -228,6 +228,23 @@ Include this in the config/argon.php
 ...
 ```
 
+### Bulk actions (for existing projects)
+
+Publish artisan commands using ``` php artisan vendor:publish --tag commands``` if you haven't done it yet.
+
+include the MediaLibrary commands in you app/Console/Kernel.php
+```php
+protected $commands = [
+    ...
+    Commands\MediaLibraryOptimizeAll::class,
+    Commands\MediaLibraryFixThumbnails::class,
+    ...
+];
+```
+
+Optimize all images with ```php artisan medialib:optimize``` command.
+
+Fix old thumbnail names with ```php artisan medialib:fixthumbs``` command.
 
 ## Development
 

@@ -302,5 +302,9 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__ . '/Commands' => app_path('Console/Commands'),
+        ], 'commands');
     }
 }
