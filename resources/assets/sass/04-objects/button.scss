@@ -92,6 +92,18 @@ button.o-btn {
         }
     }
 
+    &--white-outline {
+        background-color: transparent;
+        border-color: white;
+        color: white;
+
+        &:hover {
+            background-color: white;
+            border-color: white;
+            color: black;
+        }
+    }
+
     &:disabled {
         opacity: 0.4;
         cursor: not-allowed;

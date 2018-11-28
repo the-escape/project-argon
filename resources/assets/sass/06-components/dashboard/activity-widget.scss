@@ -1,0 +1,65 @@
+.c-activity-widget {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2a2a2a;
+
+    &__top {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 30%;
+        padding: 0 $full-gutter;
+        color: white;
+        justify-content: center;
+        align-items: center;
+
+        h2 {
+            padding-top: 20px;
+            text-align: center;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 500;
+            text-transform: uppercase;
+
+            span {
+                color: $primary;
+            }
+        }
+    }
+
+    &__bottom {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 70%;
+        overflow-y: scroll
+    }
+
+    &__activity {
+        color: $grey;
+        padding: $gutter;
+        font-size: 1.3rem;
+
+        &:nth-child(2n + 1) {
+            background-color: #353535;
+        }
+
+        &-user {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        &-description {
+            a {
+                color: $grey;
+            }
+        }
+
+        &-date {
+
+        }
+    }
+}

@@ -27,5 +27,6 @@
 }
 
 @function ratio($width, $height) {
-    @return unit(ratio-no-unit($width, $height), %);
+    // TODO: TomH, % is not a valid css after updating node to 10.13
+    @return unit(ratio-no-unit($width, $height), \%);
 }
