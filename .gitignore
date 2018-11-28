@@ -1,5 +1,5 @@
 composer.lock
-/node_modules
+node_modules
 /build
 /patternlab/public
 yarn.lock

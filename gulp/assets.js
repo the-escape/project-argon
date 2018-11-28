@@ -15,7 +15,6 @@ function copy (path, assetName) {
         return gulp
             .src(path.src)
             .pipe(plumber({ errorHandler: onError }))
-            .pipe(size({ gzip: true, showFiles: true }))
             .pipe(gulp.dest(path.dest))
     }
 }
@@ -29,7 +28,6 @@ function inlineJs (paths, filename, assetName = 'inline js') {
             .src(paths.src)
             .pipe(plumber({ errorHandler: onError }))
             .pipe(concat(filename))
-            .pipe(size({ gzip: true, showFiles: true }))
             .pipe(gulp.dest(paths.dest))
     }
 }

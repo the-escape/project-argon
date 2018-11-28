@@ -1,0 +1,87 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['text-test-group'] = [
+        {
+            "id": 2,
+            "options": {
+                "typeKey": "text",
+                "name": "multi text",
+                "settings": {
+                    "required": false,
+                    "multiline": false,
+                    "multiple": true,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "text",
+                "text 2"
+            ],
+            "errors": []
+        },
+        {
+            "id": 1,
+            "options": {
+                "typeKey": "text",
+                "name": "single text",
+                "settings": {
+                    "required": false,
+                    "multiline": false,
+                    "multiple": false,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "one"
+            ],
+            "errors": []
+        },
+        {
+            "id": 3,
+            "options": {
+                "typeKey": "text",
+                "name": "textarea",
+                "settings": {
+                    "required": false,
+                    "multiline": true,
+                    "multiple": true,
+                    "minlength": 0,
+                    "maxlength": 0,
+                    "url": false,
+                    "integer": false,
+                    "float": false,
+                    "email": false,
+                    "phone": false
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "two"
+            ],
+            "errors": [
+                "required"
+            ]
+        }
+    ]
+</script>
+<div class="js-fields" data-name="text-test-group"></div>
