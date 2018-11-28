@@ -39,6 +39,12 @@ function processFields (fields) {
         } else {
             field.values = processValues(field.values)
             field.emptyValue = createEmptyValueObj(field)
+
+            if (!field.values.length) {
+                const newValue = deepClone(field.emptyValue)
+                newValue.id = 0
+                field.values.push(newValue)
+            }
         }
         return field
     })
@@ -57,6 +63,21 @@ function createEmptyValueObj (field) {
     switch (field.options.typeKey) {
     case 'checkbox':
         emptyValue = 0
+        break
+    case 'location':
+        emptyValue = {
+            latitude: '',
+            longitude: ''
+        }
+        break
+    case 'button':
+        emptyValue = {
+            label: '',
+            url: '',
+            class: '',
+            id: '',
+            target: ''
+        }
         break
     default:
         emptyValue = ''

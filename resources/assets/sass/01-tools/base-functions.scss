@@ -27,5 +27,5 @@
 }
 
 @function ratio($width, $height) {
-    @return unit(ratio-no-unit($width, $height), %);
+    @return ratio-no-unit($width, $height) * 1%;
 }

@@ -2,7 +2,7 @@
     <div>
         <div class="o-multi" v-if="isMultiple">
             <div class="o-multi__track">
-                <draggable v-model="values" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
+                <draggable v-model="values" @end="onMove" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
                     <div class="o-multi__item" v-for="value in values" :key="value.id">
                         <div class="o-multi__item-wrap">
                             <button class="o-multi__drag-handle js-multi-drag">
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { EventBus } from './bus'
 import ConfirmBtn from './confirm-btn.vue'
 import { deepClone } from '../../../util'
 
@@ -43,6 +44,13 @@ export default {
     },
     props: ['inputName', 'fieldId', 'comboId', 'comboItemId'],
     methods: {
+        onMove: function () {
+            let name = 'move-' + this.fieldId
+            if(this.comboId){
+                name = 'move-' + this.fieldId + '-' + this.comboId + '-' + this.comboItemId
+            }
+            EventBus.$emit(name)
+        },
         addEmptyValue: function (){
             if(this.comboId){
                 const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
@@ -55,9 +63,10 @@ export default {
                 })
             }else{
                 const field = this.$store.getters.getField(this.fieldId)
+                const newEmptyValue = deepClone(field.emptyValue)
                 this.$store.commit('addValue', {
                     fieldID: this.fieldId,
-                    valueObj: field.emptyValue
+                    valueObj: newEmptyValue
                 })
             }
         },

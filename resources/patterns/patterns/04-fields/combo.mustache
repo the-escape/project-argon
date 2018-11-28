@@ -1,7 +1,7 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
     window.fieldGroups['combo-test-group'] = [
-        {
+        {{! {
             "id": 2,
             "options": {
                 "typeKey": "combo",
@@ -14,6 +14,65 @@
             "message": "",
             "messageAfter": "",
             "fields": [
+                {
+                    "id": 21,
+                    "options": {
+                        "typeKey": "wysiwyg",
+                        "name": "wysiwyg",
+                        "settings": {
+                            "required": false,
+                            "multiple": false,
+                            "minlength": 0,
+                            "maxlength": 0,
+                            "height": 150,
+                            "source": false,
+                            "format": false,
+                            "h1": "0",
+                            "h2": "0",
+                            "h3": "0",
+                            "h4": "0",
+                            "h5": "0",
+                            "h6": "0",
+                            "styles": false,
+                            "fontsize": false,
+                            "bold": false,
+                            "italic": false,
+                            "blockquote": false,
+                            "numberedlist": false,
+                            "bulletedlist": false,
+                            "image": false,
+                            "table": false,
+                            "link": false,
+                            "unlink": false,
+                            "iframe": false,
+                            "editor_options": {
+                                "toolbar": "",
+                                "format-tags": "",
+                                "height": 150,
+                                "extra-allowed-content": false,
+                                "typography-styles": "\/css\/typography.css"
+                            }
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
+                },
+                {
+                    "id": 20,
+                    "options": {
+                        "typeKey": "location",
+                        "name": "Location",
+                        "settings": {
+                            "required": false,
+                            "float": false,
+                            "multiple": true
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
+                },
                 {
                     "id": 9,
                     "options": {
@@ -232,7 +291,7 @@
                 }
             ],
             "errors": []
-        },
+        }, }}
         {
             "id": 20,
             "options": {
@@ -246,6 +305,50 @@
             "message": "",
             "messageAfter": "",
             "fields": [
+                {
+                    "id": 23,
+                    "options": {
+                        "typeKey": "wysiwyg",
+                        "name": "wysiwyg",
+                        "settings": {
+                            "required": false,
+                            "multiple": true,
+                            "minlength": 0,
+                            "maxlength": 0,
+                            "height": 150,
+                            "source": false,
+                            "format": false,
+                            "h1": "0",
+                            "h2": "0",
+                            "h3": "0",
+                            "h4": "0",
+                            "h5": "0",
+                            "h6": "0",
+                            "styles": false,
+                            "fontsize": false,
+                            "bold": false,
+                            "italic": false,
+                            "blockquote": false,
+                            "numberedlist": false,
+                            "bulletedlist": false,
+                            "image": false,
+                            "table": false,
+                            "link": false,
+                            "unlink": false,
+                            "iframe": false,
+                            "editor_options": {
+                                "toolbar": "",
+                                "format-tags": "",
+                                "height": 150,
+                                "extra-allowed-content": false,
+                                "typography-styles": "\/css\/typography.css"
+                            }
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
+                },
                 {
                     "id": 5,
                     "options": {
@@ -323,36 +426,49 @@
                     "helpText": "",
                     "message": "",
                     "messageAfter": ""
-                }
-            ],
-            "values": [
-                {
-                    "21": [
-                        "first",
-                        "second"
-                    ],
-                    "22": [
-                        "single"
-                    ],
-                    "5": [
-                        '1',
-                        '4'
-                    ]
                 },
                 {
-                    "21": [
-                        "next",
-                        "next 2"
-                    ],
-                    "22": [
-                        "single 2"
-                    ],
-                    "5": [
-                        '3',
-                        '2'
-                    ]
+                    "id": 24,
+                    "options": {
+                        "typeKey": "button",
+                        "name": "button",
+                        "settings": {
+                            "required": false,
+                            "multiple": true
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
+                },
+                {
+                    "id": 25,
+                    "options": {
+                        "typeKey": "boolean",
+                        "name": "boolean",
+                        "settings": {
+                            "initial_value": "0"
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
+                },
+                {
+                    "id": 26,
+                    "options": {
+                        "typeKey": "boolean",
+                        "name": "boolean",
+                        "settings": {
+                            "initial_value": "1"
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": ""
                 }
             ],
+            "values": [],
             "errors": []
         }
     ]

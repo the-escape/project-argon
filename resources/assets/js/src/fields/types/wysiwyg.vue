@@ -4,7 +4,7 @@
             <label :for="inputName">{{ name }}</label>
             <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
-                    <textarea :id="inputName" :name="inputName" v-on:keyup.stop="updateValue(valueObj, $event.target.value)">{{ valueObj.value }}</textarea>
+                    <single-wysiwyg :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :name="inputName" :value-obj="valueObj" v-on:update="updateValue(valueObj, $event)" />
                 </template>
             </multi>
         </validation>
@@ -16,12 +16,14 @@
 import Validation from './util/validation.vue'
 import Multi from './util/multi.vue'
 import FieldValues from './mixins/field-values.vue'
+import SingleWysiwyg from './single-wysiwyg.vue'
 
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],
     components: {
         'validation': Validation,
-        'multi': Multi
+        'multi': Multi,
+        'single-wysiwyg': SingleWysiwyg
     },
     mixins: [FieldValues],
     methods: {
