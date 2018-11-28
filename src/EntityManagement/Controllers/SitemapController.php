@@ -24,7 +24,10 @@ class SitemapController extends Controller
     public function xml()
     {
         // Get all published pages.
-        $pages = $this->entityRepository->pages();
+//        $pages = $this->entityRepository->pages();
+        $pages = $this->entityRepository->pages([], [
+            'status' => "1"
+        ]);
 
         // Initial XML element.
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" />');
