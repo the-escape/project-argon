@@ -37,6 +37,12 @@ function init () {
     registerFormSaveEvents()
     resetForm()
     Fields()
+
+    var test = {
+        x: 1,
+        y: 2
+    }
+    console.log({ z: 3, ...test })
 }
 
 if (document.readyState !== 'loading') {

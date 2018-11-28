@@ -128,12 +128,13 @@
         ]
     },
     "devDependencies": {
+        "@babel/core": "^7.1.6",
+        "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/preset-env": "^7.1.6",
         "autoprefixer": "^8.6.0",
-        "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.3",
-        "babel-loader": "^7.1.4",
+        "babel-loader": "^8.0.4",
         "babel-minify-webpack-plugin": "^0.3.1",
-        "babel-preset-env": "^1.7.0",
         "browser-sync": "^2.24.4",
         "css-loader": "^1.0.1",
         "eslint": "^4.19.1",
