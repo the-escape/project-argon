@@ -100,6 +100,11 @@ function email_submission($email, array $input, $subject='')
 
     foreach ($input as $k => $v)
     {
+        if(is_array($v))
+        {
+            $v = implode(', ', $v);
+        }
+
         $msg .= "<p><strong>{$k}:</strong> ".nl2br($v, true)."</p>";
     }
 
