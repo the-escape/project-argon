@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
-  "main.js": "/js/main.1de59a3d185c037a89ad.js",
-  "main.js.map": "/js/main.1de59a3d185c037a89ad.js.map"
-=======
-  "main.js": "/js/main.51073a618056be4b436c.js",
-  "main.js.map": "/js/main.51073a618056be4b436c.js.map",
-  "vendor.js": "/js/vendor.1736f43acdbbdd95988c.js",
-  "vendor.js.map": "/js/vendor.1736f43acdbbdd95988c.js.map"
->>>>>>> fields-update
+  "main.js": "/js/main.50d4abdb8a8de298325d.js",
+  "main.js.map": "/js/main.50d4abdb8a8de298325d.js.map",
+  "vendor.js": "/js/vendor.1c5b09d4aa733848c4a8.js",
+  "vendor.js.map": "/js/vendor.1c5b09d4aa733848c4a8.js.map"
 }

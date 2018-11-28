@@ -16,6 +16,7 @@ import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
 import { Fields } from './fields'
+import { Dashboard } from './dashboard'
 
 function init () {
     polyfill()
@@ -37,6 +38,7 @@ function init () {
     registerFormSaveEvents()
     resetForm()
     Fields()
+    Dashboard()
 }
 
 if (document.readyState !== 'loading') {
