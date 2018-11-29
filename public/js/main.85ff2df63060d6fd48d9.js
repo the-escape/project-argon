@@ -7649,6 +7649,10 @@ function Dashboard() {
 function activityLog() {
     var widget = document.querySelector('.c-activity-widget');
 
+    if (!widget) {
+        return;
+    }
+
     new vue_default.a().$mount(widget);
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/index.js
@@ -7696,4 +7700,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.50d4abdb8a8de298325d.js.map
+//# sourceMappingURL=main.85ff2df63060d6fd48d9.js.map

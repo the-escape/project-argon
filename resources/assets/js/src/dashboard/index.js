@@ -11,5 +11,10 @@ export function Dashboard() {
 function activityLog() {
     const widget = document.querySelector('.c-activity-widget')
 
+    if(!widget)
+    {
+        return
+    }
+
     new Vue().$mount(widget)
 }
