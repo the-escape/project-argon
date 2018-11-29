@@ -21,6 +21,73 @@ use Input;
 class MediaController extends BaseController
 {
 
+    public function app()
+    {
+        return View::make('argon::media.app');
+    }
+
+    public function appFolders($id=null)
+    {
+        $media_folders = DB::table("media_folders")->get();
+
+        if (is_null($id))
+        {
+            if (request()->query->has("debug"))
+            {
+                echo "\n\n<pre>" . print_r($media_folders, TRUE) . "</pre>\n\n"; exit;
+            }
+
+            return response()->json($media_folders);
+        }
+
+        $folder = [];
+
+        foreach ($media_folders as $media_folder)
+        {
+            if ($media_folder->id == $id)
+            {
+                $folder = $media_folder;
+                $folder->children = Media::treeLevel($media_folders, $id, 2);
+                $folder->items = [];
+                break;
+            }
+        }
+
+        if ($folder)
+        {
+            $media_items = DB::table("media_items")->get();
+            $folder = Media::addItems($folder, $media_items);
+        }
+
+        if (request()->query->has("debug"))
+        {
+            echo "\n\n<pre>" . print_r($folder, TRUE) . "</pre>\n\n"; exit;
+        }
+        
+        return response()->json($folder);
+    }
+
+    public function appSearch($keywords="")
+    {
+        $items = [];
+
+        if ($keywords === '')
+        {
+            return response()->json($items);
+        }
+
+        $like = "%{$keywords}%";
+        $items = DB::table("media_items")->where('filename', 'like', $like)->get();
+
+        // TODO: Perhaps fuzzy search here
+
+        if (request()->query->has("debug"))
+        {
+            echo "\n\n<pre>" . print_r($items, TRUE) . "</pre>\n\n"; exit;
+        }
+
+        return response()->json($items);
+    }
 
     public function manage(MediaFolderRepository $folderRepository)
     {

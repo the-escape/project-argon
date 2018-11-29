@@ -16,6 +16,7 @@ import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
 import { Fields } from './fields'
+import { Medialib } from './medialib/app'
 
 function init () {
     polyfill()
@@ -37,12 +38,7 @@ function init () {
     registerFormSaveEvents()
     resetForm()
     Fields()
-
-    var test = {
-        x: 1,
-        y: 2
-    }
-    console.log({ z: 3, ...test })
+    Medialib()
 }
 
 if (document.readyState !== 'loading') {
