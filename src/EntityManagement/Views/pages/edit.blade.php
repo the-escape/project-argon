@@ -253,8 +253,8 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                 window.fieldGroups = window.fieldGroups || {}
                                 window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
                             </script>
-                            <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
-
+                            <div class="js-fields" data-name="{{$group->id}}"></div>
+                            <!-- <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div> -->
                         </div>
 
                     </div>
@@ -298,7 +298,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             window.fieldGroups = window.fieldGroups || {}
                                             window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
                                         </script>
-                                        <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
 
                                     </div>
 

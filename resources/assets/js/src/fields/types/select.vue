@@ -26,7 +26,7 @@ export default {
                 field = this.$store.getters.getField(this.fieldId)
             }
 
-            if(field.options.settings.multiple){
+            if(field.options.settings.multiple || field.options.settings.multiple_instances){
                 return 'multi'
             }
             return 'single'

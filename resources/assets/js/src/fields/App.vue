@@ -1,7 +1,6 @@
 <template>
     <div class="o-form l-container">
         <types v-for="field in fields" :key="field.id" :field="field"></types>
-        <pre>{{ fields }}</pre>
     </div>
 </template>
 

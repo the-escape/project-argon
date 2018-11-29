@@ -20,10 +20,11 @@
 <script>
 import Validation from './util/validation.vue'
 import FieldValues from './mixins/field-values.vue'
+import ValueObjs from './mixins/value-objs.vue'
 
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],
-    mixins: [FieldValues],
+    mixins: [FieldValues, ValueObjs],
     components: {
         'validation': Validation
     },

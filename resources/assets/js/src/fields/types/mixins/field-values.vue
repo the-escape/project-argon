@@ -17,6 +17,16 @@ export default {
                 return `fields[${field.id}][]`
             }
         },
+        inputNameMultiValue: function () {
+            let field
+            if(this.comboId){
+                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                return `combo[${this.comboId}][${this.comboItemId}][fields][${this.fieldId}]`
+            }else{
+                field = this.$store.getters.getField(this.fieldId)
+                return `fields[${field.id}]`
+            }
+        },
         name: function () {
             let field
             if (this.comboId) {

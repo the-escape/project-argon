@@ -17,6 +17,9 @@ import Location from './location.vue'
 import Wysiwyg from './wysiwyg.vue'
 import Button from './button.vue'
 import Switch from './boolean.vue'
+import DateTime from './datetime.vue'
+import Image from './image.vue'
+import File from './file.vue'
 
 const typeMap = {
     'text': 'text-input',
@@ -27,7 +30,12 @@ const typeMap = {
     'location': 'location-input',
     'wysiwyg': 'wysiwyg-input',
     'button': 'button-input',
-    'boolean': 'boolean-input'
+    'boolean': 'boolean-input',
+    'item': 'select-input',
+    'menu': 'select-input',
+    'datetime' : 'datetime-input',
+    'image': 'image-input',
+    'file': 'file-input'
 }
 
 export default {
@@ -42,7 +50,10 @@ export default {
         'location-input': Location,
         'wysiwyg-input': Wysiwyg,
         'button-input': Button,
-        'boolean-input': Switch
+        'boolean-input': Switch,
+        'datetime-input': DateTime,
+        'image-input': Image,
+        'file-input': File
     },
     computed: {
         type: function () {

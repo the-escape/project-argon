@@ -25,24 +25,26 @@ export default {
                 if(this.comboId){
                     const combo = this.$store.getters.getField(this.comboId)
                     const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
+                    const isMultiple = field.options.settings.multiple || field.options.settings.multiple_instances
                     if(combo && combo.values.length){
                         const values = combo.values.filter(value => value.id === this.comboItemId)
 
                         if(values.length && values[0][this.fieldId]){
-                            if(field.options.settings.multiple){
+                            if(isMultiple){
                                 return values[0][this.fieldId].map(value => value.value)
                             }else if(values[0][this.fieldId][0]){
                                 return values[0][this.fieldId][0].value
                             }
                         }
 
-                        if(field.options.settings.multiple){
+                        if(isMultiple){
                             return []
                         }
                     }
                 }else{
                     field = this.$store.getters.getField(this.fieldId)
-                    if(field.options.settings.multiple){
+                    const isMultiple = field.options.settings.multiple || field.options.settings.multiple_instances
+                    if(isMultiple){
                         return field.values.map(value => value.value)
                     }
 
