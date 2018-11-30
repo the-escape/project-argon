@@ -30,7 +30,6 @@
             @include('argon::inc.alerts', compact($errors))
 
             <div class="o-form">
-
                 <div class="pull-right">
                     @if(!$groups->isEmpty())
                         <a href="#" class="accordion-expand-collapse pull-md-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
@@ -162,14 +161,15 @@
                             <div class="card accordion">
 
                                 <div class="card-header accordion-header">
-                                    {{ $group->name }}
+                                    <span>{{ $group->name }}</span>
 
                                     @if($group->isRenderable())
-                                        <div class="checkbox">
+                                        <div class="o-checkbox checkbox">
                                             <label>
-                                                <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                                <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
-                                                Render?
+                                                <input type="hidden" name="group_render[{{$group->id}}]" value="0" class="js-toggle-value">
+                                                <input class="js-toggle-input" type="checkbox" name="group_render[{{$group->id}}]" value="1" @if($page->isGroupRender($localisation->getLocaleId(), $group->id)) checked @endif>
+                                                <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                                <label>Render?</label>
                                             </label>
                                         </div>
                                     @endif
@@ -219,14 +219,15 @@
 
                                             <div class="card-header accordion-header">
                                                 <span class="sortable-handle">&#8645;</span>
-                                                {{ $group->name }}
+                                                <span>{{ $group->name }}</span>
 
                                                 @if($group->isRenderable())
-                                                    <div class="checkbox">
+                                                    <div class="o-checkbox checkbox">
                                                         <label>
-                                                            <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                                            <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
-                                                            Render?
+                                                            <input type="hidden" name="group_render[{{$group->id}}]" value="0" class="js-toggle-value">
+                                                            <input class="js-toggle-input" type="checkbox" name="group_render[{{$group->id}}]" value="1">
+                                                            <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                                            <label>Render?</label>
                                                         </label>
                                                     </div>
                                                 @endif

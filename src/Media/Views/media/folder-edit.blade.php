@@ -3,57 +3,57 @@
 @section('body-class', 'dashboard medialib-library medialib-folder-edit')
 
 @section('content')
+    <div class="c-container">
+        <div class="main">
+            <h1 class="page-header">Edit Folder</h1>
 
-    <div class="main">
-        <h1 class="page-header">Edit Folder</h1>
+            @if (session('message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('message') }}
+                </div>
+            @endif
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
+            <div class="dashboard-actions dashboard-actions--top">
+
+                <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+
             </div>
-        @endif
 
-        <div class="dashboard-actions dashboard-actions--top">
+            <div class="dashboard-content">
 
-            <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+                <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
 
-        </div>
+                    <div class="form-group">
+                        <label for="name" class="required">Folder Name</label>
+                        <input type="text" id="name" class="form-control required " name="name" value="{{ $currentFolder->getName() }}">
+                    </div>
 
-        <div class="dashboard-content">
+                    <div class="form-group">
+                        <label for="parent" class="required">Parent Folder</label>
 
-            <form action="{{ route("cms:media:folders:update", [$currentFolder->getId()]) }}" method="post">
+                        <select name="parent" id="parent" class="form-control">
+                            <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
 
-                <div class="form-group">
-                    <label for="name" class="required">Folder Name</label>
-                    <input type="text" id="name" class="form-control required " name="name" value="{{ $currentFolder->getName() }}">
-                </div>
+                            @if($currentFolder->getParentId())
+                                @foreach($root->children as $child)
+                                    @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getParentId(), 'currentFolderId'=>$currentFolder->getId()])
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="parent" class="required">Parent Folder</label>
+                    {{csrf_field()}}
+                    {{method_field('PUT')}}
 
-                    <select name="parent" id="parent" class="form-control">
-                        <option value="{{ $root->getId() }}" @if($root->getId() == $currentFolder->getId()) selected @endif>{{ $root->name }}</option>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
+                    <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
 
-                        @if($currentFolder->getParentId())
-                            @foreach($root->children as $child)
-                                @include('argon::media.folder-select-option', ['child'=>$child, 'indent'=>'- ', 'parentFolderId'=>$currentFolder->getParentId(), 'currentFolderId'=>$currentFolder->getId()])
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+                </form>
 
-                {{csrf_field()}}
-                {{method_field('PUT')}}
-
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{{ route("cms:media:folders") }}" class="btn btn-primary-outline">Back to Media Folders</a>
-                <a href="{{ route("cms:media:all") }}" class="btn btn-primary-outline">Back to All</a>
-
-            </form>
-
+            </div>
         </div>
     </div>
-
 @stop
 
 @section('styles')

@@ -74,21 +74,21 @@
 
                             <div class="o-radio">
                                 <label>
-                                    <input type="checkbox" name="type" {{ $type->type == 'page' ? 'checked="checked"' : '' }} id="type-page" value="page">
+                                    <input type="radio" name="type" {{ $type->type == 'page' ? 'checked="checked"' : '' }} id="type-page" value="page">
                                     <span></span>
                                 </label>
                                 <label for="type-page">Page</label>
                             </div>
                             <div class="o-radio">
                                 <label>
-                                    <input type="checkbox" name="type" {{ $type->type == 'block' ? 'checked="checked"' : '' }} id="type-block" value="block">
+                                    <input type="radio" name="type" {{ $type->type == 'block' ? 'checked="checked"' : '' }} id="type-block" value="block">
                                     <span></span>
                                 </label>
                                 <label for="type-block">Block</label>
                             </div>
                             <div class="o-radio">
                                 <label>
-                                    <input type="checkbox" name="type" {{ $type->type == 'email' ? 'checked="checked"' : '' }} id="type-email" value="email">
+                                    <input type="radio" name="type" {{ $type->type == 'email' ? 'checked="checked"' : '' }} id="type-email" value="email">
                                     <span></span>
                                 </label>
                                 <label for="type-email">Email</label>
