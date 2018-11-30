@@ -114,7 +114,7 @@ function spawnMediaLibModal (type) {
                     }
                 }
 
-                res(mediaValueObj)
+                resolve(mediaValueObj)
             })
         })
 

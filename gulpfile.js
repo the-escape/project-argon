@@ -334,7 +334,15 @@ function watchJS (done) {
     fancyLog('-> Watching JS')
 
     gulp.watch(
-        [pkg.paths.src.js + '**/*.js', pkg.paths.src.js + '**/*.vue'],
+        pkg.paths.src.js + '**/*.js',
+        {
+            awaitWriteFinish: true
+        },
+        gulp.series(buildJS(), reload)
+    )
+
+    gulp.watch(
+        pkg.paths.src.js + '**/*.vue',
         {
             awaitWriteFinish: true
         },

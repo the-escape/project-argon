@@ -23313,52 +23313,52 @@ process.umask = function () {
   !*** ./node_modules/rxjs/_esm5/index.js + 18 modules ***!
   \*******************************************************/
 /*! exports provided: Observable, ConnectableObservable, GroupedObservable, observable, Subject, BehaviorSubject, ReplaySubject, AsyncSubject, asapScheduler, asyncScheduler, queueScheduler, animationFrameScheduler, VirtualTimeScheduler, VirtualAction, Scheduler, Subscription, Subscriber, Notification, pipe, noop, identity, isObservable, ArgumentOutOfRangeError, EmptyError, ObjectUnsubscribedError, UnsubscriptionError, TimeoutError, bindCallback, bindNodeCallback, combineLatest, concat, defer, empty, forkJoin, from, fromEvent, fromEventPattern, generate, iif, interval, merge, never, of, onErrorResumeNext, pairs, race, range, throwError, timer, using, zip, EMPTY, NEVER, config */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/AsyncSubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/BehaviorSubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Notification.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/OuterSubscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/ReplaySubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Scheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/config.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/ConnectableObservable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/combineLatest.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/concat.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/defer.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/empty.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/from.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/merge.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/of.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/race.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/throwError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/timer.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/zip.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/groupBy.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/map.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/asap.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/async.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/queue.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ArgumentOutOfRangeError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/EmptyError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ObjectUnsubscribedError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/TimeoutError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/UnsubscriptionError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/canReportError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/identity.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArray.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isFunction.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isNumeric.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isScheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/noop.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToResult.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/AsyncSubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/BehaviorSubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Notification.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/OuterSubscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/ReplaySubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Scheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/config.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/ConnectableObservable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/combineLatest.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/concat.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/defer.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/empty.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/from.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/merge.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/of.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/race.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/throwError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/timer.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/zip.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/groupBy.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/map.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/asap.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/async.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/queue.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ArgumentOutOfRangeError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/EmptyError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ObjectUnsubscribedError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/TimeoutError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/UnsubscriptionError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/canReportError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/identity.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArray.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isFunction.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isNumeric.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isScheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/noop.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToResult.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25086,13 +25086,13 @@ function () {
   !*** ./node_modules/rxjs/_esm5/internal/Observable.js + 1 modules ***!
   \********************************************************************/
 /*! exports provided: Observable */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observer.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/config.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/rxSubscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/canReportError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observer.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/config.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/rxSubscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/canReportError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26879,17 +26879,17 @@ function emptyScheduled(scheduler) {
   !*** ./node_modules/rxjs/_esm5/internal/observable/from.js + 5 modules ***!
   \*************************************************************************/
 /*! exports provided: from */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/fromArray.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/iterator.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArrayLike.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isPromise.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeTo.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToIterable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToObservable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToPromise.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/fromArray.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/iterator.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/symbol/observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArrayLike.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isPromise.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeTo.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToIterable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToObservable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToPromise.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28541,8 +28541,8 @@ function (_super) {
   !*** ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js + 1 modules ***!
   \*******************************************************************************/
 /*! exports provided: AsyncAction */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28795,9 +28795,9 @@ function (_super) {
   !*** ./node_modules/rxjs/_esm5/internal/scheduler/asap.js + 3 modules ***!
   \************************************************************************/
 /*! exports provided: asap */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28971,9 +28971,9 @@ new _AsyncScheduler__WEBPACK_IMPORTED_MODULE_1__["AsyncScheduler"](_AsyncAction_
   !*** ./node_modules/rxjs/_esm5/internal/scheduler/queue.js + 2 modules ***!
   \*************************************************************************/
 /*! exports provided: queue */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncAction.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/AsyncScheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29775,52 +29775,52 @@ function tryCatch(fn) {
   !*** ./node_modules/rxjs/_esm5/operators/index.js + 99 modules ***!
   \*****************************************************************/
 /*! exports provided: audit, auditTime, buffer, bufferCount, bufferTime, bufferToggle, bufferWhen, catchError, combineAll, combineLatest, concat, concatAll, concatMap, concatMapTo, count, debounce, debounceTime, defaultIfEmpty, delay, delayWhen, dematerialize, distinct, distinctUntilChanged, distinctUntilKeyChanged, elementAt, endWith, every, exhaust, exhaustMap, expand, filter, finalize, find, findIndex, first, groupBy, ignoreElements, isEmpty, last, map, mapTo, materialize, max, merge, mergeAll, mergeMap, flatMap, mergeMapTo, mergeScan, min, multicast, observeOn, onErrorResumeNext, pairwise, partition, pluck, publish, publishBehavior, publishLast, publishReplay, race, reduce, repeat, repeatWhen, retry, retryWhen, refCount, sample, sampleTime, scan, sequenceEqual, share, shareReplay, single, skip, skipLast, skipUntil, skipWhile, startWith, subscribeOn, switchAll, switchMap, switchMapTo, take, takeLast, takeUntil, takeWhile, tap, throttle, throttleTime, throwIfEmpty, timeInterval, timeout, timeoutWith, timestamp, toArray, window, windowCount, windowTime, windowToggle, windowWhen, withLatestFrom, zip, zipAll */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/AsyncSubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/BehaviorSubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/InnerSubscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Notification.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/OuterSubscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/ReplaySubject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/ConnectableObservable.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/combineLatest.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/concat.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/defer.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/empty.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/from.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/fromArray.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/merge.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/race.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/scalar.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/throwError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/timer.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/zip.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/concatAll.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/groupBy.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/map.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/mergeAll.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/mergeMap.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/observeOn.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/refCount.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/asap.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/async.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ArgumentOutOfRangeError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/EmptyError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/TimeoutError.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/errorObject.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/identity.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArray.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isFunction.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isNumeric.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isScheduler.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/noop.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToResult.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/tryCatch.js because of ./resources/assets/js/src/form/reset-form.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/form/reset-form.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/AsyncSubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/BehaviorSubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/InnerSubscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Notification.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Observable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/OuterSubscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/ReplaySubject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscriber.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/Subscription.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/ConnectableObservable.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/combineLatest.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/concat.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/defer.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/empty.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/from.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/fromArray.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/merge.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/race.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/scalar.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/throwError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/timer.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/observable/zip.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/concatAll.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/groupBy.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/map.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/mergeAll.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/mergeMap.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/observeOn.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/operators/refCount.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/asap.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/scheduler/async.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/ArgumentOutOfRangeError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/EmptyError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/TimeoutError.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/errorObject.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/identity.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isArray.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isFunction.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isNumeric.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/isScheduler.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/noop.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/pipe.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/subscribeToResult.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/internal/util/tryCatch.js because of ./resources/assets/js/src/ui/tree.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tslib/tslib.es6.js because of ./resources/assets/js/src/ui/tree.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46719,6 +46719,492 @@ if (inBrowser) {
 
 /***/ }),
 
+/***/ "./node_modules/vuedraggable/dist/vuedraggable.js":
+/*!********************************************************!*\
+  !*** ./node_modules/vuedraggable/dist/vuedraggable.js ***!
+  \********************************************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+function _toConsumableArray(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  } else {
+    return Array.from(arr);
+  }
+}
+
+(function () {
+  "use strict";
+
+  if (!Array.from) {
+    Array.from = function (object) {
+      return [].slice.call(object);
+    };
+  }
+
+  function buildAttribute(object, propName, value) {
+    if (value == undefined) {
+      return object;
+    }
+
+    object = object == null ? {} : object;
+    object[propName] = value;
+    return object;
+  }
+
+  function buildDraggable(Sortable) {
+    function removeNode(node) {
+      node.parentElement.removeChild(node);
+    }
+
+    function insertNodeAt(fatherNode, node, position) {
+      var refNode = position === 0 ? fatherNode.children[0] : fatherNode.children[position - 1].nextSibling;
+      fatherNode.insertBefore(node, refNode);
+    }
+
+    function computeVmIndex(vnodes, element) {
+      return vnodes.map(function (elt) {
+        return elt.elm;
+      }).indexOf(element);
+    }
+
+    function _computeIndexes(slots, children, isTransition) {
+      if (!slots) {
+        return [];
+      }
+
+      var elmFromNodes = slots.map(function (elt) {
+        return elt.elm;
+      });
+      var rawIndexes = [].concat(_toConsumableArray(children)).map(function (elt) {
+        return elmFromNodes.indexOf(elt);
+      });
+      return isTransition ? rawIndexes.filter(function (ind) {
+        return ind !== -1;
+      }) : rawIndexes;
+    }
+
+    function emit(evtName, evtData) {
+      var _this = this;
+
+      this.$nextTick(function () {
+        return _this.$emit(evtName.toLowerCase(), evtData);
+      });
+    }
+
+    function delegateAndEmit(evtName) {
+      var _this2 = this;
+
+      return function (evtData) {
+        if (_this2.realList !== null) {
+          _this2['onDrag' + evtName](evtData);
+        }
+
+        emit.call(_this2, evtName, evtData);
+      };
+    }
+
+    var eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End'];
+    var eventsToEmit = ['Choose', 'Sort', 'Filter', 'Clone'];
+    var readonlyProperties = ['Move'].concat(eventsListened, eventsToEmit).map(function (evt) {
+      return 'on' + evt;
+    });
+    var draggingElement = null;
+    var props = {
+      options: Object,
+      list: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      value: {
+        type: Array,
+        required: false,
+        default: null
+      },
+      noTransitionOnDrag: {
+        type: Boolean,
+        default: false
+      },
+      clone: {
+        type: Function,
+        default: function _default(original) {
+          return original;
+        }
+      },
+      element: {
+        type: String,
+        default: 'div'
+      },
+      move: {
+        type: Function,
+        default: null
+      },
+      componentData: {
+        type: Object,
+        required: false,
+        default: null
+      }
+    };
+    var draggableComponent = {
+      name: 'draggable',
+      props: props,
+      data: function data() {
+        return {
+          transitionMode: false,
+          noneFunctionalComponentMode: false,
+          init: false
+        };
+      },
+      render: function render(h) {
+        var slots = this.$slots.default;
+
+        if (slots && slots.length === 1) {
+          var child = slots[0];
+
+          if (child.componentOptions && child.componentOptions.tag === "transition-group") {
+            this.transitionMode = true;
+          }
+        }
+
+        var children = slots;
+        var footer = this.$slots.footer;
+
+        if (footer) {
+          children = slots ? [].concat(_toConsumableArray(slots), _toConsumableArray(footer)) : [].concat(_toConsumableArray(footer));
+        }
+
+        var attributes = null;
+
+        var update = function update(name, value) {
+          attributes = buildAttribute(attributes, name, value);
+        };
+
+        update('attrs', this.$attrs);
+
+        if (this.componentData) {
+          var _componentData = this.componentData,
+              on = _componentData.on,
+              _props = _componentData.props;
+          update('on', on);
+          update('props', _props);
+        }
+
+        return h(this.element, attributes, children);
+      },
+      mounted: function mounted() {
+        var _this3 = this;
+
+        this.noneFunctionalComponentMode = this.element.toLowerCase() !== this.$el.nodeName.toLowerCase();
+
+        if (this.noneFunctionalComponentMode && this.transitionMode) {
+          throw new Error('Transition-group inside component is not supported. Please alter element value or remove transition-group. Current element value: ' + this.element);
+        }
+
+        var optionsAdded = {};
+        eventsListened.forEach(function (elt) {
+          optionsAdded['on' + elt] = delegateAndEmit.call(_this3, elt);
+        });
+        eventsToEmit.forEach(function (elt) {
+          optionsAdded['on' + elt] = emit.bind(_this3, elt);
+        });
+
+        var options = _extends({}, this.options, optionsAdded, {
+          onMove: function onMove(evt, originalEvent) {
+            return _this3.onDragMove(evt, originalEvent);
+          }
+        });
+
+        !('draggable' in options) && (options.draggable = '>*');
+        this._sortable = new Sortable(this.rootContainer, options);
+        this.computeIndexes();
+      },
+      beforeDestroy: function beforeDestroy() {
+        this._sortable.destroy();
+      },
+      computed: {
+        rootContainer: function rootContainer() {
+          return this.transitionMode ? this.$el.children[0] : this.$el;
+        },
+        isCloning: function isCloning() {
+          return !!this.options && !!this.options.group && this.options.group.pull === 'clone';
+        },
+        realList: function realList() {
+          return !!this.list ? this.list : this.value;
+        }
+      },
+      watch: {
+        options: {
+          handler: function handler(newOptionValue) {
+            for (var property in newOptionValue) {
+              if (readonlyProperties.indexOf(property) == -1) {
+                this._sortable.option(property, newOptionValue[property]);
+              }
+            }
+          },
+          deep: true
+        },
+        realList: function realList() {
+          this.computeIndexes();
+        }
+      },
+      methods: {
+        getChildrenNodes: function getChildrenNodes() {
+          if (!this.init) {
+            this.noneFunctionalComponentMode = this.noneFunctionalComponentMode && this.$children.length == 1;
+            this.init = true;
+          }
+
+          if (this.noneFunctionalComponentMode) {
+            return this.$children[0].$slots.default;
+          }
+
+          var rawNodes = this.$slots.default;
+          return this.transitionMode ? rawNodes[0].child.$slots.default : rawNodes;
+        },
+        computeIndexes: function computeIndexes() {
+          var _this4 = this;
+
+          this.$nextTick(function () {
+            _this4.visibleIndexes = _computeIndexes(_this4.getChildrenNodes(), _this4.rootContainer.children, _this4.transitionMode);
+          });
+        },
+        getUnderlyingVm: function getUnderlyingVm(htmlElt) {
+          var index = computeVmIndex(this.getChildrenNodes() || [], htmlElt);
+
+          if (index === -1) {
+            //Edge case during move callback: related element might be
+            //an element different from collection
+            return null;
+          }
+
+          var element = this.realList[index];
+          return {
+            index: index,
+            element: element
+          };
+        },
+        getUnderlyingPotencialDraggableComponent: function getUnderlyingPotencialDraggableComponent(_ref) {
+          var __vue__ = _ref.__vue__;
+
+          if (!__vue__ || !__vue__.$options || __vue__.$options._componentTag !== "transition-group") {
+            return __vue__;
+          }
+
+          return __vue__.$parent;
+        },
+        emitChanges: function emitChanges(evt) {
+          var _this5 = this;
+
+          this.$nextTick(function () {
+            _this5.$emit('change', evt);
+          });
+        },
+        alterList: function alterList(onList) {
+          if (!!this.list) {
+            onList(this.list);
+          } else {
+            var newList = [].concat(_toConsumableArray(this.value));
+            onList(newList);
+            this.$emit('input', newList);
+          }
+        },
+        spliceList: function spliceList() {
+          var _arguments = arguments;
+
+          var spliceList = function spliceList(list) {
+            return list.splice.apply(list, _arguments);
+          };
+
+          this.alterList(spliceList);
+        },
+        updatePosition: function updatePosition(oldIndex, newIndex) {
+          var updatePosition = function updatePosition(list) {
+            return list.splice(newIndex, 0, list.splice(oldIndex, 1)[0]);
+          };
+
+          this.alterList(updatePosition);
+        },
+        getRelatedContextFromMoveEvent: function getRelatedContextFromMoveEvent(_ref2) {
+          var to = _ref2.to,
+              related = _ref2.related;
+          var component = this.getUnderlyingPotencialDraggableComponent(to);
+
+          if (!component) {
+            return {
+              component: component
+            };
+          }
+
+          var list = component.realList;
+          var context = {
+            list: list,
+            component: component
+          };
+
+          if (to !== related && list && component.getUnderlyingVm) {
+            var destination = component.getUnderlyingVm(related);
+
+            if (destination) {
+              return _extends(destination, context);
+            }
+          }
+
+          return context;
+        },
+        getVmIndex: function getVmIndex(domIndex) {
+          var indexes = this.visibleIndexes;
+          var numberIndexes = indexes.length;
+          return domIndex > numberIndexes - 1 ? numberIndexes : indexes[domIndex];
+        },
+        getComponent: function getComponent() {
+          return this.$slots.default[0].componentInstance;
+        },
+        resetTransitionData: function resetTransitionData(index) {
+          if (!this.noTransitionOnDrag || !this.transitionMode) {
+            return;
+          }
+
+          var nodes = this.getChildrenNodes();
+          nodes[index].data = null;
+          var transitionContainer = this.getComponent();
+          transitionContainer.children = [];
+          transitionContainer.kept = undefined;
+        },
+        onDragStart: function onDragStart(evt) {
+          this.context = this.getUnderlyingVm(evt.item);
+          evt.item._underlying_vm_ = this.clone(this.context.element);
+          draggingElement = evt.item;
+        },
+        onDragAdd: function onDragAdd(evt) {
+          var element = evt.item._underlying_vm_;
+
+          if (element === undefined) {
+            return;
+          }
+
+          removeNode(evt.item);
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.spliceList(newIndex, 0, element);
+          this.computeIndexes();
+          var added = {
+            element: element,
+            newIndex: newIndex
+          };
+          this.emitChanges({
+            added: added
+          });
+        },
+        onDragRemove: function onDragRemove(evt) {
+          insertNodeAt(this.rootContainer, evt.item, evt.oldIndex);
+
+          if (this.isCloning) {
+            removeNode(evt.clone);
+            return;
+          }
+
+          var oldIndex = this.context.index;
+          this.spliceList(oldIndex, 1);
+          var removed = {
+            element: this.context.element,
+            oldIndex: oldIndex
+          };
+          this.resetTransitionData(oldIndex);
+          this.emitChanges({
+            removed: removed
+          });
+        },
+        onDragUpdate: function onDragUpdate(evt) {
+          removeNode(evt.item);
+          insertNodeAt(evt.from, evt.item, evt.oldIndex);
+          var oldIndex = this.context.index;
+          var newIndex = this.getVmIndex(evt.newIndex);
+          this.updatePosition(oldIndex, newIndex);
+          var moved = {
+            element: this.context.element,
+            oldIndex: oldIndex,
+            newIndex: newIndex
+          };
+          this.emitChanges({
+            moved: moved
+          });
+        },
+        computeFutureIndex: function computeFutureIndex(relatedContext, evt) {
+          if (!relatedContext.element) {
+            return 0;
+          }
+
+          var domChildren = [].concat(_toConsumableArray(evt.to.children)).filter(function (el) {
+            return el.style['display'] !== 'none';
+          });
+          var currentDOMIndex = domChildren.indexOf(evt.related);
+          var currentIndex = relatedContext.component.getVmIndex(currentDOMIndex);
+          var draggedInList = domChildren.indexOf(draggingElement) != -1;
+          return draggedInList || !evt.willInsertAfter ? currentIndex : currentIndex + 1;
+        },
+        onDragMove: function onDragMove(evt, originalEvent) {
+          var onMove = this.move;
+
+          if (!onMove || !this.realList) {
+            return true;
+          }
+
+          var relatedContext = this.getRelatedContextFromMoveEvent(evt);
+          var draggedContext = this.context;
+          var futureIndex = this.computeFutureIndex(relatedContext, evt);
+
+          _extends(draggedContext, {
+            futureIndex: futureIndex
+          });
+
+          _extends(evt, {
+            relatedContext: relatedContext,
+            draggedContext: draggedContext
+          });
+
+          return onMove(evt, originalEvent);
+        },
+        onDragEnd: function onDragEnd(evt) {
+          this.computeIndexes();
+          draggingElement = null;
+        }
+      }
+    };
+    return draggableComponent;
+  }
+
+  if (true) {
+    var Sortable = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/Sortable.js");
+
+    module.exports = buildDraggable(Sortable);
+  } else { var draggable; }
+})();
+
+/***/ }),
+
 /***/ "./node_modules/vuex/dist/vuex.esm.js":
 /*!********************************************!*\
   !*** ./node_modules/vuex/dist/vuex.esm.js ***!
@@ -47810,4 +48296,4 @@ module.exports = function (module) {
 /***/ })
 
 }]);
-//# sourceMappingURL=vendor.ce225cb00b9888f56dff.js.map
+//# sourceMappingURL=vendor.49b0d5adb731cfb3ea35.js.map

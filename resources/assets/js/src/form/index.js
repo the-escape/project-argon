@@ -10,8 +10,8 @@ import { createEditors, removeEditor, processWysiwygEditors } from './wysiwyg'
 import { createDragSelects, createDragSelect } from './drag-select'
 import { createMediaInputs, createMediaInput } from './media-input'
 
-function registerFormSaveEvents() {
-    const savePublishBtn = document.querySelector(".js-save")
+function registerFormSaveEvents () {
+    const savePublishBtn = document.querySelector('.js-save')
     if (!savePublishBtn) {
         return
     }
@@ -75,7 +75,7 @@ export {
     initialiseFormElements,
     initialiseFormElementsForNewElement,
     refreshFromElements,
-    registerFormSaveEvents,
+    registerFormSaveEvents
     // createFileInputs,
     // createFileInput,
     // controller,

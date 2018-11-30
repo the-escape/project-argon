@@ -105,6 +105,12 @@ class Fields
                 continue;
             }
 
+            // button field setup
+            if ($field->field_type == 'button') {
+                list($rules, $niceNames, $messages) = self::button($request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName);
+                continue;
+            }
+
             // image field setup
             if ($field->field_type == 'image') {
                 list($rules, $niceNames, $messages) = self::image($request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName);
@@ -226,6 +232,62 @@ class Fields
         return [$rules, $niceNames, $messages];
     }
 
+    private static function button(Request $request, $field, $parent, $settings, $rules, $niceNames, $messages, $niceName)
+    {
+        $i = 0;
+        foreach ($request->input($niceName,[]) as $k => $v) {
+
+            $i++;
+
+            // longitude
+            $label = "{$niceName}.{$k}.label";
+
+            $niceNames[$label] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'label'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'label';
+
+            $rules = self::rules($rules, $settings, $label, $field->field_type);
+
+            // longitude
+            $url = "{$niceName}.{$k}.url";
+
+            $niceNames[$url] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'url'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'url';
+
+            $rules = self::rules($rules, $settings, $url, $field->field_type);
+
+            // class
+            $class = "{$niceName}.{$k}.class";
+
+            $niceNames[$class] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'class'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'class';
+
+            $rules = self::rules($rules, $settings, $class, $field->field_type);
+
+            // longitude
+            $id = "{$niceName}.{$k}.id";
+
+            $niceNames[$id] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'id'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'id';
+
+            $rules = self::rules($rules, $settings, $id, $field->field_type);
+
+            // longitude
+            $target = "{$niceName}.{$k}.target";
+
+            $niceNames[$target] = ($field->parent_field_id)
+                ? $parent->name.' '.$parent->instance.self::DIVIDER.$field->name.self::DIVIDER.($i).self::DIVIDER.'target'
+                : $field->name.self::DIVIDER.($i).self::DIVIDER.'target';
+
+            $rules = self::rules($rules, $settings, $target, $field->field_type);
+        }
+
+        return [$rules, $niceNames, $messages];
+    }
+
 
     private static function rules(array $rules, $settings, $niceName, $field_type)
     {
@@ -308,7 +370,6 @@ class Fields
             self::saveField($field, $revision, $request->input($niceName), $fieldDataRepository, $locale);
         }
     }
-
 
     public static function saveField(EntityField $field, EntityRevision $revision, $value, FieldDataRepository $fieldDataRepository=null, Locale $locale=null)
     {

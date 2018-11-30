@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
-import draggable from '../../vendor/vuedraggable'
+import draggable from 'vuedraggable'
 import types from './types/types.vue'
 import { getStore } from './store'
 import { deepClone } from '../util'

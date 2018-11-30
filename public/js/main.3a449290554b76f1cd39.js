@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 167 modules ***!
+  !*** ./resources/assets/js/src/index.js + 161 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -445,9 +445,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/moment/moment.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/operators/index.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/sortablejs/Sortable.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue/dist/vue.runtime.esm.js (<- Module uses injected variables (global, setImmediate)) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuedraggable/dist/vuedraggable.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuex/dist/vuex.esm.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-loader/lib/runtime/componentNormalizer.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1525,9 +1525,294 @@ function destroy() {
   this.events.question.unsubscribe();
   this.events.confirm.unsubscribe();
 }
-// EXTERNAL MODULE: ./node_modules/dragula/dragula.js
-var dragula = __webpack_require__("./node_modules/dragula/dragula.js");
-var dragula_default = /*#__PURE__*/__webpack_require__.n(dragula);
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/table-actions.js
+
+
+
+var TableActions = {
+  el: null,
+  id: null,
+  dropdown: null,
+  confirm: null,
+  delete: null,
+  duplicate: null,
+  dropdownToggle: null,
+  destroy: table_actions_destroy,
+  nameInput: null,
+  submitEvent: null
+};
+function tableAction(actions, dropdown, duplicateCB, deleteCB) {
+  var Obj = Object.create(TableActions);
+  table_actions_init.call(Obj, actions, dropdown, duplicateCB, deleteCB);
+  return Obj;
+}
+
+function table_actions_init(actions, dropdown, duplicateCB, deleteCB) {
+  if (!actions) {
+    return;
+  }
+
+  this.el = actions;
+  var id = this.el.dataset.id;
+  this.id = id;
+  this.dropdown = dropdown;
+  setDropdownHeight.call(this);
+  this.delete = deleteCB.bind(this);
+  this.duplicate = duplicateCB.bind(this);
+  this.dropdownToggle = toggleDropdown.bind(this);
+  this.destroy = this.destroy.bind(this);
+  this.nameInput = this.el.querySelector('[name="name"]');
+  this.confirm = confirm_btns_confirm(this.el, this.dropdownToggle, this.delete);
+  Object(_esm5["fromEvent"])(this.el, 'click').pipe(Object(operators["filter"])(function (evt) {
+    return evt.target.classList.contains();
+  }));
+}
+
+function toggleDropdown() {
+  if (!this.dropdown) {
+    return;
+  }
+
+  if (this.dropdown.classList.contains('is-active')) {
+    this.dropdown.classList.remove('is-active');
+    this.dropdown.style.height = 0;
+    return;
+  }
+
+  var height = this.dropdown.dataset.height;
+  this.dropdown.style.height = height + 'px';
+  this.dropdown.classList.add('is-active');
+}
+
+function setDropdownHeight() {
+  var cleanUp = false;
+
+  if (!this.dropdown.classList.contains('is-active')) {
+    this.dropdown.classList.add('is-active');
+    cleanUp = true;
+  }
+
+  var container = this.dropdown.firstElementChild;
+
+  var _container$getBoundin = container.getBoundingClientRect(),
+      height = _container$getBoundin.height;
+
+  this.dropdown.dataset.height = height;
+
+  if (cleanUp) {
+    this.dropdown.classList.remove('is-active');
+  }
+
+  return height;
+}
+
+function table_actions_destroy() {
+  this.confirm.destroy();
+  delete this.confirm;
+}
+// EXTERNAL MODULE: ./node_modules/moment/moment.js
+var moment = __webpack_require__("./node_modules/moment/moment.js");
+var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
+
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/table.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+
+
+var Table = {
+  el: null,
+  container: null,
+  classes: {
+    header: 'o-table__header',
+    data: 'o-table__data',
+    tableSize: 'o-table--'
+  },
+  headerEls: [],
+  events: [],
+  defaultHeaders: ['Actions', ''],
+  actionsTemplate: null,
+  data: null,
+  dataKeys: null
+};
+function tables() {
+  var tableEls = document.querySelectorAll('.js-table');
+  var tables = Array.from(tableEls);
+  tables = tables.map(function (el) {
+    return table(el);
+  });
+  return tables;
+}
+function table(el) {
+  var Obj = Object.create(Table);
+  table_init.call(Obj, el);
+  return Obj;
+}
+
+function table_init(el) {
+  if (!el) {
+    return;
+  }
+
+  this.el = el;
+  this.actionsTemplate = this.el.querySelector('.js-tale-action-template');
+  this.actionsTemplate = createTemplate(this.actionsTemplate);
+  this.container = this.el.querySelector('.js-table-container');
+  this.data = getData.call(this);
+  this.dataKeys = Object.keys(this.data.headers).filter(function (el) {
+    return el !== 'id';
+  });
+  setTableSize.call(this);
+  parseData.call(this);
+  addHeaders.call(this);
+  table_render.call(this);
+  console.log(this);
+}
+
+function getData() {
+  return window.tableData;
+}
+
+function createTemplate(templateEl) {
+  var html = templateEl.innerHTML;
+  return function () {
+    var div = document.createElement('div');
+    div.innerHTML = html;
+    return Array.from(div.children);
+  };
+}
+
+function setTableSize() {
+  this.container.classList.add(this.classes.tableSize + this.dataKeys.length);
+}
+
+function addHeaders() {
+  var _this = this;
+
+  var createHeader = function createHeader(text) {
+    var header = document.createElement('div');
+    header.classList.add(_this.classes.header);
+    header.innerHTML = text;
+
+    _this.headerEls.push(header);
+  };
+
+  this.dataKeys.forEach(function (dataKey) {
+    createHeader(_this.data.headers[dataKey]);
+  });
+  this.defaultHeaders.forEach(function (header) {
+    createHeader(header);
+  });
+}
+
+function parseData() {
+  var _this2 = this;
+
+  var types = getTypes(this.dataKeys, this.data.dataTypes);
+  this.data.rows = this.data.rows.map(function (row) {
+    var formattedRow = _this2.dataKeys.reduce(function (acc, key) {
+      switch (types[key]) {
+        case 'boolean':
+          if (typeof _this2.data.formats[key] !== 'undefined' && (row[key] === 1 || row[key] === 0)) {
+            acc[key] = _this2.data.formats[key][row[key]];
+          } else {
+            acc[key] = row[key];
+          }
+
+          return acc;
+
+        case 'date':
+          if (typeof _this2.data.formats[key] !== 'undefined') {
+            row[key] = moment_default()(row[key]);
+            acc[key] = row[key].format(_this2.data.formats[key]);
+          }
+
+          return acc;
+
+        default:
+          acc[key] = row[key];
+          return acc;
+      }
+    }, {});
+
+    var rowDataEls = _this2.dataKeys.map(function (key) {
+      var rowData = document.createElement('div');
+      rowData.classList.add(_this2.classes.data);
+      rowData.innerHTML = formattedRow[key];
+      return rowData;
+    });
+
+    var actionEls = _this2.actionsTemplate();
+
+    var dataEls = _toConsumableArray(rowDataEls).concat(_toConsumableArray(actionEls));
+
+    return {
+      id: row.id,
+      row: row,
+      formattedRow: formattedRow,
+      dataEls: dataEls,
+      delete: function _delete() {
+        return console.log('delete', row.id);
+      },
+      duplicate: function duplicate(name) {
+        return console.log('duplicate', row.id, name);
+      }
+    };
+  });
+}
+
+function getTypes(keys, types) {
+  return keys.reduce(function (acc, key) {
+    if (typeof types[key] !== 'undefined') {
+      acc[key] = types[key];
+    } else {
+      acc[key] = 'string';
+    }
+
+    return acc;
+  }, {});
+}
+
+function table_render() {
+  var _this3 = this;
+
+  this.container.innerHTML = '';
+  this.headerEls.forEach(function (el) {
+    _this3.container.appendChild(el);
+  });
+  this.data.rows.forEach(function (row) {
+    row.dataEls.forEach(function (el) {
+      _this3.container.appendChild(el);
+    });
+  });
+  addRowEvents.call(this);
+}
+
+function addRowEvents() {
+  this.events = this.data.rows.map(function (row) {
+    var action = row.dataEls[row.dataEls.length - 3].querySelector('.js-table-actions');
+    var dropdown = row.dataEls[row.dataEls.length - 1];
+    return tableAction(action, dropdown, row.duplicate, row.delete);
+  });
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
+
+
+
+
+
+
+
+
+
+
+
+
 
 // CONCATENATED MODULE: ./resources/assets/js/src/form/file-input.js
 function createFileInputs() {
@@ -2162,6 +2447,10 @@ function processWysiwygEditors() {
   // }
 
 }
+// EXTERNAL MODULE: ./node_modules/dragula/dragula.js
+var dragula = __webpack_require__("./node_modules/dragula/dragula.js");
+var dragula_default = /*#__PURE__*/__webpack_require__.n(dragula);
+
 // CONCATENATED MODULE: ./resources/assets/js/src/form/drag-select.js
 
 var DragSelect = {
@@ -2410,7 +2699,7 @@ function spawnMediaLibModal(type) {
           };
         }
 
-        res(mediaValueObj);
+        resolve(mediaValueObj);
       });
     });
     $('#medialib').modal();
@@ -2430,7 +2719,7 @@ function spawnMediaLibModal(type) {
 
 
 function registerFormSaveEvents() {
-  var savePublishBtn = document.querySelector(".js-save");
+  var savePublishBtn = document.querySelector('.js-save');
 
   if (!savePublishBtn) {
     return;
@@ -2490,1524 +2779,6 @@ function refreshFromElements(el, formElements) {
   });
   formElements.editors = createEditors(el);
 }
-
-
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/multi.js
-function multi_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { multi_typeof = function _typeof(obj) { return typeof obj; }; } else { multi_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return multi_typeof(obj); }
-
-
-
-
-
-
-
-var Multiple = {
-  el: null,
-  track: null,
-  itemTemplate: null,
-  addItemCB: null,
-  data: null,
-  items: null,
-  drag: null
-};
-
-function exampleCB() {
-  return new Promise(function (resolve) {
-    // spawn modal
-    resolve('resolved value');
-    ƒ;
-  });
-}
-
-function createMultiples() {
-  var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
-  var multipleEls = context.querySelectorAll('.js-multi');
-  var multiples = Array.from(multipleEls);
-  multiples = multiples.map(function (el) {
-    return createMultiple(el);
-  });
-  return multiples;
-}
-function createMultiple(el) {
-  var values = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var Obj = Object.create(Multiple);
-  multi_init.call(Obj, el, values, data);
-  return Obj;
-}
-
-function multi_init(el, values, data) {
-  if (typeof el === 'string') {
-    this.el = document.querySelector(el);
-  } else {
-    this.el = el;
-  }
-
-  if (!this.el) {
-    return;
-  }
-
-  this.track = this.el.querySelector('.js-multi-track');
-  this.itemTemplate = this.track.innerHTML;
-  this.track.innerHTML = '';
-  this.items = [];
-  this.data = data;
-  this.addItemCB = data.addItemCB;
-  multi_setupEvents.call(this);
-  multi_setupItems.call(this, values);
-}
-
-function multi_setupEvents() {
-  var _this = this;
-
-  Object(_esm5["fromEvent"])(this.el, 'click').pipe(Object(operators["filter"])(function (evt) {
-    return evt.target.classList.contains('js-multi-add');
-  }), Object(operators["map"])(function (evt) {
-    evt.preventDefault();
-    return evt;
-  })).subscribe(function () {
-    return addItemCB.call(_this, '');
-  });
-  this.drag = dragula_default()([this.track], {
-    revertOnSpill: true,
-    removeOnSpill: false,
-    moves: function moves(el, container, handle) {
-      return handle.classList.contains('js-multi-drag');
-    }
-  });
-  this.drag.on('drop', function (el) {
-    var formElements = getformElementsFromMultiEl.call(_this, el);
-    refreshFromElements(el, formElements);
-  });
-}
-
-function multi_setupItems(data) {
-  var _this2 = this;
-
-  data.forEach(function (values) {
-    multi_addItem.call(_this2, values);
-  });
-
-  if (!data.length) {
-    multi_addItem.call(this);
-  }
-}
-
-function addItemCB() {
-  var _this3 = this;
-
-  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-  if (!this.addItemCB) {
-    multi_addItem.call(this, value);
-    return;
-  }
-
-  this.addItemCB().then(function (values) {
-    var valueKeys = Object.keys(values);
-    var dataName = _this3.data.dataName;
-    return valueKeys.reduce(function (acc, key) {
-      acc[dataName + '-' + key] = values[key];
-      return acc;
-    }, {});
-  }).then(multi_addItem.bind(this));
-}
-
-function multi_addItem() {
-  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-  var html = getTemplateHtml.call(this);
-  var newItem = this.track.appendChild(html);
-
-  if (multi_typeof(value) === 'object') {
-    var dataNames = Object.keys(value);
-
-    if (dataNames.length) {
-      dataNames.forEach(function (dataName) {
-        newItem.querySelector("[data-name=\"".concat(dataName, "\"]")).value = value[dataName];
-      });
-    }
-  } else {
-    newItem.querySelector('input, textarea').value = value;
-  }
-
-  newItem = initialiseItem.call(this, newItem);
-  this.items.push(newItem);
-}
-
-function getTemplateHtml() {
-  var div = document.createElement('div');
-  var hash = createUniqueHash();
-  var html = this.itemTemplate.replace(/{multiHash}/g, hash);
-  div.innerHTML = html;
-  var input = div.querySelector('input, textarea');
-
-  if (input.dataset.class) {
-    input.classList.add(input.dataset.class);
-  }
-
-  return div.firstElementChild;
-}
-
-function initialiseItem(item) {
-  var comfirmBtns = item.querySelector('.js-confirm');
-  confirm_btns_confirm(comfirmBtns, multi_duplicateItem.call(this, item), multi_removeItem.call(this, item));
-  return initialiseFormElementsForNewElement(item);
-}
-
-function multi_duplicateItem(item) {
-  var _this4 = this;
-
-  return function () {
-    var inputs = item.querySelectorAll('input, textarea');
-    var inputValues;
-
-    if (inputs.length === 1) {
-      inputValues = inputs[0].value;
-    } else {
-      inputValues = Array.from(inputs).reduce(function (acc, input) {
-        var name = input.dataset.name;
-        acc[name] = input.value;
-        return acc;
-      }, {});
-    }
-
-    multi_addItem.call(_this4, inputValues);
-  };
-}
-
-function multi_removeItem(item) {
-  var _this5 = this;
-
-  return function () {
-    _this5.items = _this5.items.filter(function (multiItem) {
-      return multiItem !== item;
-    });
-    item.remove();
-  };
-}
-
-function getformElementsFromMultiEl(item) {
-  var multiItem = this.items.filter(function (multiItem) {
-    return multiItem.el === item;
-  });
-
-  if (!multiItem.length) {
-    return;
-  }
-
-  return multiItem[0].formElements;
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/templates.js
-var areTemplatesSet = false;
-var templates_templates = {
-  combo: '.tp-combo',
-  comboItemTop: '.tp-combo-item-top',
-  comboItemBot: '.tp-combo-item-bot',
-  multiTop: '.tp-multi-top',
-  multiBot: '.tp-multi-bottom',
-  group: '.tp-group',
-  description: '.tp-description',
-  text: '.tp-text',
-  textarea: '.tp-textarea',
-  select: '.tp-select',
-  selectMultiple: '.tp-select-multiple',
-  selectMultipleOption: '.tp-select-multiple-option',
-  switch: '.tp-switch',
-  datetime: '.tp-datetime',
-  location: '.tp-location',
-  wysiwyg: '.tp-wysiwyg',
-  button: '.tp-button',
-  file: '.tp-file',
-  image: '.tp-image'
-};
-function setupTemplates() {
-  if (areTemplatesSet) {
-    return;
-  }
-
-  var templateKeys = Object.keys(templates_templates);
-  templateKeys.forEach(function (key) {
-    var templateEl = document.querySelector(templates_templates[key]);
-
-    if (!templateEl) {
-      console.warn('Cannot find template: ' + key);
-      return;
-    }
-
-    templates_templates[key] = templateEl.innerHTML;
-  });
-  areTemplatesSet = true;
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/template-input-types.js
-
- // ==================
-// Type Options
-// ==================
-
-function template_input_types_text(data, templates) {
-  // TODO: sort out text icons
-  // options to account for
-  // url: 0,
-  // integer: 0,
-  // float: 0,
-  // email: 0,
-  // phone: 0
-  data.inputIconBefore = '';
-  data.inputIconAfter = '';
-
-  if (data.multiline) {
-    data.input = templates.textarea;
-  } else {
-    data.input = templates.text;
-  }
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-  } else {
-    data.inputName += '[]';
-    data.value = data.values[0] || '';
-  }
-
-  return data;
-}
-
-function template_input_types_select(data, templates) {
-  if (data.multiple) {
-    data.label = '';
-    data.input = templates.selectMultiple;
-    data.options = data.options.reduce(function (acc, keyVal) {
-      var keys = Object.keys(keyVal);
-      keys.forEach(function (key) {
-        acc += selectOption(data, key, keyVal[key], true, templates);
-      });
-      return acc;
-    }, '');
-    data.value = JSON.stringify(data.values);
-  } else {
-    data.isMultiple = '';
-    data.inputName += '[]';
-    data.input = templates.select;
-    data.options = data.options.reduce(function (acc, keyVal) {
-      var keys = Object.keys(keyVal);
-      keys.forEach(function (key) {
-        acc += selectOption(data, key, keyVal[key]);
-      });
-      return acc;
-    }, '<option>&nbsp;</option>');
-  }
-
-  return data;
-}
-
-function selectOption(data, key, value) {
-  var isMultiple = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var templates = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-
-  if (!isMultiple) {
-    var selected = '';
-
-    if (~data.values.indexOf(key)) {
-      selected = ' selected';
-    }
-
-    return "<option value=\"".concat(key, "\"").concat(selected, ">").concat(value, "</option>");
-  }
-
-  var optionHtml = templates.selectMultipleOption;
-  return optionHtml.replace(/{key}|{value}/g, function (match) {
-    if (match === '{key}') {
-      return key;
-    }
-
-    if (match === '{value}') {
-      return value;
-    }
-  });
-}
-
-function template_input_types_boolean(data, templates) {
-  data.label = '';
-  data.input = templates.switch;
-
-  if (!data.values.length) {
-    data.value = data['initial_value'];
-  }
-
-  data.value = parseInt(data.value);
-  data.checked = '';
-
-  if (data.value) {
-    data.checked = 'checked';
-  }
-
-  return data;
-}
-
-function datetime(data, templates) {
-  data.input = templates.datetime;
-  data.time = data.time ? 'true' : 'false';
-  data.default = data.default ? 'true' : 'false';
-  data.range = data.range ? 'true' : 'false';
-  data.value = data.values[0] || '';
-  return data;
-}
-
-function template_input_types_item(data, templates) {
-  if (data.multiple_instances) {
-    data.inputName += '[]';
-    data.label = '';
-    data.input = templates.selectMultiple;
-    data.options = data.options.reduce(function (acc, keyVal) {
-      var keys = Object.keys(keyVal);
-      keys.forEach(function (key) {
-        acc += selectOption(data, key, keyVal[key], true, templates);
-      });
-      return acc;
-    }, '');
-    data.value = JSON.stringify(data.values);
-    return data;
-  }
-
-  data.isMultiple = '';
-
-  if (data.multiple) {
-    data.isMultiple = 'multiple';
-  } else {
-    data.inputName += '[]';
-  }
-
-  data.input = templates.select;
-  data.options = data.options.reduce(function (acc, keyVal) {
-    var keys = Object.keys(keyVal);
-    keys.forEach(function (key) {
-      acc += selectOption(data, key, keyVal[key]);
-    });
-    return acc;
-  }, '<option>&nbsp;</option>');
-  return data;
-}
-
-function template_input_types_location(data, templates) {
-  data.input = templates.location;
-  var hash = '';
-
-  if (!data.multiple) {
-    hash = createUniqueHash();
-    hash = "[".concat(hash, "]");
-  }
-
-  data.latInputName = data.inputName + "".concat(hash, "[latitude]");
-  data.lngInputName = data.inputName + "".concat(hash, "[longitude]");
-  data.latDataName = data.dataName + '-latitude';
-  data.lngDataName = data.dataName + '-longitude';
-  data.latValue = data.value && data.value.latitude ? data.value.latitude : '';
-  data.lngValue = data.value && data.value.longitude ? data.value.longitude : '';
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-    data.values = data.values.reduce(function (acc, value) {
-      var keys = Object.keys(value);
-      var newValue = {};
-      keys.forEach(function (key) {
-        newValue[data.dataName + '-' + key] = value[key];
-      });
-      acc.push(newValue);
-      return acc;
-    }, []);
-  }
-
-  return data;
-}
-
-function template_input_types_button(data, templates) {
-  var hash = '';
-
-  if (!data.multiple) {
-    hash = createUniqueHash();
-    hash = "[".concat(hash, "]");
-  }
-
-  data.input = templates.button;
-  data.labelInputName = data.inputName + "".concat(hash, "[label]");
-  data.urlInputName = data.inputName + "".concat(hash, "[url]");
-  data.classInputName = data.inputName + "".concat(hash, "[class]");
-  data.idInputName = data.inputName + "".concat(hash, "[id]");
-  data.targetInputName = data.inputName + "".concat(hash, "[target]");
-  data.labelDataName = data.dataName + '-label';
-  data.urlDataName = data.dataName + '-url';
-  data.classDataName = data.dataName + '-class';
-  data.idDataName = data.dataName + '-id';
-  data.targetDataName = data.dataName + '-target';
-  data.labelValue = data.value && data.value.label ? data.value.label : '';
-  data.urlValue = data.value && data.value.url ? data.value.url : '';
-  data.classValue = data.value && data.value.class ? data.value.class : '';
-  data.idValue = data.value && data.value.id ? data.value.id : '';
-  data.targetValue = data.value && data.value.target ? data.value.target : '';
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-    data.values = data.values.reduce(function (acc, value) {
-      var keys = Object.keys(value);
-      var newValue = {};
-      keys.forEach(function (key) {
-        newValue[data.dataName + '-' + key] = value[key];
-      });
-      acc.push(newValue);
-      return acc;
-    }, []);
-  }
-
-  return data;
-}
-
-function wysiwyg(data, templates, fieldSettings) {
-  data.input = templates.wysiwyg;
-  var editorSettings = '';
-  Object.keys(fieldSettings.editor_options).forEach(function (key) {
-    var val = fieldSettings.editor_options[key];
-    editorSettings += "data-".concat(key, "=\"").concat(val, "\" ");
-  });
-  data.inlineProperties = editorSettings;
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-  } else {
-    var hash = createUniqueHash();
-    data.inputName += "[".concat(hash, "]");
-    data.input = data.input.replace('data-class', 'class');
-    data.value = data.values[0] || '';
-  }
-
-  return data;
-}
-
-function file(data, templates) {
-  data.input = templates.file;
-  data.addItemCB = spawnMediaLibModalForFile;
-  data.idDataName = data.dataName + '-id';
-  data.urlDataName = data.dataName + '-url';
-  data.urlValue = data.value && data.value.url ? data.value.url : '';
-  data.idValue = data.value && data.value.id ? data.value.id : '';
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-    data.values = data.values.reduce(function (acc, value) {
-      var keys = Object.keys(value);
-      var newValue = {};
-      keys.forEach(function (key) {
-        newValue[data.dataName + '-' + key] = value[key];
-      });
-      acc.push(newValue);
-      return acc;
-    }, []);
-  } else {
-    data.inputName += '[]';
-  }
-
-  return data;
-}
-
-function template_input_types_image(data, templates) {
-  data.input = templates.image;
-  var hash = '';
-
-  if (!data.multiple) {
-    hash = createUniqueHash();
-    hash = "[".concat(hash, "]");
-  }
-
-  data.idInputName = data.inputName + "".concat(hash, "[id]");
-  data.widthInputName = data.inputName + "".concat(hash, "[width]");
-  data.heightInputName = data.inputName + "".concat(hash, "[height]");
-  data.altInputName = data.inputName + "".concat(hash, "[alt]");
-  data.urlInputName = data.inputName + "".concat(hash, "[url]");
-  data.idDataName = data.dataName + '-id';
-  data.widthDataName = data.dataName + '-width';
-  data.heightDataName = data.dataName + '-height';
-  data.altDataName = data.dataName + '-alt';
-  data.urlDataName = data.dataName + '-url';
-  data.urlValue = data.value && data.value.url ? data.value.url : '';
-  data.idValue = data.value && data.value.id ? data.value.id : '';
-  data.widthValue = data.value && data.value.width ? data.value.width : '';
-  data.heightValue = data.value && data.value.height ? data.value.height : '';
-  data.altValue = data.value && data.value.alt ? data.value.alt : '';
-
-  if (data.multiple) {
-    data.multi = true;
-    data.multiTop = templates.multiTop;
-    data.multiBot = templates.multiBot;
-    data.values = data.values.reduce(function (acc, value) {
-      var keys = Object.keys(value);
-      var newValue = {};
-      keys.forEach(function (key) {
-        newValue[data.dataName + '-' + key] = value[key];
-      });
-      acc.push(newValue);
-      return acc;
-    }, []);
-  }
-
-  data.addItemCB = spawnMediaLibModalForImage;
-  return data;
-} // ==================
-// Common Template functions
-// ==================
-
-
-function setInputTypeData(field, templates) {
-  var comboValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  var comboInputName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-  if (!field.errors) {
-    field.errors = [];
-  }
-
-  if (!field.values) {
-    field.values = [];
-  }
-
-  var data = {
-    statusClass: field.errors.length ? 'has-error' : '',
-    inputName: "fields[".concat(field.id, "]"),
-    name: field.options.name,
-    dataName: slugify(field.options.name, field.id),
-    helpText: field.helpText,
-    errors: field.errors,
-    multi: false,
-    multiTop: '',
-    multiBot: '',
-    message: field.message,
-    messageAfter: field.messageAfter,
-    value: '',
-    values: field.values,
-    errorMessage: field.errors.length ? field.errors[0] : '',
-    html: templates.group,
-    comboAddName: field.options.comboAddName || 'Item'
-  };
-
-  if (comboInputName) {
-    data.inputName = comboInputName + "[".concat(field.id, "]");
-  }
-
-  if (comboValues) {
-    data.values = comboValues;
-
-    if (!data.multiple) {
-      data.value = comboValues[0];
-    }
-  }
-
-  data.label = "<label for=\"".concat(data.inputName, "\">").concat(data.name, "</label>");
-  data = Object.assign(data, field.options.settings);
-
-  if (data.multiple) {
-    if (~['image', 'location', 'button', 'wysiwyg'].indexOf(field.options.typeKey)) {
-      data.inputName += '[{multiHash}]';
-    } else {
-      data.inputName += '[]';
-    }
-  } else {
-    if (!comboValues) {
-      data.value = field.values[0];
-    }
-  }
-
-  switch (field.options.typeKey) {
-    case 'text':
-      data = template_input_types_text(data, templates);
-      break;
-
-    case 'description':
-      data.html = templates.description;
-      break;
-
-    case 'combo':
-      data.html = templates.combo;
-      break;
-
-    case 'select':
-      data = template_input_types_select(data, templates);
-      break;
-
-    case 'boolean':
-      data = template_input_types_boolean(data, templates);
-      break;
-
-    case 'datetime':
-      data = datetime(data, templates);
-      break;
-
-    case 'item':
-      data = template_input_types_item(data, templates);
-      break;
-
-    case 'location':
-      data = template_input_types_location(data, templates);
-      break;
-
-    case 'wysiwyg':
-      data = wysiwyg(data, templates, field.options.settings);
-      break;
-
-    case 'button':
-      data = template_input_types_button(data, templates);
-      break;
-
-    case 'image':
-      data = template_input_types_image(data, templates);
-      break;
-
-    case 'file':
-      data = file(data, templates);
-      break;
-  }
-
-  return data;
-}
-function parseTemplate(html, data, templates) {
-  var skipDataParse = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var dataKeys = Object.keys(data);
-  var dataRegex = new RegExp(dataKeys.map(function (str) {
-    return "{".concat(str, "}");
-  }).join('|'), 'gm'); // add input to html before parsing rest
-
-  var parsedHtml = html.replace(/{input}/g, function () {
-    return data.input;
-  });
-
-  if (data.message) {
-    parsedHtml = templates.description.replace(/{content}/g, data.message) + parsedHtml;
-  }
-
-  if (data.messageAfter) {
-    parsedHtml += templates.description.replace(/{content}/g, data.messageAfter);
-  } // skip for combo to handle data parse step
-
-
-  if (skipDataParse) {
-    return parsedHtml;
-  }
-
-  parsedHtml = parsedHtml.replace(dataRegex, function (match) {
-    return data[match.substr(1, match.length - 2)];
-  });
-  return parsedHtml;
-}
-function slugify(str, id) {
-  return str.toLowerCase().replace(/\s/g, '-') + "".concat(id);
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/combo.js
-function combo_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { combo_typeof = function _typeof(obj) { return typeof obj; }; } else { combo_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return combo_typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-
-
-
-
-
-
-
-
-
-
-var Combo = {
-  el: null,
-  templates: null,
-  track: null,
-  id: null,
-  data: null,
-  orderNum: null,
-  // part of the name combo[${orderNum}]
-  items: null,
-  drag: null,
-  moving: false,
-  isMultiple: true,
-  name: null,
-  comboName: null
-};
-var comboCount = 0;
-function combos() {
-  var comboEls = document.querySelectorAll('.js-combo');
-  var combos = Array.from(comboEls);
-  combos = combos.map(function (el) {
-    return combo(el);
-  });
-  return combos;
-}
-function combo(el) {
-  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  var template = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  var Obj = Object.create(Combo);
-
-  if (!areTemplatesSet) {
-    setupTemplates();
-  }
-
-  combo_init.call(Obj, el, comboCount, data, templates_templates);
-  comboCount += 1;
-  return Obj;
-}
-
-function combo_init(el, comboNumber) {
-  var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  var templates = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-  if (!el) {
-    return;
-  }
-
-  this.el = el;
-
-  if (data) {
-    this.id = data.id;
-    this.data = data;
-  } else {
-    this.id = this.el.dataset.id;
-
-    if (!window.combos || !window.combos[this.id]) {
-      return;
-    }
-
-    this.data = window.combos[this.id];
-  }
-
-  this.name = this.data.options.name;
-  this.comboName = this.data.options.comboAddName || 'Item';
-  this.isMultiple = this.data.options.settings.multiple;
-  this.templates = templates;
-  this.track = this.el.querySelector('.js-combo-track');
-  this.orderNum = comboNumber;
-  this.items = [];
-
-  if (this.el.classList.contains('o-combo--moving')) {
-    this.moving = true;
-  }
-
-  combo_setupEvents.call(this);
-  combo_setupItems.call(this);
-}
-
-function combo_setupEvents() {
-  var _this = this;
-
-  var click = Object(_esm5["fromEvent"])(this.el, 'click');
-  click.pipe(Object(operators["filter"])(function (evt) {
-    return evt.target.classList.contains('js-combo-add');
-  }), Object(operators["map"])(function (evt) {
-    evt.preventDefault();
-    return evt;
-  })).subscribe(function () {
-    return combo_addItem.call(_this);
-  });
-  click.pipe(Object(operators["filter"])(function (evt) {
-    return evt.target.classList.contains('js-combo-drag');
-  }), Object(operators["map"])(function (evt) {
-    evt.preventDefault();
-    return evt;
-  })).subscribe(function (evt) {
-    if (_this.el.classList.contains('o-combo--moving')) {
-      _this.el.classList.remove('o-combo--moving');
-
-      _this.moving = false;
-      scrollToComboItem(evt.target);
-    } else {
-      _this.el.classList.add('o-combo--moving');
-
-      _this.moving = true;
-    }
-  });
-  this.drag = dragula_default()([this.track], {
-    revertOnSpill: true,
-    removeOnSpill: false,
-    moves: function moves(el, container, handle) {
-      return handle.classList.contains('js-combo-drag') && _this.moving;
-    }
-  });
-  this.drag.on('drop', function (el) {
-    var formElements = getformElementsFromComboEl.call(_this, el);
-    refreshFromElements(el, formElements);
-  });
-}
-
-function combo_setupItems() {
-  var _this2 = this;
-
-  this.data.values.forEach(function (comboValues) {
-    combo_addItem.call(_this2, comboValues);
-  });
-}
-
-function combo_addItem(values) {
-  var _getComboHtml$call = getComboHtml.call(this, values),
-      el = _getComboHtml$call.el,
-      hash = _getComboHtml$call.hash;
-
-  var newComboItem = this.track.appendChild(el);
-  newComboItem.querySelector('.js-combo-title').dataset.no = this.items.length + 1;
-  var formElements = combo_initialiseItem.call(this, newComboItem, hash);
-  setupMulti.call(this, newComboItem, values);
-  this.items.push({
-    el: newComboItem,
-    hash: hash,
-    formElements: formElements
-  });
-}
-
-function combo_removeItem(combo) {
-  var _this3 = this;
-
-  return function () {
-    _this3.items = _this3.items.filter(function (item) {
-      return item !== combo;
-    });
-    combo.remove();
-  };
-}
-
-function combo_duplicateItem(combo, hash) {
-  var _this4 = this;
-
-  return function () {
-    var comboValues = getComboItemValues(combo);
-    combo_addItem.call(_this4, comboValues);
-  };
-}
-
-function combo_initialiseItem(item, hash) {
-  var comfirmBtns = item.querySelector('.js-confirm');
-  confirm_btns_confirm(comfirmBtns, combo_duplicateItem.call(this, item, hash), combo_removeItem.call(this, item));
-  return initialiseFormElementsForNewElement(item);
-}
-
-function getComboHtml(values) {
-  var _this5 = this;
-
-  var html;
-  var hash = createUniqueHash();
-  html = this.data.fields.reduce(function (acc, field) {
-    var fieldValue;
-
-    if (values) {
-      fieldValue = values[field.id];
-    }
-
-    var templateData = setInputTypeData(field, _this5.templates, fieldValue, "combo[".concat(_this5.id, "][").concat(hash, "][fields]")); // templateData.inputName = templateData.inputName.replace(/field/g,'')
-
-    templateData.dataName = field.id;
-    html = parseTemplate(templateData.html, templateData, _this5.templates);
-    acc += html;
-    return acc;
-  }, '');
-  html = this.templates.comboItemTop + html + this.templates.comboItemBot;
-  var div = document.createElement('div');
-  div.innerHTML = html;
-  return {
-    el: div.firstElementChild,
-    hash: hash
-  };
-}
-
-function getComboItemValues(comboEl) {
-  var groupEls = comboEl.querySelectorAll('[data-input-id]');
-  var groups = Array.from(groupEls);
-  var values = groups.reduce(function (acc, group) {
-    var inputID = group.dataset.inputId;
-    var multiTrack = group.querySelector('.js-multi-track');
-    var multiInputItems = group.querySelectorAll('[data-input-item-name]');
-    var values;
-
-    if (multiTrack) {
-      values = getMultiTrackValues(multiTrack);
-    } else if (multiInputItems.length) {
-      var inputs = Array.from(multiInputItems);
-      values = inputs.reduce(function (inputAcc, input) {
-        var name = input.dataset.inputItemName;
-        var value = parseInputValue(input);
-        inputAcc[name] = value;
-        return inputAcc;
-      }, {});
-      values = [values];
-    } else {
-      var inputEls = group.querySelectorAll('[data-name]');
-
-      var _inputs = Array.from(inputEls);
-
-      values = _inputs.reduce(function (inputAcc, el) {
-        var value = parseInputValue(el);
-
-        if (Array.isArray(value)) {
-          return _toConsumableArray(inputAcc).concat(_toConsumableArray(value));
-        } else {
-          inputAcc.push(value);
-          return inputAcc;
-        }
-      }, []);
-    }
-
-    acc[inputID] = values;
-    return acc;
-  }, {});
-  return values;
-}
-
-function getMultiTrackValues(track) {
-  var items = Array.from(track.children);
-  return items.reduce(function (acc, item) {
-    var inputs = item.querySelectorAll('[data-name]');
-    inputs = Array.from(inputs);
-
-    if (inputs.length === 1) {
-      acc.push(inputs[0].value);
-      return acc;
-    }
-
-    var values = inputs.reduce(function (inputAcc, input) {
-      var name = input.dataset.name;
-      inputAcc[name] = input.value;
-      return inputAcc;
-    }, {});
-    acc.push(values);
-    return acc;
-  }, []);
-}
-
-function parseInputValue(input) {
-  var value = input.value;
-
-  if (typeof input.dataset.jsonValue !== 'undefined') {
-    value = JSON.parse(value);
-  }
-
-  if (input.tagName === 'SELECT') {
-    value = _toConsumableArray(input.options).filter(function (option) {
-      return option.selected;
-    }).map(function (option) {
-      return option.value;
-    });
-  }
-
-  return value;
-}
-
-function getformElementsFromComboEl(combo) {
-  var item = this.items.filter(function (item) {
-    return item.el === combo;
-  });
-
-  if (!item.length) {
-    return;
-  }
-
-  return item[0].formElements;
-}
-
-function scrollToComboItem(el) {
-  requestAnimationFrame(function () {
-    ui_jump.jump(el);
-  });
-}
-
-function setupMulti(newComboItem, comboValues) {
-  this.data.fields.forEach(function (field) {
-    if (!field.options.settings.multiple) {
-      return;
-    }
-
-    var group = newComboItem.querySelector("[data-input-id=\"".concat(field.id, "\"]"));
-    var multiEl = group.querySelector('.js-multi');
-    var values = [];
-
-    if (comboValues && comboValues[field.id]) {
-      values = comboValues[field.id];
-      values = parseMultiValues(values, field);
-    }
-
-    createMultiple(multiEl, values, field);
-  });
-}
-
-function parseMultiValues(values, field) {
-  if (combo_typeof(values[0]) !== 'object') {
-    return values;
-  }
-
-  var dataName = slugify(field.options.name, field.id) + '-';
-  return values.map(function (value) {
-    var keys = Object.keys(value);
-    return keys.reduce(function (acc, key) {
-      if (~key.indexOf(dataName)) {
-        acc[key] = value[key];
-      } else {
-        acc[dataName + key] = value[key];
-      }
-
-      return acc;
-    }, {});
-  });
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/table-actions.js
-
-
-
-var TableActions = {
-  el: null,
-  id: null,
-  dropdown: null,
-  confirm: null,
-  delete: null,
-  duplicate: null,
-  dropdownToggle: null,
-  destroy: table_actions_destroy,
-  nameInput: null,
-  submitEvent: null
-};
-function tableAction(actions, dropdown, duplicateCB, deleteCB) {
-  var Obj = Object.create(TableActions);
-  table_actions_init.call(Obj, actions, dropdown, duplicateCB, deleteCB);
-  return Obj;
-}
-
-function table_actions_init(actions, dropdown, duplicateCB, deleteCB) {
-  if (!actions) {
-    return;
-  }
-
-  this.el = actions;
-  var id = this.el.dataset.id;
-  this.id = id;
-  this.dropdown = dropdown;
-  setDropdownHeight.call(this);
-  this.delete = deleteCB.bind(this);
-  this.duplicate = duplicateCB.bind(this);
-  this.dropdownToggle = toggleDropdown.bind(this);
-  this.destroy = this.destroy.bind(this);
-  this.nameInput = this.el.querySelector('[name="name"]');
-  this.confirm = confirm_btns_confirm(this.el, this.dropdownToggle, this.delete);
-  Object(_esm5["fromEvent"])(this.el, 'click').pipe(Object(operators["filter"])(function (evt) {
-    return evt.target.classList.contains();
-  }));
-}
-
-function toggleDropdown() {
-  if (!this.dropdown) {
-    return;
-  }
-
-  if (this.dropdown.classList.contains('is-active')) {
-    this.dropdown.classList.remove('is-active');
-    this.dropdown.style.height = 0;
-    return;
-  }
-
-  var height = this.dropdown.dataset.height;
-  this.dropdown.style.height = height + 'px';
-  this.dropdown.classList.add('is-active');
-}
-
-function setDropdownHeight() {
-  var cleanUp = false;
-
-  if (!this.dropdown.classList.contains('is-active')) {
-    this.dropdown.classList.add('is-active');
-    cleanUp = true;
-  }
-
-  var container = this.dropdown.firstElementChild;
-
-  var _container$getBoundin = container.getBoundingClientRect(),
-      height = _container$getBoundin.height;
-
-  this.dropdown.dataset.height = height;
-
-  if (cleanUp) {
-    this.dropdown.classList.remove('is-active');
-  }
-
-  return height;
-}
-
-function table_actions_destroy() {
-  this.confirm.destroy();
-  delete this.confirm;
-}
-// EXTERNAL MODULE: ./node_modules/moment/moment.js
-var moment = __webpack_require__("./node_modules/moment/moment.js");
-var moment_default = /*#__PURE__*/__webpack_require__.n(moment);
-
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/table.js
-function table_toConsumableArray(arr) { return table_arrayWithoutHoles(arr) || table_iterableToArray(arr) || table_nonIterableSpread(); }
-
-function table_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function table_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function table_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
-
-
-var Table = {
-  el: null,
-  container: null,
-  classes: {
-    header: 'o-table__header',
-    data: 'o-table__data',
-    tableSize: 'o-table--'
-  },
-  headerEls: [],
-  events: [],
-  defaultHeaders: ['Actions', ''],
-  actionsTemplate: null,
-  data: null,
-  dataKeys: null
-};
-function tables() {
-  var tableEls = document.querySelectorAll('.js-table');
-  var tables = Array.from(tableEls);
-  tables = tables.map(function (el) {
-    return table(el);
-  });
-  return tables;
-}
-function table(el) {
-  var Obj = Object.create(Table);
-  table_init.call(Obj, el);
-  return Obj;
-}
-
-function table_init(el) {
-  if (!el) {
-    return;
-  }
-
-  this.el = el;
-  this.actionsTemplate = this.el.querySelector('.js-tale-action-template');
-  this.actionsTemplate = createTemplate(this.actionsTemplate);
-  this.container = this.el.querySelector('.js-table-container');
-  this.data = getData.call(this);
-  this.dataKeys = Object.keys(this.data.headers).filter(function (el) {
-    return el !== 'id';
-  });
-  setTableSize.call(this);
-  parseData.call(this);
-  addHeaders.call(this);
-  table_render.call(this);
-  console.log(this);
-}
-
-function getData() {
-  return window.tableData;
-}
-
-function createTemplate(templateEl) {
-  var html = templateEl.innerHTML;
-  return function () {
-    var div = document.createElement('div');
-    div.innerHTML = html;
-    return Array.from(div.children);
-  };
-}
-
-function setTableSize() {
-  this.container.classList.add(this.classes.tableSize + this.dataKeys.length);
-}
-
-function addHeaders() {
-  var _this = this;
-
-  var createHeader = function createHeader(text) {
-    var header = document.createElement('div');
-    header.classList.add(_this.classes.header);
-    header.innerHTML = text;
-
-    _this.headerEls.push(header);
-  };
-
-  this.dataKeys.forEach(function (dataKey) {
-    createHeader(_this.data.headers[dataKey]);
-  });
-  this.defaultHeaders.forEach(function (header) {
-    createHeader(header);
-  });
-}
-
-function parseData() {
-  var _this2 = this;
-
-  var types = getTypes(this.dataKeys, this.data.dataTypes);
-  this.data.rows = this.data.rows.map(function (row) {
-    var formattedRow = _this2.dataKeys.reduce(function (acc, key) {
-      switch (types[key]) {
-        case 'boolean':
-          if (typeof _this2.data.formats[key] !== 'undefined' && (row[key] === 1 || row[key] === 0)) {
-            acc[key] = _this2.data.formats[key][row[key]];
-          } else {
-            acc[key] = row[key];
-          }
-
-          return acc;
-
-        case 'date':
-          if (typeof _this2.data.formats[key] !== 'undefined') {
-            row[key] = moment_default()(row[key]);
-            acc[key] = row[key].format(_this2.data.formats[key]);
-          }
-
-          return acc;
-
-        default:
-          acc[key] = row[key];
-          return acc;
-      }
-    }, {});
-
-    var rowDataEls = _this2.dataKeys.map(function (key) {
-      var rowData = document.createElement('div');
-      rowData.classList.add(_this2.classes.data);
-      rowData.innerHTML = formattedRow[key];
-      return rowData;
-    });
-
-    var actionEls = _this2.actionsTemplate();
-
-    var dataEls = table_toConsumableArray(rowDataEls).concat(table_toConsumableArray(actionEls));
-
-    return {
-      id: row.id,
-      row: row,
-      formattedRow: formattedRow,
-      dataEls: dataEls,
-      delete: function _delete() {
-        return console.log('delete', row.id);
-      },
-      duplicate: function duplicate(name) {
-        return console.log('duplicate', row.id, name);
-      }
-    };
-  });
-}
-
-function getTypes(keys, types) {
-  return keys.reduce(function (acc, key) {
-    if (typeof types[key] !== 'undefined') {
-      acc[key] = types[key];
-    } else {
-      acc[key] = 'string';
-    }
-
-    return acc;
-  }, {});
-}
-
-function table_render() {
-  var _this3 = this;
-
-  this.container.innerHTML = '';
-  this.headerEls.forEach(function (el) {
-    _this3.container.appendChild(el);
-  });
-  this.data.rows.forEach(function (row) {
-    row.dataEls.forEach(function (el) {
-      _this3.container.appendChild(el);
-    });
-  });
-  addRowEvents.call(this);
-}
-
-function addRowEvents() {
-  this.events = this.data.rows.map(function (row) {
-    var action = row.dataEls[row.dataEls.length - 3].querySelector('.js-table-actions');
-    var dropdown = row.dataEls[row.dataEls.length - 1];
-    return tableAction(action, dropdown, row.duplicate, row.delete);
-  });
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/templates/template-forms.js
-
-
-
-
-
-var TemplateForms = {
-  el: null,
-  groupID: null,
-  data: null,
-  templates: null
-};
-function createTemplateForms() {
-  var context = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document;
-  var templateFormEls = context.querySelectorAll('.js-temple-forms');
-  var templateForms = Array.from(templateFormEls);
-  setupTemplates();
-  templateForms = templateForms.map(function (el) {
-    return createTemplateForm(el);
-  });
-  return templateForms;
-}
-function createTemplateForm(el) {
-  var Obj = Object.create(TemplateForms);
-
-  if (!areTemplatesSet) {
-    setupTemplates();
-  }
-
-  template_forms_init.call(Obj, el, templates_templates);
-  return Obj;
-}
-
-function template_forms_init(el, templates) {
-  if (!el) {
-    return;
-  }
-
-  if (!window.fieldGroups) {
-    return;
-  }
-
-  this.el = el;
-  this.groupID = this.el.dataset.groupId;
-  this.templates = templates;
-
-  if (!window.fieldGroups[this.groupID]) {
-    return;
-  }
-
-  this.data = window.fieldGroups[this.groupID];
-  setTemplates.call(this);
-  appendTemplates.call(this);
-  setupMultiAndCombo.call(this);
-}
-
-function setTemplates() {
-  var _this = this;
-
-  this.data.forEach(function (el, index) {
-    if (_this.data[index].options.typeKey !== 'combo') {
-      setDataForTemplate.call(_this, index);
-      setFieldTemplate.call(_this, index);
-    } else {
-      setDataForTemplate.call(_this, index);
-      setFieldTemplate.call(_this, index); // this.data[index].fields.forEach((el, comboIndex) => {
-      //     setDataForTemplate.call(this, index, comboIndex)
-      //     setFieldTemplate.call(this, index, comboIndex)
-      // })
-      // this.data[index].fieldTemplates =
-      //     this.templates.comboItemTop +
-      //     this.data[index].fields.reduce((acc, el) => {
-      //         acc += el.template
-      //         return acc
-      //     }, '') +
-      //     this.templates.comboItemBot
-    }
-  });
-}
-
-function setDataForTemplate(index) {
-  var comboIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
-  var field = this.data[index];
-
-  if (~comboIndex) {
-    field = this.data[index].fields[comboIndex];
-  }
-
-  var data = setInputTypeData(field, this.templates);
-
-  if (~comboIndex) {
-    this.data[index].fields[comboIndex].data = data;
-  } else {
-    this.data[index].data = data;
-  }
-}
-
-function setFieldTemplate(index) {
-  var comboIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
-  var html = '';
-  var data;
-
-  if (~comboIndex) {
-    html = this.data[index].fields[comboIndex].data.html;
-    data = this.data[index].fields[comboIndex].data;
-  } else {
-    html = this.data[index].data.html;
-    data = this.data[index].data;
-  }
-
-  html = parseTemplate(html, data, this.templates, !!~comboIndex);
-
-  if (~comboIndex) {
-    this.data[index].fields[comboIndex].template = html;
-    return;
-  }
-
-  this.data[index].template = html;
-}
-
-function appendTemplates() {
-  var groupHtml = this.data.map(function (el) {
-    return el.template;
-  });
-  groupHtml = '<div>' + groupHtml.join('') + '</div>';
-  var newGroupHtml = this.el.appendChild(htmlStrToDom(groupHtml));
-  initialiseFormElementsForNewElement(newGroupHtml);
-}
-
-function htmlStrToDom(str) {
-  var div = document.createElement('div');
-  div.innerHTML = str;
-  return div.firstElementChild;
-}
-
-function setupMultiAndCombo() {
-  var _this2 = this;
-
-  this.data.forEach(function (el) {
-    if (el.data.multi && el.options.typeKey !== 'combo') {
-      var dataName = el.data.dataName;
-
-      var multiEl = _this2.el.querySelector("[data-input-id=".concat(dataName, "]"));
-
-      el.multi = createMultiple(multiEl, el.data.values, el.data);
-    }
-
-    if (el.options.typeKey === 'combo') {
-      var _dataName = el.data.dataName;
-
-      var comboEl = _this2.el.querySelector("[data-input-id=".concat(_dataName, "]"));
-
-      combo(comboEl, el, _this2.templates);
-    }
-  });
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // CONCATENATED MODULE: ./resources/assets/js/src/form/reset-form.js
@@ -4305,478 +3076,10 @@ var component = Object(componentNormalizer["default"])(
 if (false) { var api; }
 component.options.__file = "resources/assets/js/src/fields/App.vue"
 /* harmony default export */ var App = (component.exports);
-// EXTERNAL MODULE: ./node_modules/sortablejs/Sortable.js
-var Sortable = __webpack_require__("./node_modules/sortablejs/Sortable.js");
-var Sortable_default = /*#__PURE__*/__webpack_require__.n(Sortable);
+// EXTERNAL MODULE: ./node_modules/vuedraggable/dist/vuedraggable.js
+var vuedraggable = __webpack_require__("./node_modules/vuedraggable/dist/vuedraggable.js");
+var vuedraggable_default = /*#__PURE__*/__webpack_require__.n(vuedraggable);
 
-// CONCATENATED MODULE: ./resources/assets/js/vendor/vuedraggable.js
-
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-function vuedraggable_toConsumableArray(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  } else {
-    return Array.from(arr);
-  }
-}
-
-if (!Array.from) {
-  Array.from = function (object) {
-    return [].slice.call(object);
-  };
-}
-
-function buildAttribute(object, propName, value) {
-  if (value == undefined) {
-    return object;
-  }
-
-  object = object == null ? {} : object;
-  object[propName] = value;
-  return object;
-}
-
-function buildDraggable(Sortable) {
-  function removeNode(node) {
-    node.parentElement.removeChild(node);
-  }
-
-  function insertNodeAt(fatherNode, node, position) {
-    var refNode = position === 0 ? fatherNode.children[0] : fatherNode.children[position - 1].nextSibling;
-    fatherNode.insertBefore(node, refNode);
-  }
-
-  function computeVmIndex(vnodes, element) {
-    return vnodes.map(function (elt) {
-      return elt.elm;
-    }).indexOf(element);
-  }
-
-  function _computeIndexes(slots, children, isTransition) {
-    if (!slots) {
-      return [];
-    }
-
-    var elmFromNodes = slots.map(function (elt) {
-      return elt.elm;
-    });
-    var rawIndexes = [].concat(vuedraggable_toConsumableArray(children)).map(function (elt) {
-      return elmFromNodes.indexOf(elt);
-    });
-    return isTransition ? rawIndexes.filter(function (ind) {
-      return ind !== -1;
-    }) : rawIndexes;
-  }
-
-  function emit(evtName, evtData) {
-    var _this = this;
-
-    this.$nextTick(function () {
-      return _this.$emit(evtName.toLowerCase(), evtData);
-    });
-  }
-
-  function delegateAndEmit(evtName) {
-    var _this2 = this;
-
-    return function (evtData) {
-      if (_this2.realList !== null) {
-        _this2['onDrag' + evtName](evtData);
-      }
-
-      emit.call(_this2, evtName, evtData);
-    };
-  }
-
-  var eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End'];
-  var eventsToEmit = ['Choose', 'Sort', 'Filter', 'Clone'];
-  var readonlyProperties = ['Move'].concat(eventsListened, eventsToEmit).map(function (evt) {
-    return 'on' + evt;
-  });
-  var draggingElement = null;
-  var props = {
-    options: Object,
-    list: {
-      type: Array,
-      required: false,
-      default: null
-    },
-    value: {
-      type: Array,
-      required: false,
-      default: null
-    },
-    noTransitionOnDrag: {
-      type: Boolean,
-      default: false
-    },
-    clone: {
-      type: Function,
-      default: function _default(original) {
-        return original;
-      }
-    },
-    element: {
-      type: String,
-      default: 'div'
-    },
-    move: {
-      type: Function,
-      default: null
-    },
-    componentData: {
-      type: Object,
-      required: false,
-      default: null
-    }
-  };
-  var draggableComponent = {
-    name: 'draggable',
-    props: props,
-    data: function data() {
-      return {
-        transitionMode: false,
-        noneFunctionalComponentMode: false,
-        init: false
-      };
-    },
-    render: function render(h) {
-      var slots = this.$slots.default;
-
-      if (slots && slots.length === 1) {
-        var child = slots[0];
-
-        if (child.componentOptions && child.componentOptions.tag === 'transition-group') {
-          this.transitionMode = true;
-        }
-      }
-
-      var children = slots;
-      var footer = this.$slots.footer;
-
-      if (footer) {
-        children = slots ? [].concat(vuedraggable_toConsumableArray(slots), vuedraggable_toConsumableArray(footer)) : [].concat(vuedraggable_toConsumableArray(footer));
-      }
-
-      var attributes = null;
-
-      var update = function update(name, value) {
-        attributes = buildAttribute(attributes, name, value);
-      };
-
-      update('attrs', this.$attrs);
-
-      if (this.componentData) {
-        var _componentData = this.componentData,
-            on = _componentData.on,
-            _props = _componentData.props;
-        update('on', on);
-        update('props', _props);
-      }
-
-      return h(this.element, attributes, children);
-    },
-    mounted: function mounted() {
-      var _this3 = this;
-
-      this.noneFunctionalComponentMode = this.element.toLowerCase() !== this.$el.nodeName.toLowerCase();
-
-      if (this.noneFunctionalComponentMode && this.transitionMode) {
-        throw new Error('Transition-group inside component is not supported. Please alter element value or remove transition-group. Current element value: ' + this.element);
-      }
-
-      var optionsAdded = {};
-      eventsListened.forEach(function (elt) {
-        optionsAdded['on' + elt] = delegateAndEmit.call(_this3, elt);
-      });
-      eventsToEmit.forEach(function (elt) {
-        optionsAdded['on' + elt] = emit.bind(_this3, elt);
-      });
-
-      var options = _extends({}, this.options, optionsAdded, {
-        onMove: function onMove(evt, originalEvent) {
-          return _this3.onDragMove(evt, originalEvent);
-        }
-      });
-
-      !('draggable' in options) && (options.draggable = '>*');
-      this._sortable = new Sortable(this.rootContainer, options);
-      this.computeIndexes();
-    },
-    beforeDestroy: function beforeDestroy() {
-      this._sortable.destroy();
-    },
-    computed: {
-      rootContainer: function rootContainer() {
-        return this.transitionMode ? this.$el.children[0] : this.$el;
-      },
-      isCloning: function isCloning() {
-        return !!this.options && !!this.options.group && this.options.group.pull === 'clone';
-      },
-      realList: function realList() {
-        return this.list ? this.list : this.value;
-      }
-    },
-    watch: {
-      options: {
-        handler: function handler(newOptionValue) {
-          for (var property in newOptionValue) {
-            if (readonlyProperties.indexOf(property) == -1) {
-              this._sortable.option(property, newOptionValue[property]);
-            }
-          }
-        },
-        deep: true
-      },
-      realList: function realList() {
-        this.computeIndexes();
-      }
-    },
-    methods: {
-      getChildrenNodes: function getChildrenNodes() {
-        if (!this.init) {
-          this.noneFunctionalComponentMode = this.noneFunctionalComponentMode && this.$children.length == 1;
-          this.init = true;
-        }
-
-        if (this.noneFunctionalComponentMode) {
-          return this.$children[0].$slots.default;
-        }
-
-        var rawNodes = this.$slots.default;
-        return this.transitionMode ? rawNodes[0].child.$slots.default : rawNodes;
-      },
-      computeIndexes: function computeIndexes() {
-        var _this4 = this;
-
-        this.$nextTick(function () {
-          _this4.visibleIndexes = _computeIndexes(_this4.getChildrenNodes(), _this4.rootContainer.children, _this4.transitionMode);
-        });
-      },
-      getUnderlyingVm: function getUnderlyingVm(htmlElt) {
-        var index = computeVmIndex(this.getChildrenNodes() || [], htmlElt);
-
-        if (index === -1) {
-          // Edge case during move callback: related element might be
-          // an element different from collection
-          return null;
-        }
-
-        var element = this.realList[index];
-        return {
-          index: index,
-          element: element
-        };
-      },
-      getUnderlyingPotencialDraggableComponent: function getUnderlyingPotencialDraggableComponent(_ref) {
-        var __vue__ = _ref.__vue__;
-
-        if (!__vue__ || !__vue__.$options || __vue__.$options._componentTag !== 'transition-group') {
-          return __vue__;
-        }
-
-        return __vue__.$parent;
-      },
-      emitChanges: function emitChanges(evt) {
-        var _this5 = this;
-
-        this.$nextTick(function () {
-          _this5.$emit('change', evt);
-        });
-      },
-      alterList: function alterList(onList) {
-        if (this.list) {
-          onList(this.list);
-        } else {
-          var newList = [].concat(vuedraggable_toConsumableArray(this.value));
-          onList(newList);
-          this.$emit('input', newList);
-        }
-      },
-      spliceList: function spliceList() {
-        var _arguments = arguments;
-
-        var spliceList = function spliceList(list) {
-          return list.splice.apply(list, _arguments);
-        };
-
-        this.alterList(spliceList);
-      },
-      updatePosition: function updatePosition(oldIndex, newIndex) {
-        var updatePosition = function updatePosition(list) {
-          return list.splice(newIndex, 0, list.splice(oldIndex, 1)[0]);
-        };
-
-        this.alterList(updatePosition);
-      },
-      getRelatedContextFromMoveEvent: function getRelatedContextFromMoveEvent(_ref2) {
-        var to = _ref2.to,
-            related = _ref2.related;
-        var component = this.getUnderlyingPotencialDraggableComponent(to);
-
-        if (!component) {
-          return {
-            component: component
-          };
-        }
-
-        var list = component.realList;
-        var context = {
-          list: list,
-          component: component
-        };
-
-        if (to !== related && list && component.getUnderlyingVm) {
-          var destination = component.getUnderlyingVm(related);
-
-          if (destination) {
-            return _extends(destination, context);
-          }
-        }
-
-        return context;
-      },
-      getVmIndex: function getVmIndex(domIndex) {
-        var indexes = this.visibleIndexes;
-        var numberIndexes = indexes.length;
-        return domIndex > numberIndexes - 1 ? numberIndexes : indexes[domIndex];
-      },
-      getComponent: function getComponent() {
-        return this.$slots.default[0].componentInstance;
-      },
-      resetTransitionData: function resetTransitionData(index) {
-        if (!this.noTransitionOnDrag || !this.transitionMode) {
-          return;
-        }
-
-        var nodes = this.getChildrenNodes();
-        nodes[index].data = null;
-        var transitionContainer = this.getComponent();
-        transitionContainer.children = [];
-        transitionContainer.kept = undefined;
-      },
-      onDragStart: function onDragStart(evt) {
-        this.context = this.getUnderlyingVm(evt.item);
-        evt.item._underlying_vm_ = this.clone(this.context.element);
-        draggingElement = evt.item;
-      },
-      onDragAdd: function onDragAdd(evt) {
-        var element = evt.item._underlying_vm_;
-
-        if (element === undefined) {
-          return;
-        }
-
-        removeNode(evt.item);
-        var newIndex = this.getVmIndex(evt.newIndex);
-        this.spliceList(newIndex, 0, element);
-        this.computeIndexes();
-        var added = {
-          element: element,
-          newIndex: newIndex
-        };
-        this.emitChanges({
-          added: added
-        });
-      },
-      onDragRemove: function onDragRemove(evt) {
-        insertNodeAt(this.rootContainer, evt.item, evt.oldIndex);
-
-        if (this.isCloning) {
-          removeNode(evt.clone);
-          return;
-        }
-
-        var oldIndex = this.context.index;
-        this.spliceList(oldIndex, 1);
-        var removed = {
-          element: this.context.element,
-          oldIndex: oldIndex
-        };
-        this.resetTransitionData(oldIndex);
-        this.emitChanges({
-          removed: removed
-        });
-      },
-      onDragUpdate: function onDragUpdate(evt) {
-        removeNode(evt.item);
-        insertNodeAt(evt.from, evt.item, evt.oldIndex);
-        var oldIndex = this.context.index;
-        var newIndex = this.getVmIndex(evt.newIndex);
-        this.updatePosition(oldIndex, newIndex);
-        var moved = {
-          element: this.context.element,
-          oldIndex: oldIndex,
-          newIndex: newIndex
-        };
-        this.emitChanges({
-          moved: moved
-        });
-      },
-      computeFutureIndex: function computeFutureIndex(relatedContext, evt) {
-        if (!relatedContext.element) {
-          return 0;
-        }
-
-        var domChildren = [].concat(vuedraggable_toConsumableArray(evt.to.children)).filter(function (el) {
-          return el.style['display'] !== 'none';
-        });
-        var currentDOMIndex = domChildren.indexOf(evt.related);
-        var currentIndex = relatedContext.component.getVmIndex(currentDOMIndex);
-        var draggedInList = domChildren.indexOf(draggingElement) != -1;
-        return draggedInList || !evt.willInsertAfter ? currentIndex : currentIndex + 1;
-      },
-      onDragMove: function onDragMove(evt, originalEvent) {
-        var onMove = this.move;
-
-        if (!onMove || !this.realList) {
-          return true;
-        }
-
-        var relatedContext = this.getRelatedContextFromMoveEvent(evt);
-        var draggedContext = this.context;
-        var futureIndex = this.computeFutureIndex(relatedContext, evt);
-
-        _extends(draggedContext, {
-          futureIndex: futureIndex
-        });
-
-        _extends(evt, {
-          relatedContext: relatedContext,
-          draggedContext: draggedContext
-        });
-
-        return onMove(evt, originalEvent);
-      },
-      onDragEnd: function onDragEnd(evt) {
-        this.computeIndexes();
-        draggingElement = null;
-      }
-    }
-  };
-  return draggableComponent;
-}
-
-var out = buildDraggable(Sortable_default.a);
-/* harmony default export */ var vuedraggable = (out);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/fields/types/types.vue?vue&type=template&id=c5a3b86c&
 var typesvue_type_template_id_c5a3b86c_render = function() {
   var _vm = this
@@ -6563,7 +4866,7 @@ var combo_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var combo_api; }
 combo_component.options.__file = "resources/assets/js/src/fields/types/combo.vue"
-/* harmony default export */ var types_combo = (combo_component.exports);
+/* harmony default export */ var combo = (combo_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/fields/types/select.vue?vue&type=template&id=7048990a&
 var selectvue_type_template_id_7048990a_render = function() {
   var _vm = this
@@ -7295,12 +5598,12 @@ var locationvue_type_template_id_01933bf4_render = function() {
                                   _vm.inputNameMultiValue +
                                   "[" +
                                   valueObj.id +
-                                  "][latitude]",
+                                  "][longitude]",
                                 name:
                                   _vm.inputNameMultiValue +
                                   "[" +
                                   valueObj.id +
-                                  "][latitude]"
+                                  "][longitude]"
                               },
                               domProps: {
                                 value:
@@ -7738,7 +6041,7 @@ var wysiwyg_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var wysiwyg_api; }
 wysiwyg_component.options.__file = "resources/assets/js/src/fields/types/wysiwyg.vue"
-/* harmony default export */ var types_wysiwyg = (wysiwyg_component.exports);
+/* harmony default export */ var wysiwyg = (wysiwyg_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/fields/types/button.vue?vue&type=template&id=3fee9ab1&
 var buttonvue_type_template_id_3fee9ab1_render = function() {
   var _vm = this
@@ -7785,8 +6088,16 @@ var buttonvue_type_template_id_3fee9ab1_render = function() {
                             _c("input", {
                               attrs: {
                                 type: "text",
-                                id: _vm.inputName + "[label]",
-                                name: _vm.inputName + "[label]"
+                                id:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][label]",
+                                name:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][label]"
                               },
                               domProps: {
                                 value: valueObj.value && valueObj.value.label
@@ -7817,8 +6128,16 @@ var buttonvue_type_template_id_3fee9ab1_render = function() {
                             _c("input", {
                               attrs: {
                                 type: "text",
-                                id: _vm.inputName + "[url]",
-                                name: _vm.inputName + "[url]"
+                                id:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][url]",
+                                name:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][url]"
                               },
                               domProps: {
                                 value: valueObj.value && valueObj.value.url
@@ -7849,8 +6168,16 @@ var buttonvue_type_template_id_3fee9ab1_render = function() {
                             _c("input", {
                               attrs: {
                                 type: "text",
-                                id: _vm.inputName + "[class]",
-                                name: _vm.inputName + "[class]"
+                                id:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][class]",
+                                name:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][class]"
                               },
                               domProps: {
                                 value: valueObj.value && valueObj.value.class
@@ -7881,8 +6208,16 @@ var buttonvue_type_template_id_3fee9ab1_render = function() {
                             _c("input", {
                               attrs: {
                                 type: "text",
-                                id: _vm.inputName + "[id]",
-                                name: _vm.inputName + "[id]"
+                                id:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][id]",
+                                name:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][id]"
                               },
                               domProps: {
                                 value: valueObj.value && valueObj.value.id
@@ -7913,8 +6248,16 @@ var buttonvue_type_template_id_3fee9ab1_render = function() {
                             _c("input", {
                               attrs: {
                                 type: "text",
-                                id: _vm.inputName + "[target]",
-                                name: _vm.inputName + "[target]"
+                                id:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][target]",
+                                name:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  valueObj.id +
+                                  "][target]"
                               },
                               domProps: {
                                 value: valueObj.value && valueObj.value.target
@@ -8433,7 +6776,7 @@ var datetime_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var datetime_api; }
 datetime_component.options.__file = "resources/assets/js/src/fields/types/datetime.vue"
-/* harmony default export */ var types_datetime = (datetime_component.exports);
+/* harmony default export */ var datetime = (datetime_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/fields/types/image.vue?vue&type=template&id=48d633ac&
 var imagevue_type_template_id_48d633ac_render = function() {
   var _vm = this
@@ -8482,8 +6825,16 @@ var imagevue_type_template_id_48d633ac_render = function() {
                           _c("input", {
                             attrs: {
                               type: "text",
-                              id: _vm.inputName + "[alt]",
-                              name: _vm.inputName + "[alt]"
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][alt]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][alt]"
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.alt
@@ -8499,8 +6850,16 @@ var imagevue_type_template_id_48d633ac_render = function() {
                           _c("input", {
                             attrs: {
                               type: "hidden",
-                              id: _vm.inputName + "[width]",
-                              name: _vm.inputName + "[width]"
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][width]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][width]"
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.width
@@ -8510,8 +6869,16 @@ var imagevue_type_template_id_48d633ac_render = function() {
                           _c("input", {
                             attrs: {
                               type: "hidden",
-                              id: _vm.inputName + "[height]",
-                              name: _vm.inputName + "[height]"
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][height]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][height]"
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.height
@@ -8521,8 +6888,16 @@ var imagevue_type_template_id_48d633ac_render = function() {
                           _c("input", {
                             attrs: {
                               type: "hidden",
-                              id: _vm.inputName + "[url]",
-                              name: _vm.inputName + "[url]"
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][url]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][url]"
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.url
@@ -8532,8 +6907,16 @@ var imagevue_type_template_id_48d633ac_render = function() {
                           _c("input", {
                             attrs: {
                               type: "hidden",
-                              id: _vm.inputName + "[id]",
-                              name: _vm.inputName + "[id]"
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][id]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][id]"
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.id
@@ -8754,12 +7137,7 @@ var filevue_type_template_id_a250fc8a_render = function() {
                           ]),
                           _vm._v(" "),
                           _c("input", {
-                            attrs: {
-                              type: "text",
-                              id: _vm.inputName + "[url]",
-                              name: _vm.inputName + "[url]",
-                              disabled: ""
-                            },
+                            attrs: { type: "text", disabled: "" },
                             domProps: {
                               value: valueObj.value && valueObj.value.url
                             }
@@ -8768,8 +7146,8 @@ var filevue_type_template_id_a250fc8a_render = function() {
                           _c("input", {
                             attrs: {
                               type: "hidden",
-                              id: _vm.inputName + "[id]",
-                              name: _vm.inputName + "[id]"
+                              id: _vm.inputName,
+                              name: _vm.inputName
                             },
                             domProps: {
                               value: valueObj.value && valueObj.value.id
@@ -8927,7 +7305,7 @@ var file_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var file_api; }
 file_component.options.__file = "resources/assets/js/src/fields/types/file.vue"
-/* harmony default export */ var types_file = (file_component.exports);
+/* harmony default export */ var file = (file_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/fields/types/types.vue?vue&type=script&lang=js&
 //
 //
@@ -8973,15 +7351,15 @@ var typeMap = {
     'text-input': types_text,
     'email-input': email,
     'phone-input': phone,
-    combo: types_combo,
+    combo: combo,
     'select-input': types_select,
     'location-input': types_location,
-    'wysiwyg-input': types_wysiwyg,
+    'wysiwyg-input': wysiwyg,
     'button-input': types_button,
     'boolean-input': types_boolean,
-    'datetime-input': types_datetime,
+    'datetime-input': datetime,
     'image-input': types_image,
-    'file-input': types_file
+    'file-input': file
   },
   computed: {
     type: function type() {
@@ -9279,7 +7657,7 @@ function getStore() {
 
 
 vue_runtime_esm["default"].config.productionTip = false;
-vue_runtime_esm["default"].component('draggable', vuedraggable);
+vue_runtime_esm["default"].component('draggable', vuedraggable_default.a);
 vue_runtime_esm["default"].component('types', types_types);
 vue_runtime_esm["default"].use(vuex_esm["default"]);
 function Fields() {
@@ -9405,22 +7783,13 @@ function src_init() {
   video_init();
   map_init();
   setupModals();
-  initialiseFormElements();
   scroll_anim_init(); // add c-grid-anim | c-line-anim | c-scroll-anim--fade-up with js-scroll-anim to animate a component on scroll
 
-  var basicConfirm = document.querySelector('.js-confirm');
-  confirm_btns_confirm(basicConfirm, function () {
-    return console.log('dup');
-  }, function () {
-    return console.log('delete');
-  });
-  trees(); // combos()
-
+  trees();
   tables();
-  createTemplateForms(); // initialiseFormElements()
+  initialiseFormElements();
+  registerFormSaveEvents(); // resetForm()
 
-  registerFormSaveEvents();
-  reset_form_init();
   Fields();
 }
 
@@ -9433,4 +7802,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.1ca00265016244eb1d2c.js.map
+//# sourceMappingURL=main.3a449290554b76f1cd39.js.map

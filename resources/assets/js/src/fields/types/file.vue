@@ -15,8 +15,8 @@
                                 <div class="o-form-icon__icon">
                                     <span>Url</span>
                                 </div>
-                                <input type="text" :id="inputName + '[url]'" :name="inputName + '[url]'" :value="valueObj.value && valueObj.value.url" disabled>
-                                <input type="hidden" :id="inputName + '[id]'" :name="inputName + '[id]'" :value="valueObj.value && valueObj.value.id">
+                                <input type="text" :value="valueObj.value && valueObj.value.url" disabled>
+                                <input type="hidden" :id="inputName" :name="inputName" :value="valueObj.value && valueObj.value.id">
                             </div>
                             <button class="o-btn o-btn--sm o-file__btn" @click="selectFile($event, valueObj)">select</button>
                         </div>

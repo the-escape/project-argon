@@ -6,19 +6,19 @@
                 <template slot-scope="{ valueObj }">
                     <div class="o-form__vertical-list">
                         <input-icon :pre-icon="labelIcon.preIcon" :post-icon="labelIcon.postIcon">
-                            <input type="text" :id="inputName + '[label]'" :name="inputName + '[label]'" :value="valueObj.value && valueObj.value.label" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'label')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][label]`" :name="inputNameMultiValue + `[${valueObj.id}][label]`" :value="valueObj.value && valueObj.value.label" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'label')">
                         </input-icon>
                         <input-icon :pre-icon="urlIcon.preIcon" :post-icon="urlIcon.postIcon">
-                            <input type="text" :id="inputName + '[url]'" :name="inputName + '[url]'" :value="valueObj.value && valueObj.value.url" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'url')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][url]`" :name="inputNameMultiValue + `[${valueObj.id}][url]`" :value="valueObj.value && valueObj.value.url" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'url')">
                         </input-icon>
                         <input-icon :pre-icon="classIcon.preIcon" :post-icon="classIcon.postIcon">
-                            <input type="text" :id="inputName + '[class]'" :name="inputName + '[class]'" :value="valueObj.value && valueObj.value.class" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'class')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][class]`" :name="inputNameMultiValue + `[${valueObj.id}][class]`" :value="valueObj.value && valueObj.value.class" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'class')">
                         </input-icon>
                         <input-icon :pre-icon="idIcon.preIcon" :post-icon="idIcon.postIcon">
-                            <input type="text" :id="inputName + '[id]'" :name="inputName + '[id]'" :value="valueObj.value && valueObj.value.id" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'id')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][id]`" :name="inputNameMultiValue + `[${valueObj.id}][id]`" :value="valueObj.value && valueObj.value.id" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'id')">
                         </input-icon>
                         <input-icon :pre-icon="targetIcon.preIcon" :post-icon="targetIcon.postIcon">
-                            <input type="text" :id="inputName + '[target]'" :name="inputName + '[target]'" :value="valueObj.value && valueObj.value.target" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'target')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][target]`" :name="inputNameMultiValue + `[${valueObj.id}][target]`" :value="valueObj.value && valueObj.value.target" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'target')">
                         </input-icon>
                     </div>
                 </template>

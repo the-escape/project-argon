@@ -9,7 +9,7 @@
                             <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][latitude]`" :name="inputNameMultiValue + `[${valueObj.id}][latitude]`" :value="valueObj.value && valueObj.value.latitude" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'latitude')">
                         </input-icon>
                         <input-icon :pre-icon="lngIcon.preIcon" :post-icon="lngIcon.postIcon">
-                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][latitude]`" :name="inputNameMultiValue + `[${valueObj.id}][latitude]`" :value="valueObj.value && valueObj.value.longitude" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'longitude')">
+                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][longitude]`" :name="inputNameMultiValue + `[${valueObj.id}][longitude]`" :value="valueObj.value && valueObj.value.longitude" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'longitude')">
                         </input-icon>
                     </div>
                 </template>

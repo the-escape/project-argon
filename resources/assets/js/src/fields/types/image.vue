@@ -15,12 +15,12 @@
                                 <div class="o-form-icon__icon">
                                     <span>Alt</span>
                                 </div>
-                                <input type="text" :id="inputName + '[alt]'" :name="inputName + '[alt]'" :value="valueObj.value && valueObj.value.alt"  v-on:keyup.stop="updateAlt(valueObj, $event.target.value)">
+                                <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][alt]`" :name="inputNameMultiValue + `[${valueObj.id}][alt]`" :value="valueObj.value && valueObj.value.alt"  v-on:keyup.stop="updateAlt(valueObj, $event.target.value)">
 
-                                <input type="hidden" :id="inputName + '[width]'" :name="inputName + '[width]'" :value="valueObj.value && valueObj.value.width">
-                                <input type="hidden" :id="inputName + '[height]'" :name="inputName + '[height]'" :value="valueObj.value && valueObj.value.height">
-                                <input type="hidden" :id="inputName + '[url]'" :name="inputName + '[url]'" :value="valueObj.value && valueObj.value.url">
-                                <input type="hidden" :id="inputName + '[id]'" :name="inputName + '[id]'" :value="valueObj.value && valueObj.value.id">
+                                <input type="hidden" :id="inputNameMultiValue + `[${valueObj.id}][width]`" :name="inputNameMultiValue + `[${valueObj.id}][width]`" :value="valueObj.value && valueObj.value.width">
+                                <input type="hidden" :id="inputNameMultiValue + `[${valueObj.id}][height]`" :name="inputNameMultiValue + `[${valueObj.id}][height]`" :value="valueObj.value && valueObj.value.height">
+                                <input type="hidden" :id="inputNameMultiValue + `[${valueObj.id}][url]`" :name="inputNameMultiValue + `[${valueObj.id}][url]`" :value="valueObj.value && valueObj.value.url">
+                                <input type="hidden" :id="inputNameMultiValue + `[${valueObj.id}][id]`" :name="inputNameMultiValue + `[${valueObj.id}][id]`" :value="valueObj.value && valueObj.value.id">
                             </div>
                             <button class="o-btn o-btn--sm o-file__btn" @click="selectImage($event, valueObj)">select</button>
                         </div>
