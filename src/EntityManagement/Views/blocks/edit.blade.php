@@ -1,33 +1,84 @@
 @extends('argon::layout.master')
 
-@section('content')
-    <div class="main">
+@section('body-class', 'medialib medialib-all')
 
-        <div class="row">
-            <div class="col-md-9">
-                <h1>Edit Block</h1>
-            </div>
-            <div class="col-md-3">
+@section('body-id', 'argon-ui')
+
+@section('content')
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Blocks</h1>
+        </div>
+        <div class="c-tab__nav">
+            <ul>
+                <li>
+                    <a class="c-tab__btn active">
+                        <div class="c-tab__btn-container">
+                            <span>Edit</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" class="o-form" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+        <main class="c-container c-container--main">
+            @include('argon::inc.alerts', compact($errors))
+
+            <div class="l-align-end l-space">
                 @if(!$groups->isEmpty())
-                    <a href="#" class="accordion-expand-collapse pull-md-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+                    <a href="#" class="accordion-expand-collapse o-btn o-btn--sm" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
                 @endif
             </div>
-        </div>
 
-        @include('argon::inc.alerts', compact($errors))
-
-        <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">Details</div>
                 <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" id="name" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" name="name" value="{{ old('name', $page->name) }}">
+                    <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                        <div class="o-form-status">
+                            <div class="o-form-status__input">
+                                <label for="name" class="required">Name*</label>
+                                <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
+                            </div>
+                            <div class="o-form-status__message">
+                                <div class="o-form-status__icon">
+                                    <div class="o-form-status__icon--error">
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                    </div>
+                                    <div class="o-form-status__icon--success">
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="o-form-status__message-bar">
+                                    <label for="name">{{ getError($errors, 'name') }}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="slug" class="required">URL Slug</label>
-                        <input type="text" id="slug" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug', $page->slug) }}">
+
+                    <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                        <div class="o-form-status">
+                            <div class="o-form-status__input">
+                                <label for="slug" class="required">URL Slug*</label>
+                                <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
+                            </div>
+                            <div class="o-form-status__message">
+                                <div class="o-form-status__icon">
+                                    <div class="o-form-status__icon--error">
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                    </div>
+                                    <div class="o-form-status__icon--success">
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                    </div>
+                                </div>
+                                <div class="o-form-status__message-bar">
+                                    <label for="slug">{{ getError($errors, 'slug') }}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,7 +89,7 @@
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                               href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                                href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
                                 {{$l->getLocale()->getName()}}
                             </a>
                         </li>
@@ -60,20 +111,16 @@
                     <div class="card accordion">
 
                         <div class="card-header accordion-header">
-                            {{ $group->name }}
+                            <span>{{ $group->name }}</span>
                         </div>
 
                         <div class="card-block accordion-body">
 
-                            @foreach ($group->getFields() as $field)
-
-                                <div class="form-group sortable">
-
-                                    {!! $field->render($latest->getField($field->getId())) !!}
-
-                                </div>
-
-                            @endforeach
+                            <script>
+                                window.fieldGroups = window.fieldGroups || {}
+                                window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation),JSON_PRETTY_PRINT) !!}
+                            </script>
+                            <div class="js-fields" data-name="{{$group->id}}"></div>
 
                         </div>
 
@@ -93,20 +140,16 @@
 
                                 <div class="card-header accordion-header">
                                     <span class="sortable-handle">&#8645;</span>
-                                    {{ $group->name }}
+                                    <span>{{ $group->name }}</span>
                                 </div>
 
                                 <div class="card-block accordion-body">
 
-                                    @foreach ($group->getFields() as $field)
-
-                                        <div class="form-group sortable">
-
-                                            {!! $field->render($latest->getField($field->getId())) !!}
-
-                                        </div>
-
-                                    @endforeach
+                                    <script>
+                                        window.fieldGroups = window.fieldGroups || {}
+                                        window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation),JSON_PRETTY_PRINT) !!}
+                                    </script>
+                                    <div class="js-fields" data-name="{{$group->id}}"></div>
 
                                 </div>
 
@@ -119,14 +162,27 @@
                 </div>
 
             @endif
+        </main>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="btn btn-primary-outline">Add another</a>
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed">
+                <div class="c-footer__container">
 
-            <a href="{{ route('cms:blocks:manage') }}" class="btn btn-link">Back to blocks</a>
+                    <div class="c-footer__buttons">
+                        <div>
+                            <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--sm">Back to blocks</a>
+                        </div>
+                        <div>
+                        <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-btn o-btn--sm">Add another</a>
 
-        </form>
-    </div>
+                        <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+    </form>
 
     <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">

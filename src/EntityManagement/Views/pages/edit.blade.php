@@ -29,8 +29,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div>
     </header>
 
-
-
     <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" class="o-form" method="POST" id="pageEditForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
