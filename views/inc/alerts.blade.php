@@ -15,13 +15,14 @@
 
 @if($messages = getMessage(@$errors))
 
+
     <div class="alert alert-danger">
 
         <p><strong>Submission failed</strong></p>
 
         <ul>
             @foreach ($messages as $message)
-                <li>{{ $message }}</li>
+            <li>{{ $message }}</li>
             @endforeach
         </ul>
 

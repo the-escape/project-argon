@@ -182,7 +182,6 @@
                                         window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
                                     </script>
                                     <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    <!-- <div class="o-form l-container js-temple-forms" data-group-id="{{$group->id}}"></div> -->
 
                                     <?php /*
                                     @foreach ($group->getFields() as $field)

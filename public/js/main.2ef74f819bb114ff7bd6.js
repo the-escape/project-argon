@@ -3022,7 +3022,7 @@ var Appvue_type_template_id_5255ee68_render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "o-form l-container" },
+    { staticClass: "o-form l-accordion-container" },
     _vm._l(_vm.fields, function(field) {
       return _c("types", { key: field.id, attrs: { field: field } })
     })
@@ -7802,4 +7802,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3a449290554b76f1cd39.js.map
+//# sourceMappingURL=main.2ef74f819bb114ff7bd6.js.map

@@ -154,6 +154,7 @@ class BlocksController extends BaseController
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
 
+        // dd($request->all(), $rules, $niceNames);
         $this->validate($request, $rules, [], $niceNames);
 
         $entity = $entityRepository->create([

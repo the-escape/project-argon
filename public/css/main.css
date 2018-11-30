@@ -4240,6 +4240,10 @@ button.o-btn {
   width: 100%;
   margin: 0 auto; }
 
+.l-accordion-container {
+  max-width: 1440px;
+  width: 100%; }
+
 .l-page {
   overflow: hidden; }
 
@@ -5217,38 +5221,6 @@ button.o-btn {
 
 .h-background--transparent {
   background-color: transparent !important; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

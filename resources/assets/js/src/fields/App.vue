@@ -1,5 +1,5 @@
 <template>
-    <div class="o-form l-container">
+    <div class="o-form l-accordion-container">
         <types v-for="field in fields" :key="field.id" :field="field"></types>
     </div>
 </template>
