@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getFolders, getFoldersData, search } from "../api/media";
+import { getFolders, getFoldersData, search, addFolder, removeFolder } from "../api/media";
 import { Folder, children, Item } from "./folder"
 import { Search } from "./search"
 
@@ -19,10 +19,26 @@ export default new Vuex.Store({
     // getters : {},
     mutations: {
         loadFolders: (state, folder) => {
+            // if (folder.name.startsWith('New Folder'))
+            // {
+            //     state.active.active = false
+            //     state.back = state.active
+            //     folder.items = []
+            //     folder.setChildrenItems([])
+            //     folder.active = true
+            //     state.active = folder
+            //     state.search.reset()
+            //
+            //     console.log("F:");
+            //     console.log(folder);
+            //     return
+            // }
+
             getFolders(folder.id, function(f) {
                 state.active.active = false
                 state.back = state.active
                 folder.items = f.items
+                folder.setChildrenItems(f.children)
                 folder.active = true
                 state.active = folder
                 state.search.reset()
@@ -51,9 +67,8 @@ export default new Vuex.Store({
                 state.folder = folders[0];
                 state.active = state.folder
 
-                getFolders(state.folder.id, function(folder) {
-                    state.active.items = folder.items
-                    state.active.active = true
+                getFolders(state.folder.id, function(f) {
+                    state.active = new Folder(f.id, f.name, f.items, f.children, f.parent, true)
                 })
             })
         },
@@ -72,6 +87,26 @@ export default new Vuex.Store({
         },
         setLayout: (state, layout) => {
             state.layout = layout
+        },
+        createFolder: (state, parent) => {
+            addFolder('New Folder', parent.id, function (r) {
+                if (r.status !== 200) {
+                    return alert(r.body.error)
+                }
+
+                let child = new Folder(r.body.id, r.body.name, [], [], parent)
+                state.active.children.push(child)
+            })
+        },
+        removeFolder: (state, folder) => {
+            removeFolder(folder.id, function (r) {
+                if (r.status !== 200) {
+                    return alert(r.body.error)
+                }
+
+                // TODO: finish here
+                state.active = folder.parent
+            })
         }
     },
     actions: {
@@ -93,6 +128,9 @@ export default new Vuex.Store({
         },
         setLayout({ commit }, layout) {
             commit('setLayout', layout)
+        },
+        createFolder({ commit }, parent) {
+            commit('createFolder', parent)
         }
     }
 })

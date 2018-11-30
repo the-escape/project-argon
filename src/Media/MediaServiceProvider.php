@@ -19,6 +19,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'app'
         );
         $this->addRoute(
+            'media/api/folders/add',
+            'cms:media:api:folders:add',
+            MediaController::class,
+            'appFolderAdd',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
             'media/api/folders/{id?}',
             'cms:media:api:folders',
             MediaController::class,

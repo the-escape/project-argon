@@ -47,7 +47,7 @@ class MediaController extends BaseController
             if ($media_folder->id == $id)
             {
                 $folder = $media_folder;
-                $folder->children = Media::treeLevel($media_folders, $id, 2);
+                $folder->children = Media::treeLevel($media_folders, $id, 3);
                 $folder->items = [];
                 break;
             }
@@ -88,6 +88,46 @@ class MediaController extends BaseController
 
         return response()->json($items);
     }
+
+    public function appFolderAdd(Request $request, MediaFolderRepository $folderRepository)
+    {
+        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
+            $folder = $folderRepository->create($request->input());
+            return response()->json($folder);
+        }
+        else
+        {
+            return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
+        }
+    }
+
+    public function appFolderRemove (
+        $folderId,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository
+    ) {
+        if ($folderId == 1)
+        {
+            return response()->json(["error" => "Root folder can't be removed."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0 || $folderRepository->getSubfolders($folderId)->count() > 0)
+        {
+            return response()->json(["error" => "Folder not empty."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $folderRepository->delete($folderId);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+
+
+
+
+
+
 
     public function manage(MediaFolderRepository $folderRepository)
     {
@@ -356,11 +396,13 @@ class MediaController extends BaseController
 
     public function createFolder(Request $request, MediaFolderRepository $folderRepository)
     {
-        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
+        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
             $folder = $folderRepository->create($request->input());
-
             return response()->json($folder);
-        } else {
+        }
+        else
+        {
             return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
         }
     }

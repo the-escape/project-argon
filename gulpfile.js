@@ -340,6 +340,14 @@ function watchJS (done) {
         },
         gulp.series(buildJS(), reload)
     )
+
+    gulp.watch(
+        pkg.paths.src.js + '**/*.vue',
+        {
+            awaitWriteFinish: true
+        },
+        gulp.series(buildJS(), reload)
+    )
 }
 
 // ====================

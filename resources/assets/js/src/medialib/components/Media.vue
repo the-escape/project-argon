@@ -8,28 +8,33 @@
                 <div class="ml__options-layout l-flexcols-1">
 
                     <div class="layout ">
-                        <button type="button" class="o-btn o-btn--xs" :class="{ 'active':layout==='tiles'}" v-on:click="setLayout('tiles')">Tiles</button>
-                        <button type="button" class="o-btn o-btn--xs" :class="{'active':layout==='list'}" v-on:click="setLayout('list')">List</button>
+                        <button type="button" class="o-btn o-btn--xs" :class="{ 'o-btn--active':layout==='tiles'}" v-on:click="setLayout('tiles')">Tiles</button>
+                        <button type="button" class="o-btn o-btn--xs" :class="{'o-btn--active':layout==='list'}" v-on:click="setLayout('list')">List</button>
                     </div>
 
                 </div>
 
                 <div class="l-flexcols-2">
+
                     <div :class="[search.isLoading() ? 'search--loading' : '', 'search']">
-                        <div class="o-multi__item-wrap">
-                            <div class="o-form-icon">
-                                <span class="o-form-icon__icon">
-                                    <template v-if="search.hasKeywords()">
-                                        Found {{ search.getResultsCount() }} items
-                                    </template>
-                                    <template v-else>
-                                        Search for...
-                                    </template>
-                                </span>
-                                <input type="text" class="form-control" placeholder="Search for..." v-model="keywords">
-                            </div>
+
+                        <div class="search__pre">
+                            <span v-if="search.hasKeywords()">
+                                Found {{ search.getResultsCount() }} items
+                            </span>
+                            <span v-else>
+                                Search for...
+                            </span>
+                        </div>
+
+                        <div class="search__inp">
+                            <input type="text" class="inp" placeholder="Search for..." v-model="keywords">
+                        </div>
+
+                        <div class="search__btn">
                             <button class="o-btn o-btn--xs" type="button" v-on:click="searchReset(search)">Clear</button>
                         </div>
+
                     </div>
                 </div>
 
@@ -39,11 +44,11 @@
 
                 <div class="ml__tree l-flexcols-1">
 
-                    <div class="panel-heading">
+                    <div class="ml__heading">
                         Folders Tree
                     </div>
 
-                    <div class="panel-body">
+                    <div class="ml__body">
                         <DirectoryTree/>
                     </div>
 
@@ -51,57 +56,58 @@
 
                 <div class="ml__preview l-flexcols-2">
 
-                    <div class="panel panel-default">
 
-                        <template v-if="search.hasKeywords()">
+                    <template v-if="search.hasKeywords()">
 
-                            <div class="panel-heading">
-                                Search results for `{{ search.keywords }}`
+                        <div class="ml__heading">
+                            Search results for `{{ search.keywords }}`
+                        </div>
+
+                        <div class="ml__body">
+
+                            <div class="search-results" v-if="search.hasResults()">
+                                <Content v-bind:items="search.getResults()" v-bind:folders="{}"/>
                             </div>
 
-                            <div class="panel-body">
-
-                                <div class="search-results" v-if="search.hasResults()">
-                                    <Content v-bind:items="search.getResults()" v-bind:folders="{}"/>
-                                </div>
-
-                                <div class="search-results" v-else>
-                                    <p>No results found.</p>
-                                </div>
-
+                            <div class="search-results" v-else>
+                                <p>No results found.</p>
                             </div>
 
-                        </template>
+                        </div>
 
-                        <template v-if="!search.hasKeywords()">
+                    </template>
 
-                            <div class="panel-heading">
+                    <template v-else>
 
-                                <div class="breadcrumbs" v-if="active.isSet()" >
+                        <div class="ml__heading">
 
-                                    <span class="go go--back btn btn-default btn-sm" v-bind:class="{'disabled': !back.isSet()}" v-on:click="folderSelected(back)" title="Skip between current and previous folder">&#x21C4;</span>
+                            <div class="breadcrumbs" v-if="active.isSet()" >
 
-                                    <template v-for="folder of active.breadcrumbs()">
-                                        <span class="breadcrumbs__separator" v-if="folder.parent">&gt;</span>
+                                <span class="btn-skip o-btn" v-bind:class="{'o-btn--disabled': !back.isSet()}" v-on:click="folderSelected(back)" title="Skip between current and previous folder">&#x21C4;</span>
 
-                                        <span class="breadcrumbs__piece" v-bind:class="{'breadcrumbs__child': folder.parent}" v-on:click="folderSelected(folder)">
+                                <template v-for="folder of active.breadcrumbs()">
+                                    <span class="breadcrumbs__separator" v-if="folder.parent">&gt;</span>
+
+                                    <span class="breadcrumbs__piece" v-bind:class="{'breadcrumbs__child': folder.parent}" v-on:click="folderSelected(folder)">
                                         {{ folder.name }}
                                     </span>
-                                    </template>
-
-                                </div>
+                                </template>
 
                             </div>
 
-                            <div class="panel-body">
+                        </div>
 
-                                <Folder/>
+                        <div class="ml__body">
 
+                            <div class="folder__add">
+                                <button type="button" class="o-btn o-btn--xs" v-on:click="createFolder(active)">Add folder</button>
                             </div>
 
-                        </template>
+                            <Folder/>
 
-                    </div>
+                        </div>
+
+                    </template>
 
                 </div>
             </div>
@@ -191,6 +197,9 @@
             },
             setLayout(layout) {
                 this.$store.dispatch('setLayout', layout)
+            },
+            createFolder(parent) {
+                this.$store.dispatch('createFolder', parent)
             }
         }
     }

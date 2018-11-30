@@ -404,7 +404,7 @@ button.o-btn {
   border-radius: 30px; }
   .o-btn > * {
     pointer-events: none; }
-  .o-btn:hover {
+  .o-btn--active, .o-btn:hover {
     -webkit-transition: background-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1), color 400ms cubic-bezier(0.3, 0.15, 0.18, 1), border-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1);
     transition: background-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1), color 400ms cubic-bezier(0.3, 0.15, 0.18, 1), border-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1);
     text-decoration: none;
@@ -446,13 +446,17 @@ button.o-btn {
     border-color: #d8d8d8; }
     .o-btn--light-grey:hover {
       color: #b6b6b6; }
-  .o-btn:disabled {
+  .o-btn--disabled, .o-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none; }
 
 body {
   padding: 0 15px; }
+
+
+
+
 
 
 

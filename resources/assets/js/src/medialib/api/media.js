@@ -19,6 +19,49 @@ export function search (keywords, cb) {
     })
 }
 
+// export function addFolder (name, parent, cb) {
+//     let id = randomIntFromRange(1000, 2000)
+//
+//     let f = {
+//         'id': id,
+//         'name': `${name} ${id}`,
+//         'items': [],
+//         'children': [],
+//         'parent': parent,
+//         'active': false
+//     }
+//
+//    return cb(f)
+//
+//     Vue.http.post('/admin/media/api/folders/add'+encodeURIComponent(keywords)).then(response => {
+//         cb(response.body)
+//     })
+// }
+
+export function addFolder (name, parent, cb) {
+    Vue.http.post('/admin/media/api/folders/add', { name: name, parent: parent }).then(response => {
+        cb(response)
+    }).catch(e => {
+        console.log(e)
+        cb(e)
+    });
+}
+
+
+export function removeFolder (id, cb) {
+    Vue.http.post('/admin/media/api/folders/remove', { id: id }).then(response => {
+        cb(response)
+    }).catch(e => {
+        console.log(e)
+        cb(e)
+    });
+}
+
+// min and max included
+function randomIntFromRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 // export function storeFolder (parentId, name, done, error) {
 //     Vue.http.post('/admin/media/folders/store', { parent_id: parentId, name: name }).then(response => {
 //         done(response.data.data)

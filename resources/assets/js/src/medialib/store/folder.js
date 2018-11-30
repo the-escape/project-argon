@@ -5,7 +5,7 @@ export class Folder {
         this.name = name
         this.items = items
         this.children = children
-        this.children = this.setChildren(children)
+        this.setChildren(children)
         this.parent = parent
         this.active = active
     }
@@ -16,7 +16,17 @@ export class Folder {
             let childF = new Folder(child.id, child.name, child.items, child.children, this)
             c.push(childF)
         }
-        return c
+        this.children = c
+    }
+
+    setChildrenItems(children) {
+        for (let child of this.children) {
+            for (let c of children) {
+                if (child.id == c.id) {
+                    child.items = c.items
+                }
+            }
+        }
     }
 
     isSet() {
@@ -27,6 +37,7 @@ export class Folder {
     }
 
     hasContent() {
+        console.log(this);
         if (this.children.length) {
             return true
         }

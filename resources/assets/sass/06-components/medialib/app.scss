@@ -167,14 +167,14 @@
         text-align: left;
 
         img {
-            max-height: 180px;
+            max-height: 160px;
         }
     }
     &--list &__item {
         flex-direction: row;
         justify-content: flex-start;
         width: 100%;
-        height: 200px;
+        height: 180px;
 
         &--folder {
             height: 90px;
@@ -235,13 +235,28 @@
 }
 
 .search {
+
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+
+    &__pre {
+        //flex-basis: 100%;
+        white-space: nowrap;
+        padding-right: 15px;
+    }
+
+    &__inp {
+        flex-grow: 1;
+        padding-right: 15px;
+    }
+
+    &__btn {
+    }
+
     &--loading {
 
     }
-}
-
-.options {
-    margin-bottom: 11px;
 }
 
 .m {
@@ -272,40 +287,56 @@
     }
 }
 
+.l-flexcols {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .l-flexcols-1 {
+        flex-basis: calc(25% - 15px);
+    }
+
+    .l-flexcols-2 {
+        flex-basis: calc(75% - 15px);
+    }
+
+}
 .ml {
+
     &__view {
         min-height: 700px;
     }
 
     &__tree {
-        background-color: #f0f0f0;
-        padding: 15px;
+        border: 1px solid $secondary-highlight;
 
     }
 
     &__preview {
-        background-color: #ccc;
-        padding: 15px;
+        border: 1px solid $secondary-highlight;
     }
 
     &__options {
-
+        align-items: center;
+        margin-bottom: 30px;
     }
 
-    .l-flexcols {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: stretch;
+    &__heading {
+        padding: 15px;
+        border-bottom: 1px solid $secondary-highlight;
+    }
 
-        .l-flexcols-1 {
-            flex-basis: calc(25% - 15px);
-        }
+    &__body {
+        padding: 15px;
+    }
 
-        .l-flexcols-2 {
-            flex-basis: calc(75% - 15px);
-        }
-
+    .btn-skip {
+        width: auto;
+        min-width: auto;
+        padding: 0 7px;
+        margin-right: 10px;
+        cursor: pointer;
     }
 
 }
