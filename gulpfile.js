@@ -1026,7 +1026,7 @@ function copyCmsAssets () {
         tasks.push(copy(acePathsPL, 'OLD-CMS ace PL'))
         tasks.push(copy(fancyboxPathsPL, 'OLD-CMS fancybox PL'))
         tasks.push(inlineJs(argonJSPathsPL, 'argon.js', 'OlD CMD js PL'))
-        tasks.push(copy(argonScssPathsPL))
+        tasks.push(copy(argonScssPathsPL, 'OLD-CMS css'))
     }
 
     if (config.backendDevelopment) {
@@ -1037,7 +1037,7 @@ function copyCmsAssets () {
         tasks.push(copy(acePaths, 'OLD-CMS ace'))
         tasks.push(copy(fancyboxPaths, 'OLD-CMS fancybox'))
         tasks.push(inlineJs(argonJSPaths, 'argon.js', 'OlD CMD js'))
-        tasks.push(copy(argonScssPaths))
+        tasks.push(copy(argonScssPaths, 'OLD-CMS css'))
     }
 
     if (!tasks.length) {
@@ -1047,6 +1047,26 @@ function copyCmsAssets () {
     }
 
     return gulp.series.apply(null, tasks)
+}
+
+function watchOldCms () {
+    fancyLog('-> Watching Old CMS CSS')
+
+    gulp.watch(
+        pkg.paths.src.css + 'old-cms.scss',
+        {
+            awaitWriteFinish: true
+        },
+        gulp.series(copyCmsAssets(), reload)
+    )
+
+    gulp.watch(
+        pkg.paths.src.css + '/old-cms/**/*.scss',
+        {
+            awaitWriteFinish: true
+        },
+        gulp.series(copyCmsAssets(), reload)
+    )
 }
 
 // ====================
@@ -1060,6 +1080,7 @@ function watch () {
     watchStyleGuideFiles()
     watchPatternLab()
     watchHtml()
+    watchOldCms()
 }
 
 gulp.task(

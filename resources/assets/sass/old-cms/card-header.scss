@@ -1,0 +1,19 @@
+.card-header {
+    display: flex;
+    align-items: center;
+
+    > * + * {
+        margin-left: 15px;
+    }
+
+    .o-checkbox {
+        margin: 0;
+        margin-left: auto;
+
+        > label {
+            width: auto;
+            height: auto;
+            display: flex;
+        }
+    }
+}
