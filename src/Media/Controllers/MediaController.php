@@ -28,7 +28,7 @@ class MediaController extends BaseController
 
     public function appFolders($id=null)
     {
-        $media_folders = DB::table("media_folders")->get();
+        $media_folders = DB::table("media_folders")->whereNull('deleted_at')->get();
 
         if (is_null($id))
         {
@@ -55,7 +55,7 @@ class MediaController extends BaseController
 
         if ($folder)
         {
-            $media_items = DB::table("media_items")->get();
+            $media_items = DB::table("media_items")->whereNull('deleted_at')->get();
             $folder = Media::addItems($folder, $media_items);
         }
 
@@ -63,7 +63,7 @@ class MediaController extends BaseController
         {
             echo "\n\n<pre>" . print_r($folder, TRUE) . "</pre>\n\n"; exit;
         }
-        
+
         return response()->json($folder);
     }
 
@@ -77,7 +77,7 @@ class MediaController extends BaseController
         }
 
         $like = "%{$keywords}%";
-        $items = DB::table("media_items")->where('filename', 'like', $like)->get();
+        $items = DB::table("media_items")->where('filename', 'like', $like)->whereNull('deleted_at')->get();
 
         // TODO: Perhaps fuzzy search here
 
@@ -103,11 +103,18 @@ class MediaController extends BaseController
     }
 
     public function appFolderRemove (
-        $folderId,
+        Request $request,
         MediaFolderRepository $folderRepository,
         MediaItemRepository $itemRepository
     ) {
-        if ($folderId == 1)
+        $folderId = (preg_match('/^[1-9][0-9]*$/', $request->input('id'))) ? (int)$request->input('id') : null;
+
+        if (!$folderId)
+        {
+            return response()->json(["error" => "Invalid folder `$folderId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($folderId === 1)
         {
             return response()->json(["error" => "Root folder can't be removed."], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -117,7 +124,7 @@ class MediaController extends BaseController
             return response()->json(["error" => "Folder not empty."], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $folderRepository->delete($folderId);
+        $deleted = $folderRepository->delete($folderId);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

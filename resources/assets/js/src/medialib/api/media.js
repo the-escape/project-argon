@@ -42,17 +42,16 @@ export function addFolder (name, parent, cb) {
     Vue.http.post('/admin/media/api/folders/add', { name: name, parent: parent }).then(response => {
         cb(response)
     }).catch(e => {
-        console.log(e)
         cb(e)
     });
 }
 
 
 export function removeFolder (id, cb) {
+    console.log(id);
     Vue.http.post('/admin/media/api/folders/remove', { id: id }).then(response => {
         cb(response)
     }).catch(e => {
-        console.log(e)
         cb(e)
     });
 }

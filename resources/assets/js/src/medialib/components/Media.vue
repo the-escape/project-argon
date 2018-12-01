@@ -99,8 +99,9 @@
 
                         <div class="ml__body">
 
-                            <div class="folder__add">
+                            <div class="folder__act">
                                 <button type="button" class="o-btn o-btn--xs" v-on:click="createFolder(active)">Add folder</button>
+                                <button type="button" class="o-btn o-btn--xs" v-on:click="removeFolder(active)">Remove folder</button>
                             </div>
 
                             <Folder/>
@@ -200,6 +201,9 @@
             },
             createFolder(parent) {
                 this.$store.dispatch('createFolder', parent)
+            },
+            removeFolder(active) {
+                this.$store.dispatch('removeFolder', active)
             }
         }
     }

@@ -26,6 +26,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
         $this->addRoute(
+            'media/api/folders/remove',
+            'cms:media:api:folders:remove',
+            MediaController::class,
+            'appFolderRemove',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
             'media/api/folders/{id?}',
             'cms:media:api:folders',
             MediaController::class,

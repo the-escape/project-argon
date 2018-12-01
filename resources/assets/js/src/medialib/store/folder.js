@@ -37,7 +37,6 @@ export class Folder {
     }
 
     hasContent() {
-        console.log(this);
         if (this.children.length) {
             return true
         }
