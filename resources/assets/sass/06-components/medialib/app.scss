@@ -218,6 +218,9 @@
 }
 
 .breadcrumbs {
+    padding-left: 40px;
+    position: relative;
+
     &__piece {
         cursor: pointer;
     }
@@ -341,6 +344,8 @@
         padding: 0 7px;
         margin-right: 10px;
         cursor: pointer;
+        position: absolute;
+        left: 0;
     }
 
 }
