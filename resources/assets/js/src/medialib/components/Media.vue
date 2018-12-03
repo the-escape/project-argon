@@ -219,8 +219,9 @@
             editFolder(folder) {
                 this.f_edit = true
                 let fn = prompt("Please edit the folder name:", folder.name)
-                console.log(fn)
-//                this.$store.dispatch('editFolder', folder)
+                let payload = {name: fn, folder: folder}
+                console.log(payload)
+                this.$store.dispatch('editFolder', payload)
             },
             removeFolder(active) {
                 this.$store.dispatch('removeFolder', active)

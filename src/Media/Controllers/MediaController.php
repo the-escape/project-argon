@@ -101,6 +101,21 @@ class MediaController extends BaseController
         return response()->json($folder);
     }
 
+    public function appFolderEdit(Request $request, MediaFolderRepository $folderRepository)
+    {
+        $folder = $folderRepository->findWhere(['id' => $request->input('folder')])->first();
+
+        if (!$folder)
+        {
+            return response()->json(['error' => "Folder `{$request->input('folder')}` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $folder->name = $request->input('name');
+        $folder->save();
+
+        return response()->json($folder);
+    }
+
     public function appFolderRemove (
         Request $request,
         MediaFolderRepository $folderRepository,
@@ -369,7 +384,7 @@ class MediaController extends BaseController
                     unset($results[$i]);
                 }
             }
-            elseif ( in_array($result->field_type, ['image', 'file']))
+            elseif (in_array($result->field_type, ['image', 'file']))
             {
                 $fields = json_decode($result->data_value, true);
 

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getFolders, getFoldersData, search, addFolder, removeFolder } from "../api/media";
+import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder } from "../api/media";
 import { Folder, children, Item } from "./folder"
 import { Search } from "./search"
 
@@ -64,23 +64,25 @@ export default new Vuex.Store({
             state.layout = layout
         },
         createFolder: (state, payload) => {
+            // console.log(payload);
             addFolder(payload.name, payload.parent.id, function (r) {
                 if (r.status !== 200) {
                     return alert(r.body.error)
                 }
 
-                let child = new Folder(r.body.id, r.body.name, [], [], parent)
+                let child = new Folder(r.body.id, r.body.name, [], [], payload.parent)
                 state.active.children.push(child)
             })
         },
-        editFolder: (state, folder) => {
-            editFolder(folder, function (r) {
+        editFolder: (state, payload) => {
+            editFolder(payload.name, payload.folder.id, function (r) {
                 if (r.status !== 200) {
                     return alert(r.body.error)
                 }
 
                 // TODO: finish here
                 console.log(r);
+                state.active.name = r.body.name
             })
         },
         removeFolder: (state, folder) => {
@@ -122,8 +124,8 @@ export default new Vuex.Store({
         createFolder({ commit }, payload) {
             commit('createFolder', payload)
         },
-        editFolder({ commit }, folder) {
-            commit('editFolder', folder)
+        editFolder({ commit }, payload) {
+            commit('editFolder', payload)
         },
         removeFolder({ commit }, active) {
             commit('removeFolder', active)
