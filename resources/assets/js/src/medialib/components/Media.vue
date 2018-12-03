@@ -100,8 +100,14 @@
                         <div class="ml__body">
 
                             <div class="folder__act">
-                                <button type="button" class="o-btn o-btn--xs" v-on:click="createFolder(active)">Add folder</button>
-                                <button type="button" class="o-btn o-btn--xs" v-on:click="removeFolder(active)">Remove folder</button>
+                                <button type="button" class="o-btn o-btn--xs" @click="createFolder(active)">Add folder</button>
+                                <button type="button" class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="editFolder(active)">Edit folder</button>
+                                <button type="button" class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="removeFolder(active)">Remove folder</button>
+
+                                <!--<div class="folder__inp" v-if="f_edit">-->
+                                    <!--<input type="text" class="inp" placeholder="New Folder" v-model="f_name">-->
+                                <!--</div>-->
+
                             </div>
 
                             <Folder/>
@@ -159,6 +165,12 @@
         created () {
             this.$store.dispatch('loadLibrary');
         },
+        data () {
+            return {
+                f_edit: false,
+                f_name: ""
+            }
+        },
         watch: {
             keywords: function () {
                 this.searchItems()
@@ -200,7 +212,15 @@
                 this.$store.dispatch('setLayout', layout)
             },
             createFolder(parent) {
-                this.$store.dispatch('createFolder', parent)
+                let fn = prompt("Please edit the folder name:", "New Folder")
+                let payload = {name: fn, parent: parent}
+                this.$store.dispatch('createFolder', payload)
+            },
+            editFolder(folder) {
+                this.f_edit = true
+                let fn = prompt("Please edit the folder name:", folder.name)
+                console.log(fn)
+//                this.$store.dispatch('editFolder', folder)
             },
             removeFolder(active) {
                 this.$store.dispatch('removeFolder', active)

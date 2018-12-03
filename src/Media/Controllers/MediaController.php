@@ -91,15 +91,14 @@ class MediaController extends BaseController
 
     public function appFolderAdd(Request $request, MediaFolderRepository $folderRepository)
     {
-        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
         {
-            $folder = $folderRepository->create($request->input());
-            return response()->json($folder);
+            return response()->json(['error' => 'Folder exists.'], Response::HTTP_CONFLICT);
         }
-        else
-        {
-            return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
-        }
+
+        $folder = $folderRepository->create($request->input());
+
+        return response()->json($folder);
     }
 
     public function appFolderRemove (

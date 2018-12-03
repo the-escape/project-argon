@@ -19,25 +19,6 @@ export function search (keywords, cb) {
     })
 }
 
-// export function addFolder (name, parent, cb) {
-//     let id = randomIntFromRange(1000, 2000)
-//
-//     let f = {
-//         'id': id,
-//         'name': `${name} ${id}`,
-//         'items': [],
-//         'children': [],
-//         'parent': parent,
-//         'active': false
-//     }
-//
-//    return cb(f)
-//
-//     Vue.http.post('/admin/media/api/folders/add'+encodeURIComponent(keywords)).then(response => {
-//         cb(response.body)
-//     })
-// }
-
 export function addFolder (name, parent, cb) {
     Vue.http.post('/admin/media/api/folders/add', { name: name, parent: parent }).then(response => {
         cb(response)
@@ -48,7 +29,6 @@ export function addFolder (name, parent, cb) {
 
 
 export function removeFolder (id, cb) {
-    console.log(id);
     Vue.http.post('/admin/media/api/folders/remove', { id: id }).then(response => {
         cb(response)
     }).catch(e => {

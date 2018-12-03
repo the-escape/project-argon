@@ -43,7 +43,6 @@ export default new Vuex.Store({
                 state.active = state.folder
 
                 getFolders(state.folder.id, function(f) {
-                    // state.active = new Folder(f.id, f.name, f.items, f.children, f.parent, true)
                     state.active.items =  f.items
                 })
             })
@@ -64,16 +63,24 @@ export default new Vuex.Store({
         setLayout: (state, layout) => {
             state.layout = layout
         },
-        createFolder: (state, parent) => {
-            console.log(parent);
-            addFolder('New Folder', parent.id, function (r) {
+        createFolder: (state, payload) => {
+            addFolder(payload.name, payload.parent.id, function (r) {
                 if (r.status !== 200) {
                     return alert(r.body.error)
                 }
 
                 let child = new Folder(r.body.id, r.body.name, [], [], parent)
                 state.active.children.push(child)
-                // state.folder.children.push(child)
+            })
+        },
+        editFolder: (state, folder) => {
+            editFolder(folder, function (r) {
+                if (r.status !== 200) {
+                    return alert(r.body.error)
+                }
+
+                // TODO: finish here
+                console.log(r);
             })
         },
         removeFolder: (state, folder) => {
@@ -89,17 +96,6 @@ export default new Vuex.Store({
                 parent.children =  parent.children.filter(child => child.id !== folder.id);
                 state.back = new Folder()
                 state.active = parent
-
-                // getFolders(parent.id, function(f) {
-                //     state.active.active = false
-                //     state.back = new Folder()
-                //     parent.items = f.items
-                //     parent.setChildrenItems(f.children)
-                //     parent.active = true
-                //     state.active = parent
-                //     state.search.reset()
-                // })
-
             })
         }
     },
@@ -123,8 +119,11 @@ export default new Vuex.Store({
         setLayout({ commit }, layout) {
             commit('setLayout', layout)
         },
-        createFolder({ commit }, parent) {
-            commit('createFolder', parent)
+        createFolder({ commit }, payload) {
+            commit('createFolder', payload)
+        },
+        editFolder({ commit }, folder) {
+            commit('editFolder', folder)
         },
         removeFolder({ commit }, active) {
             commit('removeFolder', active)

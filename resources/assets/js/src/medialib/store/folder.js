@@ -29,6 +29,10 @@ export class Folder {
         }
     }
 
+    isRoot() {
+        return this.id === 1
+    }
+
     isSet() {
         if (this.id) {
             return true
