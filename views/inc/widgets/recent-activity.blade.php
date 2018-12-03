@@ -6,15 +6,18 @@
         <div class="c-activity-widget__bottom" v-bar>
             <div>
                 @foreach($activities as $activity)
-                    <div class="c-activity-widget__activity">
-                        <div class="c-activity-widget__activity-user">{{ $activity->user }}</div>
-                        <div class="c-activity-widget__activity-description">
-                            <a href="{{ $activity->revision_link }}">
-                                {{ $activity->description }}
-                            </a>
+                    <a href="{{ $activity->revision_link }}" class="c-activity-widget__activity">
+                        <div class="c-activity-widget__activity-avatar">
+                            <img src="{{ $activity->avatar }}">
                         </div>
-                        <div class="c-activity-widget__activity-date">{{ $activity->date }}</div>
-                    </div>
+                        <div class="c-activity-widget__activity-description">
+                            <div class="c-activity-widget__activity-user">{{ $activity->user }}</div>
+                            <div>{{ $activity->description }}</div>
+                        </div>
+                        <div class="c-activity-widget__activity-date">
+                            {{ $activity->date }}
+                        </div>
+                    </a>
                 @endforeach
             </div>
         </div>

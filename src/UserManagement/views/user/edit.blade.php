@@ -37,7 +37,7 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:user:update', [$user->id]) }}" method="POST" autocomplete="false">
+    <form action="{{ route('cms:user:update', [$user->id]) }}" method="POST" autocomplete="false"  enctype="multipart/form-data">
 
         <main class="c-container c-container--main">
 
@@ -87,6 +87,51 @@
                         </div>
                     </div>
                 </div>
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="profile_image">Profile picture</label>
+
+                            <div class="o-file js-file">
+                                <div class="o-file__preview o-file__preview--small">
+                                    <div class="o-file__preview-wrap">
+
+                                        <div class="h-background--primary">
+                                            <img class="o-file__image-preview" src="{{ $user->profile('image','/argon/images/user-icon.png') }}">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="o-file__help-text">
+                                    <p>
+                                        @if($user->profile('image'))
+                                            Upload your new profile picture.
+                                        @else
+                                            Please upload your profile picture.
+                                        @endif
+                                        <br><span class="h-text--grey-dark">Max file size: 1MB</span>
+                                    </p>
+                                    <label>
+                                        <span class="o-btn o-btn--xs o-file__btn">select</span>
+                                        <input type="file" class="o-file__input" name="profile_picture">
+                                        <span class="o-file__name"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+
+
+                            {{--<input type="file"--}}
+                                   {{--id="profile_image"--}}
+                                   {{--class="js-file-pond"--}}
+                                   {{--name="profile['image']"--}}
+                                   {{--data-max-file-size="3MB"--}}
+                                   {{--data-max-files="3">--}}
+
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="o-form__title">Change password (optional)</div>
                 <div class="o-form__group">
@@ -144,7 +189,6 @@
                 </div>
             </div>
 
-
         </main>
 
         <footer class="c-footer__wrapper">
@@ -168,4 +212,11 @@
 
     </form>
 
+@endsection
+
+@section('styles')
+    @parent
+
+    {{--<link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">--}}
+    {{--<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">--}}
 @endsection

@@ -436,11 +436,13 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 124 modules ***!
+  !*** ./resources/assets/js/src/index.js + 125 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/dragula/dragula.js (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/filepond/dist/filepond.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/flatpickr/dist/flatpickr.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/moment/moment.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
@@ -1577,14 +1579,77 @@ function createFileInputs() {
     });
 }
 
-function createFileInput(input) {
-    var label = input.querySelector('.o-file-upload__name');
+function createFileInput(wrapper) {
+    var input = wrapper.querySelector('.o-file__input');
+    var label = wrapper.querySelector('.o-file__name');
+    var preview = wrapper.querySelector('.o-file__image-preview');
     var labelVal = label.innerHTML;
 
     input.addEventListener('change', function (evt) {
         var fileName = '';
-        if (evt.target.files) {
+
+        if (evt.target.files && evt.target.files[0]) {
+
+            var file = evt.target.files[0];
+
+            if (preview && !file.type.match(/image.*/)) {
+                label.innerHTML = "<span class='h-text--danger'>You can upload only images.</span>";
+                input.type = '';
+                input.value = '';
+                input.type = 'file';
+
+                return;
+            }
+
             fileName = evt.target.value.split('\\').pop();
+
+            // let reader = new FileReader()
+            //
+            // if (preview && file.type.match(/image.*/)) {
+            //
+            //     reader.onload = function(readerEvent) {
+            //         let image = new Image()
+            //
+            //         image.onload = function(imageEvent) {
+            //             let canvas = document.createElement('canvas'),
+            //                 max_size = 200,
+            //                 width = image.width,
+            //                 height = image.height
+            //
+            //             if (width > height) {
+            //                 if (width > max_size) {
+            //                     height += max_size /width
+            //                     width = max_size
+            //                 }
+            //             } else {
+            //                 if (height > max_size) {
+            //                     width += max_size / height
+            //                     height = max_size
+            //                 }
+            //             }
+            //
+            //             canvas.width = width
+            //             canvas.height = height
+            //             canvas.getContext('2d').drawImage(image, 0, 0, width, height)
+            //             let dataUrl = canvas.toDataURL('image/jpeg')
+            //             let resizedImage = dataURLToBlob(dataUrl)
+            //
+            //             // input.value = resizedImage
+            //             preview.src = dataUrl
+            //         }
+            //         image.src = readerEvent.target.result
+            //     }
+            // reader.readAsDataURL(file)
+
+            // reader.onloadend = function() {
+            //     preview.src = reader.result
+            // }
+
+            // }
+
+            // if (file) {
+            //     reader.readAsDataURL(file)
+            // }
         }
 
         if (fileName) {
@@ -1594,6 +1659,33 @@ function createFileInput(input) {
         }
     });
 }
+
+// function dataURLToBlob(dataURL) {
+//     const BASE64_MARKER = ';base64,'
+//     let parts
+//     let contentType
+//     let raw
+//     if (dataURL.indexOf(BASE64_MARKER) == -1) {
+//         parts = dataURL.split(',')
+//         contentType = parts[0].split(':')[1]
+//         raw = parts[1]
+//
+//         return new Blob([raw], {type: contentType})
+//     }
+//
+//     parts = dataURL.split(BASE64_MARKER)
+//     contentType = parts[0].split(':')[1]
+//     raw = window.atob(parts[1])
+//     let rawLength = raw.length
+//
+//     let uInt8Array = new Uint8Array(rawLength)
+//
+//     for (let i = 0; i < rawLength; ++i) {
+//         uInt8Array[i] = raw.charCodeAt(i)
+//     }
+//
+//     return new Blob([uInt8Array], {type: contentType})
+// }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/controller.js
 
 
@@ -2538,6 +2630,7 @@ function initialiseFormElements() {
     var times = createTimes();
     var dragSelects = createDragSelects();
     var mediaItems = createMediaInputs();
+    var fileInputs = createFileInputs();
 
     return {
         selects: selects,
@@ -2546,7 +2639,8 @@ function initialiseFormElements() {
         editors: editors,
         times: times,
         dragSelects: dragSelects,
-        mediaItems: mediaItems
+        mediaItems: mediaItems,
+        fileInputs: fileInputs
     };
 }
 
@@ -4114,7 +4208,42 @@ function setupMultiAndCombo() {
         }
     });
 }
+// EXTERNAL MODULE: ./node_modules/filepond/dist/filepond.js
+var filepond = __webpack_require__("./node_modules/filepond/dist/filepond.js");
+
+// EXTERNAL MODULE: ./node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js
+var filepond_plugin_image_preview = __webpack_require__("./node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js");
+var filepond_plugin_image_preview_default = /*#__PURE__*/__webpack_require__.n(filepond_plugin_image_preview);
+
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/file-upload.js
+
+
+
+function file_upload_fileUpload() {
+    var el = document.querySelector('.js-file-pond');
+    var token = document.querySelector('meta[name=csrf-token]');
+
+    if (!el && !token) {
+        return;
+    }
+
+    filepond["registerPlugin"](filepond_plugin_image_preview_default.a);
+
+    filepond["setOptions"]({
+        server: {
+            url: '/admin/users/upload-profile-image',
+            process: {
+                headers: {
+                    'X-CSRF-TOKEN': token.content
+                }
+            }
+        }
+    });
+
+    var pond = filepond["create"](el);
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
+
 
 
 
@@ -7700,4 +7829,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.85ff2df63060d6fd48d9.js.map
+//# sourceMappingURL=main.e82ac61e08a9e0503c3b.js.map

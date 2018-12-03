@@ -30,6 +30,7 @@ function initialiseFormElements () {
     const times = createTimes()
     const dragSelects = createDragSelects()
     const mediaItems = createMediaInputs()
+    const fileInputs = createFileInputs()
 
     return {
         selects,
@@ -38,7 +39,8 @@ function initialiseFormElements () {
         editors,
         times,
         dragSelects,
-        mediaItems
+        mediaItems,
+        fileInputs
     }
 }
 

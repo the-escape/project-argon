@@ -13,6 +13,7 @@ import { tableAction } from './table-actions'
 import { tables } from './table'
 import { createMultiple } from './templates/multi'
 import { createTemplateForms } from './templates/template-forms'
+import { fileUpload } from './file-upload'
 
 export {
     Accordion,
@@ -30,5 +31,6 @@ export {
     tables,
     createMultiple,
     createTemplateForms,
-    Sidebar
+    Sidebar,
+    fileUpload
 }

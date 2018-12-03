@@ -19,6 +19,7 @@ button.o-btn {
     transition: background-color $userInactive $easeOut,
         color $userInactive $easeOut, border-color $userInactive $easeOut;
     border-radius: 30px;
+    cursor: pointer;
 
     > * {
         pointer-events: none;

@@ -65,6 +65,7 @@ class DashboardController extends BaseController
 
                 $activity = new \stdClass();
                 $activity->user = $revision->userWithTrashed->username;
+                $activity->avatar = $revision->userWithTrashed->profile('image','/argon/images/user-icon.png');
                 $activity->description = sprintf("Amended %s", $entity->name);
                 $activity->revision_link = route('cms:pages:edit_locale', [$entity->id, $localisation->locale_id, $revision->id]);
                 $activity->date = $revision->created_at->format('d M Y');

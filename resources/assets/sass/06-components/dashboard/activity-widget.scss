@@ -11,14 +11,13 @@
     &__top {
         display: flex;
         flex-direction: column;
-        flex: 0 0 30%;
+        flex: 0 0 20%;
         padding: 0 $full-gutter;
         color: white;
         justify-content: center;
         align-items: center;
 
         h2 {
-            padding-top: 20px;
             text-align: center;
             color: white;
             font-size: 1.4rem;
@@ -34,32 +33,50 @@
     &__bottom {
         display: flex;
         flex-direction: column;
-        flex: 0 0 70%;
+        flex: 0 0 80%;
         overflow-y: auto;
+        background-color: #353535;
     }
 
     &__activity {
+        display: flex;
+        position: relative;
         color: $grey;
-        padding: 10px $gutter $gutter $gutter;
+        margin: 10px 20px $gutter;
         font-size: 1.3rem;
+        padding-bottom: $gutter;
+        border-bottom: 1px solid $grey;
+        justify-content: space-between;
 
-        &:nth-child(2n + 1) {
-            background-color: #353535;
+        &:last-child {
+            border-bottom: 0 none;
         }
 
-        &-user {
-            color: white;
-            font-size: 1.5rem;
+        &-avatar {
+            flex: 0 0 36px;
+            width: 36px;
+            height: 36px;
+            margin: 0 $gutter 0 0;
+            border-radius: 50%;
+            overflow: hidden;
+            align-self: center;
         }
 
         &-description {
-            a {
-                color: $grey;
-            }
+            flex: 1 1 70%;
+            color: white;
+        }
+
+        &-user {
+            color: $primary;
+            font-size: 1.4rem;
+            font-weight: 500;
         }
 
         &-date {
-
+            flex: 1 1 30%;
+            text-align: right;
+            color: $grey-dark;
         }
     }
 }

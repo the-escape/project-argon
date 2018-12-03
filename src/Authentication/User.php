@@ -55,6 +55,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
+    public function profileValues()
+    {
+        return $this->hasMany(UserProfile::class);
+    }
+
     public function hasPermission($perm)
     {
         foreach ($this->roles as $role) {
@@ -79,5 +84,27 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function getProfileAttribute()
+    {
+        return $this->profileValues->lists('value','key')->all();
+    }
+
+    public function profile($key, $default = null, $json_decode = false)
+    {
+        $profile = $this->profile;
+
+        if(!isset($profile[$key]))
+        {
+            return $default;
+        }
+
+        if($json_decode === true)
+        {
+            return json_decode($profile[$key]);
+        }
+
+        return $profile[$key];
     }
 }
