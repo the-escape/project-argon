@@ -1,0 +1,48 @@
+.c-tab-panel {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 30px);
+    background-color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity $userActive;
+    display: flex;
+    flex-direction: column;
+
+    &.active {
+        z-index: 1;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &__list {
+        position: relative;
+        flex: 1 1 auto;
+        overflow: hidden;
+    }
+
+    &__container {
+        flex: 1 1 100%;
+        overflow: hidden;
+        padding-top: 15px;
+        margin-bottom: 15px;
+
+        + * {
+            flex: 0 0 auto;
+        }
+    }
+
+    &__inner-container {
+        overflow: auto;
+        height: 100%;
+        padding-bottom: 10px;
+    }
+
+    &__inner {
+        height: 100%;
+        padding-bottom: 30px;
+    }
+}

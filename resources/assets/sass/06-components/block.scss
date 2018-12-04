@@ -1,0 +1,80 @@
+.c-block {
+    display: flex;
+    height: 65px;
+    background-color: #fff;
+
+    &__edit {
+        display: flex;
+        position: relative;
+        flex: 1 1 auto;
+    }
+
+    &__edit-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $primary;
+        color: #fff;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity $userActive;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    &__image {
+        width: 130px;
+        height: 65px;
+        position: relative;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__title {
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+    }
+
+    &__action-list {
+        display: flex;
+    }
+
+    &__action,
+    &__drag-handle {
+        width: 65px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $secondary-acc;
+
+        &:hover {
+            color: #fff;
+            background-color: $primary;
+        }
+    }
+
+    &__icon {
+        width: 24px;
+        height: 24px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+    }
+}

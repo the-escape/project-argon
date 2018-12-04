@@ -7,7 +7,8 @@ import {
     ScrollAnim,
     Jump,
     tables,
-    Sidebar
+    Sidebar,
+    Tabs
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
@@ -29,6 +30,7 @@ function init () {
     registerFormSaveEvents()
     // resetForm()
     Fields()
+    Tabs()
 }
 
 if (document.readyState !== 'loading') {

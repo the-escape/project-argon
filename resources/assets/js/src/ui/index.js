@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import { confirm } from './confirm-btns'
 import { tableAction } from './table-actions'
 import { tables } from './table'
+import { Tabs } from './tabs'
 
 export {
     Accordion,
@@ -24,5 +25,6 @@ export {
     confirm,
     tableAction,
     tables,
-    Sidebar
+    Sidebar,
+    Tabs
 }
