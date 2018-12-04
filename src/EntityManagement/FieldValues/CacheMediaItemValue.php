@@ -116,6 +116,30 @@ class CacheMediaItemValue implements Compressable, Arrayable, Jsonable, ImageInt
         return json_encode($this->toArray(), $options);
     }
 
+    public function isEmpty()
+    {
+        if (is_null($this->url))
+        {
+            return true;
+        }
+
+        if ($this->url == "")
+        {
+            return true;
+        }
+        if (is_null($this->id))
+        {
+            return true;
+        }
+
+        if ($this->id == "")
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getUnoptimized()
     {
         return $this->getCustomOption('original');

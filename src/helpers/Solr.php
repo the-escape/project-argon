@@ -88,10 +88,22 @@ class Solr
                         foreach ($values as $hash => $val) {
 
                             foreach ($type->getSubFields() as $subField) {
-
                                 if ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
-                                    continue;
+                                    $vals = $values->getValueForSubField($hash, $subField->getId());
+                                    foreach ($vals as $img) {
+                                        if (!$img) {
+                                            continue;
+                                        }
 
+                                        $imgValue = json_encode([
+                                            "id" => $img->getId(),
+                                            "url" => $img->getUrl(),
+                                            "alt" => $img->getAlt(),
+                                        ]);
+
+                                        $doc->addField("{$slug}_txt", $imgValue);
+                                        $doc->addField("{$slug}:{$itr}:{$subField->getFieldSlug()}_txt", $imgValue);
+                                    }
                                 } elseif ($subField instanceof \Escape\Argon\EntityManagement\FieldTypes\FileFieldType) {
                                     continue;
 
@@ -155,8 +167,19 @@ class Solr
                         }
 
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\ImageFieldType) {
-                        continue;
+                        foreach ($values as $img) {
+                            if (!$img) {
+                                continue;
+                            }
 
+                            $imgValue = json_encode([
+                                "id" => $img->getId(),
+                                "url" => $img->getUrl(),
+                                "alt" => $img->getAlt(),
+                            ]);
+
+                            $doc->addField("{$slug}_txt", $imgValue);
+                        }
                     } elseif ($type instanceof \Escape\Argon\EntityManagement\FieldTypes\FileFieldType) {
                         continue;
 

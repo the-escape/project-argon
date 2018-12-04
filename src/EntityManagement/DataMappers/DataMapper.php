@@ -171,18 +171,26 @@ class DataMapper
                     return false;
                 }
 
-                if ($this->$property instanceof AbstractFieldValue)
+                if ($this->$property === '')
                 {
-                    if ($this->$property->isEmpty())
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                else
+
+                // isEmpty method equivalent
+                if (is_array($this->$property))
                 {
-                    if ($this->$property === '')
+                    return (bool) count($this->$property);
+                }
+
+                if (is_object($this->$property))
+                {
+                    //$this->$property instanceof AbstractFieldValue or CacheMediaItemValue or Collection
+                    if (method_exists($this->$property, "isEmpty"))
                     {
-                        return false;
+                        if ($this->$property->isEmpty())
+                        {
+                            return false;
+                        }
                     }
                 }
 
