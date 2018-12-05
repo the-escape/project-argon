@@ -14,6 +14,13 @@
         margin-bottom: 0;
     }
 
+    &--plain {
+        display: inline-block;
+        min-width: 200px;
+        padding-right: 10px;
+        color: $text-color;
+    }
+
     &.is-disabled &__inner,
     &.is-disabled &__input {
         background-color: #fff;
@@ -36,6 +43,15 @@
         .is-open & {
             border-color: $black;
         }
+    }
+
+    &--plain &__inner {
+        padding: 0;
+        height: auto;
+        border: 0;
+        border-radius: 0;
+        background-color: $secondary-highlight;
+        font-size: 1.6rem;
     }
 
     &__item {
@@ -75,7 +91,7 @@
 
         &--dropdown {
             display: none;
-            z-index: 1;
+            z-index: 20;
             position: absolute;
             width: 100%;
             background-color: #fff;
@@ -100,6 +116,10 @@
                 margin-bottom: -1px;
             }
         }
+    }
+
+    &--plain &__list--dropdown {
+        background-color: $secondary-highlight;
     }
 
     &__list--single &__item {
@@ -161,6 +181,26 @@
         &.is-highlighted {
             background-color: $grey-light;
         }
+    }
+
+    &--plain &__list--dropdown {
+        top: 100%;
+        padding-top: 0;
+        border: 0;
+    }
+
+    &--plain &__list--dropdown &__list {
+        border: 0;
+    }
+
+    &--plain &__list--dropdown &__item {
+        padding: 20px 10px;
+        white-space: nowrap;
+    }
+
+    &--plain &__item--selectable.is-highlighted {
+        background-color: $primary;
+        color: #fff;
     }
 
     &__heading {
@@ -304,5 +344,11 @@
 
     &[data-type*="select-multiple"] &__input {
         display: none;
+    }
+
+    &--plain &__btn {
+        right: 0;
+        background-color: $secondary-highlight;
+        color: $text-color;
     }
 }

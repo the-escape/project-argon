@@ -6,7 +6,7 @@
     &__container {
         border: 1px solid $secondary;
         border-top: 0;
-        flex: 1 0 0;
+        flex: 1 0 auto;
         overflow: auto;
 
         > * + * {

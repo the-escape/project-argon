@@ -29,6 +29,11 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div>
     </header>
 
+    <script>
+        window.fieldGroups = {}
+        window.groups = []
+    </script>
+
     <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" class="o-form" method="POST" id="pageEditForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -324,9 +329,17 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                         </div>
 
                         <div class="card-block accordion-body">
-
+                            <?php
+                                $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? 'true' : 'false';
+                            ?>
                             <script>
-                                window.fieldGroups = window.fieldGroups || {}
+                                window.groups.push({
+                                    id: '{{$group->id}}',
+                                    isRenderable: '{{ $group->isRenderable() ? "true" : "false" }}',
+                                    isRendering: '{{ $isRendering }}',
+                                    name: '{{ $group->name }}',
+                                    image: '{{ $group->getSetting("image") }}'
+                                });
                                 window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
                             </script>
                             <div class="js-fields" data-name="{{$group->id}}"></div>
@@ -346,7 +359,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                 <div class="card accordion">
 
                                     <div class="card-header accordion-header">
-
 
                                         <span class="sortable-handle">&#8645;</span>
 
@@ -368,9 +380,17 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     </div>
 
                                     <div class="card-block accordion-body">
-
+                                        <?php
+                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? 'true' : 'false';
+                                        ?>
                                         <script>
-                                            window.fieldGroups = window.fieldGroups || {}
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: '{{ $group->isRenderable() ? "true" : "false" }}',
+                                                isRendering: '{{ $isRendering }}',
+                                                name: '{{ $group->name }}',
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
                                             window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
                                         </script>
                                         <div class="js-fields" data-name="{{$group->id}}"></div>

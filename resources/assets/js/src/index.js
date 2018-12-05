@@ -14,6 +14,7 @@ import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
 import { Fields } from './fields'
+import { PageEdit } from './page-edit'
 
 function init () {
     polyfill()
@@ -31,6 +32,7 @@ function init () {
     // resetForm()
     Fields()
     Tabs()
+    PageEdit()
 }
 
 if (document.readyState !== 'loading') {
