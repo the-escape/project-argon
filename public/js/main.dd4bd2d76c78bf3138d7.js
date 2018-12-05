@@ -8748,9 +8748,23 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
           _c("div", { staticClass: "ml-upload" }, [
             _c("div", { staticClass: "ml-upload__field" }, [
               _c("input", {
+                ref: "fileInput",
+                staticStyle: { display: "none" },
                 attrs: { type: "file", multiple: "", accept: "*/*" },
                 on: { change: _vm.onFileSelected }
               }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  on: {
+                    click: function($event) {
+                      _vm.$refs.fileInput.click()
+                    }
+                  }
+                },
+                [_vm._v("Select file(s)")]
+              ),
               _vm._v(" "),
               _c("button", { on: { click: _vm.onUpload } }, [_vm._v("Upload")])
             ])
@@ -9761,6 +9775,7 @@ function Mediavue_type_script_lang_js_defineProperty(obj, key, value) { if (key 
 //
 //
 //
+//
 
 
 
@@ -10485,4 +10500,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.bf6f3ea22f440def81f2.js.map
+//# sourceMappingURL=main.dd4bd2d76c78bf3138d7.js.map

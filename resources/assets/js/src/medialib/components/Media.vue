@@ -40,7 +40,8 @@
                     <div class="ml-upload">
 
                         <div class="ml-upload__field">
-                            <input type="file" multiple accept="*/*" @change="onFileSelected">
+                            <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" style="display: none">
+                            <button @click="$refs.fileInput.click()">Select file(s)</button>
                             <button @click="onUpload">Upload</button>
                         </div>
 
