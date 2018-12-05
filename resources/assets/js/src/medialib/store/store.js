@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder } from "../api/media";
+import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder, uploadMedia } from "../api/media";
 import { Folder, children, Item } from "./folder"
 import { Search } from "./search"
 
@@ -99,6 +99,11 @@ export default new Vuex.Store({
                 state.back = new Folder()
                 state.active = parent
             })
+        },
+        uploadItems: (state, payload) => {
+            uploadMedia(payload, function(r){
+                console.log(r);
+            })
         }
     },
     actions: {
@@ -129,6 +134,9 @@ export default new Vuex.Store({
         },
         removeFolder({ commit }, active) {
             commit('removeFolder', active)
+        },
+        uploadItems({ commit }, payload) {
+            commit('uploadItems', payload)
         }
     }
 })

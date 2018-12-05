@@ -16,7 +16,7 @@
 
                 <div class="l-flexcols-2">
 
-                    <div :class="[search.isLoading() ? 'search--loading' : '', 'search']">
+                    <div class="search" :class="{'search--loading':search.isLoading()}">
 
                         <div class="search__pre">
                             <span v-if="search.hasKeywords()">
@@ -36,6 +36,16 @@
                         </div>
 
                     </div>
+
+                    <div class="ml-upload">
+
+                        <div class="ml-upload__field">
+                            <input type="file" multiple accept="*/*" @change="onFileSelected">
+                            <button @click="onUpload">Upload</button>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -131,7 +141,7 @@
                     <div class="modal-body">
                         <div class="m-details__content">
                             <div class="m-details__preview">
-                                <img :src="`https://www.serco-ese.com/media/${modal.item.id}/${modal.item.slug}.${modal.item.extension}`" :alt="modal.item.filename">
+                                <img :src="`/media/${modal.item.id}/${modal.item.slug}.${modal.item.extension}`" :alt="modal.item.filename">
                             </div>
                             <dl class="m-details__info">
                                 <dt>{{ modal.item.filename }}</dt>
@@ -168,7 +178,8 @@
         data () {
             return {
                 f_edit: false,
-                f_name: ""
+                f_name: "",
+                selectedFiles: []
             }
         },
         watch: {
@@ -212,15 +223,16 @@
                 this.$store.dispatch('setLayout', layout)
             },
             createFolder(parent) {
-                let fn = prompt("Please edit the folder name:", "New Folder")
-                let payload = {name: fn, parent: parent}
-                this.$store.dispatch('createFolder', payload)
+                let fn = prompt("Please enter the folder name:", "New Folder")
+                if (fn) {
+                    let payload = {name: fn, parent: parent}
+                    this.$store.dispatch('createFolder', payload)
+                }
             },
             editFolder(folder) {
                 this.f_edit = true
                 let fn = prompt("Please edit the folder name:", folder.name)
                 let payload = {name: fn, folder: folder}
-                console.log(payload)
                 this.$store.dispatch('editFolder', payload)
             },
             removeFolder(active) {
@@ -228,6 +240,42 @@
                 if (c === true) {
                     this.$store.dispatch('removeFolder', active)
                 }
+            },
+            onFileSelected(e) {
+                this.selectedFiles = e.target.files
+            },
+            onUpload() {
+                console.log(this.selectedFiles)
+
+                if (!this.selectedFiles.length) {
+                    alert("Nothing to upload...")
+                }
+
+                let fd = new FormData()
+                fd.append('folder', this.active.id)
+
+                Array
+                    .from(Array(this.selectedFiles.length).keys())
+                    .map(x => {
+                        fd.append('files[]', this.selectedFiles[x], this.selectedFiles[x].name);
+                    });
+
+                this.$store.dispatch('uploadItems', fd)
+            },
+            onUpload2() {
+                console.log(this.selectedFile);
+
+                let payload = {
+                    media: [{
+                        file: this.selectedFiles,
+                        name: this.selectedFiles.name
+                    }],
+                    folder: this.active.id
+                }
+
+                console.log(payload);
+
+                // this.$store.dispatch('uploadItems', payload)
             }
         }
     }

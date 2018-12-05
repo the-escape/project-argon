@@ -51,6 +51,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             MediaController::class,
             'appSearch'
         );
+        $this->addRoute(
+            'media/api/upload',
+            'cms:media:api:upload',
+            MediaController::class,
+            'appUpload',
+            Request::METHOD_POST
+        );
 
 
 

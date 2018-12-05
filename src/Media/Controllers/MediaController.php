@@ -143,6 +143,66 @@ class MediaController extends BaseController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
+    public function appUpload(Request $request, MediaFolderRepository $folderRepository)
+    {
+        $folderId = $request->request->get('folder');
+
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
+
+        if ($folder === null)
+        {
+            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $files = $request->file('files');
+
+        if (empty($files[0]))
+        {
+            return response()->json(['error' => "No file(s) selected for upload."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userId = $request->user()->id;
+
+        $mediaRepository = app()->make(MediaItemRepository::class);
+
+        $msgErrors = [];
+        $msgSuccess = [];
+
+        foreach ($files as $file)
+        {
+            if ($file->getError() !== 0)
+            {
+                $msgErrors[] = $file->getErrorMessage();
+                continue;
+            }
+
+            $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
+            $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
+        }
+
+        if ($msgErrors)
+        {
+            $messageCombined = [];
+
+            foreach ($msgErrors as $msg)
+            {
+                $messageCombined[] = $msg;
+            }
+
+            if ($msgSuccess)
+            {
+                foreach ($msgSuccess as $msg)
+                {
+                    $messageCombined[] = $msg;
+                }
+            }
+
+            return response()->json([$messageCombined], Response::HTTP_NO_CONTENT);
+        }
+
+        //return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
+        return response()->json([$msgSuccess], Response::HTTP_NO_CONTENT);
+    }
 
 
 

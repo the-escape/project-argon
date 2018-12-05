@@ -35,9 +35,16 @@ export function editFolder (name, folderId, cb) {
     });
 }
 
-
 export function removeFolder (id, cb) {
     Vue.http.post('/admin/media/api/folders/remove', { id: id }).then(response => {
+        cb(response)
+    }).catch(e => {
+        cb(e)
+    });
+}
+
+export function uploadMedia (data, cb) {
+    Vue.http.post('/admin/media/api/upload', data).then(response => {
         cb(response)
     }).catch(e => {
         cb(e)
