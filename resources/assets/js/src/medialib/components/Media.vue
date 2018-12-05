@@ -224,7 +224,10 @@
                 this.$store.dispatch('editFolder', payload)
             },
             removeFolder(active) {
-                this.$store.dispatch('removeFolder', active)
+                let c = confirm("Are you sure?")
+                if (c === true) {
+                    this.$store.dispatch('removeFolder', active)
+                }
             }
         }
     }
