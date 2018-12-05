@@ -48,7 +48,7 @@
                     <div class="o-form-status">
                         <div class="o-form__list">
                             <div class="o-checkbox">
-                                <input type="hidden" name="sortable" class="js-toggle-value" value="0">
+                                <input type="hidden" name="sortable" class="js-toggle-value" value="{{ $group->sortable ? '1' : '0' }}">
                                 <label>
                                     <input type="checkbox" value="1" id="sortable" class="js-toggle-input" {{ $group->sortable ? 'checked' : '' }}>
                                     <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
@@ -63,7 +63,7 @@
                     <div class="o-form-status">
                         <div class="o-form__list">
                             <div class="o-checkbox">
-                                <input type="hidden" name="renderable" class="js-toggle-value" value="0">
+                                <input type="hidden" name="renderable" class="js-toggle-value" value="{{ $group->renderable ? '1' : '0' }}">
                                 <label>
                                     <input type="checkbox" value="1" id="renderable" class="js-toggle-input" {{ $group->renderable ? 'checked' : '' }}>
                                     <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>

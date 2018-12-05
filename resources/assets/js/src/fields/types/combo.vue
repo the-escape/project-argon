@@ -36,7 +36,7 @@
 
 <script>
 import { deepClone } from '../../util'
-import ComfirmBtn from './util/confirm-btn.vue'
+import ComfirmBtn from '../../commonComponents/confirm-btn.vue'
 import Jump from '../../ui/jump'
 
 export default {

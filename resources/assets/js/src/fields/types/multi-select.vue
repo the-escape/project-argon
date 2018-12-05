@@ -6,7 +6,7 @@
                 <input type="hidden" v-for="(value, index) in values" :key="index" :name="inputName" :value="value">
                 <div class="o-drag-select__column-wrap">
                     <div class="o-drag-select__title">&nbsp;</div>
-                    <draggable class="o-drag-select__column o-drag-select__column--inactive" v-model="filteredOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 150 }">
+                    <draggable class="o-drag-select__column o-drag-select__column--inactive" v-model="filteredOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 75 }">
                         <div class="o-drag-select__item" v-for="option in filteredOptions" :key="option.value">
                             <div class="o-drag-select__item-wrap">
                                 <span>{{option.label}}</span>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="o-drag-select__column-wrap">
                     <div class="o-drag-select__title">Selected</div>
-                    <draggable class="o-drag-select__column o-drag-select__column--active" v-model="valueOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 150 }">
+                    <draggable class="o-drag-select__column o-drag-select__column--active" v-model="valueOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 75 }">
                         <div class="o-drag-select__item" v-for="option in valueOptions" :key="option.value">
                             <div class="o-drag-select__item-wrap">
                                 <span>{{option.label}}</span>

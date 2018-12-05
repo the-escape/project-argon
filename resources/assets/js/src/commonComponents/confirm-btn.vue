@@ -1,7 +1,8 @@
 <template>
-    <div class="o-confirm-btn__container" :class="{ 'is-active': confirmDelete }">
+    <div class="o-confirm-btn__container" :class="{ 'is-active': confirmDelete, 'o-confirm-btn--block': isBlock }">
         <div class="o-confirm-btn__questions">
-            <button class="o-confirm-btn" title="Duplicate" @click="duplicate($event)">
+            <div class="o-confirm-btn" v-if="hideDuplicate"></div>
+            <button class="o-confirm-btn" title="Duplicate" v-if="!hideDuplicate" @click="duplicate($event)">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#duplicate"></use>
                 </svg>
@@ -31,6 +32,7 @@
 
 <script>
 export default {
+    props: ['hideDuplicate', 'isBlock'],
     data() {
         return {
             confirmDelete: false

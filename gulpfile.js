@@ -1114,6 +1114,7 @@ gulp.task(
         patternLabBuild(),
         buildDemo(),
         copyCmsAssets(),
+        publishArtisan,
         watch
     )
 )
@@ -1127,6 +1128,7 @@ gulp.task(
         patternLabBuild(),
         buildDemo(),
         copyCmsAssets(),
+        publishArtisan,
         gulp.parallel(serv(), watch)
     )
 )

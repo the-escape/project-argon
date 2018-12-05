@@ -435,6 +435,34 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
+        $tabNav = [
+            [ "name" => 'Page Content', "slug" => "page-content", "isActive" => true],
+            [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false]
+        ];
+
+        if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
+            $tabNavGroups = $page->getNonSortableGroups($localisation->getLocaleId())
+                ->filter(function($el){
+                    return $el->getSetting('isTab');
+                })
+                ->map(function($el){
+                    $slug = 'group-'.$el->id;
+
+                    return [
+                        "name" => $el->name,
+                        "slug" => $slug,
+                        "isActive" => false
+                    ];
+                })->toArray();
+
+            $tabNav = array_merge($tabNav, $tabNavGroups);
+        }
+
+        $revisionsTotal = $revisions->total();
+        if($revisionsTotal){
+            $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
+        }
+
         return view(
             'argon::pages.edit',
             [
@@ -448,6 +476,7 @@ class PagesController extends BaseController
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
                 'currentRevision' => $currentRevision,
+                'tabNav' => $tabNav
             ]
         );
     }

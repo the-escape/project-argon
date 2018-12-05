@@ -9,10 +9,23 @@ const TabsObj = {
     currentTab: null
 }
 
+let tabs
+let tabBtns
+
 export function Tabs () {
-    const tabEls = document.querySelectorAll('.js-tabs')
-    let tabs = Array.from(tabEls)
-    tabs = tabs.map(el => createTabs(el))
+    const tabEl = document.querySelector('.js-tabs')
+    tabs = createTabs(tabEl)
+
+    fromEvent(document, 'click')
+        .pipe(
+            filter(evt => evt.target.classList.contains('js-tab-btn')),
+            map(evt => {
+                evt.preventDefault()
+                return evt.target.dataset.tab
+            })
+        )
+        .subscribe(changeTab)
+
     return tabs
 }
 
@@ -50,19 +63,23 @@ function init (el) {
     fromEvent(this.navContainer, 'click')
         .pipe(
             filter(evt => evt.target.dataset.tab),
-            map(evt => evt.target.dataset.tab)
+            map(evt => {
+                evt.preventDefault()
+                return evt.target.dataset.tab
+            })
         )
-        .subscribe(changeTab.bind(this))
+        .subscribe(changeTab)
 }
 
-function changeTab (tabName) {
-    if (!this.panels[tabName]) {
+export function changeTab (tabName) {
+    if (!tabs.panels || !tabs.panels[tabName]) {
         return
     }
 
-    this.panels[this.currentTab].classList.remove('active')
-    this.nav[this.currentTab].classList.remove('active')
-    this.panels[tabName].classList.add('active')
-    this.nav[tabName].classList.add('active')
-    this.currentTab = tabName
+    tabs.panels[tabs.currentTab].classList.remove('active')
+    tabs.nav[tabs.currentTab] &&
+        tabs.nav[tabs.currentTab].classList.remove('active')
+    tabs.panels[tabName].classList.add('active')
+    tabs.nav[tabName] && tabs.nav[tabName].classList.add('active')
+    tabs.currentTab = tabName
 }
