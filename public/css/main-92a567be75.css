@@ -5690,6 +5690,9 @@ button.o-btn {
 .h-text--uppercase {
   text-transform: uppercase !important; }
 
+.h-text--right {
+  text-align: right; }
+
 .h-background--primary {
   background-color: #12a3c7 !important; }
 
@@ -5744,4 +5747,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-8f143f9295.css.map
+//# sourceMappingURL=main-92a567be75.css.map

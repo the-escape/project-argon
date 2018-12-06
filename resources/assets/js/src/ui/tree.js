@@ -11,7 +11,8 @@ const Tree = {
     viewItem: _ => {},
     editItem: _ => {},
     addItem: _ => {},
-    deleteItem: _ => {}
+    deleteItem: _ => {},
+    editItemNewTab: _ => {}
 }
 
 let count = 0
@@ -41,6 +42,7 @@ function init (el, id) {
     this.treeContainer = this.el.querySelector('.js-tree-container')
     this.viewItem = viewItem.bind(this)
     this.editItem = editItem.bind(this)
+    this.editItemNewTab = editItemNewTab.bind(this)
     this.addItem = addItem.bind(this)
     this.deleteItem = deleteItem.bind(this)
     this.typesSubMenu = setupTypesSubMenu.call(this)
@@ -81,11 +83,11 @@ function createTree () {
                     label: 'Add new page',
                     title: 'Add new page beneath',
                     icon: 'o-tree__icon o-tree__icon--children',
-                    submenu: this.typesSubMenu,
+                    submenu: this.typesSubMenu
                     // action: this.addItem
                 },
                 remove: {
-                    _disabled: function(el) {
+                    _disabled: function (el) {
                         // TODO TomH please refactor :)
                         return !el.reference.parent()[0].dataset.deletable
                     },
@@ -105,6 +107,12 @@ function createTree () {
             key: 'jstree-' + this.id
         }
     })
+
+    this.tree.on('select_node.jstree', (_, data) => {
+        if (data.event.altKey) {
+            editItemNewTab(data.node)
+        }
+    })
 }
 
 function editItem (data) {
@@ -113,7 +121,13 @@ function editItem (data) {
     console.log(obj, 'edit page')
 
     window.location.href = argon.root() + '/pages/' + id + '/edit'
+}
 
+function editItemNewTab (node) {
+    const id = argon.helpers.getIdFromNodeIdString(node.id)
+    console.log(node, 'edit page New Window')
+
+    window.open(argon.root() + '/pages/' + id + '/edit')
 }
 
 function viewItem (data) {
@@ -125,12 +139,13 @@ function viewItem (data) {
 }
 
 function addItem (typeId) {
-    return (data) => {
+    return data => {
         const obj = this.tree.jstree(true).get_node(data.reference)
         const id = argon.helpers.getIdFromNodeIdString(obj.id)
         console.log(obj, 'add page')
 
-        window.location.href = argon.root() + '/pages/' + id + '/addchild/' + typeId
+        window.location.href =
+            argon.root() + '/pages/' + id + '/addchild/' + typeId
     }
 }
 
@@ -140,18 +155,21 @@ function deleteItem (data) {
     const id = argon.helpers.getIdFromNodeIdString(obj.id)
     console.log(obj, 'delete page')
 
-    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const token = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute('content')
 
     if (confirm('Are you sure you want to delete this page?')) {
         post(argon.root() + '/pages/' + id, {
-            '_token': token,
-            '_method': 'DELETE'
-        }).then(data => JSON.parse(data))
+            _token: token,
+            _method: 'DELETE'
+        })
+            .then(data => JSON.parse(data))
             .then(data => {
                 if (data.success) {
                     tree.delete_node(obj)
                 } else {
-                    alert('Page could not be deleted...');
+                    alert('Page could not be deleted...')
                 }
             })
             .catch(error => console.log(error))

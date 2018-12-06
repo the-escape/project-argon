@@ -45,8 +45,13 @@
         <div class="c-footer c-container c-footer--fixed">
             <div class="c-footer__container">
 
-                <div class="o-form__help-text">
-                    <p>Right click on each page to see an options menu.</p>
+                <div class="o-form__help-text l-halves">
+                    <div>
+                        <p>Right click on each page to see an options menu.</p>
+                    </div>
+                    <div>
+                        <p class="h-text--right">Alt click on each page to open edit in new tab.</p>
+                    </div>
                 </div>
 
             </div>

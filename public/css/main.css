@@ -5690,6 +5690,9 @@ button.o-btn {
 .h-text--uppercase {
   text-transform: uppercase !important; }
 
+.h-text--right {
+  text-align: right; }
+
 .h-background--primary {
   background-color: #12a3c7 !important; }
 

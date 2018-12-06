@@ -2946,7 +2946,8 @@ var Tree = {
   viewItem: function viewItem(_) {},
   editItem: function editItem(_) {},
   addItem: function addItem(_) {},
-  deleteItem: function deleteItem(_) {}
+  deleteItem: function deleteItem(_) {},
+  editItemNewTab: function editItemNewTab(_) {}
 };
 var count = 0;
 function trees() {
@@ -2975,6 +2976,7 @@ function tree_init(el, id) {
   this.treeContainer = this.el.querySelector('.js-tree-container');
   this.viewItem = viewItem.bind(this);
   this.editItem = editItem.bind(this);
+  this.editItemNewTab = editItemNewTab.bind(this);
   this.addItem = tree_addItem.bind(this);
   this.deleteItem = deleteItem.bind(this);
   this.typesSubMenu = setupTypesSubMenu.call(this);
@@ -3039,6 +3041,11 @@ function createTree() {
       key: 'jstree-' + this.id
     }
   });
+  this.tree.on('select_node.jstree', function (_, data) {
+    if (data.event.altKey) {
+      editItemNewTab(data.node);
+    }
+  });
 }
 
 function editItem(data) {
@@ -3046,6 +3053,12 @@ function editItem(data) {
   var id = argon.helpers.getIdFromNodeIdString(obj.id);
   console.log(obj, 'edit page');
   window.location.href = argon.root() + '/pages/' + id + '/edit';
+}
+
+function editItemNewTab(node) {
+  var id = argon.helpers.getIdFromNodeIdString(node.id);
+  console.log(node, 'edit page New Window');
+  window.open(argon.root() + '/pages/' + id + '/edit');
 }
 
 function viewItem(data) {
@@ -3076,8 +3089,8 @@ function deleteItem(data) {
 
   if (confirm('Are you sure you want to delete this page?')) {
     post(argon.root() + '/pages/' + id, {
-      '_token': token,
-      '_method': 'DELETE'
+      _token: token,
+      _method: 'DELETE'
     }).then(function (data) {
       return JSON.parse(data);
     }).then(function (data) {
@@ -8800,4 +8813,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8fe1f88f3f5d46be37e6.js.map
+//# sourceMappingURL=main.27970fbbf640a6bfb2cd.js.map
