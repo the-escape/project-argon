@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import InputIcon from './util/input-icon.vue'
 import Validation from './util/validation.vue'
 import Multi from './util/multi.vue'
 import FieldValues from './mixins/field-values.vue'
@@ -21,7 +20,6 @@ import FieldValues from './mixins/field-values.vue'
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],
     components: {
-        'input-icon': InputIcon,
         'validation': Validation,
         'multi': Multi
     },

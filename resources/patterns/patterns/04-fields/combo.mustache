@@ -1,360 +1,479 @@
-<script>
-    window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['combo-test-group'] = [
-        {
-            "id": 2,
-            "options": {
-                "typeKey": "combo",
-                "name": "single combo",
-                "settings": {
-                    "multiple": false
-                }
+<form action="#">
+    <script>
+        window.fieldGroups = window.fieldGroups || {}
+        window.fieldGroups['combo-test-group'] = [
+            {{! {
+                "id": 2,
+                "options": {
+                    "typeKey": "combo",
+                    "name": "single combo",
+                    "settings": {
+                        "multiple": false
+                    }
+                },
+                "helpText": "",
+                "message": "",
+                "messageAfter": "",
+                "fields": [
+                    {
+                        "id": 21,
+                        "options": {
+                            "typeKey": "wysiwyg",
+                            "name": "wysiwyg",
+                            "settings": {
+                                "required": false,
+                                "multiple": false,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "height": 150,
+                                "source": false,
+                                "format": false,
+                                "h1": "0",
+                                "h2": "0",
+                                "h3": "0",
+                                "h4": "0",
+                                "h5": "0",
+                                "h6": "0",
+                                "styles": false,
+                                "fontsize": false,
+                                "bold": false,
+                                "italic": false,
+                                "blockquote": false,
+                                "numberedlist": false,
+                                "bulletedlist": false,
+                                "image": false,
+                                "table": false,
+                                "link": false,
+                                "unlink": false,
+                                "iframe": false,
+                                "editor_options": {
+                                    "toolbar": "",
+                                    "format-tags": "",
+                                    "height": 150,
+                                    "extra-allowed-content": false,
+                                    "typography-styles": "\/css\/typography.css"
+                                }
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 20,
+                        "options": {
+                            "typeKey": "location",
+                            "name": "Location",
+                            "settings": {
+                                "required": false,
+                                "float": false,
+                                "multiple": true
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 9,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "multi text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": true,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 10,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "single text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": false,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 4,
+                        "options": {
+                            "typeKey": "select",
+                            "name": "single select",
+                            "settings": {
+                                "required": false,
+                                "multiple": false,
+                                "options": [
+                                    {
+                                        "1": "item 1"
+                                    },
+                                    {
+                                        "2": "item 2"
+                                    },
+                                    {
+                                        "3": "item 3"
+                                    },
+                                    {
+                                        "4": "item 4"
+                                    }
+                                ]
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 5,
+                        "options": {
+                            "typeKey": "select",
+                            "name": "multi select",
+                            "settings": {
+                                "required": false,
+                                "multiple": true,
+                                "options": [
+                                    {
+                                        "1": "item 1"
+                                    },
+                                    {
+                                        "2": "item 2"
+                                    },
+                                    {
+                                        "3": "item 3"
+                                    },
+                                    {
+                                        "4": "item 4"
+                                    },
+                                    {
+                                        "5": "item 5"
+                                    },
+                                    {
+                                        "6": "item 6"
+                                    }
+                                ]
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    }
+                ],
+                "values": [],
+                "errors": []
             },
-            "helpText": "",
-            "message": "",
-            "messageAfter": "",
-            "fields": [
-                {
-                    "id": 9,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "multi text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": true,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
-                    },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
+            {
+                "id": 8,
+                "options": {
+                    "typeKey": "combo",
+                    "name": "single combo",
+                    "settings": {
+                        "multiple": false
+                    }
                 },
-                {
-                    "id": 10,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "single text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": false,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
+                "helpText": "",
+                "message": "",
+                "messageAfter": "",
+                "fields": [
+                    {
+                        "id": 9,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "multi text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": true,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
+                    {
+                        "id": 10,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "single text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": false,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    },
+                    {
+                        "id": 5,
+                        "options": {
+                            "typeKey": "select",
+                            "name": "multi select",
+                            "settings": {
+                                "required": false,
+                                "multiple": true,
+                                "options": [
+                                    {
+                                        "1": "item 1"
+                                    },
+                                    {
+                                        "2": "item 2"
+                                    },
+                                    {
+                                        "3": "item 3"
+                                    },
+                                    {
+                                        "4": "item 4"
+                                    },
+                                    {
+                                        "5": "item 5"
+                                    },
+                                    {
+                                        "6": "item 6"
+                                    }
+                                ]
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    }
+                ],
+                "values": [
+                    {
+                        "9": [
+                            "first",
+                            "second"
+                        ],
+                        "10": [
+                            "single"
+                        ],
+                        "5": [
+                            '1',
+                            '2'
+                        ]
+                    }
+                ],
+                "errors": []
+            }, }}
+            {
+                "id": 20,
+                "options": {
+                    "typeKey": "combo",
+                    "name": "Multi Combo",
+                    "settings": {
+                        "multiple": true
+                    }
                 },
-                {
-                    "id": 4,
-                    "options": {
-                        "typeKey": "select",
-                        "name": "single select",
-                        "settings": {
-                            "required": false,
-                            "multiple": false,
-                            "options": [
-                                {
-                                    "1": "item 1"
-                                },
-                                {
-                                    "2": "item 2"
-                                },
-                                {
-                                    "3": "item 3"
-                                },
-                                {
-                                    "4": "item 4"
+                "helpText": "",
+                "message": "",
+                "messageAfter": "",
+                "fields": [
+                    {
+                        "id": 23,
+                        "options": {
+                            "typeKey": "wysiwyg",
+                            "name": "wysiwyg",
+                            "settings": {
+                                "required": false,
+                                "multiple": true,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "height": 150,
+                                "source": false,
+                                "format": false,
+                                "h1": "0",
+                                "h2": "0",
+                                "h3": "0",
+                                "h4": "0",
+                                "h5": "0",
+                                "h6": "0",
+                                "styles": false,
+                                "fontsize": false,
+                                "bold": false,
+                                "italic": false,
+                                "blockquote": false,
+                                "numberedlist": false,
+                                "bulletedlist": false,
+                                "image": false,
+                                "table": false,
+                                "link": false,
+                                "unlink": false,
+                                "iframe": false,
+                                "editor_options": {
+                                    "toolbar": "",
+                                    "format-tags": "",
+                                    "height": 150,
+                                    "extra-allowed-content": false,
+                                    "typography-styles": "\/css\/typography.css"
                                 }
-                            ]
-                        }
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                },
-                {
-                    "id": 5,
-                    "options": {
-                        "typeKey": "select",
-                        "name": "multi select",
-                        "settings": {
-                            "required": false,
-                            "multiple": true,
-                            "options": [
-                                {
-                                    "1": "item 1"
-                                },
-                                {
-                                    "2": "item 2"
-                                },
-                                {
-                                    "3": "item 3"
-                                },
-                                {
-                                    "4": "item 4"
-                                },
-                                {
-                                    "5": "item 5"
-                                },
-                                {
-                                    "6": "item 6"
-                                }
-                            ]
-                        }
+                    {
+                        "id": 5,
+                        "options": {
+                            "typeKey": "select",
+                            "name": "multi select",
+                            "settings": {
+                                "required": false,
+                                "multiple": true,
+                                "options": [
+                                    {
+                                        "1": "item 1"
+                                    },
+                                    {
+                                        "2": "item 2"
+                                    },
+                                    {
+                                        "3": "item 3"
+                                    },
+                                    {
+                                        "4": "item 4"
+                                    },
+                                    {
+                                        "5": "item 5"
+                                    },
+                                    {
+                                        "6": "item 6"
+                                    }
+                                ]
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                }
-            ],
-            "values": [],
-            "errors": []
-        },
-        {
-            "id": 8,
-            "options": {
-                "typeKey": "combo",
-                "name": "single combo",
-                "settings": {
-                    "multiple": false
-                }
-            },
-            "helpText": "",
-            "message": "",
-            "messageAfter": "",
-            "fields": [
-                {
-                    "id": 9,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "multi text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": true,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
+                    {
+                        "id": 21,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "multi text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": true,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                },
-                {
-                    "id": 10,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "single text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": false,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
+                    {
+                        "id": 22,
+                        "options": {
+                            "typeKey": "text",
+                            "name": "single text",
+                            "settings": {
+                                "required": false,
+                                "multiline": false,
+                                "multiple": false,
+                                "minlength": 0,
+                                "maxlength": 0,
+                                "url": false,
+                                "integer": false,
+                                "float": false,
+                                "email": false,
+                                "phone": false
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                },
-                {
-                    "id": 5,
-                    "options": {
-                        "typeKey": "select",
-                        "name": "multi select",
-                        "settings": {
-                            "required": false,
-                            "multiple": true,
-                            "options": [
-                                {
-                                    "1": "item 1"
-                                },
-                                {
-                                    "2": "item 2"
-                                },
-                                {
-                                    "3": "item 3"
-                                },
-                                {
-                                    "4": "item 4"
-                                },
-                                {
-                                    "5": "item 5"
-                                },
-                                {
-                                    "6": "item 6"
-                                }
-                            ]
-                        }
+                    {
+                        "id": 24,
+                        "options": {
+                            "typeKey": "button",
+                            "name": "button",
+                            "settings": {
+                                "required": false,
+                                "multiple": true
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                }
-            ],
-            "values": [
-                {
-                    "9": [
-                        "first",
-                        "second"
-                    ],
-                    "10": [
-                        "single"
-                    ],
-                    "5": [
-                        '1',
-                        '2'
-                    ]
-                }
-            ],
-            "errors": []
-        },
-        {
-            "id": 20,
-            "options": {
-                "typeKey": "combo",
-                "name": "Multi Combo",
-                "settings": {
-                    "multiple": true
-                }
-            },
-            "helpText": "",
-            "message": "",
-            "messageAfter": "",
-            "fields": [
-                {
-                    "id": 5,
-                    "options": {
-                        "typeKey": "select",
-                        "name": "multi select",
-                        "settings": {
-                            "required": false,
-                            "multiple": true,
-                            "options": [
-                                {
-                                    "1": "item 1"
-                                },
-                                {
-                                    "2": "item 2"
-                                },
-                                {
-                                    "3": "item 3"
-                                },
-                                {
-                                    "4": "item 4"
-                                },
-                                {
-                                    "5": "item 5"
-                                },
-                                {
-                                    "6": "item 6"
-                                }
-                            ]
-                        }
+                    {
+                        "id": 25,
+                        "options": {
+                            "typeKey": "boolean",
+                            "name": "boolean",
+                            "settings": {
+                                "initial_value": "0"
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
                     },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                },
-                {
-                    "id": 21,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "multi text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": true,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
-                    },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                },
-                {
-                    "id": 22,
-                    "options": {
-                        "typeKey": "text",
-                        "name": "single text",
-                        "settings": {
-                            "required": false,
-                            "multiline": false,
-                            "multiple": false,
-                            "minlength": 0,
-                            "maxlength": 0,
-                            "url": false,
-                            "integer": false,
-                            "float": false,
-                            "email": false,
-                            "phone": false
-                        }
-                    },
-                    "helpText": "",
-                    "message": "",
-                    "messageAfter": ""
-                }
-            ],
-            "values": [
-                {
-                    "21": [
-                        "first",
-                        "second"
-                    ],
-                    "22": [
-                        "single"
-                    ],
-                    "5": [
-                        '1',
-                        '4'
-                    ]
-                },
-                {
-                    "21": [
-                        "next",
-                        "next 2"
-                    ],
-                    "22": [
-                        "single 2"
-                    ],
-                    "5": [
-                        '3',
-                        '2'
-                    ]
-                }
-            ],
-            "errors": []
-        }
-    ]
-</script>
-<div class="js-fields" data-name="combo-test-group"></div>
+                    {
+                        "id": 26,
+                        "options": {
+                            "typeKey": "boolean",
+                            "name": "boolean",
+                            "settings": {
+                                "initial_value": "1"
+                            }
+                        },
+                        "helpText": "",
+                        "message": "",
+                        "messageAfter": ""
+                    }
+                ],
+                "values": [],
+                "errors": []
+            }
+        ]
+    </script>
+    <div class="js-fields" data-name="combo-test-group"></div>
+</form>
+

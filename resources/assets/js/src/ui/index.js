@@ -8,12 +8,11 @@ import Video from './video'
 import map from './map'
 import Sidebar from './sidebar'
 import { confirm } from './confirm-btns'
-import { combos } from './templates/combo'
 import { tableAction } from './table-actions'
 import { tables } from './table'
-import { createMultiple } from './templates/multi'
-import { createTemplateForms } from './templates/template-forms'
 import { fileUpload } from './file-upload'
+import { Tabs } from './tabs'
+import { Notifications } from './notifications'
 
 export {
     Accordion,
@@ -26,11 +25,10 @@ export {
     Video,
     map,
     confirm,
-    combos,
     tableAction,
     tables,
-    createMultiple,
-    createTemplateForms,
+    fileUpload,
     Sidebar,
-    fileUpload
+    Tabs,
+    Notifications
 }

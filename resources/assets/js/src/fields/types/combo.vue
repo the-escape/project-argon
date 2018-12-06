@@ -2,13 +2,13 @@
     <div class="o-combo o-form__group l-full">
         <div class="o-combo__head">
             <div class="o-combo__label">{{comboField.options.name}}</div>
-            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" v-on:click="addEmptyItem()">Add {{comboField.options.comboAddName}}</button>
+            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
         </div>
         <div class="o-combo__track">
             <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
-                <div class="o-combo__item" v-for="item in items" :key="item.id">
+                <div class="o-combo__item" v-for="item in items" :key="item.id" :id="'combo-' + item.id">
                     <div class="o-combo__header">
-                        <button class="o-combo__drag-handle js-combo-drag" v-if="isMultiple" v-on:click="toggleBodyHide()">
+                        <button class="o-combo__drag-handle js-combo-drag" v-if="isMultiple" @click="toggleBodyHide($event, item.id)">
                             <div class="o-combo__drag-wrap">
                                 <svg>
                                     <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
@@ -17,7 +17,7 @@
                         </button>
                         <div class="o-combo__title js-combo-title" v-if="isMultiple">Item {{ item.id + 1 }}</div>
                         <div class="o-combo__actions" v-if="isMultiple">
-                            <confirm-btn v-on:delete="deleteItem(item.id)" v-on:duplicate="duplicateItem(item.id)"></confirm-btn>
+                            <confirm-btn @delete="deleteItem(item.id)" @duplicate="duplicateItem(item.id)"></confirm-btn>
                         </div>
                     </div>
                     <div class="o-combo__body" v-if="!isHidingBody">
@@ -29,14 +29,15 @@
             </draggable>
         </div>
         <div class="o-combo__foot">
-            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" v-on:click="addEmptyItem()">Add {{comboField.options.comboAddName}}</button>
+            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
         </div>
     </div>
 </template>
 
 <script>
 import { deepClone } from '../../util'
-import ComfirmBtn from './util/confirm-btn.vue'
+import ComfirmBtn from '../../commonComponents/confirm-btn.vue'
+import Jump from '../../ui/jump'
 
 export default {
     name: 'combo',
@@ -55,8 +56,16 @@ export default {
         }
     },
     methods: {
-        toggleBodyHide: function() {
+        toggleBodyHide: function(evt, scrollID) {
+            evt.preventDefault()
+
             this.isHidingBody = !this.isHidingBody
+
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    Jump.jump('#combo-' + scrollID)
+                })
+            }, 0)
         },
         deleteItem: function (comboItemID) {
             this.$store.commit('removeComboItem', {
@@ -78,7 +87,9 @@ export default {
                 newValueObj: duplicate
             })
         },
-        addEmptyItem: function () {
+        addEmptyItem: function (evt) {
+            evt && evt.preventDefault()
+
             const comboField = this.$store.getters.getField(this.fieldId)
             const emptyValue = deepClone(comboField.emptyValue)
             this.$store.commit('addComboItemValue', {

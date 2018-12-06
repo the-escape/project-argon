@@ -629,7 +629,14 @@ function getError($errors, $field_name)
 {
     if(is_object($errors) && ($errors instanceof ViewErrorBag && $errors->has($field_name)))
     {
-        return $errors->get($field_name);
+        $error = $errors->get($field_name);
+
+        if(is_array($error))
+        {
+            $error = implode('<br>', $error);
+        }
+
+        return $error;
     }
 
     return '';

@@ -28,8 +28,8 @@ export function createMediaInput (input, type) {
     return Obj
 }
 
-function init(input, type){
-    if(!input){
+function init (input, type) {
+    if (!input) {
         return
     }
 
@@ -39,7 +39,7 @@ function init(input, type){
     this.selectBtn = input.querySelector('.js-media-input-select')
     this.type = type
 
-    if(type === 'image') {
+    if (type === 'image') {
         this.thumb = input.querySelector('.js-media-input-preview')
         this.width = input.querySelector('[data-input-item-name=width]')
         this.height = input.querySelector('[data-input-item-name=height]')
@@ -60,12 +60,11 @@ function init(input, type){
         })
 }
 
-function setValues(values){
+function setValues (values) {
     this.id.value = values.id
     this.url.value = values.url
 
     if (this.type === 'image') {
-
         this.width.value = values.width
         this.height.value = values.height
     }
@@ -73,7 +72,7 @@ function setValues(values){
     updateThumb.call(this)
 }
 
-function updateThumb(){
+function updateThumb () {
     if (this.type === 'image') {
         this.thumb.src = this.url.value
         this.thumb.alt = ''
@@ -83,16 +82,16 @@ function updateThumb(){
     // }
 }
 
-export function spawnMediaLibModalForFile() {
+export function spawnMediaLibModalForFile () {
     return spawnMediaLibModal('file')
 }
 
-export function spawnMediaLibModalForImage() {
+export function spawnMediaLibModalForImage () {
     return spawnMediaLibModal('image')
 }
 
-function spawnMediaLibModal(type) {
-    return new Promise(res => {
+function spawnMediaLibModal (type) {
+    return new Promise(resolve => {
         $('#medialib').off('hidden.bs.modal')
         $('#medialib').on('hidden.bs.modal', function () {
             const id = $(this).data('mlselect')
@@ -100,7 +99,6 @@ function spawnMediaLibModal(type) {
             // data.values
 
             $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
-
                 if (type === 'image') {
                     mediaValueObj = {
                         id: r.id,
@@ -116,8 +114,8 @@ function spawnMediaLibModal(type) {
                     }
                 }
 
-                res(mediaValueObj)
-            });
+                resolve(mediaValueObj)
+            })
         })
 
         $('#medialib').modal()

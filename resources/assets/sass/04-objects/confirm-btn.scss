@@ -8,6 +8,11 @@
         background-color $userInactive $easeOut,
         transform $userInactive $easeOut;
 
+    &--block & {
+        width: 55px;
+        height: 65px;
+    }
+
     &:hover {
         color: $black;
         transition: color $userActive $easeOut,
@@ -65,12 +70,22 @@
         }
     }
 
+    &--block &__decline,
+    &--block &__accept {
+        width: 55px;
+        height: 65px;
+    }
+
     &__decline {
         right: 45px;
 
         > * {
             transform: translateX(-100%);
         }
+    }
+
+    &--block &__decline {
+        right: 55px;
     }
 
     &__accept {
