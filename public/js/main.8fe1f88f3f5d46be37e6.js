@@ -436,13 +436,14 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 186 modules ***!
+  !*** ./resources/assets/js/src/index.js + 187 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/dragula/dragula.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/flatpickr/dist/flatpickr.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/moment/moment.js (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/noty/lib/noty.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/operators/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
@@ -1873,7 +1874,26 @@ function changeTab(tabName) {
   tabs.nav[tabName] && tabs.nav[tabName].classList.add('active');
   tabs.currentTab = tabName;
 }
+// EXTERNAL MODULE: ./node_modules/noty/lib/noty.js
+var noty = __webpack_require__("./node_modules/noty/lib/noty.js");
+var noty_default = /*#__PURE__*/__webpack_require__.n(noty);
+
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/notifications.js
+
+function Notifications() {
+  if (!window.notifications || !window.notifications.length) {
+    return;
+  }
+
+  return window.notifications.map(function (notif) {
+    return new noty_default.a({
+      text: notif.text,
+      type: notif.success ? 'success' : 'error'
+    }).show();
+  });
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
+
 
 
 
@@ -7893,7 +7913,16 @@ var Appvue_type_template_id_46fae1cd_render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "l-halves c-tab-panel__inner" }, [
     _c("div", { staticClass: "c-block-list__wrap" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "typography l-space" }, [
+        _c("h3", [_vm._v("Page Preview")]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Here you can edit, remove and re-order content")]),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { type: "hidden", name: "group_order" },
+          domProps: { value: _vm.renderOrder }
+        })
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "c-block-list" }, [
         _c("div", { staticClass: "c-block-list__search o-form" }, [
@@ -7979,7 +8008,7 @@ var Appvue_type_template_id_46fae1cd_render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "c-block-list__wrap" }, [
-      _vm._m(1),
+      _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "c-block-list" }, [
         _c("div", { staticClass: "c-block-list__search o-form" }, [
@@ -8051,16 +8080,6 @@ var Appvue_type_template_id_46fae1cd_render = function() {
   ])
 }
 var Appvue_type_template_id_46fae1cd_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "typography l-space" }, [
-      _c("h3", [_vm._v("Page Preview")]),
-      _vm._v(" "),
-      _c("p", [_vm._v("Here you can edit, remove and re-order content")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -8577,6 +8596,7 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
 //
 //
 //
+//
 
 
 /* harmony default export */ var page_edit_Appvue_type_script_lang_js_ = ({
@@ -8656,6 +8676,11 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
       return this.nonSortableRenderingGroups.filter(function (block) {
         return block.name.toLowerCase().includes(_this3.renderSearch);
       });
+    },
+    renderOrder: function renderOrder() {
+      return this.renderingGroups.map(function (block) {
+        return block.id;
+      }).join(',');
     }
   },
   methods: {
@@ -8749,6 +8774,7 @@ function src_init() {
   init();
   ui_jump.init(650, 150);
   sidebar_init();
+  Notifications();
   accordion_init();
   video_init();
   map_init();
@@ -8774,4 +8800,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.1b8dd16fddce82993a26.js.map
+//# sourceMappingURL=main.8fe1f88f3f5d46be37e6.js.map

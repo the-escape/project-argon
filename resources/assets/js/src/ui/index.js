@@ -11,6 +11,7 @@ import { confirm } from './confirm-btns'
 import { tableAction } from './table-actions'
 import { tables } from './table'
 import { Tabs } from './tabs'
+import { Notifications } from './notifications'
 
 export {
     Accordion,
@@ -26,5 +27,6 @@ export {
     tableAction,
     tables,
     Sidebar,
-    Tabs
+    Tabs,
+    Notifications
 }

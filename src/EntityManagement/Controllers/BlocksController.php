@@ -39,11 +39,11 @@ class BlocksController extends BaseController
     public function manage(
         Request $request,
         EntityTypeRepository $typeRepository,
-//        LocaleRepository $localeRepository,
+        //LocaleRepository $localeRepository,
         EntityRepository $entityRepository
     ) {
         $types = $typeRepository->block();
-//        $locales = $localeRepository->all();
+        //$locales = $localeRepository->all();
 
         $perPage = $request->input('perpage', 25);
         $orderBy = $request->input('order', 'id');
@@ -74,13 +74,13 @@ class BlocksController extends BaseController
         }
 
         $blocks = $query->paginate($perPage);
-//        $blocks = $entityRepository->blocks();
+        //$blocks = $entityRepository->blocks();
 
         return view('argon::blocks.manage', [
             'types' => $types,
             'blocks' => $blocks,
             'request' => $request,
-//            'locales' => $locales
+            //'locales' => $locales
         ]);
     }
 
@@ -107,12 +107,18 @@ class BlocksController extends BaseController
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
         $type = $typeRepository->find($typeId);
 
+        $nonSortableGroups = $groups->filter(function($group){
+            return !$group->isSortable();
+        });
+        $tabNav = $this->getTabNav($nonSortableGroups, true);
+
         return view(
             'argon::blocks.create',
             [
                 'type' => $type,
                 'groups' => $groups,
                 'root' => $folderRepository->root(),
+                'tabNav' => $tabNav
             ]
         );
     }
@@ -301,6 +307,9 @@ class BlocksController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
+        $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
+        $tabNav = $this->getTabNav($nonSortableGroups);
+
         return view(
             'argon::blocks.edit',
             [
@@ -310,6 +319,7 @@ class BlocksController extends BaseController
                 'root' => $folderRepository->root(),
                 'groups' => $groups,
                 'locales' => $locales,
+                'tabNav' => $tabNav
             ]
         );
     }
@@ -423,5 +433,41 @@ class BlocksController extends BaseController
         }
 
         return $query;
+    }
+
+    public function getTabNav($nonSortableGroups, $attributesFirst = false)
+    {
+        $tabNav = [];
+
+        $blockContent = [ "name" => 'Block Content', "slug" => "block-content", "isActive" => false];
+        $attributes = [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false];
+
+        if($attributesFirst){
+            $attributes['isActive'] = true;
+            $tabNav = [$attributes, $blockContent];
+        }else{
+            $blockContent['isActive'] = true;
+            $tabNav = [$blockContent, $attributes];
+        }
+
+        if($nonSortableGroups){
+            $tabNavGroups = $nonSortableGroups
+                ->filter(function($el){
+                    return $el->getSetting('isTab');
+                })
+                ->map(function($el){
+                    $slug = 'group-'.$el->id;
+
+                    return [
+                        "name" => $el->name,
+                        "slug" => $slug,
+                        "isActive" => false
+                    ];
+                })->toArray();
+
+            $tabNav = array_merge($tabNav, $tabNavGroups);
+        }
+
+        return $tabNav;
     }
 }

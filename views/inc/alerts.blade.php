@@ -1,31 +1,24 @@
 @if($messages = getMessage(session('message')))
-
-    <div class="alert alert-success">
-
-        <ul>
-            @foreach ($messages as $message)
-                <li>{{ $message }}</li>
-            @endforeach
-        </ul>
-
-    </div>
-
+    <script>
+        window.notifications = window.notifications || []
+        @foreach ($messages as $message)
+        window.notifications.push({
+            text: "{{ $message }}",
+            success: true
+        });
+        @endforeach
+    </script>
 @endif
 
 
 @if($messages = getMessage(@$errors))
-
-
-    <div class="alert alert-danger">
-
-        <p><strong>Submission failed</strong></p>
-
-        <ul>
-            @foreach ($messages as $message)
-            <li>{{ $message }}</li>
-            @endforeach
-        </ul>
-
-    </div>
-
+    <script>
+        window.notifications = window.notifications || []
+        @foreach ($messages as $message)
+        window.notifications.push({
+            text: "{{ $message }}",
+            success: false
+        });
+        @endforeach
+    </script>
 @endif

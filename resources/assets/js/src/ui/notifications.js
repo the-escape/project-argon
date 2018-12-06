@@ -1,0 +1,14 @@
+import Noty from 'noty'
+
+export function Notifications () {
+    if (!window.notifications || !window.notifications.length) {
+        return
+    }
+
+    return window.notifications.map(notif => {
+        return new Noty({
+            text: notif.text,
+            type: notif.success ? 'success' : 'error'
+        }).show()
+    })
+}

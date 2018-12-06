@@ -4,6 +4,7 @@
             <div class="typography l-space">
                 <h3>Page Preview</h3>
                 <p>Here you can edit, remove and re-order content</p>
+                <input type="hidden" name="group_order" :value="renderOrder">
             </div>
             <div class="c-block-list">
                 <div class="c-block-list__search o-form">
@@ -113,6 +114,9 @@ export default {
             return this.nonSortableRenderingGroups.filter(block => {
                 return block.name.toLowerCase().includes(this.renderSearch)
             })
+        },
+        renderOrder: function () {
+            return this.renderingGroups.map(block => block.id).join(',')
         }
     },
     methods: {

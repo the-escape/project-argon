@@ -92,6 +92,12 @@ class PagesController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
+
+        $nonSortableGroups = $groups->filter(function($group){
+            return !$group->isSortable();
+        });
+        $tabNav = $this->getTabNav($nonSortableGroups, false, true);
+
         return view(
             'argon::pages.create',
             [
@@ -99,6 +105,7 @@ class PagesController extends BaseController
                 'parentId' => $parentId,
                 'groups' => $groups,
                 'root' => $folderRepository->root(),
+                'tabNav' => $tabNav
             ]
         );
     }
@@ -398,12 +405,12 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-//        if ($clone) {
-//            $localisation = $page->getDefaultLocalisation();
-//        } else {
-            $currentLocale = Locale::find($localeId);
-            $localisation = $page->getLocalisation($currentLocale);
-//        }
+            //if ($clone) {
+            //$localisation = $page->getDefaultLocalisation();
+            //} else {
+                        $currentLocale = Locale::find($localeId);
+                        $localisation = $page->getLocalisation($currentLocale);
+            //}
 
         $currentRevision = null;
         $publishedRevision = $localisation->publishedRevision();
@@ -435,33 +442,11 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
-        $tabNav = [
-            [ "name" => 'Page Content', "slug" => "page-content", "isActive" => true],
-            [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false]
-        ];
-
+        $nonSortableGroups = false;
         if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
-            $tabNavGroups = $page->getNonSortableGroups($localisation->getLocaleId())
-                ->filter(function($el){
-                    return $el->getSetting('isTab');
-                })
-                ->map(function($el){
-                    $slug = 'group-'.$el->id;
-
-                    return [
-                        "name" => $el->name,
-                        "slug" => $slug,
-                        "isActive" => false
-                    ];
-                })->toArray();
-
-            $tabNav = array_merge($tabNav, $tabNavGroups);
+            $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
         }
-
-        $revisionsTotal = $revisions->total();
-        if($revisionsTotal){
-            $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
-        }
+        $tabNav = $this->getTabNav($nonSortableGroups, $revisions);
 
         return view(
             'argon::pages.edit',
@@ -660,5 +645,48 @@ class PagesController extends BaseController
         EntityCache::cache($entity, $localisation, $revision);
 
         return back()->with('message', 'Revision restored.');
+    }
+
+    public function getTabNav($nonSortableGroups, $revisions = false, $attributesFirst = false)
+    {
+        $tabNav = [];
+
+        $pageContent = [ "name" => 'Page Content', "slug" => "page-content", "isActive" => false];
+        $attributes = [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false];
+
+        if($attributesFirst){
+            $attributes['isActive'] = true;
+            $tabNav = [$attributes, $pageContent];
+        }else{
+            $pageContent['isActive'] = true;
+            $tabNav = [$pageContent, $attributes];
+        }
+
+        if($nonSortableGroups){
+            $tabNavGroups = $nonSortableGroups
+                ->filter(function($el){
+                    return $el->getSetting('isTab');
+                })
+                ->map(function($el){
+                    $slug = 'group-'.$el->id;
+
+                    return [
+                        "name" => $el->name,
+                        "slug" => $slug,
+                        "isActive" => false
+                    ];
+                })->toArray();
+
+            $tabNav = array_merge($tabNav, $tabNavGroups);
+        }
+
+        if($revisions){
+            $revisionsTotal = $revisions->total();
+            if($revisionsTotal){
+                $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
+            }
+        }
+
+        return $tabNav;
     }
 }

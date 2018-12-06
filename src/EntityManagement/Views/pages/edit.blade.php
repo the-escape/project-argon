@@ -20,6 +20,8 @@ $defaultLocalisation = $page->getDefaultLocalisation();
     <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" class="o-form" method="POST" id="pageEditForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+        @include('argon::inc.alerts', compact($errors))
+
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
@@ -43,7 +45,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             <div class="c-tab-panel__list js-tabs-list">
                 <div class="c-tab-panel active" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
-                        @include('argon::inc.alerts', compact($errors))
                         <div class="js-page-edit"></div>
                     </main>
                     <footer class="c-footer__wrapper">
@@ -182,6 +183,24 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             </div>
                         </div>
                     </main>
+                    <footer class="c-footer__wrapper">
+                        <div class="c-footer c-container c-footer--fixed">
+                            <div class="c-footer__container">
+
+                                <div class="c-footer__buttons">
+                                    <div>
+                                        <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
+                                        <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    </div>
+                                    <div>
+                                    <button type="submit" class="o-btn o-btn--sm o-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
+                                    <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </footer>
                 </div>
 
                 @if($revisionsTotal = $revisions->total())
@@ -284,7 +303,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                 @endif
 
                 @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
-                    @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
+                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
                                 <div class="c-tab-panel__inner-container l-full">
@@ -297,7 +316,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             id: '{{$group->id}}',
                                             isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
                                             isRendering: {{ $isRendering }},
-                                            isSortable: false,
+                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
                                             name: '{{ $group->name }}',
                                             isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
                                             image: '{{ $group->getSetting("image") }}'
@@ -324,51 +343,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             </footer>
                         </div>
                     @endforeach
-
-                    @if(!$page->getSortableGroups($localisation->getLocaleId())->isEmpty())
-                        <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
-
-                        @foreach($page->getSortableGroups($localisation->getLocaleId()) as $group)
-                            <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
-                                <main class="c-tab-panel__container c-container">
-                                    <div class="c-tab-panel__inner-container l-full">
-                                        <h2>{{ $group->name }}</h2>
-                                        <?php
-                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                        ?>
-                                        <script>
-                                            window.groups.push({
-                                                id: '{{$group->id}}',
-                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                                isRendering: {{ $isRendering }},
-                                                isSortable: true,
-                                                name: '{{ $group->name }}',
-                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                                image: '{{ $group->getSetting("image") }}'
-                                            });
-                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
-                                        </script>
-                                        <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    </div>
-                                </main>
-                                <footer class="c-footer__wrapper">
-                                    <div class="c-footer c-container c-footer--fixed">
-                                        <div class="c-footer__container">
-                                            <div class="c-footer__buttons">
-                                                <div>
-                                                    <button class="o-btn o-btn--sm js-tab-btn" data-tab="page-content">Back</a>
-                                                </div>
-                                                <div>
-                                                    <button class="o-btn o-btn--sm o-btn--success js-tab-btn" data-tab="page-content">OK</a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </footer>
-                            </div>
-                        @endforeach
-                    @endif
                 @endif
             </div>
 

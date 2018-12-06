@@ -8,7 +8,8 @@ import {
     Jump,
     tables,
     Sidebar,
-    Tabs
+    Tabs,
+    Notifications
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
@@ -20,6 +21,7 @@ function init () {
     polyfill()
     Jump.init(650, 150)
     Sidebar()
+    Notifications()
     Accordion()
     Video()
     map()
