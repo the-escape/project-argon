@@ -4,23 +4,27 @@ namespace Escape\Argon\Core\Controllers;
 
 use Carbon\Carbon;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
+use Escape\Argon\EntityManagement\Helpers\Validation;
+use Escape\Argon\Exceptions\SpamException;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use View;
 use Slack;
 use Auth;
 
 class DashboardController extends BaseController
 {
+    protected $request;
+
     public function __construct(Request $request)
     {
         $this->middleware('auth');
         $this->middleware('perm:cms:login');
-
-
+        
         // setting up the dynamic data needed for some widgets
-
 
         view()->composer('argon::inc.widgets.manage-site-content', function($view)
         {
@@ -33,7 +37,7 @@ class DashboardController extends BaseController
         view()->composer('argon::inc.widgets.blog-and-media', function($view)
         {
             $blogLink = config('argon.dashboard_widgets.create_blog_post_link');
-            $blogLabel = 'Create new blog post';
+            $blogLabel = config('argon.dashboard_widgets.create_blog_post_label','Create new blog post');
 
             return $view->with(compact('blogLink', 'blogLabel'));
         });
@@ -73,12 +77,12 @@ class DashboardController extends BaseController
                 $activities->push($activity);
             }
 
-//            dd($activities);
-
             return $view->with(compact('activities'));
         });
 
         parent::__construct($request);
+
+        $this->request = $request;
     }
 
     public function dashboard(Request $request)
@@ -86,7 +90,7 @@ class DashboardController extends BaseController
         $availableWidgets = [
             'manage-site-content',
             'blog-and-media',
-            'manage-users',
+            'recent-activity',
             'video-tutorial',
             'account-manager',
             'feedback-form',
@@ -109,6 +113,122 @@ class DashboardController extends BaseController
 
     public function submitFeedback(Request $request)
     {
-        // TODO: submit feedback to digital@the-escape...; set cookie to throttle another submission; in the view check the cookie and show thank you message temporarily
+        if($isBot = $this->_spamCheck())
+        {
+            return $isBot;
+        }
+
+        $rules = [
+            'feedback' => 'required|min:10'
+        ];
+
+        $messages = [
+            "feedback.required" => "Message is required.",
+            "feedback.min:10" => "Message must be at least 10 characters.",
+        ];
+
+        $validator = Validator::make($this->request->all(), $rules, $messages);
+
+        if($validator->fails())
+        {
+            return $this->_errorOut($validator);
+        }
+
+
+        $submissionDate = date('Y-m-d H:i:s');
+        $user = auth()->user();
+
+        $email = sprintf("Feedback from %s | %s\n\n", $request->header('host'), $submissionDate);
+        $email .= sprintf("Source: %s\n\n", $request->headers->get('referer'));
+        $email .= sprintf("User: %s\n\n", $user->username);
+        $email .= sprintf("Feedback: %s\n\n", $request->get("feedback"));
+
+
+        try
+        {
+            $recipient = 'digital@the-escape.co.uk';
+
+            Mail::raw($email, function ($message) use ($submissionDate, $recipient, $request) {
+                $message
+                    ->to($recipient)
+                    ->subject(sprintf("Feedback from %s \n %s", $request->header('host'), $submissionDate));
+            });
+        }
+        catch (\Exception $e)
+        {
+            app()->isLocal() ? dd($e) : alert_escape($e);
+        }
+
+
+        $successMessage = "<p>Thank you, request has been submitted successfully.</p>";
+
+        $throttleSubmissions = Carbon::now()->addMinutes(5);
+        session()->set('throttleFeedbackSubmission', $throttleSubmissions);
+
+
+        if ($this->request->ajax())
+        {
+            return response()->json([
+                'success' => true,
+                'msg' => $successMessage
+            ]);
+        }
+        else
+        {
+            return back()
+                ->with('success', true)
+                ->with('msg', $successMessage);
+        }
+        
+    }
+
+
+    private function _errorOut($validator)
+    {
+        if ($this->request->ajax())
+        {
+            return response()->json([
+                'success' => false,
+                'msg' => 'There was a problem with your submission.',
+                'fields' => $validator->errors(),
+                'block' => $this->request->input('_block')
+            ]);
+        }
+        else
+        {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->with('success-block', $this->request->input('_block'))
+                ->withInput();
+        }
+    }
+
+    private function _spamCheck()
+    {
+        try
+        {
+            Validation::spamCheck();
+        }
+        catch(SpamException $e)
+        {
+            if($this->request->ajax())
+            {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'There was a problem with submission, please try again.',
+                    'fields' => []
+                ]);
+            }
+            else
+            {
+                return redirect()->back()
+                    ->with('error', "There was a problem with submission, please try again.")
+                    ->with('success-block', $this->request->input('_block'))
+                    ->withInput();
+            }
+        }
+
+        return null;
     }
 }
