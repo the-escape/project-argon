@@ -259,7 +259,7 @@
                     .from(Array(this.upload.getFiles().length).keys())
                     .map(x => {
                         fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
-                    });
+                    })
 
                 this.$store.dispatch('uploadItems', fd)
             },
