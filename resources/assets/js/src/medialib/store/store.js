@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder, uploadMedia } from "../api/media";
 import { Folder, children, Item } from "./folder"
 import { Search } from "./search"
+import { Upload } from "./upload"
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ export default new Vuex.Store({
         data: [],
         search: new Search,
         modal: new Item,
-        layout: 'tiles'
+        layout: 'tiles',
+        upload: new Upload
     },
     // getters : {},
     mutations: {
@@ -64,7 +66,6 @@ export default new Vuex.Store({
             state.layout = layout
         },
         createFolder: (state, payload) => {
-            // console.log(payload);
             addFolder(payload.name, payload.parent.id, function (r) {
                 if (r.status !== 200) {
                     return alert(r.body.error)
@@ -102,7 +103,27 @@ export default new Vuex.Store({
         },
         uploadItems: (state, payload) => {
             uploadMedia(payload, function(r){
-                console.log(r);
+                console.log(r)
+
+                if (r.status >= 400) {
+                    return alert(r.body.error)
+                }
+
+                let msg = r.body.messages
+
+                if (Array.isArray(msg)) {
+                    msg = r.body.messages.join('\n')
+                }
+
+                getFolders(state.active.id, function(f) {
+                    state.active.items =  f.items
+                })
+
+                state.upload.reset()
+
+                if (msg) {
+                    alert(msg)
+                }
             })
         }
     },

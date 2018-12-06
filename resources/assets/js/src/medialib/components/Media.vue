@@ -32,17 +32,7 @@
                         </div>
 
                         <div class="search__btn">
-                            <button class="o-btn o-btn--xs" type="button" v-on:click="searchReset(search)">Clear</button>
-                        </div>
-
-                    </div>
-
-                    <div class="ml-upload">
-
-                        <div class="ml-upload__field">
-                            <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" style="display: none">
-                            <button @click="$refs.fileInput.click()">Select file(s)</button>
-                            <button @click="onUpload">Upload</button>
+                            <button class="o-btn o-btn--xs" type="button" v-on:click="searchReset()">Clear</button>
                         </div>
 
                     </div>
@@ -111,13 +101,26 @@
                         <div class="ml__body">
 
                             <div class="folder__act">
-                                <button type="button" class="o-btn o-btn--xs" @click="createFolder(active)">Add folder</button>
-                                <button type="button" class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="editFolder(active)">Edit folder</button>
-                                <button type="button" class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="removeFolder(active)">Remove folder</button>
+                                <button class="o-btn o-btn--xs" @click="createFolder(active)">Add folder</button>
+                                <button class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="editFolder(active)">Edit folder</button>
+                                <button class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="removeFolder(active)">Remove folder</button>
+                                <button class="o-btn o-btn--xs" @click="onUploadClick">{{ upload.getLabel() }}</button>
 
-                                <!--<div class="folder__inp" v-if="f_edit">-->
-                                    <!--<input type="text" class="inp" placeholder="New Folder" v-model="f_name">-->
-                                <!--</div>-->
+                                <div v-if="upload.isInitialised()" class="ml-upload">
+
+                                    <div class="ml-upload__field">
+                                        <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" style="display: none">
+                                        <button class="o-btn o-btn--xs" @click="$refs.fileInput.click()">Select file(s)</button>
+                                        <button class="o-btn o-btn--xs" @click="onUpload()">Upload</button>
+                                    </div>
+
+                                    <div v-if="upload.hasFiles()" class="ml-upload__output">
+                                        <ul>
+                                            <li v-for="u of upload.getFiles()">{{ u.name }}</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -177,11 +180,7 @@
             this.$store.dispatch('loadLibrary');
         },
         data () {
-            return {
-                f_edit: false,
-                f_name: "",
-                selectedFiles: []
-            }
+            return {}
         },
         watch: {
             keywords: function () {
@@ -194,7 +193,8 @@
                 'back',
                 'search',
                 'modal',
-                'layout'
+                'layout',
+                'upload'
             ]),
             keywords: {
                 set(keywords) {
@@ -211,8 +211,8 @@
             DirectoryTree
         },
         methods: {
-            searchReset(search) {
-                search.reset()
+            searchReset() {
+                this.search.reset()
             },
             searchItems: debounce(function () {
                 this.$store.dispatch('search', this.keywords)
@@ -231,10 +231,12 @@
                 }
             },
             editFolder(folder) {
-                this.f_edit = true
                 let fn = prompt("Please edit the folder name:", folder.name)
-                let payload = {name: fn, folder: folder}
-                this.$store.dispatch('editFolder', payload)
+                if (fn) {
+                    let payload = {name: fn, folder: folder}
+                    this.$store.dispatch('editFolder', payload)
+                }
+
             },
             removeFolder(active) {
                 let c = confirm("Are you sure?")
@@ -243,40 +245,30 @@
                 }
             },
             onFileSelected(e) {
-                this.selectedFiles = e.target.files
+                this.upload.files = e.target.files
             },
             onUpload() {
-                console.log(this.selectedFiles)
-
-                if (!this.selectedFiles.length) {
-                    alert("Nothing to upload...")
+                if (!this.upload.hasFiles()) {
+                    return alert("Nothing to upload.\nPlease select files to upload and continue...")
                 }
 
                 let fd = new FormData()
                 fd.append('folder', this.active.id)
 
                 Array
-                    .from(Array(this.selectedFiles.length).keys())
+                    .from(Array(this.upload.getFiles().length).keys())
                     .map(x => {
-                        fd.append('files[]', this.selectedFiles[x], this.selectedFiles[x].name);
+                        fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
                     });
 
                 this.$store.dispatch('uploadItems', fd)
             },
-            onUpload2() {
-                console.log(this.selectedFile);
-
-                let payload = {
-                    media: [{
-                        file: this.selectedFiles,
-                        name: this.selectedFiles.name
-                    }],
-                    folder: this.active.id
+            onUploadClick() {
+                if (this.upload.isInitialised()) {
+                    return this.upload.reset()
                 }
 
-                console.log(payload);
-
-                // this.$store.dispatch('uploadItems', payload)
+                return this.upload.init()
             }
         }
     }

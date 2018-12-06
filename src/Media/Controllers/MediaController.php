@@ -197,11 +197,11 @@ class MediaController extends BaseController
                 }
             }
 
-            return response()->json([$messageCombined], Response::HTTP_NO_CONTENT);
+            return response()->json(["messages" => $messageCombined], Response::HTTP_NO_CONTENT);
         }
 
         //return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
-        return response()->json([$msgSuccess], Response::HTTP_NO_CONTENT);
+        return response()->json(["messages" => $msgSuccess], Response::HTTP_OK);
     }
 
 
