@@ -30,7 +30,7 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:user:create') }}" method="POST" autocomplete="off">
+    <form action="{{ route('cms:user:create') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
 
         <main class="c-container c-container--main">
             <div class="o-form">
@@ -101,6 +101,40 @@
                             <div class="o-form-status__message-bar">
                                 <label for="password">Error Message</label>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="o-form__group">
+                    <div class="o-form-status">
+                        <div class="o-form-status__input">
+                            <label for="profile_image">Profile picture</label>
+
+                            <div class="o-file js-file">
+                                <div class="o-file__preview o-file__preview--small">
+                                    <div class="o-file__preview-wrap">
+
+                                        <div class="h-background--primary">
+                                            <img class="o-file__image-preview" src="/argon/images/user-icon.png">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="o-file__help-text">
+                                    <p>
+                                        Please upload your profile picture.
+                                        <br><span class="h-text--grey-dark">Max file size: 1MB</span>
+                                    </p>
+                                    <label>
+                                        <span class="o-btn o-btn--xs o-file__btn">select</span>
+                                        <input type="file" class="o-file__input" name="profile_picture">
+                                        <span class="o-file__name"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -33,6 +33,7 @@ function init () {
     registerFormSaveEvents()
     // resetForm()
     Fields()
+    Dashboard()
     Tabs()
     PageEdit()
     // CreateCropper()

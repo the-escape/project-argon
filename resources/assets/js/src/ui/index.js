@@ -10,6 +10,7 @@ import Sidebar from './sidebar'
 import { confirm } from './confirm-btns'
 import { tableAction } from './table-actions'
 import { tables } from './table'
+import { fileUpload } from './file-upload'
 import { Tabs } from './tabs'
 import { Notifications } from './notifications'
 import { CreateCropper } from './cropper'
@@ -27,6 +28,7 @@ export {
     confirm,
     tableAction,
     tables,
+    fileUpload,
     Sidebar,
     Tabs,
     Notifications,

@@ -1,0 +1,25 @@
+.c-dashboard {
+
+    &__welcome-msg {
+        color: white;
+
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 300;
+            margin-top: 40px;
+            margin-bottom: 0;
+        }
+
+        p {
+            margin-top: 5px;
+        }
+    }
+
+    &__widgets {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        margin-left: - $gutter;
+        margin-right: - $gutter;
+    }
+}

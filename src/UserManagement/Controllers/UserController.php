@@ -10,9 +10,11 @@ use Escape\Argon\Events\UserDelete;
 use Escape\Argon\Helpers\Skynet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 use Input;
 use Redirect;
 use View;
+use Image;
 
 class UserController extends BaseController
 {
@@ -91,7 +93,8 @@ class UserController extends BaseController
     {
         $this->validate($this->request, [
             'name' => 'required',
-            'email' => 'required'
+            'email' => 'required',
+            'profile_picture' => 'mimes:jpeg,bmp,png,gif,jpg'
         ]);
 
         if (Input::get('password')) {
@@ -103,6 +106,28 @@ class UserController extends BaseController
         $roles = Input::get('roles', []);
 
         $user->roles()->sync($roles);
+
+        if (Input::hasFile('profile_picture'))
+        {
+            $file = Input::file('profile_picture');
+
+            $disk = Storage::disk('media');
+            $filePath = sprintf("profile_pictures/%s", $user->id);
+            if (!$disk->exists($filePath))
+            {
+                $disk->makeDirectory($filePath);
+            }
+
+            $thumb = Image::make($file)->fit(100, 100);
+            $fileName = sprintf("%s/%s%s.%s", $filePath, $user->id, time(), $file->getClientOriginalExtension());
+            $disk->put($fileName, $thumb->encode());
+
+            $user->profileValues()->where('key','image')->delete();
+            $user->profileValues()->create([
+                'key' => 'image',
+                'value' => sprintf('/media/%s', $fileName)
+            ]);
+        }
 
         return Redirect::route('cms:user:edit', [$userId])->with('message', Lang::get('argon-users::user.saved'));
     }
@@ -153,12 +178,39 @@ class UserController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'profile_picture' => 'mimes:jpeg,bmp,png,gif,jpg'
         ]);
 
-        $this->userRepository->create(Input::all());
+        $user = $this->userRepository->create(Input::all());
 
-        return Redirect::route('cms:user:manage')->with('message', Lang::get('argon-users::user.created'));
+        if ($user && Input::hasFile('profile_picture'))
+        {
+            $file = Input::file('profile_picture');
+
+            $disk = Storage::disk('media');
+            $filePath = sprintf("profile_pictures/%s", $user->id);
+            if (!$disk->exists($filePath))
+            {
+                $disk->makeDirectory($filePath);
+            }
+
+            $thumb = Image::make($file)->fit(100, 100);
+            $fileName = sprintf("%s/%s%s.%s", $filePath, $user->id, time(), $file->getClientOriginalExtension());
+            $disk->put($fileName, $thumb->encode());
+
+            $user->profileValues()->create([
+                'key' => 'image',
+                'value' => sprintf('/media/%s', $fileName)
+            ]);
+        }
+
+        return Redirect::route('cms:user:edit', [$user->id])->with('message', Lang::get('argon-users::user.created'));
+    }
+
+    public function uploadProfileImage()
+    {
+        // TODO
     }
 
     private function getOrder($query, Request $request)

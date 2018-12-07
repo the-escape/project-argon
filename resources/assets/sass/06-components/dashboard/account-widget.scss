@@ -1,0 +1,50 @@
+.c-account-widget {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $primary;
+
+    &__top {
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 70%;
+        padding: 0 $full-gutter;
+        color: white;
+
+        p {
+            font-size: 1.3rem;
+            color: white;
+            margin: 15px 0 0 0;
+        }
+
+        a,
+        a:hover {
+            color: white;
+        }
+    }
+
+    &__bottom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 30%;
+
+        img {
+            width: 6%;
+        }
+    }
+
+    &__title {
+        padding-top: 20px;
+        text-align: center;
+        color: white;
+        font-size: 1.4rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
+
+}

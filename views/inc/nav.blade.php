@@ -18,7 +18,7 @@
     <div class="c-sidebar__container">
 		<div class="c-user">
             <div class="c-user__img">
-                <img src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
+                <img src="{{ auth()->user()->profile('image','/argon/images/user-icon.png') }}">
             </div>
             <span class="c-user__name">{{ $currentUser->name }}</span>
             <a href="{{ route('logout') }}" class="c-user__logout">

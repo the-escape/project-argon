@@ -19,6 +19,7 @@ button.o-btn {
     transition: background-color $userInactive $easeOut,
         color $userInactive $easeOut, border-color $userInactive $easeOut;
     border-radius: 30px;
+    cursor: pointer;
 
     > * {
         pointer-events: none;
@@ -89,6 +90,18 @@ button.o-btn {
 
         &:hover {
             color: $grey;
+        }
+    }
+
+    &--white-outline {
+        background-color: transparent;
+        border-color: white;
+        color: white;
+
+        &:hover {
+            background-color: white;
+            border-color: white;
+            color: black;
         }
     }
 

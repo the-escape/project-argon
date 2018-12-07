@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\EntityManagement;
 
+use Escape\Argon\Core\Controllers\DashboardController;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\EntityManagement\Controllers\BlocksController;
 use Escape\Argon\EntityManagement\Controllers\BlocksLibraryController;
@@ -574,6 +575,13 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
 
+        $this->addRoute(
+            '/',
+            'cms:dashboard',
+            DashboardController::class,
+            'dashboard'
+        );
+
     }
 
     public function boot()
@@ -615,6 +623,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Listeners' => app_path('Listeners'),
         ], 'listeners');
 
+        $this->pluginManager->registerNavLink('Dashboard', route('cms:dashboard'), 'cms:login', 'dashboard');
         $this->pluginManager->registerNavLink('Pages', route('cms:pages:manage'), 'cms:content:manage', 'sitemap');
         $this->pluginManager->registerNavLink('Blocks', route('cms:blocks:manage'), 'cms:content:manage', 'sitemap');
 //        $this->pluginManager->registerNavLink('Collections', route('cms:pages:manage'), 'cms:content:manage');

@@ -60,6 +60,13 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
             UserController::class,
             'delete'
         );
+        $this->addRoute(
+            'users/upload-profile-image',
+            'cms:user:profile-image',
+            UserController::class,
+            'uploadProfileImage',
+            Request::METHOD_POST
+        );
 
         // Roles
         $this->addRoute(

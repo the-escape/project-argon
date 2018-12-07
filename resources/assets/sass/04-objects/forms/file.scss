@@ -28,6 +28,11 @@
                 height: 100%;
             }
         }
+
+        &--small {
+            flex: 0 0 100px;
+            width: 100px;
+        }
     }
 
     &__help-text {
@@ -42,6 +47,10 @@
 
     &__btn {
         margin-top: auto;
+    }
+
+    &__input {
+        display: none;
     }
 }
 
