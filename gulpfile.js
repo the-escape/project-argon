@@ -59,9 +59,9 @@ function publishArtisan (done) {
                 }
             }
         )
-
-        done && done()
     }
+
+    done && done()
 }
 
 const reload = function (done) {

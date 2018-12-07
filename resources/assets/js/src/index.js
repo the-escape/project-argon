@@ -9,13 +9,13 @@ import {
     tables,
     Sidebar,
     Tabs,
-    Notifications
+    Notifications,
+    CreateCropper
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
-import { Fields } from './fields'
-import { PageEdit } from './page-edit'
+import { Fields, PageEdit, Cropper, setCropperImage } from './components'
 
 function init () {
     polyfill()
@@ -35,6 +35,23 @@ function init () {
     Fields()
     Tabs()
     PageEdit()
+    // CreateCropper()
+    cropperTest()
+}
+
+function cropperTest () {
+    Cropper()
+
+    setCropperImage({ path: 'https://picsum.photos/1920/1080/?random' }).then(
+        console.log
+    )
+
+    // const btn = document.querySelector('.js-spawn-cropper')
+    // btn.addEventListener('click', function () {
+    //     setCropperImage({ path: 'https://picsum.photos/800/600/?random' }).then(
+    //         console.log
+    //     )
+    // })
 }
 
 if (document.readyState !== 'loading') {

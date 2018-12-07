@@ -104,11 +104,11 @@ export default {
         if(this.comboId){
             name = 'move-' + this.fieldId + '-' + this.comboId + '-' + this.comboItemId
         }
-        EventBus.$on(name, function () {
+        EventBus.$on(name, () => {
             updateEditorHeight.call(this)
             destoryEditor.call(this)
             mountEditor.call(this)
-        }.bind(this))
+        })
 
         mountEditor.call(this)
     },

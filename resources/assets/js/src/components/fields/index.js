@@ -4,7 +4,7 @@ import App from './App.vue'
 import draggable from 'vuedraggable'
 import types from './types/types.vue'
 import { getStore } from './store'
-import { deepClone } from '../util'
+import { deepClone } from '../../util'
 
 Vue.config.productionTip = false
 Vue.component('draggable', draggable)

@@ -47,7 +47,7 @@
 
 <script>
 import Block from './components/Block.vue'
-import { changeTab } from '../ui/tabs'
+import { changeTab } from '../../ui/tabs'
 
 export default {
     components: {

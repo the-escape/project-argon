@@ -12,6 +12,7 @@ import { tableAction } from './table-actions'
 import { tables } from './table'
 import { Tabs } from './tabs'
 import { Notifications } from './notifications'
+import { CreateCropper } from './cropper'
 
 export {
     Accordion,
@@ -28,5 +29,6 @@ export {
     tables,
     Sidebar,
     Tabs,
-    Notifications
+    Notifications,
+    CreateCropper
 }

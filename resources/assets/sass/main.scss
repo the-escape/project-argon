@@ -86,6 +86,11 @@
 @import "05-layout/container";
 @import "05-layout/spaces";
 
+// components - vendor
+//====================
+@import "06-components/vendor/noty";
+@import "06-components/vendor/cropper";
+
 // components
 //====================
 @import "06-components/sidebar/index";
@@ -106,7 +111,7 @@
 @import "06-components/tab-panels";
 @import "06-components/block";
 @import "06-components/block-list";
-@import "06-components/noty";
+@import "06-components/cropper";
 
 // trumps
 //====================

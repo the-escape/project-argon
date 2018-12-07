@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { createUniqueHash } from '../../util'
+import { createUniqueHash } from '../../../util'
 
 export function getStore () {
     return new Vuex.Store({

@@ -35,7 +35,7 @@
 <script>
 import { EventBus } from './bus'
 import ConfirmBtn from '../../../commonComponents/confirm-btn.vue'
-import { deepClone } from '../../../util'
+import { deepClone } from '../../../../util'
 import valueObjs from '../mixins/value-objs.vue'
 
 export default {

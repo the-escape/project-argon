@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { deepClone } from '../../util'
+import { deepClone } from '../../../util'
 import ComfirmBtn from '../../commonComponents/confirm-btn.vue'
-import Jump from '../../ui/jump'
+import Jump from '../../../ui/jump'
 
 export default {
     name: 'combo',
