@@ -204,6 +204,28 @@ class MediaController extends BaseController
         return response()->json(["messages" => $msgSuccess], Response::HTTP_OK);
     }
 
+    public function appDeleteItem(Request $request, MediaItemRepository $itemRepository)
+    {
+        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('id'))) ? (int)$request->request->get('id') : null;
+
+        if (!$itemId)
+        {
+            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // TODO: implement graceful handling of fetching images in blade withohut exceprtions/interruptions
+        $item = $itemRepository->findWhere(["id" => $itemId])->first();
+
+        if (!$item)
+        {
+            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $deleted = $itemRepository->delete($itemId);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
 
 
 

@@ -138,14 +138,29 @@
             box-shadow: 0 1px 1px rgba(0,0,0,.075);
         }
     }
+    &__preview {
+
+    }
     &__image {
         width: calc(100% - 20px);
         height: calc(60% - 10px);
         text-align: center;
     }
+    &__details {
+
+    }
     &__info {
         padding-top: 10px;
         height: calc(40% - 10px);
+        margin: 0;
+
+        dd {
+            margin: 0;
+
+            & + dd {
+                margin-top: 0.5rem;
+            }
+        }
 
         small {
             font-size:inherit;
@@ -166,6 +181,56 @@
     &__act {
         padding: 0 0 15px;
     }
+
+    &__options {
+        position: relative;
+        text-align: left;
+        border: 1px solid $secondary-highlight;
+        padding: 2px 8px 2px 3px;
+        border-radius: $panel-border-radius;
+        background-color: #fff;
+        cursor: default;
+
+        &:hover {
+            .folder__options-list {
+                display: block;
+            }
+        }
+    }
+
+    &__options-title {
+        white-space: nowrap;
+
+        .chevron--bottom {
+            float: right;
+            &:before {
+                border-width: 0.21em 0.21em 0 0;
+                top: 7px;
+            }
+        }
+    }
+    &__options-list {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        padding: 2px 3px;
+        display: none;
+        background-color: #fff;
+        border: 1px solid $secondary-highlight;
+        a {
+            display: block;
+        }
+
+        a + a {
+            border-top: 1px solid $secondary-highlight;
+        }
+
+        &:hover {
+            display: block;
+        }
+    }
+
+
 
     &--list {
         text-align: left;
@@ -202,18 +267,32 @@
 
             & + dd {
                 margin-left: 10px;
+                margin-top: 0;
             }
         }
     }
-    &--list &__info {
+    &--list &__details{
         padding: 0 0 0 10px;
         height: auto;
     }
-    &--list &__image {
+    &--list &__info {
+        padding: 0;
+        height: auto;
+    }
+    &--list &__preview {
         max-width: 50%;
         width: auto;
         height: auto;
         text-align: left;
+    }
+    &--list &__image {
+        //max-width: 50%;
+        //width: auto;
+        //height: auto;
+        //text-align: left;
+    }
+    * + &__options {
+        margin-top: 10px;
     }
 }
 
@@ -247,15 +326,6 @@
     flex-flow: row wrap;
     align-items: center;
     width: calc(70% - 15px);
-
-    &__pre {
-        //flex-basis: 100%;
-        //padding-right: 15px;
-        white-space: nowrap;
-        position: absolute;
-        top: -22px;
-        line-height: 1;
-    }
 
     &__inp {
         flex-grow: 1;

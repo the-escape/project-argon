@@ -4,7 +4,7 @@
 
         <div class="folder__item folder__item--folder" v-for="child in folders" :key="child.id">
 
-            <div class="folder__icon" v-on:click.stop="folderSelected(child)">
+            <div class="folder__icon" @click.stop="folderSelected(child)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 85.04 56.69"><path d="M79.3 9.77H42.2a5.41 5.41 0 0 1-3.56-1.33L29.88.76a3.1 3.1 0 0 0-2-.76H3.54A3.49 3.49 0 0 0 0 3.42v47.73a5.66 5.66 0 0 0 5.74 5.54H79.3a5.64 5.64 0 0 0 5.7-5.54V15.32a5.64 5.64 0 0 0-5.7-5.55z"/></svg>
             </div>
 
@@ -16,17 +16,33 @@
 
         </div>
 
-        <div :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`" v-on:click="modal(item)">
+        <div :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
 
-            <div class="folder__image" >
-                <img :src="`/media/${item.id}/${item.slug}.${item.extension}`" :alt="item.filename">
+            <div class="folder__preview">
+
+                <div class="folder__image" @click="modal(item)">
+                    <img :src="`/media/${item.id}/${item.slug}.${item.extension}`" :alt="item.filename">
+                </div>
+
             </div>
 
-            <dl class="folder__info">
-                <dt>{{ item.filename }}</dt>
-                <dd><small>Dimensions:</small> {{ JSON.parse(item.meta).width }} x {{ JSON.parse(item.meta).height }}</dd>
-                <dd><small>Size:</small> {{ item.filesize }}</dd>
-            </dl>
+            <div class="folder__details">
+
+                <dl class="folder__info">
+                    <dt>{{ item.filename }}</dt>
+                    <dd><small>Dimensions:</small> {{ JSON.parse(item.meta).width }} x {{ JSON.parse(item.meta).height }}</dd>
+                    <!--<dd><small>Size:</small> {{ item.filesize }}</dd>-->
+                </dl>
+
+                <div class="folder__options">
+                    <div class="folder__options-title">Actions: <span class="chevron--bottom"></span></div>
+                    <div class="folder__options-list">
+                        <a href="#" @click.prevent="onChange('edit', item)">Edit</a>
+                        <a href="#" @click.prevent="onChange('remove', item)">Remove</a>
+                    </div>
+                </div>
+
+            </div>
 
         </div>
 
@@ -37,6 +53,11 @@
 <script>
     import  { mapState } from 'vuex'
     export default {
+        data () {
+            return {
+                key: ""
+            }
+        },
         props: ['items', 'folders'],
         computed: {
             ...mapState([
@@ -51,6 +72,25 @@
                 // TODO: promise with modal callback
                 this.$store.dispatch('modal', item)
                 $('#myModal').modal()
+            },
+            onChange(event, item) {
+                let c = false
+
+                switch (event) {
+                    case 'edit':
+                        c = confirm("Are you sure?")
+                        if (c === true) {
+                            console.log("Requested edit of item %d", item.id)
+                        }
+                        break
+
+                    case 'remove':
+                        c = confirm("Are you sure?")
+                        if (c === true) {
+                            this.$store.dispatch('removeItem', item)
+                        }
+                        break
+                }
             }
         }
     }

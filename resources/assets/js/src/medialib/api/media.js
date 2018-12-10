@@ -51,6 +51,14 @@ export function uploadMedia (data, cb) {
     });
 }
 
+export function removeItem (id, cb) {
+    Vue.http.post('/admin/media/api/items/remove', { id: id }).then(response => {
+        cb(response)
+    }).catch(e => {
+        cb(e)
+    });
+}
+
 // min and max included
 function randomIntFromRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);

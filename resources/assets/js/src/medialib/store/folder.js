@@ -22,8 +22,9 @@ export class Folder {
     setChildrenItems(children) {
         for (let child of this.children) {
             for (let c of children) {
-                if (child.id == c.id) {
+                if (child.id === c.id) {
                     child.items = c.items
+                    break
                 }
             }
         }

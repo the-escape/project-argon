@@ -2232,12 +2232,12 @@ function drag_select_setupEvents() {
     if (source === _this.activeColumn) {
       var _siblingValue = sibling && sibling.dataset.value || false;
 
-      removeItem.call(_this, el.dataset.value);
+      drag_select_removeItem.call(_this, el.dataset.value);
       addItem.call(_this, el.dataset.value, _siblingValue);
     }
 
     if (target === _this.inactiveColumn) {
-      removeItem.call(_this, el.dataset.value);
+      drag_select_removeItem.call(_this, el.dataset.value);
     }
 
     updateValues.call(_this);
@@ -2253,7 +2253,7 @@ function addItem(value, siblingValue) {
   }
 }
 
-function removeItem(value) {
+function drag_select_removeItem(value) {
   this.values = this.values.filter(function (el) {
     return el !== value;
   });
@@ -8642,9 +8642,9 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "mlapp o-form" }, [
+  return _c("div", { staticClass: "mlapp" }, [
     _c("div", { staticClass: "ml" }, [
-      _c("div", { staticClass: "ml__options l-flexcols" }, [
+      _c("div", { staticClass: "ml__options o-form l-flexcols" }, [
         _c("div", { staticClass: "ml__options-layout l-flexcols-1" }, [
           _c("div", { staticClass: "layout " }, [
             _c(
@@ -8687,22 +8687,6 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
               class: { "search--loading": _vm.search.isLoading() }
             },
             [
-              _c("div", { staticClass: "search__pre" }, [
-                _vm.search.hasKeywords()
-                  ? _c("span", [
-                      _vm._v(
-                        "\n                            Found " +
-                          _vm._s(_vm.search.getResultsCount()) +
-                          " items\n                        "
-                      )
-                    ])
-                  : _c("span", [
-                      _vm._v(
-                        "\n                            Search for...\n                        "
-                      )
-                    ])
-              ]),
-              _vm._v(" "),
               _c("div", { staticClass: "search__inp" }, [
                 _c("input", {
                   directives: [
@@ -8764,7 +8748,9 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
               ? [
                   _c("div", { staticClass: "ml__heading" }, [
                     _vm._v(
-                      "\n                        Search results for `" +
+                      "\n                        Found " +
+                        _vm._s(_vm.search.getResultsCount()) +
+                        " results for `" +
                         _vm._s(_vm.search.keywords) +
                         "`\n                    "
                     )
@@ -8938,18 +8924,20 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
                                   [_vm._v("Select file(s)")]
                                 ),
                                 _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "o-btn o-btn--xs",
-                                    on: {
-                                      click: function($event) {
-                                        _vm.onUpload()
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Upload")]
-                                )
+                                _vm.upload.hasFiles()
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass: "o-btn o-btn--xs",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.onUpload()
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Upload")]
+                                    )
+                                  : _vm._e()
                               ]),
                               _vm._v(" "),
                               _vm.upload.hasFiles()
@@ -9456,45 +9444,84 @@ var Contentvue_type_template_id_4b031da1_render = function() {
           "div",
           {
             key: "item-" + item.id,
-            class: "folder__item folder__item--" + item.extension,
-            on: {
-              click: function($event) {
-                _vm.modal(item)
-              }
-            }
+            class: "folder__item folder__item--" + item.extension
           },
           [
-            _c("div", { staticClass: "folder__image" }, [
-              _c("img", {
-                attrs: {
-                  src:
-                    "/media/" +
-                    item.id +
-                    "/" +
-                    item.slug +
-                    "." +
-                    item.extension,
-                  alt: item.filename
-                }
-              })
+            _c("div", { staticClass: "folder__preview" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "folder__image",
+                  on: {
+                    click: function($event) {
+                      _vm.modal(item)
+                    }
+                  }
+                },
+                [
+                  _c("img", {
+                    attrs: {
+                      src:
+                        "/media/" +
+                        item.id +
+                        "/" +
+                        item.slug +
+                        "." +
+                        item.extension,
+                      alt: item.filename
+                    }
+                  })
+                ]
+              )
             ]),
             _vm._v(" "),
-            _c("dl", { staticClass: "folder__info" }, [
-              _c("dt", [_vm._v(_vm._s(item.filename))]),
-              _vm._v(" "),
-              _c("dd", [
-                _c("small", [_vm._v("Dimensions:")]),
-                _vm._v(
-                  " " +
-                    _vm._s(JSON.parse(item.meta).width) +
-                    " x " +
-                    _vm._s(JSON.parse(item.meta).height)
-                )
+            _c("div", { staticClass: "folder__details" }, [
+              _c("dl", { staticClass: "folder__info" }, [
+                _c("dt", [_vm._v(_vm._s(item.filename))]),
+                _vm._v(" "),
+                _c("dd", [
+                  _c("small", [_vm._v("Dimensions:")]),
+                  _vm._v(
+                    " " +
+                      _vm._s(JSON.parse(item.meta).width) +
+                      " x " +
+                      _vm._s(JSON.parse(item.meta).height)
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("dd", [
-                _c("small", [_vm._v("Size:")]),
-                _vm._v(" " + _vm._s(item.filesize))
+              _c("div", { staticClass: "folder__options" }, [
+                _vm._m(0, true),
+                _vm._v(" "),
+                _c("div", { staticClass: "folder__options-list" }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.onChange("edit", item)
+                        }
+                      }
+                    },
+                    [_vm._v("Edit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.onChange("remove", item)
+                        }
+                      }
+                    },
+                    [_vm._v("Remove")]
+                  )
+                ])
               ])
             ])
           ]
@@ -9504,7 +9531,17 @@ var Contentvue_type_template_id_4b031da1_render = function() {
     2
   )
 }
-var Contentvue_type_template_id_4b031da1_staticRenderFns = []
+var Contentvue_type_template_id_4b031da1_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "folder__options-title" }, [
+      _vm._v("Actions: "),
+      _c("span", { staticClass: "chevron--bottom" })
+    ])
+  }
+]
 Contentvue_type_template_id_4b031da1_render._withStripped = true
 
 
@@ -9551,8 +9588,29 @@ function Contentvue_type_script_lang_js_defineProperty(obj, key, value) { if (ke
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ var Contentvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      key: ""
+    };
+  },
   props: ['items', 'folders'],
   computed: Contentvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout'])),
   methods: {
@@ -9563,6 +9621,29 @@ function Contentvue_type_script_lang_js_defineProperty(obj, key, value) { if (ke
       // TODO: promise with modal callback
       this.$store.dispatch('modal', item);
       $('#myModal').modal();
+    },
+    onChange: function onChange(event, item) {
+      var c = false;
+
+      switch (event) {
+        case 'edit':
+          c = confirm("Are you sure?");
+
+          if (c === true) {
+            console.log("Requested edit of item %d", item.id);
+          }
+
+          break;
+
+        case 'remove':
+          c = confirm("Are you sure?");
+
+          if (c === true) {
+            this.$store.dispatch('removeItem', item);
+          }
+
+          break;
+      }
     }
   }
 });
@@ -9652,15 +9733,6 @@ function Mediavue_type_script_lang_js_objectSpread(target) { for (var i = 1; i <
 
 function Mediavue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -10002,6 +10074,15 @@ function uploadMedia(data, cb) {
   }).catch(function (e) {
     cb(e);
   });
+}
+function media_removeItem(id, cb) {
+  vue_default.a.http.post('/admin/media/api/items/remove', {
+    id: id
+  }).then(function (response) {
+    cb(response);
+  }).catch(function (e) {
+    cb(e);
+  });
 } // min and max included
 
 function randomIntFromRange(min, max) {
@@ -10109,8 +10190,9 @@ function () {
             for (var _iterator3 = children[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               var c = _step3.value;
 
-              if (child.id == c.id) {
+              if (child.id === c.id) {
                 child.items = c.items;
+                break;
               }
             }
           } catch (err) {
@@ -10427,6 +10509,7 @@ vue_default.a.use(vuex_esm["default"]);
         state.active = state.folder;
         getFolders(state.folder.id, function (f) {
           state.active.items = f.items;
+          state.active.setChildrenItems(f.children);
         });
       });
     },
@@ -10508,6 +10591,19 @@ vue_default.a.use(vuex_esm["default"]);
           alert(msg);
         }
       });
+    },
+    removeItem: function removeItem(state, item) {
+      media_removeItem(item.id, function (r) {
+        if (r.status >= 400) {
+          return alert(r.body.error);
+        }
+
+        alert("Item removed.\nRefreshing directory...");
+        getFolders(item.folder, function (f) {
+          state.active.items = f.items;
+          console.log("Refreshed folder content.");
+        });
+      });
     }
   },
   actions: {
@@ -10550,6 +10646,10 @@ vue_default.a.use(vuex_esm["default"]);
     uploadItems: function uploadItems(_ref10, payload) {
       var commit = _ref10.commit;
       commit('uploadItems', payload);
+    },
+    removeItem: function removeItem(_ref11, item) {
+      var commit = _ref11.commit;
+      commit('removeItem', item);
     }
   }
 }));
@@ -10627,4 +10727,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3e88630fbc83258d6d62.js.map
+//# sourceMappingURL=main.205e1b277b94c93aa1f2.js.map

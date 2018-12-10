@@ -1,9 +1,9 @@
 <template>
-    <div class="mlapp o-form">
+    <div class="mlapp">
 
         <div class="ml">
 
-            <div class="ml__options l-flexcols">
+            <div class="ml__options o-form l-flexcols">
 
                 <div class="ml__options-layout l-flexcols-1">
 
@@ -17,15 +17,6 @@
                 <div class="l-flexcols-2">
 
                     <div class="search" :class="{'search--loading':search.isLoading()}">
-
-                        <div class="search__pre">
-                            <span v-if="search.hasKeywords()">
-                                Found {{ search.getResultsCount() }} items
-                            </span>
-                            <span v-else>
-                                Search for...
-                            </span>
-                        </div>
 
                         <div class="search__inp">
                             <input type="text" class="inp" placeholder="Search for..." v-model="keywords">
@@ -61,7 +52,7 @@
                     <template v-if="search.hasKeywords()">
 
                         <div class="ml__heading">
-                            Search results for `{{ search.keywords }}`
+                            Found {{ search.getResultsCount() }} results for `{{ search.keywords }}`
                         </div>
 
                         <div class="ml__body">
@@ -111,7 +102,7 @@
                                     <div class="ml-upload__field">
                                         <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" style="display: none">
                                         <button class="o-btn o-btn--xs" @click="$refs.fileInput.click()">Select file(s)</button>
-                                        <button class="o-btn o-btn--xs" @click="onUpload()">Upload</button>
+                                        <button class="o-btn o-btn--xs" v-if="upload.hasFiles()" @click="onUpload()">Upload</button>
                                     </div>
 
                                     <div v-if="upload.hasFiles()" class="ml-upload__output">
