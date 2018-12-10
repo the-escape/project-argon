@@ -13,9 +13,9 @@ export function Cropper () {
     }).$mount(cropperEl)
 }
 
-export function setCropperImage (image) {
+export function setCropperImage (options) {
     return new Promise(resolve => {
-        cropper.$emit('setImage', image)
+        cropper.$emit('setOptions', options)
         cropper.$on('cropImage', resolve)
     })
 }

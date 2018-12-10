@@ -38,22 +38,22 @@ function init () {
     Tabs()
     PageEdit()
     // CreateCropper()
-    // cropperTest()
+    cropperTest()
 }
 
 function cropperTest () {
     Cropper()
 
-    setCropperImage({ path: 'https://picsum.photos/1920/1080/?random' }).then(
-        console.log
-    )
-
-    // const btn = document.querySelector('.js-spawn-cropper')
-    // btn.addEventListener('click', function () {
-    //     setCropperImage({ path: 'https://picsum.photos/800/600/?random' }).then(
-    //         console.log
-    //     )
-    // })
+    const btn = document.querySelector('.js-spawn-cropper')
+    btn.addEventListener('click', function () {
+        setCropperImage({
+            image: {
+                path: 'https://picsum.photos/1920/1080/?random'
+            },
+            rotator: true,
+            ratio: '16:9'
+        }).then(console.log)
+    })
 }
 
 if (document.readyState !== 'loading') {

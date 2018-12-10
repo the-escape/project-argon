@@ -6,50 +6,30 @@
                 <div class="c-cropper__toolbar-left">
                     <button class="c-cropper__btn" @click="dragImage($event)">
                         <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
+                            <svg><use xlink:href="/argon/images/svgicons.svg#move" /></svg>
                         </div>
                     </button>
                     <button class="c-cropper__btn" @click="dragCrop($event)">
                         <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
+                            <svg><use xlink:href="/argon/images/svgicons.svg#crop" /></svg>
                         </div>
                     </button>
                     <button class="c-cropper__btn" @click="zoomIn($event)">
                         <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
+                            <svg><use xlink:href="/argon/images/svgicons.svg#zoom-in" /></svg>
                         </div>
                     </button>
                     <button class="c-cropper__btn" @click="zoomOut($event)">
                         <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
+                            <svg><use xlink:href="/argon/images/svgicons.svg#zoom-out" /></svg>
                         </div>
                     </button>
                 </div>
-                <div class="c-cropper__toolbar-mid">
-                    <div class="c-cropper__rotater">
-                        <div class="c-cropper__rotater-wrap">
-                            <div class="c-cropper__rotater-track">
-                                <svg viewBox="0 0 1100 48">
-                                    <g fill="currentColor">
-                                        <rect v-for="line in rotatorPoints.lines" :key="line.x" :x="line.x" y="0" width="2" :height="line.height"></rect>
-                                        <text v-for="text in rotatorPoints.text" :key="text.x" :x="text.x" y="38" text-anchor="middle">{{ text.text }}</text>
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
+                <div class="c-cropper__toolbar-mid" v-if="useRotator">
+                    <rotater-input v-model="rotation"></rotater-input>
                 </div>
-                <div class="c-cropper__toolbar-right">
-                    <button class="c-cropper__btn" @click="setRatio($event, '16:9')">
-                        <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
-                        </div>
-                    </button>
-                    <button class="c-cropper__btn" @click="setRatio($event, '4:3')">
-                        <div class="c-cropper__icon">
-                            <svg><use xlink:href="/argon/images/svgicons.svg#search" /></svg>
-                        </div>
-                    </button>
+                <div class="c-cropper__toolbar-right" @click="crop($event)">
+                    <button class="o-btn o-btn--xs o-btn--success">done</button>
                 </div>
             </div>
         </div>
@@ -59,14 +39,19 @@
 
 <script>
 import Cropper from 'cropperjs'
+import Rotater from './rotater.vue'
 
 export default {
-    props: ['image'],
+    props: ['image', 'useRotator', 'ratio'],
+    components: {
+        'rotater-input': Rotater
+    },
     data() {
         return {
             cropper: null,
+            rotationValue: 0,
             defaultOptions: {
-
+                background: false
             }
         }
     },
@@ -75,39 +60,25 @@ export default {
     },
     computed: {
         options: function () {
-            return this.defaultOptions
-        },
-        rotatorPoints: function (){
-            let points = new Array(19).fill().map((el, index) => index * 10 - 90)
-            let offset = 10
-            let space = 12
-            let currentX = offset
-            points = points.reduce((acc, el) => {
-                acc.lines.push({
-                    x: currentX,
-                    height: 18
-                })
-                acc.text.push({
-                    x: currentX,
-                    text: el + '°'
-                })
+            let ratio = NaN
+            if(this.ratio){
+                ratio = this.ratio.split(':')
+                ratio = ratio[0] / ratio[1]
+            }
 
-                if(el < 90) {
-                    for(let i = 0; i < 4; i++) {
-                        currentX += space
-                        acc.lines.push({
-                            x: currentX,
-                            height: 10
-                        })
-                    }
-                }
-                currentX += space
-                return acc
-            }, {
-                lines: [],
-                text: []
-            })
-            return points
+            const customOptions = {
+                aspectRatio: ratio
+            }
+            return Object.assign(this.defaultOptions, customOptions)
+        },
+        rotation: {
+            get() {
+                return this.rotationValue
+            },
+            set(value) {
+                this.rotationValue = value
+                this.cropper.rotateTo(this.rotationValue)
+            }
         }
     },
     methods: {
@@ -127,12 +98,8 @@ export default {
             evt.preventDefault()
             this.cropper.zoom(-0.1)
         },
-        setRatio: function(evt, ratio) {
-            evt.preventDefault()
-            ratio = ratio.split(':')
-            ratio = ratio[0] / ratio[1]
-            console.log(ratio)
-            this.cropper.setAspectRatio(ratio)
+        crop: function(evt) {
+            this.$emit('crop', this.cropper.getCroppedCanvas().toDataURL())
         }
     }
 }

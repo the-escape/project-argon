@@ -23,6 +23,7 @@
         max-width: 1200px;
         width: 100%;
         background-color: #fff;
+        background-image: url("../argon/images/cropper-bg.png");
 
         > * {
             position: absolute;
@@ -70,6 +71,20 @@
 
         &-right {
             justify-content: flex-end;
+        }
+
+        &:before {
+            position: absolute;
+            content: "";
+            top: -10px;
+            height: calc(100% + 10px);
+            left: 0;
+            width: 100%;
+            background-image: linear-gradient(
+                to top,
+                rgba(60, 60, 60, 0.8) 0%,
+                rgba(60, 60, 60, 0) 100%
+            );
         }
     }
 

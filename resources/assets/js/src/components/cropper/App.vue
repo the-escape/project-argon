@@ -1,9 +1,10 @@
 <template>
-    <cropper-editor :image="image" v-if="image"></cropper-editor>
+    <cropper-editor :image="image" :use-rotator="useRotator" :ratio="ratio" v-if="image" @crop="cropImage"></cropper-editor>
 </template>
 
 <script>
 import Cropper from './components/Cropper.vue'
+import Noty from 'noty'
 
 export default {
     components: {
@@ -11,17 +12,35 @@ export default {
     },
     data() {
         return {
-            image: false
+            image: false,
+            useRotator: true,
+            ratio: false
         }
     },
     mounted: function (){
-        this.$root.$on('setImage', image => {
-            this.image = image
+        this.$root.$on('setOptions', options => {
+            if(!options.hasOwnProperty('image')){
+                new Noty({
+                    text: 'No Image was passed to the cropper!',
+                    type: 'error'
+                }).show()
+                return
+            }
+
+            this.image = options.image
+
+            if(options.hasOwnProperty('rotator')){
+                this.useRotator = options.rotator
+            }
+
+            if(options.hasOwnProperty('ratio')){
+                this.ratio = options.ratio
+            }
         })
     },
     methods: {
-        cropImage: function () {
-            this.$root.$emit('cropImage', 'cropped image')
+        cropImage: function (croppedImage) {
+            this.$root.$emit('cropImage', croppedImage)
             this.image = false
         }
     }
