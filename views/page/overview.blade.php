@@ -9,7 +9,7 @@
     <div class="c-dashboard c-container">
 
         <div class="c-dashboard__welcome-msg">
-            <h1>Hi {{ auth()->user()->username }}</h1>
+            <h1>Hi {{ auth()->user()->name }}</h1>
             <p>Welcome back to your dashboard!</p>
         </div>
 
