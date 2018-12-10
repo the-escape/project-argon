@@ -16,6 +16,7 @@ import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
 import { trees } from './ui/tree'
 import { Fields, PageEdit, Cropper, setCropperImage } from './components'
+import { Dashboard } from './dashboard'
 
 function init () {
     polyfill()
@@ -37,7 +38,7 @@ function init () {
     Tabs()
     PageEdit()
     // CreateCropper()
-    cropperTest()
+    // cropperTest()
 }
 
 function cropperTest () {
