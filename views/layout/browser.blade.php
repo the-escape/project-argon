@@ -113,7 +113,7 @@
         }
 
         if (typeof window.fetch === "undefined") {
-            loadjs(['/argon/vendor/promise.min.js', '/argon/vendor/fetch.js'], {
+            loadjs(['/argon/vendor/polyfill.min.js', '/argon/vendor/fetch.js'], {
                 success: fetchJs
             });
         } else {

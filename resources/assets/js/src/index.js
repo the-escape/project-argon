@@ -10,7 +10,8 @@ import {
     Sidebar,
     Tabs,
     Notifications,
-    CreateCropper
+    setupPageLeave,
+    allowPageLeave
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
@@ -37,8 +38,22 @@ function init () {
     Dashboard()
     Tabs()
     PageEdit()
-    // CreateCropper()
-    cropperTest()
+    // cropperTest()
+
+    formSubmits()
+}
+
+function formSubmits () {
+    setupPageLeave()
+
+    const formEls = document.querySelectorAll('form.o-form')
+    const forms = Array.from(formEls)
+    forms.forEach(form => {
+        form.addEventListener('submit', () => {
+            allowPageLeave()
+            return true
+        })
+    })
 }
 
 function cropperTest () {

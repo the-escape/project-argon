@@ -2,7 +2,7 @@
     <div class="l-halves c-tab-panel__inner">
         <div class="c-block-list__wrap">
             <div class="typography l-space">
-                <h3>Page Preview</h3>
+                <h3>Page blocks</h3>
                 <p>Here you can edit, remove and re-order content</p>
                 <input type="hidden" name="group_order" :value="renderOrder">
             </div>
@@ -23,9 +23,9 @@
                 </div>
             </div>
         </div>
-        <div class="c-block-list__wrap">
+        <div class="c-block-list__wrap" v-if="hasRenderable">
             <div class="typography l-space">
-                <h3>Page Builder</h3>
+                <h3>Unused blocks</h3>
                 <p>Add blocks to create you own custom page layout</p>
             </div>
             <div class="c-block-list">
@@ -48,6 +48,7 @@
 <script>
 import Block from './components/Block.vue'
 import { changeTab } from '../../ui/tabs'
+import { preventPageLeave } from '../../ui'
 
 export default {
     components: {
@@ -55,10 +56,10 @@ export default {
     },
     data () {
         return {
-            msg: 'hello world',
             nonSortableRenderingGroups: [],
             renderingGroups: [],
             blockList: [],
+            hasRenderable: false,
             dragOptions: {
                 group: {
                     name: 'groupEdit',
@@ -76,6 +77,7 @@ export default {
         this.nonSortableRenderingGroups = window.groups.filter(el => (!el.isRenderable || el.isRendering) && !el.isSortable && !el.isTab)
         this.renderingGroups = window.groups.filter(el => (!el.isRenderable || el.isRendering) && el.isSortable && !el.isTab)
         this.blockList = window.groups.filter(el => el.isRenderable && !el.isRendering)
+        this.hasRenderable = !!window.groups.find(group => group.isRenderable)
     },
     computed: {
         renderingDragGroup: {
@@ -83,6 +85,7 @@ export default {
                 return this.renderingGroups
             },
             set (values) {
+                preventPageLeave()
                 this.renderingGroups = values.map(el => {
                     el.isRendering = true
                     return el
@@ -94,6 +97,7 @@ export default {
                 return this.blockList
             },
             set (values) {
+                preventPageLeave()
                 this.blockList = values.map(el => {
                     el.isRendering = false
                     return el

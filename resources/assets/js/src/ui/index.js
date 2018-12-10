@@ -14,6 +14,11 @@ import { fileUpload } from './file-upload'
 import { Tabs } from './tabs'
 import { Notifications } from './notifications'
 import { CreateCropper } from './cropper'
+import {
+    preventPageLeave,
+    setupPageLeave,
+    allowPageLeave
+} from './prevent-leave'
 
 export {
     Accordion,
@@ -32,5 +37,8 @@ export {
     Sidebar,
     Tabs,
     Notifications,
-    CreateCropper
+    CreateCropper,
+    preventPageLeave,
+    setupPageLeave,
+    allowPageLeave
 }

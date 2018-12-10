@@ -1,5 +1,6 @@
 import Vuex from 'vuex'
 import { createUniqueHash } from '../../../util'
+import { preventPageLeave } from '../../../ui'
 
 export function getStore () {
     return new Vuex.Store({
@@ -49,6 +50,7 @@ export function getStore () {
                     })
                     return field
                 })
+                preventPageLeave()
             },
             updateValues (state, { fieldID, newValues }) {
                 state.fields = state.fields.map(field => {
@@ -59,6 +61,7 @@ export function getStore () {
                     field.values = newValues
                     return field
                 })
+                preventPageLeave()
             },
             addValue (state, { fieldID, valueObj }) {
                 state.fields = state.fields.map(field => {
@@ -71,6 +74,7 @@ export function getStore () {
                     )
                     return field
                 })
+                preventPageLeave()
             },
             removeValue (state, { fieldID, valueID }) {
                 state.fields = state.fields.map(field => {
@@ -83,6 +87,7 @@ export function getStore () {
                     )
                     return field
                 })
+                preventPageLeave()
             },
 
             // Combo Item Mutations
@@ -95,6 +100,7 @@ export function getStore () {
                     field.values = newValues
                     return field
                 })
+                preventPageLeave()
             },
             addComboItemValue (state, { comboID, newValueObj }) {
                 state.fields = state.fields.map(field => {
@@ -123,6 +129,7 @@ export function getStore () {
                     )
                     return field
                 })
+                preventPageLeave()
             },
             removeComboItem (state, { comboID, comboItemID }) {
                 state.fields = state.fields.map(field => {
@@ -135,6 +142,7 @@ export function getStore () {
                     )
                     return field
                 })
+                preventPageLeave()
             },
 
             // Combo Field Mutations
@@ -166,6 +174,7 @@ export function getStore () {
 
                     return field
                 })
+                preventPageLeave()
             },
             updateComboFieldValues (
                 state,
@@ -186,6 +195,7 @@ export function getStore () {
                     })
                     return field
                 })
+                preventPageLeave()
             },
             addComboFieldValue (
                 state,
@@ -208,6 +218,7 @@ export function getStore () {
                     })
                     return field
                 })
+                preventPageLeave()
             },
             removeComboFieldValue (
                 state,
@@ -230,6 +241,7 @@ export function getStore () {
                     })
                     return field
                 })
+                preventPageLeave()
             }
         }
     })

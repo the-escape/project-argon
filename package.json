@@ -118,7 +118,8 @@
         ],
         "inlineJs": [
             "./node_modules/loadjs/dist/loadjs.min.js",
-            "./node_modules/svg4everybody/dist/svg4everybody.min.js"
+            "./node_modules/svg4everybody/dist/svg4everybody.min.js",
+            "./resources/assets/vendor/pollyfills.js"
         ],
         "vendorJs": [
             "./node_modules/promise-polyfill/dist/polyfill.min.js",
@@ -130,6 +131,7 @@
     "devDependencies": {
         "@babel/core": "^7.1.6",
         "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+        "@babel/plugin-transform-object-assign": "^7.2.0",
         "@babel/preset-env": "^7.1.6",
         "autoprefixer": "^8.6.0",
         "babel-eslint": "^8.2.3",

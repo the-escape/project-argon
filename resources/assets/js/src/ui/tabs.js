@@ -10,11 +10,22 @@ const TabsObj = {
 }
 
 let tabs
-let tabBtns
 
 export function Tabs () {
     const tabEl = document.querySelector('.js-tabs')
     tabs = createTabs(tabEl)
+
+    const tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/
+    let tab = tabUrlParamRegex.exec(window.location.search)
+    if (tab && tab[2]) {
+        changeTab(tab[2])
+    }
+
+    window.onpopstate = evt => {
+        if (evt.state && evt.state.tab) {
+            changeTab(evt.state.tab, false)
+        }
+    }
 
     fromEvent(document, 'click')
         .pipe(
@@ -71,7 +82,7 @@ function init (el) {
         .subscribe(changeTab)
 }
 
-export function changeTab (tabName) {
+export function changeTab (tabName, pushstate = true) {
     if (!tabs.panels || !tabs.panels[tabName]) {
         return
     }
@@ -82,4 +93,8 @@ export function changeTab (tabName) {
     tabs.panels[tabName].classList.add('active')
     tabs.nav[tabName] && tabs.nav[tabName].classList.add('active')
     tabs.currentTab = tabName
+
+    if (pushstate) {
+        history.pushState({ tab: tabName }, tabName, `?tab=${tabName}`)
+    }
 }

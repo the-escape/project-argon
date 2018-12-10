@@ -178,19 +178,19 @@ function deleteItem (data) {
 
 function setupTypesSubMenu () {
     const typesList = JSON.parse(this.el.dataset.types)
-    let types = {}
 
-    for (let type of typesList) {
-        types[type.id] = {
+    const typeListKeys = Object.keys(typesList)
+    return typeListKeys.reduce((acc, key) => {
+        const type = typesList[key]
+        acc[type.id] = {
             _disabled: false,
             label: type.name,
             title: 'Create new page of type ' + type.name,
             icon: 'o-tree__icon o-tree__icon--add',
             action: this.addItem(type.id)
         }
-    }
-
-    return types
+        return acc
+    }, {})
 }
 
 function setupEvents () {

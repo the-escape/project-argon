@@ -331,10 +331,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     <div class="c-footer__container">
                                         <div class="c-footer__buttons">
                                             <div>
-                                                <button class="o-btn o-btn--sm js-tab-btn" data-tab="page-content">Back</a>
+
                                             </div>
                                             <div>
-                                                <button class="o-btn o-btn--sm o-btn--success js-tab-btn" data-tab="page-content">OK</a>
+                                                <button class="o-btn o-btn--sm js-tab-btn" data-tab="page-content">OK</a>
                                             </div>
                                         </div>
 
