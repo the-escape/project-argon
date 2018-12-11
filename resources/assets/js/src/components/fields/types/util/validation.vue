@@ -29,10 +29,10 @@ export default {
     },
     computed: {
         hasError: function () {
-            return this.statusError.length
+            return this.statusError && this.statusError.length
         },
         errorMsg: function () {
-            return this.statusError[0]
+            return this.statusError && this.statusError[0]
         }
     }
 }

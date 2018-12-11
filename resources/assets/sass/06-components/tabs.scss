@@ -1,43 +1,44 @@
-.c-tab{
-	&__nav{
-		ul{
-			list-style: none;
-			display: flex;
-			padding: 0;
-			margin: 0;
-		}
+.c-tab {
+    &__nav {
+        ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
 
-		li{
-			margin-bottom: 0;
-		}
-	}
+        li {
+            margin-bottom: 0;
+        }
+    }
 
-	&__btn{
-		text-decoration: none;
+    &__btn {
+        text-decoration: none;
+        display: block;
 
-		&-container{
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 48px;
-			min-width: 160px;
-			padding: 0 space(2);
-			background-color: $tertiary;
-			color: #fff;
-			font-size: 1.6rem;
-			font-weight: 600;
-			text-transform: uppercase;
-			transition: background-color $userOut $easeOut;
-		}
+        &-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
+            min-width: 160px;
+            padding: 0 space(2);
+            background-color: $tertiary;
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: background-color $userOut $easeOut;
+        }
 
-		&.active &-container{
-			color: $client-primary;
-			background-color: #fff;
-		}
+        &.active &-container {
+            color: $client-primary;
+            background-color: #fff;
+        }
 
-		&:not(.active):hover &-container,
-		&:not(.active):focus &-container{
-			background-color: $client-primary;
-		}
-	}
+        &:not(.active):hover &-container,
+        &:not(.active):focus &-container {
+            background-color: $client-primary;
+        }
+    }
 }

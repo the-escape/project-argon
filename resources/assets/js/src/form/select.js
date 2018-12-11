@@ -27,7 +27,9 @@ export function createSelects (context = document) {
     const selectHtmlList = context.querySelectorAll('.js-select')
     let selectList = Array.from(selectHtmlList)
     selectList = selectList.map(el => createSelect(el))
-    const plainSelectHtmlList = context.querySelectorAll('.js-plain-select')
+    const plainSelectHtmlList = context.querySelectorAll(
+        '.js-plain-submit-select'
+    )
     let plainSelectList = Array.from(plainSelectHtmlList)
     plainSelectList = plainSelectList.map(el => createPlainSelect(el))
     return [...selectList, ...plainSelectList]
@@ -65,5 +67,9 @@ export function createPlainSelect (el) {
 
     el.choices = select
     select.setValueByChoice(items)
+    el.addEventListener('change', () => {
+        el.closest('form').submit()
+    })
+
     return select
 }

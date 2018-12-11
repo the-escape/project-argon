@@ -25,7 +25,17 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <h1>Editing {{$page->name}}</h1>
+                    <div class="c-header__local-container">
+                        <h1>Editing {{$page->name}}</h1>
+
+                        <div class="c-header__btns">
+                            @foreach ($page->getLocalisations() as $l)
+                                @if ($l->getId() == $localisation->getId())
+                                    <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-btn o-btn--sm o-btn--primary" target="_blank">View page</a>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
                 <div class="c-tab__nav js-tabs-nav">
                     <ul>

@@ -1,5 +1,5 @@
 <template>
-    <div class="o-combo o-form__group l-full">
+    <div class="o-combo o-form__group">
         <div class="o-combo__head">
             <div class="o-combo__label">{{comboField.options.name}}</div>
             <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>

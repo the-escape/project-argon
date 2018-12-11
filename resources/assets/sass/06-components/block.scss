@@ -1,6 +1,6 @@
 .c-block {
     display: flex;
-    height: 65px;
+    height: 75px;
     background-color: #fff;
 
     &__edit {
@@ -28,8 +28,8 @@
 
     &__image,
     &__empty-image {
-        width: 130px;
-        height: 65px;
+        width: 150px;
+        height: 74px;
         position: relative;
     }
 
@@ -47,7 +47,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 64px;
+        height: 74px;
 
         svg {
             width: 32px;
@@ -70,7 +70,7 @@
     &__action,
     &__drag-handle {
         width: 65px;
-        height: 65px;
+        height: 75px;
         display: flex;
         align-items: center;
         justify-content: center;

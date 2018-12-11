@@ -16,11 +16,11 @@
         </div>
         <div class="c-block__action-list">
             <confirm-btns :hide-duplicate="true" is-block="true" @delete="deleteBlock" v-if="block.isRenderable && block.isSortable" />
-            <button class="c-block__drag-handle" v-if="block.isSortable" @click="preventDefault($event)">
+            <div class="c-block__drag-handle" v-if="block.isSortable" @click="preventDefault($event)">
                 <div class="c-block__icon">
                     <svg><use xlink:href="/argon/images/svgicons.svg#hamburger"></use></svg>
                 </div>
-            </button>
+            </div>
         </div>
     </div>
 </template>

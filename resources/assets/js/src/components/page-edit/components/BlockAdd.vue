@@ -17,11 +17,11 @@
                     <svg><use xlink:href="/argon/images/svgicons.svg#add"></use></svg>
                 </div>
             </button>
-            <button class="c-block__drag-handle" @click="preventDefault($event)">
+            <div class="c-block__drag-handle">
                 <div class="c-block__icon">
                     <svg><use xlink:href="/argon/images/svgicons.svg#hamburger"></use></svg>
                 </div>
-            </button>
+            </div>
         </div>
     </div>
 </template>
@@ -36,9 +36,6 @@ export default {
         addBlock (evt) {
             evt.preventDefault()
             this.$emit('add', this.block.id)
-        },
-        preventDefault (evt) {
-            evt.preventDefault()
         }
     }
 }

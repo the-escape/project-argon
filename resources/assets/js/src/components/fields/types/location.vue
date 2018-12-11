@@ -1,20 +1,47 @@
 <template>
     <div class="o-form__group">
-        <validation :status-error="errors" :input-name="inputName">
-            <label :for="inputName + '[latitude]'">{{ name }}</label>
-            <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
-                <template slot-scope="{ valueObj }">
-                    <div class="o-form__vertical-list">
-                        <input-icon :pre-icon="latIcon.preIcon" :post-icon="latIcon.postIcon">
-                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][latitude]`" :name="inputNameMultiValue + `[${valueObj.id}][latitude]`" :value="valueObj.value && valueObj.value.latitude" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'latitude')">
-                        </input-icon>
-                        <input-icon :pre-icon="lngIcon.preIcon" :post-icon="lngIcon.postIcon">
-                            <input type="text" :id="inputNameMultiValue + `[${valueObj.id}][longitude]`" :name="inputNameMultiValue + `[${valueObj.id}][longitude]`" :value="valueObj.value && valueObj.value.longitude" v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'longitude')">
-                        </input-icon>
+        <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
+            <template slot-scope="{ valueObj }">
+                <div class="o-form__set">
+                    <div class="o-form__set-title">
+                        <label :for="inputNameMultiValue + `[${valueObj.id}][latitude]`">{{ name }}</label>
                     </div>
-                </template>
-            </multi>
-        </validation>
+
+                    <div class="o-form__set-container">
+                        <div class="o-form__group">
+                            <validation
+                                :status-error="errors && errors.latitude"
+                                :input-name="inputNameMultiValue + `[${valueObj.id}][latitude]`"
+                            >
+                                <label :for="inputNameMultiValue + `[${valueObj.id}][latitude]`">Latitude</label>
+                                <input
+                                    type="text"
+                                    :id="inputNameMultiValue + `[${valueObj.id}][latitude]`"
+                                    :name="inputNameMultiValue + `[${valueObj.id}][latitude]`"
+                                    :value="valueObj.value && valueObj.value.latitude"
+                                    v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'latitude')"
+                                >
+                            </validation>
+                        </div>
+                        <div class="o-form__group">
+                            <validation
+                                :status-error="errors && errors.longitude"
+                                :input-name="inputNameMultiValue + `[${valueObj.id}][longitude]`"
+                            >
+                                <label :for="inputNameMultiValue + `[${valueObj.id}][longitude]`">Longitude</label>
+                                <input
+                                    type="text"
+                                    :id="inputNameMultiValue + `[${valueObj.id}][longitude]`"
+                                    :name="inputNameMultiValue + `[${valueObj.id}][longitude]`"
+                                    :value="valueObj.value && valueObj.value.longitude"
+                                    v-on:keyup.stop="updateValue(valueObj, $event.target.value, 'longitude')"
+                                >
+                            </validation>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </multi>
         <div class="o-form__help-text l-full" v-if="field.helpText" v-html="field.helpText"></div>
     </div>
 </template>

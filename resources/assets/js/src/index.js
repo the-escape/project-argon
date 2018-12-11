@@ -38,8 +38,7 @@ function init () {
     Dashboard()
     Tabs()
     PageEdit()
-    // cropperTest()
-
+    cropperTest()
     formSubmits()
 }
 
@@ -60,6 +59,10 @@ function cropperTest () {
     Cropper()
 
     const btn = document.querySelector('.js-spawn-cropper')
+    if(!btn){
+        return
+    }
+    
     btn.addEventListener('click', function () {
         setCropperImage({
             image: {

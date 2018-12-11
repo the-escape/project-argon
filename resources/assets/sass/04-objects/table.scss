@@ -1,5 +1,6 @@
 .o-table {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
 
     > * {
         padding-right: 15px;
@@ -7,12 +8,19 @@
 
     @for $i from 1 through 15 {
         &--#{$i} {
-            grid-template-columns:
-                repeat(#{$i}, minmax(min-content, 700px))
-                115px 125px;
+            > * {
+                flex: 1 1 #{100% / ($i + 1)};
+                flex-basis: calc(#{100% / ($i + 1)} - 15px);
 
-            > *:nth-child(#{$i + 2}n) {
-                padding-right: 0;
+                &:nth-child(#{$i + 2}n + #{$i + 1}) {
+                    flex: 1 1 #{(100% / ($i + 1)) / 2};
+                    flex-basis: calc(#{(100% / ($i + 1)) / 2} - 15px);
+                }
+
+                &:nth-child(#{$i + 2}n) {
+                    flex: 1 1 #{(100% / ($i + 1)) / 2};
+                    padding-right: 0;
+                }
             }
         }
     }
@@ -64,5 +72,19 @@
         display: flex;
         align-items: center;
         border-top: 1px solid $grey;
+    }
+}
+
+@supports (display: grid) {
+    .o-table {
+        display: grid;
+
+        @for $i from 1 through 15 {
+            &--#{$i} {
+                grid-template-columns:
+                    repeat(#{$i}, minmax(min-content, 700px))
+                    115px 125px;
+            }
+        }
     }
 }

@@ -2247,7 +2247,7 @@ function createSelects() {
   selectList = selectList.map(function (el) {
     return createSelect(el);
   });
-  var plainSelectHtmlList = context.querySelectorAll('.js-plain-select');
+  var plainSelectHtmlList = context.querySelectorAll('.js-plain-submit-select');
   var plainSelectList = Array.from(plainSelectHtmlList);
   plainSelectList = plainSelectList.map(function (el) {
     return createPlainSelect(el);
@@ -2284,6 +2284,9 @@ function createPlainSelect(el) {
   var select = new choices_min_default.a(el, plainOptions);
   el.choices = select;
   select.setValueByChoice(items);
+  el.addEventListener('change', function () {
+    el.closest('form').submit();
+  });
   return select;
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/form/item-picker.js
@@ -3605,10 +3608,10 @@ validationvue_type_template_id_afceefb4_render._withStripped = true
   },
   computed: {
     hasError: function hasError() {
-      return this.statusError.length;
+      return this.statusError && this.statusError.length;
     },
     errorMsg: function errorMsg() {
-      return this.statusError[0];
+      return this.statusError && this.statusError[0];
     }
   }
 });
@@ -4779,7 +4782,7 @@ var combovue_type_template_id_90b659e4_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "o-combo o-form__group l-full" }, [
+  return _c("div", { staticClass: "o-combo o-form__group" }, [
     _c("div", { staticClass: "o-combo__head" }, [
       _c("div", { staticClass: "o-combo__label" }, [
         _vm._v(_vm._s(_vm.comboField.options.name))
@@ -5738,40 +5741,68 @@ var locationvue_type_template_id_27f260e5_render = function() {
     "div",
     { staticClass: "o-form__group" },
     [
-      _c(
-        "validation",
-        { attrs: { "status-error": _vm.errors, "input-name": _vm.inputName } },
-        [
-          _c("label", { attrs: { for: _vm.inputName + "[latitude]" } }, [
-            _vm._v(_vm._s(_vm.name))
-          ]),
-          _vm._v(" "),
-          _c("multi", {
-            attrs: {
-              "field-id": _vm.fieldId,
-              "combo-id": _vm.comboId,
-              "combo-item-id": _vm.comboItemId,
-              "input-name": _vm.inputName
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var valueObj = ref.valueObj
-                  return [
+      _c("multi", {
+        attrs: {
+          "field-id": _vm.fieldId,
+          "combo-id": _vm.comboId,
+          "combo-item-id": _vm.comboItemId,
+          "input-name": _vm.inputName
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function(ref) {
+              var valueObj = ref.valueObj
+              return [
+                _c("div", { staticClass: "o-form__set" }, [
+                  _c("div", { staticClass: "o-form__set-title" }, [
+                    _c(
+                      "label",
+                      {
+                        attrs: {
+                          for:
+                            _vm.inputNameMultiValue +
+                            "[" +
+                            valueObj.id +
+                            "][latitude]"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.name))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "o-form__set-container" }, [
                     _c(
                       "div",
-                      { staticClass: "o-form__vertical-list" },
+                      { staticClass: "o-form__group" },
                       [
                         _c(
-                          "input-icon",
+                          "validation",
                           {
                             attrs: {
-                              "pre-icon": _vm.latIcon.preIcon,
-                              "post-icon": _vm.latIcon.postIcon
+                              "status-error": _vm.errors && _vm.errors.latitude,
+                              "input-name":
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][latitude]"
                             }
                           },
                           [
+                            _c(
+                              "label",
+                              {
+                                attrs: {
+                                  for:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][latitude]"
+                                }
+                              },
+                              [_vm._v("Latitude")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               attrs: {
                                 type: "text",
@@ -5801,17 +5832,43 @@ var locationvue_type_template_id_27f260e5_render = function() {
                               }
                             })
                           ]
-                        ),
-                        _vm._v(" "),
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "o-form__group" },
+                      [
                         _c(
-                          "input-icon",
+                          "validation",
                           {
                             attrs: {
-                              "pre-icon": _vm.lngIcon.preIcon,
-                              "post-icon": _vm.lngIcon.postIcon
+                              "status-error":
+                                _vm.errors && _vm.errors.longitude,
+                              "input-name":
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                valueObj.id +
+                                "][longitude]"
                             }
                           },
                           [
+                            _c(
+                              "label",
+                              {
+                                attrs: {
+                                  for:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][longitude]"
+                                }
+                              },
+                              [_vm._v("Longitude")]
+                            ),
+                            _vm._v(" "),
                             _c("input", {
                               attrs: {
                                 type: "text",
@@ -5846,14 +5903,13 @@ var locationvue_type_template_id_27f260e5_render = function() {
                       ],
                       1
                     )
-                  ]
-                }
-              }
-            ])
-          })
-        ],
-        1
-      ),
+                  ])
+                ])
+              ]
+            }
+          }
+        ])
+      }),
       _vm._v(" "),
       _vm.field.helpText
         ? _c("div", {
@@ -5872,6 +5928,33 @@ locationvue_type_template_id_27f260e5_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location.vue?vue&type=template&id=27f260e5&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6276,241 +6359,420 @@ var buttonvue_type_template_id_550447e2_render = function() {
     "div",
     { staticClass: "o-form__group" },
     [
-      _c(
-        "validation",
-        { attrs: { "status-error": _vm.errors, "input-name": _vm.inputName } },
-        [
-          _c("label", { attrs: { for: _vm.inputName + "[label]" } }, [
-            _vm._v(_vm._s(_vm.name))
-          ]),
-          _vm._v(" "),
-          _c("multi", {
-            attrs: {
-              "field-id": _vm.fieldId,
-              "combo-id": _vm.comboId,
-              "combo-item-id": _vm.comboItemId,
-              "input-name": _vm.inputName
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(ref) {
-                  var valueObj = ref.valueObj
-                  return [
+      _c("multi", {
+        attrs: {
+          "field-id": _vm.fieldId,
+          "combo-id": _vm.comboId,
+          "combo-item-id": _vm.comboItemId,
+          "input-name": _vm.inputName
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function(ref) {
+              var valueObj = ref.valueObj
+              return [
+                _c("div", { staticClass: "o-form__set" }, [
+                  _c("div", { staticClass: "o-form__set-title" }, [
                     _c(
-                      "div",
-                      { staticClass: "o-form__vertical-list" },
-                      [
-                        _c(
-                          "input-icon",
-                          {
-                            attrs: {
-                              "pre-icon": _vm.labelIcon.preIcon,
-                              "post-icon": _vm.labelIcon.postIcon
-                            }
-                          },
-                          [
-                            _c("input", {
+                      "label",
+                      {
+                        attrs: {
+                          for:
+                            _vm.inputNameMultiValue +
+                            "[" +
+                            valueObj.id +
+                            "][label]"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.name))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "o-form__set-container" },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "o-form__group" },
+                        [
+                          _c(
+                            "validation",
+                            {
                               attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][label]",
-                                name:
+                                "status-error": _vm.errors && _vm.errors.label,
+                                "input-name":
                                   _vm.inputNameMultiValue +
                                   "[" +
                                   valueObj.id +
                                   "][label]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.label
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "label"
-                                  )
-                                }
                               }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "input-icon",
-                          {
-                            attrs: {
-                              "pre-icon": _vm.urlIcon.preIcon,
-                              "post-icon": _vm.urlIcon.postIcon
-                            }
-                          },
-                          [
-                            _c("input", {
+                            },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for:
+                                      _vm.inputNameMultiValue +
+                                      "[" +
+                                      valueObj.id +
+                                      "][label]"
+                                  }
+                                },
+                                [_vm._v("Label")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                attrs: {
+                                  type: "text",
+                                  id:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][label]",
+                                  name:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][label]"
+                                },
+                                domProps: {
+                                  value: valueObj.value && valueObj.value.label
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    $event.stopPropagation()
+                                    _vm.updateValue(
+                                      valueObj,
+                                      $event.target.value,
+                                      "label"
+                                    )
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "o-form__group" },
+                        [
+                          _c(
+                            "validation",
+                            {
                               attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][url]",
-                                name:
+                                "status-error": _vm.errors && _vm.errors.url,
+                                "input-name":
                                   _vm.inputNameMultiValue +
                                   "[" +
                                   valueObj.id +
                                   "][url]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.url
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "url"
-                                  )
-                                }
                               }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "input-icon",
-                          {
-                            attrs: {
-                              "pre-icon": _vm.classIcon.preIcon,
-                              "post-icon": _vm.classIcon.postIcon
-                            }
+                            },
+                            [
+                              _c(
+                                "label",
+                                {
+                                  attrs: {
+                                    for:
+                                      _vm.inputNameMultiValue +
+                                      "[" +
+                                      valueObj.id +
+                                      "][url]"
+                                  }
+                                },
+                                [_vm._v("Url")]
+                              ),
+                              _vm._v(" "),
+                              _c("input", {
+                                attrs: {
+                                  type: "text",
+                                  id:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][url]",
+                                  name:
+                                    _vm.inputNameMultiValue +
+                                    "[" +
+                                    valueObj.id +
+                                    "][url]"
+                                },
+                                domProps: {
+                                  value: valueObj.value && valueObj.value.url
+                                },
+                                on: {
+                                  keyup: function($event) {
+                                    $event.stopPropagation()
+                                    _vm.updateValue(
+                                      valueObj,
+                                      $event.target.value,
+                                      "url"
+                                    )
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "transition",
+                        {
+                          attrs: {
+                            "enter-active-class": "collapsing",
+                            "leave-active-class": "collapsing"
                           },
-                          [
-                            _c("input", {
-                              attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][class]",
-                                name:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][class]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.class
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "class"
+                          on: {
+                            enter: _vm.enter,
+                            afterEnter: _vm.afterEnter,
+                            leave: _vm.leave,
+                            afterLeave: _vm.afterLeave
+                          }
+                        },
+                        [
+                          _vm.show
+                            ? _c(
+                                "div",
+                                { staticClass: "o-form__set-accordion" },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "o-form__group" },
+                                    [
+                                      _c(
+                                        "validation",
+                                        {
+                                          attrs: {
+                                            "status-error":
+                                              _vm.errors && _vm.errors.class,
+                                            "input-name":
+                                              _vm.inputNameMultiValue +
+                                              "[" +
+                                              valueObj.id +
+                                              "][class]"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              attrs: {
+                                                for:
+                                                  _vm.inputNameMultiValue +
+                                                  "[" +
+                                                  valueObj.id +
+                                                  "][class]"
+                                              }
+                                            },
+                                            [_vm._v("Class")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            attrs: {
+                                              type: "text",
+                                              id:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][class]",
+                                              name:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][class]"
+                                            },
+                                            domProps: {
+                                              value:
+                                                valueObj.value &&
+                                                valueObj.value.class
+                                            },
+                                            on: {
+                                              keyup: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.updateValue(
+                                                  valueObj,
+                                                  $event.target.value,
+                                                  "class"
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "o-form__group" },
+                                    [
+                                      _c(
+                                        "validation",
+                                        {
+                                          attrs: {
+                                            "status-error":
+                                              _vm.errors && _vm.errors.id,
+                                            "input-name":
+                                              _vm.inputNameMultiValue +
+                                              "[" +
+                                              valueObj.id +
+                                              "][id]"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              attrs: {
+                                                for:
+                                                  _vm.inputNameMultiValue +
+                                                  "[" +
+                                                  valueObj.id +
+                                                  "][id]"
+                                              }
+                                            },
+                                            [_vm._v("ID")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            attrs: {
+                                              type: "text",
+                                              id:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][id]",
+                                              name:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][id]"
+                                            },
+                                            domProps: {
+                                              value:
+                                                valueObj.value &&
+                                                valueObj.value.id
+                                            },
+                                            on: {
+                                              keyup: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.updateValue(
+                                                  valueObj,
+                                                  $event.target.value,
+                                                  "id"
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "o-form__group" },
+                                    [
+                                      _c(
+                                        "validation",
+                                        {
+                                          attrs: {
+                                            "status-error":
+                                              _vm.errors && _vm.errors.target,
+                                            "input-name":
+                                              _vm.inputNameMultiValue +
+                                              "[" +
+                                              valueObj.id +
+                                              "][target]"
+                                          }
+                                        },
+                                        [
+                                          _c(
+                                            "label",
+                                            {
+                                              attrs: {
+                                                for:
+                                                  _vm.inputNameMultiValue +
+                                                  "[" +
+                                                  valueObj.id +
+                                                  "][target]"
+                                              }
+                                            },
+                                            [_vm._v("Target")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("input", {
+                                            attrs: {
+                                              type: "text",
+                                              id:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][target]",
+                                              name:
+                                                _vm.inputNameMultiValue +
+                                                "[" +
+                                                valueObj.id +
+                                                "][target]"
+                                            },
+                                            domProps: {
+                                              value:
+                                                valueObj.value &&
+                                                valueObj.value.target
+                                            },
+                                            on: {
+                                              keyup: function($event) {
+                                                $event.stopPropagation()
+                                                _vm.updateValue(
+                                                  valueObj,
+                                                  $event.target.value,
+                                                  "target"
+                                                )
+                                              }
+                                            }
+                                          })
+                                        ]
+                                      )
+                                    ],
+                                    1
                                   )
-                                }
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "input-icon",
-                          {
-                            attrs: {
-                              "pre-icon": _vm.idIcon.preIcon,
-                              "post-icon": _vm.idIcon.postIcon
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "o-btn o-btn--sm",
+                          on: {
+                            click: function($event) {
+                              _vm.toggle($event)
                             }
-                          },
-                          [
-                            _c("input", {
-                              attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][id]",
-                                name:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][id]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.id
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "id"
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "input-icon",
-                          {
-                            attrs: {
-                              "pre-icon": _vm.targetIcon.preIcon,
-                              "post-icon": _vm.targetIcon.postIcon
-                            }
-                          },
-                          [
-                            _c("input", {
-                              attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][target]",
-                                name:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][target]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.target
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "target"
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ]
-                }
-              }
-            ])
-          })
-        ],
-        1
-      ),
+                          }
+                        },
+                        [_vm._v("less options")]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              ]
+            }
+          }
+        ])
+      }),
       _vm._v(" "),
       _vm.field.helpText
         ? _c("div", {
@@ -6559,6 +6821,75 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6568,36 +6899,8 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
   mixins: [field_values],
   data: function data() {
     return {
-      labelIcon: {
-        preIcon: {
-          text: 'Label'
-        },
-        postIcon: false
-      },
-      urlIcon: {
-        preIcon: {
-          text: 'Url'
-        },
-        postIcon: false
-      },
-      classIcon: {
-        preIcon: {
-          text: 'Class'
-        },
-        postIcon: false
-      },
-      idIcon: {
-        preIcon: {
-          text: 'ID'
-        },
-        postIcon: false
-      },
-      targetIcon: {
-        preIcon: {
-          text: 'Target'
-        },
-        postIcon: false
-      }
+      show: false,
+      transitioning: false
     };
   },
   components: {
@@ -6622,6 +6925,36 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
           newValue: valueObj
         });
       }
+    },
+    toggle: function toggle(evt) {
+      evt.preventDefault();
+      this.show = !this.show;
+    },
+    enter: function enter(el) {
+      el.style.height = 0;
+      el.offsetHeight;
+      el.style.height = el.scrollHeight + 'px';
+      this.transitioning = true;
+    },
+    afterEnter: function afterEnter(el) {
+      el.style.height = null;
+      this.transitioning = false;
+    },
+    leave: function leave(el) {
+      el.style.height = 'auto';
+      el.style.display = 'block';
+
+      var _el$getBoundingClient = el.getBoundingClientRect(),
+          height = _el$getBoundingClient.height;
+
+      el.style.height = height + 'px';
+      el.offsetHeight;
+      this.transitioning = true;
+      el.style.height = 0;
+    },
+    afterLeave: function afterLeave(el) {
+      el.style.height = null;
+      this.transitioning = false;
     }
   }
 });
@@ -8282,26 +8615,15 @@ var BlockAddvue_type_template_id_33dff4ec_render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "c-block__drag-handle",
-          on: {
-            click: function($event) {
-              _vm.preventDefault($event)
-            }
-          }
-        },
-        [
-          _c("div", { staticClass: "c-block__icon" }, [
-            _c("svg", [
-              _c("use", {
-                attrs: { "xlink:href": "/argon/images/svgicons.svg#hamburger" }
-              })
-            ])
+      _c("div", { staticClass: "c-block__drag-handle" }, [
+        _c("div", { staticClass: "c-block__icon" }, [
+          _c("svg", [
+            _c("use", {
+              attrs: { "xlink:href": "/argon/images/svgicons.svg#hamburger" }
+            })
           ])
-        ]
-      )
+        ])
+      ])
     ])
   ])
 }
@@ -8381,9 +8703,6 @@ BlockValues_component.options.__file = "resources/assets/js/src/components/page-
     addBlock: function addBlock(evt) {
       evt.preventDefault();
       this.$emit('add', this.block.id);
-    },
-    preventDefault: function preventDefault(evt) {
-      evt.preventDefault();
     }
   }
 });
@@ -8482,7 +8801,7 @@ var BlockEditvue_type_template_id_f0915a1e_render = function() {
         _vm._v(" "),
         _vm.block.isSortable
           ? _c(
-              "button",
+              "div",
               {
                 staticClass: "c-block__drag-handle",
                 on: {
@@ -9528,8 +9847,8 @@ function src_init() {
   Fields();
   Dashboard();
   Tabs();
-  PageEdit(); // cropperTest()
-
+  PageEdit();
+  cropperTest();
   formSubmits();
 }
 
@@ -9548,6 +9867,11 @@ function formSubmits() {
 function cropperTest() {
   cropper_Cropper();
   var btn = document.querySelector('.js-spawn-cropper');
+
+  if (!btn) {
+    return;
+  }
+
   btn.addEventListener('click', function () {
     setCropperImage({
       image: {
@@ -9568,4 +9892,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.d640dfa12fd18e1da811.js.map
+//# sourceMappingURL=main.4b7843b120ed2b5c9def.js.map
