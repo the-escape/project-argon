@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </transition>
-                        <button class="o-btn o-btn--sm" @click="toggle($event)">less options</button>
+                        <button class="o-btn o-btn--sm" @click="toggle($event)">{{ show ? 'less' : 'more' }} options</button>
                     </div>
                 </div>
             </template>

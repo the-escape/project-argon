@@ -219,8 +219,6 @@ var map = {
 	"./en-au.js": "./node_modules/moment/locale/en-au.js",
 	"./en-ca": "./node_modules/moment/locale/en-ca.js",
 	"./en-ca.js": "./node_modules/moment/locale/en-ca.js",
-	"./en-gb": "./node_modules/moment/locale/en-gb.js",
-	"./en-gb.js": "./node_modules/moment/locale/en-gb.js",
 	"./en-ie": "./node_modules/moment/locale/en-ie.js",
 	"./en-ie.js": "./node_modules/moment/locale/en-ie.js",
 	"./en-il": "./node_modules/moment/locale/en-il.js",
@@ -6762,7 +6760,11 @@ var buttonvue_type_template_id_550447e2_render = function() {
                             }
                           }
                         },
-                        [_vm._v("less options")]
+                        [
+                          _vm._v(
+                            _vm._s(_vm.show ? "less" : "more") + " options"
+                          )
+                        ]
                       )
                     ],
                     1
@@ -9892,4 +9894,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.4b7843b120ed2b5c9def.js.map
+//# sourceMappingURL=main.5fcbecd6cfea67c4fa85.js.map
