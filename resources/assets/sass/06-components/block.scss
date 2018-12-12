@@ -80,6 +80,11 @@
             color: #fff;
             background-color: $primary;
         }
+
+        &--no-hover:hover {
+            color: $secondary-acc;
+            background-color: transparent;
+        }
     }
 
     &__icon {

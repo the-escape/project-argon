@@ -109,9 +109,15 @@ function createTree () {
     })
 
     this.tree.on('select_node.jstree', (_, data) => {
-        if (data.event.altKey) {
+        if (data && data.event && data.event.altKey) {
             editItemNewTab(data.node)
         }
+    })
+
+    this.tree.on('dblclick.jstree', evt => {
+        var node = this.tree.jstree(true).get_node(event.target)
+        const id = argon.helpers.getIdFromNodeIdString(node.id)
+        window.location.href = argon.root() + '/pages/' + id + '/edit'
     })
 }
 

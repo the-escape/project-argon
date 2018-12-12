@@ -353,9 +353,9 @@ abstract class AbstractFieldType
                     $returnValues[] = [
                         'label' => $tmpVal->label,
                         'url' => $tmpVal->url,
-                        'class' => $tmpVal->class,
-                        'id' => $tmpVal->id,
-                        'target' => $tmpVal->target,
+                        'class' => !empty($tmpVal->class) ? $tmpVal->class : '',
+                        'id' => !empty($tmpVal->id) ? $tmpVal->id : '',
+                        'target' => !empty($tmpVal->target) ? $tmpVal->target : '',
                     ];
                 }
                 break;

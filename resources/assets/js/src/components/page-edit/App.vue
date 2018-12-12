@@ -66,8 +66,7 @@ export default {
                     pull: true,
                     put: true
                 },
-                animation: 75,
-                handle: '.c-block__drag-handle'
+                animation: 75
             },
             renderSearch: '',
             blockSearch: ''
@@ -140,8 +139,8 @@ export default {
             this.renderingGroups = this.renderingGroups.filter(el => el.id !== id)
             this.blockDragList = [...this.blockList, item]
         },
-        editBlock: function (id) {
-            changeTab(`group-${id}`)
+        editBlock: function (id, title) {
+            changeTab(`group-${id}`, title)
         }
     }
 }

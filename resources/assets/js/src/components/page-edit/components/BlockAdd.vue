@@ -14,14 +14,9 @@
         <div class="c-block__action-list">
             <button class="c-block__action" @click="addBlock($event)">
                 <div class="c-block__icon">
-                    <svg><use xlink:href="/argon/images/svgicons.svg#add"></use></svg>
+                    <svg><use xlink:href="/argon/images/svgicons.svg#arrow-left"></use></svg>
                 </div>
             </button>
-            <div class="c-block__drag-handle">
-                <div class="c-block__icon">
-                    <svg><use xlink:href="/argon/images/svgicons.svg#hamburger"></use></svg>
-                </div>
-            </div>
         </div>
     </div>
 </template>

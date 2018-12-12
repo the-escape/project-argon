@@ -219,6 +219,8 @@ var map = {
 	"./en-au.js": "./node_modules/moment/locale/en-au.js",
 	"./en-ca": "./node_modules/moment/locale/en-ca.js",
 	"./en-ca.js": "./node_modules/moment/locale/en-ca.js",
+	"./en-gb": "./node_modules/moment/locale/en-gb.js",
+	"./en-gb.js": "./node_modules/moment/locale/en-gb.js",
 	"./en-ie": "./node_modules/moment/locale/en-ie.js",
 	"./en-ie.js": "./node_modules/moment/locale/en-ie.js",
 	"./en-il": "./node_modules/moment/locale/en-il.js",
@@ -1640,6 +1642,7 @@ function file_upload_fileUpload() {// const el = document.querySelector('.js-fil
 var TabsObj = {
   el: null,
   navContainer: null,
+  navTemplate: null,
   nav: null,
   panels: null,
   currentTab: null
@@ -1649,15 +1652,17 @@ function Tabs() {
   var tabEl = document.querySelector('.js-tabs');
   tabs = createTabs(tabEl);
   var tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/;
+  var titleUrlParamRegex = /[?&]title(=([^&#]*)|&|#|$)/;
   var tab = tabUrlParamRegex.exec(window.location.search);
+  var title = titleUrlParamRegex.exec(window.location.search);
 
   if (tab && tab[2]) {
-    changeTab(tab[2]);
+    changeTab(tab[2], title[2]);
   }
 
   window.onpopstate = function (evt) {
     if (evt.state && evt.state.tab) {
-      changeTab(evt.state.tab, false);
+      changeTab(evt.state.tab, evt.state.title, false);
     }
   };
 
@@ -1684,6 +1689,7 @@ function tabs_init(el) {
   this.el = el;
   this.navContainer = el.querySelector('.js-tabs-nav');
   this.nav = Array.from(this.navContainer.querySelectorAll('[data-tab]'));
+  this.navTemplate = setupTemplate(this.nav[0].parentNode.innerHTML);
   this.nav = this.nav.reduce(function (acc, panel) {
     acc[panel.dataset.tab] = panel;
     return acc;
@@ -1708,23 +1714,59 @@ function tabs_init(el) {
   })).subscribe(changeTab);
 }
 
-function changeTab(tabName) {
-  var pushstate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+function setupTemplate(html) {
+  return function (tab, title) {
+    var div = document.createElement('li');
+    div.innerHTML = html;
+    div.firstElementChild.classList.add('to-remove');
+    div.firstElementChild.classList.add('active');
+    div.firstElementChild.dataset.tab = tab;
+    div.querySelector('span').innerText = title;
+    return div;
+  };
+}
 
-  if (!tabs.panels || !tabs.panels[tabName]) {
+function changeTab(tabName) {
+  var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  var pushstate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+  if (!tabs.panels || !tabs.panels[tabName] || tabName === tabs.currentTab) {
     return;
   }
 
   tabs.panels[tabs.currentTab].classList.remove('active');
-  tabs.nav[tabs.currentTab] && tabs.nav[tabs.currentTab].classList.remove('active');
+
+  if (tabs.nav[tabs.currentTab]) {
+    if (tabs.nav[tabs.currentTab].classList.contains('to-remove')) {
+      tabs.nav[tabs.currentTab].remove();
+      tabs.nav[tabs.currentTab] = null;
+    } else {
+      tabs.nav[tabs.currentTab].classList.remove('active');
+    }
+  }
+
   tabs.panels[tabName].classList.add('active');
-  tabs.nav[tabName] && tabs.nav[tabName].classList.add('active');
+
+  if (!tabs.nav[tabName]) {
+    var newTabNav = tabs.navTemplate(tabName, title);
+    var insertBeforeEl = tabs.navContainer.firstElementChild.children[1];
+    tabs.navContainer.firstElementChild.insertBefore(newTabNav, insertBeforeEl);
+    tabs.nav[tabName] = newTabNav.firstElementChild;
+  } else {
+    tabs.nav[tabName].classList.add('active');
+  }
+
+  if (!title) {
+    title = tabs.nav[tabName].querySelector('span').innerText;
+  }
+
   tabs.currentTab = tabName;
 
   if (pushstate) {
     history.pushState({
-      tab: tabName
-    }, tabName, "?tab=".concat(tabName));
+      tab: tabName,
+      title: title
+    }, tabName, "?tab=".concat(tabName, "&title=").concat(title));
   }
 }
 // EXTERNAL MODULE: ./node_modules/noty/lib/noty.js
@@ -3070,6 +3112,8 @@ function tree_init(el, id) {
 }
 
 function createTree() {
+  var _this = this;
+
   this.tree = $(this.treeContainer).jstree({
     plugins: ['contextmenu', 'dnd', 'search', 'state'],
     core: {
@@ -3127,9 +3171,15 @@ function createTree() {
     }
   });
   this.tree.on('select_node.jstree', function (_, data) {
-    if (data.event.altKey) {
+    if (data && data.event && data.event.altKey) {
       editItemNewTab(data.node);
     }
+  });
+  this.tree.on('dblclick.jstree', function (evt) {
+    var node = _this.tree.jstree(true).get_node(event.target);
+
+    var id = argon.helpers.getIdFromNodeIdString(node.id);
+    window.location.href = argon.root() + '/pages/' + id + '/edit';
   });
 }
 
@@ -3154,10 +3204,10 @@ function viewItem(data) {
 }
 
 function tree_addItem(typeId) {
-  var _this = this;
+  var _this2 = this;
 
   return function (data) {
-    var obj = _this.tree.jstree(true).get_node(data.reference);
+    var obj = _this2.tree.jstree(true).get_node(data.reference);
 
     var id = argon.helpers.getIdFromNodeIdString(obj.id);
     console.log(obj, 'add page');
@@ -3191,7 +3241,7 @@ function deleteItem(data) {
 }
 
 function setupTypesSubMenu() {
-  var _this2 = this;
+  var _this3 = this;
 
   var typesList = JSON.parse(this.el.dataset.types);
   var typeListKeys = Object.keys(typesList);
@@ -3202,17 +3252,17 @@ function setupTypesSubMenu() {
       label: type.name,
       title: 'Create new page of type ' + type.name,
       icon: 'o-tree__icon o-tree__icon--add',
-      action: _this2.addItem(type.id)
+      action: _this3.addItem(type.id)
     };
     return acc;
   }, {});
 }
 
 function tree_setupEvents() {
-  var _this3 = this;
+  var _this4 = this;
 
   Object(_esm5["fromEvent"])(this.input, 'input').pipe(Object(operators["debounceTime"])(100)).subscribe(function () {
-    _this3.tree.jstree(true).search(_this3.input.value);
+    _this4.tree.jstree(true).search(_this4.input.value);
   });
 }
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
@@ -8610,22 +8660,12 @@ var BlockAddvue_type_template_id_33dff4ec_render = function() {
           _c("div", { staticClass: "c-block__icon" }, [
             _c("svg", [
               _c("use", {
-                attrs: { "xlink:href": "/argon/images/svgicons.svg#add" }
+                attrs: { "xlink:href": "/argon/images/svgicons.svg#arrow-left" }
               })
             ])
           ])
         ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "c-block__drag-handle" }, [
-        _c("div", { staticClass: "c-block__icon" }, [
-          _c("svg", [
-            _c("use", {
-              attrs: { "xlink:href": "/argon/images/svgicons.svg#hamburger" }
-            })
-          ])
-        ])
-      ])
+      )
     ])
   ])
 }
@@ -8669,11 +8709,6 @@ if (false) { var BlockValues_api; }
 BlockValues_component.options.__file = "resources/assets/js/src/components/page-edit/mixins/BlockValues.vue"
 /* harmony default export */ var BlockValues = (BlockValues_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/components/BlockAdd.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8790,44 +8825,48 @@ var BlockEditvue_type_template_id_f0915a1e_render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "c-block__action-list" },
-      [
-        _vm.block.isRenderable && _vm.block.isSortable
-          ? _c("confirm-btns", {
-              attrs: { "hide-duplicate": true, "is-block": "true" },
-              on: { delete: _vm.deleteBlock }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.block.isSortable
-          ? _c(
-              "div",
-              {
-                staticClass: "c-block__drag-handle",
-                on: {
-                  click: function($event) {
-                    _vm.preventDefault($event)
-                  }
+    _c("div", { staticClass: "c-block__action-list" }, [
+      _vm.block.isRenderable && _vm.block.isSortable
+        ? _c(
+            "button",
+            {
+              staticClass: "c-block__action",
+              on: {
+                click: function($event) {
+                  _vm.deleteBlock($event)
                 }
-              },
-              [
-                _c("div", { staticClass: "c-block__icon" }, [
-                  _c("svg", [
-                    _c("use", {
-                      attrs: {
-                        "xlink:href": "/argon/images/svgicons.svg#hamburger"
-                      }
-                    })
-                  ])
+              }
+            },
+            [
+              _c("div", { staticClass: "c-block__icon" }, [
+                _c("svg", [
+                  _c("use", {
+                    attrs: {
+                      "xlink:href": "/argon/images/svgicons.svg#arrow-right"
+                    }
+                  })
                 ])
-              ]
-            )
-          : _vm._e()
-      ],
-      1
-    )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.block.isRenderable && !_vm.block.isSortable
+        ? _c(
+            "div",
+            { staticClass: "c-block__action c-block__action--no-hover" },
+            [
+              _c("div", { staticClass: "c-block__icon" }, [
+                _c("svg", [
+                  _c("use", {
+                    attrs: { "xlink:href": "/argon/images/svgicons.svg#lock" }
+                  })
+                ])
+              ])
+            ]
+          )
+        : _vm._e()
+    ])
   ])
 }
 var BlockEditvue_type_template_id_f0915a1e_staticRenderFns = []
@@ -8864,21 +8903,22 @@ BlockEditvue_type_template_id_f0915a1e_render._withStripped = true
 //
 //
 //
-
+//
+//
+//
+//
 
 /* harmony default export */ var BlockEditvue_type_script_lang_js_ = ({
   props: ['block'],
   mixins: [BlockValues],
-  components: {
-    ConfirmBtns: confirm_btn
-  },
   methods: {
-    deleteBlock: function deleteBlock() {
+    deleteBlock: function deleteBlock(evt) {
+      evt.preventDefault();
       this.$emit('delete', this.block.id);
     },
     editBlock: function editBlock(evt) {
       evt.preventDefault();
-      this.$emit('edit', this.block.id);
+      this.$emit('edit', this.block.id, this.block.name);
     },
     preventDefault: function preventDefault(evt) {
       evt.preventDefault();
@@ -8939,8 +8979,8 @@ BlockEdit_component.options.__file = "resources/assets/js/src/components/page-ed
     deleteItem: function deleteItem(id) {
       this.$emit('delete', id);
     },
-    editBlock: function editBlock(id) {
-      this.$emit('edit', id);
+    editBlock: function editBlock(id, name) {
+      this.$emit('edit', id, name);
     }
   }
 });
@@ -9044,8 +9084,7 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
           pull: true,
           put: true
         },
-        animation: 75,
-        handle: '.c-block__drag-handle'
+        animation: 75
       },
       renderSearch: '',
       blockSearch: ''
@@ -9146,8 +9185,8 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
       });
       this.blockDragList = Appvue_type_script_lang_js_toConsumableArray(this.blockList).concat([item]);
     },
-    editBlock: function editBlock(id) {
-      changeTab("group-".concat(id));
+    editBlock: function editBlock(id, title) {
+      changeTab("group-".concat(id), title);
     }
   }
 });
@@ -9894,4 +9933,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.5fcbecd6cfea67c4fa85.js.map
+//# sourceMappingURL=main.ead293f72fe5b2ca5b82.js.map

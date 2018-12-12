@@ -27,8 +27,8 @@ export default {
         deleteItem: function (id) {
             this.$emit('delete', id)
         },
-        editBlock: function (id) {
-            this.$emit('edit', id)
+        editBlock: function (id, name) {
+            this.$emit('edit', id, name)
         }
     }
 }

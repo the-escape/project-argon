@@ -4,6 +4,7 @@ import { filter, map } from 'rxjs/operators'
 const TabsObj = {
     el: null,
     navContainer: null,
+    navTemplate: null,
     nav: null,
     panels: null,
     currentTab: null
@@ -16,14 +17,16 @@ export function Tabs () {
     tabs = createTabs(tabEl)
 
     const tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/
+    const titleUrlParamRegex = /[?&]title(=([^&#]*)|&|#|$)/
     let tab = tabUrlParamRegex.exec(window.location.search)
+    let title = titleUrlParamRegex.exec(window.location.search)
     if (tab && tab[2]) {
-        changeTab(tab[2])
+        changeTab(tab[2], title[2])
     }
 
     window.onpopstate = evt => {
         if (evt.state && evt.state.tab) {
-            changeTab(evt.state.tab, false)
+            changeTab(evt.state.tab, evt.state.title, false)
         }
     }
 
@@ -54,6 +57,7 @@ function init (el) {
     this.el = el
     this.navContainer = el.querySelector('.js-tabs-nav')
     this.nav = Array.from(this.navContainer.querySelectorAll('[data-tab]'))
+    this.navTemplate = setupTemplate(this.nav[0].parentNode.innerHTML)
     this.nav = this.nav.reduce((acc, panel) => {
         acc[panel.dataset.tab] = panel
         return acc
@@ -82,19 +86,58 @@ function init (el) {
         .subscribe(changeTab)
 }
 
-export function changeTab (tabName, pushstate = true) {
-    if (!tabs.panels || !tabs.panels[tabName]) {
+function setupTemplate (html) {
+    return (tab, title) => {
+        const div = document.createElement('li')
+        div.innerHTML = html
+        div.firstElementChild.classList.add('to-remove')
+        div.firstElementChild.classList.add('active')
+        div.firstElementChild.dataset.tab = tab
+        div.querySelector('span').innerText = title
+        return div
+    }
+}
+
+export function changeTab (tabName, title = '', pushstate = true) {
+    if (!tabs.panels || !tabs.panels[tabName] || tabName === tabs.currentTab) {
         return
     }
 
     tabs.panels[tabs.currentTab].classList.remove('active')
-    tabs.nav[tabs.currentTab] &&
-        tabs.nav[tabs.currentTab].classList.remove('active')
+    if (tabs.nav[tabs.currentTab]) {
+        if (tabs.nav[tabs.currentTab].classList.contains('to-remove')) {
+            tabs.nav[tabs.currentTab].remove()
+            tabs.nav[tabs.currentTab] = null
+        } else {
+            tabs.nav[tabs.currentTab].classList.remove('active')
+        }
+    }
+
     tabs.panels[tabName].classList.add('active')
-    tabs.nav[tabName] && tabs.nav[tabName].classList.add('active')
+
+    if (!tabs.nav[tabName]) {
+        const newTabNav = tabs.navTemplate(tabName, title)
+        const insertBeforeEl = tabs.navContainer.firstElementChild.children[1]
+        tabs.navContainer.firstElementChild.insertBefore(
+            newTabNav,
+            insertBeforeEl
+        )
+        tabs.nav[tabName] = newTabNav.firstElementChild
+    } else {
+        tabs.nav[tabName].classList.add('active')
+    }
+
+    if (!title) {
+        title = tabs.nav[tabName].querySelector('span').innerText
+    }
+
     tabs.currentTab = tabName
 
     if (pushstate) {
-        history.pushState({ tab: tabName }, tabName, `?tab=${tabName}`)
+        history.pushState(
+            { tab: tabName, title },
+            tabName,
+            `?tab=${tabName}&title=${title}`
+        )
     }
 }

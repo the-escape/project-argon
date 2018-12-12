@@ -15,10 +15,14 @@
             </div>
         </div>
         <div class="c-block__action-list">
-            <confirm-btns :hide-duplicate="true" is-block="true" @delete="deleteBlock" v-if="block.isRenderable && block.isSortable" />
-            <div class="c-block__drag-handle" v-if="block.isSortable" @click="preventDefault($event)">
+            <button class="c-block__action" @click="deleteBlock($event)" v-if="block.isRenderable && block.isSortable">
                 <div class="c-block__icon">
-                    <svg><use xlink:href="/argon/images/svgicons.svg#hamburger"></use></svg>
+                    <svg><use xlink:href="/argon/images/svgicons.svg#arrow-right"></use></svg>
+                </div>
+            </button>
+            <div class="c-block__action c-block__action--no-hover" v-if="!block.isRenderable && !block.isSortable">
+                <div class="c-block__icon">
+                    <svg><use xlink:href="/argon/images/svgicons.svg#lock"></use></svg>
                 </div>
             </div>
         </div>
@@ -27,21 +31,18 @@
 
 <script>
 import BlockValues from '../mixins/BlockValues.vue'
-import ConfirmBtns from '../../commonComponents/confirm-btn.vue'
 
 export default {
     props: ['block'],
     mixins: [BlockValues],
-    components: {
-        ConfirmBtns
-    },
     methods: {
-        deleteBlock: function () {
+        deleteBlock: function (evt) {
+            evt.preventDefault()
             this.$emit('delete', this.block.id)
         },
         editBlock: function (evt) {
             evt.preventDefault()
-            this.$emit('edit', this.block.id)
+            this.$emit('edit', this.block.id, this.block.name)
         },
         preventDefault (evt) {
             evt.preventDefault()

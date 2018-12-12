@@ -6423,6 +6423,9 @@ button.o-btn {
     .c-block__action:hover, .c-block__drag-handle:hover {
       color: #fff;
       background-color: #12a3c7; }
+    .c-block__action--no-hover:hover, .c-block__drag-handle--no-hover:hover {
+      color: #808080;
+      background-color: transparent; }
   .c-block__icon {
     width: 24px;
     height: 24px; }
@@ -6760,4 +6763,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-bb3cb87da3.css.map
+//# sourceMappingURL=main-16fcdcb36b.css.map
