@@ -1,5 +1,5 @@
 <template>
-    <div class="l-halves c-tab-panel__inner">
+    <div class="l-halves c-tab-panel__inner" :class="{ 'is-dragging': isDragging }">
         <div class="c-block-list__wrap">
             <div class="typography l-space">
                 <h3>Page blocks</h3>
@@ -17,7 +17,7 @@
                     <div class="c-block-list__inner-list c-block-list__inner-list--no-grow">
                         <block-item v-for="block in filteredRenderNonSortList" :key="block.id" :block="block" @edit="editBlock" />
                     </div>
-                    <draggable class="c-block-list__inner-list" v-model="renderingDragGroup" :options="dragOptions">
+                    <draggable class="c-block-list__inner-list" v-model="renderingDragGroup" :options="dragOptions" @start="startDragging" @end="endDragging">
                         <block-item v-for="block in filteredRenderList" :key="block.id" :block="block" @delete="removeItem" @edit="editBlock" />
                     </draggable>
                 </div>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="c-block-list__container">
-                    <draggable class="c-block-list__inner-list" v-model="blockDragList" :options="dragOptions">
+                    <draggable class="c-block-list__inner-list" v-model="blockDragList" :options="dragOptions" @start="startDragging" @end="endDragging">
                         <block-item v-for="block in filteredBlockList" :key="block.id" :block="block" @add="addItem" />
                     </draggable>
                 </div>
@@ -60,6 +60,7 @@ export default {
             renderingGroups: [],
             blockList: [],
             hasRenderable: false,
+            isDragging: false,
             dragOptions: {
                 group: {
                     name: 'groupEdit',
@@ -141,6 +142,12 @@ export default {
         },
         editBlock: function (id, title) {
             changeTab(`group-${id}`, title)
+        },
+        startDragging: function () {
+            this.isDragging = true
+        },
+        endDragging: function () {
+            this.isDragging = false
         }
     }
 }

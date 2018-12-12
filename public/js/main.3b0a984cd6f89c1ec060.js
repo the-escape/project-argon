@@ -8401,175 +8401,186 @@ var Appvue_type_template_id_146287be_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "l-halves c-tab-panel__inner" }, [
-    _c("div", { staticClass: "c-block-list__wrap" }, [
-      _c("div", { staticClass: "typography l-space" }, [
-        _c("h3", [_vm._v("Page blocks")]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Here you can edit, remove and re-order content")]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "hidden", name: "group_order" },
-          domProps: { value: _vm.renderOrder }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "c-block-list" }, [
-        _c("div", { staticClass: "c-block-list__search o-form" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.renderSearch,
-                expression: "renderSearch"
-              }
-            ],
-            attrs: {
-              type: "text",
-              id: "search",
-              name: "search",
-              placeholder: "Search blocks"
-            },
-            domProps: { value: _vm.renderSearch },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.renderSearch = $event.target.value
-              }
-            }
-          }),
+  return _c(
+    "div",
+    {
+      staticClass: "l-halves c-tab-panel__inner",
+      class: { "is-dragging": _vm.isDragging }
+    },
+    [
+      _c("div", { staticClass: "c-block-list__wrap" }, [
+        _c("div", { staticClass: "typography l-space" }, [
+          _c("h3", [_vm._v("Page blocks")]),
           _vm._v(" "),
-          _c("div", { staticClass: "c-block-list__search-icon" }, [
-            _c("svg", [
-              _c("use", {
-                attrs: { "xlink:href": "/argon/images/svgicons.svg#search" }
-              })
-            ])
-          ])
+          _c("p", [_vm._v("Here you can edit, remove and re-order content")]),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "hidden", name: "group_order" },
+            domProps: { value: _vm.renderOrder }
+          })
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "c-block-list__container" },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "c-block-list__inner-list c-block-list__inner-list--no-grow"
-              },
-              _vm._l(_vm.filteredRenderNonSortList, function(block) {
-                return _c("block-item", {
-                  key: block.id,
-                  attrs: { block: block },
-                  on: { edit: _vm.editBlock }
-                })
-              })
-            ),
-            _vm._v(" "),
-            _c(
-              "draggable",
-              {
-                staticClass: "c-block-list__inner-list",
-                attrs: { options: _vm.dragOptions },
-                model: {
-                  value: _vm.renderingDragGroup,
-                  callback: function($$v) {
-                    _vm.renderingDragGroup = $$v
-                  },
-                  expression: "renderingDragGroup"
+        _c("div", { staticClass: "c-block-list" }, [
+          _c("div", { staticClass: "c-block-list__search o-form" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.renderSearch,
+                  expression: "renderSearch"
                 }
-              },
-              _vm._l(_vm.filteredRenderList, function(block) {
-                return _c("block-item", {
-                  key: block.id,
-                  attrs: { block: block },
-                  on: { delete: _vm.removeItem, edit: _vm.editBlock }
-                })
-              })
-            )
-          ],
-          1
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.hasRenderable
-      ? _c("div", { staticClass: "c-block-list__wrap" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "c-block-list" }, [
-            _c("div", { staticClass: "c-block-list__search o-form" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.blockSearch,
-                    expression: "blockSearch"
-                  }
-                ],
-                attrs: {
-                  type: "text",
-                  id: "search",
-                  name: "search",
-                  placeholder: "Search blocks"
-                },
-                domProps: { value: _vm.blockSearch },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.blockSearch = $event.target.value
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "c-block-list__search-icon" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#search" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "c-block-list__container" },
-              [
-                _c(
-                  "draggable",
-                  {
-                    staticClass: "c-block-list__inner-list",
-                    attrs: { options: _vm.dragOptions },
-                    model: {
-                      value: _vm.blockDragList,
-                      callback: function($$v) {
-                        _vm.blockDragList = $$v
-                      },
-                      expression: "blockDragList"
-                    }
-                  },
-                  _vm._l(_vm.filteredBlockList, function(block) {
-                    return _c("block-item", {
-                      key: block.id,
-                      attrs: { block: block },
-                      on: { add: _vm.addItem }
-                    })
-                  })
-                )
               ],
-              1
-            )
-          ])
+              attrs: {
+                type: "text",
+                id: "search",
+                name: "search",
+                placeholder: "Search blocks"
+              },
+              domProps: { value: _vm.renderSearch },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.renderSearch = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "c-block-list__search-icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#search" }
+                })
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "c-block-list__container" },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "c-block-list__inner-list c-block-list__inner-list--no-grow"
+                },
+                _vm._l(_vm.filteredRenderNonSortList, function(block) {
+                  return _c("block-item", {
+                    key: block.id,
+                    attrs: { block: block },
+                    on: { edit: _vm.editBlock }
+                  })
+                })
+              ),
+              _vm._v(" "),
+              _c(
+                "draggable",
+                {
+                  staticClass: "c-block-list__inner-list",
+                  attrs: { options: _vm.dragOptions },
+                  on: { start: _vm.startDragging, end: _vm.endDragging },
+                  model: {
+                    value: _vm.renderingDragGroup,
+                    callback: function($$v) {
+                      _vm.renderingDragGroup = $$v
+                    },
+                    expression: "renderingDragGroup"
+                  }
+                },
+                _vm._l(_vm.filteredRenderList, function(block) {
+                  return _c("block-item", {
+                    key: block.id,
+                    attrs: { block: block },
+                    on: { delete: _vm.removeItem, edit: _vm.editBlock }
+                  })
+                })
+              )
+            ],
+            1
+          )
         ])
-      : _vm._e()
-  ])
+      ]),
+      _vm._v(" "),
+      _vm.hasRenderable
+        ? _c("div", { staticClass: "c-block-list__wrap" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "c-block-list" }, [
+              _c("div", { staticClass: "c-block-list__search o-form" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.blockSearch,
+                      expression: "blockSearch"
+                    }
+                  ],
+                  attrs: {
+                    type: "text",
+                    id: "search",
+                    name: "search",
+                    placeholder: "Search blocks"
+                  },
+                  domProps: { value: _vm.blockSearch },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.blockSearch = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "c-block-list__search-icon" }, [
+                  _c("svg", [
+                    _c("use", {
+                      attrs: {
+                        "xlink:href": "/argon/images/svgicons.svg#search"
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "c-block-list__container" },
+                [
+                  _c(
+                    "draggable",
+                    {
+                      staticClass: "c-block-list__inner-list",
+                      attrs: { options: _vm.dragOptions },
+                      on: { start: _vm.startDragging, end: _vm.endDragging },
+                      model: {
+                        value: _vm.blockDragList,
+                        callback: function($$v) {
+                          _vm.blockDragList = $$v
+                        },
+                        expression: "blockDragList"
+                      }
+                    },
+                    _vm._l(_vm.filteredBlockList, function(block) {
+                      return _c("block-item", {
+                        key: block.id,
+                        attrs: { block: block },
+                        on: { add: _vm.addItem }
+                      })
+                    })
+                  )
+                ],
+                1
+              )
+            ])
+          ])
+        : _vm._e()
+    ]
+  )
 }
 var Appvue_type_template_id_146287be_staticRenderFns = [
   function() {
@@ -9078,6 +9089,7 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
       renderingGroups: [],
       blockList: [],
       hasRenderable: false,
+      isDragging: false,
       dragOptions: {
         group: {
           name: 'groupEdit',
@@ -9187,6 +9199,12 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
     },
     editBlock: function editBlock(id, title) {
       changeTab("group-".concat(id), title);
+    },
+    startDragging: function startDragging() {
+      this.isDragging = true;
+    },
+    endDragging: function endDragging() {
+      this.isDragging = false;
     }
   }
 });
@@ -9933,4 +9951,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.ead293f72fe5b2ca5b82.js.map
+//# sourceMappingURL=main.3b0a984cd6f89c1ec060.js.map

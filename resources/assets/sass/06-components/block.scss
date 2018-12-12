@@ -3,6 +3,10 @@
     height: 75px;
     background-color: #fff;
 
+    &.sortable-chosen {
+        background-color: $secondary-light;
+    }
+
     &__edit {
         display: flex;
         position: relative;
@@ -24,6 +28,10 @@
         &:hover {
             opacity: 1;
         }
+    }
+
+    .is-dragging &__edit-btn {
+        opacity: 0;
     }
 
     &__image,

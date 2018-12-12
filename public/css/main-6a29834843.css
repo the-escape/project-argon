@@ -6342,6 +6342,8 @@ button.o-btn {
   display: flex;
   height: 75px;
   background-color: #fff; }
+  .c-block.sortable-chosen {
+    background-color: #d8d8d8; }
   .c-block__edit {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -6364,6 +6366,8 @@ button.o-btn {
     transition: opacity 400ms; }
     .c-block__edit-btn:hover {
       opacity: 1; }
+  .is-dragging .c-block__edit-btn {
+    opacity: 0; }
   .c-block__image, .c-block__empty-image {
     width: 150px;
     height: 74px;
@@ -6763,4 +6767,8 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-16fcdcb36b.css.map
+
+
+
+
+//# sourceMappingURL=main-6a29834843.css.map
