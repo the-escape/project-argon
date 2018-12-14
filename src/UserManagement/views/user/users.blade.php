@@ -34,31 +34,46 @@
 
         @include('argon::inc.new-alerts')
 
-        @include('argon::inc.listing.filters', [
-            'createLink' => [
-                'url' => route('cms:user:create'),
-                'label' => 'Create User'
-            ],
-            'filters' => [
-                'role' => $roles->lists('name','id')->all()
-            ],
-            'resetLinkUrl' => route('cms:user:manage')
-        ])
+        <div class="c-actions__container">
+            <div class="c-actions__content">
 
-        <div class="o-table o-table--3 l-full">
+                @include('argon::inc.listing.filters', [
+                    'filters' => [
+                        'role' => $roles->lists('name','id')->all()
+                    ],
+                    'resetLinkUrl' => route('cms:user:manage')
+                ])
 
-            @include('argon::inc.listing.table-headers', ['headers' => ['name', 'email', 'created_at', '', '']])
+                <div class="o-table o-table--3 l-full">
 
-            @foreach ($users->all() as $i => $user)
-                <div class="o-table__data">{{ $user->name }}</div>
-                <div class="o-table__data">{{ $user->email }}</div>
-                <div class="o-table__data">{{ $user->created_at->format('jS M Y') }}</div>
-                <div class="o-table__data"></div>
-                <div class="o-table__data">
-                    <a href="{{ route('cms:user:edit', ['userId' => $user->id]) }}" class="o-btn o-btn--xs">edit user</a>
+                    @include('argon::inc.listing.table-headers', ['headers' => ['name', 'email', 'created_at', '', '']])
+
+                    @foreach ($users->all() as $i => $user)
+                        <div class="o-table__data">{{ $user->name }}</div>
+                        <div class="o-table__data">{{ $user->email }}</div>
+                        <div class="o-table__data">{{ $user->created_at->format('jS M Y') }}</div>
+                        <div class="o-table__data"></div>
+                        <div class="o-table__data">
+                            <a href="{{ route('cms:user:edit', ['userId' => $user->id]) }}" class="o-btn o-btn--xs">edit user</a>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
 
+            <div class="c-actions">
+                <div class="c-actions__group">
+                    <a href="route('cms:user:create')" class="o-icon-btn o-icon-btn--primary">
+                        <div class="o-icon-btn__wrap">
+                            <div class="o-icon-btn__icon">
+                                <svg>
+                                    <use xlink:href="/argon/images/svgicons.svg#add"></use>
+                                </svg>
+                            </div>
+                            <div class="o-icon-btn__label">Create User</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
 

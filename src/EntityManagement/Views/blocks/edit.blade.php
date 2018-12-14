@@ -18,7 +18,7 @@
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <h1>Editing {{$page->name}}</h1>
+                    <h1>{{$page->name}}</h1>
                 </div>
                 <div class="c-tab__nav js-tabs-nav">
                     <ul>
@@ -38,89 +38,115 @@
             <div class="c-tab-panel__list js-tabs-list">
                 <div class="c-tab-panel active" data-tab="block-content">
                     <main class="c-tab-panel__container c-container">
-                        <div class="js-page-edit"></div>
-                    </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--sm">Back to blocks</a>
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-btn o-btn--sm">Add another</a>
-                                        <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save</button>
-                                    </div>
+                        <div class="c-actions__container">
+                            <div class="c-actions__content">
+                                <div class="js-page-edit"></div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-icon-btn preview-page" >
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#add"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Add another</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-publish js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save</div>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </footer>
+                    </main>
                 </div>
                 <div class="c-tab-panel" data-tab="attributes">
                     <main class="c-tab-panel__container c-container">
-                        <div class="c-tab-panel__inner-container l-full">
-                            <h2>Attributes</h2>
+                        <div class="c-actions__container">
+                            <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                <h2>Attributes</h2>
 
-                            <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="name" class="required">Name*</label>
-                                        <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="name" class="required">Name*</label>
+                                            <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="name">{{ getError($errors, 'name') }}</label>
                                             </div>
                                         </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="name">{{ getError($errors, 'name') }}</label>
+                                    </div>
+                                </div>
+
+                                <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="slug" class="required">URL Slug*</label>
+                                            <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="slug">{{ getError($errors, 'slug') }}</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="slug" class="required">URL Slug*</label>
-                                        <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-icon-btn preview-page" >
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#add"></use>
+                                                </svg>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-icon-btn__label">Add another</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-publish js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
                                             </div>
+                                            <div class="o-icon-btn__label">Save</div>
                                         </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="slug">{{ getError($errors, 'slug') }}</label>
-                                        </div>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--sm">Back to blocks</a>
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-btn o-btn--sm">Add another</a>
-                                        <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
                 </div>
 
                 @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())

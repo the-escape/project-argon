@@ -38,7 +38,7 @@
                 <div class="o-form__vertical-list">
                     @foreach($types as $type)
                         <p>
-                            <a href="{{ route('cms:blocks:create', ['typeId'=>$type->id]) }}" class="o-btn o-btn--sm">{{ $type->name }}</a>
+                            <a href="{{ route('cms:blocks:create', ['typeId'=>$type->id]) }}" class="o-btn o-btn--primary o-btn--sm">{{ $type->name }}</a>
                         </p>
                     @endforeach
                 </div>

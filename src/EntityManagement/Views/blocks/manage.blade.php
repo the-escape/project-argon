@@ -34,31 +34,47 @@
 
         @include('argon::inc.new-alerts')
 
-        @include('argon::inc.listing.filters', [
-            'createLink' => [
-                'url' => route('cms:blocks:create'),
-                'label' => 'Create Block'
-            ],
-            'filters' => [
-                'types' => $types->lists('name','id')->all()
-            ],
-            'resetLinkUrl' => route('cms:blocks:manage')
-        ])
+        <div class="c-actions__container">
+            <div class="c-actions__content">
 
-        <div class="o-table o-table--3 l-full">
+                @include('argon::inc.listing.filters', [
+                    'filters' => [
+                        'types' => $types->lists('name','id')->all()
+                    ],
+                    'resetLinkUrl' => route('cms:blocks:manage')
+                ])
 
-            @include('argon::inc.listing.table-headers', ['headers' => ['name', 'type', 'created_at', '', '']])
+                <div class="o-table o-table--3 l-full">
 
-            @foreach ($blocks->all() as $i => $block)
-                <div class="o-table__data">{{ $block->name }}</div>
-                <div class="o-table__data">{{ $block->type->name }}</div>
-                <div class="o-table__data">{{ $block->created_at->format('jS M Y') }}</div>
-                <div class="o-table__data"></div>
-                <div class="o-table__data">
-                    <a href="{{ route('cms:blocks:edit', ['id' => $block->id]) }}" class="o-btn o-btn--xs">edit block</a>
+                    @include('argon::inc.listing.table-headers', ['headers' => ['name', 'type', 'created_at', '', '']])
+
+                    @foreach ($blocks->all() as $i => $block)
+                        <div class="o-table__data">{{ $block->name }}</div>
+                        <div class="o-table__data">{{ $block->type->name }}</div>
+                        <div class="o-table__data">{{ $block->created_at->format('jS M Y') }}</div>
+                        <div class="o-table__data"></div>
+                        <div class="o-table__data">
+                            <a href="{{ route('cms:blocks:edit', ['id' => $block->id]) }}" class="o-btn o-btn--xs">edit block</a>
+                        </div>
+                    @endforeach
+
                 </div>
-            @endforeach
+            </div>
 
+            <div class="c-actions">
+                <div class="c-actions__group">
+                    <a href="{{ route('cms:blocks:create') }}" class="o-icon-btn o-icon-btn--primary">
+                        <div class="o-icon-btn__wrap">
+                            <div class="o-icon-btn__icon">
+                                <svg>
+                                    <use xlink:href="/argon/images/svgicons.svg#add"></use>
+                                </svg>
+                            </div>
+                            <div class="o-icon-btn__label">Create Block</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
 
