@@ -20,7 +20,7 @@
                 <div class="c-header__title">
                     <h1>Create Page</h1>
                 </div>
-                <div class="c-tab__nav js-tabs-nav">
+                <div class="c-header__nav c-tab__nav js-tabs-nav">
                     <ul>
                         @foreach($tabNav as $tab)
                         <li>
@@ -38,178 +38,217 @@
             <div class="c-tab-panel__list js-tabs-list">
                 <div class="c-tab-panel active" data-tab="attributes">
                     <main class="c-tab-panel__container c-container">
-                        <div class="c-tab-panel__inner-container l-full">
-                            <h2>Attributes</h2>
-                            <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="name">Name*</label>
-                                        <input type="text" id="name" name="name" value="{{ old('name') }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                        <div class="c-actions__container">
+                            <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                <h2>Attributes</h2>
+                                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="name">Name*</label>
+                                            <input type="text" id="name" name="name" value="{{ old('name') }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="name">{{ getError($errors, 'name') }}</label>
                                             </div>
                                         </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="name">{{ getError($errors, 'name') }}</label>
+                                    </div>
+                                </div>
+
+                                <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="slug">URL Slug*</label>
+                                            <input type="text" id="slug" name="slug" value="{{ old('slug') }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="slug">{{ getError($errors, 'slug') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="o-form__group {{ hasError($errors, 'status') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="status1">Published</label>
+                                        </div>
+                                        <div></div>
+                                        <div class="o-form__list">
+
+                                            <div class="o-radio">
+                                                <label>
+                                                    <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
+                                                    <span></span>
+                                                </label>
+                                                <label for="status1">Yes</label>
+                                            </div>
+
+                                            <div class="o-radio">
+                                                <label>
+                                                    <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
+                                                    <span></span>
+                                                </label>
+                                                <label for="status0">No</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="roles">{{ getError($errors, 'status') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <h3>301 Redirects</h3>
+
+                                <div class="o-form__group">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="redirect-url" class="required">Enter redirect URL</label>
+                                            <input type="text" id="redirect-url" name="redirect_url" value="{{ old('redirect_url') }}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="slug">URL Slug*</label>
-                                        <input type="text" id="slug" name="slug" value="{{ old('slug') }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-icon-btn">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#cross"></use>
+                                                </svg>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-icon-btn__label">Cancel</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-publish js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
                                             </div>
+                                            <div class="o-icon-btn__label">Save</div>
                                         </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="slug">{{ getError($errors, 'slug') }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="o-form__group {{ hasError($errors, 'status') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="status1">Published</label>
-                                    </div>
-                                    <div></div>
-                                    <div class="o-form__list">
-
-                                        <div class="o-radio">
-                                            <label>
-                                                <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
-                                                <span></span>
-                                            </label>
-                                            <label for="status1">Yes</label>
-                                        </div>
-
-                                        <div class="o-radio">
-                                            <label>
-                                                <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
-                                                <span></span>
-                                            </label>
-                                            <label for="status0">No</label>
-                                        </div>
-
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                            </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                            </div>
-                                        </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="roles">{{ getError($errors, 'status') }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <h3>301 Redirects</h3>
-
-                            <div class="o-form__group">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="redirect-url" class="required">Enter redirect URL</label>
-                                        <input type="text" id="redirect-url" name="redirect_url" value="{{ old('redirect_url') }}">
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Cancel</a>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
                 </div>
                 <div class="c-tab-panel" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
-                        <div class="js-page-edit"></div>
-                    </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Cancel</a>
-                                    </div>
-                                    <div>
-                                        <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save</button>
-                                    </div>
+                        <div class="c-actions__container">
+                            <div class="c-actions__content">
+                                <div class="js-page-edit"></div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-icon-btn">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#cross"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Cancel</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-publish js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save</div>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </footer>
+                    </main>
                 </div>
 
                  @if(!$groups->isEmpty())
                     @foreach($groups as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-tab-panel__inner-container l-full">
-                                    <h2>{{ $group->name }}</h2>
-                                    <script>
-                                        window.groups.push({
-                                            id: '{{$group->id}}',
-                                            isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                            isRendering: false,
-                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                            name: '{{ $group->name }}',
-                                            isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                            image: '{{ $group->getSetting("image") }}'
-                                        });
-                                        window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
-                                    </script>
-                                    <div class="js-fields" data-name="{{$group->id}}"></div>
-                                </div>
-                            </main>
-                            <footer class="c-footer__wrapper">
-                                <div class="c-footer c-container c-footer--fixed">
-                                    <div class="c-footer__container">
-                                        <div class="c-footer__buttons">
-                                            <div>
-                                                <button class="o-btn o-btn--sm js-tab-btn" data-tab="page-content">Back</a>
-                                            </div>
-                                            <div>
-                                                <button class="o-btn o-btn--sm o-btn--success js-tab-btn" data-tab="page-content">OK</a>
-                                            </div>
-                                        </div>
+                                <div class="c-actions__container">
+                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                        <h2>{{ $group->name }}</h2>
+                                        <script>
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                                isRendering: false,
+                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                                name: '{{ $group->name }}',
+                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                        </script>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    </div>
 
+                                    <div class="c-actions">
+                                        <div class="c-actions__group">
+                                            <button class="o-icon-btn js-tab-btn" data-tab="page-content">
+                                                <div class="o-icon-btn__wrap">
+                                                    <div class="o-icon-btn__icon">
+                                                        <svg>
+                                                            <use xlink:href="/argon/images/svgicons.svg#cross"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="o-icon-btn__label">Cancel</div>
+                                                </div>
+                                            </button>
+                                            <button class="o-icon-btn o-icon-btn--success js-tab-btn" data-tab="page-content">
+                                                <div class="o-icon-btn__wrap">
+                                                    <div class="o-icon-btn__icon">
+                                                        <svg>
+                                                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="o-icon-btn__label">OK</div>
+                                                </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </footer>
+                            </main>
                         </div>
                     @endforeach
                 @endif

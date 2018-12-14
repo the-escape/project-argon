@@ -3,7 +3,7 @@
         <input type="hidden" :name="renderInputName" value="1">
         <input type="checkbox" checked hidden :name="renderInputName" value="1">
         <div class="c-block__edit">
-            <button class="c-block__edit-btn" @click="editBlock($event)"><span>Edit block content</span></button>
+            <div class="c-block__edit-btn" @click="editBlock($event)"><span>Edit block content</span></div>
             <div class="c-block__image">
                 <img :src="block.image" v-if="block.image" :alt="block.name">
                 <div class="c-block__empty-image" v-if="!block.image">

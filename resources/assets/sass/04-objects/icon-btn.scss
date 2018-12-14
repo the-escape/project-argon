@@ -1,39 +1,104 @@
 .o-icon-btn {
-    display: inline-block;
+    display: block;
     position: relative;
-    width: 35px;
-    height: 35px;
+    height: 48px;
+    padding: 0;
+    text-transform: uppercase;
+    text-align: center;
     text-decoration: none;
-    color: $grey;
-    background-color: transparent;
-    border: 0;
+    color: #fff;
     transition: color $userInactive $easeOut;
-
-    svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 24px;
-        height: 24px;
-        transform: translate(-50%, -50%);
-    }
-
-    > * {
-        pointer-events: none;
-    }
+    cursor: pointer;
 
     &:hover {
-        transition-duration: $userActive;
-        color: $black-light;
+        transition: color $userActive $easeOut;
+        text-decoration: none;
+        color: $grey-dark;
     }
 
-    #{$typegraphyClass} & {
-        margin-top: $paragraphSpace * 2;
+    &__wrap {
+        display: flex;
+        align-items: center;
     }
 
-    &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-        pointer-events: none;
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        width: 48px;
+        border-radius: 50%;
+        background-color: $grey;
+        border: 1px solid $grey;
+        transition: background-color $userInactive $easeOut,
+            border-color $userInactive $easeOut;
+
+        svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+    }
+
+    &:hover &__icon {
+        background-color: transparent;
+    }
+
+    &__label {
+        margin-left: 10px;
+        white-space: nowrap;
+        color: $grey;
+    }
+
+    &--primary:hover {
+        color: $primary;
+    }
+
+    &--primary &__icon {
+        background-color: $primary;
+        border-color: $primary;
+    }
+
+    &--primary &__label {
+        color: $primary;
+    }
+
+    &--danger:hover {
+        color: $danger;
+    }
+
+    &--danger &__icon {
+        background-color: $danger;
+        border-color: $danger;
+    }
+
+    &--danger &__label {
+        color: $danger;
+    }
+
+    &--success:hover {
+        color: $active;
+    }
+
+    &--success &__icon {
+        background-color: $active;
+        border-color: $active;
+    }
+
+    &--success &__label {
+        color: $success;
+    }
+
+    &--light-grey:hover {
+        color: $grey;
+    }
+
+    &--light-grey &__icon {
+        background-color: $grey-light;
+        border-color: $grey-light;
+    }
+
+    &--light-grey &__label {
+        color: $grey;
     }
 }

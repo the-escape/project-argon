@@ -8801,7 +8801,7 @@ var BlockEditvue_type_template_id_f0915a1e_render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "c-block__edit" }, [
       _c(
-        "button",
+        "div",
         {
           staticClass: "c-block__edit-btn",
           on: {
@@ -9951,4 +9951,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3b0a984cd6f89c1ec060.js.map
+//# sourceMappingURL=main.0c66cd9aba2439ecd394.js.map

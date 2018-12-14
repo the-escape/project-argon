@@ -1,4 +1,4 @@
-a{
+a {
     background-color: transparent;
     color: $link-color;
     text-decoration: $link-decoration;
@@ -6,9 +6,17 @@ a{
     transition: color $userInactive $easeOut;
 
     &:hover,
-    &:focus{
+    &:focus {
         color: $link-hover;
         text-decoration: $link-hover-decoration;
         transition: color $userActive $easeOut;
+    }
+}
+
+.o-link {
+    &,
+    &:hover,
+    &:focus {
+        text-decoration: underline;
     }
 }

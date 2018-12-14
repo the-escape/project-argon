@@ -6,7 +6,7 @@
                 {{> page-localisation-dropdown}}
             </div>
         </div>
-        <div class="c-tab__nav js-tabs-nav">
+        <div class="c-header__nav c-tab__nav js-tabs-nav">
             <ul>
                 <li>
                     <button class="c-tab__btn active" data-tab="first">
@@ -23,32 +23,57 @@
                     </button>
                 </li>
             </ul>
+
+            <div class="c-header__btns">
+                <a href="#" class="o-link">View page</a>
+            </div>
         </div>
     </header>
 
     <div class="c-tab-panel__list js-tabs-list">
         <div class="c-tab-panel active" data-tab="first">
             <main class="c-tab-panel__container c-container">
-                {{> edit-edit-vue}}
-            </main>
-            <footer class="c-footer__wrapper">
-                <div class="c-footer c-container">
-                    <div class="c-footer__container">
+                <div class="c-actions__container">
+                    <div class="c-actions__content">
+                        {{> edit-edit-vue}}
+                    </div>
 
-                        <div class="c-footer__buttons">
-                            <div>
-                                <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
-                                <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
-                            </div>
-                            <div>
-                            <button type="submit" class="o-btn o-btn--sm o-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
-                            <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
-                            </div>
+                    <div class="c-actions">
+                        <div class="c-actions__group">
+                            <button type="submit" class="o-icon-btn o-icon-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">
+                                <div class="o-icon-btn__wrap">
+                                    <div class="o-icon-btn__icon">
+                                        <svg>
+                                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="o-icon-btn__label">Save changes</div>
+                                </div>
+                            </button>
+                            <a href="#" class="o-icon-btn preview-page" >
+                                <div class="o-icon-btn__wrap">
+                                    <div class="o-icon-btn__icon">
+                                        <svg>
+                                            <use xlink:href="/argon/images/svgicons.svg#see"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="o-icon-btn__label">Preview changes</div>
+                                </div>
+                            </a>
+                            <button type="submit" class="o-icon-btn o-icon-btn--success save-revision js-save">
+                                <div class="o-icon-btn__wrap">
+                                    <div class="o-icon-btn__icon">
+                                        <svg>
+                                            <use xlink:href="/argon/images/svgicons.svg#upload"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="o-icon-btn__label">Save &amp; publish</div>
+                                </div>
+                            </button>
                         </div>
-
                     </div>
                 </div>
-            </footer>
+            </main>
         </div>
         <div class="c-tab-panel" data-tab="second">
             <main class="c-tab-panel__container c-container">

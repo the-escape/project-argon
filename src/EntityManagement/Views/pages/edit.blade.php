@@ -26,18 +26,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             <header class="c-header c-container">
                 <div class="c-header__title">
                     <div class="c-header__local-container">
-                        <h1>Editing {{$page->name}}</h1>
-
-                        <div class="c-header__btns">
-                            @foreach ($page->getLocalisations() as $l)
-                                @if ($l->getId() == $localisation->getId())
-                                    <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-btn o-btn--sm o-btn--primary" target="_blank">View page</a>
-                                @endif
-                            @endforeach
-                        </div>
+                        <h1>{{$page->name}}</h1>
                     </div>
                 </div>
-                <div class="c-tab__nav js-tabs-nav">
+                <div class="c-header__nav c-tab__nav js-tabs-nav">
                     <ul>
                         @foreach($tabNav as $tab)
                         <li>
@@ -49,264 +41,329 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                         </li>
                         @endforeach
                     </ul>
+
+                    <div class="c-header__btns">
+                        @foreach ($page->getLocalisations() as $l)
+                            @if ($l->getId() == $localisation->getId())
+                                <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-link" target="_blank">View page</a>
+                            @endif
+                        @endforeach
+                    </div>
                 </div>
             </header>
 
             <div class="c-tab-panel__list js-tabs-list">
                 <div class="c-tab-panel active" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
-                        <div class="js-page-edit"></div>
-                    </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
+                        <div class="c-actions__container">
+                            <div class="c-actions__content">
+                                <div class="js-page-edit"></div>
+                            </div>
 
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
-                                        <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
-                                    </div>
-                                    <div>
-                                    <button type="submit" class="o-btn o-btn--sm o-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
-                                    <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
-                                    </div>
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save changes</div>
+                                        </div>
+                                    </button>
+                                    <a href="#" class="o-icon-btn preview-page" data-preview-id="{{ $currentRevision->id }}">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#see"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Preview changes</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-revision js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#upload"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save &amp; publish</div>
+                                        </div>
+                                    </button>
                                 </div>
-
                             </div>
                         </div>
-                    </footer>
+                    </main>
                 </div>
                 <div class="c-tab-panel" data-tab="attributes">
                     <main class="c-tab-panel__container c-container">
-                        <div class="c-tab-panel__inner-container l-full">
-                            <h2>Attributes</h2>
+                        <div class="c-actions__container">
+                            <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                <h2>Attributes</h2>
 
-                            <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="name" class="required">Name*</label>
-                                        <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                            </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                            </div>
+                                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="name" class="required">Name*</label>
+                                            <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
                                         </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="name">{{ getError($errors, 'name') }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="slug" class="required">URL Slug*</label>
-                                        <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="name">{{ getError($errors, 'name') }}</label>
                                             </div>
-                                        </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="slug">{{ getError($errors, 'slug') }}</label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="o-form__group {{ hasError($errors, 'status') ? 'has-error' : '' }}">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="status1">Published</label>
-                                        <div class="o-form__list">
-                                            <div class="o-radio">
-                                                <label>
-                                                    <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
-                                                    <span></span>
-                                                </label>
-                                                <label for="status1">Yes</label>
-                                            </div>
-
-                                            <div class="o-radio">
-                                                <label>
-                                                    <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
-                                                    <span></span>
-                                                </label>
-                                                <label for="status0">No</label>
-                                            </div>
+                                <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="slug" class="required">URL Slug*</label>
+                                            <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
                                         </div>
-                                    </div>
-                                    <div class="o-form-status__message">
-                                        <div class="o-form-status__icon">
-                                            <div class="o-form-status__icon--error">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
                                             </div>
-                                            <div class="o-form-status__icon--success">
-                                                <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="slug">{{ getError($errors, 'slug') }}</label>
                                             </div>
-                                        </div>
-                                        <div class="o-form-status__message-bar">
-                                            <label for="status1">{{ getError($errors, 'status') }}</label>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <hr>
+                                <div class="o-form__group {{ hasError($errors, 'status') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="status1">Published</label>
+                                            <div class="o-form__list">
+                                                <div class="o-radio">
+                                                    <label>
+                                                        <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
+                                                        <span></span>
+                                                    </label>
+                                                    <label for="status1">Yes</label>
+                                                </div>
 
-                            <h3>301 Redirects</h3>
-                            @if($page->getLocalisations()->count() > 1)
+                                                <div class="o-radio">
+                                                    <label>
+                                                        <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
+                                                        <span></span>
+                                                    </label>
+                                                    <label for="status0">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="status1">{{ getError($errors, 'status') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <h3>301 Redirects</h3>
+                                @if($page->getLocalisations()->count() > 1)
+                                    <div class="o-form__group">
+                                        <div class="o-form-status">
+                                            <div class="o-form-status__input">
+                                                <label for="locale-redirect">Choose a locale redirect</label>
+                                                <select name="locale-redirect" id="locale-redirect" class="field-poputale js-select" data-target="#redirect-url">
+                                                    <option placeholder></option>
+                                                    @foreach ($page->getLocalisations() as $l)
+                                                        @if ($l->getId() != $localisation->getId())
+                                                            <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$defaultFronEndPageUrl}}@else{{$defaultFronEndPageUrl}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="o-form__group">
                                     <div class="o-form-status">
                                         <div class="o-form-status__input">
-                                            <label for="locale-redirect">Choose a locale redirect</label>
-                                            <select name="locale-redirect" id="locale-redirect" class="field-poputale js-select" data-target="#redirect-url">
-                                                <option placeholder></option>
-                                                @foreach ($page->getLocalisations() as $l)
-                                                    @if ($l->getId() != $localisation->getId())
-                                                        <option value="@if($localSlug = $l->getLocale()->getSlug()){{'/'.$localSlug.$defaultFronEndPageUrl}}@else{{$defaultFronEndPageUrl}}@endif">@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif</option>
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                            <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
+                                            <input type="text" id="redirect-url" name="redirect_url" value="{{ old('redirect_url', $fronEndPage->getRedirect($localisation->getLocale()->getId())) }}">
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            <div class="o-form__group">
-                                <div class="o-form-status">
-                                    <div class="o-form-status__input">
-                                        <label for="redirect-url" class="required">@if($page->getLocalisations()->count() > 1) Or enter @else Enter @endif redirect URL</label>
-                                        <input type="text" id="redirect-url" name="redirect_url" value="{{ old('redirect_url', $fronEndPage->getRedirect($localisation->getLocale()->getId())) }}">
-                                    </div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save changes</div>
+                                        </div>
+                                    </button>
+                                    <a href="#" class="o-icon-btn preview-page" data-preview-id="{{ $currentRevision->id }}">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#see"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Preview changes</div>
+                                        </div>
+                                    </a>
+                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-revision js-save">
+                                        <div class="o-icon-btn__wrap">
+                                            <div class="o-icon-btn__icon">
+                                                <svg>
+                                                    <use xlink:href="/argon/images/svgicons.svg#upload"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="o-icon-btn__label">Save &amp; publish</div>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </main>
-                    <footer class="c-footer__wrapper">
-                        <div class="c-footer c-container c-footer--fixed">
-                            <div class="c-footer__container">
-
-                                <div class="c-footer__buttons">
-                                    <div>
-                                        <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
-                                        <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
-                                    </div>
-                                    <div>
-                                    <button type="submit" class="o-btn o-btn--sm o-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
-                                    <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </footer>
                 </div>
 
                 @if($revisionsTotal = $revisions->total())
                     <div class="c-tab-panel" data-tab="revisions">
                         <main class="c-tab-panel__container c-container">
-                            <div class="c-tab-panel__inner-container l-full">
-                                <h2>Revisions ({{ $revisionsTotal }})</h2>
+                            <div class="c-actions__container">
+                                <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                    <h2>Revisions ({{ $revisionsTotal }})</h2>
 
-                                @if($currentRevision->id != $publishedRevision->id)
-                                    <span class="accordion-header-details" style="position: relative; top: -2px; float: right; font-size:83%;">
-                                        You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.
-                                        <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
-                                    </span>
-                                @endif
-
-                                <div class="alert alert-info" role="alert">
                                     @if($currentRevision->id != $publishedRevision->id)
-                                        <p>You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.</p>
-                                        <p>This is not currently published revision.</p>
+                                        <span class="accordion-header-details" style="position: relative; top: -2px; float: right; font-size:83%;">
+                                            You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.
+                                            <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                                        </span>
                                     @endif
 
-                                    <p>Currently published revision ID: {{ $publishedRevision->id }}, created at {{ $publishedRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$publishedRevision->userWithTrashed->name }}.</p>
+                                    <div class="alert alert-info" role="alert">
+                                        @if($currentRevision->id != $publishedRevision->id)
+                                            <p>You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.</p>
+                                            <p>This is not currently published revision.</p>
+                                        @endif
 
-                                    @if($currentRevision->id != $publishedRevision->id)
-                                        <p>
-                                            <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
-                                        </p>
+                                        <p>Currently published revision ID: {{ $publishedRevision->id }}, created at {{ $publishedRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$publishedRevision->userWithTrashed->name }}.</p>
+
+                                        @if($currentRevision->id != $publishedRevision->id)
+                                            <p>
+                                                <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                                            </p>
+                                        @endif
+                                    </div>
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Created At</th>
+                                            <th>Created By</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach ($revisions as $revision)
+                                            <tr>
+                                                <td>{{ $revision->id }}</td>
+                                                <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
+                                                <td>{{ $revision->user->name }}</td>
+                                                <td>
+                                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
+
+                                                    <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
+
+                                                    <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+
+                                    @if($revisionsPagination['pages_count'] > 1)
+
+                                        <?php
+                                        $revisionsPresenter = paginationPresenter($revisionsPagination, '...', 1, 2, function($element, $hellip, $current_page_number)
+                                        {
+                                            if ($element != $hellip)
+                                            {
+                                                return '<li class="page-item class="'.(($element == $current_page_number) ? "active" : "").'"><a class="page-link" href="'.getUrlWithQueryString(['revisions'=>$element]).'">'.$element.'</a></li>';
+                                            }
+                                            return '<li class="page-item"><span class="page-link">'.$element.'</span></li>';
+                                        });
+                                        ?>
+
+                                        <nav>
+                                            <ul class="pagination pagination-sm">
+                                                <li class="page-item @if(!$revisionsPagination['page_prev']) disabled @endif">
+                                                    @if($revisionsPagination['page_prev'])
+                                                        <a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_prev']])  }}" tabindex="-1">Previous</a>
+                                                    @else
+                                                        <span class="page-link">Previous</span>
+                                                    @endif
+                                                </li>
+
+                                                @foreach ($revisionsPresenter as $li)
+                                                    {!! $li !!}
+                                                @endforeach
+
+                                                <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
+                                                    @if($revisionsPagination['page_next'])
+                                                        <a class="page-link" href=" {{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_next']])  }}">Next</a>
+                                                    @else
+                                                        <span class="page-link">Next</span>
+                                                    @endif
+                                                </li>
+                                            </ul>
+                                        </nav>
+
                                     @endif
                                 </div>
 
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Created At</th>
-                                        <th>Created By</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($revisions as $revision)
-                                        <tr>
-                                            <td>{{ $revision->id }}</td>
-                                            <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
-                                            <td>{{ $revision->user->name }}</td>
-                                            <td>
-                                                <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
-
-                                                <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
-
-                                                <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-
-                                @if($revisionsPagination['pages_count'] > 1)
-
-                                    <?php
-                                    $revisionsPresenter = paginationPresenter($revisionsPagination, '...', 1, 2, function($element, $hellip, $current_page_number)
-                                    {
-                                        if ($element != $hellip)
-                                        {
-                                            return '<li class="page-item class="'.(($element == $current_page_number) ? "active" : "").'"><a class="page-link" href="'.getUrlWithQueryString(['revisions'=>$element]).'">'.$element.'</a></li>';
-                                        }
-                                        return '<li class="page-item"><span class="page-link">'.$element.'</span></li>';
-                                    });
-                                    ?>
-
-                                    <nav>
-                                        <ul class="pagination pagination-sm">
-                                            <li class="page-item @if(!$revisionsPagination['page_prev']) disabled @endif">
-                                                @if($revisionsPagination['page_prev'])
-                                                    <a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_prev']])  }}" tabindex="-1">Previous</a>
-                                                @else
-                                                    <span class="page-link">Previous</span>
-                                                @endif
-                                            </li>
-
-                                            @foreach ($revisionsPresenter as $li)
-                                                {!! $li !!}
-                                            @endforeach
-
-                                            <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
-                                                @if($revisionsPagination['page_next'])
-                                                    <a class="page-link" href=" {{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_next']])  }}">Next</a>
-                                                @else
-                                                    <span class="page-link">Next</span>
-                                                @endif
-                                            </li>
-                                        </ul>
-                                    </nav>
-
-                                @endif
+                                <div class="c-actions">
+                                    <div class="c-actions__group">
+                                        <button class="o-icon-btn o-icon-btn--primary js-tab-btn" data-tab="page-content">
+                                            <div class="o-icon-btn__wrap">
+                                                <div class="o-icon-btn__icon">
+                                                    <svg>
+                                                        <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                                                    </svg>
+                                                </div>
+                                                <div class="o-icon-btn__label">Back</div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </back>
                             </div>
                         </main>
                     </div>
@@ -316,41 +373,43 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     @foreach($page->getGroups($localisation->getLocaleId()) as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-tab-panel__inner-container l-full">
-                                    <h2>{{ $group->name }}</h2>
-                                    <?php
-                                        $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                    ?>
-                                    <script>
-                                        window.groups.push({
-                                            id: '{{$group->id}}',
-                                            isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                            isRendering: {{ $isRendering }},
-                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                            name: '{{ $group->name }}',
-                                            isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                            image: '{{ $group->getSetting("image") }}'
-                                        });
-                                        window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
-                                    </script>
-                                    <div class="js-fields" data-name="{{$group->id}}"></div>
-                                </div>
-                            </main>
-                            <footer class="c-footer__wrapper">
-                                <div class="c-footer c-container c-footer--fixed">
-                                    <div class="c-footer__container">
-                                        <div class="c-footer__buttons">
-                                            <div>
+                                <div class="c-actions__container">
+                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                        <h2>{{ $group->name }}</h2>
+                                        <?php
+                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                        ?>
+                                        <script>
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                                isRendering: {{ $isRendering }},
+                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                                name: '{{ $group->name }}',
+                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
+                                        </script>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    </div>
 
-                                            </div>
-                                            <div>
-                                                <button class="o-btn o-btn--sm js-tab-btn" data-tab="page-content">OK</a>
-                                            </div>
+                                    <div class="c-actions">
+                                        <div class="c-actions__group">
+                                            <button class="o-icon-btn o-icon-btn--success js-tab-btn" data-tab="page-content">
+                                                <div class="o-icon-btn__wrap">
+                                                    <div class="o-icon-btn__icon">
+                                                        <svg>
+                                                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="o-icon-btn__label">ok</div>
+                                                </div>
+                                            </button>
                                         </div>
-
                                     </div>
                                 </div>
-                            </footer>
+                            </main>
                         </div>
                     @endforeach
                 @endif

@@ -328,6 +328,9 @@ a {
     -webkit-transition: color 400ms cubic-bezier(0.3, 0.15, 0.18, 1);
     transition: color 400ms cubic-bezier(0.3, 0.15, 0.18, 1); }
 
+.o-link, .o-link:hover, .o-link:focus {
+  text-decoration: underline; }
+
 blockquote,
 q {
   quotes: none;
@@ -462,6 +465,8 @@ button.o-btn {
 
 body {
   padding: 0 15px; }
+
+
 
 
 
