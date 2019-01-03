@@ -64,7 +64,28 @@ class PagesController extends BaseController
             return $entity->parent_id == null;
         });
 
-        return view('argon::pages.manage', ['types' => $types, 'typesJson' => $typesJson, 'entities' => $entities, 'locales' => $locales]);
+        $sitemapJson = json_encode($this->collectionToArray($entities));
+
+        return view('argon::pages.manage', ['types' => $types, 'typesJson' => $typesJson, 'entities' => $entities, 'locales' => $locales, 'sitemapJson' => $sitemapJson]);
+    }
+
+    private function collectionToArray($entities){
+        $out = [];
+        foreach($entities as $el){
+            $entity = [
+                "id" => $el->id,
+                "title" => $el->name,
+                "typeName" => $el->type->name,
+                "status" => (int)$el->status,
+                "children" => []
+            ];
+
+            if($el->hasChildren()){
+                $entity["children"] = $this->collectionToArray($el->getChildren());
+            }
+            $out[] = $entity;
+        }
+        return $out;
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)

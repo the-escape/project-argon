@@ -13,8 +13,12 @@
     </header>
 
     <main class="c-container c-container--main">
-
-        <div class="o-tree js-tree" data-types="{{ $typesJson }}">
+        <script>
+            window.sitemap = {!! $sitemapJson !!};
+            window.types = {!! $typesJson !!};
+        </script>
+        <div class="js-site-tree"></div>
+        {{-- <div class="o-tree js-tree" data-types="{{ $typesJson }}">
             <div class="o-tree__header">
                 <div class="o-tree__search o-form">
                     <div class="o-form-icon">
@@ -37,26 +41,9 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </main>
-
-    <footer class="c-footer__wrapper">
-        <div class="c-footer c-container c-footer--fixed">
-            <div class="c-footer__container">
-
-                <div class="o-form__help-text l-halves">
-                    <div>
-                        <p>Right click on each page to see an options menu.</p>
-                    </div>
-                    <div>
-                        <p class="h-text--right">Alt click on each page to open edit in new tab.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </footer>
 
 @stop
 

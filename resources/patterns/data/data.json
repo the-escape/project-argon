@@ -1,12 +1,348 @@
 {
-	"title": "title test",
-	"subtitle": "subtitle",
-	"btnText": "btn title",
-	"class": "",
-	"wrapperIcon": "icon-border",
-	"iconClass": "",
-	"icon": "files",
-	"link": "#link",
-	"image": "/images/tmp-oil-rig.png",
-	"content": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus laudantium amet fugiat excepturi. Ea placeat, fuga id officiis omnis deleniti totam facere recusandae. Ullam quia amet magni eaque, omnis tempora!</p>"
+    "title": "title test",
+    "subtitle": "subtitle",
+    "btnText": "btn title",
+    "class": "",
+    "wrapperIcon": "icon-border",
+    "iconClass": "",
+    "icon": "files",
+    "link": "#link",
+    "image": "/images/tmp-oil-rig.png",
+    "content": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus laudantium amet fugiat excepturi. Ea placeat, fuga id officiis omnis deleniti totam facere recusandae. Ullam quia amet magni eaque, omnis tempora!</p>",
+    "listHeaders": [
+        {
+            "label": "Title",
+            "isOrdering": true,
+            "isDesc": true,
+            "canOrder": true
+        },
+        {
+            "label": "Author",
+            "isOrdering": true,
+            "isDesc": false,
+            "canOrder": true
+        },
+        {
+            "label": "Date Created",
+            "canOrder": true
+        },
+        {
+            "label": "Status",
+            "canOrder": true
+        },
+        {
+            "label": "Actions",
+            "canOrder": false
+        },
+        {
+            "label": "",
+            "canOrder": false
+        }
+    ],
+    "listData": [
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 1",
+            "author": "author 1",
+            "publishDate": "01 Nov 2017",
+            "published": true,
+            "openForm": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 2",
+            "author": "author 2",
+            "publishDate": "03 Nov 2017",
+            "published": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 3",
+            "author": "author 3",
+            "publishDate": "05 Nov 2017",
+            "published": false
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "unique name",
+            "author": "some person",
+            "publishDate": "05 Feb 2018",
+            "published": false
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "Design Systems",
+            "author": "Alla kholmatova",
+            "publishDate": "05 Mar 2016",
+            "published": false
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 5",
+            "author": "author 5",
+            "publishDate": "01 Jan 2017",
+            "published": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 6",
+            "author": "author 6",
+            "publishDate": "03 Fed 2017",
+            "published": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 7",
+            "author": "author 7",
+            "publishDate": "05 Mar 2017",
+            "published": false
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 8",
+            "author": "author 8",
+            "publishDate": "01 Apr 2017",
+            "published": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 9",
+            "author": "author 9",
+            "publishDate": "03 Jun 2017",
+            "published": true
+        },
+        {
+            "titleImg": "/images/user.png",
+            "title": "item 10",
+            "author": "author 1",
+            "publishDate": "05 Jul 2017",
+            "published": false
+        }
+    ],
+    "listHeadersSubItems": [
+        {
+            "label": "Title",
+            "canOrder": false
+        },
+        {
+            "label": "Author",
+            "canOrder": false
+        },
+        {
+            "label": "Date Created",
+            "canOrder": false
+        },
+        {
+            "label": "Status",
+            "canOrder": false
+        },
+        {
+            "label": "Actions",
+            "canOrder": false
+        },
+        {
+            "label": "",
+            "canOrder": false
+        },
+        {
+            "label": "",
+            "canOrder": false
+        }
+    ],
+    "listDataSubItems": [
+        {
+            "isInSubItemList": true,
+            "title": "item 1",
+            "author": "author 1",
+            "publishDate": "01 Nov 2017",
+            "published": true,
+            "openForm": true,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 2",
+            "author": "author 2",
+            "publishDate": "03 Nov 2017",
+            "published": true,
+            "hasChildren1": true,
+            "children1Active": true,
+            "draggable": true,
+            "children1": [
+                {
+                    "isInSubItemList": true,
+                    "title": "Design Systems",
+                    "author": "Alla kholmatova",
+                    "publishDate": "05 Mar 2016",
+                    "published": false,
+                    "hasChildren2": true,
+                    "children2Active": true,
+                    "draggable": true,
+                    "children2": [
+                        {
+                            "isInSubItemList": true,
+                            "title": "item 7",
+                            "author": "author 7",
+                            "publishDate": "05 Mar 2017",
+                            "published": false,
+                            "hasChildren3": false,
+                            "draggable": true
+                        },
+                        {
+                            "isInSubItemList": true,
+                            "title": "item 8",
+                            "author": "author 8",
+                            "publishDate": "01 Apr 2017",
+                            "published": true,
+                            "hasChildren3": true,
+                            "children3Active": true,
+                            "draggable": true,
+                            "children3": [
+                                {
+                                    "isInSubItemList": true,
+                                    "title": "item 7",
+                                    "author": "author 7",
+                                    "publishDate": "05 Mar 2017",
+                                    "published": false,
+                                    "hasChildren4": false,
+                                    "draggable": true
+                                },
+                                {
+                                    "isInSubItemList": true,
+                                    "title": "item 8",
+                                    "author": "author 8",
+                                    "publishDate": "01 Apr 2017",
+                                    "published": true,
+                                    "hasChildren4": false,
+                                    "draggable": true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "isInSubItemList": true,
+                    "title": "item 5",
+                    "author": "author 5",
+                    "publishDate": "01 Jan 2017",
+                    "published": true,
+                    "hasChildren2": true,
+                    "children2Active": false,
+                    "draggable": true,
+                    "children2": [
+                        {
+                            "isInSubItemList": true,
+                            "title": "item 7",
+                            "author": "author 7",
+                            "publishDate": "05 Mar 2017",
+                            "published": false,
+                            "hasChildren3": false,
+                            "draggable": true
+                        },
+                        {
+                            "isInSubItemList": true,
+                            "title": "item 8",
+                            "author": "author 8",
+                            "publishDate": "01 Apr 2017",
+                            "published": true,
+                            "hasChildren3": false,
+                            "draggable": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 3",
+            "author": "author 3",
+            "publishDate": "05 Nov 2017",
+            "published": false,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "unique name",
+            "author": "some person",
+            "publishDate": "05 Feb 2018",
+            "published": false,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "Design Systems",
+            "author": "Alla kholmatova",
+            "publishDate": "05 Mar 2016",
+            "published": false,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 5",
+            "author": "author 5",
+            "publishDate": "01 Jan 2017",
+            "published": true,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 6",
+            "author": "author 6",
+            "publishDate": "03 Fed 2017",
+            "published": true,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 7",
+            "author": "author 7",
+            "publishDate": "05 Mar 2017",
+            "published": false,
+            "hasChildren1": true,
+            "draggable": true,
+            "children1": [
+                {
+                    "isInSubItemList": true,
+                    "title": "Design Systems",
+                    "author": "Alla kholmatova",
+                    "publishDate": "05 Mar 2016",
+                    "published": false,
+                    "hasChildren2": false,
+                    "draggable": true
+                }
+            ]
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 8",
+            "author": "author 8",
+            "publishDate": "01 Apr 2017",
+            "published": true,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 9",
+            "author": "author 9",
+            "publishDate": "03 Jun 2017",
+            "published": true,
+            "hasChildren1": false,
+            "draggable": true
+        },
+        {
+            "isInSubItemList": true,
+            "title": "item 10",
+            "author": "author 1",
+            "publishDate": "05 Jul 2017",
+            "published": false,
+            "hasChildren1": false,
+            "draggable": true
+        }
+    ]
 }

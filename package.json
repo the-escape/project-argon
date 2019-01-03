@@ -194,18 +194,19 @@
         "loadjs": "^3.5.4",
         "lodash-webpack-plugin": "^0.11.5",
         "mathsass": "^0.10.1",
+        "noty": "^3.2.0-beta",
         "promise-polyfill": "^8.0.0",
         "rxjs": "^6.2.0",
         "svg4everybody": "^2.1.9",
         "vue": "^2.5.17",
+        "vue-cropperjs": "^3.0.0",
+        "vue-draggable-nested-tree": "^2.2.2",
         "vue-filepond": "^4.0.1",
-        "vuebar": "0.0.20",
         "vue-flatpickr-component": "^8.0.0",
+        "vuebar": "0.0.20",
         "vuedraggable": "^2.16.0",
         "vuex": "^3.0.1",
         "webpack-bundle-analyzer": "^2.13.1",
-        "whatwg-fetch": "^2.0.4",
-        "vue-cropperjs": "^3.0.0",
-        "noty": "^3.2.0-beta"
+        "whatwg-fetch": "^2.0.4"
     }
 }

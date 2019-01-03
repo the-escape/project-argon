@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 208 modules ***!
+  !*** ./resources/assets/js/src/index.js + 231 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -447,6 +447,8 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/noty/lib/noty.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/operators/index.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tree-helper/dist/tree-helper.esm.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js (<- Module uses injected variables (process)) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue/dist/vue.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuebar/vuebar.js (<- Module is not an ECMAScript module) */
@@ -3060,211 +3062,6 @@ function findAndReset(e) {
   });
   form.submit();
 }
-// CONCATENATED MODULE: ./resources/assets/js/src/ui/tree.js
-
-
-
-var Tree = {
-  el: null,
-  input: null,
-  treeContainer: null,
-  tree: null,
-  id: 0,
-  viewItem: function viewItem(_) {},
-  editItem: function editItem(_) {},
-  addItem: function addItem(_) {},
-  deleteItem: function deleteItem(_) {},
-  editItemNewTab: function editItemNewTab(_) {}
-};
-var count = 0;
-function trees() {
-  var treeEls = document.querySelectorAll('.js-tree');
-  var trees = Array.from(treeEls);
-  trees = trees.map(function (el) {
-    return tree_tree(el);
-  });
-  return trees;
-}
-function tree_tree(el) {
-  var Obj = Object.create(Tree);
-  count++;
-  tree_init.call(Obj, el, count);
-  return Obj;
-}
-
-function tree_init(el, id) {
-  if (!el) {
-    return;
-  }
-
-  this.el = el;
-  this.id = id;
-  this.input = this.el.querySelector('.js-tree-search');
-  this.treeContainer = this.el.querySelector('.js-tree-container');
-  this.viewItem = viewItem.bind(this);
-  this.editItem = editItem.bind(this);
-  this.editItemNewTab = editItemNewTab.bind(this);
-  this.addItem = tree_addItem.bind(this);
-  this.deleteItem = deleteItem.bind(this);
-  this.typesSubMenu = setupTypesSubMenu.call(this);
-  createTree.call(this);
-  tree_setupEvents.call(this);
-}
-
-function createTree() {
-  var _this = this;
-
-  this.tree = $(this.treeContainer).jstree({
-    plugins: ['contextmenu', 'dnd', 'search', 'state'],
-    core: {
-      check_callback: function check_callback(operation, _, nodeParent) {
-        return !(operation === 'move_node' && nodeParent.parent === null);
-      },
-      themes: {
-        stripes: true
-      }
-    },
-    contextmenu: {
-      items: {
-        edit: {
-          _disabled: false,
-          label: 'Edit',
-          title: 'Edit Page',
-          separator_after: true,
-          icon: 'o-tree__icon o-tree__icon--edit',
-          action: this.editItem
-        },
-        view: {
-          _disabled: false,
-          label: 'View',
-          title: 'View Page',
-          icon: 'o-tree__icon o-tree__icon--view',
-          action: this.viewItem
-        },
-        add: {
-          _disabled: false,
-          label: 'Add new page',
-          title: 'Add new page beneath',
-          icon: 'o-tree__icon o-tree__icon--children',
-          submenu: this.typesSubMenu // action: this.addItem
-
-        },
-        remove: {
-          _disabled: function _disabled(el) {
-            // TODO TomH please refactor :)
-            return !el.reference.parent()[0].dataset.deletable;
-          },
-          label: 'Delete',
-          title: 'Delete Page',
-          icon: 'o-tree__icon o-tree__icon--delete',
-          action: this.deleteItem,
-          separator_before: true
-        }
-      }
-    },
-    dnd: {
-      copy: false,
-      inside_pos: 'last'
-    },
-    state: {
-      key: 'jstree-' + this.id
-    }
-  });
-  this.tree.on('select_node.jstree', function (_, data) {
-    if (data && data.event && data.event.altKey) {
-      editItemNewTab(data.node);
-    }
-  });
-  this.tree.on('dblclick.jstree', function (evt) {
-    var node = _this.tree.jstree(true).get_node(event.target);
-
-    var id = argon.helpers.getIdFromNodeIdString(node.id);
-    window.location.href = argon.root() + '/pages/' + id + '/edit';
-  });
-}
-
-function editItem(data) {
-  var obj = this.tree.jstree(true).get_node(data.reference);
-  var id = argon.helpers.getIdFromNodeIdString(obj.id);
-  console.log(obj, 'edit page');
-  window.location.href = argon.root() + '/pages/' + id + '/edit';
-}
-
-function editItemNewTab(node) {
-  var id = argon.helpers.getIdFromNodeIdString(node.id);
-  console.log(node, 'edit page New Window');
-  window.open(argon.root() + '/pages/' + id + '/edit');
-}
-
-function viewItem(data) {
-  var obj = this.tree.jstree(true).get_node(data.reference);
-  var id = argon.helpers.getIdFromNodeIdString(obj.id);
-  console.log(obj, 'view page');
-  window.open(argon.root() + '/pages/' + id + '/preview', '_blank').focus();
-}
-
-function tree_addItem(typeId) {
-  var _this2 = this;
-
-  return function (data) {
-    var obj = _this2.tree.jstree(true).get_node(data.reference);
-
-    var id = argon.helpers.getIdFromNodeIdString(obj.id);
-    console.log(obj, 'add page');
-    window.location.href = argon.root() + '/pages/' + id + '/addchild/' + typeId;
-  };
-}
-
-function deleteItem(data) {
-  var tree = this.tree.jstree(true);
-  var obj = tree.get_node(data.reference);
-  var id = argon.helpers.getIdFromNodeIdString(obj.id);
-  console.log(obj, 'delete page');
-  var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-  if (confirm('Are you sure you want to delete this page?')) {
-    post(argon.root() + '/pages/' + id, {
-      _token: token,
-      _method: 'DELETE'
-    }).then(function (data) {
-      return JSON.parse(data);
-    }).then(function (data) {
-      if (data.success) {
-        tree.delete_node(obj);
-      } else {
-        alert('Page could not be deleted...');
-      }
-    }).catch(function (error) {
-      return console.log(error);
-    });
-  }
-}
-
-function setupTypesSubMenu() {
-  var _this3 = this;
-
-  var typesList = JSON.parse(this.el.dataset.types);
-  var typeListKeys = Object.keys(typesList);
-  return typeListKeys.reduce(function (acc, key) {
-    var type = typesList[key];
-    acc[type.id] = {
-      _disabled: false,
-      label: type.name,
-      title: 'Create new page of type ' + type.name,
-      icon: 'o-tree__icon o-tree__icon--add',
-      action: _this3.addItem(type.id)
-    };
-    return acc;
-  }, {});
-}
-
-function tree_setupEvents() {
-  var _this4 = this;
-
-  Object(_esm5["fromEvent"])(this.input, 'input').pipe(Object(operators["debounceTime"])(100)).subscribe(function () {
-    _this4.tree.jstree(true).search(_this4.input.value);
-  });
-}
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
 var vue = __webpack_require__("./node_modules/vue/dist/vue.js");
 var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
@@ -3838,7 +3635,7 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
     },
     [
       _c("div", { staticClass: "o-confirm-btn__questions" }, [
-        _vm.hideDuplicate
+        _vm.hideDuplicate && !_vm.showAdd
           ? _c("div", { staticClass: "o-confirm-btn" })
           : _vm._e(),
         _vm._v(" "),
@@ -3870,6 +3667,7 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
           "button",
           {
             staticClass: "o-confirm-btn",
+            class: { "o-confirm-btn--fade": _vm.fadeDelete },
             attrs: { title: "Delete" },
             on: {
               click: function($event) {
@@ -3884,7 +3682,52 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
               })
             ])
           ]
-        )
+        ),
+        _vm._v(" "),
+        _vm.showAdd
+          ? _c(
+              "button",
+              {
+                staticClass: "o-confirm-btn",
+                attrs: { title: "Add" },
+                on: {
+                  click: function($event) {
+                    _vm.add($event)
+                  }
+                }
+              },
+              [
+                _c("svg", [
+                  _c("use", {
+                    attrs: { "xlink:href": "/argon/images/svgicons.svg#add" }
+                  })
+                ])
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.showView
+          ? _c(
+              "a",
+              {
+                staticClass: "o-confirm-btn",
+                class: { "o-confirm-btn--fade": !_vm.viewUrl },
+                attrs: { href: _vm.viewUrl, target: "_blank", title: "view" },
+                on: {
+                  click: function($event) {
+                    _vm.view($event)
+                  }
+                }
+              },
+              [
+                _c("svg", [
+                  _c("use", {
+                    attrs: { "xlink:href": "/argon/images/svgicons.svg#see" }
+                  })
+                ])
+              ]
+            )
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "o-confirm-btn__decline" }, [
@@ -3970,8 +3813,18 @@ confirm_btnvue_type_template_id_73a6f08d_render._withStripped = true
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ var confirm_btnvue_type_script_lang_js_ = ({
-  props: ['hideDuplicate', 'isBlock'],
+  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView'],
   data: function data() {
     return {
       confirmDelete: false
@@ -3980,11 +3833,26 @@ confirm_btnvue_type_template_id_73a6f08d_render._withStripped = true
   methods: {
     toggleConfirmDelete: function toggleConfirmDelete(evt) {
       evt.preventDefault();
-      this.confirmDelete = !this.confirmDelete;
+
+      if (this.fadeDelete) {
+        this.$emit('delete');
+      } else {
+        this.confirmDelete = !this.confirmDelete;
+      }
     },
     duplicate: function duplicate(evt) {
       evt.preventDefault();
       this.$emit('duplicate');
+    },
+    add: function add(evt) {
+      evt.preventDefault();
+      this.$emit('add');
+    },
+    view: function view(evt) {
+      if (!this.viewUrl) {
+        evt.preventDefault();
+        this.$emit('view');
+      }
     },
     deleteConfirm: function deleteConfirm(evt) {
       evt.preventDefault();
@@ -9846,7 +9714,828 @@ function setCropperImage(options) {
     cropper_cropper.$on('cropImage', resolve);
   });
 }
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/App.vue?vue&type=template&id=8c54b0cc&
+var Appvue_type_template_id_8c54b0cc_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "o-table o-table--tree o-table--tree-2 l-full" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._l(_vm.rootNodes, function(rootNode) {
+        return _c(
+          "root-row",
+          { key: rootNode.pageID, attrs: { data: rootNode } },
+          [
+            rootNode.children.length
+              ? _c("tree", {
+                  attrs: {
+                    data: rootNode.children,
+                    indent: 45,
+                    space: 0,
+                    crossTree: ""
+                  },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "default",
+                      fn: function(ref) {
+                        var data = ref.data
+                        var store = ref.store
+                        return [
+                          _c("row", { attrs: { data: data, store: store } })
+                        ]
+                      }
+                    }
+                  ])
+                })
+              : _vm._e()
+          ],
+          1
+        )
+      })
+    ],
+    2
+  )
+}
+var Appvue_type_template_id_8c54b0cc_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "o-table__headers" }, [
+      _c("div", { staticClass: "o-table__header" }, [_vm._v("Title")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__header o-table--center" }, [
+        _vm._v("Status")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__header" }, [_vm._v("Actions")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__header" })
+    ])
+  }
+]
+Appvue_type_template_id_8c54b0cc_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/App.vue?vue&type=template&id=8c54b0cc&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/RootRow.vue?vue&type=template&id=5870ccf6&
+var RootRowvue_type_template_id_5870ccf6_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "o-table__row" },
+    [
+      _vm.data.children.length
+        ? _c(
+            "button",
+            {
+              staticClass: "o-table__child-btn",
+              class: { "is-active": _vm.isOpen },
+              on: { click: _vm.toggleOpen }
+            },
+            [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#select" }
+                })
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__data", on: { dblclick: _vm.edit } }, [
+        _vm._v(_vm._s(_vm.data.title))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__data o-table--center" }, [
+        _c("div", {
+          staticClass: "o-status",
+          class: {
+            "o-status--active": _vm.data.status,
+            "o-status--inactive": !_vm.data.status
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "o-table__data o-table--end" },
+        [
+          _c("comfirm-btn", {
+            attrs: {
+              hideDuplicate: "true",
+              showAdd: "true",
+              showView: "true",
+              viewUrl: _vm.viewUrl,
+              "fade-delete": _vm.preventDelete
+            },
+            on: {
+              add: _vm.toggleAddForm,
+              delete: _vm.deleteItem,
+              view: _vm.viewError
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__data" }, [
+        _c(
+          "a",
+          { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
+          [_vm._v("edit post")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.addFormOpen
+        ? _c("add-form", {
+            attrs: { "input-name": _vm.data.id },
+            on: { add: _vm.addItem }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "o-table__children" },
+        [_vm.isOpen ? _vm._t("default") : _vm._e()],
+        2
+      )
+    ],
+    1
+  )
+}
+var RootRowvue_type_template_id_5870ccf6_staticRenderFns = []
+RootRowvue_type_template_id_5870ccf6_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/RootRow.vue?vue&type=template&id=5870ccf6&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/mixins/row.vue?vue&type=script&lang=js&
+
+
+/* harmony default export */ var rowvue_type_script_lang_js_ = ({
+  methods: {
+    toggleAddForm: function toggleAddForm() {
+      this.addFormOpen = !this.addFormOpen;
+    },
+    addItem: function addItem(typeid) {
+      window.location.href = argon.root() + '/pages/' + this.data.id + '/addchild/' + typeid;
+    },
+    deleteItem: function deleteItem() {
+      var _this = this;
+
+      if (this.preventDelete) {
+        var level = this.data._vm && this.data._vm.level || 0;
+
+        if (level === 0) {
+          new noty_default.a({
+            text: "You can't delete the home page",
+            type: 'error'
+          }).show();
+        } else {
+          new noty_default.a({
+            text: "Before you delete this page, move or remove it's child pages",
+            type: 'error'
+          }).show();
+        }
+
+        return;
+      }
+
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      var pageName = this.data.title;
+
+      if (confirm('Are you sure you want to delete this page?')) {
+        post(argon.root() + '/pages/' + this.data.id, {
+          _token: token,
+          _method: 'DELETE'
+        }).then(function (data) {
+          return JSON.parse(data);
+        }).then(function (data) {
+          if (data.success) {
+            new noty_default.a({
+              text: 'Successfully removed ' + pageName,
+              type: 'success'
+            }).show();
+
+            _this.data._vm.store.deleteNode(_this.data);
+          } else {
+            new noty_default.a({
+              text: 'An error occured removing: ' + pageName,
+              type: 'error'
+            }).show();
+          }
+        }).catch(function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    viewError: function viewError() {
+      new noty_default.a({
+        text: "The Page needs to be published before you can view it",
+        type: 'error'
+      }).show();
+    },
+    edit: function edit() {
+      window.location.href = this.editUrl;
+    }
+  },
+  computed: {
+    viewUrl: function viewUrl() {
+      if (this.data.status) {
+        return argon.root() + '/pages/' + this.data.id + '/preview';
+      }
+    },
+    preventDelete: function preventDelete() {
+      var level = this.data._vm && this.data._vm.level || 0;
+      return this.data.children.length || !level;
+    },
+    editUrl: function editUrl() {
+      return argon.root() + '/pages/' + this.data.id + '/edit';
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/mixins/row.vue?vue&type=script&lang=js&
+ /* harmony default export */ var mixins_rowvue_type_script_lang_js_ = (rowvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/mixins/row.vue
+var row_render, row_staticRenderFns
+
+
+
+
+/* normalize component */
+
+var row_component = Object(componentNormalizer["default"])(
+  mixins_rowvue_type_script_lang_js_,
+  row_render,
+  row_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var row_api; }
+row_component.options.__file = "resources/assets/js/src/components/site-tree/mixins/row.vue"
+/* harmony default export */ var mixins_row = (row_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=template&id=e8222bfa&
+var addFormvue_type_template_id_e8222bfa_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "o-table__dropdown is-active" }, [
+    _c("div", { staticClass: "o-table__dropdown-wrap" }, [
+      _c("div", { staticClass: "o-form" }, [
+        _c("div", { staticClass: "o-form__inline" }, [
+          _c("label", { attrs: { for: "add" + _vm.inputName } }, [
+            _vm._v("Page Type")
+          ]),
+          _vm._v(" "),
+          _c(
+            "select",
+            { attrs: { id: "add" + _vm.inputName } },
+            [
+              _c("option", { attrs: { value: " " } }, [_vm._v(" ")]),
+              _vm._v(" "),
+              _vm._l(_vm.options, function(option, index) {
+                return _c(
+                  "option",
+                  { key: index, domProps: { value: option.id } },
+                  [_vm._v(_vm._s(option.name))]
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "o-btn o-btn--sm o-btn--square o-btn--primary",
+              on: {
+                click: function($event) {
+                  _vm.add($event)
+                }
+              }
+            },
+            [_vm._v("Add")]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var addFormvue_type_template_id_e8222bfa_staticRenderFns = []
+addFormvue_type_template_id_e8222bfa_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=template&id=e8222bfa&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var addFormvue_type_script_lang_js_ = ({
+  props: ['inputName'],
+  data: function data() {
+    return {
+      options: [],
+      selectedOption: null,
+      selectInstance: null,
+      selectElement: null,
+      choicesOptions: {
+        searchEnabled: false,
+        searchChoices: false,
+        paste: false,
+        shouldSort: false,
+        removeItemButton: true,
+        placeholderValue: 'select',
+        itemSelectText: '',
+        callbackOnCreateTemplates: function callbackOnCreateTemplates(template) {
+          var classNames = this.config.classNames;
+          return {
+            containerInner: function containerInner() {
+              return template("\n                            <div class=\"".concat(classNames.containerInner, "\">\n                                <div class=\"choices__btn\">\n                                    <svg><use xlink:href=\"/argon/images/svgicons.svg#select\"></use></svg>\n                                </div>\n                            </div>\n                        "));
+            }
+          };
+        }
+      }
+    };
+  },
+  created: function created() {
+    this.options = window.types;
+  },
+  mounted: function mounted() {
+    var select = this.$el.querySelector('select');
+    this.selectElement = select;
+    this.selectInstance = new choices_min_default.a(select, this.choicesOptions);
+    this.selectInstance.setValueByChoice(this.value);
+    this.selectElement.addEventListener('change', this.selectChange.bind(this));
+  },
+  destroyed: function destroyed() {
+    this.selectElement.removeEventListener('change', this.selectChange.bind(this));
+  },
+  methods: {
+    selectChange: function selectChange() {
+      this.selectedOption = this.selectInstance.getValue(true);
+    },
+    add: function add(evt) {
+      evt.preventDefault();
+      this.$emit('add', this.selectedOption);
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_addFormvue_type_script_lang_js_ = (addFormvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/addForm.vue
+
+
+
+
+
+/* normalize component */
+
+var addForm_component = Object(componentNormalizer["default"])(
+  components_addFormvue_type_script_lang_js_,
+  addFormvue_type_template_id_e8222bfa_render,
+  addFormvue_type_template_id_e8222bfa_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var addForm_api; }
+addForm_component.options.__file = "resources/assets/js/src/components/site-tree/components/addForm.vue"
+/* harmony default export */ var addForm = (addForm_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/RootRow.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var RootRowvue_type_script_lang_js_ = ({
+  name: 'root-row',
+  props: ['data'],
+  components: {
+    ComfirmBtn: confirm_btn,
+    AddForm: addForm
+  },
+  mixins: [mixins_row],
+  data: function data() {
+    return {
+      isOpen: true,
+      addFormOpen: false
+    };
+  },
+  methods: {
+    toggleOpen: function toggleOpen() {
+      this.isOpen = !this.isOpen;
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/RootRow.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RootRowvue_type_script_lang_js_ = (RootRowvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/RootRow.vue
+
+
+
+
+
+/* normalize component */
+
+var RootRow_component = Object(componentNormalizer["default"])(
+  components_RootRowvue_type_script_lang_js_,
+  RootRowvue_type_template_id_5870ccf6_render,
+  RootRowvue_type_template_id_5870ccf6_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var RootRow_api; }
+RootRow_component.options.__file = "resources/assets/js/src/components/site-tree/components/RootRow.vue"
+/* harmony default export */ var RootRow = (RootRow_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
+var Rowvue_type_template_id_6f236b38_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "o-table__row" },
+    [
+      !_vm.data.isDragPlaceHolder
+        ? [
+            _vm.data.children && _vm.data.children.length
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "o-table__child-btn",
+                    class: { "is-active": _vm.data.open },
+                    on: {
+                      click: function($event) {
+                        _vm.store.toggleOpen(_vm.data)
+                      }
+                    }
+                  },
+                  [
+                    _c("svg", [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href": "/argon/images/svgicons.svg#select"
+                        }
+                      })
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "o-table__data", on: { dblclick: _vm.edit } },
+              [_vm._v(_vm._s(_vm.data.title))]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "o-table__data o-table--center" }, [
+              _c("div", {
+                staticClass: "o-status",
+                class: {
+                  "o-status--active": _vm.data.status,
+                  "o-status--inactive": !_vm.data.status
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "o-table__data o-table--end" },
+              [
+                _c("comfirm-btn", {
+                  attrs: {
+                    hideDuplicate: "true",
+                    showAdd: "true",
+                    showView: "true",
+                    viewUrl: _vm.viewUrl,
+                    "fade-delete": _vm.preventDelete
+                  },
+                  on: {
+                    add: _vm.toggleAddForm,
+                    delete: _vm.deleteItem,
+                    view: _vm.viewError
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "o-table__data" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "o-btn o-btn--xs",
+                  attrs: { href: _vm.editUrl }
+                },
+                [_vm._v("edit post")]
+              )
+            ]),
+            _vm._v(" "),
+            _vm.addFormOpen
+              ? _c("add-form", {
+                  attrs: { "input-name": _vm.data.id },
+                  on: { add: _vm.addItem }
+                })
+              : _vm._e()
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var Rowvue_type_template_id_6f236b38_staticRenderFns = []
+Rowvue_type_template_id_6f236b38_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var Rowvue_type_script_lang_js_ = ({
+  name: 'Row',
+  props: ['data', 'store'],
+  components: {
+    ComfirmBtn: confirm_btn,
+    AddForm: addForm
+  },
+  data: function data() {
+    return {
+      addFormOpen: false
+    };
+  },
+  mixins: [mixins_row]
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Rowvue_type_script_lang_js_ = (Rowvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue
+
+
+
+
+
+/* normalize component */
+
+var Row_component = Object(componentNormalizer["default"])(
+  components_Rowvue_type_script_lang_js_,
+  Rowvue_type_template_id_6f236b38_render,
+  Rowvue_type_template_id_6f236b38_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var Row_api; }
+Row_component.options.__file = "resources/assets/js/src/components/site-tree/components/Row.vue"
+/* harmony default export */ var Row = (Row_component.exports);
+// EXTERNAL MODULE: ./node_modules/tree-helper/dist/tree-helper.esm.js
+var tree_helper_esm = __webpack_require__("./node_modules/tree-helper/dist/tree-helper.esm.js");
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
+function Appvue_type_script_lang_js_extends() { Appvue_type_script_lang_js_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return Appvue_type_script_lang_js_extends.apply(this, arguments); }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var site_tree_Appvue_type_script_lang_js_ = ({
+  components: {
+    RootRow: RootRow,
+    Row: Row
+  },
+  data: function data() {
+    return {
+      rootNodes: []
+    };
+  },
+  created: function created() {
+    this.rootNodes = window.sitemap;
+  },
+  mounted: function mounted() {
+    Object(tree_helper_esm["breadthFirstSearch"])(this.rootNodes, function (childNode) {
+      childNode.open = false;
+    });
+  },
+  methods: {
+    drop: function drop() {
+      var _this = this;
+
+      var sitemapData = this.rootNodes.map(function (el) {
+        el.children = el.children.map(function (child) {
+          return _this.pure(child, true);
+        });
+        return el;
+      });
+      console.log(sitemapData);
+    },
+    pure: function pure(node, withChildren, after) {
+      var _this2 = this;
+
+      var t = Appvue_type_script_lang_js_extends({}, node);
+
+      delete t._id;
+      delete t.parent;
+      delete t.children;
+      delete t.open;
+      delete t.active;
+      delete t.style;
+      delete t.class;
+      delete t.innerStyle;
+      delete t.innerClass;
+      delete t.innerBackStyle;
+      delete t.innerBackClass;
+
+      var _arr = Object.keys(t);
+
+      for (var _i = 0; _i < _arr.length; _i++) {
+        var key = _arr[_i];
+
+        if (key[0] === '_') {
+          delete t[key];
+        }
+      }
+
+      if (withChildren && node.children) {
+        t.children = node.children.slice();
+        t.children.forEach(function (v, k) {
+          t.children[k] = _this2.pure(v, withChildren);
+        });
+      }
+
+      if (after) {
+        return after(t, node) || t;
+      }
+
+      return t;
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_site_tree_Appvue_type_script_lang_js_ = (site_tree_Appvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/App.vue
+
+
+
+
+
+/* normalize component */
+
+var site_tree_App_component = Object(componentNormalizer["default"])(
+  components_site_tree_Appvue_type_script_lang_js_,
+  Appvue_type_template_id_8c54b0cc_render,
+  Appvue_type_template_id_8c54b0cc_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var site_tree_App_api; }
+site_tree_App_component.options.__file = "resources/assets/js/src/components/site-tree/App.vue"
+/* harmony default export */ var site_tree_App = (site_tree_App_component.exports);
+// EXTERNAL MODULE: ./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js
+var vue_draggable_nested_tree_es = __webpack_require__("./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js");
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/index.js
+
+
+
+vue_default.a.config.productionTip = false;
+vue_default.a.component('tree', vue_draggable_nested_tree_es["DraggableTree"]);
+function SiteTree() {
+  var siteTree = document.querySelector('.js-site-tree');
+
+  if (!siteTree) {
+    return;
+  }
+
+  return new vue_default.a({
+    render: function render(h) {
+      return h(site_tree_App);
+    }
+  }).$mount(siteTree);
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/components/index.js
+
 
 
 
@@ -9886,7 +10575,6 @@ function feedbackForm() {// controller('.js-feedback-form')
 
 
 
-
 function src_init() {
   init();
   ui_jump.init(650, 150);
@@ -9898,7 +10586,6 @@ function src_init() {
   setupModals();
   scroll_anim_init(); // add c-grid-anim | c-line-anim | c-scroll-anim--fade-up with js-scroll-anim to animate a component on scroll
 
-  trees();
   tables();
   initialiseFormElements();
   registerFormSaveEvents(); // resetForm()
@@ -9909,6 +10596,7 @@ function src_init() {
   PageEdit();
   cropperTest();
   formSubmits();
+  SiteTree();
 }
 
 function formSubmits() {
@@ -9951,4 +10639,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.0c66cd9aba2439ecd394.js.map
+//# sourceMappingURL=main.bafe4206b695ceb281fb.js.map

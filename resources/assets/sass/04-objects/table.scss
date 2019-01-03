@@ -1,13 +1,48 @@
-.o-table {
+.draggable-placeholder-inner {
+    border: 1px dashed $client-primary-acc;
+    box-sizing: border-box;
+    background: rgba($client-primary-acc, 0.2);
+    text-align: center;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+}
 
-    > * {
-        padding-right: 15px;
+.o-table {
+    &,
+    &__headers,
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+
+        > * {
+            padding-right: 15px;
+        }
+    }
+
+    &--tree {
+        display: block;
+    }
+
+    &--center {
+        justify-content: center;
+        text-align: center;
+    }
+
+    &--end {
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    &__headers,
+    &__row {
+        width: 100%;
     }
 
     @for $i from 1 through 15 {
-        &--#{$i} {
+        &--#{$i},
+        &--tree-#{$i} &__headers,
+        &--tree-#{$i} &__row {
             > * {
                 flex: 1 1 #{100% / ($i + 1)};
                 flex-basis: calc(#{100% / ($i + 1)} - 15px);
@@ -19,33 +54,37 @@
 
                 &:nth-child(#{$i + 2}n) {
                     flex: 1 1 #{(100% / ($i + 1)) / 2};
-                    padding-right: 0;
                 }
             }
         }
     }
 
+    &__row &__data {
+        transition: background-color $userActive $easeOut;
+    }
+
+    &__row:hover > &__data {
+        background-color: $grey-offwhite;
+    }
+
     &__dropdown {
+        flex: 1 1 100% !important;
         height: 0;
         will-change: height;
-        overflow: hidden;
         transition: height $userInactive $easeOut;
-        grid-column: 1 / -1;
+        padding: 0;
 
         &-wrap {
             border-top: 1px solid $grey;
             background-color: $primary-offwhite;
             padding: 10px 15px;
+            display: flex;
+            justify-content: flex-end;
         }
 
         &.is-active {
             height: auto;
             transition: height $userActive $easeOut;
-        }
-
-        .o-form {
-            margin-left: auto;
-            max-width: 65%;
         }
     }
 
@@ -62,6 +101,7 @@
         color: $black-light;
         padding-right: 10px;
         white-space: nowrap;
+        border-bottom: 1px solid $grey;
 
         a {
             color: $black-light;
@@ -71,20 +111,83 @@
     &__data {
         display: flex;
         align-items: center;
-        border-top: 1px solid $grey;
+        border-bottom: 1px solid $grey;
+    }
+
+    &--tree &__row {
+        position: relative;
+    }
+
+    &__children {
+        padding-left: 45px;
+        padding-right: 0;
+        flex: 1 1 100% !important;
+    }
+
+    &__child-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        width: 30px;
+        height: 66px;
+
+        svg {
+            width: 15px;
+            height: 15px;
+            transform: rotateZ(-90deg);
+            transition: transform $userActive $easeOut;
+        }
+
+        &.is-active svg {
+            transform: none;
+        }
+    }
+
+    &__child-btn + &__data {
+        padding-left: 30px;
     }
 }
 
 @supports (display: grid) {
     .o-table {
-        display: grid;
+        &,
+        &__headers,
+        &__row {
+            display: grid;
+        }
 
-        @for $i from 1 through 15 {
+        &--tree {
+            display: block;
+        }
+
+        &--1 {
+            grid-template-columns: minmax(0, 100%) 115px 125px;
+        }
+
+        &--tree-1 &__headers,
+        &--tree-1 &__row {
+            grid-template-columns: minmax(0, 100%) 150px 125px;
+        }
+
+        @for $i from 2 through 15 {
             &--#{$i} {
                 grid-template-columns:
-                    repeat(#{$i}, minmax(min-content, 700px))
-                    115px 125px;
+                    minmax(0, 100%)
+                    repeat(#{$i - 1}, minmax(0, 700px)) 115px 125px;
             }
+
+            &--tree-#{$i} &__headers,
+            &--tree-#{$i} &__row {
+                grid-template-columns:
+                    minmax(0, 100%)
+                    repeat(#{$i - 1}, minmax(0, 700px)) 150px 125px;
+            }
+        }
+
+        &__children,
+        &__dropdown {
+            grid-column: 1 / -1;
         }
     }
 }

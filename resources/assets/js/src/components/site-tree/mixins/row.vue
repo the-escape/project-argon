@@ -1,0 +1,84 @@
+<script>
+import { post } from '../../../util'
+import Noty from 'noty'
+
+export default {
+    methods: {
+        toggleAddForm() {
+            this.addFormOpen = !this.addFormOpen
+        },
+        addItem(typeid) {
+            window.location.href = argon.root() + '/pages/' + this.data.id + '/addchild/' + typeid
+        },
+        deleteItem() {
+            if(this.preventDelete){
+                const level = this.data._vm && this.data._vm.level || 0
+                if(level === 0){
+                    new Noty({
+                        text: "You can't delete the home page",
+                        type: 'error'
+                    }).show()
+                }else{
+                    new Noty({
+                        text: "Before you delete this page, move or remove it's child pages",
+                        type: 'error'
+                    }).show()
+                }
+
+                return
+            }
+
+            const token = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
+
+            const pageName = this.data.title
+            if (confirm('Are you sure you want to delete this page?')) {
+                post(argon.root() + '/pages/' + this.data.id, {
+                    _token: token,
+                    _method: 'DELETE'
+                })
+                    .then(data => JSON.parse(data))
+                    .then(data => {
+                        if (data.success) {
+                            new Noty({
+                                text: 'Successfully removed ' + pageName,
+                                type: 'success'
+                            }).show()
+                            this.data._vm.store.deleteNode(this.data)
+                        } else {
+                            new Noty({
+                                text: 'An error occured removing: ' + pageName,
+                                type: 'error'
+                            }).show()
+                        }
+                    })
+                    .catch(error => console.log(error))
+            }
+        },
+        viewError() {
+            new Noty({
+                text: "The Page needs to be published before you can view it",
+                type: 'error'
+            }).show()
+        },
+        edit() {
+            window.location.href = this.editUrl
+        }
+    },
+    computed: {
+        viewUrl: function() {
+            if(this.data.status){
+                return argon.root() + '/pages/' + this.data.id + '/preview'
+            }
+        },
+        preventDelete: function () {
+            const level = this.data._vm && this.data._vm.level || 0
+            return this.data.children.length || !level
+        },
+        editUrl: function () {
+            return argon.root() + '/pages/' + this.data.id + '/edit'
+        }
+    }
+}
+</script>

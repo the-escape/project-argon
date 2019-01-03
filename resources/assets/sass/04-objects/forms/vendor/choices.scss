@@ -45,6 +45,10 @@
         }
     }
 
+    .o-form__inline &__inner {
+        min-width: 250px;
+    }
+
     &--plain &__inner {
         padding: 0;
         height: auto;

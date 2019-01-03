@@ -15,8 +15,13 @@ import {
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import resetForm from './form/reset-form'
-import { trees } from './ui/tree'
-import { Fields, PageEdit, Cropper, setCropperImage } from './components'
+import {
+    Fields,
+    PageEdit,
+    Cropper,
+    setCropperImage,
+    SiteTree
+} from './components'
 import { Dashboard } from './dashboard'
 
 function init () {
@@ -29,7 +34,6 @@ function init () {
     map()
     setupModals()
     ScrollAnim() // add c-grid-anim | c-line-anim | c-scroll-anim--fade-up with js-scroll-anim to animate a component on scroll
-    trees()
     tables()
     initialiseFormElements()
     registerFormSaveEvents()
@@ -40,6 +44,7 @@ function init () {
     PageEdit()
     cropperTest()
     formSubmits()
+    SiteTree()
 }
 
 function formSubmits () {
@@ -59,10 +64,10 @@ function cropperTest () {
     Cropper()
 
     const btn = document.querySelector('.js-spawn-cropper')
-    if(!btn){
+    if (!btn) {
         return
     }
-    
+
     btn.addEventListener('click', function () {
         setCropperImage({
             image: {
