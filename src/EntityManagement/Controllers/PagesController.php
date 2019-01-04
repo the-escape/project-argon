@@ -73,11 +73,13 @@ class PagesController extends BaseController
         $out = [];
         foreach($entities as $el){
             $entity = [
-                "id" => $el->id,
                 "title" => $el->name,
-                "typeName" => $el->type->name,
-                "status" => (int)$el->status,
-                "children" => []
+                "children" => [],
+                "data" => [
+                    "id" => $el->id,
+                    "typeName" => $el->type->name,
+                    "status" => (int)$el->status
+                ]
             ];
 
             if($el->hasChildren()){

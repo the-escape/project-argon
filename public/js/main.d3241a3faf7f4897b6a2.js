@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 231 modules ***!
+  !*** ./resources/assets/js/src/index.js + 230 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -447,8 +447,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/noty/lib/noty.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/operators/index.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/tree-helper/dist/tree-helper.esm.js */
-/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js (<- Module uses injected variables (process)) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/sl-vue-tree/dist/sl-vue-tree.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue/dist/vue.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuebar/vuebar.js (<- Module is not an ECMAScript module) */
@@ -3036,32 +3035,6 @@ function refreshFromElements(el, formElements) {
 }
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/form/reset-form.js
-
-
-function reset_form_init() {
-  Object(_esm5["fromEvent"])(document, 'click').pipe(Object(operators["filter"])(function (el) {
-    return el.target.classList.contains('js-form-reset');
-  }), Object(operators["map"])(function (evt) {
-    return evt.preventDefault(), evt;
-  })).subscribe(findAndReset);
-}
-
-function findAndReset(e) {
-  var form = e.target.closest('.js-form'),
-      inputs = form.querySelectorAll('[name]');
-  Array.from(inputs).forEach(function (el) {
-    if (el.classList.contains('js-select')) {
-      var choices = el.choices;
-      choices.setValueByChoice('');
-    } else if (el.hasAttribute('checked')) {
-      el.checked = false;
-    } else {
-      el.value = '';
-    }
-  });
-  form.submit();
-}
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
 var vue = __webpack_require__("./node_modules/vue/dist/vue.js");
 var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
@@ -9725,31 +9698,64 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
     [
       _vm._m(0),
       _vm._v(" "),
-      _vm._l(_vm.rootNodes, function(rootNode) {
+      _vm._l(_vm.rootNodes, function(rootNode, index) {
         return _c(
           "root-row",
-          { key: rootNode.pageID, attrs: { data: rootNode } },
+          { key: index, attrs: { node: rootNode } },
           [
             rootNode.children.length
               ? _c("tree", {
-                  attrs: {
-                    data: rootNode.children,
-                    indent: 45,
-                    space: 0,
-                    crossTree: ""
-                  },
+                  ref: "tree",
+                  refInFor: true,
+                  on: { drop: _vm.drop },
                   scopedSlots: _vm._u([
                     {
-                      key: "default",
+                      key: "toggle",
                       fn: function(ref) {
-                        var data = ref.data
-                        var store = ref.store
+                        var node = ref.node
                         return [
-                          _c("row", { attrs: { data: data, store: store } })
+                          node.children && node.children.length
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "o-table__child-btn o-table__child-btn--tree",
+                                  class: { "is-active": node.isExpanded }
+                                },
+                                [
+                                  _c("svg", [
+                                    _c("use", {
+                                      attrs: {
+                                        "xlink:href":
+                                          "/argon/images/svgicons.svg#select"
+                                      }
+                                    })
+                                  ])
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      }
+                    },
+                    {
+                      key: "title",
+                      fn: function(ref) {
+                        var node = ref.node
+                        return [
+                          _c("row", {
+                            attrs: { node: node, "tree-index": index }
+                          })
                         ]
                       }
                     }
-                  ])
+                  ]),
+                  model: {
+                    value: rootNode.children,
+                    callback: function($$v) {
+                      _vm.$set(rootNode, "children", $$v)
+                    },
+                    expression: "rootNode.children"
+                  }
                 })
               : _vm._e()
           ],
@@ -9792,7 +9798,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
     "div",
     { staticClass: "o-table__row" },
     [
-      _vm.data.children.length
+      _vm.node.children.length
         ? _c(
             "button",
             {
@@ -9811,15 +9817,15 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "o-table__data", on: { dblclick: _vm.edit } }, [
-        _vm._v(_vm._s(_vm.data.title))
+        _vm._v(_vm._s(_vm.node.title))
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "o-table__data o-table--center" }, [
         _c("div", {
           staticClass: "o-status",
           class: {
-            "o-status--active": _vm.data.status,
-            "o-status--inactive": !_vm.data.status
+            "o-status--active": _vm.node.data.status,
+            "o-status--inactive": !_vm.node.data.status
           }
         })
       ]),
@@ -9856,7 +9862,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
       _vm._v(" "),
       _vm.addFormOpen
         ? _c("add-form", {
-            attrs: { "input-name": _vm.data.id },
+            attrs: { "input-name": _vm.node.data.id },
             on: { add: _vm.addItem }
           })
         : _vm._e(),
@@ -9886,15 +9892,13 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
       this.addFormOpen = !this.addFormOpen;
     },
     addItem: function addItem(typeid) {
-      window.location.href = argon.root() + '/pages/' + this.data.id + '/addchild/' + typeid;
+      window.location.href = argon.root() + '/pages/' + this.node.data.id + '/addchild/' + typeid;
     },
     deleteItem: function deleteItem() {
       var _this = this;
 
       if (this.preventDelete) {
-        var level = this.data._vm && this.data._vm.level || 0;
-
-        if (level === 0) {
+        if (typeof this.node.level === 'undefined') {
           new noty_default.a({
             text: "You can't delete the home page",
             type: 'error'
@@ -9910,10 +9914,10 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
       }
 
       var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      var pageName = this.data.title;
+      var pageName = this.node.title;
 
       if (confirm('Are you sure you want to delete this page?')) {
-        post(argon.root() + '/pages/' + this.data.id, {
+        post(argon.root() + '/pages/' + this.node.data.id, {
           _token: token,
           _method: 'DELETE'
         }).then(function (data) {
@@ -9925,7 +9929,7 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
               type: 'success'
             }).show();
 
-            _this.data._vm.store.deleteNode(_this.data);
+            _this.$root.$children[0].removeNode(_this.treeIndex, _this.node.path);
           } else {
             new noty_default.a({
               text: 'An error occured removing: ' + pageName,
@@ -9949,16 +9953,15 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
   },
   computed: {
     viewUrl: function viewUrl() {
-      if (this.data.status) {
-        return argon.root() + '/pages/' + this.data.id + '/preview';
+      if (this.node.data.status) {
+        return argon.root() + '/pages/' + this.node.data.id + '/preview';
       }
     },
     preventDelete: function preventDelete() {
-      var level = this.data._vm && this.data._vm.level || 0;
-      return this.data.children.length || !level;
+      return this.node.children.length || !this.node.level;
     },
     editUrl: function editUrl() {
-      return argon.root() + '/pages/' + this.data.id + '/edit';
+      return argon.root() + '/pages/' + this.node.data.id + '/edit';
     }
   }
 });
@@ -10171,7 +10174,7 @@ addForm_component.options.__file = "resources/assets/js/src/components/site-tree
 
 /* harmony default export */ var RootRowvue_type_script_lang_js_ = ({
   name: 'root-row',
-  props: ['data'],
+  props: ['node'],
   components: {
     ComfirmBtn: confirm_btn,
     AddForm: addForm
@@ -10221,93 +10224,64 @@ var Rowvue_type_template_id_6f236b38_render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "o-table__row" },
+    {
+      staticClass: "o-table__row",
+      class: { "o-table__row--children": _vm.node.children.length },
+      on: { mouseover: _vm.mouseOver, mouseout: _vm.mouseOut }
+    },
     [
-      !_vm.data.isDragPlaceHolder
-        ? [
-            _vm.data.children && _vm.data.children.length
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "o-table__child-btn",
-                    class: { "is-active": _vm.data.open },
-                    on: {
-                      click: function($event) {
-                        _vm.store.toggleOpen(_vm.data)
-                      }
-                    }
-                  },
-                  [
-                    _c("svg", [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href": "/argon/images/svgicons.svg#select"
-                        }
-                      })
-                    ])
-                  ]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "o-table__data", on: { dblclick: _vm.edit } },
-              [_vm._v(_vm._s(_vm.data.title))]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "o-table__data o-table--center" }, [
-              _c("div", {
-                staticClass: "o-status",
-                class: {
-                  "o-status--active": _vm.data.status,
-                  "o-status--inactive": !_vm.data.status
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "o-table__data o-table--end" },
-              [
-                _c("comfirm-btn", {
-                  attrs: {
-                    hideDuplicate: "true",
-                    showAdd: "true",
-                    showView: "true",
-                    viewUrl: _vm.viewUrl,
-                    "fade-delete": _vm.preventDelete
-                  },
-                  on: {
-                    add: _vm.toggleAddForm,
-                    delete: _vm.deleteItem,
-                    view: _vm.viewError
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "o-table__data" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "o-btn o-btn--xs",
-                  attrs: { href: _vm.editUrl }
-                },
-                [_vm._v("edit post")]
-              )
-            ]),
-            _vm._v(" "),
-            _vm.addFormOpen
-              ? _c("add-form", {
-                  attrs: { "input-name": _vm.data.id },
-                  on: { add: _vm.addItem }
-                })
-              : _vm._e()
-          ]
+      _c("div", { staticClass: "o-table__data", on: { dblclick: _vm.edit } }, [
+        _vm._v(_vm._s(_vm.node.title))
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__data o-table--center" }, [
+        _c("div", {
+          staticClass: "o-status",
+          class: {
+            "o-status--active": _vm.node.data.status,
+            "o-status--inactive": !_vm.node.data.status
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "o-table__data o-table--end" },
+        [
+          _c("comfirm-btn", {
+            attrs: {
+              hideDuplicate: "true",
+              showAdd: "true",
+              showView: "true",
+              viewUrl: _vm.viewUrl,
+              "fade-delete": _vm.preventDelete
+            },
+            on: {
+              add: _vm.toggleAddForm,
+              delete: _vm.deleteItem,
+              view: _vm.viewError
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-table__data" }, [
+        _c(
+          "a",
+          { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
+          [_vm._v("edit post")]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.addFormOpen
+        ? _c("add-form", {
+            attrs: { "input-name": _vm.node.data.id },
+            on: { add: _vm.addItem }
+          })
         : _vm._e()
     ],
-    2
+    1
   )
 }
 var Rowvue_type_template_id_6f236b38_staticRenderFns = []
@@ -10338,29 +10312,52 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
 /* harmony default export */ var Rowvue_type_script_lang_js_ = ({
   name: 'Row',
-  props: ['data', 'store'],
+  props: ['node', 'treeIndex', 'isDragging'],
   components: {
     ComfirmBtn: confirm_btn,
     AddForm: addForm
   },
   data: function data() {
     return {
-      addFormOpen: false
+      addFormOpen: false,
+      isHovering: true
     };
   },
-  mixins: [mixins_row]
+  mixins: [mixins_row],
+  methods: {
+    mouseOver: function mouseOver() {
+      var _this = this;
+
+      var dragging = this.$root.$children[0].$refs.tree.reduce(function (acc, tree) {
+        if (acc) {
+          return acc;
+        }
+
+        return tree.isDragging;
+      }, false);
+
+      if (!dragging) {
+        return;
+      }
+
+      if (!this.isHovering) {
+        this.isHovering = true;
+        setTimeout(function () {
+          if (!_this.node.isExpanded && _this.isHovering) {
+            _this.$set(_this.node, 'isExpanded', true);
+          }
+        }, 300);
+      }
+    },
+    mouseOut: function mouseOut() {
+      this.isHovering = false;
+    }
+  }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Rowvue_type_script_lang_js_ = (Rowvue_type_script_lang_js_); 
@@ -10387,11 +10384,16 @@ var Row_component = Object(componentNormalizer["default"])(
 if (false) { var Row_api; }
 Row_component.options.__file = "resources/assets/js/src/components/site-tree/components/Row.vue"
 /* harmony default export */ var Row = (Row_component.exports);
-// EXTERNAL MODULE: ./node_modules/tree-helper/dist/tree-helper.esm.js
-var tree_helper_esm = __webpack_require__("./node_modules/tree-helper/dist/tree-helper.esm.js");
-
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
-function Appvue_type_script_lang_js_extends() { Appvue_type_script_lang_js_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return Appvue_type_script_lang_js_extends.apply(this, arguments); }
+function site_tree_Appvue_type_script_lang_js_toConsumableArray(arr) { return site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) || site_tree_Appvue_type_script_lang_js_iterableToArray(arr) || site_tree_Appvue_type_script_lang_js_nonIterableSpread(); }
+
+function site_tree_Appvue_type_script_lang_js_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function site_tree_Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return typeof obj; }; } else { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Appvue_type_script_lang_js_typeof(obj); }
 
 //
 //
@@ -10412,7 +10414,13 @@ function Appvue_type_script_lang_js_extends() { Appvue_type_script_lang_js_exten
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ var site_tree_Appvue_type_script_lang_js_ = ({
@@ -10422,71 +10430,109 @@ function Appvue_type_script_lang_js_extends() { Appvue_type_script_lang_js_exten
   },
   data: function data() {
     return {
-      rootNodes: []
+      rootNodes: [],
+      isDragging: false
     };
   },
   created: function created() {
     this.rootNodes = window.sitemap;
-  },
-  mounted: function mounted() {
-    Object(tree_helper_esm["breadthFirstSearch"])(this.rootNodes, function (childNode) {
-      childNode.open = false;
+    breadthFirstSearch(this.rootNodes, function (childNode) {
+      childNode.isExpanded = false;
     });
   },
   methods: {
-    drop: function drop() {
-      var _this = this;
-
-      var sitemapData = this.rootNodes.map(function (el) {
-        el.children = el.children.map(function (child) {
-          return _this.pure(child, true);
-        });
-        return el;
-      });
-      console.log(sitemapData);
+    drop: function drop(node, position) {
+      console.log(node[0].title, position.placement, position.node.title);
     },
-    pure: function pure(node, withChildren, after) {
-      var _this2 = this;
-
-      var t = Appvue_type_script_lang_js_extends({}, node);
-
-      delete t._id;
-      delete t.parent;
-      delete t.children;
-      delete t.open;
-      delete t.active;
-      delete t.style;
-      delete t.class;
-      delete t.innerStyle;
-      delete t.innerClass;
-      delete t.innerBackStyle;
-      delete t.innerBackClass;
-
-      var _arr = Object.keys(t);
-
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var key = _arr[_i];
-
-        if (key[0] === '_') {
-          delete t[key];
-        }
+    removeNode: function removeNode(treeIndex, paths) {
+      if (!paths.length) {
+        return;
       }
 
-      if (withChildren && node.children) {
-        t.children = node.children.slice();
-        t.children.forEach(function (v, k) {
-          t.children[k] = _this2.pure(v, withChildren);
-        });
+      var transverse = this.rootNodes[treeIndex];
+
+      for (var i = 0; i < paths.length - 1; i++) {
+        transverse = transverse.children[paths[i]];
       }
 
-      if (after) {
-        return after(t, node) || t;
-      }
-
-      return t;
+      transverse.children.splice(paths[paths.length - 1], 1);
+    },
+    mouseOver: function mouseOver(treeIndex) {
+      console.log('mouseover');
     }
   }
 });
+
+function breadthFirstSearch(obj, handler) {
+  var childrenKey = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'children';
+  var reverse = arguments.length > 3 ? arguments[3] : undefined;
+  var rootChildren = Array.isArray(obj) ? obj : [obj];
+  var stack = rootChildren.map(function (v, i) {
+    return {
+      item: v,
+      index: i
+    };
+  });
+
+  if (reverse) {
+    stack.reverse();
+  }
+
+  var _loop = function _loop() {
+    var _stack$shift = stack.shift(),
+        item = _stack$shift.item,
+        index = _stack$shift.index,
+        parent = _stack$shift.parent;
+
+    var r = handler(item, index, parent);
+
+    if (r === false) {
+      // stop
+      return {
+        v: void 0
+      };
+    } else if (r === 'skip children') {
+      return "continue";
+    } else if (r === 'skip siblings') {
+      stack = stack.filter(function (v) {
+        return v.parent !== parent;
+      });
+    }
+
+    if (item.children) {
+      var _stack;
+
+      var children = item.children;
+
+      if (reverse) {
+        children = children.slice();
+        children.reverse();
+      }
+
+      var pushStack = children.map(function (v, i) {
+        return {
+          item: v,
+          index: i,
+          parent: item
+        };
+      });
+
+      (_stack = stack).push.apply(_stack, site_tree_Appvue_type_script_lang_js_toConsumableArray(pushStack));
+    }
+  };
+
+  while (stack.length) {
+    var _ret = _loop();
+
+    switch (_ret) {
+      case "continue":
+        continue;
+
+      default:
+        if (Appvue_type_script_lang_js_typeof(_ret) === "object") return _ret.v;
+    }
+  }
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_site_tree_Appvue_type_script_lang_js_ = (site_tree_Appvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/App.vue
@@ -10512,15 +10558,17 @@ var site_tree_App_component = Object(componentNormalizer["default"])(
 if (false) { var site_tree_App_api; }
 site_tree_App_component.options.__file = "resources/assets/js/src/components/site-tree/App.vue"
 /* harmony default export */ var site_tree_App = (site_tree_App_component.exports);
-// EXTERNAL MODULE: ./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js
-var vue_draggable_nested_tree_es = __webpack_require__("./node_modules/vue-draggable-nested-tree/dist/vue-draggable-nested-tree.es.js");
+// EXTERNAL MODULE: ./node_modules/sl-vue-tree/dist/sl-vue-tree.js
+var sl_vue_tree = __webpack_require__("./node_modules/sl-vue-tree/dist/sl-vue-tree.js");
+var sl_vue_tree_default = /*#__PURE__*/__webpack_require__.n(sl_vue_tree);
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/index.js
 
+ // import { DraggableTree } from 'vue-draggable-nested-tree'
 
 
 vue_default.a.config.productionTip = false;
-vue_default.a.component('tree', vue_draggable_nested_tree_es["DraggableTree"]);
+vue_default.a.component('tree', sl_vue_tree_default.a);
 function SiteTree() {
   var siteTree = document.querySelector('.js-site-tree');
 
@@ -10568,7 +10616,6 @@ function activityLog() {
 function feedbackForm() {// controller('.js-feedback-form')
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/index.js
-
 
 
 
@@ -10639,4 +10686,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.bafe4206b695ceb281fb.js.map
+//# sourceMappingURL=main.d3241a3faf7f4897b6a2.js.map

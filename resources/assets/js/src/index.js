@@ -14,7 +14,6 @@ import {
     allowPageLeave
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
-import resetForm from './form/reset-form'
 import {
     Fields,
     PageEdit,

@@ -7,10 +7,17 @@
         <div class="o-table__header"></div>
     </div>
 
-    <root-row :data="rootNode" v-for="rootNode in rootNodes" :key="rootNode.pageID">
-        <tree :data="rootNode.children" v-if="rootNode.children.length" :indent="45" :space="0" crossTree>
-            <template slot-scope="{data, store}">
-                <row :data="data" :store="store"></row>
+    <root-row :node="rootNode" v-for="(rootNode, index) in rootNodes" :key="index">
+        <tree v-model="rootNode.children" v-if="rootNode.children.length" ref="tree" @drop="drop">
+            <template slot="toggle" slot-scope="{ node }">
+                <div class="o-table__child-btn o-table__child-btn--tree" :class="{'is-active': node.isExpanded}" v-if="node.children && node.children.length">
+                    <svg>
+                        <use xlink:href="/argon/images/svgicons.svg#select"></use>
+                    </svg>
+                </div>
+            </template>
+            <template slot="title" slot-scope="{ node }">
+                <row :node="node" :tree-index="index"></row>
             </template>
         </tree>
     </root-row>
@@ -20,7 +27,6 @@
 <script>
 import RootRow from './components/RootRow.vue'
 import Row from './components/Row.vue'
-import { breadthFirstSearch } from 'tree-helper'
 
 export default {
     components: {
@@ -29,53 +35,61 @@ export default {
     },
     data() {
         return {
-            rootNodes: []
+            rootNodes: [],
+            isDragging: false
         }
     },
     created() {
         this.rootNodes = window.sitemap
-    },
-    mounted() {
         breadthFirstSearch(this.rootNodes, childNode => {
-            childNode.open = false
+            childNode.isExpanded = false
         })
     },
     methods: {
-        drop: function () {
-            const sitemapData = this.rootNodes.map(el => {
-                el.children = el.children.map(child => this.pure(child, true))
-                return el
-            })
-            console.log(sitemapData)
+        drop: function (node, position) {
+            console.log(node[0].title, position.placement, position.node.title)
         },
-        pure(node, withChildren, after) {
-            const t = Object.assign({}, node)
-            delete t._id
-            delete t.parent
-            delete t.children
-            delete t.open
-            delete t.active
-            delete t.style
-            delete t.class
-            delete t.innerStyle
-            delete t.innerClass
-            delete t.innerBackStyle
-            delete t.innerBackClass
-            for (const key of Object.keys(t)) {
-                if (key[0] === '_') {
-                delete t[key]
-                }
+        removeNode(treeIndex, paths){
+            if(!paths.length){
+                return
             }
-            if (withChildren && node.children) {
-                t.children = node.children.slice()
-                t.children.forEach((v, k) => {
-                t.children[k] = this.pure(v, withChildren)
-                })
+            let transverse = this.rootNodes[treeIndex]
+            for(let i = 0; i < paths.length - 1; i++){
+                transverse = transverse.children[paths[i]]
             }
-            if (after) {
-                return after(t, node) || t
+            transverse.children.splice(paths[paths.length - 1], 1)
+        },
+        mouseOver(treeIndex){
+            console.log('mouseover')
+        }
+    }
+}
+
+function breadthFirstSearch(obj, handler, childrenKey = 'children', reverse) {
+    const rootChildren = Array.isArray(obj) ? obj : [obj]
+    let stack = rootChildren.map((v, i) => ({item: v, index: i}))
+    if (reverse) {
+        stack.reverse()
+    }
+    while (stack.length) {
+        const {item, index, parent} = stack.shift()
+        const r = handler(item, index, parent)
+        if (r === false) {
+            // stop
+            return
+        } else if (r === 'skip children') {
+            continue
+        } else if (r === 'skip siblings') {
+            stack = stack.filter(v => v.parent !== parent)
+        }
+        if (item.children) {
+            let children = item.children
+            if (reverse) {
+                children = children.slice()
+                children.reverse()
             }
-            return t
+            const pushStack = children.map((v, i) => ({item: v, index: i, parent: item}))
+            stack.push(...pushStack)
         }
     }
 }

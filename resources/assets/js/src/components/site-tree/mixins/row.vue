@@ -8,12 +8,11 @@ export default {
             this.addFormOpen = !this.addFormOpen
         },
         addItem(typeid) {
-            window.location.href = argon.root() + '/pages/' + this.data.id + '/addchild/' + typeid
+            window.location.href = argon.root() + '/pages/' + this.node.data.id + '/addchild/' + typeid
         },
         deleteItem() {
             if(this.preventDelete){
-                const level = this.data._vm && this.data._vm.level || 0
-                if(level === 0){
+                if(typeof this.node.level === 'undefined'){
                     new Noty({
                         text: "You can't delete the home page",
                         type: 'error'
@@ -32,9 +31,10 @@ export default {
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute('content')
 
-            const pageName = this.data.title
+            const pageName = this.node.title
+
             if (confirm('Are you sure you want to delete this page?')) {
-                post(argon.root() + '/pages/' + this.data.id, {
+                post(argon.root() + '/pages/' + this.node.data.id, {
                     _token: token,
                     _method: 'DELETE'
                 })
@@ -45,7 +45,7 @@ export default {
                                 text: 'Successfully removed ' + pageName,
                                 type: 'success'
                             }).show()
-                            this.data._vm.store.deleteNode(this.data)
+                            this.$root.$children[0].removeNode(this.treeIndex, this.node.path)
                         } else {
                             new Noty({
                                 text: 'An error occured removing: ' + pageName,
@@ -68,16 +68,15 @@ export default {
     },
     computed: {
         viewUrl: function() {
-            if(this.data.status){
-                return argon.root() + '/pages/' + this.data.id + '/preview'
+            if(this.node.data.status){
+                return argon.root() + '/pages/' + this.node.data.id + '/preview'
             }
         },
         preventDelete: function () {
-            const level = this.data._vm && this.data._vm.level || 0
-            return this.data.children.length || !level
+            return this.node.children.length || !this.node.level
         },
         editUrl: function () {
-            return argon.root() + '/pages/' + this.data.id + '/edit'
+            return argon.root() + '/pages/' + this.node.data.id + '/edit'
         }
     }
 }

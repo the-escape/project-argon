@@ -1,13 +1,3 @@
-.draggable-placeholder-inner {
-    border: 1px dashed $client-primary-acc;
-    box-sizing: border-box;
-    background: rgba($client-primary-acc, 0.2);
-    text-align: center;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
 .o-table {
     &,
     &__headers,
@@ -59,12 +49,16 @@
         }
     }
 
-    &__row &__data {
-        transition: background-color $userActive $easeOut;
-    }
+    // &__row &__data {
+    //     transition: background-color $userActive $easeOut;
+    // }
 
-    &__row:hover > &__data {
-        background-color: $grey-offwhite;
+    // &__row:hover > &__data {
+    //     background-color: $grey-offwhite;
+    // }
+
+    &__row--children > &__data:first-child {
+        padding-left: 30px;
     }
 
     &__dropdown {
@@ -141,6 +135,12 @@
 
         &.is-active svg {
             transform: none;
+        }
+
+        &--tree {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 
