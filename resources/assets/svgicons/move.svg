@@ -1,3 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-  <path fill="currentColor" d="M38 14.171L35.171 17l5 5H26V7.829l5 5L33.829 10l-8.415-8.414a2 2 0 0 0-2.828 0L14.171 10 17 12.829l5-5V22H7.829l5-5L10 14.171l-8.414 8.415a2 2 0 0 0 0 2.828L10 33.829 12.829 31l-5-5H22v14.171l-5-5L14.171 38l8.415 8.414c.39.391.902.586 1.414.586s1.024-.195 1.414-.586L33.829 38 31 35.171l-5 5V26h14.171l-5 5L38 33.829l8.414-8.415a2 2 0 0 0 0-2.828L38 14.171z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g fill="none" stroke="currentColor">
+        <path d="M8 13.24V8h5.24"/>
+        <path d="M18.76 8H24v5.24"/>
+        <path d="M24 18.76V24h-5.24"/>
+        <path d="M13.24 24H8v-5.24"/>
+        <g stroke-linecap="square" stroke-miterlimit="10">
+            <path d="M8.46 8.46L16 16"/>
+            <path d="M23.54 8.46L16 16"/>
+            <path d="M23.54 23.54L16 16"/>
+            <path d="M8.46 23.54L16 16"/>
+        </g>
+    </g>
 </svg>

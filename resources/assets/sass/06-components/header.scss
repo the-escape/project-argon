@@ -5,6 +5,7 @@
     background-color: $secondary-highlight;
 
     &__title {
+        position: relative;
         min-height: 115px;
         display: flex;
         align-items: center;
@@ -29,17 +30,22 @@
         }
     }
 
-    &__nav {
-        position: relative;
-    }
-
     &__btns {
         position: absolute;
-        bottom: 0;
-        right: 230px;
+        top: 0;
+        right: 15px;
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        height: 38px;
+        height: 100%;
+
+        a {
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }

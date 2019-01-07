@@ -2,8 +2,7 @@
     <div class="l-halves c-tab-panel__inner" :class="{ 'is-dragging': isDragging }">
         <div class="c-block-list__wrap">
             <div class="typography l-space">
-                <h3>Page blocks</h3>
-                <p>Here you can edit, remove and re-order content</p>
+                <h3>Active blocks</h3>
                 <input type="hidden" name="group_order" :value="renderOrder">
             </div>
             <div class="c-block-list">
@@ -25,8 +24,7 @@
         </div>
         <div class="c-block-list__wrap" v-if="hasRenderable">
             <div class="typography l-space">
-                <h3>Unused blocks</h3>
-                <p>Add blocks to create you own custom page layout</p>
+                <h3>Inactive blocks</h3>
             </div>
             <div class="c-block-list">
                 <div class="c-block-list__search o-form">

@@ -8251,9 +8251,7 @@ var Appvue_type_template_id_146287be_render = function() {
     [
       _c("div", { staticClass: "c-block-list__wrap" }, [
         _c("div", { staticClass: "typography l-space" }, [
-          _c("h3", [_vm._v("Page blocks")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("Here you can edit, remove and re-order content")]),
+          _c("h3", [_vm._v("Active blocks")]),
           _vm._v(" "),
           _c("input", {
             attrs: { type: "hidden", name: "group_order" },
@@ -8429,9 +8427,7 @@ var Appvue_type_template_id_146287be_staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "typography l-space" }, [
-      _c("h3", [_vm._v("Unused blocks")]),
-      _vm._v(" "),
-      _c("p", [_vm._v("Add blocks to create you own custom page layout")])
+      _c("h3", [_vm._v("Inactive blocks")])
     ])
   }
 ]
@@ -8870,8 +8866,6 @@ function Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator 
 
 function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-//
-//
 //
 //
 //
@@ -10686,4 +10680,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.d3241a3faf7f4897b6a2.js.map
+//# sourceMappingURL=main.31f5069f562ce3127787.js.map

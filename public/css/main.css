@@ -2434,8 +2434,8 @@ span.flatpickr-day.selected {
     .o-drag-select__item svg {
       color: #b6b6b6;
       margin-left: auto;
-      width: 20px;
-      height: 20px; }
+      width: 30px;
+      height: 30px; }
   .o-drag-select__column--active .o-drag-select__item {
     background-color: #12a3c7; }
     .o-drag-select__column--active .o-drag-select__item svg {
@@ -2976,8 +2976,8 @@ button.o-btn {
   width: 45px;
   height: 45px; }
   .o-combo__drag-wrap svg {
-    width: 24px;
-    height: 24px; }
+    width: 32px;
+    height: 32px; }
 
 .o-combo--moving .o-combo__drag-handle {
   background-color: #12a3c7;
@@ -3063,8 +3063,8 @@ button.o-btn {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%); }
   .o-confirm-btn--success {
@@ -4390,8 +4390,8 @@ button.o-btn {
   width: 45px;
   height: 45px; }
   .o-multi__drag-wrap svg {
-    width: 24px;
-    height: 24px; }
+    width: 32px;
+    height: 32px; }
 
 .o-multi--moving .o-multi__drag-handle {
   background-color: #12a3c7;
@@ -5698,9 +5698,9 @@ button.o-btn {
     position: relative; }
     .c-navigation__icon svg {
       color: inherit;
-      width: 16px;
-      height: 16px;
-      margin: 16px; }
+      width: 32px;
+      height: 32px;
+      margin: 8px; }
   .c-navigation__text {
     opacity: 0;
     -webkit-transition: opacity cubic-bezier(0.3, 0.15, 0.18, 1) 250ms;
@@ -5787,6 +5787,7 @@ button.o-btn {
           justify-content: space-between;
   background-color: #f0f0f0; }
   .c-header__title {
+    position: relative;
     min-height: 115px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -5817,12 +5818,10 @@ button.o-btn {
           -ms-flex-align: center;
               align-items: center;
       width: 100%; }
-  .c-header__nav {
-    position: relative; }
   .c-header__btns {
     position: absolute;
-    bottom: 0;
-    right: 230px;
+    top: 0;
+    right: 15px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -5832,7 +5831,12 @@ button.o-btn {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    height: 38px; }
+    height: 100%; }
+    .c-header__btns a {
+      color: #12a3c7;
+      text-decoration: none; }
+      .c-header__btns a:hover {
+        text-decoration: underline; }
 
 .c-footer {
   width: 100%;
@@ -6427,7 +6431,7 @@ button.o-btn {
             flex: 1 1 50%;
     -ms-flex-preferred-size: calc(50% - 15px);
         flex-basis: calc(50% - 15px);
-    border: 1px solid white;
+    border: 1px solid #fff;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -6441,18 +6445,18 @@ button.o-btn {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center; }
-    + .c-links-widget__link {
-      margin-top: 30px; }
     .c-links-widget__link span {
       display: block;
       text-align: center;
       margin-top: 20px;
-      color: white;
+      color: #fff;
       text-transform: uppercase; }
     .c-links-widget__link svg {
       width: 60px;
       height: 60px;
       color: #12a3c7; }
+  .c-links-widget__link + .c-links-widget__link {
+    margin-top: 30px; }
 
 .c-account-widget {
   display: -webkit-box;
@@ -6771,11 +6775,11 @@ button.o-btn {
       color: #808080;
       background-color: transparent; }
   .c-block__icon {
-    width: 24px;
-    height: 24px; }
+    width: 32px;
+    height: 32px; }
     .c-block__icon svg {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       fill: currentColor; }
 
 .c-block-list {
@@ -6833,8 +6837,8 @@ button.o-btn {
           -ms-flex-align: center;
               align-items: center; }
       .c-block-list__search-icon svg {
-        width: 24px;
-        height: 24px;
+        width: 32px;
+        height: 32px;
         color: #b6b6b6; }
   .c-block-list__wrap {
     display: -webkit-box;
@@ -7015,7 +7019,8 @@ button.o-btn {
       -ms-flex: 0 0 210px;
           flex: 0 0 210px;
   padding-bottom: 30px;
-  padding-left: 15px; }
+  padding-left: 15px;
+  padding-top: 65px; }
   .c-actions__container {
     display: -webkit-box;
     display: -ms-flexbox;
