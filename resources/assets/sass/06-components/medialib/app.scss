@@ -96,7 +96,7 @@
         span {
             width: auto;
             font-size: 16px;
-            color: #000000;
+            color: $color-black;
         }
     }
 }
@@ -131,11 +131,11 @@
         border: 1px solid $color-grey-dark;
         margin: 6px;
         border-radius: $panel-border-radius;
-        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        box-shadow: 0 1px 1px rgba($color-black,.05);
 
         &:hover {
             border-color: $color-grey-accent;
-            box-shadow: 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: 0 1px 1px rgba($color-black,.075);
         }
     }
     &__preview {
@@ -188,7 +188,7 @@
         border: 1px solid $secondary-highlight;
         padding: 2px 8px 2px 3px;
         border-radius: $panel-border-radius;
-        background-color: #fff;
+        background-color: $color-white;
         cursor: default;
 
         &:hover {
@@ -215,13 +215,23 @@
         width: 100%;
         padding: 2px 3px;
         display: none;
-        background-color: #fff;
+        background-color: $color-white;
         border: 1px solid $secondary-highlight;
+
+        button,
         a {
             display: block;
+            width: 100%;
+            text-align: left;
+            color: $color-black;
+
+            &:hover {
+                color: $color-blue;
+            }
         }
 
-        a + a {
+        * + button,
+        * + a {
             border-top: 1px solid $secondary-highlight;
         }
 

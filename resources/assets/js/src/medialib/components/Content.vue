@@ -16,7 +16,15 @@
 
         </div>
 
-        <div :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
+        <drag class="drag" :transfer-data="{ file: item.id }" :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
+
+            <div slot="image" class="drag-image">
+                <ul>
+                    <li>Drag</li>
+                    <li>Image</li>
+                    <li>HTML</li>
+                </ul>
+            </div>
 
             <div class="folder__preview">
 
@@ -37,14 +45,14 @@
                 <div class="folder__options">
                     <div class="folder__options-title">Actions: <span class="chevron--bottom"></span></div>
                     <div class="folder__options-list">
-                        <a href="#" @click.prevent="onChange('edit', item)">Edit</a>
-                        <a href="#" @click.prevent="onChange('remove', item)">Remove</a>
+                        <button @click="onChange('edit', item)">Edit</button>
+                        <button @click="onChange('remove', item)">Remove</button>
                     </div>
                 </div>
 
             </div>
 
-        </div>
+        </drag>
 
     </div>
 
@@ -52,6 +60,8 @@
 
 <script>
     import  { mapState } from 'vuex'
+    import { Drag } from 'vue-drag-drop'
+
     export default {
         data () {
             return {
@@ -63,6 +73,9 @@
             ...mapState([
                 'layout'
             ])
+        },
+        components: {
+            Drag
         },
         methods: {
             folderSelected(folder) {
@@ -95,3 +108,9 @@
         }
     }
 </script>
+
+<style>
+    .drag-image {
+        color: #000;
+    }
+</style>

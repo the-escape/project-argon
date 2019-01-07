@@ -5300,7 +5300,7 @@ $color-primary-accent: rbga();*/
     border: 1px solid #f0f0f0;
     padding: 2px 8px 2px 3px;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #ffffff;
     cursor: default; }
     .folder__options:hover .folder__options-list {
       display: block; }
@@ -5317,11 +5317,19 @@ $color-primary-accent: rbga();*/
     width: 100%;
     padding: 2px 3px;
     display: none;
-    background-color: #fff;
+    background-color: #ffffff;
     border: 1px solid #f0f0f0; }
+    .folder__options-list button,
     .folder__options-list a {
-      display: block; }
-    .folder__options-list a + a {
+      display: block;
+      width: 100%;
+      text-align: left;
+      color: #000000; }
+      .folder__options-list button:hover,
+      .folder__options-list a:hover {
+        color: #12a3c7; }
+    .folder__options-list * + button,
+    .folder__options-list * + a {
       border-top: 1px solid #f0f0f0; }
     .folder__options-list:hover {
       display: block; }
@@ -5585,4 +5593,4 @@ $color-primary-accent: rbga();*/
 
 
 
-//# sourceMappingURL=main-e0786b9bd6.css.map
+//# sourceMappingURL=main-16d1d4b485.css.map
