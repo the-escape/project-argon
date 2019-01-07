@@ -18,6 +18,11 @@
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
+                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                        </svg>
+                    </a>
                     <h1>Create Page</h1>
                 </div>
                 <div class="c-header__nav c-tab__nav js-tabs-nav">
@@ -141,26 +146,8 @@
                             </div>
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-icon-btn">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#cross"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Cancel</div>
-                                        </div>
-                                    </a>
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-publish js-save">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -175,26 +162,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-icon-btn">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#cross"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Cancel</div>
-                                        </div>
-                                    </a>
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-publish js-save">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -225,26 +194,7 @@
 
                                     <div class="c-actions">
                                         <div class="c-actions__group">
-                                            <button class="o-icon-btn js-tab-btn" data-tab="page-content">
-                                                <div class="o-icon-btn__wrap">
-                                                    <div class="o-icon-btn__icon">
-                                                        <svg>
-                                                            <use xlink:href="/argon/images/svgicons.svg#cross"></use>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="o-icon-btn__label">Cancel</div>
-                                                </div>
-                                            </button>
-                                            <button class="o-icon-btn o-icon-btn--success js-tab-btn" data-tab="page-content">
-                                                <div class="o-icon-btn__wrap">
-                                                    <div class="o-icon-btn__icon">
-                                                        <svg>
-                                                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="o-icon-btn__label">OK</div>
-                                                </div>
-                                            </button>
+                                            <button class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">back</button>
                                         </div>
                                     </div>
                                 </div>

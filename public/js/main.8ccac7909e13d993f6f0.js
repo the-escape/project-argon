@@ -1739,7 +1739,7 @@ function changeTab(tabName) {
 
   if (tabs.nav[tabs.currentTab]) {
     if (tabs.nav[tabs.currentTab].classList.contains('to-remove')) {
-      tabs.nav[tabs.currentTab].remove();
+      tabs.nav[tabs.currentTab].parentNode.remove();
       tabs.nav[tabs.currentTab] = null;
     } else {
       tabs.nav[tabs.currentTab].classList.remove('active');
@@ -10616,6 +10616,8 @@ function feedbackForm() {// controller('.js-feedback-form')
 
 
 
+
+
 function src_init() {
   init();
   ui_jump.init(650, 150);
@@ -10642,7 +10644,15 @@ function src_init() {
 
 function formSubmits() {
   setupPageLeave();
-  var formEls = document.querySelectorAll('form.o-form');
+  Object(_esm5["fromEvent"])(document, 'click').pipe(Object(operators["filter"])(function (evt) {
+    return evt.target.dataset && evt.target.dataset.formAction;
+  })).subscribe(function (evt) {
+    evt.preventDefault();
+    var form = evt.target.closest('form');
+    form.action = evt.target.dataset.formAction;
+    form.submit();
+  });
+  var formEls = document.querySelectorAll('form.js-prevent-leave');
   var forms = Array.from(formEls);
   forms.forEach(function (form) {
     form.addEventListener('submit', function () {
@@ -10680,4 +10690,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.31f5069f562ce3127787.js.map
+//# sourceMappingURL=main.8ccac7909e13d993f6f0.js.map

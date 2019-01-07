@@ -8,6 +8,11 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
+            <a href="{{ route('cms:role:manage') }}" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
             <h1>Role</h1>
         </div>
         <div class="c-tab__nav">
@@ -38,95 +43,87 @@
     </header>
 
     <form action="{{ route('cms:role:update', [$role->id]) }}" method="POST" autocomplete="false">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <main class="c-container c-container--main">
 
             @include('argon::inc.new-alerts')
 
-            <div class="o-form">
-                <div class="o-form__title">Edit role</div>
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="name">Name*</label>
-                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $role->name) }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+            <div class="c-actions__container">
+                <div class="c-actions__content">
+
+                    <div class="o-form">
+                        <div class="o-form__title">Edit role</div>
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="name">Name*</label>
+                                    <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $role->name) }}">
                                 </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="name">Error Message</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="name">Error Message</label>
+                        </div>
+
+                        <div class="o-form__title">Permissions</div>
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form__vertical-list">
+                                    @foreach ($permissions->getDefinedPermissions() as $permission)
+                                        <div class="o-checkbox">
+                                            <label>
+                                                <input type="checkbox"
+                                                    {{ $role->hasPermission($permission) ? 'checked="checked"' : '' }}
+                                                    name="permissions[]"
+                                                    id="role{{$permission}}"
+                                                    value="{{$permission}}">
+                                                <span>
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg>
+                                                </span>
+                                            </label>
+                                            <label for="role{{ $permission }}">{{ $permission }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="permissions">Error Message</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-                <div class="o-form__title">Permissions</div>
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form__vertical-list">
-                            @foreach ($permissions->getDefinedPermissions() as $permission)
-                                <div class="o-checkbox">
-                                    <label>
-                                        <input type="checkbox"
-                                               {{ $role->hasPermission($permission) ? 'checked="checked"' : '' }}
-                                               name="permissions[]"
-                                               id="role{{$permission}}"
-                                               value="{{$permission}}">
-                                        <span>
-                                            <svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg>
-                                        </span>
-                                    </label>
-                                    <label for="role{{ $permission }}">{{ $permission }}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                </div>
-                            </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="permissions">Error Message</label>
-                            </div>
-                        </div>
+                <div class="c-actions">
+                    <div class="c-actions__group">
+                        <button type="submit" class="o-btn o-btn--primary">save</button>
+                        <a href="{{ route('cms:role:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                        <a href="{{ route('cms:role:delete', ['id' => $role->id]) }}" onclick="return confirm('Are you sure you want to delete this role?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>
-
             </div>
-
 
         </main>
-
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container c-footer--fixed">
-                <div class="c-footer__container">
-
-                    <div class="c-footer__buttons">
-                        <div>
-                            <a href="{{ route('cms:role:delete', ['id' => $role->id]) }}" onclick="return confirm('Are you sure you want to delete this role?');" class="o-btn o-btn--sm o-btn--danger">Delete</a>
-                        </div>
-                        <div>
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <a href="{{ route('cms:role:manage') }}" class="o-btn o-btn--sm">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </footer>
-
     </form>
 
 @endsection

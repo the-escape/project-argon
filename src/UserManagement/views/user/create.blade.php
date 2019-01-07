@@ -8,6 +8,11 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
+            <a href="{{ route('cms:user:manage') }}" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
             <h1>User</h1>
         </div>
         <div class="c-tab__nav">
@@ -147,16 +152,8 @@
 
                 <div class="c-actions">
                     <div class="c-actions__group">
-                        <button type="submit" class="o-icon-btn o-icon-btn--primary">
-                            <div class="o-icon-btn__wrap">
-                                <div class="o-icon-btn__icon">
-                                    <svg>
-                                        <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                    </svg>
-                                </div>
-                                <div class="o-icon-btn__label">Save</div>
-                            </div>
-                        </button>
+                        <button type="submit" class="o-btn o-btn--primary">save</button>
+                        <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
                     </div>
                 </div>
             </div>

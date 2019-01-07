@@ -23,6 +23,9 @@ import {
 } from './components'
 import { Dashboard } from './dashboard'
 
+import { fromEvent } from 'rxjs'
+import { filter } from 'rxjs/operators'
+
 function init () {
     polyfill()
     Jump.init(650, 150)
@@ -49,7 +52,18 @@ function init () {
 function formSubmits () {
     setupPageLeave()
 
-    const formEls = document.querySelectorAll('form.o-form')
+    fromEvent(document, 'click')
+        .pipe(
+            filter(evt => evt.target.dataset && evt.target.dataset.formAction)
+        )
+        .subscribe(evt => {
+            evt.preventDefault()
+            const form = evt.target.closest('form')
+            form.action = evt.target.dataset.formAction
+            form.submit()
+        })
+
+    const formEls = document.querySelectorAll('form.js-prevent-leave')
     const forms = Array.from(formEls)
     forms.forEach(form => {
         form.addEventListener('submit', () => {

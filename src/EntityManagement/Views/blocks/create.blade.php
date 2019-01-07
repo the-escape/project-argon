@@ -18,6 +18,12 @@
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
+                    <a href="{{ route('cms:blocks:manage') }}" class="c-header__back">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                        </svg>
+                    </a>
+
                     <h1>Create {{ $type->name }}</h1>
                 </div>
                 <div class="c-tab__nav js-tabs-nav">
@@ -87,16 +93,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">save</button>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
                                 </div>
                             </div>
                         </div>
@@ -111,16 +109,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">save</button>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
                                 </div>
                             </div>
                         </div>
@@ -131,37 +121,30 @@
                     @foreach($groups as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-tab-panel__inner-container l-full">
-                                    <h2>{{ $group->name }}</h2>
-                                    <script>
-                                        window.groups.push({
-                                            id: '{{$group->id}}',
-                                            isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                            isRendering: false,
-                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                            name: '{{ $group->name }}',
-                                            isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                            image: '{{ $group->getSetting("image") }}'
-                                        });
-                                        window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
-                                    </script>
-                                    <div class="js-fields" data-name="{{$group->id}}"></div>
-                                </div>
-                            </main>
-                            <footer class="c-footer__wrapper">
-                                <div class="c-footer c-container c-footer--fixed">
-                                    <div class="c-footer__container">
-                                        <div class="c-footer__buttons">
-                                            <div>
-                                                <button class="o-btn o-btn--sm js-tab-btn" data-tab="block-content">Back</a>
-                                            </div>
-                                            <div>
-                                                <button class="o-btn o-btn--sm o-btn--success js-tab-btn" data-tab="block-content">OK</a>
-                                            </div>
+                                <div class="c-actions__container">
+                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                        <h2>{{ $group->name }}</h2>
+                                        <script>
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                                isRendering: false,
+                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                                name: '{{ $group->name }}',
+                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                        </script>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    </div>
+                                    <div class="c-actions">
+                                        <div class="c-actions__group">
+                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="block-content">Back</button>
                                         </div>
                                     </div>
                                 </div>
-                            </footer>
+                            </main>
                         </div>
                     @endforeach
                 @endif

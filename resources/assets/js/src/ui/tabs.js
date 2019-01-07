@@ -106,7 +106,7 @@ export function changeTab (tabName, title = '', pushstate = true) {
     tabs.panels[tabs.currentTab].classList.remove('active')
     if (tabs.nav[tabs.currentTab]) {
         if (tabs.nav[tabs.currentTab].classList.contains('to-remove')) {
-            tabs.nav[tabs.currentTab].remove()
+            tabs.nav[tabs.currentTab].parentNode.remove()
             tabs.nav[tabs.currentTab] = null
         } else {
             tabs.nav[tabs.currentTab].classList.remove('active')

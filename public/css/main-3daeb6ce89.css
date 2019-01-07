@@ -5837,6 +5837,24 @@ button.o-btn {
       text-decoration: none; }
       .c-header__btns a:hover {
         text-decoration: underline; }
+  .c-header__back {
+    position: absolute;
+    top: 0;
+    left: -40px;
+    color: #12a3c7;
+    width: 48px;
+    height: 100%;
+    padding: 0; }
+    .c-header__back:hover {
+      color: #000; }
+    .c-header__back svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 42px;
+      height: 42px;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%); }
 
 .c-footer {
   width: 100%;
@@ -7154,4 +7172,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-38fa841354.css.map
+//# sourceMappingURL=main-3daeb6ce89.css.map

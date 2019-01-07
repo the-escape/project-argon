@@ -17,7 +17,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         window.groups = []
     </script>
 
-    <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" class="o-form" method="POST" id="pageEditForm">
+    <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" class="o-form js-prevent-leave" method="POST" id="pageEditForm">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         @include('argon::inc.alerts', compact($errors))
@@ -25,8 +25,22 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
+                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                        </svg>
+                    </a>
+
                     <div class="c-header__local-container">
                         <h1>{{$page->name}}</h1>
+                    </div>
+
+                    <div class="c-header__btns">
+                        @foreach ($page->getLocalisations() as $l)
+                            @if ($l->getId() == $localisation->getId())
+                                <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-link" target="_blank">Go to live page</a>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
                 <div class="c-header__nav c-tab__nav js-tabs-nav">
@@ -41,14 +55,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                         </li>
                         @endforeach
                     </ul>
-
-                    <div class="c-header__btns">
-                        @foreach ($page->getLocalisations() as $l)
-                            @if ($l->getId() == $localisation->getId())
-                                <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-link" target="_blank">View page</a>
-                            @endif
-                        @endforeach
-                    </div>
                 </div>
             </header>
 
@@ -62,36 +68,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save changes</div>
-                                        </div>
-                                    </button>
-                                    <a href="#" class="o-icon-btn preview-page" data-preview-id="{{ $currentRevision->id }}">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#see"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Preview changes</div>
-                                        </div>
-                                    </a>
-                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-revision js-save">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#upload"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save &amp; publish</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
+                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
+                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
                                 </div>
                             </div>
                         </div>
@@ -217,36 +197,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-icon-btn o-icon-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save changes</div>
-                                        </div>
-                                    </button>
-                                    <a href="#" class="o-icon-btn preview-page" data-preview-id="{{ $currentRevision->id }}">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#see"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Preview changes</div>
-                                        </div>
-                                    </a>
-                                    <button type="submit" class="o-icon-btn o-icon-btn--success save-revision js-save">
-                                        <div class="o-icon-btn__wrap">
-                                            <div class="o-icon-btn__icon">
-                                                <svg>
-                                                    <use xlink:href="/argon/images/svgicons.svg#upload"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="o-icon-btn__label">Save &amp; publish</div>
-                                        </div>
-                                    </button>
+                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
+                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
+                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
                                 </div>
                             </div>
                         </div>
@@ -352,16 +306,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                 <div class="c-actions">
                                     <div class="c-actions__group">
-                                        <button class="o-icon-btn o-icon-btn--primary js-tab-btn" data-tab="page-content">
-                                            <div class="o-icon-btn__wrap">
-                                                <div class="o-icon-btn__icon">
-                                                    <svg>
-                                                        <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                                                    </svg>
-                                                </div>
-                                                <div class="o-icon-btn__label">Back</div>
-                                            </div>
-                                        </button>
+                                        <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
                                     </div>
                                 </back>
                             </div>
@@ -396,16 +341,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                     <div class="c-actions">
                                         <div class="c-actions__group">
-                                            <button class="o-icon-btn o-icon-btn--success js-tab-btn" data-tab="page-content">
-                                                <div class="o-icon-btn__wrap">
-                                                    <div class="o-icon-btn__icon">
-                                                        <svg>
-                                                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
-                                                        </svg>
-                                                    </div>
-                                                    <div class="o-icon-btn__label">ok</div>
-                                                </div>
-                                            </button>
+                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
                                         </div>
                                     </div>
                                 </div>
