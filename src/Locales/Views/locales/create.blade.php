@@ -8,6 +8,11 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
+            <a href="{{ route('cms:locales:manage') }}" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
             <h1>Locale</h1>
         </div>
         <div class="c-tab__nav">
@@ -30,124 +35,116 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:locales:create') }}" method="POST" autocomplete="off">
+    <main class="c-container c-container--main">
+        <form action="{{ route('cms:locales:create') }}" method="POST" autocomplete="off">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        <main class="c-container c-container--main">
-            <div class="o-form">
+            <div class="c-actions__container">
+                <div class="c-actions__content">
+                    <div class="o-form">
 
-                <div class="o-form__title">Create new locale</div>
+                        <div class="o-form__title">Create new locale</div>
 
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="name">Name*</label>
-                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name') }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="name">Name*</label>
+                                    <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name') }}">
                                 </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="name">Error Message</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="name">Error Message</label>
+                        </div>
+
+
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="languageCode">Language Code*</label>
+                                    <input type="text" id="languageCode" name="languageCode" placeholder="Language Code..." value="{{ old('languageCode') }}">
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="languageCode">Error Message</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="region">Region*</label>
+                                    <input type="text" id="region" name="region" placeholder="Region..." value="{{ old('region') }}">
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="region">Error Message</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="locale_slug">Slug*</label>
+                                    <input type="text" id="locale_slug" name="locale_slug" placeholder="Slug..." value="{{ old('locale_slug') }}">
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="locale_slug">Error Message</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="languageCode">Language Code*</label>
-                            <input type="text" id="languageCode" name="languageCode" placeholder="Language Code..." value="{{ old('languageCode') }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                </div>
-                            </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="languageCode">Error Message</label>
-                            </div>
-                        </div>
+                <div class="c-actions">
+                    <div class="c-actions__group">
+                        <button type="submit" class="o-btn o-btn--primary">save</button>
+                        <a href="{{ route('cms:locales:manage') }}" class="o-btn o-btn--light-grey">Cancel</a>
                     </div>
-                </div>
-
-
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="region">Region*</label>
-                            <input type="text" id="region" name="region" placeholder="Region..." value="{{ old('region') }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                </div>
-                            </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="region">Error Message</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="o-form__group">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="locale_slug">Slug*</label>
-                            <input type="text" id="locale_slug" name="locale_slug" placeholder="Slug..." value="{{ old('locale_slug') }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
-                                </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
-                                </div>
-                            </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="locale_slug">Error Message</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container c-footer--fixed">
-                <div class="c-footer__container">
-
-                    <div class="c-footer__buttons">
-                        <div></div>
-                        <div>
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--sm">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </footer>
-
-    </form>
+        </form>
+    </main>
 
 @endsection

@@ -16,7 +16,7 @@
 
         <main class="c-container c-container--main">
 
-            @include('argon::inc.new-alerts')
+            @include('argon::inc.alerts')
 
             <div class="o-form">
 
@@ -141,7 +141,7 @@
 
                 @include('argon::types.fields.loop', ['items'=>$field->type->getProperties()])
 
-                
+
             </div>
         </main>
 

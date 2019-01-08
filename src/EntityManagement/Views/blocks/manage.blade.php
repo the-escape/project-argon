@@ -32,7 +32,7 @@
 
     <main class="c-container c-container--main">
 
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'filters' => [
@@ -46,30 +46,28 @@
         ])
 
         <div class="o-table o-table--3 l-full">
-
             @include('argon::inc.listing.table-headers', ['headers' => ['name', 'type', 'created_at', '', '']])
 
             @foreach ($blocks->all() as $i => $block)
                 <div class="o-table__data">{{ $block->name }}</div>
                 <div class="o-table__data">{{ $block->type->name }}</div>
                 <div class="o-table__data">{{ $block->created_at->format('jS M Y') }}</div>
-                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    @include('argon::inc.listing.confirm', [
+                        'deleteUrl' => route('cms:blocks:delete', ['id' => $block->id])
+                    ])
+                </div>
                 <div class="o-table__data">
                     <a href="{{ route('cms:blocks:edit', ['id' => $block->id]) }}" class="o-btn o-btn--xs">edit block</a>
                 </div>
             @endforeach
-
         </div>
-    </main>
 
-    @if($blocks->lastPage() > 1)
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container"><!-- .c-footer--fixed -->
-                <div class="c-footer__container ">
-                    @include('argon::inc.listing.pagination', ['items' => $blocks])
-                </div>
+        @if($blocks->lastPage() > 1)
+            <div class="l-full">
+                @include('argon::inc.listing.pagination', ['items' => $blocks])
             </div>
-        </footer>
-    @endif
+        @endif
+    </main>
 
 @stop

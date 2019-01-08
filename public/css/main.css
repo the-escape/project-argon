@@ -3039,6 +3039,7 @@ button.o-btn {
   font-size: 1.8rem; }
 
 .o-confirm-btn {
+  display: block;
   position: relative;
   width: 45px;
   height: 45px;

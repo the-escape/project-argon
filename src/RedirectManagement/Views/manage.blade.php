@@ -32,8 +32,7 @@
 
 
     <main class="c-container c-container--main">
-
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'createLink' => [
@@ -45,29 +44,26 @@
         ])
 
         <div class="o-table o-table--2 l-full">
-
             @include('argon::inc.listing.table-headers', ['headers' => ['from', 'to', '', '']])
 
             @foreach ($redirects->all() as $i => $redirect)
                 <div class="o-table__data">{{ $redirect->from }}</div>
                 <div class="o-table__data">{{ $redirect->to }}</div>
-                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    @include('argon::inc.listing.confirm', [
+                        'deleteUrl' => route('cms:redirects:delete', ['id' => $redirect->id])
+                    ])
+                </div>
                 <div class="o-table__data">
                     <a href="{{ route('cms:redirects:edit', ['userId' => $redirect->id]) }}" class="o-btn o-btn--xs">edit redirect</a>
                 </div>
             @endforeach
-
         </div>
-    </main>
 
-    @if($redirects->lastPage() > 1)
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container"><!-- .c-footer--fixed -->
-                <div class="c-footer__container ">
-                    @include('argon::inc.listing.pagination', ['items' => $redirects])
-                </div>
+        @if($redirects->lastPage() > 1)
+            <div class="l-full">
+                @include('argon::inc.listing.pagination', ['items' => $redirects])
             </div>
-        </footer>
-    @endif
-
+        @endif
+    </main>
 @stop

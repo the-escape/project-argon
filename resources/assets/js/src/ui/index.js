@@ -19,6 +19,7 @@ import {
     setupPageLeave,
     allowPageLeave
 } from './prevent-leave'
+import { BasicConfirmBtns } from './basic-confirm-btns'
 
 export {
     Accordion,
@@ -40,5 +41,6 @@ export {
     CreateCropper,
     preventPageLeave,
     setupPageLeave,
-    allowPageLeave
+    allowPageLeave,
+    BasicConfirmBtns
 }

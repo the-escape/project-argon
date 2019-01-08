@@ -42,12 +42,11 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:user:update', [$user->id]) }}" method="POST" autocomplete="false"  enctype="multipart/form-data">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <main class="c-container c-container--main">
+        <form action="{{ route('cms:user:update', [$user->id]) }}" method="POST" autocomplete="false"  enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        <main class="c-container c-container--main">
-
-            @include('argon::inc.new-alerts')
+            @include('argon::inc.alerts')
 
             <div class="c-actions__container">
                 <div class="c-actions__content">
@@ -197,7 +196,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">save</button>
@@ -206,8 +204,8 @@
                     </div>
                 </div>
             </div>
-        </main>
-    </form>
+        </form>
+    </main>
 
 @endsection
 

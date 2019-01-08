@@ -11,7 +11,8 @@ import {
     Tabs,
     Notifications,
     setupPageLeave,
-    allowPageLeave
+    allowPageLeave,
+    BasicConfirmBtns
 } from './ui'
 import { initialiseFormElements, registerFormSaveEvents } from './form'
 import {
@@ -47,6 +48,7 @@ function init () {
     cropperTest()
     formSubmits()
     SiteTree()
+    BasicConfirmBtns()
 }
 
 function formSubmits () {

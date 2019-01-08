@@ -32,7 +32,7 @@
 
     <main class="c-container c-container--main">
 
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'filters' => [
@@ -53,23 +53,22 @@
                 <div class="o-table__data">{{ $user->name }}</div>
                 <div class="o-table__data">{{ $user->email }}</div>
                 <div class="o-table__data">{{ $user->created_at->format('jS M Y') }}</div>
-                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    @include('argon::inc.listing.confirm', [
+                        'deleteUrl' => route('cms:user:delete', ['id' => $user->id])
+                    ])
+                </div>
                 <div class="o-table__data">
                     <a href="{{ route('cms:user:edit', ['userId' => $user->id]) }}" class="o-btn o-btn--xs">edit user</a>
                 </div>
             @endforeach
         </div>
-    </main>
 
-    @if($users->lastPage() > 1)
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container"><!-- .c-footer--fixed -->
-                <div class="c-footer__container ">
-                    @include('argon::inc.listing.pagination', ['items' => $users])
-                </div>
+        @if($users->lastPage() > 1)
+            <div class="l-full">
+                @include('argon::inc.listing.pagination', ['items' => $users])
             </div>
-        </footer>
-    @endif
-
+        @endif
+    </main>
 @stop
 

@@ -50,6 +50,6 @@
     </form>
 
     @if(!empty($createLink))
-        <a href="{{ $createLink['url'] }}" class="o-btn o-btn--xs">{{ $createLink['label'] }}</a>
+        <a href="{{ $createLink['url'] }}" class="o-btn o-btn--sm o-btn--primary">{{ $createLink['label'] }}</a>
     @endif
 </div>

@@ -32,7 +32,7 @@
 
     <main class="c-container c-container--main">
 
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'createLink' => [
@@ -44,27 +44,25 @@
         ])
 
         <div class="o-table o-table--2 l-full">
-
             @include('argon::inc.listing.table-headers', ['headers' => ['name', 'slug', '', '']])
 
             @foreach ($menus->all() as $i => $menu)
                 <div class="o-table__data">{{ $menu->name }}</div>
                 <div class="o-table__data">{{ $menu->slug }}</div>
-                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    @include('argon::inc.listing.confirm', [
+                        'deleteUrl' => route('cms:menus:delete', ['id' => $menu->id])
+                    ])
+                </div>
                 <div class="o-table__data">
                     <a href="{{ route('cms:menus:edit', ['userId' => $menu->id]) }}" class="o-btn o-btn--xs">edit menu</a>
                 </div>
             @endforeach
+        </div>
 
+        <div class="l-full">
+            @include('argon::inc.listing.pagination', ['items' => $menus])
         </div>
     </main>
-
-    <footer class="c-footer__wrapper">
-        <div class="c-footer c-container"><!-- .c-footer--fixed -->
-            <div class="c-footer__container ">
-                @include('argon::inc.listing.pagination', ['items' => $menus])
-            </div>
-        </div>
-    </footer>
 
 @stop

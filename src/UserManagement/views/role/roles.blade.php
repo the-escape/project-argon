@@ -32,7 +32,7 @@
 
     <main class="c-container c-container--main">
 
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'createLink' => [
@@ -50,22 +50,22 @@
             @foreach ($roles->all() as $i => $role)
                 <div class="o-table__data">{{ $role->name }}</div>
                 <div class="o-table__data">{{ $role->created_at->format('jS M Y') }}</div>
-                <div class="o-table__data"></div>
+                <div class="o-table__data">
+                    @include('argon::inc.listing.confirm', [
+                        'deleteUrl' => route('cms:role:delete', ['id' => $role->id])
+                    ])
+                </div>
                 <div class="o-table__data">
                     <a href="{{ route('cms:role:edit', ['id' => $role->id]) }}" class="o-btn o-btn--xs">edit role</a>
                 </div>
             @endforeach
 
         </div>
-    </main>
 
-    @if($roles->lastPage() > 1)
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container"><!-- .c-footer--fixed -->
-                <div class="c-footer__container ">
-                    @include('argon::inc.listing.pagination', ['items' => $roles])
-                </div>
+        @if($roles->lastPage() > 1)
+            <div class="l-full">
+                @include('argon::inc.listing.pagination', ['items' => $roles])
             </div>
-        </footer>
-    @endif
+        @endif
+    </main>
 @stop

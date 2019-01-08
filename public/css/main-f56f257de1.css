@@ -3039,6 +3039,7 @@ button.o-btn {
   font-size: 1.8rem; }
 
 .o-confirm-btn {
+  display: block;
   position: relative;
   width: 45px;
   height: 45px;
@@ -7172,4 +7173,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-3daeb6ce89.css.map
+//# sourceMappingURL=main-f56f257de1.css.map

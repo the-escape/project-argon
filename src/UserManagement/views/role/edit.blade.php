@@ -42,16 +42,14 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:role:update', [$role->id]) }}" method="POST" autocomplete="false">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <main class="c-container c-container--main">
+        <form action="{{ route('cms:role:update', [$role->id]) }}" method="POST" autocomplete="false">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        <main class="c-container c-container--main">
-
-            @include('argon::inc.new-alerts')
+            @include('argon::inc.alerts')
 
             <div class="c-actions__container">
                 <div class="c-actions__content">
-
                     <div class="o-form">
                         <div class="o-form__title">Edit role</div>
                         <div class="o-form__group">
@@ -122,8 +120,7 @@
                     </div>
                 </div>
             </div>
-
-        </main>
-    </form>
+        </form>
+    </main>
 
 @endsection

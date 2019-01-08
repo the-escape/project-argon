@@ -31,8 +31,7 @@
     </header>
 
     <main class="c-container c-container--main">
-
-        @include('argon::inc.new-alerts')
+        @include('argon::inc.alerts')
 
         @include('argon::inc.listing.filters', [
             'createLink' => [
@@ -44,7 +43,6 @@
         ])
 
         <div class="o-table o-table--3 l-full">
-
             @include('argon::inc.listing.table-headers', ['headers' => ['name', 'type', '', '', '']])
 
             @foreach ($types->all() as $i => $type)
@@ -56,52 +54,7 @@
                     <a href="{{ route('cms:types:edit', ['id' => $type->id]) }}" class="o-btn o-btn--xs">edit type</a>
                 </div>
             @endforeach
-
         </div>
     </main>
 
-
-
-
-
-
-
-
-
-<?php /*
-    <div class="main">
-
-        <h1 class="page-header">Types</h1>
-
-        @include('argon::inc.alerts', compact($errors))
-
-        <div class="dashboard-actions dashboard-actions--top">
-            <a href="{{ route('cms:types:create') }}" class="btn btn-primary">Create</a>
-        </div>
-
-        <div class="dashboard-content">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($types->all() as $type)
-                    <tr>
-                        <td>{{$type->name}}</td>
-                        <td>{{$type->type}}</td>
-                        <td>
-                            <a href="{{ route('cms:types:edit', ['typeId' => $type->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                            <a href="{{ route('cms:types:delete', ['typeId' => $type->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
- */ ?>
 @stop

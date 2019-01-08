@@ -35,10 +35,10 @@
         </div>
     </header>
 
-    <form action="{{ route('cms:user:create') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <main class="c-container c-container--main">
+        <form action="{{ route('cms:user:create') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-        <main class="c-container c-container--main">
             <div class="c-actions__container">
                 <div class="c-actions__content">
                     <div class="o-form">
@@ -157,7 +157,7 @@
                     </div>
                 </div>
             </div>
-        </main>
-    </form>
+        </form>
+    </main>
 
 @endsection

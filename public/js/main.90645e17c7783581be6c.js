@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 230 modules ***!
+  !*** ./resources/assets/js/src/index.js + 231 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -1927,7 +1927,54 @@ function preventPageLeave() {
 function allowPageLeave() {
   hasChanged = false;
 }
+// CONCATENATED MODULE: ./resources/assets/js/src/ui/basic-confirm-btns.js
+
+
+function BasicConfirmBtns() {
+  var basicConfirmEls = document.querySelectorAll('.js-basic-confirm');
+  var basicConfirms = Array.from(basicConfirmEls);
+  return basicConfirms.map(function (el) {
+    return createBasicConfirm(el);
+  });
+}
+var BasicConfirm = {
+  el: null
+};
+
+function createBasicConfirm(el) {
+  var Obj = Object.create(BasicConfirm);
+  basic_confirm_btns_init.call(Obj, el);
+  return Obj;
+}
+
+function basic_confirm_btns_init(el) {
+  var _this = this;
+
+  if (!el) {
+    return;
+  }
+
+  this.el = el;
+  var click = Object(_esm5["fromEvent"])(this.el, 'click');
+  click.pipe(Object(operators["filter"])(function (evt) {
+    return evt.target.dataset.question;
+  }), Object(operators["map"])(function (evt) {
+    return evt.preventDefault(), evt;
+  }), Object(operators["map"])(function (evt) {
+    return evt.target.dataset.question;
+  })).subscribe(function (question) {
+    if (question === 'delete') {
+      _this.el.classList.add('is-active');
+    }
+  });
+  click.pipe(Object(operators["filter"])(function (evt) {
+    return evt.target.classList.contains('js-confirm-decline');
+  })).subscribe(function (_) {
+    _this.el.classList.remove('is-active');
+  });
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/ui/index.js
+
 
 
 
@@ -10640,6 +10687,7 @@ function src_init() {
   cropperTest();
   formSubmits();
   SiteTree();
+  BasicConfirmBtns();
 }
 
 function formSubmits() {
@@ -10690,4 +10738,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8ccac7909e13d993f6f0.js.map
+//# sourceMappingURL=main.90645e17c7783581be6c.js.map

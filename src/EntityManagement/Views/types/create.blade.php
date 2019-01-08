@@ -8,6 +8,11 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
+            <a href="{{ route('cms:types:manage') }}" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
             <h1>Content Type</h1>
         </div>
         <div class="c-tab__nav">
@@ -31,58 +36,51 @@
     </header>
 
     <form action="{{ route('cms:types:create') }}" method="POST" autocomplete="off">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <main class="c-container c-container--main">
 
-            @include('argon::inc.new-alerts')
+            @include('argon::inc.alerts')
 
-            <div class="o-form">
+            <div class="c-actions__container">
+                <div class="c-actions__content">
+                    <div class="o-form">
 
-                <div class="o-form__title">Create new content type</div>
+                        <div class="o-form__title">Create new content type</div>
 
-                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
-                    <div class="o-form-status">
-                        <div class="o-form-status__input">
-                            <label for="name">Name*</label>
-                            <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name') }}">
-                        </div>
-                        <div class="o-form-status__message">
-                            <div class="o-form-status__icon">
-                                <div class="o-form-status__icon--error">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                        <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="name">Name*</label>
+                                    <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name') }}">
                                 </div>
-                                <div class="o-form-status__icon--success">
-                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="name">{{ getError($errors, 'name') }}</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="o-form-status__message-bar">
-                                <label for="name">{{ getError($errors, 'name') }}</label>
-                            </div>
                         </div>
+
+                    </div>
+                    <br><br>
+                </div>
+                <div class="c-actions">
+                     <div class="c-actions__group">
+                        <button type="submit" class="o-btn o-btn--primary">save</button>
+                        <a href="{{ route('cms:types:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
                     </div>
                 </div>
-
             </div>
         </main>
-
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container c-footer--fixed">
-                <div class="c-footer__container">
-
-                    <div class="c-footer__buttons">
-                        <div></div>
-                        <div>
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                            <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--sm">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary" value="Save">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </footer>
-
     </form>
 
 @endsection
