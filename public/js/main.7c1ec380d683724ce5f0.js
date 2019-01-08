@@ -10321,7 +10321,11 @@ function () {
               var c = _step3.value;
 
               if (child.id === c.id) {
-                // child.items = c.items
+                if (!c.items) {
+                  child.items = [];
+                  break;
+                }
+
                 child.items = c.items.reduce(function (a, v) {
                   a.push(new Item(v));
                   return a;
@@ -10949,4 +10953,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.658c523050e79ef561a0.js.map
+//# sourceMappingURL=main.7c1ec380d683724ce5f0.js.map

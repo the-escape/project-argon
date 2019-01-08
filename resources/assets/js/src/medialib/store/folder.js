@@ -24,7 +24,10 @@ export class Folder {
         for (let child of this.children) {
             for (let c of children) {
                 if (child.id === c.id) {
-                    // child.items = c.items
+                    if (!c.items) {
+                        child.items = []
+                        break;
+                    }
                     child.items = c.items.reduce((a, v) => {
                         a.push(new Item(v))
                         return a
