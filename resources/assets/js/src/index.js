@@ -78,20 +78,20 @@ function formSubmits () {
 function cropperTest () {
     Cropper()
 
-    // const btn = document.querySelector('.js-spawn-cropper')
-    // if (!btn) {
-    //     return
-    // }
+    const btn = document.querySelector('.js-spawn-cropper')
+    if (!btn) {
+        return
+    }
 
-    // btn.addEventListener('click', function () {
-    setCropperImage({
-        image: {
-            path: 'https://picsum.photos/1920/1080/?random'
-        },
-        rotator: true,
-        ratio: '16:9'
-    }).then(console.log)
-    // })
+    btn.addEventListener('click', function () {
+        setCropperImage({
+            image: {
+                path: 'https://picsum.photos/800/600/?random'
+            },
+            rotator: true,
+            ratio: '16:9'
+        }).then(console.log)
+    })
 }
 
 if (document.readyState !== 'loading') {

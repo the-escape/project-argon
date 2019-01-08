@@ -77,6 +77,10 @@ export default {
     },
     mounted: function () {
         this.cropper = new Cropper(this.$refs.img, this.options)
+
+        this.$refs.img.addEventListener('ready', () => {
+            this.cropper.zoomTo(1)
+        })
     },
     computed: {
         options: function () {
