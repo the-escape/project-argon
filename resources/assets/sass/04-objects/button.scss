@@ -93,15 +93,24 @@ button.o-btn {
         }
     }
 
-    &--white-outline {
-        background-color: transparent;
-        border-color: white;
-        color: white;
+    &--grey {
+        background-color: $grey-dark;
+        border-color: $grey-dark;
 
         &:hover {
-            background-color: white;
-            border-color: white;
-            color: black;
+            color: $grey;
+        }
+    }
+
+    &--white-outline {
+        background-color: transparent;
+        border-color: #fff;
+        color: #fff;
+
+        &:hover {
+            background-color: #fff;
+            border-color: #fff;
+            color: #000;
         }
     }
 

@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <g class="nc-icon-wrapper" stroke-linecap="square" stroke-width="2" fill="none" stroke="currentColor" stroke-miterlimit="10">
-    <path data-color="color-2" d="M17 13H9"/>
-    <path d="M29 29l-8.223-8.223"/>
-    <circle cx="13" cy="13" r="11"/>
+  <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M16.778 13.37H9.963M27 27l-7.005-7.005"/>
+    <circle cx="13.37" cy="13.37" r="9.37"/>
   </g>
 </svg>
