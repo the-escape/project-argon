@@ -164,7 +164,7 @@
 
         small {
             font-size:inherit;
-            color: lighten($text-color, 15%);
+            color: $grey-dark;
         }
     }
     &__icon {
@@ -195,6 +195,10 @@
             .folder__options-list {
                 display: block;
             }
+
+            .chevron--bottom {
+                color: $black;
+            }
         }
     }
 
@@ -203,6 +207,7 @@
 
         .chevron--bottom {
             float: right;
+            color: $grey-dark;
             &:before {
                 border-width: 0.21em 0.21em 0 0;
                 top: 7px;

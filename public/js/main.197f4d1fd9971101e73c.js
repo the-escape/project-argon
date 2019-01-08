@@ -9252,10 +9252,7 @@ var MediaTreeItemvue_type_template_id_1eb062fd_render = function() {
               var i = arguments.length,
                 argsArray = Array(i)
               while (i--) argsArray[i] = arguments[i]
-              _vm.handleDrop.apply(
-                void 0,
-                [{ f: _vm.folder.id }].concat(argsArray)
-              )
+              _vm.handleDrop.apply(void 0, [_vm.folder].concat(argsArray))
             }
           }
         },
@@ -9339,9 +9336,16 @@ var vue_drag_drop_common_default = /*#__PURE__*/__webpack_require__.n(vue_drag_d
     folderSelected: function folderSelected(folder) {
       this.$store.dispatch('folderSelected', folder);
     },
-    handleDrop: function handleDrop(data, transferData, nativeEvent) {
-      console.log(data);
-      console.log(transferData); // alert(`You dropped with data: ${JSON.stringify(data)}`);
+    handleDrop: function handleDrop(destinationFolder, transferData, nativeEvent) {
+      console.log(destinationFolder);
+      console.log(transferData);
+      console.log(nativeEvent); // alert(`You dropped with data: ${JSON.stringify(data)}`);
+
+      var payload = {
+        folder: destinationFolder,
+        item: transferData
+      };
+      this.$store.dispatch('moveItem', payload);
     }
   }
 });
@@ -9535,7 +9539,11 @@ var Contentvue_type_template_id_4b031da1_render = function() {
             key: "item-" + item.id,
             staticClass: "drag",
             class: "folder__item folder__item--" + item.extension,
-            attrs: { "transfer-data": { file: item.id } }
+            attrs: {
+              "effect-allowed": ["move"],
+              "drop-effect": "move",
+              "transfer-data": item
+            }
           },
           [
             _c(
@@ -10197,6 +10205,13 @@ function media_removeItem(id, cb) {
   }).catch(function (e) {
     cb(e);
   });
+}
+function media_moveItem(data, cb) {
+  vue_default.a.http.post('/admin/media/api/items/move', data).then(function (response) {
+    cb(response);
+  }).catch(function (e) {
+    cb(e);
+  });
 } // min and max included
 
 function randomIntFromRange(min, max) {
@@ -10718,6 +10733,24 @@ vue_default.a.use(vuex_esm["default"]);
           console.log("Refreshed folder content.");
         });
       });
+    },
+    moveItem: function moveItem(state, payload) {
+      var data = {
+        item: payload.item.id,
+        folder: payload.folder.id
+      };
+
+      media_moveItem(data, function (r) {
+        if (r.status >= 400) {
+          return alert(r.body.error);
+        }
+
+        alert("Item moved.\nRefreshing directory...");
+        getFolders(payload.item.folder, function (f) {
+          state.active.items = f.items;
+          console.log("Refreshed folder content.");
+        });
+      });
     }
   },
   actions: {
@@ -10764,6 +10797,10 @@ vue_default.a.use(vuex_esm["default"]);
     removeItem: function removeItem(_ref11, item) {
       var commit = _ref11.commit;
       commit('removeItem', item);
+    },
+    moveItem: function moveItem(_ref12, payload) {
+      var commit = _ref12.commit;
+      commit('moveItem', payload);
     }
   }
 }));
@@ -10860,4 +10897,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.aca9068b69db27ed421b.js.map
+//# sourceMappingURL=main.197f4d1fd9971101e73c.js.map

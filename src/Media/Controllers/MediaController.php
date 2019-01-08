@@ -226,6 +226,40 @@ class MediaController extends BaseController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
+    public function appMoveItem(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
+    {
+        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('item'))) ? (int)$request->request->get('item') : null;
+
+        if (!$itemId)
+        {
+            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $item = $itemRepository->findWhere(["id" => $itemId])->first();
+
+        if (!$item)
+        {
+            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $folderId = $request->request->get('folder');
+
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
+
+        if ($folder === null)
+        {
+            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+
+        $item->folder = $folder->id;
+        $saved = $item->save();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+
+
 
 
 

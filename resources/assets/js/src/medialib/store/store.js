@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder, uploadMedia, removeItem } from "../api/media";
+import { getFolders, getFoldersData, search, addFolder, editFolder, removeFolder, uploadMedia, removeItem, moveItem } from "../api/media";
 import { Folder, children, Item } from "./folder"
 import { Search } from "./search"
 import { Upload } from "./upload"
@@ -140,6 +140,25 @@ export default new Vuex.Store({
                     console.log("Refreshed folder content.");
                 })
             })
+        },
+        moveItem: (state, payload) => {
+            let data = {
+                item: payload.item.id,
+                folder: payload.folder.id
+            }
+
+            moveItem(data, function (r) {
+                if (r.status >= 400) {
+                    return alert(r.body.error)
+                }
+
+                alert("Item moved.\nRefreshing directory...")
+
+                getFolders(payload.item.folder, function(f) {
+                    state.active.items =  f.items
+                    console.log("Refreshed folder content.");
+                })
+            })
         }
     },
     actions: {
@@ -176,6 +195,9 @@ export default new Vuex.Store({
         },
         removeItem({ commit }, item) {
             commit('removeItem', item)
+        },
+        moveItem({ commit }, payload) {
+            commit('moveItem', payload)
         }
     }
 })

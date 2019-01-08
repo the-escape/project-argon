@@ -65,6 +65,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'appDeleteItem',
             Request::METHOD_POST
         );
+        $this->addRoute(
+            'media/api/items/move',
+            'cms:media:api:items:move',
+            MediaController::class,
+            'appMoveItem',
+            Request::METHOD_POST
+        );
 
 
 

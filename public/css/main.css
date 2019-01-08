@@ -5283,7 +5283,7 @@ $color-primary-accent: rbga();*/
         margin-top: 0.5rem; }
     .folder__info small {
       font-size: inherit;
-      color: #899196; }
+      color: #808080; }
   .folder__icon {
     width: 100px;
     text-align: center;
@@ -5304,10 +5304,13 @@ $color-primary-accent: rbga();*/
     cursor: default; }
     .folder__options:hover .folder__options-list {
       display: block; }
+    .folder__options:hover .chevron--bottom {
+      color: #000; }
   .folder__options-title {
     white-space: nowrap; }
     .folder__options-title .chevron--bottom {
-      float: right; }
+      float: right;
+      color: #808080; }
       .folder__options-title .chevron--bottom:before {
         border-width: 0.21em 0.21em 0 0;
         top: 7px; }

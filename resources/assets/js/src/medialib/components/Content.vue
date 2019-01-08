@@ -16,7 +16,7 @@
 
         </div>
 
-        <drag class="drag" :transfer-data="{ file: item.id }" :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
+        <drag class="drag" :effect-allowed="['move']" drop-effect="move" :transfer-data="item" :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
 
             <div slot="image" class="drag-image">
                 <ul>
