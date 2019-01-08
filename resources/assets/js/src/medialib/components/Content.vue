@@ -16,7 +16,7 @@
 
         </div>
 
-        <drag class="drag" :effect-allowed="['move']" drop-effect="move" :transfer-data="item" :class="`folder__item folder__item--${item.extension}`" v-for="item in items" :key="`item-${item.id}`">
+        <drag class="drag" :effect-allowed="['move']" drop-effect="move" :transfer-data="item" :class="`folder__item folder__item--${item.item.extension}`" v-for="item in items" :key="`item-${item.item.id}`">
 
             <div slot="image" class="drag-image">
                 <ul>
@@ -29,7 +29,7 @@
             <div class="folder__preview">
 
                 <div class="folder__image" @click="modal(item)">
-                    <img :src="`/media/${item.id}/${item.slug}.${item.extension}`" :alt="item.filename">
+                    <img :src="item.getUrl()" :alt="item.getName()">
                 </div>
 
             </div>
@@ -37,8 +37,8 @@
             <div class="folder__details">
 
                 <dl class="folder__info">
-                    <dt>{{ item.filename }}</dt>
-                    <dd><small>Dimensions:</small> {{ JSON.parse(item.meta).width }} x {{ JSON.parse(item.meta).height }}</dd>
+                    <dt>{{ item.getName() }}</dt>
+                    <dd><small>Dimensions:</small> {{ item.getDimensions() }}</dd>
                     <!--<dd><small>Size:</small> {{ item.filesize }}</dd>-->
                 </dl>
 
@@ -93,7 +93,7 @@
                     case 'edit':
                         c = confirm("Are you sure?")
                         if (c === true) {
-                            console.log("Requested edit of item %d", item.id)
+                            console.log("Requested edit of item %d", item.item.id)
                         }
                         break
 

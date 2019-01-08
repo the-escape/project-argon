@@ -9177,7 +9177,14 @@ var DirectoryTreevue_type_template_id_4f977bd3_render = function() {
             "drop",
             {
               staticClass: "drop media-tree__item",
-              on: { drop: _vm.handleDrop }
+              on: {
+                drop: function($event) {
+                  var i = arguments.length,
+                    argsArray = Array(i)
+                  while (i--) argsArray[i] = arguments[i]
+                  _vm.handleDrop.apply(void 0, [_vm.folder].concat(argsArray))
+                }
+              }
             },
             [
               _c(
@@ -9413,9 +9420,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     folderSelected: function folderSelected() {
       this.$store.dispatch('folderSelected', this.folder);
     },
-    handleDrop: function handleDrop(data) {
-      console.log(e);
-      alert("You dropped with data: ".concat(JSON.stringify(data)));
+    handleDrop: function handleDrop(destinationFolder, transferData, nativeEvent) {
+      console.log(destinationFolder);
+      console.log(transferData);
+      console.log(nativeEvent); // alert(`You dropped with data: ${JSON.stringify(data)}`);
+
+      var payload = {
+        folder: destinationFolder,
+        item: transferData
+      };
+      this.$store.dispatch('moveItem', payload);
     }
   }
 });
@@ -9536,9 +9550,9 @@ var Contentvue_type_template_id_4b031da1_render = function() {
         return _c(
           "drag",
           {
-            key: "item-" + item.id,
+            key: "item-" + item.item.id,
             staticClass: "drag",
-            class: "folder__item folder__item--" + item.extension,
+            class: "folder__item folder__item--" + item.item.extension,
             attrs: {
               "effect-allowed": ["move"],
               "drop-effect": "move",
@@ -9577,16 +9591,7 @@ var Contentvue_type_template_id_4b031da1_render = function() {
                 },
                 [
                   _c("img", {
-                    attrs: {
-                      src:
-                        "/media/" +
-                        item.id +
-                        "/" +
-                        item.slug +
-                        "." +
-                        item.extension,
-                      alt: item.filename
-                    }
+                    attrs: { src: item.getUrl(), alt: item.getName() }
                   })
                 ]
               )
@@ -9594,16 +9599,11 @@ var Contentvue_type_template_id_4b031da1_render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "folder__details" }, [
               _c("dl", { staticClass: "folder__info" }, [
-                _c("dt", [_vm._v(_vm._s(item.filename))]),
+                _c("dt", [_vm._v(_vm._s(item.getName()))]),
                 _vm._v(" "),
                 _c("dd", [
                   _c("small", [_vm._v("Dimensions:")]),
-                  _vm._v(
-                    " " +
-                      _vm._s(JSON.parse(item.meta).width) +
-                      " x " +
-                      _vm._s(JSON.parse(item.meta).height)
-                  )
+                  _vm._v(" " + _vm._s(item.getDimensions()))
                 ])
               ]),
               _vm._v(" "),
@@ -9748,7 +9748,7 @@ function Contentvue_type_script_lang_js_defineProperty(obj, key, value) { if (ke
           c = confirm("Are you sure?");
 
           if (c === true) {
-            console.log("Requested edit of item %d", item.id);
+            console.log("Requested edit of item %d", item.item.id);
           }
 
           break;
@@ -10262,8 +10262,9 @@ function () {
     _classCallCheck(this, Folder);
 
     this.id = id;
-    this.name = name;
-    this.items = items;
+    this.name = name; // this.items = items
+
+    this.setItems(items);
     this.children = children;
     this.setChildren(children);
     this.parent = parent;
@@ -10320,7 +10321,11 @@ function () {
               var c = _step3.value;
 
               if (child.id === c.id) {
-                child.items = c.items;
+                // child.items = c.items
+                child.items = c.items.reduce(function (a, v) {
+                  a.push(new Item(v));
+                  return a;
+                }, []);
                 break;
               }
             }
@@ -10353,6 +10358,14 @@ function () {
           }
         }
       }
+    }
+  }, {
+    key: "setItems",
+    value: function setItems(items) {
+      this.items = items.reduce(function (a, v) {
+        a.push(new Item(v));
+        return a;
+      }, []);
     }
   }, {
     key: "isRoot",
@@ -10452,6 +10465,34 @@ function () {
   }
 
   _createClass(Item, [{
+    key: "getName",
+    value: function getName() {
+      return "".concat(this.item.filename, ".").concat(this.item.extension);
+    }
+  }, {
+    key: "getUrl",
+    value: function getUrl() {
+      return "/media/".concat(this.item.id, "/").concat(this.item.slug, ".").concat(this.item.extension);
+    }
+  }, {
+    key: "getWidth",
+    value: function getWidth() {
+      var suffix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      return JSON.parse(this.item.meta).width + suffix;
+    }
+  }, {
+    key: "getHeight",
+    value: function getHeight() {
+      var suffix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      return JSON.parse(this.item.meta).height + suffix;
+    }
+  }, {
+    key: "getDimensions",
+    value: function getDimensions() {
+      var suffix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      return "".concat(this.getWidth(suffix), " x ").concat(this.getHeight(suffix));
+    }
+  }, {
     key: "isSet",
     value: function isSet() {
       if (this.item) {
@@ -10619,8 +10660,9 @@ vue_default.a.use(vuex_esm["default"]);
       getFolders(folder.id, function (f) {
         state.folder.active = false;
         state.active.active = false;
-        state.back = state.active;
-        folder.items = f.items;
+        state.back = state.active; // folder.items = f.items
+
+        folder.setItems(f.items);
         folder.setChildrenItems(f.children);
         folder.active = true;
         state.active = folder;
@@ -10637,7 +10679,8 @@ vue_default.a.use(vuex_esm["default"]);
         state.folder = new folder_Folder(folders[0].id, folders[0].name, folders[0].items, folders[0].children, folders[0].parent, true);
         state.active = state.folder;
         getFolders(state.folder.id, function (f) {
-          state.active.items = f.items;
+          // state.active.items = f.items
+          state.active.setItems(f.items);
           state.active.setChildrenItems(f.children);
         });
       });
@@ -10655,7 +10698,8 @@ vue_default.a.use(vuex_esm["default"]);
       });
     },
     modal: function modal(state, item) {
-      state.modal = new Item(item);
+      // state.modal = new Item(item)
+      state.modal = item;
     },
     setLayout: function setLayout(state, layout) {
       state.layout = layout;
@@ -10712,7 +10756,8 @@ vue_default.a.use(vuex_esm["default"]);
         }
 
         getFolders(state.active.id, function (f) {
-          state.active.items = f.items;
+          // state.active.items =  f.items
+          state.active.setItems(f.items);
         });
         state.upload.reset();
 
@@ -10722,21 +10767,27 @@ vue_default.a.use(vuex_esm["default"]);
       });
     },
     removeItem: function removeItem(state, item) {
-      media_removeItem(item.id, function (r) {
+      media_removeItem(item.item.id, function (r) {
         if (r.status >= 400) {
           return alert(r.body.error);
         }
 
         alert("Item removed.\nRefreshing directory...");
-        getFolders(item.folder, function (f) {
-          state.active.items = f.items;
+        getFolders(item.item.folder, function (f) {
+          // state.active.items =  f.items
+          state.active.setItems(f.items);
           console.log("Refreshed folder content.");
         });
       });
     },
     moveItem: function moveItem(state, payload) {
+      if (payload.item.item.folder === payload.folder.id) {
+        console.log("Item (".concat(payload.item.item.filename, ") already exists inside selected folder (").concat(payload.folder.name, ")."));
+        return;
+      }
+
       var data = {
-        item: payload.item.id,
+        item: payload.item.item.id,
         folder: payload.folder.id
       };
 
@@ -10746,8 +10797,9 @@ vue_default.a.use(vuex_esm["default"]);
         }
 
         alert("Item moved.\nRefreshing directory...");
-        getFolders(payload.item.folder, function (f) {
-          state.active.items = f.items;
+        getFolders(payload.item.item.folder, function (f) {
+          // state.active.items =  f.items
+          state.active.setItems(f.items);
           console.log("Refreshed folder content.");
         });
       });
@@ -10897,4 +10949,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.197f4d1fd9971101e73c.js.map
+//# sourceMappingURL=main.658c523050e79ef561a0.js.map

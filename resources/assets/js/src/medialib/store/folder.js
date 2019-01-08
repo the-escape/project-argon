@@ -3,7 +3,8 @@ export class Folder {
     constructor(id, name, items=[], children=[], parent=null, active=false) {
         this.id = id
         this.name = name
-        this.items = items
+        // this.items = items
+        this.setItems(items)
         this.children = children
         this.setChildren(children)
         this.parent = parent
@@ -23,11 +24,23 @@ export class Folder {
         for (let child of this.children) {
             for (let c of children) {
                 if (child.id === c.id) {
-                    child.items = c.items
+                    // child.items = c.items
+                    child.items = c.items.reduce((a, v) => {
+                        a.push(new Item(v))
+                        return a
+                    }, [])
                     break
                 }
             }
         }
+    }
+
+    setItems(items) {
+        this.items = items.reduce((a, v) => {
+            a.push(new Item(v))
+            return a
+        }, [])
+
     }
 
     isRoot() {
@@ -108,6 +121,26 @@ export function parents(items, id=null) {
 export class Item {
     constructor(item) {
         this.item = item
+    }
+
+    getName() {
+        return `${this.item.filename}.${this.item.extension}`
+    }
+
+    getUrl() {
+        return `/media/${this.item.id}/${this.item.slug}.${this.item.extension}`
+    }
+
+    getWidth(suffix='') {
+        return JSON.parse(this.item.meta).width + suffix
+    }
+
+    getHeight(suffix='') {
+        return JSON.parse(this.item.meta).height + suffix
+    }
+
+    getDimensions(suffix='') {
+        return `${this.getWidth(suffix)} x ${this.getHeight(suffix)}`
     }
 
     isSet() {

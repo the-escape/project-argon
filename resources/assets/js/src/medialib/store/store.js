@@ -25,7 +25,8 @@ export default new Vuex.Store({
                 state.folder.active = false
                 state.active.active = false
                 state.back = state.active
-                folder.items = f.items
+                // folder.items = f.items
+                folder.setItems(f.items)
                 folder.setChildrenItems(f.children)
                 folder.active = true
                 state.active = folder
@@ -45,7 +46,8 @@ export default new Vuex.Store({
                 state.active = state.folder
 
                 getFolders(state.folder.id, function(f) {
-                    state.active.items = f.items
+                    // state.active.items = f.items
+                    state.active.setItems(f.items)
                     state.active.setChildrenItems(f.children)
                 })
             })
@@ -61,7 +63,8 @@ export default new Vuex.Store({
             })
         },
         modal: (state, item) => {
-            state.modal = new Item(item)
+            // state.modal = new Item(item)
+            state.modal = item
         },
         setLayout: (state, layout) => {
             state.layout = layout
@@ -117,7 +120,8 @@ export default new Vuex.Store({
                 }
 
                 getFolders(state.active.id, function(f) {
-                    state.active.items =  f.items
+                    // state.active.items =  f.items
+                    state.active.setItems(f.items)
                 })
 
                 state.upload.reset()
@@ -128,22 +132,28 @@ export default new Vuex.Store({
             })
         },
         removeItem: (state, item) => {
-            removeItem(item.id, function (r) {
+            removeItem(item.item.id, function (r) {
                 if (r.status >= 400) {
                     return alert(r.body.error)
                 }
 
                 alert("Item removed.\nRefreshing directory...")
 
-                getFolders(item.folder, function(f) {
-                    state.active.items =  f.items
-                    console.log("Refreshed folder content.");
+                getFolders(item.item.folder, function(f) {
+                    // state.active.items =  f.items
+                    state.active.setItems(f.items)
+                    console.log("Refreshed folder content.")
                 })
             })
         },
         moveItem: (state, payload) => {
+            if (payload.item.item.folder === payload.folder.id) {
+                console.log(`Item (${payload.item.item.filename}) already exists inside selected folder (${payload.folder.name}).`)
+                return
+            }
+
             let data = {
-                item: payload.item.id,
+                item: payload.item.item.id,
                 folder: payload.folder.id
             }
 
@@ -154,9 +164,10 @@ export default new Vuex.Store({
 
                 alert("Item moved.\nRefreshing directory...")
 
-                getFolders(payload.item.folder, function(f) {
-                    state.active.items =  f.items
-                    console.log("Refreshed folder content.");
+                getFolders(payload.item.item.folder, function(f) {
+                    // state.active.items =  f.items
+                    state.active.setItems(f.items)
+                    console.log("Refreshed folder content.")
                 })
             })
         }
