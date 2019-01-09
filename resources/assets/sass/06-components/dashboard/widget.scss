@@ -4,6 +4,7 @@
     width: calc(33.333% - #{$full-gutter});
     padding-bottom: calc(33.333% - #{$full-gutter});
     height: 0;
+    min-height: 350px;
     margin: $gutter;
 
     &__btn-cover {

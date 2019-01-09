@@ -450,14 +450,19 @@ button.o-btn {
     border-color: #d8d8d8; }
     .o-btn--light-grey:hover {
       color: #b6b6b6; }
+  .o-btn--grey {
+    background-color: #808080;
+    border-color: #808080; }
+    .o-btn--grey:hover {
+      color: #b6b6b6; }
   .o-btn--white-outline {
     background-color: transparent;
-    border-color: white;
-    color: white; }
+    border-color: #fff;
+    color: #fff; }
     .o-btn--white-outline:hover {
-      background-color: white;
-      border-color: white;
-      color: black; }
+      background-color: #fff;
+      border-color: #fff;
+      color: #000; }
   .o-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;

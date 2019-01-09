@@ -2542,14 +2542,19 @@ button.o-btn {
     border-color: #d8d8d8; }
     .o-btn--light-grey:hover {
       color: #b6b6b6; }
+  .o-btn--grey {
+    background-color: #808080;
+    border-color: #808080; }
+    .o-btn--grey:hover {
+      color: #b6b6b6; }
   .o-btn--white-outline {
     background-color: transparent;
-    border-color: white;
-    color: white; }
+    border-color: #fff;
+    color: #fff; }
     .o-btn--white-outline:hover {
-      background-color: white;
-      border-color: white;
-      color: black; }
+      background-color: #fff;
+      border-color: #fff;
+      color: #000; }
   .o-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
@@ -5249,7 +5254,7 @@ button.o-btn {
     min-width: 0 !important;
     width: 100%; }
 
-.cropper-wrap-box, .cropper-canvas, .cropper-drag-box, .cropper-crop-box, .cropper-modal {
+.cropper-wrap-box, .cropper-canvas, .cropper-drag-box, .cropper-crop-box {
   bottom: 0;
   left: 0;
   position: absolute;
@@ -5264,6 +5269,13 @@ button.o-btn {
   opacity: 0; }
 
 .cropper-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   background-color: #000;
   opacity: 0.5; }
 
@@ -6303,14 +6315,17 @@ button.o-btn {
     padding: 0 20px 10px; }
 
 .c-dashboard__welcome-msg {
-  color: white; }
+  position: relative;
+  color: #fff; }
   .c-dashboard__welcome-msg h1 {
-    font-size: 3.8rem;
+    font-size: 3.6rem;
     font-weight: 300;
-    margin-top: 40px;
+    margin-top: 50px;
     margin-bottom: 0; }
   .c-dashboard__welcome-msg p {
-    margin-top: 5px; }
+    margin-top: 5px;
+    font-size: 1.8rem;
+    font-weight: 300; }
 
 .c-dashboard__widgets {
   display: -webkit-box;
@@ -6322,6 +6337,14 @@ button.o-btn {
   margin-left: -15px;
   margin-right: -15px; }
 
+.c-dashboard__logo {
+  position: absolute;
+  right: 0;
+  bottom: 0; }
+  .c-dashboard__logo img {
+    height: 60px;
+    width: auto; }
+
 .c-widget {
   position: relative;
   -webkit-box-flex: 0;
@@ -6330,6 +6353,7 @@ button.o-btn {
   width: calc(33.333% - 30px);
   padding-bottom: calc(33.333% - 30px);
   height: 0;
+  min-height: 350px;
   margin: 15px; }
   .c-widget__btn-cover {
     position: absolute;
@@ -6395,10 +6419,14 @@ button.o-btn {
   .c-feedback-widget__title {
     padding-top: 20px;
     text-align: center;
-    color: white;
+    color: #fff;
     font-size: 1.4rem;
     font-weight: 500;
     text-transform: uppercase; }
+    .c-feedback-widget__title + p {
+      padding: 0 25px;
+      font-size: 1.4rem;
+      color: #fff; }
   .c-feedback-widget__input {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 90%;
@@ -6408,7 +6436,7 @@ button.o-btn {
     background-color: transparent;
     border: 0 none;
     resize: none;
-    color: white;
+    color: #fff;
     font-size: 1.3rem; }
   .c-feedback-widget__thank-you {
     display: -webkit-box;
@@ -6444,7 +6472,7 @@ button.o-btn {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-  .c-links-widget__link {
+  .c-links-widget__link, .c-links-widget--alt {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
@@ -6464,16 +6492,29 @@ button.o-btn {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center; }
-    .c-links-widget__link span {
+    .c-links-widget__link span, .c-links-widget--alt span {
       display: block;
       text-align: center;
       margin-top: 20px;
       color: #fff;
       text-transform: uppercase; }
-    .c-links-widget__link svg {
-      width: 60px;
-      height: 60px;
+    .c-links-widget__link svg, .c-links-widget--alt svg {
+      width: 62px;
+      height: 62px;
       color: #12a3c7; }
+  .c-links-widget--alt {
+    color: #fff;
+    text-align: center;
+    padding: 28px 25px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .c-links-widget--alt span {
+      margin-top: 10px; }
   .c-links-widget__link + .c-links-widget__link {
     margin-top: 30px; }
 
@@ -6873,30 +6914,18 @@ button.o-btn {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-  .c-cropper:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); }
+  overflow: hidden; }
   .c-cropper__container {
     position: relative;
-    max-width: 1200px;
     width: 100%;
-    background-color: #fff;
-    background-image: url("../argon/images/cropper-bg.png"); }
+    height: calc(100% - 80px); }
     .c-cropper__container > * {
       position: absolute;
       top: 0;
@@ -6915,7 +6944,7 @@ button.o-btn {
     left: 0;
     top: auto;
     width: 100%;
-    height: auto;
+    height: 80px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -6925,7 +6954,8 @@ button.o-btn {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 10px; }
+    padding: 15px;
+    background-color: #2a2a2a; }
     .c-cropper__toolbar > * {
       position: relative;
       display: -webkit-box;
@@ -6947,15 +6977,20 @@ button.o-btn {
       -webkit-box-pack: end;
           -ms-flex-pack: end;
               justify-content: flex-end; }
-    .c-cropper__toolbar:before {
-      position: absolute;
-      content: "";
-      top: -10px;
-      height: calc(100% + 10px);
-      left: 0;
-      width: 100%;
-      background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(60, 60, 60, 0.8)), to(rgba(60, 60, 60, 0)));
-      background-image: linear-gradient(to top, rgba(60, 60, 60, 0.8) 0%, rgba(60, 60, 60, 0) 100%); }
+  .c-cropper__tool-group--end {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .c-cropper__tool-group--center {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
   .c-cropper__btn {
     width: 48px;
     height: 48px;
@@ -6973,9 +7008,39 @@ button.o-btn {
         -ms-flex-align: center;
             align-items: center; }
     .c-cropper__icon svg {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       fill: currentColor; }
+  .c-cropper__range-rotate {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .c-cropper__range-line {
+    width: 180px;
+    height: 2px;
+    background-color: #fff; }
+  .c-cropper__range-handle {
+    position: absolute;
+    top: -23px;
+    left: 0;
+    width: 48px;
+    height: 48px;
+    cursor: pointer; }
+    .c-cropper__range-handle:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #fff;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%); }
   .c-cropper__rotater {
     position: relative;
     width: 550px;
@@ -7173,4 +7238,4 @@ button.o-btn {
 
 
 
-//# sourceMappingURL=main-f56f257de1.css.map
+//# sourceMappingURL=main-7e21b01bcd.css.map

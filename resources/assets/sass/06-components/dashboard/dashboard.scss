@@ -1,17 +1,19 @@
 .c-dashboard {
-
     &__welcome-msg {
-        color: white;
+        position: relative;
+        color: #fff;
 
         h1 {
-            font-size: 3.8rem;
+            font-size: 3.6rem;
             font-weight: 300;
-            margin-top: 40px;
+            margin-top: 50px;
             margin-bottom: 0;
         }
 
         p {
             margin-top: 5px;
+            font-size: 1.8rem;
+            font-weight: 300;
         }
     }
 
@@ -19,7 +21,18 @@
         display: flex;
         flex-wrap: wrap;
         margin-top: 20px;
-        margin-left: - $gutter;
-        margin-right: - $gutter;
+        margin-left: -$gutter;
+        margin-right: -$gutter;
+    }
+
+    &__logo {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+        img {
+            height: 60px;
+            width: auto;
+        }
     }
 }

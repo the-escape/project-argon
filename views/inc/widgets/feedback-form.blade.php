@@ -1,12 +1,12 @@
 <div class="c-widget">
     @if(session()->has('throttleFeedbackSubmission') && \Carbon\Carbon::now()->lt(session('throttleFeedbackSubmission')))
-        <div class="c-feedback-widget__thank-you">
-            Thank you for your feedback.
-        </div>
+        <div class="c-feedback-widget__thank-you">Thank you for your feedback.</div>
+
     @else
         <form class="c-feedback-widget js-feedback-form" action="{{ route('dashboard:submit-feedback') }}" method="post">
             <div class="c-feedback-widget__top">
                 <h2 class="c-feedback-widget__title">Give us some feedback</h2>
+                <p>We are always looking to improve functionality and would appreciate your feedback.</p>
                 <textarea class="c-feedback-widget__input" name="feedback" id="feedback" placeholder="Your message"></textarea>
             </div>
             <div class="c-feedback-widget__bottom">

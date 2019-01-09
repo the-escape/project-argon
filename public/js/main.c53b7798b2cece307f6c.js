@@ -9163,135 +9163,194 @@ var Croppervue_type_template_id_761e1e22_render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "c-cropper" }, [
     _c("div", { staticClass: "c-cropper__container" }, [
-      _c("img", { ref: "img", attrs: { src: _vm.image.path } }),
-      _vm._v(" "),
-      _c("div", { staticClass: "c-cropper__toolbar" }, [
-        _c("div", { staticClass: "c-cropper__toolbar-left" }, [
-          _c(
-            "button",
-            {
-              staticClass: "c-cropper__btn",
-              on: {
-                click: function($event) {
-                  _vm.dragImage($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "c-cropper__icon" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#move" }
-                  })
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "c-cropper__btn",
-              on: {
-                click: function($event) {
-                  _vm.dragCrop($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "c-cropper__icon" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#crop" }
-                  })
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "c-cropper__btn",
-              on: {
-                click: function($event) {
-                  _vm.zoomIn($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "c-cropper__icon" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href": "/argon/images/svgicons.svg#zoom-in"
-                    }
-                  })
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "c-cropper__btn",
-              on: {
-                click: function($event) {
-                  _vm.zoomOut($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "c-cropper__icon" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href": "/argon/images/svgicons.svg#zoom-out"
-                    }
-                  })
-                ])
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _vm.useRotator
-          ? _c(
-              "div",
-              { staticClass: "c-cropper__toolbar-mid" },
-              [
-                _c("rotater-input", {
-                  model: {
-                    value: _vm.rotation,
-                    callback: function($$v) {
-                      _vm.rotation = $$v
-                    },
-                    expression: "rotation"
-                  }
-                })
-              ],
-              1
-            )
-          : _vm._e(),
-        _vm._v(" "),
+      _c("img", { ref: "img", attrs: { src: _vm.image.path } })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "c-cropper__toolbar" }, [
+      _c("div", { staticClass: "c-cropper__tool-group" }, [
         _c(
-          "div",
+          "button",
           {
-            staticClass: "c-cropper__toolbar-right",
+            staticClass: "o-btn o-btn--sm o-btn--grey",
             on: {
               click: function($event) {
-                _vm.crop($event)
+                _vm.cancel($event)
+              }
+            }
+          },
+          [_vm._v("cancel")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "c-cropper__tool-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.rotateNeg45($event)
               }
             }
           },
           [
-            _c("button", { staticClass: "o-btn o-btn--xs o-btn--success" }, [
-              _vm._v("done")
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: {
+                    "xlink:href": "/argon/images/svgicons.svg#rotate-alt"
+                  }
+                })
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.rotate45($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#rotate" }
+                })
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.mirrorHorizontal($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#flip" }
+                })
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.mirrorVertical($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#flip-alt" }
+                })
+              ])
             ])
           ]
         )
-      ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "c-cropper__tool-group" }, [
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.zoomIn($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#zoom-in" }
+                })
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "c-cropper__btn",
+            on: {
+              click: function($event) {
+                _vm.zoomOut($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "c-cropper__icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#zoom-out" }
+                })
+              ])
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.useRotator
+        ? _c(
+            "div",
+            {
+              staticClass: "c-cropper__tool-group c-cropper__tool-group--center"
+            },
+            [
+              _c("rotater-input", {
+                model: {
+                  value: _vm.rotation,
+                  callback: function($$v) {
+                    _vm.rotation = $$v
+                  },
+                  expression: "rotation"
+                }
+              })
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "c-cropper__tool-group c-cropper__tool-group--end",
+          on: {
+            click: function($event) {
+              _vm.crop($event)
+            }
+          }
+        },
+        [
+          _c("button", { staticClass: "o-btn o-btn--sm o-btn--success" }, [
+            _vm._v("done")
+          ])
+        ]
+      )
     ]),
     _vm._v(" "),
     _c("pre", [_vm._v(_vm._s(_vm.image))])
@@ -9303,72 +9362,28 @@ Croppervue_type_template_id_761e1e22_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/Cropper.vue?vue&type=template&id=761e1e22&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/cropper/components/rotater.vue?vue&type=template&id=dc07d9a8&
-var rotatervue_type_template_id_dc07d9a8_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/cropper/components/range-rotater.vue?vue&type=template&id=113800dc&
+var range_rotatervue_type_template_id_113800dc_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-cropper__rotater" }, [
-    _c("div", { ref: "rotater", staticClass: "c-cropper__rotater-wrap" }, [
-      _c(
-        "div",
-        {
-          ref: "track",
-          staticClass: "c-cropper__rotater-track",
-          style: { transform: "translateX(" + _vm.trackPosition + "px)" }
-        },
-        [
-          _c("svg", { attrs: { viewBox: "0 0 1120 48" } }, [
-            _c(
-              "g",
-              { attrs: { fill: "currentColor" } },
-              [
-                _vm._l(_vm.rotatorPoints.lines, function(line) {
-                  return _c("rect", {
-                    key: "line-" + line.x,
-                    attrs: {
-                      x: line.x,
-                      y: "0",
-                      width: "2",
-                      height: line.height
-                    }
-                  })
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.rotatorPoints.text, function(text) {
-                  return _c(
-                    "text",
-                    {
-                      key: "text-" + text.x,
-                      attrs: { x: text.x, y: "38", "text-anchor": "middle" }
-                    },
-                    [_vm._v(_vm._s(text.text))]
-                  )
-                })
-              ],
-              2
-            )
-          ])
-        ]
-      )
-    ])
+  return _c("div", { staticClass: "c-cropper__range-rotate" }, [
+    _c("div", {
+      ref: "handle",
+      staticClass: "c-cropper__range-handle",
+      style: { transform: "translateX(" + (_vm.handlePos - _vm.offset) + "px)" }
+    }),
+    _vm._v(" "),
+    _c("div", { ref: "line", staticClass: "c-cropper__range-line" })
   ])
 }
-var rotatervue_type_template_id_dc07d9a8_staticRenderFns = []
-rotatervue_type_template_id_dc07d9a8_render._withStripped = true
+var range_rotatervue_type_template_id_113800dc_staticRenderFns = []
+range_rotatervue_type_template_id_113800dc_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/rotater.vue?vue&type=template&id=dc07d9a8&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/range-rotater.vue?vue&type=template&id=113800dc&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/cropper/components/rotater.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/cropper/components/range-rotater.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -9378,98 +9393,73 @@ rotatervue_type_template_id_dc07d9a8_render._withStripped = true
 //
 
 
-/* harmony default export */ var rotatervue_type_script_lang_js_ = ({
+/* harmony default export */ var range_rotatervue_type_script_lang_js_ = ({
   props: ['value'],
   data: function data() {
     return {
-      currentRotation: 0,
+      handleStartPos: 0,
+      handlePos: 0,
+      offset: 19,
+      max: 90,
+      min: -90,
       moveRotation: 0,
-      trackPosition: 0,
-      trackPositionStart: 0,
-      oneDegreeToPixel: 6,
-      maxRotation: 90,
-      minRotation: -90
+      currentRotation: 0,
+      oneDegreeToPixel: 0
     };
   },
-  computed: {
-    rotatorPoints: function rotatorPoints() {
-      var points = new Array(19).fill().map(function (el, index) {
-        return index * 10 - 90;
-      });
-      var offset = 20;
-      var space = 12;
-      var currentX = offset;
-      points = points.reduce(function (acc, el) {
-        acc.lines.push({
-          x: currentX,
-          height: 18
-        });
-        acc.text.push({
-          x: currentX,
-          text: el + '°'
-        });
-
-        if (el < 90) {
-          for (var i = 0; i < 4; i++) {
-            currentX += space;
-            acc.lines.push({
-              x: currentX,
-              height: 10
-            });
-          }
-        }
-
-        currentX += space;
-        return acc;
-      }, {
-        lines: [],
-        text: []
-      });
-      return points;
+  watch: {
+    value: function value(_value) {
+      this.updateValue(_value);
     }
   },
   mounted: function mounted() {
-    rotatervue_type_script_lang_js_dragRotate.call(this);
-    this.trackPositionStart = -this.$refs.track.offsetWidth / 2;
-    this.trackPosition = this.trackPositionStart;
+    var _this = this;
+
+    this.updateValue(this.value);
+    this.handleStartPos = this.$refs.line.offsetWidth / 2;
+    this.handlePos = this.handleStartPos;
+    this.oneDegreeToPixel = this.$refs.line.offsetWidth / 180;
+    var down = Object(_esm5["fromEvent"])(this.$refs.handle, 'mousedown');
+    var move = Object(_esm5["fromEvent"])(document, 'mousemove');
+    var up = Object(_esm5["fromEvent"])(document, 'mouseup');
+    down.pipe(Object(operators["mergeMap"])(function (downEvent) {
+      var startPos = range_rotatervue_type_script_lang_js_getPositionFromEvent(downEvent);
+      return move.pipe(Object(operators["map"])(function (moveEvent) {
+        moveEvent.preventDefault();
+        var movePos = range_rotatervue_type_script_lang_js_getPositionFromEvent(moveEvent);
+        return {
+          x: movePos.x - startPos.x
+        };
+      }), Object(operators["takeUntil"])(up));
+    })).subscribe(function (_ref) {
+      var x = _ref.x;
+      _this.moveRotation = x;
+      var moveChange = _this.currentRotation + _this.moveRotation;
+      moveChange = Math.max(Math.min(moveChange, _this.max * _this.oneDegreeToPixel), _this.min * _this.oneDegreeToPixel);
+
+      _this.updateRotation(moveChange);
+    });
+    up.subscribe(function () {
+      _this.currentRotation += _this.moveRotation;
+      _this.currentRotation = Math.max(Math.min(_this.currentRotation, _this.max * _this.oneDegreeToPixel), _this.min * _this.oneDegreeToPixel);
+    });
   },
   methods: {
     updateRotation: function updateRotation(value) {
       var rotation = value / this.oneDegreeToPixel;
-      rotation = Math.max(Math.min(rotation, this.maxRotation), this.minRotation);
-      this.trackPosition = this.trackPositionStart + value;
+      rotation = Math.max(Math.min(rotation, this.max), this.min);
+      this.handlePos = this.handleStartPos + value;
       this.$emit('input', rotation);
+    },
+    updateValue: function updateValue(value) {
+      var rotation = Math.max(Math.min(value, this.max), this.min);
+      var posMove = rotation * this.oneDegreeToPixel;
+      this.handlePos = this.handleStartPos + posMove;
     }
   }
 });
 
-function rotatervue_type_script_lang_js_dragRotate() {
-  var self = this;
-  var down = Object(_esm5["merge"])(Object(_esm5["fromEvent"])(self.$refs.rotater, 'mousedown'), Object(_esm5["fromEvent"])(self.$refs.rotater, 'touchstart'));
-  var move = Object(_esm5["merge"])(Object(_esm5["fromEvent"])(document, 'mousemove'), Object(_esm5["fromEvent"])(document, 'touchmove'));
-  var up = Object(_esm5["merge"])(Object(_esm5["fromEvent"])(document, 'mouseup'), Object(_esm5["fromEvent"])(document, 'touchend'));
-  down.pipe(Object(operators["mergeMap"])(function (downEvents) {
-    var startPos = rotatervue_type_script_lang_js_getPositionFromEvent(downEvents);
-    return move.pipe(Object(operators["map"])(function (moveEvents) {
-      moveEvents.preventDefault();
-      var movePos = rotatervue_type_script_lang_js_getPositionFromEvent(moveEvents);
-      return {
-        x: movePos.x - startPos.x
-      };
-    }), Object(operators["takeUntil"])(up));
-  })).subscribe(function (move) {
-    self.moveRatation = move.x * 0.3;
-    var moveChange = self.currentRotation + self.moveRatation;
-    moveChange = Math.max(Math.min(moveChange, self.maxRotation * self.oneDegreeToPixel), self.minRotation * self.oneDegreeToPixel);
-    self.updateRotation(moveChange);
-  });
-  up.subscribe(function () {
-    self.currentRotation += self.moveRatation;
-    self.currentRotation = Math.max(Math.min(self.currentRotation, self.maxRotation * self.oneDegreeToPixel), self.minRotation * self.oneDegreeToPixel);
-  });
-}
-
-function rotatervue_type_script_lang_js_getPositionFromEvent(evt) {
+function range_rotatervue_type_script_lang_js_getPositionFromEvent(evt) {
   if (evt.touches) {
     evt = evt.touches[0];
   }
@@ -9478,9 +9468,9 @@ function rotatervue_type_script_lang_js_getPositionFromEvent(evt) {
     x: evt.clientX
   };
 }
-// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/rotater.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_rotatervue_type_script_lang_js_ = (rotatervue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/rotater.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/range-rotater.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_range_rotatervue_type_script_lang_js_ = (range_rotatervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/cropper/components/range-rotater.vue
 
 
 
@@ -9488,10 +9478,10 @@ function rotatervue_type_script_lang_js_getPositionFromEvent(evt) {
 
 /* normalize component */
 
-var rotater_component = Object(componentNormalizer["default"])(
-  components_rotatervue_type_script_lang_js_,
-  rotatervue_type_template_id_dc07d9a8_render,
-  rotatervue_type_template_id_dc07d9a8_staticRenderFns,
+var range_rotater_component = Object(componentNormalizer["default"])(
+  components_range_rotatervue_type_script_lang_js_,
+  range_rotatervue_type_template_id_113800dc_render,
+  range_rotatervue_type_template_id_113800dc_staticRenderFns,
   false,
   null,
   null,
@@ -9500,12 +9490,31 @@ var rotater_component = Object(componentNormalizer["default"])(
 )
 
 /* hot reload */
-if (false) { var rotater_api; }
-rotater_component.options.__file = "resources/assets/js/src/components/cropper/components/rotater.vue"
-/* harmony default export */ var rotater = (rotater_component.exports);
+if (false) { var range_rotater_api; }
+range_rotater_component.options.__file = "resources/assets/js/src/components/cropper/components/range-rotater.vue"
+/* harmony default export */ var range_rotater = (range_rotater_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/cropper/components/Cropper.vue?vue&type=script&lang=js&
 function Croppervue_type_script_lang_js_extends() { Croppervue_type_script_lang_js_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return Croppervue_type_script_lang_js_extends.apply(this, arguments); }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9550,19 +9559,25 @@ function Croppervue_type_script_lang_js_extends() { Croppervue_type_script_lang_
 /* harmony default export */ var Croppervue_type_script_lang_js_ = ({
   props: ['image', 'useRotator', 'ratio'],
   components: {
-    'rotater-input': rotater
+    'rotater-input': range_rotater
   },
   data: function data() {
     return {
       cropper: null,
       rotationValue: 0,
       defaultOptions: {
-        background: false
+        background: false,
+        dragMode: 'move'
       }
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.cropper = new cropper_esm["default"](this.$refs.img, this.options);
+    this.$refs.img.addEventListener('ready', function () {
+      _this.cropper.zoomTo(1);
+    });
   },
   computed: {
     options: function options() {
@@ -9583,20 +9598,12 @@ function Croppervue_type_script_lang_js_extends() { Croppervue_type_script_lang_
         return this.rotationValue;
       },
       set: function set(value) {
-        this.rotationValue = value;
+        this.rotationValue = Math.max(Math.min(value, 90), -90);
         this.cropper.rotateTo(this.rotationValue);
       }
     }
   },
   methods: {
-    dragImage: function dragImage(evt) {
-      evt.preventDefault();
-      this.cropper.setDragMode('move');
-    },
-    dragCrop: function dragCrop(evt) {
-      evt.preventDefault();
-      this.cropper.setDragMode('crop');
-    },
     zoomIn: function zoomIn(evt) {
       evt.preventDefault();
       this.cropper.zoom(0.1);
@@ -9607,6 +9614,29 @@ function Croppervue_type_script_lang_js_extends() { Croppervue_type_script_lang_
     },
     crop: function crop(evt) {
       this.$emit('crop', this.cropper.getCroppedCanvas().toDataURL());
+    },
+    cancel: function cancel(evt) {
+      this.$emit('crop');
+    },
+    rotateNeg45: function rotateNeg45() {
+      this.rotation = this.rotation - 45;
+    },
+    rotate45: function rotate45() {
+      this.rotation = this.rotation + 45;
+    },
+    mirrorHorizontal: function mirrorHorizontal() {
+      if (this.cropper.imageData.scaleY === -1) {
+        this.cropper.scaleY(1);
+      } else {
+        this.cropper.scaleY(-1);
+      }
+    },
+    mirrorVertical: function mirrorVertical() {
+      if (this.cropper.imageData.scaleX === -1) {
+        this.cropper.scaleX(1);
+      } else {
+        this.cropper.scaleX(-1);
+      }
     }
   }
 });
@@ -10721,7 +10751,7 @@ function cropperTest() {
   btn.addEventListener('click', function () {
     setCropperImage({
       image: {
-        path: 'https://picsum.photos/1920/1080/?random'
+        path: 'https://picsum.photos/800/600/?random'
       },
       rotator: true,
       ratio: '16:9'
@@ -10738,4 +10768,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.90645e17c7783581be6c.js.map
+//# sourceMappingURL=main.c53b7798b2cece307f6c.js.map

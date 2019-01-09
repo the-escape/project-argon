@@ -2,7 +2,9 @@
     <div class="c-account-widget">
         <div class="c-account-widget__top">
             <h2 class="c-account-widget__title">Your account manager</h2>
-            <p>{{ $name }}</p>
+            <p>If you require further help or support please contact your designated account manager.</p>
+            <br>
+            <p><strong>{{ $name }}</strong></p>
             @if(!empty($phone))
                 <p><a href="tel:{{ $phone }}">{{ $phone }}</a></p>
             @endif
