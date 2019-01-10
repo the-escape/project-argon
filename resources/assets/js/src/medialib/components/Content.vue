@@ -29,7 +29,12 @@
             <div class="folder__preview">
 
                 <div class="folder__image" @click="modal(item)">
-                    <img :src="item.getUrl()" :alt="item.getName()">
+                    <template v-if="search.hasKeywords() && layout!=='list'">
+                        <img :src="item.getUrl()" :alt="item.getName()" :title="`Breadcrumbs: ${item.getFormattedBreadcrumbs(folder)}`">
+                    </template>
+                    <template v-else>
+                        <img :src="item.getUrl()" :alt="item.getName()">
+                    </template>
                 </div>
 
             </div>
