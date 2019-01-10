@@ -5301,7 +5301,9 @@ $color-primary-accent: rbga();*/
     padding: 2px 8px 2px 3px;
     border-radius: 4px;
     background-color: #ffffff;
-    cursor: default; }
+    cursor: default;
+    display: inline-block;
+    min-width: 100px; }
     .folder__options:hover .folder__options-list {
       display: block; }
     .folder__options:hover .chevron--bottom {
@@ -5310,7 +5312,8 @@ $color-primary-accent: rbga();*/
     white-space: nowrap; }
     .folder__options-title .chevron--bottom {
       float: right;
-      color: #808080; }
+      color: #808080;
+      padding: 0 0px 0px 5px; }
       .folder__options-title .chevron--bottom:before {
         border-width: 0.21em 0.21em 0 0;
         top: 7px; }
@@ -5596,4 +5599,4 @@ $color-primary-accent: rbga();*/
 
 
 
-//# sourceMappingURL=main-eded810e84.css.map
+//# sourceMappingURL=main-f0d616e53d.css.map

@@ -1,12 +1,14 @@
+import {Item} from "./folder";
+
 export class Search {
-    constructor(keywords='', results={}) {
+    constructor(keywords='', results=[]) {
         this.keywords = keywords
-        this.results = results
+        this.setResults(results)
         this.loading = false
     }
 
     hasResults() {
-        return Object.keys(this.results).length !== 0
+        return this.results.length !== 0
     }
 
     getResults() {
@@ -14,11 +16,14 @@ export class Search {
     }
 
     setResults(results) {
-        this.results = results
+        this.results = results.reduce((a, v) => {
+            a.push(new Item(v))
+            return a
+        }, [])
     }
 
     getResultsCount() {
-        return Object.keys(this.results).length
+        return this.results.length
     }
 
     isLoading() {
@@ -30,7 +35,7 @@ export class Search {
     }
 
     reset() {
-        this.results = {}
+        this.results = []
         this.keywords = ''
     }
 }

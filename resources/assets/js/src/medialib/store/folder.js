@@ -5,7 +5,7 @@ export class Folder {
         this.name = name
         // this.items = items
         this.setItems(items)
-        this.children = children
+        // this.children = children
         this.setChildren(children)
         this.parent = parent
         this.active = active
@@ -43,7 +43,6 @@ export class Folder {
             a.push(new Item(v))
             return a
         }, [])
-
     }
 
     isRoot() {
@@ -97,28 +96,60 @@ export class Folder {
 // }
 
 export function children(items, parent=null) {
-    let t = []
+    // let t = []
+    //
+    // for (let [id, item] of Object.entries(items)){
+    //     if (parent === item.parent) {
+    //         let f = new Folder(item.id, item.name, item.items, children(items, item.id), item.parent)
+    //         t.push(f)
+    //     }
+    // }
 
-    for (let [id, item] of Object.entries(items)){
+    // return t
+
+    return items.reduce((a, item) => {
         if (parent === item.parent) {
             let f = new Folder(item.id, item.name, item.items, children(items, item.id), item.parent)
-            t.push(f)
+            a.push(f)
         }
-    }
-    return t
+        return a
+    }, [])
 }
 
 
-export function parents(items, id=null) {
+// export function parents(items, id=null) {
+//     if (id === null) {
+//         return null
+//     }
+//
+//     let p = items.find(function(item) {
+//         return item.id === id
+//     })
+//
+//     return new Folder(p.id, p.name, p.items, p.children, parents(items, p.parent))
+// }
+
+
+export function parents(folder, id=null) {
     if (id === null) {
         return null
     }
 
-    let p = items[id]
+    if (folder.id === id) {
+        return folder
+    }
 
-    return new Folder(p.id, p.name, p.items, p.children, parents(items, p.parent))
+    for (let child of folder.children) {
+        if (child.id === id) {
+            return child
+        }
+        let f = parents(child, id)
+        if (f)
+        {
+            return f
+        }
+    }
 }
-
 
 
 export class Item {
@@ -151,5 +182,21 @@ export class Item {
             return true
         }
         return false
+    }
+
+    getBreadcrumbs(folderData) {
+        let f = parents(folderData, this.item.folder)
+        return f.breadcrumbs()
+    }
+
+    getFormattedBreadcrumbs(folderData, glue=' > ') {
+        let breadcrumbs = this.getBreadcrumbs(folderData)
+
+        let trail = breadcrumbs.reduce((a, folder) => {
+            a.push(folder.name)
+            return a
+        }, [])
+
+        return trail.join(glue)
     }
 }

@@ -131,18 +131,18 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{{ modal.item.filename }}</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{ modal.getName() }}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="m-details__content">
                             <div class="m-details__preview">
-                                <img :src="`/media/${modal.item.id}/${modal.item.slug}.${modal.item.extension}`" :alt="modal.item.filename">
+                                <img :src="modal.getUrl()" :alt="modal.getName()">
                             </div>
                             <dl class="m-details__info">
-                                <dt>{{ modal.item.filename }}</dt>
+                                <dt>{{ modal.getName() }}</dt>
                                 <dd><small>File type:</small> {{ modal.item.extension }}</dd>
                                 <dd><small>Uploaded at:</small> {{ modal.item.updated_at }}</dd>
-                                <dd><small>Dimensions:</small> {{ JSON.parse(modal.item.meta).width }} x {{ JSON.parse(modal.item.meta).height }}</dd>
+                                <dd><small>Dimensions:</small> {{ modal.getDimensions() }}</dd>
                                 <dd><small>File Size:</small> {{ modal.item.filesize }}</dd>
                                 <dd><small>Uploaded by:</small> {{ modal.item.uploaded_by }}</dd>
                             </dl>

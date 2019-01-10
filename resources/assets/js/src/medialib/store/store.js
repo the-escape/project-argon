@@ -35,10 +35,12 @@ export default new Vuex.Store({
         },
         folders: (state) => {
             getFoldersData(function(data) {
-                state.data = data.reduce((a, v) => {
-                    a[v.id] = v
-                    return a
-                }, {})
+                // state.data = data.reduce((a, v) => {
+                //     a[v.id] = v
+                //     return a
+                // }, {})
+
+                state.data = data
 
                 let folders = children(state.data)
 

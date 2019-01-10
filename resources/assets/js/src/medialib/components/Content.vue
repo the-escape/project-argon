@@ -39,6 +39,18 @@
                 <dl class="folder__info">
                     <dt>{{ item.getName() }}</dt>
                     <dd><small>Dimensions:</small> {{ item.getDimensions() }}</dd>
+                    <dd v-if="search.hasKeywords() && layout==='list'"><small>Breadcrumbs:</small>
+                        <span class="breadcrumbs--inline">
+                            <template v-for="breadcrumb of item.getBreadcrumbs(folder)">
+                                <span class="breadcrumbs__separator" v-if="breadcrumb.parent">&gt;</span>
+
+                                <span class="breadcrumbs__piece" v-bind:class="{'breadcrumbs__child': breadcrumb.parent}" v-on:click="folderSelected(breadcrumb)">
+                                    {{ breadcrumb.name }}
+                                </span>
+                            </template>
+                        </span>
+                    </dd>
+
                     <!--<dd><small>Size:</small> {{ item.filesize }}</dd>-->
                 </dl>
 
@@ -71,7 +83,11 @@
         props: ['items', 'folders'],
         computed: {
             ...mapState([
-                'layout'
+                'layout',
+                'data',
+                'search',
+                'layout',
+                'folder'
             ])
         },
         components: {

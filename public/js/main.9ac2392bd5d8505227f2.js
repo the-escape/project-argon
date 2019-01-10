@@ -9043,7 +9043,7 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
                         staticClass: "modal-title",
                         attrs: { id: "myModalLabel" }
                       },
-                      [_vm._v(_vm._s(_vm.modal.item.filename))]
+                      [_vm._v(_vm._s(_vm.modal.getName()))]
                     )
                   ]),
                   _vm._v(" "),
@@ -9052,20 +9052,14 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
                       _c("div", { staticClass: "m-details__preview" }, [
                         _c("img", {
                           attrs: {
-                            src:
-                              "/media/" +
-                              _vm.modal.item.id +
-                              "/" +
-                              _vm.modal.item.slug +
-                              "." +
-                              _vm.modal.item.extension,
-                            alt: _vm.modal.item.filename
+                            src: _vm.modal.getUrl(),
+                            alt: _vm.modal.getName()
                           }
                         })
                       ]),
                       _vm._v(" "),
                       _c("dl", { staticClass: "m-details__info" }, [
-                        _c("dt", [_vm._v(_vm._s(_vm.modal.item.filename))]),
+                        _c("dt", [_vm._v(_vm._s(_vm.modal.getName()))]),
                         _vm._v(" "),
                         _c("dd", [
                           _c("small", [_vm._v("File type:")]),
@@ -9079,12 +9073,7 @@ var Mediavue_type_template_id_27b52f8c_render = function() {
                         _vm._v(" "),
                         _c("dd", [
                           _c("small", [_vm._v("Dimensions:")]),
-                          _vm._v(
-                            " " +
-                              _vm._s(JSON.parse(_vm.modal.item.meta).width) +
-                              " x " +
-                              _vm._s(JSON.parse(_vm.modal.item.meta).height)
-                          )
+                          _vm._v(" " + _vm._s(_vm.modal.getDimensions()))
                         ]),
                         _vm._v(" "),
                         _c("dd", [
@@ -9604,7 +9593,56 @@ var Contentvue_type_template_id_4b031da1_render = function() {
                 _c("dd", [
                   _c("small", [_vm._v("Dimensions:")]),
                   _vm._v(" " + _vm._s(item.getDimensions()))
-                ])
+                ]),
+                _vm._v(" "),
+                _vm.search.hasKeywords() && _vm.layout === "list"
+                  ? _c("dd", [
+                      _c("small", [_vm._v("Breadcrumbs:")]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        { staticClass: "breadcrumbs--inline" },
+                        [
+                          _vm._l(item.getBreadcrumbs(_vm.folder), function(
+                            breadcrumb
+                          ) {
+                            return [
+                              breadcrumb.parent
+                                ? _c(
+                                    "span",
+                                    { staticClass: "breadcrumbs__separator" },
+                                    [_vm._v(">")]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "breadcrumbs__piece",
+                                  class: {
+                                    breadcrumbs__child: breadcrumb.parent
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.folderSelected(breadcrumb)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(breadcrumb.name) +
+                                      "\n                            "
+                                  )
+                                ]
+                              )
+                            ]
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "folder__options" }, [
@@ -9718,6 +9756,18 @@ function Contentvue_type_script_lang_js_defineProperty(obj, key, value) { if (ke
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ var Contentvue_type_script_lang_js_ = ({
@@ -9727,7 +9777,7 @@ function Contentvue_type_script_lang_js_defineProperty(obj, key, value) { if (ke
     };
   },
   props: ['items', 'folders'],
-  computed: Contentvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout'])),
+  computed: Contentvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'folder'])),
   components: {
     Drag: vue_drag_drop_common["Drag"]
   },
@@ -10236,14 +10286,6 @@ function randomIntFromRange(min, max) {
 //     })
 // }
 // CONCATENATED MODULE: ./resources/assets/js/src/medialib/store/folder.js
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
-
-function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -10264,8 +10306,8 @@ function () {
     this.id = id;
     this.name = name; // this.items = items
 
-    this.setItems(items);
-    this.children = children;
+    this.setItems(items); // this.children = children
+
     this.setChildren(children);
     this.parent = parent;
     this.active = active;
@@ -10432,32 +10474,78 @@ function () {
 
 function children(items) {
   var parent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  var t = [];
-
-  var _arr = Object.entries(items);
-
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var _arr$_i = _slicedToArray(_arr[_i], 2),
-        id = _arr$_i[0],
-        item = _arr$_i[1];
-
+  // let t = []
+  //
+  // for (let [id, item] of Object.entries(items)){
+  //     if (parent === item.parent) {
+  //         let f = new Folder(item.id, item.name, item.items, children(items, item.id), item.parent)
+  //         t.push(f)
+  //     }
+  // }
+  // return t
+  return items.reduce(function (a, item) {
     if (parent === item.parent) {
       var f = new folder_Folder(item.id, item.name, item.items, children(items, item.id), item.parent);
-      t.push(f);
+      a.push(f);
     }
-  }
 
-  return t;
-}
-function parents(items) {
+    return a;
+  }, []);
+} // export function parents(items, id=null) {
+//     if (id === null) {
+//         return null
+//     }
+//
+//     let p = items.find(function(item) {
+//         return item.id === id
+//     })
+//
+//     return new Folder(p.id, p.name, p.items, p.children, parents(items, p.parent))
+// }
+
+function parents(folder) {
   var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
   if (id === null) {
     return null;
   }
 
-  var p = items[id];
-  return new folder_Folder(p.id, p.name, p.items, p.children, parents(items, p.parent));
+  if (folder.id === id) {
+    return folder;
+  }
+
+  var _iteratorNormalCompletion4 = true;
+  var _didIteratorError4 = false;
+  var _iteratorError4 = undefined;
+
+  try {
+    for (var _iterator4 = folder.children[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+      var child = _step4.value;
+
+      if (child.id === id) {
+        return child;
+      }
+
+      var f = parents(child, id);
+
+      if (f) {
+        return f;
+      }
+    }
+  } catch (err) {
+    _didIteratorError4 = true;
+    _iteratorError4 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+        _iterator4.return();
+      }
+    } finally {
+      if (_didIteratorError4) {
+        throw _iteratorError4;
+      }
+    }
+  }
 }
 var Item =
 /*#__PURE__*/
@@ -10505,6 +10593,23 @@ function () {
 
       return false;
     }
+  }, {
+    key: "getBreadcrumbs",
+    value: function getBreadcrumbs(folderData) {
+      var f = parents(folderData, this.item.folder);
+      return f.breadcrumbs();
+    }
+  }, {
+    key: "getFormattedBreadcrumbs",
+    value: function getFormattedBreadcrumbs(folderData) {
+      var glue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' > ';
+      var breadcrumbs = this.getBreadcrumbs(folderData);
+      var trail = breadcrumbs.reduce(function (a, folder) {
+        a.push(folder.name);
+        return a;
+      }, []);
+      return trail.join(glue);
+    }
   }]);
 
   return Item;
@@ -10516,24 +10621,25 @@ function search_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function search_createClass(Constructor, protoProps, staticProps) { if (protoProps) search_defineProperties(Constructor.prototype, protoProps); if (staticProps) search_defineProperties(Constructor, staticProps); return Constructor; }
 
-var Search =
+
+var search_Search =
 /*#__PURE__*/
 function () {
   function Search() {
     var keywords = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var results = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var results = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
     search_classCallCheck(this, Search);
 
     this.keywords = keywords;
-    this.results = results;
+    this.setResults(results);
     this.loading = false;
   }
 
   search_createClass(Search, [{
     key: "hasResults",
     value: function hasResults() {
-      return Object.keys(this.results).length !== 0;
+      return this.results.length !== 0;
     }
   }, {
     key: "getResults",
@@ -10543,12 +10649,15 @@ function () {
   }, {
     key: "setResults",
     value: function setResults(results) {
-      this.results = results;
+      this.results = results.reduce(function (a, v) {
+        a.push(new Item(v));
+        return a;
+      }, []);
     }
   }, {
     key: "getResultsCount",
     value: function getResultsCount() {
-      return Object.keys(this.results).length;
+      return this.results.length;
     }
   }, {
     key: "isLoading",
@@ -10563,7 +10672,7 @@ function () {
   }, {
     key: "reset",
     value: function reset() {
-      this.results = {};
+      this.results = [];
       this.keywords = '';
     }
   }]);
@@ -10653,7 +10762,7 @@ vue_default.a.use(vuex_esm["default"]);
     active: new folder_Folder(),
     back: new folder_Folder(),
     data: [],
-    search: new Search(),
+    search: new search_Search(),
     modal: new Item(),
     layout: 'tiles',
     upload: new Upload()
@@ -10675,10 +10784,11 @@ vue_default.a.use(vuex_esm["default"]);
     },
     folders: function folders(state) {
       getFoldersData(function (data) {
-        state.data = data.reduce(function (a, v) {
-          a[v.id] = v;
-          return a;
-        }, {});
+        // state.data = data.reduce((a, v) => {
+        //     a[v.id] = v
+        //     return a
+        // }, {})
+        state.data = data;
         var folders = children(state.data);
         state.folder = new folder_Folder(folders[0].id, folders[0].name, folders[0].items, folders[0].children, folders[0].parent, true);
         state.active = state.folder;
@@ -10693,12 +10803,12 @@ vue_default.a.use(vuex_esm["default"]);
       state.search.loading = true;
 
       if (keywords === '') {
-        state.search = new Search();
+        state.search = new search_Search();
         return;
       }
 
       media_search(keywords, function (data) {
-        state.search = new Search(keywords, data);
+        state.search = new search_Search(keywords, data);
       });
     },
     modal: function modal(state, item) {
@@ -10953,4 +11063,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.7c1ec380d683724ce5f0.js.map
+//# sourceMappingURL=main.9ac2392bd5d8505227f2.js.map

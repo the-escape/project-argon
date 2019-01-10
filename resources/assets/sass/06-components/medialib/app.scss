@@ -190,6 +190,8 @@
         border-radius: $panel-border-radius;
         background-color: $color-white;
         cursor: default;
+        display: inline-block;
+        min-width: 100px;
 
         &:hover {
             .folder__options-list {
@@ -208,6 +210,7 @@
         .chevron--bottom {
             float: right;
             color: $grey-dark;
+            padding: 0 0px 0px 5px;
             &:before {
                 border-width: 0.21em 0.21em 0 0;
                 top: 7px;
