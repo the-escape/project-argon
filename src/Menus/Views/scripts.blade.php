@@ -97,12 +97,12 @@
         }
 
         function UnfocusUpdateBtn() {
-            if (!$navtreeUpdate.hasClass("btn-primary-outline")) {
-                $navtreeUpdate.addClass("btn-primary-outline");
-            }
+//            if (!$navtreeUpdate.hasClass("btn-primary-outline")) {
+//                $navtreeUpdate.addClass("btn-primary-outline");
+//            }
 
-            if ($navtreeUpdate.hasClass("btn-primary")) {
-                $navtreeUpdate.removeClass("btn-primary");
+            if ($navtreeUpdate.hasClass("o-btn--primary")) {
+                $navtreeUpdate.removeClass("o-btn--primary");
             }
         }
 
@@ -111,8 +111,8 @@
                 $navtreeUpdate.removeClass("btn-primary-outline");
             }
 
-            if (!$navtreeUpdate.hasClass("btn-primary")) {
-                $navtreeUpdate.addClass("btn-primary");
+            if (!$navtreeUpdate.hasClass("o-btn--primary")) {
+                $navtreeUpdate.addClass("o-btn--primary");
             }
         }
 

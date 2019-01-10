@@ -1,0 +1,84 @@
+<script type="text/template" class="js-text-template">
+    <div class="o-form__group {{statusClass}}">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="{inputName}">{name}</label>
+
+                {{multiOpen}}
+                    <input type="text" id="{inputName}" name="{inputName}" class="js-time" data-default-now="{timeDefaultNow}" data-name="{name}" value="{value}">
+                {{multiClose}}
+            </div>
+            <div class="o-form-status__message">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="{inputName}">{errorMessage}</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            {helpText}
+        </div>
+    </div>
+</script>
+
+<div class="o-form l-container">
+    <div class="o-form__group">
+        <div class="o-form-status">
+            <div class="o-form-status__input">
+                <label for="title">Title</label>
+
+                <div class="o-multi js-multi">
+                    <div class="o-multi__track js-multi-track">
+
+                        <div class="o-multi__item">
+                            <div class="o-multi__item-wrap">
+                                <button class="o-multi__drag-handle js-multi-drag">
+                                    <div class="o-multi__drag-wrap">
+                                        <svg>
+                                            <use xlink:href="/images/svgicons.svg#reorder"></use>
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                <input type="text" id="title3" name="title3" data-class="js-time" data-default-now="false">
+
+                                <div class="o-multi__actions">
+                                    {{> elements-confirm-button}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="o-multi__foot">
+                        <button class="o-btn o-btn--sm js-multi-add">Add</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="o-form-status__message o-form-status__message--centre">
+                <div class="o-form-status__icon">
+                    <div class="o-form-status__icon--error">
+                        <svg><use xlink:href="/images/svgicons.svg#alert"></use></svg>
+                    </div>
+                    <div class="o-form-status__icon--success">
+                        <svg><use xlink:href="/images/svgicons.svg#success"></use></svg>
+                    </div>
+                </div>
+                <div class="o-form-status__message-bar">
+                    <label for="title">Error Message</label>
+                </div>
+            </div>
+        </div>
+        <div class="o-form__help-text l-full">
+            <p>Help Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+        </div>
+    </div>
+</div>
+

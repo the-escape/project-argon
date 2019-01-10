@@ -36,6 +36,18 @@ class MenuFieldType extends AbstractFieldType
         return new MenuFieldValue($data);
     }
 
+    public function getSettings()
+    {
+        $settings = parent::getSettings();
+        $opts = [];
+        foreach($this->getOptions()->sortBy('name')->lists('name', 'slug') as $k => $v)
+        {
+            $opts[] = (object) [$k => $v];
+        }
+        $settings->options = $opts;
+        return $settings;
+    }
+
     public function getOptions()
     {
         return menuCache();

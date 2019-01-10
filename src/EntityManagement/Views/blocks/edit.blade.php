@@ -1,44 +1,171 @@
 @extends('argon::layout.master')
 
-@section('content')
-    <div class="main">
+@section('body-class', 'medialib medialib-all')
 
-        <div class="row">
-            <div class="col-md-9">
-                <h1>Edit Block</h1>
-            </div>
-            <div class="col-md-3">
-                @if(!$groups->isEmpty())
-                    <a href="#" class="accordion-expand-collapse pull-md-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
+@section('body-id', 'argon-ui')
+
+@section('content')
+    <script>
+        window.fieldGroups = {}
+        window.groups = []
+    </script>
+
+    <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" class="o-form" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+        @include('argon::inc.alerts', compact($errors))
+
+        <div class="js-tabs c-page">
+            <header class="c-header c-container">
+                <div class="c-header__title">
+                    <a href="{{ route('cms:blocks:manage') }}" class="c-header__back">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                        </svg>
+                    </a>
+
+                    <h1>{{$page->name}}</h1>
+                </div>
+                <div class="c-tab__nav js-tabs-nav">
+                    <ul>
+                        @foreach($tabNav as $tab)
+                        <li>
+                            <button class="c-tab__btn @if($tab['isActive']) active @endif" data-tab="{{ $tab['slug'] }}">
+                                <div class="c-tab__btn-container">
+                                    <span>{{ $tab['name'] }}</span>
+                                </div>
+                            </button>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </header>
+
+            <div class="c-tab-panel__list js-tabs-list">
+                <div class="c-tab-panel active" data-tab="block-content">
+                    <main class="c-tab-panel__container c-container">
+                        <div class="c-actions__container">
+                            <div class="c-actions__content">
+                                <div class="js-page-edit"></div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-btn o-btn--primary">save</button>
+                                    <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-btn o-btn--light-grey">Add another</a>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="c-tab-panel" data-tab="attributes">
+                    <main class="c-tab-panel__container c-container">
+                        <div class="c-actions__container">
+                            <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                <h2>Attributes</h2>
+
+                                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="name" class="required">Name*</label>
+                                            <input type="text" id="name" name="name" value="{{ old('name', $page->name) }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="name">{{ getError($errors, 'name') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="slug" class="required">URL Slug*</label>
+                                            <input type="text" id="slug" name="slug" value="{{ old('slug', $page->slug) }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="slug">{{ getError($errors, 'slug') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-btn o-btn--primary">save</button>
+                                    <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="o-btn o-btn--light-grey">Add another</a>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+
+                @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
+                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
+                        <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
+                            <main class="c-tab-panel__container c-container">
+                                <div class="c-actions__container">
+                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                        <h2>{{ $group->name }}</h2>
+                                        <?php
+                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                        ?>
+                                        <script>
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                                isRendering: {{ $isRendering }},
+                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                                name: '{{ $group->name }}',
+                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!}
+                                        </script>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    </div>
+                                    <div class="c-actions">
+                                        <div class="c-actions__group">
+                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="block-content">Back</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </div>
+                    @endforeach
                 @endif
             </div>
         </div>
 
-        @include('argon::inc.alerts', compact($errors))
-
-        <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" method="POST">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" id="name" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" name="name" value="{{ old('name', $page->name) }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="slug" class="required">URL Slug</label>
-                        <input type="text" id="slug" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug', $page->slug) }}">
-                    </div>
-                </div>
-            </div>
-
+        {{-- <main class="c-container c-container--main" hidden>
             @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
 
                 <ul class="nav nav-tabs">
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                               href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                                href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
                                 {{$l->getLocale()->getName()}}
                             </a>
                         </li>
@@ -51,82 +178,9 @@
                 </ul>
 
                 <br>
-
             @endif
-
-            @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
-
-                @foreach($page->getNonSortableGroups($localisation->getLocaleId()) as $group)
-                    <div class="card accordion">
-
-                        <div class="card-header accordion-header">
-                            {{ $group->name }}
-                        </div>
-
-                        <div class="card-block accordion-body">
-
-                            @foreach ($group->getFields() as $field)
-
-                                <div class="form-group sortable">
-
-                                    {!! $field->render($latest->getField($field->getId())) !!}
-
-                                </div>
-
-                            @endforeach
-
-                        </div>
-
-                    </div>
-                @endforeach
-
-
-                <input id="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}" type="hidden" name="group_order" value="{{ old('group_order', implode(',',$page->getGroupOrder($localisation->getLocaleId())) ) }}">
-
-                <div class="sortable sortable-groups" data-sortable_field="order-{{ $page->getId() }}-{{ $localisation->getLocaleId() }}">
-
-                    @foreach($page->getSortableGroups($localisation->getLocaleId()) as $group)
-
-                        <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
-
-                            <div class="card accordion">
-
-                                <div class="card-header accordion-header">
-                                    <span class="sortable-handle">&#8645;</span>
-                                    {{ $group->name }}
-                                </div>
-
-                                <div class="card-block accordion-body">
-
-                                    @foreach ($group->getFields() as $field)
-
-                                        <div class="form-group sortable">
-
-                                            {!! $field->render($latest->getField($field->getId())) !!}
-
-                                        </div>
-
-                                    @endforeach
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    @endforeach
-
-                </div>
-
-            @endif
-
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="{{ route('cms:blocks:create', ['typeId'=>$page->type->id]) }}" class="btn btn-primary-outline">Add another</a>
-
-            <a href="{{ route('cms:blocks:manage') }}" class="btn btn-link">Back to blocks</a>
-
-        </form>
-    </div>
+        </main> --}}
+    </form>
 
     <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">

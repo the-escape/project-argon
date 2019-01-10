@@ -1,0 +1,202 @@
+.c-cropper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+
+    &__container {
+        position: relative;
+        width: 100%;
+        height: calc(100% - 80px);
+
+        > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 0;
+            padding-bottom: ratio(16, 12);
+        }
+    }
+
+    &__toolbar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background-color: $grey-black;
+
+        > * {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 1 1 0;
+
+            > * {
+                z-index: 1;
+            }
+        }
+
+        &-mid {
+            justify-content: center;
+        }
+
+        &-right {
+            justify-content: flex-end;
+        }
+    }
+
+    &__tool-group {
+        &--end {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        &--center {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__btn {
+        width: 48px;
+        height: 48px;
+        color: #aaa;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+        }
+    }
+
+    &__range {
+        &-rotate {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        &-line {
+            width: 180px;
+            height: 2px;
+            background-color: #fff;
+        }
+
+        &-handle {
+            position: absolute;
+            top: -23px;
+            left: 0;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: #fff;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    &__rotater {
+        position: relative;
+        width: 550px;
+        height: 48px;
+        color: #aaa;
+        transition: color $userActive;
+
+        &:hover {
+            color: #fff;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: -16px;
+            width: 2px;
+            height: 12px;
+            left: 50%;
+            background-color: currentColor;
+        }
+
+        &-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            -webkit-mask: linear-gradient(
+                90deg,
+                transparent 15%,
+                #000 30%,
+                #000 70%,
+                transparent 85%
+            );
+            mask: linear-gradient(
+                90deg,
+                transparent 15%,
+                #000 30%,
+                #000 70%,
+                transparent 85%
+            );
+        }
+
+        &-track {
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            height: 100%;
+            width: 1100px;
+            transform: translateX(-50%);
+
+            svg {
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    pre {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}

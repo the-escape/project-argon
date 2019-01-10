@@ -1,0 +1,12 @@
+.ratio {
+    &-test {
+        background: #ccc;
+
+        &-container {
+            max-width: 40vw;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+        }
+    }
+}

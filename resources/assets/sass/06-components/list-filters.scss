@@ -1,0 +1,45 @@
+.c-list-filters {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	&__form {
+		display: flex;
+		align-items: center;
+		justify-content: stretch;
+		flex-grow: 1;
+		margin-right: 20%;
+
+		> * {
+			margin-top: 0;
+			margin-right: 15px;
+			flex: 0 1 250px;
+		}
+	}
+
+	&__clear-btn {
+		display: flex;
+		align-items: center;
+		color: $secondary;
+		flex: 0 1 130px;
+
+		svg {
+			color: inherit;
+			width: 44px;
+			height: 44px;
+			padding: 10px;
+		}
+
+		&:hover {
+			color: $tertiary-dark;
+
+			svg {
+				padding: 8px;
+			}
+		}
+	}
+
+	& + .o-table {
+		margin-top: 48px;
+	}
+}

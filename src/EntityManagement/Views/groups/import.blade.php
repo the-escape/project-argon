@@ -1,21 +1,34 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Import Field Group</h1>
 
-        <div class="js-alerts">
-            @include('argon::inc.alerts', compact($errors))
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <h1>Import Field Group</h1>
         </div>
+    </header>
 
-        <form action="{{ route('cms:types:groups:post-import-json', [$type->id]) }}" method="POST" autocomplete="false">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-            <div class="card">
-                <div class="card-header js-editor-title">Json Editor</div>
-                <div class="card-block json-editor-wrapper">
-                    <div class="loading-overlay js-loading-block"></div>
-                    <div class="editor-tools">
+    {{-- need some refactoring, I noticed some issues with blocks library saving and retrieving blocks + problems with alerts --}}
+
+
+    <form action="{{ route('cms:types:groups:post-import-json', [$type->id]) }}" method="POST" autocomplete="false">
+
+        <main class="c-container c-container--main">
+
+            @include('argon::inc.alerts')
+
+            <div class="o-form">
+
+                <div class="js-alerts"></div>
+
+                <div class="json-editor-wrapper c-json-editor">
+                    <div class="loading-overlay c-json-editor__loading-overlay js-loading-block"></div>
+                    <div class="editor-tools c-json-editor__editor-tools">
                         <span class="settings fa fa-cog"></span>
                         <span class="expand fa fa-expand"></span>
                         <span class="collapse fa fa-compress"></span>
@@ -26,7 +39,7 @@
                             <span class="c-library-tools__button c-library-tools__create create fa fa-plus"></span>
                             <span class="c-library-tools__button c-library-tools__save save fa fa-save"></span>
                             <span class="c-library-tools__button c-library-tools__input"><input type="text" name="lib_block_name"></span>
-                            <label class="">
+                            <label class="js-select-image">
                                 <span class="c-library-tools__button c-library-tools__image image fa fa-image"></span>
                                 <input type="file" name="lib_block_image_tmp" style="display:none;">
                                 <input type="hidden" name="lib_block_image">
@@ -43,81 +56,136 @@
                     <textarea class="form-control hidden js-block-lib-data" id="blade-textarea" name="blade"></textarea>
                     <textarea class="form-control hidden js-block-lib-data" id="mappers-textarea" name="mappers"></textarea>
 
-                    <div id="json-editor"></div>
-
-
+                    <div id="json-editor" class="c-json-editor__editor"></div>
                 </div>
-            </div>
 
-            <div class="card c-blocks-library__settings-wrapper js-settings-wrapper">
-                <div class="card-block">
 
-                    <div class="form-group">
-                        <label>Settings</label>
-                        <div>
-                            <label class="checkbox-inline"><input type="checkbox" class="" name="smart_import" value="1" {{ session()->get('smartImportFieldGroups') ? 'checked="checked"' : '' }}>
-                                Smart Import
-                                <small class="text-muted">If the fields already exist append number at the end of the field name and carry on with the import</small>
-                            </label>
-                        </div>
-                    </div>
+                <div class="c-blocks-library__settings-wrapper js-settings-wrapper">
 
-                </div>
-            </div>
-
-            @if(env('BLOCKS_LIB_URL', false))
-                <div class="card accordion">
-                    <div class="card-header accordion-header">Blocks Library</div>
-                    <div class="card-block accordion-body">
-                        <div class="c-blocks-library js-blocks-library">
-
-                            @foreach($blocks as $b)
-                                <div class="c-blocks-library__item js-get-library-block" data-block-id="{{$b->id}}" data-block-url="{{ route('cms:blockslibrary:get',[$b->id]) }}" >
-                                    <div class="c-blocks-library__item-name">{{ $b->name }}</div>
-                                    <div class="c-blocks-library__item-image" style="background-image: url('{{ $b->image }}')"></div>
+                    <div class="o-form__group">
+                        <div class="o-form-status">
+                            <div class="o-form__list">
+                                <div class="o-checkbox">
+                                    <input type="hidden" name="smart_import" class="js-toggle-value" value="0">
+                                    <label>
+                                        <input type="checkbox" value="1" name="" id="smart_import" class="js-toggle-input" {{ session()->get('smartImportFieldGroups') ? 'checked="checked"' : '' }}>
+                                        <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
+                                    </label>
+                                    <label for="smart_import">Smart Import</label>
                                 </div>
-                            @endforeach
-
-                            @if(empty($blocks))
-                                <p class="text-muted">No blocks in the library.</p>
-                            @endif
+                            </div>
                         </div>
-                        <div class="c-blocks-library__item--template js-block-template">
-                            <div class="c-blocks-library__item-name"></div>
-                            <div class="c-blocks-library__item-image" style="background-image: url()"></div>
+                        <div class="o-form__help-text l-full">
+                            <p>If the fields already exist append number at the end of the field name and carry on with the import</p>
                         </div>
                     </div>
+
                 </div>
-            @endif
 
-            <div class="card accordion">
-                <div class="card-header accordion-header">Local Field Groups</div>
-                <div class="card-block accordion-body">
-                    <div id="navtree">
-                        <ul>
-                            @foreach($types as $t)
-                                <li>
-                                    {{ $t->name }}
-                                    <ul>
-                                        @foreach($t->groups as $g)
-                                            <li data-jstree='{"icon":"fa fa-file-code-o"}' data-export-target="{{ route('cms:types:groups:export', [$t->id, $g->id]) }}">
-                                                {{ $g->name }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endforeach
-                        </ul>
+
+
+                <div class="l-halves l-internal-columns c-import-field-groups">
+
+                    <div>
+                        <div class="c-import-field-groups__title">
+                            <h4>Local templates</h4>
+                            <p>Copy field groups from another template existing in this project.</p>
+                        </div>
+                        <div class="c-import-field-groups__search">
+                            <div class="o-form__group o-form__group--icon-btn">
+                                <input type="text" class="js-search-navtree" name="local_search" placeholder="Search field groups">
+                                <button class="js-search-navtree-trigger">
+                                    <svg>
+                                        <use xlink:href="/argon/images/svgicons.svg#search"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="c-import-field-groups__column">
+                            <div id="navtree" class="c-import-field-groups__navtree">
+                                <ul>
+                                    @foreach($types as $t)
+                                        <li>
+                                            {{ $t->name }}
+                                            <ul>
+                                                @foreach($t->groups as $g)
+                                                    <li data-jstree='{"icon":"fa fa-file-code-o"}' data-export-target="{{ route('cms:types:groups:export', [$t->id, $g->id]) }}">
+                                                        {{ $g->name }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
+                    <div>
+                        @if(env('BLOCKS_LIB_URL', false))
+                            <div class="c-import-field-groups__title">
+                                <h4>Blocks Library</h4>
+                                <p>Import blocks stored in the cloud.</p>
+                            </div>
+                            <div class="c-import-field-groups__search">
+                                <div class="o-form__group o-form__group--icon-btn">
+                                    <input type="text" class="js-search-blocks-library" name="cloud_search" placeholder="Search field groups">
+                                    <button class="js-search-blocks-library-trigger">
+                                        <svg>
+                                            <use xlink:href="/argon/images/svgicons.svg#search"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="c-import-field-groups__column">
+                                <div class="c-blocks-library js-blocks-library">
+
+                                    @foreach($blocks as $b)
+                                        <div class="c-blocks-library__item js-get-library-block show" data-block-id="{{$b->id}}" data-block-url="{{ route('cms:blockslibrary:get',[$b->id]) }}" >
+                                            <div class="c-blocks-library__item-name">{{ $b->name }}</div>
+                                            <div class="c-blocks-library__item-image" style="background-image: url('{{ $b->image }}')"></div>
+                                        </div>
+                                    @endforeach
+
+                                    <div class="c-blocks-library__no-blocks-message">No blocks in the library.</div>
+                                </div>
+                                <div class="c-blocks-library__item--template js-block-template">
+                                    <div class="c-blocks-library__item-name"></div>
+                                    <div class="c-blocks-library__item-image" style="background-image: url()"></div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="c-footer__wrapper">
+            <div class="c-footer c-container c-footer--fixed"> <!-- .c-footer--fixed -->
+                <div class="c-footer__container">
+
+                    <div class="c-footer__buttons">
+                        <div></div>
+                        <div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                            <a class="o-btn o-btn--sm" href="{{route('cms:types:edit', [$type->id])}}">Cancel</a>
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import">
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </footer>
+
+    </form>
 
 
-            <button type="submit" class="btn btn-primary js-import">Save</button>
-            <a class="btn btn-link" href="{{route('cms:types:edit',[$type->id])}}">Back to edit type</a>
-        </form>
-    </div>
 @endsection
+
 
 @section('footer')
     @parent
@@ -130,7 +198,13 @@
 
     <script>
 
-        var BlocksLib = {};
+        var BlocksLib = {
+            mode: 'json',
+            json: null,
+            mappers: null,
+            blade: null,
+            selectedBlock: null
+        };
 
         $(function(){
 
@@ -140,6 +214,8 @@
                 mappersTextarea = $('#mappers-textarea').hide(),
                 JsonMode = ace.require("ace/mode/json").Mode,
                 PhpMode = ace.require("ace/mode/php").Mode,
+                blockImageInput = $('[name=lib_block_image]'),
+                blockImageBtn = $('.js-select-image'),
                 blockNameInput = $('[name=lib_block_name]');
 
             BlocksLib.mode = 'json';
@@ -148,19 +224,27 @@
             editor.setTheme("ace/theme/twilight");
             editor.session.setMode(new JsonMode());
 
-            editor.getSession().setValue(jsonTextarea.val());
-            editor.getSession().on('change', function(){
+//            editor.getSession().setValue(jsonTextarea.val());
+            BlocksLib.blade = bladeTextarea.val();
+            BlocksLib.mappers = mappersTextarea.val();
+            BlocksLib.json = jsonTextarea.val();
 
-                switch(mode){
+            editor.getSession().on('change', function(){
+                console.log('change');
+
+                switch(BlocksLib.mode){
                     case 'blade':
-                        bladeTextarea.val(editor.getSession().getValue());
+                        BlocksLib.blade = editor.getSession().getValue();
+//                        bladeTextarea.val(editor.getSession().getValue());
                         break;
                     case 'mappers':
-                        mappersTextarea.val(editor.getSession().getValue());
+                        BlocksLib.mappers = editor.getSession().getValue();
+//                        mappersTextarea.val(editor.getSession().getValue());
                         break;
                     case 'json':
                     default:
-                        jsonTextarea.val(editor.getSession().getValue());
+                        BlocksLib.json = editor.getSession().getValue();
+//                        jsonTextarea.val(editor.getSession().getValue());
                         break;
                 }
             });
@@ -242,10 +326,24 @@
 
                             BlocksLib.selectedBlock = r.id;
                             $('.js-lib-block').val(r.id);
-                            jsonTextarea.val(json);
-                            bladeTextarea.val(r.blade);
-                            mappersTextarea.val(r.mappers);
+
+                            BlocksLib.json = json;
+                            BlocksLib.mappers = r.mappers;
+                            BlocksLib.blade = r.blade;
+
+
+//                            jsonTextarea.val(json);
+//                            bladeTextarea.val(r.blade);
+//                            mappersTextarea.val(r.mappers);
+
                             blockNameInput.val(r.name);
+
+                            if (r.image) {
+                                blockImageInput.val(r.image);
+                                blockImageBtn.addClass('selected');
+                            } else {
+                                unsetImage();
+                            }
 
                             $('.js-loading-block').removeClass('show');
 
@@ -273,17 +371,34 @@
                 deleteBlock();
             }).on('click', '.create', function() {
                 createBlock();
+            }).on('click', '.js-select-image.selected', function(e) {
+                e.preventDefault();
+                unsetImage();
+            }).on('mouseover', '.js-select-image.selected', function() {
+                var src = blockImageInput.val(),
+                    el = $('<div class="c-blocks-library__img-preview"><img src="'+src+'"></div>');
+                $('.c-json-editor').append(el);
+            }).on('mouseout', '.js-select-image.selected', function() {
+                $('.c-json-editor').find('.c-blocks-library__img-preview').remove();
             });
+
+
+            $('.js-alerts').on('click', '.js-close-alert', function(e) {
+                e.preventDefault();
+                $(this).parent().remove();
+            })
 
 
 
             $('[name=lib_block_image_tmp]').on('change', function(){
                 encodeImagetoBase64(this);
+                console.log('selected image');
+                $('.js-select-image').addClass('selected');
             });
 
 
 
-            $('#navtree')
+            var navtree = $('#navtree')
                 .on('dblclick.jstree', function(e){
 
                     var el = $('#navtree').jstree().get_selected(true);
@@ -304,7 +419,12 @@
 
                             var json = JSON.stringify(r, null, 4);
 
-                            jsonTextarea.val(json);
+                            BlocksLib.json = json;
+                            BlocksLib.mappers = '';
+                            BlocksLib.blade = '';
+
+//                            jsonTextarea.val(json);
+
                             changeEditorMode('json');
                             $('.js-loading-block').removeClass('show');
 
@@ -313,14 +433,40 @@
                     }
                 })
                 .jstree({
-                    "core": {
-                        "multiple": false,
-                        "dblclick_toggle": false
-                    }
+                    plugins: ['contextmenu', 'dnd', 'search', 'state'],
+                    core: {
+                        multiple: false,
+                        dblclick_toggle: false,
+                        themes: {
+                            stripes: true
+                        }
+                    },
+                    search : {
+                        show_only_matches : true,
+//                        search_callback : function (str, node) {
+//                            if(node.text === str) { return true; }
+//                        }
+                    },
                 });
+
+//            $('.js-search-navtree').on('keyup', function(e) {
+//                navtree.jstree(true).search($(this).val());
+//            });
+
+            $('.js-search-navtree').on('keyup', searchNavTree);
+            $('.js-search-navtree-trigger').on('click', searchNavTree);
+
+            $('.js-search-blocks-library').on('keyup', searchCloud);
+            $('.js-search-blocks-library-trigger').on('click', searchCloud);
+
+
 
             $('.js-import').on('click', function(e) {
                 e.preventDefault();
+
+                jsonTextarea.val(BlocksLib.json);
+                bladeTextarea.val(BlocksLib.blade);
+                mappersTextarea.val(BlocksLib.mappers);
 
                 var btn = $(this),
                     form = btn.closest('form'),
@@ -337,18 +483,18 @@
                     data: data
                 }).done(function(r) {
                     var msg = '',
-                        closeBtn = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                        closeBtn = '<button type="button" class="close js-close-alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
 
                     btn.prop('disabled',false).html('Save');
 
                     if(r.success)
                     {
                         var message = r.msg ? r.msg : 'Field group has been successfully imported.';
-                        msg += '<div class="alert alert-success">'+closeBtn+'<p>'+message+'</p>';
+                        msg += '<div class="o-alert o-alert--success">'+closeBtn+'<p>'+message+'</p>';
                     }
                     else
                     {
-                        msg += '<div class="alert alert-danger">'+closeBtn+'<p><strong>Submission failed</strong></p>';
+                        msg += '<div class="o-alert o-alert--danger">'+closeBtn+'<p><strong>Submission failed</strong></p>';
 
                         if (r.error) {
                             msg += "<ul>";
@@ -366,14 +512,35 @@
 
             });
 
+            function searchNavTree(e){
+                e.preventDefault();
+
+                var search = $('.js-search-navtree').val();
+                navtree.jstree(true).search(search);
+            }
+
+            function searchCloud(e){
+                e.preventDefault();
+
+                var search = $('.js-search-blocks-library').val();
+
+                if (search === '') {
+                    $('.c-blocks-library__item').addClass('show');
+                } else {
+
+                    // todo: refactor - case insensitive
+                    $('.c-blocks-library__item').removeClass('show');
+                    $('.c-blocks-library__item-name:contains(' + search + ')').parent().addClass('show');
+                }
+            }
 
             function changeEditorMode(selectedMode){
 
                 mode = selectedMode || BlocksLib.mode;
 
-                var activeToggle = $('.js-library-tools .toggle.active'),
-                    currentMode = activeToggle.data('mode'),
-                    currentData = editor.getSession().getValue();
+                BlocksLib.mode = mode;
+
+                var activeToggle = $('.js-library-tools .toggle.active');
 
                 activeToggle.removeClass('active');
 
@@ -385,22 +552,25 @@
                         case 'blade':
                             $('.js-library-tools .toggle-blade').addClass('active');
 
-                            editor.getSession().setValue(bladeTextarea.val());
+//                            editor.getSession().setValue(bladeTextarea.val());
                             editor.session.setMode(new PhpMode());
+                            editor.getSession().setValue(BlocksLib.blade);
 
                             break;
                         case 'mappers':
                             $('.js-library-tools .toggle-mappers').addClass('active');
 
-                            editor.getSession().setValue(mappersTextarea.val());
+//                            editor.getSession().setValue(mappersTextarea.val());
                             editor.session.setMode(new PhpMode());
+                            editor.getSession().setValue(BlocksLib.mappers);
                             break;
                         case 'json':
                         default:
                             $('.js-library-tools .toggle-json').addClass('active');
 
-                            editor.getSession().setValue(jsonTextarea.val());
+//                            editor.getSession().setValue(jsonTextarea.val());
                             editor.session.setMode(new JsonMode());
+                            editor.getSession().setValue(BlocksLib.json);
                             break;
                     }
 
@@ -409,8 +579,9 @@
 
                     $('.js-library-tools .toggle-json').addClass('active');
 
-                    editor.getSession().setValue(jsonTextarea.val());
+//                    editor.getSession().setValue(jsonTextarea.val());
                     editor.session.setMode(new JsonMode());
+                    editor.getSession().setValue(BlocksLib.json);
 
                     $('.js-library-tools').removeClass('show');
 
@@ -455,11 +626,18 @@
                     url += '/' + BlocksLib.selectedBlock;
                 }
 
+//                var data = {
+//                    name: blockNameInput.val(),
+//                    json: jsonTextarea.val(),
+//                    blade: bladeTextarea.val(),
+//                    mappers: mappersTextarea.val(),
+//                };
+
                 var data = {
                     name: blockNameInput.val(),
-                    json: jsonTextarea.val(),
-                    blade: bladeTextarea.val(),
-                    mappers: mappersTextarea.val(),
+                    json: BlocksLib.json,
+                    blade: BlocksLib.blade,
+                    mappers: BlocksLib.mappers,
                 };
 
                 if($('[name=lib_block_image]').val() !== '')
@@ -480,8 +658,8 @@
 
                             var newBlock = $('.js-block-template').clone();
 
-                            newBlock.removeClass('js-block-template').removeClass('c-blocks-library__item--template');
-                            newBlock.addClass('c-blocks-library__item').addClass('js-get-library-block editing');
+                            newBlock.removeClass('js-block-template c-blocks-library__item--template');
+                            newBlock.addClass('c-blocks-library__item js-get-library-block editing show');
                             newBlock.data('blockId', r.block.id);
                             newBlock.attr('data-block-id', r.block.id);
                             newBlock.data('blockUrl', '/admin/blockslibrary/'+r.block.id);
@@ -489,7 +667,7 @@
                             newBlock.find('.c-blocks-library__item-image').css('background-image', 'url("'+data.image+'")');
 
 
-                            $('.c-blocks-library').prepend(newBlock);
+                            $('.js-blocks-library').prepend(newBlock);
 
                         } else {
 
@@ -514,8 +692,7 @@
 
                 BlocksLib.selectedBlock = null;
                 $('.js-lib-block').val();
-                bladeTextarea.val('');
-                mappersTextarea.val('');
+
                 blockNameInput.val('');
             }
 
@@ -530,263 +707,15 @@
                 reader.readAsDataURL(file);
             }
 
+            function unsetImage() {
+                blockImageBtn.removeClass('selected');
+                blockImageBtn.find('[name=lib_block_image_tmp]').val('');
+                blockImageInput.val('');
+                $('.c-json-editor').find('.c-blocks-library__img-preview').remove();
+            }
+
 
 
         });
     </script>
-@endsection
-
-
-@section('styles')
-    @parent
-
-    <style>
-        .json-editor-wrapper{
-            position: relative;
-        }
-
-        .json-editor-wrapper #json-editor{
-            position: relative;
-            width: 100%;
-            height: 350px;
-        }
-
-        .json-editor-wrapper.expanded #json-editor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 2998;
-        }
-
-        .json-editor-wrapper .editor-tools{
-            position: absolute;
-            top: 25px;
-            right: 40px;
-            z-index: 2999;
-        }
-
-        .json-editor-wrapper.expanded .editor-tools {
-            position: fixed;
-            top: 10px;
-            right: 20px;
-        }
-
-        .json-editor-wrapper .editor-tools > *{
-            background-color: white;
-            padding: 7px 8px;
-            margin-left: 5px;
-            cursor: pointer;
-        }
-
-        .json-editor-wrapper .editor-tools .collapse{
-            display: none;
-        }
-
-        .json-editor-wrapper.expanded .editor-tools .expand,
-        .json-editor-wrapper.expanded .editor-tools .settings{
-            display: none;
-        }
-
-        .json-editor-wrapper.expanded .editor-tools .collapse{
-            display: inline-block;
-        }
-
-        .c-library-tools{
-            position: absolute;
-            bottom: 25px;
-            right: 40px;
-            z-index: 2999;
-            display: flex;
-            height: 30px;
-        }
-
-        .json-editor-wrapper.expanded .c-library-tools {
-            position: fixed;
-            bottom: 10px;
-            right: 20px;
-        }
-
-        /*.c-library-tools.show{*/
-            /*display: flex;*/
-        /*}*/
-
-        .c-library-tools__button{
-            background-color: white;
-            padding: 7px 8px;
-            margin-right: 10px;
-            cursor: pointer;
-            min-width: 30px;
-            text-align: center;
-
-            display: none;
-        }
-
-        .c-library-tools.show .c-library-tools__button{
-            display: block;
-        }
-
-        .c-library-tools__create{
-            display: block;
-            margin-right: 0;
-        }
-
-        .c-library-tools.show .c-library-tools__create{
-            display: none;
-        }
-
-        .c-library-tools__input.error {
-            background-color: rgb(255, 150, 150)
-        }
-
-        .c-library-tools__delete{
-            margin-left: 10px;
-        }
-
-        .c-library-tools__close{
-            margin-right: 0;
-        }
-
-        .c-library-tools__toggle{
-            padding: 3px 8px;
-            margin-right: 1px;
-        }
-
-        .c-library-tools__toggle.active{
-            background-color: #cdcdcd;
-        }
-
-        .c-library-tools__input{
-            padding: 0;
-        }
-
-        .c-library-tools__input input {
-            background-color: transparent;
-            border: 0 none;
-            outline: 0 none;
-            padding: 2px 10px;
-        }
-
-        .c-library-tools__input input:active {
-            outline: 0 none
-        }
-
-        .c-blocks-library__settings-wrapper {
-            padding: 20px 30px 10px;
-            display: none;
-        }
-
-        .c-blocks-library__settings-wrapper.expanded{
-            display: block;
-        }
-
-        #navtree {
-            margin: 0 0 10px;
-            padding: 0 20px 10px;
-        }
-
-        .card-block {
-            padding: 0;
-        }
-
-        .loading-overlay{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            align-items: center;
-            justify-content: center;
-            z-index: 99;
-
-            display: none;
-        }
-
-        .loading-overlay.show{
-            display: flex;
-        }
-
-        .loading-overlay:after{
-            content: "loading...";
-            display: block;
-            text-align: center;
-            color: white;
-        }
-
-        .c-blocks-library{
-            display: flex;
-            flex-wrap: wrap;
-            overflow-y: auto;
-            padding: 5px;
-            width: 100%;
-            max-height: 450px;
-        }
-
-        .c-blocks-library__item {
-            flex: 0 0 400px;
-            width: 400px;
-            min-height: 70px;
-            margin: 5px;
-            transition: opacity linear 200ms;
-            opacity: .7;
-            cursor: pointer;
-            display: flex;
-            flex-direction: row-reverse;
-            border: 1px solid #c1c1c1;
-            box-sizing: border-box;
-        }
-
-        .c-blocks-library__item--template{
-            display: none;
-        }
-
-        .c-blocks-library__item:hover {
-            opacity: 1;
-        }
-
-        .c-blocks-library__item-name{
-            flex: 0 1 300px;
-            text-align: left;
-            align-self: center;
-            padding: 5px 15px;
-            /*background-color: black;*/
-            /*color: white;*/
-            /*border-radius: 5px 5px 0 0;*/
-        }
-
-        .c-blocks-library__item-name::selection {
-            background-color: transparent;
-        }
-
-        .c-blocks-library__item-image{
-            flex: 0 0 100px;
-            width: 100px;
-            height: 70px;
-
-            /*background-color: #cdcdcd;*/
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            border-right: 1px solid #c1c1c1;
-
-            /*border-top: 0 none;*/
-            /*border-radius: 0 0 5px 5px;*/
-        }
-
-        .c-blocks-library__item.editing{
-            opacity: 1;
-            border-color: #0275d8;
-        }
-
-        .c-blocks-library__item.editing .c-blocks-library__item-name{
-
-        }
-
-        .c-blocks-library__item.editing .c-blocks-library__item-image{
-            border-color: #0275d8;
-        }
-    </style>
-
 @endsection

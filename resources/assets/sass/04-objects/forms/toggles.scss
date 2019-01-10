@@ -1,0 +1,192 @@
+.o-radio,
+.o-checkbox,
+.o-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    > label {
+        cursor: pointer;
+        white-space: nowrap;
+        margin-right: 8px;
+
+        * {
+            pointer-events: none;
+        }
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    > label,
+    > label span {
+        width: 26px;
+        height: 26px;
+    }
+
+    label + label,
+    label + span {
+        margin-top: 0;
+        padding: 0;
+        width: auto;
+        height: auto;
+    }
+
+    input {
+        width: 0.1px;
+        height: 0.1px;
+        position: absolute;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+
+        + span {
+            position: relative;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid $grey;
+            max-width: none;
+            background-color: #fff;
+            transition: border-color $userInactive $easeOut;
+
+            &:after {
+                content: "";
+                position: absolute;
+                opacity: 0;
+                transition: opacity $userActive $easeOut;
+            }
+        }
+
+        &:checked + span {
+            &:after {
+                opacity: 1;
+            }
+        }
+
+        &:focus + span {
+            border-color: $black;
+            transition-duration: $userActive;
+        }
+    }
+}
+
+.o-radio {
+    input {
+        + span {
+            &:after {
+                top: 4px;
+                left: 4px;
+                bottom: 4px;
+                right: 4px;
+                background-color: $primary;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+.o-checkbox {
+    input {
+        + span {
+            position: relative;
+            border-radius: 0;
+            padding: 8px;
+            transition: border-color $userInactive $easeOut;
+            color: $primary;
+
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 26px;
+                height: 26px;
+                transform: translate(-50%, -50%);
+                opacity: 0;
+                transition: opacity $userInactive $easeOut,
+                    stroke $userInactive $easeOut;
+            }
+
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    input:checked + span svg {
+        opacity: 1;
+        transition: opacity $userActive $easeOut, stroke $userActive $easeOut;
+    }
+
+    input:focus span {
+        border-color: $grey;
+        transition-duration: $userActive;
+    }
+}
+
+.o-switch {
+    padding: 0;
+
+    > label {
+        width: auto;
+        height: 45px;
+        margin-right: $gutter;
+    }
+
+    input + label {
+        position: relative;
+        height: 45px;
+        width: 100px;
+        border-radius: 24px;
+        border: 0;
+        background-color: $grey-dark;
+        color: #fff;
+        transition: background-color $userActive $easeOut;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 7px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #fff;
+            transform: translateY(-50%);
+            transition: transform $userActive $easeOut;
+        }
+    }
+
+    input:checked + label {
+        background-color: $success;
+
+        &:after {
+            transform: translate(52px, -50%);
+        }
+    }
+
+    &__text {
+        &:before,
+        &:after {
+            position: absolute;
+            top: 50%;
+            font-size: 1.6rem;
+            transform: translateY(-50%);
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        &:before {
+            content: attr(data-yes);
+            left: 14px;
+        }
+
+        &:after {
+            content: attr(data-no);
+            right: 14px;
+        }
+    }
+}

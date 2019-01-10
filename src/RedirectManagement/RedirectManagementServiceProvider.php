@@ -41,18 +41,19 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
         $this->addRoute(
-            'redirects/{id}',
+            'redirects/{id}/update',
             'cms:redirects:update',
             RedirectsController::class,
             'update',
-            Request::METHOD_PUT
+            Request::METHOD_POST
+//            Request::METHOD_PUT
         );
         $this->addRoute(
-            'redirects/{id}',
+            'redirects/{id}/delete',
             'cms:redirects:delete',
             RedirectsController::class,
-            'delete',
-            Request::METHOD_DELETE
+            'delete'
+//            Request::METHOD_DELETE
         );
     }
 
@@ -72,7 +73,7 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
 
         $this->permissionsManager->register('cms:redirects:manage');
 
-        $this->pluginManager->registerNavLink('Redirect Manager', route('cms:redirects:manage'), 'cms:redirects:manage');
+        $this->pluginManager->registerNavLink('Redirect Manager', route('cms:redirects:manage'), 'cms:redirects:manage', 'redirects');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

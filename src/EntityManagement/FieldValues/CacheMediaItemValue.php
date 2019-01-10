@@ -16,6 +16,8 @@ class CacheMediaItemValue implements Compressable, Arrayable, Jsonable, ImageInt
     protected $alt;
     protected $path;
     protected $dimensions;
+//    protected $width;
+//    protected $height;
 
     public function __construct(array $values=[])
     {
@@ -77,6 +79,26 @@ class CacheMediaItemValue implements Compressable, Arrayable, Jsonable, ImageInt
     {
         $this->url = $url;
     }
+
+//    public function getWidth()
+//    {
+//        return $this->width;
+//    }
+//
+//    public function setWidth($width)
+//    {
+//        $this->width = $width;
+//    }
+//
+//    public function getHeight()
+//    {
+//        return $this->height;
+//    }
+//
+//    public function setHeight($height)
+//    {
+//        $this->height = $height;
+//    }
 
     public function getAlt($default="")
     {

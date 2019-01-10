@@ -1,0 +1,64 @@
+.o-multi {
+    &__item {
+        + * {
+            margin-top: 15px;
+        }
+
+        &-wrap {
+            display: flex;
+
+            > * {
+                flex: 1 1 auto;
+            }
+        }
+    }
+
+    &__drag-handle {
+        height: 45px;
+        width: 45px;
+        flex: 0 0 45px;
+        padding: 0;
+        color: $black-light;
+        cursor: pointer;
+        background-color: $grey;
+        transition: color $userInactive $easeOut,
+            background-color $userInactive $easeOut;
+
+        &:hover {
+            transition: color $userActive $easeOut,
+                background-color $userActive $easeOut;
+            background-color: $black-light;
+            color: #fff;
+        }
+    }
+
+    &__drag-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 45px;
+        height: 45px;
+
+        svg {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    &--moving &__drag-handle {
+        background-color: $primary;
+        color: #fff;
+
+        &:hover {
+            background-color: $primary-dark;
+        }
+    }
+
+    &__actions {
+        flex: 0 0 auto;
+    }
+
+    &__foot {
+        margin-top: 15px;
+    }
+}

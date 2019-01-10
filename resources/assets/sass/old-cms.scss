@@ -1,0 +1,15 @@
+// vendor
+@import "old-cms/bootstrap-vars";
+@import "../../../bower_components/bootstrap/scss/bootstrap";
+@import "../../../bower_components/font-awesome/scss/font-awesome";
+@import "old-cms/bootstrap-fixes";
+@import "old-cms/vendor/fancybox";
+
+// cms
+@import "old-cms/login";
+@import "old-cms/dashboard";
+@import "old-cms/media";
+@import "old-cms/fields/fields";
+@import "old-cms/fields/boolean";
+@import "old-cms/fields/datetime";
+@import "old-cms/card-header";

@@ -33,13 +33,26 @@ class PluginManager
         return $filteredLinks;
     }
 
-    public function registerNavLink($name, $url, $access = '', $group = 'default')
+    public function registerNavLink($name, $url, $access = '', $icon = 'pages', $group = 'default')
     {
+
+        if ($url === route('cms:dashboard'))
+        {
+            $active = preg_match('/admin$/', request()->url()) === 1;
+        }
+        else
+        {
+            $active = strpos(request()->url(), $url) !== false;
+        }
+
+
         $this->navLinks[$group][$name] = (object)[
             'name' => $name,
             'url' => $url,
             'access' => $access,
-            'group' => $group
+            'icon' => $icon,
+            'group' => $group,
+            'active' => $active
         ];
     }
 }

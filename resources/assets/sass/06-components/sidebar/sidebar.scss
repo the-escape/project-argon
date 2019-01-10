@@ -1,0 +1,61 @@
+$color-sidebar-divider: rgba(255, 255, 255, 0.1);
+
+.c-sidebar{
+	z-index: $sidebar-index;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: $sidebarWidth;
+	height: 100%;
+	color: #fff;
+
+	&__overlay{
+		z-index: $sidebar-index + 1;
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: rgba(0, 0, 0, 0.7);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity $easeOut $userIn;
+	}
+
+	&.active &__overlay{
+		transition: opacity $easeOut $userOut;
+		opacity: 1;
+	}
+
+	&__container{
+		z-index: $sidebar-index + 2;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: $tertiary;
+		transition: width $easeOut $userIn;
+		display: flex;
+		flex-direction: column;
+		overflow-x: hidden;
+	}
+
+	&.active &__container{
+		transition: width $easeOut $userOut;
+		width: 210px;
+	}
+
+	&__logo{
+		margin-top: auto;
+		padding-bottom: 40px;
+		padding-top: 40px;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+
+		img{
+			width: 19px;
+		}
+	}
+}

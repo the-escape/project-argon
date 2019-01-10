@@ -1,0 +1,129 @@
+//====================
+// Typography
+//====================
+
+// Headings
+//===============
+
+#{$nameSpace} {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        margin-top: 0;
+        font-weight: $font-weight;
+        line-height: $p-line-height;
+        font-size: $base-font-size;
+
+        + * {
+            margin-top: $paragraphSpace;
+        }
+    }
+
+    #{$typegraphyClass} h1,
+    #{$typegraphyClass} h2,
+    #{$typegraphyClass} h3,
+    #{$typegraphyClass} h4,
+    #{$typegraphyClass} h5,
+    #{$typegraphyClass} h6 {
+        color: $header-color;
+        font-family: $header-font-family;
+        font-weight: $header-weight;
+        line-height: $header-line-height;
+
+        strong {
+            font-weight: $header-bold-weight;
+        }
+
+        + * {
+            margin-top: $headerSpace;
+        }
+
+        + h1,
+        + h2,
+        + h3,
+        + h4,
+        + h5,
+        + h6 {
+            margin-top: $subHeaderSpace;
+        }
+    }
+
+    #{$typegraphyClass} p {
+        + h1,
+        + h2,
+        + h3,
+        + h4,
+        + h5,
+        + h6 {
+            margin-top: $paragraphHeaderSpace;
+        }
+    }
+
+    $headerKeys: map-keys($headerStyles);
+
+    @each $header in $headerKeys {
+        $headerStyle: map-get($headerStyles, $header);
+        $styleKeys: map-keys($headerStyle);
+
+        #{$header} {
+            @each $rule in $styleKeys {
+                $value: map-get($headerStyle, $rule);
+
+                $baseStyleValue: map-get($baseHeaderStyles, $rule);
+
+                @if $baseStyleValue != $value {
+                    @if $rule == "space" {
+                        + * {
+                            margin-top: $value;
+                        }
+                    }
+
+                    @elseif $rule == 'base-size' {
+                        font-size: $value;
+                    }
+
+                    @elseif $rule == 'sm-size' {
+                        @media (min-width: $sm) {
+                            font-size: $value;
+                        }
+                    }
+
+                    @elseif $rule == 'md-size' {
+                        @media (min-width: $md) {
+                            font-size: $value;
+                        }
+                    } @else {
+                        #{$rule}: $value;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// inline elements
+//===============
+#{$nameSpace} {
+    table,
+    pre {
+        line-height: $p-line-height;
+
+        + * {
+            margin-top: $paragraphSpace;
+        }
+    }
+
+    strong,
+    b {
+        font-weight: $strong-weight;
+    }
+
+    code,
+    pre {
+        font-family: $font-mono;
+    }
+}

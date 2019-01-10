@@ -1,0 +1,429 @@
+.l-halves {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+        margin-left: $gutter;
+        margin-right: $gutter;
+        margin-top: $full-gutter;
+        flex: 1 1 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 1 1 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:nth-child(2) {
+            @media (min-width: $sm) {
+                margin-top: 0;
+            }
+        }
+
+        &.l-no-gutter {
+            margin-left: 0;
+            margin-right: 0;
+            flex-basis: 100%;
+            width: 100%;
+
+            @media (min-width: $sm) {
+                flex-basis: 50%;
+                width: 50%;
+            }
+        }
+    }
+
+    &--no-grow > * {
+        flex: 0 0 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 0 0 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+    }
+}
+
+@supports (display: grid) {
+    .l-halves {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: $full-gutter;
+        padding-left: $gutter;
+        padding-right: $gutter;
+
+        @media (min-width: $sm) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        > * {
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            width: 100%;
+
+            &.l-no-gutter {
+                margin-left: -$gutter;
+                margin-right: -$gutter;
+                width: calc(100% + #{$full-gutter});
+            }
+        }
+    }
+}
+
+.l-thirds {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+        margin-left: $gutter;
+        margin-right: $gutter;
+        margin-top: $full-gutter;
+        flex: 1 1 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 1 1 33.333%;
+            flex-basis: calc(33.333% - #{$full-gutter});
+            width: calc(33.333% - #{$full-gutter});
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:nth-child(2),
+        &:nth-child(3) {
+            @media (min-width: $sm) {
+                margin-top: 0;
+            }
+        }
+
+        &.l-no-gutter {
+            margin-left: 0;
+            margin-right: 0;
+            flex-basis: 100%;
+            width: 100%;
+
+            @media (min-width: $sm) {
+                flex-basis: 33.333%;
+                width: 33.333%;
+            }
+        }
+    }
+
+    &--no-grow > * {
+        flex: 0 0 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 0 0 33.333%;
+            flex-basis: calc(33.333% - #{$full-gutter});
+            width: calc(33.333% - #{$full-gutter});
+        }
+    }
+
+    &--half {
+        @media (min-width: $sm) {
+            flex: 1 1 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+
+        &.l-no-gutter {
+            @media (min-width: $sm) {
+                flex-basis: 50%;
+                width: 50%;
+            }
+        }
+    }
+}
+
+@supports (display: grid) {
+    .l-thirds {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: $full-gutter;
+        padding-left: $gutter;
+        padding-right: $gutter;
+
+        @media (min-width: $sm) {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        > * {
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            width: 100%;
+
+            &.l-no-gutter {
+                margin-left: -$gutter;
+                margin-right: -$gutter;
+                width: calc(100% + #{$full-gutter});
+            }
+
+            @media (min-width: $sm) {
+                grid-column: span 2;
+            }
+        }
+
+        &--half {
+            @media (min-width: $sm) {
+                grid-column: span 3;
+            }
+        }
+    }
+}
+
+.l-two-thirds,
+.l-third-two-thirds {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+        margin-left: $gutter;
+        margin-right: $gutter;
+        flex: 1 1 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 1 1 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+
+        @media (min-width: $md) {
+            &:nth-child(2n) {
+                flex: 1 1 66.666%;
+                flex-basis: calc(66.666% - #{$full-gutter});
+                width: calc(66.666% - #{$full-gutter});
+            }
+
+            &:nth-child(2n + 1) {
+                flex: 1 1 33.333%;
+                flex-basis: calc(33.333% - #{$full-gutter});
+                width: calc(33.333% - #{$full-gutter});
+            }
+        }
+    }
+}
+
+.l-third-two-thirds {
+    > * {
+        @media (min-width: $md) {
+            &:nth-child(2n) {
+                flex: 1 1 33.333%;
+                flex-basis: calc(33.333% - #{$full-gutter});
+                width: calc(33.333% - #{$full-gutter});
+            }
+
+            &:nth-child(2n + 1) {
+                flex: 1 1 66.666%;
+                flex-basis: calc(66.666% - #{$full-gutter});
+                width: calc(66.666% - #{$full-gutter});
+            }
+        }
+    }
+}
+
+@supports (display: grid) {
+    .l-two-thirds,
+    .l-third-two-thirds {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: $full-gutter;
+        padding-left: $gutter;
+        padding-right: $gutter;
+
+        @media (min-width: $sm) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (min-width: $md) {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        > * {
+            margin-left: 0;
+            margin-right: 0;
+
+            &,
+            &:nth-child(2n),
+            &:nth-child(2n + 1) {
+                width: 100%;
+            }
+        }
+    }
+
+    .l-third-two-thirds {
+        @media (min-width: $md) {
+            grid-template-columns: 1fr 2fr;
+        }
+    }
+}
+
+.l-quarters {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+        margin-left: $gutter;
+        margin-right: $gutter;
+        margin-top: $full-gutter;
+        flex: 1 1 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $xs) {
+            flex: 1 1 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+
+        @media (min-width: $sm) {
+            flex: 1 1 25%;
+            flex-basis: calc(25% - #{$full-gutter});
+            width: calc(25% - #{$full-gutter});
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:nth-child(1) ~ * {
+            @media (min-width: $xs) {
+                margin-top: 0;
+            }
+        }
+
+        &.l-no-gutter {
+            margin-left: 0;
+            margin-right: 0;
+            flex-basis: 100%;
+            width: 100%;
+
+            @media (min-width: $xs) {
+                flex-basis: 50%;
+                width: 50%;
+            }
+
+            @media (min-width: $xs) {
+                flex-basis: 25%;
+                width: 25%;
+            }
+        }
+    }
+}
+
+@supports (display: grid) {
+    .l-quarters {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: $full-gutter;
+        padding-left: $gutter;
+        padding-right: $gutter;
+
+        @media (min-width: $xs) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (min-width: $sm) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        > * {
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            width: 100%;
+
+            &.l-no-gutter {
+                margin-left: -$gutter;
+                margin-right: -$gutter;
+                width: calc(100% + #{$full-gutter});
+            }
+        }
+    }
+}
+
+.l-7-1-4 {
+    display: flex;
+    flex-wrap: wrap;
+
+    > * {
+        margin-left: $gutter;
+        margin-right: $gutter;
+        flex: 1 1 100%;
+        flex-basis: calc(100% - #{$full-gutter});
+        width: calc(100% - #{$full-gutter});
+
+        @media (min-width: $sm) {
+            flex: 1 1 50%;
+            flex-basis: calc(50% - #{$full-gutter});
+            width: calc(50% - #{$full-gutter});
+        }
+
+        @media (min-width: $md) {
+            &:nth-child(2n + 1) {
+                flex: 1 1 #{$col-7};
+                flex-basis: calc(#{$col-7} - #{$full-gutter});
+                width: calc(#{$col-7} - #{$full-gutter});
+            }
+
+            &:nth-child(2n) {
+                flex: 1 1 #{$col-4};
+                flex-basis: calc(#{$col-4} - #{$full-gutter});
+                width: calc(#{$col-4} - #{$full-gutter});
+                margin-left: calc(#{$col-1} + #{$gutter});
+            }
+        }
+    }
+}
+
+@supports (display: grid) {
+    .l-7-1-4 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: $full-gutter;
+        padding-left: $gutter;
+        padding-right: $gutter;
+
+        @media (min-width: $sm) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (min-width: $md) {
+            grid-template-columns: 7fr 1fr 4fr;
+        }
+
+        > * {
+            margin-left: 0;
+            margin-right: 0;
+
+            &,
+            &:nth-child(2n),
+            &:nth-child(2n + 1) {
+                width: 100%;
+            }
+
+            &:nth-child(2n) {
+                @media (min-width: $md) {
+                    grid-column: 3 / 4;
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

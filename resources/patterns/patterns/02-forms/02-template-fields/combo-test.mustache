@@ -1,0 +1,99 @@
+<div class="o-form l-container">
+    <div class="o-combo o-form__group l-full js-combo" data-id="combo1">{{! o-combo--moving }}
+        <script>
+            window.combos = window.combos || {}
+            window.combos.combo1 = {
+                id: '402',
+                options: {
+                    typeKey: 'combo',
+                    name: 'Combo Test',
+                    comboAddName: 'Item',
+                    settings: {
+                        multiple: 1
+                    }
+                },
+                values: [
+                    {
+                        '395': [
+                            'test 1',
+                            'test 2'
+                        ],
+                        '396': [
+                            '/contact'
+                        ]
+                    },
+                    {
+                        '395': [
+                            'test 4',
+                            'test 5'
+                        ],
+                        '396': [
+                            '/about'
+                        ]
+                    }
+                ],
+                errors: [],
+                fields: [
+                    {
+                        id: '395',
+                        options: {
+                            typeKey: 'text',
+                            name: 'Text Stuff',
+                            settings: {
+                                required: 0,
+                                multiline: 0,
+                                multiple: 1,
+                                minlength: null,
+                                maxlength: null,
+                                url: 0,
+                                integer: 0,
+                                float: 0,
+                                email: 0,
+                                phone: 0
+                            }
+                        },
+                        message: '',
+                        helpText: '<p>Some help text</p>'
+                    },
+                    {
+                        id: '396',
+                        options: {
+                            typeKey: 'text',
+                            name: 'Url',
+                            settings: {
+                                required: 0,
+                                multiline: 0,
+                                multiple: 0,
+                                minlength: null,
+                                maxlength: null,
+                                url: 1,
+                                integer: 0,
+                                float: 0,
+                                email: 0,
+                                phone: 0
+                            }
+                        },
+                        message: '',
+                        helpText: '<p>Some help text</p>'
+                    }
+                ]
+            }
+        </script>
+        <div class="o-combo__head">
+            <div class="o-combo__label">Combo Items</div>
+            <button class="o-btn o-btn--sm o-btn--primary js-combo-add">Add Item</button>
+        </div>
+        <div class="o-combo__track js-combo-track">
+        </div>
+        <div class="o-combo__foot">
+            <button class="o-btn o-btn--sm o-btn--primary js-combo-add">Add Item</button>
+        </div>
+    </div>
+</div>
+
+{{> forms-multi-templates}}
+{{> forms-combo-template}}
+{{> forms-group-template}}
+{{> forms-description-template}}
+{{> forms-text-template}}
+{{> forms-textarea-template}}

@@ -1,59 +1,61 @@
 @extends('argon::layout.browser')
 
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Media</h1>
+    <div class="c-container">
+        <div class="main">
+            <h1 class="page-header">Media</h1>
 
-        @if (session('message'))
-            <div class="alert alert-success" role="alert">
-                {{ session('message') }}
+            @if (session('message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('message') }}
+                </div>
+            @endif
+
+            <button type="button" class="btn btn-primary btn-upload">Upload</button>
+            <button type="button" class="btn btn-primary btn-list">Change View</button>
+
+            <div class="media-library" style="position: relative;">
+                <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
+                    <div id="folders">
+                        <ul>
+                            @each('argon::media.folder', [$root], 'folder')
+                        </ul>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn btn-sm" id="add-folder">+</button>
+                        <button class="btn btn-sm" id="del-folder">-</button>
+                    </div>
+                </div>
+                <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
+                    <input type="hidden" name="current-folder" id="current-folder" value="1">
+                    <div class="files">
+
+                    </div>
+                </form>
             </div>
-        @endif
-
-        <button type="button" class="btn btn-primary btn-upload">Upload</button>
-        <button type="button" class="btn btn-primary btn-list">Change View</button>
-
-        <div class="media-library" style="position: relative;">
-            <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
-                <div id="folders">
-                    <ul>
-                        @each('argon::media.folder', [$root], 'folder')
-                    </ul>
-                </div>
-                <div class="buttons">
-                    <button class="btn btn-sm" id="add-folder">+</button>
-                    <button class="btn btn-sm" id="del-folder">-</button>
-                </div>
-            </div>
-            <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
-                <input type="hidden" name="current-folder" id="current-folder" value="1">
-                <div class="files">
-
-                </div>
-            </form>
         </div>
-    </div>
 
-    <div style="display: none;" id="preview-template">
-        <div class="media-item">
-            <img class="thumb" data-dz-thumbnail>
-            <span class="filename" data-dz-name></span>
-            <span class="filesize" data-dz-size></span>
+        <div style="display: none;" id="preview-template">
+            <div class="media-item">
+                <img class="thumb" data-dz-thumbnail>
+                <span class="filename" data-dz-name></span>
+                <span class="filesize" data-dz-size></span>
 
-            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-            <progress class="progress" value="25" max="100"></progress>
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Options
-                    <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" data-dz-delete href="#">Delete</a>
-                    {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
-                    {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
-                    <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
-                    {{--<a href="javascript:select_image('/3.jpg');">Insert this image</a>--}}
-                    <a class="dropdown-item insert-path" href="#" data-dz-path>Select</a>
+                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                <progress class="progress" value="25" max="100"></progress>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" data-dz-delete href="#">Delete</a>
+                        {{--<a class="dropdown-item" data-dz-move href="#">Move</a>--}}
+                        {{--<a class="dropdown-item" data-dz-edit href="#">Edit</a>--}}
+                        <a class="dropdown-item" data-dz-original href="" target="_blank">View Original</a>
+                        {{--<a href="javascript:select_image('/3.jpg');">Insert this image</a>--}}
+                        <a class="dropdown-item insert-path" href="#" data-dz-path>Select</a>
+                    </div>
                 </div>
             </div>
         </div>

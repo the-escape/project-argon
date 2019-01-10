@@ -1,0 +1,301 @@
+.o-item-picker {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 455px;
+
+    &__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 45px;
+        width: 45px;
+        height: 45px;
+        transition: background-color $userActive $easeOut;
+        border: 1px solid $grey;
+
+        svg {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    > input[type="text"] {
+        border-left: 0;
+    }
+
+    &__output {
+        border: 1px solid $grey-light;
+        border-left: 0;
+        background-color: #fff;
+        width: 100%;
+        padding: 12px 16px;
+        min-height: 45px;
+        line-height: 1.2;
+        cursor: pointer;
+    }
+
+    &--no-edit &__input {
+        width: 0.1px;
+        height: 0.1px;
+        position: absolute;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    &__window {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: $black-light;
+        border: 1px solid $grey;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 455px;
+        margin-top: 8px;
+        box-shadow: 0 0 3px rgba($black-light, 0.3),
+            3px 3px 6px rgba($black-light, 0.1);
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity $userInactive $easeOut,
+            transform $userInactive $easeOut;
+        z-index: 20;
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 22.5px;
+            width: 0;
+            height: 0;
+            transform: translate(-50%, -100%);
+        }
+
+        &:before {
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid $grey;
+        }
+
+        &:after {
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid $black-light;
+        }
+    }
+
+    &.is-open &__window {
+        pointer-events: auto;
+        opacity: 1;
+        transform: none;
+        transition: opacity $userInactive $easeOut,
+            transform $userInactive $easeOut;
+    }
+
+    &__list {
+        padding: 15px;
+        max-height: 350px;
+        overflow: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 55px));
+        grid-gap: $gutter;
+    }
+
+    &__vignette {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        &:before {
+            top: 0;
+            height: 15px;
+            background-image: linear-gradient(
+                to bottom,
+                $black-light 20%,
+                rgba($black-light, 0)
+            );
+        }
+
+        &:after {
+            bottom: 0;
+            height: 20px;
+            background-image: linear-gradient(
+                to top,
+                $black-light 20%,
+                rgba($black-light, 0)
+            );
+        }
+    }
+
+    &__item {
+        position: relative;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            bottom: -2px;
+            right: -2px;
+            background-color: $primary-light;
+            border-radius: 5px;
+            filter: blur(2px);
+            opacity: 0;
+            transition: opacity $userInactive $easeOut;
+        }
+
+        &:hover:before {
+            opacity: 0.75;
+            transition-duration: $userActive;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            border: 1px solid $grey-dark;
+            border-radius: 5px;
+            transition: border-color $userInactive $easeOut;
+        }
+
+        &:hover:after {
+            border-color: $primary;
+            transition-duration: $userActive;
+        }
+
+        svg {
+            width: 30px;
+            height: 30px;
+            z-index: 2;
+        }
+    }
+
+    &--color &__item {
+        border-radius: 50%;
+        color: transparent;
+
+        &:before {
+            display: none;
+        }
+
+        &:after {
+            content: attr(data-value);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 110%;
+            height: auto;
+            color: $text-color;
+            background-color: rgba(#fff, 0.8);
+            border: 0;
+            padding: 3px;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity $userInactive $easeOut;
+        }
+
+        &:hover:after {
+            opacity: 1;
+            transition-duration: $userActive;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 25px;
+        height: 25px;
+        z-index: 3;
+        color: $grey-dark;
+        transition: color $userInactive $easeOut;
+        background-color: $black-light;
+        border-radius: 5px;
+
+        &:hover {
+            color: $grey-light;
+            transition-duration: $userActive;
+        }
+
+        &:before,
+        &:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 2px;
+            background-color: currentColor;
+        }
+
+        &:before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        &:after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+    }
+
+    &__dropdown-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 45px;
+        height: 45px;
+        background-color: transparent;
+        color: $grey-dark;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: color $userInactive $easeOut,
+            background-color $userInactive $easeOut;
+
+        svg {
+            transition: transform $userInactive $easeOut;
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &:hover &__dropdown-btn {
+        color: #fff;
+        background-color: $primary;
+        transition: color $userActive $easeOut,
+            background-color $userActive $easeOut;
+    }
+
+    &.is-open &__dropdown-btn svg {
+        transition: transform $userActive $easeOut;
+        transform: rotateX(180deg);
+    }
+}

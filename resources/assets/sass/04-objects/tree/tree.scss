@@ -1,0 +1,37 @@
+.o-tree {
+    &__header {
+        margin-bottom: 30px;
+    }
+
+    &__search {
+        max-width: 450px;
+    }
+
+    &__container {
+        border: 1px solid $grey;
+        padding: 0 15px 30px;
+    }
+
+    &__icon {
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background-position: center;
+            background-size: contain;
+        }
+
+        &--edit:after {
+            background-image: url("/argon/images/edit.svg");
+        }
+
+        &--view:after {
+            background-image: url("/argon/images/see.svg");
+        }
+    }
+}

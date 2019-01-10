@@ -1,0 +1,68 @@
+<script>
+    window.fieldGroups = window.fieldGroups || {}
+    window.fieldGroups['items-test-group'] = [
+        {
+            "id": 18,
+            "options": {
+                "typeKey": "item",
+                "name": "item",
+                "settings": {
+                    "required": false,
+                    "multiple": false,
+                    "multiple_instances": false,
+                    "items": [
+                        "2",
+                        "3"
+                    ],
+                    "options": [
+                        {
+                            "2": "sub page"
+                        },
+                        {
+                            "3": "test fields"
+                        }
+                    ]
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "2"
+            ],
+            "errors": []
+        },
+        {
+            "id": 19,
+            "options": {
+                "typeKey": "item",
+                "name": "item multi",
+                "settings": {
+                    "required": false,
+                    "multiple": false,
+                    "multiple_instances": true,
+                    "items": [
+                        "2",
+                        "3"
+                    ],
+                    "options": [
+                        {
+                            "2": "sub page"
+                        },
+                        {
+                            "3": "test fields"
+                        }
+                    ]
+                }
+            },
+            "helpText": "",
+            "message": "",
+            "messageAfter": "",
+            "values": [
+                "3"
+            ],
+            "errors": []
+        }
+    ]
+</script>
+<div class="js-fields" data-name="items-test-group"></div>

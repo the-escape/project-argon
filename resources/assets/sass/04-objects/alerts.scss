@@ -1,0 +1,17 @@
+.o-alert {
+	padding: 10px 20px;
+
+	& + * {
+		margin-top: 50px;
+	}
+
+	&--success {
+		color: $grey-white;
+		background-color: $success-dark;
+	}
+
+	&--danger {
+		color: $grey-white;
+		background-color: $danger-dark;
+	}
+}

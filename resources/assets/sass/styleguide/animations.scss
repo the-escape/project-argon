@@ -1,0 +1,218 @@
+.sg-anim {
+    &-state {
+        display: flex;
+
+        > * {
+            width: 100px;
+            height: 100px;
+            margin-left: 15px;
+            margin-right: 15px;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        &-colour {
+            background-color: $primary;
+            color: #fff;
+            transition: background-color $userInactive $easeOut;
+
+            &:hover {
+                background-color: $grey;
+                transition-duration: $userActive;
+            }
+        }
+
+        &-opacity {
+            background-color: $primary;
+            color: #fff;
+            opacity: 1;
+            transition: opacity $userInactive $easeOut;
+
+            &:hover {
+                opacity: 0;
+                transition-duration: $userActive;
+            }
+        }
+
+        &-translate {
+            background-color: $primary;
+            color: #fff;
+            transition: transform $userInactive $easeOut;
+            transform-origin: center;
+
+            &:hover {
+                transform: translateX(10px);
+                transition-duration: $userActive;
+            }
+        }
+    }
+
+    &-emphasis {
+        width: 200px;
+        height: 60px;
+        background-color: $primary;
+
+        svg {
+            width: 35px;
+            height: 35px;
+            stroke: #fff;
+        }
+
+        &--right {
+            svg {
+                transition: transform $userInactive $easeOut;
+            }
+
+            &:hover,
+            &:focus {
+                svg {
+                    transform: translateX(10px);
+                    transition-duration: $userActive;
+                }
+            }
+        }
+
+        &--left {
+            svg {
+                transition: transform $userInactive $easeOut;
+            }
+
+            &:hover,
+            &:focus {
+                svg {
+                    transform: translateX(-10px);
+                    transition-duration: $userActive;
+                }
+            }
+        }
+
+        &--up {
+            svg {
+                transition: transform $userInactive $easeOut;
+            }
+
+            &:hover,
+            &:focus {
+                svg {
+                    transform: translateY(-10px);
+                    transition-duration: $userActive;
+                }
+            }
+        }
+
+        &--down {
+            svg {
+                transition: transform $userInactive $easeOut;
+            }
+
+            &:hover,
+            &:focus {
+                svg {
+                    transform: translateY(10px);
+                    transition-duration: $userActive;
+                }
+            }
+        }
+    }
+
+    &-reveal {
+        width: 200px;
+        height: 60px;
+        background-color: $primary;
+
+        svg {
+            width: 35px;
+            height: 35px;
+            stroke: #fff;
+        }
+
+        &--flip {
+            position: relative;
+
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: transform $userInactive $easeOut,
+                    opacity $userInactive $easeOut;
+
+                &:first-child {
+                    transition-delay: $userInactive;
+                    opacity: 1;
+                }
+
+                &:last-child {
+                    opacity: 0;
+                    transform: translate(-50%, calc(-50% + 10px));
+                }
+            }
+
+            &:hover,
+            &:focus {
+                svg {
+                    transition-duration: $userActive;
+
+                    &:first-child {
+                        transition-delay: 0ms;
+                        opacity: 0;
+                        transform: translate(-50%, calc(-50% + 10px));
+                    }
+
+                    &:last-child {
+                        transition-delay: $userInactive;
+                        opacity: 1;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+        }
+    }
+
+    &-nav {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+
+        &--bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $primary;
+            transform: translateY(-100%);
+            transition: transform $userInactive $easeOut;
+        }
+
+        ul {
+            position: absolute;
+            display: flex;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform $userInactive $easeOut,
+                opacity $userInactive $easeOut;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0 15px;
+        }
+
+        &:hover &--bg {
+            transition-duration: $userActive;
+            transform: none;
+        }
+
+        &:hover ul {
+            transition: transform $userActive $userInactive $easeOut,
+                opacity $userActive $userInactive $easeOut;
+            transform: none;
+            opacity: 1;
+        }
+    }
+}

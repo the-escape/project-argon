@@ -14,6 +14,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Events\BeforePageSaved;
+use Escape\Argon\Frontend\Page;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
@@ -43,6 +44,9 @@ class PagesController extends BaseController
         EntityRepository $entityRepository
     ) {
         $types = $typeRepository->page();
+        $typesJson = $types->map(function($item) {
+            return array_only($item->toArray(), ['id','name']);
+        })->toJson();
 
         $locales = $localeRepository->all();
 
@@ -60,7 +64,30 @@ class PagesController extends BaseController
             return $entity->parent_id == null;
         });
 
-        return view('argon::pages.manage', ['types' => $types, 'entities' => $entities, 'locales' => $locales]);
+        $sitemapJson = json_encode($this->collectionToArray($entities));
+
+        return view('argon::pages.manage', ['types' => $types, 'typesJson' => $typesJson, 'entities' => $entities, 'locales' => $locales, 'sitemapJson' => $sitemapJson]);
+    }
+
+    private function collectionToArray($entities){
+        $out = [];
+        foreach($entities as $el){
+            $entity = [
+                "title" => $el->name,
+                "children" => [],
+                "data" => [
+                    "id" => $el->id,
+                    "typeName" => $el->type->name,
+                    "status" => (int)$el->status
+                ]
+            ];
+
+            if($el->hasChildren()){
+                $entity["children"] = $this->collectionToArray($el->getChildren());
+            }
+            $out[] = $entity;
+        }
+        return $out;
     }
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
@@ -68,6 +95,14 @@ class PagesController extends BaseController
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
+
+        if (request()->ajax())
+        {
+            return response()->json([
+                'success' => true
+            ]);
+        }
+
         return Redirect::route('cms:pages:manage');
     }
 
@@ -80,6 +115,12 @@ class PagesController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
+
+        $nonSortableGroups = $groups->filter(function($group){
+            return !$group->isSortable();
+        });
+        $tabNav = $this->getTabNav($nonSortableGroups, false, true);
+
         return view(
             'argon::pages.create',
             [
@@ -87,6 +128,7 @@ class PagesController extends BaseController
                 'parentId' => $parentId,
                 'groups' => $groups,
                 'root' => $folderRepository->root(),
+                'tabNav' => $tabNav
             ]
         );
     }
@@ -191,6 +233,15 @@ class PagesController extends BaseController
         $locale = $page->getDefaultLocalisation();
 
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+    }
+
+    public function preview($pageId, EntityRepository $entityRepository)
+    {
+        /** @var Entity $page */
+        $entity = $entityRepository->find($pageId);
+        $page = new Page($entity, request());
+        $revision = $page->getCurrentLocalisation()->publishedRevision();
+        return redirect()->to($page->getUrl().'?preview_page='.$revision->id);
     }
 
     public function update(
@@ -377,12 +428,12 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-//        if ($clone) {
-//            $localisation = $page->getDefaultLocalisation();
-//        } else {
-            $currentLocale = Locale::find($localeId);
-            $localisation = $page->getLocalisation($currentLocale);
-//        }
+            //if ($clone) {
+            //$localisation = $page->getDefaultLocalisation();
+            //} else {
+                        $currentLocale = Locale::find($localeId);
+                        $localisation = $page->getLocalisation($currentLocale);
+            //}
 
         $currentRevision = null;
         $publishedRevision = $localisation->publishedRevision();
@@ -414,6 +465,12 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
+        $nonSortableGroups = false;
+        if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
+            $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
+        }
+        $tabNav = $this->getTabNav($nonSortableGroups, $revisions);
+
         return view(
             'argon::pages.edit',
             [
@@ -427,6 +484,7 @@ class PagesController extends BaseController
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
                 'currentRevision' => $currentRevision,
+                'tabNav' => $tabNav
             ]
         );
     }
@@ -610,5 +668,48 @@ class PagesController extends BaseController
         EntityCache::cache($entity, $localisation, $revision);
 
         return back()->with('message', 'Revision restored.');
+    }
+
+    public function getTabNav($nonSortableGroups, $revisions = false, $attributesFirst = false)
+    {
+        $tabNav = [];
+
+        $pageContent = [ "name" => 'Page Content', "slug" => "page-content", "isActive" => false];
+        $attributes = [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false];
+
+        if($attributesFirst){
+            $attributes['isActive'] = true;
+            $tabNav = [$attributes, $pageContent];
+        }else{
+            $pageContent['isActive'] = true;
+            $tabNav = [$pageContent, $attributes];
+        }
+
+        if($nonSortableGroups){
+            $tabNavGroups = $nonSortableGroups
+                ->filter(function($el){
+                    return $el->getSetting('isTab');
+                })
+                ->map(function($el){
+                    $slug = 'group-'.$el->id;
+
+                    return [
+                        "name" => $el->name,
+                        "slug" => $slug,
+                        "isActive" => false
+                    ];
+                })->toArray();
+
+            $tabNav = array_merge($tabNav, $tabNavGroups);
+        }
+
+        if($revisions){
+            $revisionsTotal = $revisions->total();
+            if($revisionsTotal){
+                $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
+            }
+        }
+
+        return $tabNav;
     }
 }

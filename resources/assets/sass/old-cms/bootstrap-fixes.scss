@@ -1,0 +1,30 @@
+.radio,
+.checkbox {
+    label {
+        padding-left: 2rem;
+    }
+}
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+    margin-top: 0.3rem;
+    margin-left: -2rem;
+}
+
+body.dashboard .help-block {
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+input,
+button,
+select,
+textarea {
+    line-height: 1;
+}
+
+.input-group {
+    display: block;
+}

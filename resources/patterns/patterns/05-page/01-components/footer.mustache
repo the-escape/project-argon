@@ -1,0 +1,18 @@
+<footer class="c-footer__wrapper">
+    <div class="c-footer c-container c-footer--fixed">
+        <div class="c-footer__container">
+
+            <div class="c-footer__buttons">
+                <div>
+                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
+                    <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                </div>
+                <div>
+                <button type="submit" class="o-btn o-btn--sm o-btn--primary save-revision js-save" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
+                <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</footer>

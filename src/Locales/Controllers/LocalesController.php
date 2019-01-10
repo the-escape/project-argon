@@ -21,9 +21,31 @@ class LocalesController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage(LocaleRepository $localeRepository)
+    public function manage(Request $request, LocaleRepository $localeRepository)
     {
-        $locales = $localeRepository->all();
+        $perPage = $request->input('perpage', 25);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $localeRepository->model();
+        $query = $model::orderBy($orderBy, $orderDir);
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('email', 'LIKE', "%{$search}%")
+                    ->orWhere('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $locales = $query->paginate($perPage);
+
         return View::make('argon::locales.manage', ['locales' => $locales]);
     }
 
@@ -71,5 +93,34 @@ class LocalesController extends BaseController
         $returnUrl = $request->get('return');
 
         return Redirect::to($returnUrl);
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'languageCode':
+                $query = $query->orderBy('languageCode', $dir);
+                break;
+
+            case 'region':
+                $query = $query->orderBy('region', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }

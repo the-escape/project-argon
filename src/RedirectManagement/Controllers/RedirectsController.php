@@ -18,9 +18,32 @@ class RedirectsController extends BaseController
         parent::__construct($request);
     }
 
-    public function manage(RedirectRepository $redirectRepository)
+    public function manage(Request $request, RedirectRepository $redirectRepository)
     {
-        return view('argon::manage', ['redirects' => $redirectRepository]);
+        $perPage = $request->input('perpage', 25);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $redirectRepository->model();
+        $query = $model::orderBy($orderBy, $orderDir);
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('from', 'LIKE', "%{$search}%")
+                    ->orWhere('to', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $redirects = $query->paginate($perPage);
+
+        return view('argon::manage', ['redirects' => $redirects]);
     }
 
     public function create(RedirectRepository $redirectRepository)
@@ -74,6 +97,27 @@ class RedirectsController extends BaseController
     {
         $redirectRepository->delete($id);
         return redirect(route('cms:redirects:manage'))->with('message', 'DELETED');
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'to':
+                $query = $query->orderBy('to', $dir);
+                break;
+
+            case 'from':
+                $query = $query->orderBy('from', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 
 }

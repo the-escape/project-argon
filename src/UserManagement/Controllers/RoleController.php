@@ -31,9 +31,31 @@ class RoleController extends BaseController
         parent::__construct($request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return View::make('argon::role.roles', ['roles' => $this->roleRepository]);
+        $perPage = $request->input('perpage', 25);
+        $orderBy = $request->input('order', 'id');
+        $orderDir = $request->input('dir', 'asc');
+
+        $model = $this->roleRepository->model();
+        $query = $model::orderBy($orderBy, $orderDir);
+
+        if ($search = $request->input('keywords'))
+        {
+            $search = trim($search);
+            $query = $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->has('order'))
+        {
+            $query = $this->getOrder($query, $request);
+        }
+
+        $roles = $query->paginate($perPage);
+
+        return View::make('argon::role.roles', ['roles' => $roles]);
     }
 
     public function edit($roleId)
@@ -97,5 +119,31 @@ class RoleController extends BaseController
         $this->grantRepository->syncGrants($role, $permissions);
 
         return Redirect::route('cms:role:manage')->with('message', Lang::get('argon-users::role.created'));
+    }
+
+    private function getOrder($query, Request $request)
+    {
+        $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
+
+        switch ($request->input('order'))
+        {
+            case 'id':
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            case 'name':
+                $query = $query->orderBy('name', $dir);
+                break;
+
+            case 'created_at':
+                $query = $query->orderBy('created_at', $dir);
+                $query = $query->orderBy('id', $dir);
+                break;
+
+            default:
+                throw new RuntimeException('Unknown order argument!');
+        }
+
+        return $query;
     }
 }

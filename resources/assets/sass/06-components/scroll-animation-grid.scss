@@ -1,0 +1,66 @@
+.c-grid-anim {
+    &--scroll > * {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity $scrollIn $easeOut, transform $scrollIn $easeOut;
+    }
+
+    &--scroll.scroll-active > * {
+        opacity: 1;
+        transform: none;
+
+        @media (max-width: $xs-max) {
+            @for $i from 1 through 30 {
+                $delay: $scrollInitialDelay + $scrollDelayInc * ($i + 1);
+
+                &:nth-child(#{$i}) {
+                    transition: opacity $scrollIn $easeOut $delay,
+                        transform $scrollIn $easeOut $delay;
+                }
+            }
+        }
+
+        @media (min-width: $sm) and (max-width: $sm-max) {
+            &:nth-child(1) {
+                transition: opacity $scrollIn $easeOut $scrollInitialDelay,
+                    transform $scrollIn $easeOut $scrollInitialDelay;
+            }
+
+            @for $i from 1 through 15 {
+                $delay: $scrollInitialDelay + $scrollDelayInc * ($i);
+
+                &:nth-child(#{$i * 2}),
+                &:nth-child(#{$i * 2 + 1}) {
+                    transition: opacity $scrollIn $easeOut $delay,
+                        transform $scrollIn $easeOut $delay;
+                }
+            }
+        }
+
+        @media (min-width: $md) {
+            &:nth-child(1) {
+                transition: opacity $scrollIn $easeOut $scrollInitialDelay,
+                    transform $scrollIn $easeOut $scrollInitialDelay;
+            }
+
+            &:nth-child(2),
+            &:nth-child(4) {
+                transition: opacity $scrollIn $easeOut $scrollInitialDelay +
+                    $scrollDelayInc * 1,
+                    transform $scrollIn $easeOut $scrollInitialDelay +
+                    $scrollDelayInc * 1;
+            }
+
+            @for $i from 1 through 10 {
+                $delay: $scrollInitialDelay + $scrollDelayInc * ($i + 1);
+
+                &:nth-child(#{$i * 3}),
+                &:nth-child(#{$i * 3 + 2}),
+                &:nth-child(#{$i * 3 + 4}) {
+                    transition: opacity $scrollIn $easeOut $delay,
+                        transform $scrollIn $easeOut $delay;
+                }
+            }
+        }
+    }
+}

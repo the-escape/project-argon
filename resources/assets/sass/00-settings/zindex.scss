@@ -1,0 +1,9 @@
+$layerIncrement: 20;
+
+$zindex-nav:             $layerIncrement * 1;
+$zindex-sticky:          $layerIncrement * 2;
+$zindex-fixed:           $layerIncrement * 3;
+$zindex-modal-backdrop:  $layerIncrement * 4;
+$zindex-modal:           $layerIncrement * 5;
+$zindex-popover:         $layerIncrement * 6;
+$zindex-tooltip:         $layerIncrement * 7;

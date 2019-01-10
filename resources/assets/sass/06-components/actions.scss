@@ -1,0 +1,27 @@
+.c-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 210px;
+    padding-bottom: 30px;
+    padding-left: 15px;
+    padding-top: 65px;
+
+    &__container {
+        display: flex;
+        height: 100%;
+    }
+
+    &__content {
+        flex: 1 1 100%;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+
+        > * + * {
+            margin-top: 15px !important;
+        }
+    }
+}

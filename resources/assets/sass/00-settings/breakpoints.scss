@@ -1,0 +1,63 @@
+//====================
+//	breakpoints
+//====================
+
+//	Min - breakpoints
+//====================
+$breakpoint-sizes: (
+    xxxs: 360,
+    xxs: 450,
+    xs: 560,
+    sm: 768,
+    md: 1024,
+    lg: 1200,
+    xl: 1366,
+    xxl: 1920,
+    xxxl: 2560
+);
+
+$xxxs: unit((map-get($breakpoint-sizes, "xxxs") / 16), em); // 360px
+$xxs: unit((map-get($breakpoint-sizes, "xxs") / 16), em); // 450px
+$xs: unit((map-get($breakpoint-sizes, "xs") / 16), em); // 560px
+$sm: unit((map-get($breakpoint-sizes, "sm") / 16), em); // 768px
+$md: unit((map-get($breakpoint-sizes, "md") / 16), em); // 1024px
+$lg: unit((map-get($breakpoint-sizes, "lg") / 16), em); // 1200px
+$xl: unit((map-get($breakpoint-sizes, "xl") / 16), em); // 1366px
+$xxl: unit((map-get($breakpoint-sizes, "xxl") / 16), em); // 1920px
+$xxxl: unit((map-get($breakpoint-sizes, "xxxl") / 16), em); // 2560px
+
+$breakpoints-min: (
+    xxxs: $xxxs,
+    xxs: $xxs,
+    xs: $xs,
+    sm: $sm,
+    md: $md,
+    lg: $lg,
+    xl: $xl,
+    xxl: $xxl,
+    xxx: $xxxl
+);
+
+//	Max - breakpoints
+//====================
+$bp-max-diff: 0.01;
+
+$xxxs-max: unit((map-get($breakpoint-sizes, "xxs") / 16) - $bp-max-diff, em);
+$xxs-max: unit((map-get($breakpoint-sizes, "xs") / 16) - $bp-max-diff, em);
+$xs-max: unit((map-get($breakpoint-sizes, "sm") / 16) - $bp-max-diff, em);
+$sm-max: unit((map-get($breakpoint-sizes, "md") / 16) - $bp-max-diff, em);
+$md-max: unit((map-get($breakpoint-sizes, "lg") / 16) - $bp-max-diff, em);
+$lg-max: unit((map-get($breakpoint-sizes, "xl") / 16) - $bp-max-diff, em);
+$xl-max: unit((map-get($breakpoint-sizes, "xxl") / 16) - $bp-max-diff, em);
+$xxl-max: unit((map-get($breakpoint-sizes, "xxxl") / 16) - $bp-max-diff, em);
+
+$breakpoints-max: (
+    xxxs: $xxxs-max,
+    xxs: $xxs-max,
+    xs: $xs-max,
+    sm: $sm-max,
+    md: $md-max,
+    lg: $lg-max,
+    xl: $xl-max,
+    xxl: $xxl-max
+);

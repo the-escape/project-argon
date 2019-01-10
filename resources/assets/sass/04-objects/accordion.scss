@@ -1,0 +1,81 @@
+.o-accordion {
+    position: relative;
+    background-color: transparent;
+    text-align: left;
+    border-radius: 6px;
+    width: 100%;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    background-color: #fff;
+    border: 2px solid $primary;
+    color: $black;
+    transition: background-color $userInactive $easeOut,
+        color $userInactive $easeOut;
+
+    &:hover {
+        background-color: $primary;
+        color: #fff;
+        transition: background-color $userActive $easeOut,
+            color $userActive $easeOut;
+    }
+
+    &__list {
+        padding-top: 20px;
+        padding-bottom: 25px;
+
+        > * + * {
+            margin-top: 18px;
+        }
+    }
+
+    &__title {
+        width: 100%;
+        text-align: left;
+        padding: 20px 25px 20px 50px;
+        font-weight: 500;
+        font-size: 1.6rem;
+        color: currentColor;
+        cursor: pointer;
+
+        &-wrap {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+    }
+
+    &__icon {
+        flex: 0 0 20px;
+        margin-left: 25px;
+
+        &,
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &.active &__icon {
+        transform: rotate(180deg);
+    }
+
+    &__container {
+        height: 0;
+        will-change: height;
+        overflow: hidden;
+        transition: height $userInactive $easeOut;
+    }
+
+    &.active &__container {
+        height: auto;
+        transition: height $userActive $easeOut;
+    }
+
+    &__content {
+        padding: 10px 15px 30px 35px;
+    }
+}

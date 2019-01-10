@@ -1,0 +1,113 @@
+.o-confirm-btn {
+    display: block;
+    position: relative;
+    width: 45px;
+    height: 45px;
+    color: $grey-dark;
+    cursor: pointer;
+    transition: color $userInactive $easeOut,
+        background-color $userInactive $easeOut,
+        transform $userInactive $easeOut;
+
+    &--block & {
+        width: 55px;
+        height: 75px;
+    }
+
+    &--fade {
+        opacity: 0.3;
+    }
+
+    &:hover {
+        color: $black;
+        transition: color $userActive $easeOut,
+            background-color $userActive $easeOut,
+            transform $userActive $easeOut;
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 32px;
+        height: 32px;
+        transform: translate(-50%, -50%);
+    }
+
+    &--success {
+        background-color: $success;
+
+        &:hover {
+            background-color: $success-dark;
+        }
+    }
+
+    &--danger {
+        background-color: $danger;
+
+        &:hover {
+            background-color: $danger-dark;
+        }
+    }
+
+    &__container {
+        display: inline-flex;
+        justify-content: flex-end;
+        position: relative;
+        min-width: 90px;
+    }
+
+    &__questions {
+        display: flex;
+    }
+
+    &__decline,
+    &__accept {
+        position: absolute;
+        top: 0;
+        width: 45px;
+        height: 45px;
+        overflow: hidden;
+        pointer-events: none;
+
+        > * {
+            color: #fff;
+        }
+    }
+
+    &--block &__decline,
+    &--block &__accept {
+        width: 55px;
+        height: 75px;
+    }
+
+    &__decline {
+        right: 45px;
+
+        > * {
+            transform: translateX(-100%);
+        }
+    }
+
+    &--block &__decline {
+        right: 55px;
+    }
+
+    &__accept {
+        right: 0;
+
+        > * {
+            transform: translateX(100%);
+        }
+    }
+
+    &__container.is-active &__decline,
+    &__container.is-active &__accept {
+        pointer-events: auto;
+
+        > * {
+            transform: none;
+            color: #fff;
+        }
+    }
+}

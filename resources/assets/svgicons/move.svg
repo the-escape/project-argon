@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <g fill="none" stroke="currentColor">
+        <path d="M8 13.24V8h5.24"/>
+        <path d="M18.76 8H24v5.24"/>
+        <path d="M24 18.76V24h-5.24"/>
+        <path d="M13.24 24H8v-5.24"/>
+        <g stroke-linecap="square" stroke-miterlimit="10">
+            <path d="M8.46 8.46L16 16"/>
+            <path d="M23.54 8.46L16 16"/>
+            <path d="M23.54 23.54L16 16"/>
+            <path d="M8.46 23.54L16 16"/>
+        </g>
+    </g>
+</svg>

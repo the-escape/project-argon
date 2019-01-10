@@ -1,0 +1,38 @@
+<button data-modal-id="ThankYou" class="o-btn">Test Modal</button>
+<br>
+<button data-modal-id="dyn-test" class="o-btn">Dynamic test</button>
+
+<script>
+    window.modals = window.modals || [];
+
+    window.modals.push({
+        id: 'dyn-test',
+        content: '<h1>testing dynamic</h1><h2>sub title</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, obcaecati pariatur. Laborum dicta quasi repellat eligendi nostrum totam, dolores iusto voluptatum ipsam facilis ducimus omnis cupiditate nisi? Adipisci, nulla labore!</p>',
+        open: false
+    })
+
+    // window.modals.push({
+        // id: 'ThankYou',
+        // open: true
+    // })
+</script>
+
+<div class="o-modal__container js-modal-container">
+    <div class="o-modal" data-modal-item-id="ThankYou">
+        <div class="o-modal__content typography h-text--centre">
+            <h1>H1 to go here</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus feugiat quam sit amet dui tempor ultrices vel vitae arcu. Aliquam facilisis viverra eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <button class="o-btn js-modal-close">
+                <span>close window</span>
+            </button>
+        </div>
+    </div>
+
+    <script class="js-modal-template" type="text/template">
+        <div class="o-modal" data-modal-item-id="{id}">
+            <div class="o-modal__content typography h-text--centre">
+                {content}
+            </div>
+        </div>
+    </script>
+</div>

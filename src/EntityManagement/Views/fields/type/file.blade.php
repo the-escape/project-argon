@@ -22,4 +22,3 @@
 
     <a href="#addField" class="btn btn-secondary-outline btn-sm field-add-file" data-field="{{$field->getId()}}">Add File</a>
 </div>
-

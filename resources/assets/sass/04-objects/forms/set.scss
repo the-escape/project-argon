@@ -1,0 +1,50 @@
+.o-form__set {
+    position: relative;
+    border: 1px solid $secondary-light;
+    padding: 20px 15px 15px;
+    margin-top: 20px;
+
+    .o-multi & {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .o-btn {
+        margin-top: 15px !important;
+    }
+
+    label {
+        font-size: 1.6rem;
+
+        + * {
+            margin-top: 0;
+        }
+    }
+
+    &-title {
+        position: absolute;
+        top: -15px;
+        left: 10px;
+        background-color: #fff;
+        padding-left: 5px;
+        padding-right: 5px;
+
+        label {
+            font-size: 1.8rem;
+        }
+    }
+
+    &-accordion {
+        &.collapsing {
+            height: 0;
+            overflow: hidden;
+            transition: height $userActive;
+        }
+    }
+
+    .o-form__group + .o-form__group,
+    .o-form__group + &-accordion,
+    .o-form__group + .o-btn {
+        margin-top: 15px;
+    }
+}

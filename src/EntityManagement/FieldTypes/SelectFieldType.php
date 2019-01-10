@@ -32,9 +32,24 @@ class SelectFieldType extends AbstractFieldType
         ],
     ];
 
+    public function getSettings()
+    {
+        $settings = parent::getSettings();
+
+        foreach($settings->options as $k => $v)
+        {
+            if(is_string($v))
+            {
+                $settings->options[$k] = (object)[$v => $v];
+            }
+        }
+
+        return $settings;
+    }
+
     public function getOptions()
     {
-        return (array)$this->getSetting('options');
+        return (array)$this->getSetting('options');;
     }
 
     public function getFormFieldName($hash)

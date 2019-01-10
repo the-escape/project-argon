@@ -1,0 +1,75 @@
+$color-sidebar-divider: rgba(255, 255, 255, 0.1);
+
+.c-navigation {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.6rem;
+
+    &__item {
+        width: 100%;
+        height: $linkItemHeight;
+        margin-bottom: 0;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        color: inherit;
+        white-space: nowrap;
+        text-decoration: none;
+        transition: background-color $easeOut $userIn;
+
+        &:hover,
+        &.active {
+            background-color: $client-primary;
+            color: inherit;
+            transition: background-color $easeOut $userOut;
+        }
+    }
+
+    &__item:not(:last-child) &__link {
+        border-bottom: 1px solid $color-sidebar-divider;
+    }
+
+    &__icon {
+        flex: 0 0 $sidebarWidth;
+        width: $sidebarWidth;
+        height: $linkItemHeight;
+        position: relative;
+
+        svg {
+            color: inherit;
+            width: 32px;
+            height: 32px;
+            margin: 8px;
+        }
+    }
+
+    &__text {
+        opacity: 0;
+        transition: opacity $easeOut $userIn;
+    }
+
+    .active &__text {
+        opacity: 1;
+        transition: opacity $easeOut $userOut;
+    }
+
+    &__link-alert {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 12px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: $client-primary-acc;
+    }
+}

@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>CMS Admin Area</title>
-    <link rel="stylesheet" href="/argon/css/fancybox/jquery.fancybox.css">
-    <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
-    <link rel="stylesheet" href="/argon/css/app.css">
+    <link rel="stylesheet" href="/argon/css/old-cms.css">
+    <link rel="stylesheet" href="/argon/css/main.css">
     <link rel="adminroot" href="/admin">
     @foreach ($assetsManager->outputStyles() as $styles)
         <link rel="stylesheet" href="{{$styles}}">
@@ -20,42 +19,18 @@
     </style>
 </head>
 
-<body class="@yield('body-class', 'dashboard')">
+<body id="@yield('body-id','')" class="@yield('body-class', 'dashboard')">
 
-<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-    <ul class="nav navbar-nav pull-xs-right">
-        @if($currentUser->hasPermission('cms:settings'))
-            <li class="nav-item"><a class="nav-link" href="{{ route('settings') }}">Settings</a></li>
-        @endif
-        <li class="nav-item"><a class="nav-link" href="{{ route('cms:user:profile') }}">Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('logout') }}">Logout</a></li>
-    </ul>
-    <a class="navbar-brand" href="{{ route('dashboard') }}"><img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}"></a>
-</nav>
+@include('argon::inc.nav')
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            @foreach ($plugins->getNavLinksForUser($currentUser) as $group)
-                <ul class="nav nav-pills nav-stacked">
-                    @foreach ($group as $plugin)
-                        @if($currentUser->hasPermission($plugin->access))
-                            <li class="nav-item"><a class="nav-link" href="{{$plugin->url}}">{{$plugin->name}}</a></li>
-                        @endif
-                    @endforeach
-                </ul>
-            @endforeach
-        </div>
+@section('header')
+@show
 
-        <div class="col-sm-9 offset-sm-3 col-md-10 col-md-offset-2">
-            @yield('content')
-        </div>
-    </div>
-</div>
+@yield('content')
 
 <div class="modals">@yield('modals')</div>
 
-<script src="/argon/js/jquery.min.js"></script>
+<script src="/argon/vendor/jquery.min.js"></script>
 <script src="/argon/js/core.js"></script>
 <script src="/argon/js/widget.js"></script>
 <script src="/argon/js/mouse.js"></script>
@@ -63,13 +38,50 @@
 <script src="/argon/js/sortable.js"></script>
 <script src="/argon/js/tether.min.js"></script>
 <script src="/argon/js/bootstrap.min.js"></script>
-<script src="/argon/js/ckeditor/ckeditor.js"></script>
-<script src="/argon/js/jstree.min.js"></script>
+<script src="/argon/vendor/ckeditor/ckeditor.js"></script>
+<script src="/argon/vendor/jstree.min.js"></script>
 <script src="/argon/js/bootstrap-datepicker.min.js"></script>
 <script src="/argon/js/handlebars.min.js"></script>
 {{--<script src="/argon/js/dropzone.min.js"></script>--}}
 <script src="/argon/js/jquery.fancybox.pack.js"></script>
 <script src="/argon/js/argon.js"></script>
+
+@foreach($assetsManager->outputScripts() as $script)
+    <script src="{{$script}}"></script>
+@endforeach
+
+<script src="/argon/vendor/libs.js"></script>
+<script>
+    function fetchJs() {
+            fetch('/argon/js/manifest.json')
+                .then(function (data) {
+                    return data.json();
+                })
+                .then(function (manifestfiles) {
+                    if (!loadjs.isDefined('js')) {
+                        var files = []
+
+                        files.push('/argon' + manifestfiles['main.js'])
+
+                        if(manifestfiles['vendor.js']){
+                            files.push('/argon' + manifestfiles['vendor.js'])
+                        }
+
+                        loadjs(files, 'js', {
+                            async: false
+                        });
+                    }
+                });
+        }
+
+        if (typeof window.fetch === "undefined") {
+            loadjs(['/argon/vendor/polyfill.min.js', '/argon/vendor/fetch.js'], {
+                success: fetchJs
+            });
+        } else {
+            fetchJs();
+        }
+</script>
 
 <script>
 /*

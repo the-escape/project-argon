@@ -1,176 +1,210 @@
 @extends('argon::layout.master')
 
-@section('content')
-    <div class="main">
+@section('body-class', 'medialib medialib-all')
 
-        <div class="row">
-            <div class="col-md-9">
-                <h1>Create Content</h1>
-            </div>
-            <div class="col-md-3">
-                @if(!$groups->isEmpty())
-                    <a href="#" class="accordion-expand-collapse pull-md-right" data-expand="Expand All" data-collapse="Collapse All">Expand all</a>
-                @endif
-            </div>
-        </div>
+@section('body-id', 'argon-ui')
+
+@section('content')
+    <script>
+        window.fieldGroups = {}
+        window.groups = []
+    </script>
+
+    <form action="{{ route('cms:content:save', [$parentId, $type->id]) }}" class="o-form" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:content:save', [$parentId, $type->id]) }}" method="POST">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" id="name" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" name="name" value="{{ old('name') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="slug" class="required">URL Slug</label>
-                        <input type="text" id="slug" class="form-control required slug {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'slug') }}" name="slug" value="{{ old('slug') }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Published</label>
-                        <div>
-                            <label class="checkbox-inline">
-                                <input type="radio" name="status" value="1"> Yes
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="radio" name="status" value="0" checked> No
-                            </label>
-                        </div>
-                    </div>
+        <div class="js-tabs c-page">
+            <header class="c-header c-container">
+                <div class="c-header__title">
+                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                        </svg>
+                    </a>
+                    <h1>Create Page</h1>
                 </div>
-            </div>
-
-
-            <div class="card accordion">
-
-                <div class="card-header accordion-header">301 Redirect</div>
-
-                <div class="card-block accordion-body">
-
-                    <div class="form-group">
-                        <label for="redirect-url" class="required">Enter redirect URL</label>
-                        <input type="text" id="redirect-url" class="form-control" name="redirect_url" value="{{ old('redirect_url') }}">
-                    </div>
-
+                <div class="c-header__nav c-tab__nav js-tabs-nav">
+                    <ul>
+                        @foreach($tabNav as $tab)
+                        <li>
+                            <button class="c-tab__btn @if($tab['isActive']) active @endif" data-tab="{{ $tab['slug'] }}">
+                                <div class="c-tab__btn-container">
+                                    <span>{{ $tab['name'] }}</span>
+                                </div>
+                            </button>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
+            </header>
 
-            </div>
-
-            @if(!$groups->isEmpty())
-
-                <?php $sortable = []; ?>
-
-                @foreach($groups as $group)
-
-                    @if($group->isSortable())
-
-                        <?php $sortable[] = $group; ?>
-
-                    @else
-
-                        <div class="card accordion">
-
-                            <div class="card-header accordion-header">
-                                {{ $group->name }}
-
-                                @if($group->isRenderable())
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                            <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
-                                            Render?
-                                        </label>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="card-block accordion-body">
-
-                                @foreach ($group->getFields() as $field)
-
-                                    <div class="form-group sortable">
-
-                                        {!! $field->render() !!}
-
-                                    </div>
-
-                                @endforeach
-
-                            </div>
-
-                        </div>
-                    @endif
-                @endforeach
-
-
-                @if($sortable)
-
-                    <?php $mt = str_replace('.', '', microtime(1)); ?>
-                    <input id="order-{{ $mt }}" type="hidden" name="group_order" value="{{ old('group_order') }}">
-                    <div class="sortable sortable-groups" data-sortable_field="order-{{ $mt }}">
-
-                        @foreach($groups as $group)
-
-                            @if($group->isSortable())
-
-                                <div class="input-group sortable-item" data-sortable_item="{{$group->id}}">
-
-                                    <div class="card accordion">
-
-                                        <div class="card-header accordion-header">
-                                            <span class="sortable-handle">&#8645;</span>
-                                            {{ $group->name }}
-
-                                            @if($group->isRenderable())
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="hidden" name="group_render[{{$group->id}}]" value="0">
-                                                        <input type="checkbox" name="group_render[{{$group->id}}]" value="1">
-                                                        Render?
-                                                    </label>
-                                                </div>
-                                            @endif
-
+            <div class="c-tab-panel__list js-tabs-list">
+                <div class="c-tab-panel active" data-tab="attributes">
+                    <main class="c-tab-panel__container c-container">
+                        <div class="c-actions__container">
+                            <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                <h2>Attributes</h2>
+                                <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="name">Name*</label>
+                                            <input type="text" id="name" name="name" value="{{ old('name') }}">
                                         </div>
-
-                                        <div class="card-block accordion-body">
-
-                                            @foreach ($group->getFields() as $field)
-
-                                                <div class="form-group sortable">
-
-                                                    {!! $field->render() !!}
-
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
                                                 </div>
-
-                                            @endforeach
-
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="name">{{ getError($errors, 'name') }}</label>
+                                            </div>
                                         </div>
-
                                     </div>
-
                                 </div>
 
-                            @endif
+                                <div class="o-form__group {{ hasError($errors, 'slug') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="slug">URL Slug*</label>
+                                            <input type="text" id="slug" name="slug" value="{{ old('slug') }}">
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="slug">{{ getError($errors, 'slug') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        @endforeach
+                                <div class="o-form__group {{ hasError($errors, 'status') ? 'has-error' : '' }}">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="status1">Published</label>
+                                        </div>
+                                        <div></div>
+                                        <div class="o-form__list">
 
-                    </div>
+                                            <div class="o-radio">
+                                                <label>
+                                                    <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
+                                                    <span></span>
+                                                </label>
+                                                <label for="status1">Yes</label>
+                                            </div>
 
+                                            <div class="o-radio">
+                                                <label>
+                                                    <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
+                                                    <span></span>
+                                                </label>
+                                                <label for="status0">No</label>
+                                            </div>
+
+                                        </div>
+                                        <div class="o-form-status__message">
+                                            <div class="o-form-status__icon">
+                                                <div class="o-form-status__icon--error">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                                </div>
+                                                <div class="o-form-status__icon--success">
+                                                    <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                                </div>
+                                            </div>
+                                            <div class="o-form-status__message-bar">
+                                                <label for="roles">{{ getError($errors, 'status') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <h3>301 Redirects</h3>
+
+                                <div class="o-form__group">
+                                    <div class="o-form-status">
+                                        <div class="o-form-status__input">
+                                            <label for="redirect-url" class="required">Enter redirect URL</label>
+                                            <input type="text" id="redirect-url" name="redirect_url" value="{{ old('redirect_url') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="c-tab-panel" data-tab="page-content">
+                    <main class="c-tab-panel__container c-container">
+                        <div class="c-actions__container">
+                            <div class="c-actions__content">
+                                <div class="js-page-edit"></div>
+                            </div>
+
+                            <div class="c-actions">
+                                <div class="c-actions__group">
+                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+
+                 @if(!$groups->isEmpty())
+                    @foreach($groups as $group)
+                        <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
+                            <main class="c-tab-panel__container c-container">
+                                <div class="c-actions__container">
+                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
+                                        <h2>{{ $group->name }}</h2>
+                                        <script>
+                                            window.groups.push({
+                                                id: '{{$group->id}}',
+                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                                isRendering: false,
+                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                                name: '{{ $group->name }}',
+                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                                image: '{{ $group->getSetting("image") }}'
+                                            });
+                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                        </script>
+                                        <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    </div>
+
+                                    <div class="c-actions">
+                                        <div class="c-actions__group">
+                                            <button class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">back</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                        </div>
+                    @endforeach
                 @endif
-
-
-            @endif
-
-            <button type="submit" class="btn btn-primary">Save</button>
-
-            <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
-
-        </form>
-    </div>
+            </div>
+        </div>
+    </form>
 
     <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">
@@ -223,6 +257,12 @@
             <progress class="progress" value="25" max="100"></progress>
         </div>
     </div>
+@stop
+
+@section('footer')
+    @parent
+
+    @include('argon::fields.templates')
 @stop
 
 

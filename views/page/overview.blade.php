@@ -1,7 +1,35 @@
-@extends('argon::layout.master')
+@extends('argon::layout.login')
+
+@section('header')
+    @include('argon::inc.nav')
+@stop
 
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Dashboard</h1>
+
+    <div class="c-dashboard c-container">
+
+        <div class="c-dashboard__welcome-msg">
+            <h1>Hi {{ auth()->user()->name }}</h1>
+            <p>Welcome back to your dashboard!</p>
+
+            <div class="c-dashboard__logo">
+                <img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
+            </div>
+        </div>
+
+        <div class="c-dashboard__widgets">
+            @foreach($widgets as $widgetView)
+
+                @if(view()->exists('argon::inc.widgets.'.$widgetView))
+
+                    @include('argon::inc.widgets.'.$widgetView, compact('widgetData'))
+
+                @endif
+
+            @endforeach
+        </div>
+
     </div>
+
+
 @stop

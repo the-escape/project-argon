@@ -39,7 +39,7 @@
 
 ?>
 
-@if(!$isCloning)
+ @if(!$isCloning)
     <div class="field field-text field-{{ $field->getId() }} @if($field->isRequired()) required @endif"
          data-field="{{$field->getId()}}"
          data-hash="{{$hash}}">
@@ -65,15 +65,15 @@
                 $fieldNameSuffix = 'wysiwyg-'. str_replace('.', '', microtime(1));
                 ?>
 
-            <textarea
-                    name="{{ $field->getFormFieldName($hash) }}[{{ $fieldNameSuffix }}]"
-                    class="form-control ckeditor @if($field->isRequired()) required @endif"
-                    data-wysiwyg_height="{{$wysiwyg_config_height}}"
-                    data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}"
-                    data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}"
-                    data-wysiwyg_extraAllowedContent="{{$wysiwyg_config_extraAllowedContent}}"
-                    data-wysiwyg_typography_styles="{{config('argon.typography_styles','/css/typography.css')}}"
-            >{{ $v }}</textarea>
+                <textarea
+                        name="{{ $field->getFormFieldName($hash) }}[{{ $fieldNameSuffix }}]"
+                        class="js-wysiwyg @if($field->isRequired()) required @endif"
+                        data-wysiwyg_height="{{$wysiwyg_config_height}}"
+                        data-wysiwyg_toolbar="{{$wysiwyg_config_toolbar}}"
+                        data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}"
+                        data-wysiwyg_extraAllowedContent="{{$wysiwyg_config_extraAllowedContent}}"
+                        data-wysiwyg_typography_styles="{{config('argon.typography_styles','/css/typography.css')}}"
+                >{{ $v }}</textarea>
 
         @if($field->allowMultiple())
                 <div class="input-group-addon field-remove">&#10005;</div>
@@ -82,12 +82,10 @@
 
     @endforeach
 
-@if(!$isCloning)
+    @if(!$isCloning)
         </div>
-        @if($field->allowMultiple())
-            <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
+    @if($field->allowMultiple())
+        <a href="#addField" class="btn btn-secondary-outline btn-sm field-clone" data-field="{{$field->getId()}}" data-hash="{{$hash}}">Add Field</a>
         @endif
-    </div>
-@endif
-
-
+        </div>
+    @endif

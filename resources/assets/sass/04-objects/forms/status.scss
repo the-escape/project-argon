@@ -1,0 +1,83 @@
+.o-form-status {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-gap: $gutter;
+    //padding-left: $gutter;
+    //padding-right: $gutter;
+
+    @media (min-width: $sm) {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 350px);
+    }
+
+    &__message {
+        align-self: flex-end;
+        display: flex;
+        align-items: center;
+        min-height: 45px;
+
+        &--centre {
+            align-self: center;
+        }
+    }
+
+    &__message-bar {
+        flex: 1 1 auto;
+        display: none;
+        padding: 7px 16px;
+        line-height: 1.65;
+        color: #fff;
+        border: 1px solid $danger;
+        background-color: $danger;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    .has-error &__message-bar {
+        display: block;
+    }
+
+    &__input-container {
+        position: relative;
+    }
+
+    .has-error &__input-container input,
+    .has-success &__input-container input {
+        padding-right: 45px;
+    }
+
+    &__icon {
+        flex: 0 0 24px;
+        margin-right: $gutter;
+
+        > * {
+            display: none;
+        }
+
+        &,
+        svg,
+        > * {
+            width: 24px;
+            height: 24px;
+        }
+
+        &--error {
+            color: $danger;
+        }
+
+        &--success {
+            color: $success;
+        }
+
+        .has-success &--success,
+        .has-error &--error {
+            display: block;
+        }
+    }
+}
+
+.o-form-status .o-form__list {
+    margin-left: -$gutter;
+    width: calc(100% + #{$full-gutter});
+}

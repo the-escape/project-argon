@@ -1,0 +1,25 @@
+.o-form-icon {
+    display: flex;
+
+    &__icon {
+        flex: 0 0 auto;
+        padding: 0 10px;
+        min-width: 45px;
+        height: 45px;
+        background-color: $black-light;
+        color: $grey-light;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}

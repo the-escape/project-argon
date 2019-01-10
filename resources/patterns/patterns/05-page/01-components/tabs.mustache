@@ -1,0 +1,107 @@
+<div class="js-tabs c-page">
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <a href="#" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
+
+            <div class="c-header__local-container">
+                <h1>Edit Page</h1>
+                {{> page-localisation-dropdown}}
+            </div>
+
+             <div class="c-header__btns">
+                <a href="#">Go to live page</a>
+            </div>
+        </div>
+        <div class="c-header__nav c-tab__nav js-tabs-nav">
+            <ul>
+                <li>
+                    <button class="c-tab__btn active" data-tab="first">
+                        <div class="c-tab__btn-container">
+                            <span>first</span>
+                        </div>
+                    </button>
+                </li>
+                <li>
+                    <button class="c-tab__btn" data-tab="second">
+                        <div class="c-tab__btn-container">
+                            <span>second</span>
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="c-tab-panel__list js-tabs-list">
+        <div class="c-tab-panel active" data-tab="first">
+            <main class="c-tab-panel__container c-container">
+                <div class="c-actions__container">
+                    <div class="c-actions__content">
+                        {{> edit-edit-vue}}
+                    </div>
+
+                    <div class="c-actions">
+                        <div class="c-actions__group">
+                            <button type="submit" class="o-btn o-btn--primary">publish changes</button>
+                            <a href="#" class="o-btn o-btn--light-grey preview-page">preview changes</a>
+                            <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
+                            <a href="#" class="o-btn o-btn--light-grey">cancel changes</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div class="c-tab-panel" data-tab="second">
+            <main class="c-tab-panel__container c-container">
+                <div class="c-tab-panel__inner-container">
+                    <div class="l-full">
+                        <h1>Second Tab</h1>
+                    </div>
+
+                    <div class="l-halves">
+                        <div>
+                            <p>Orci sem tristique habitant vitae aliquam adipiscing per diam potenti consectetur class augue porta a parturient enim per scelerisque malesuada nec. Curabitur ac vehicula non torquent scelerisque parturient scelerisque elementum dictumst pharetra odio erat sapien pulvinar sapien mi habitasse vestibulum ac habitant nascetur augue. Venenatis himenaeos placerat habitant nibh magna dictumst eu id elementum cubilia in sem pharetra est. Pretium malesuada eros accumsan parturient placerat litora condimentum senectus bibendum nostra dolor torquent volutpat dolor est a aliquam bibendum vestibulum nullam consectetur sagittis donec habitasse maecenas.</p>
+                            <p>Faucibus fames ultricies quam habitasse ut nulla sem mus convallis netus ac ante sodales mus nam. Ullamcorper malesuada neque suscipit luctus neque congue a eu consectetur a a rhoncus id nullam. In a a massa accumsan habitant elit a adipiscing sociosqu pretium ante montes neque scelerisque pretium fringilla vel consectetur vestibulum leo leo a mus condimentum.</p>
+                            <p>A gravida parturient imperdiet congue ut id nascetur id nec adipiscing quam ultrices rutrum venenatis id parturient dui a donec. Mi dui dolor rhoncus metus fusce ad sociosqu habitasse condimentum eget ad aptent donec cursus dolor vestibulum suspendisse vitae hac consectetur vestibulum vitae per mollis cras laoreet eu. Taciti a egestas curabitur tellus elementum primis euismod tellus nibh orci lobortis parturient vulputate a. Leo suspendisse euismod risus neque metus non suspendisse in natoque facilisis rhoncus parturient per ligula condimentum vitae dolor a dolor ullamcorper dui.</p>
+                            <p>Vivamus congue vestibulum in fermentum a sed vestibulum consequat dolor pulvinar suspendisse vestibulum placerat lectus ullamcorper vestibulum at lectus ullamcorper ut praesent nostra fringilla cras condimentum a sed vestibulum. Vivamus ut ac nibh lobortis euismod blandit vestibulum ultrices pharetra molestie condimentum platea inceptos adipiscing ullamcorper et orci vestibulum consectetur suspendisse. Mus blandit mattis consectetur consequat condimentum a fusce magna etiam scelerisque in odio morbi condimentum phasellus at at parturient class eu luctus vulputate cras dui justo faucibus suspendisse fames. Convallis iaculis dictum a dis phasellus accumsan a senectus est a adipiscing in eget ultrices mus etiam sapien quis. Adipiscing urna luctus per vestibulum commodo mi rhoncus eu at montes fringilla adipiscing dis sociis a commodo libero sodales quisque blandit parturient dignissim ullamcorper ligula aenean curabitur a nullam.</p>
+                            <p>Habitant sit vivamus a vestibulum non malesuada lacus a nulla sem adipiscing nulla facilisis tortor parturient morbi mattis a proin malesuada. Gravida blandit commodo bibendum curabitur auctor parturient a aliquet iaculis ullamcorper bibendum inceptos ad sit a. A a ut ullamcorper a justo vestibulum parturient suspendisse dolor primis ac eu euismod consequat. Metus tellus dui parturient condimentum lacinia molestie inceptos mus nisi viverra vestibulum nunc rhoncus non dolor massa sapien justo suscipit a primis dui cum quam mi velit vestibulum. Aptent a consectetur cubilia dis elit urna integer purus duis donec curae eu bibendum conubia per. Curae ac praesent nibh molestie a laoreet eu parturient eros a ad adipiscing fames etiam class vitae ridiculus mollis parturient vestibulum.</p>
+                            <p>Non erat feugiat hendrerit vestibulum sit feugiat cum pharetra taciti a curabitur netus non a malesuada imperdiet natoque vestibulum nulla lacus a. Aptent penatibus ad ultricies facilisis ut netus adipiscing scelerisque luctus ante commodo dolor est sagittis consectetur tempor mattis a donec sagittis parturient tellus vestibulum urna fringilla suspendisse ac. Maecenas per suscipit eu arcu condimentum augue molestie consectetur venenatis arcu a sapien taciti fringilla erat taciti cursus tincidunt a a elit penatibus a feugiat ornare.</p>
+                            <p>Netus venenatis est aliquet iaculis neque mollis himenaeos sed parturient a ante per nisl tincidunt adipiscing egestas varius potenti ad parturient adipiscing scelerisque a. A augue eu consectetur fusce gravida sociosqu suspendisse a habitasse iaculis netus diam ullamcorper a euismod vitae parturient porta. Montes vulputate vestibulum adipiscing purus a suscipit mus vehicula scelerisque a a a malesuada sodales dui a leo eu condimentum laoreet suscipit per placerat aliquam etiam.</p>
+                            <p>Massa est vestibulum lorem urna scelerisque vestibulum euismod eu ad elit odio a rhoncus metus ullamcorper sociis odio auctor id posuere adipiscing. Non tincidunt dignissim libero a a habitasse taciti vestibulum consectetur scelerisque velit sit conubia felis ut condimentum dis a vestibulum neque a. Ullamcorper convallis urna a luctus per dignissim parturient ad laoreet augue purus euismod commodo sagittis diam dolor vehicula duis. Vehicula turpis nec amet duis himenaeos odio netus odio vestibulum quisque metus imperdiet laoreet pulvinar consectetur scelerisque praesent a. Quis ligula fringilla vestibulum feugiat in condimentum nascetur mi vehicula nunc a habitasse parturient primis commodo vestibulum parturient eu. Enim velit volutpat urna lorem class a laoreet quis nec nam a neque accumsan est varius ac scelerisque adipiscing eu parturient.</p>
+                            <p>Natoque convallis a a parturient habitasse id feugiat a ullamcorper ornare ut dis nec nisl nam ad mus netus fermentum eget himenaeos habitasse adipiscing conubia. Posuere adipiscing curabitur consequat id habitant dui dis adipiscing eu fusce himenaeos a magnis nam natoque viverra ad habitasse a eleifend vestibulum justo a. A fusce vehicula placerat consectetur fermentum elit potenti justo scelerisque habitant at metus nunc posuere ad aliquet at dictumst condimentum nostra diam adipiscing nostra placerat vel.</p>
+                            <p>Suspendisse consectetur dis nibh condimentum tristique dis fusce habitasse fusce dis erat vestibulum est quis sapien dolor dolor ipsum commodo nec volutpat vestibulum leo a volutpat adipiscing. Venenatis est a habitant dui viverra at dolor a a sem congue eu ante et suspendisse praesent eleifend consectetur rhoncus purus. Nec facilisi nunc ullamcorper a praesent luctus hac hac dapibus vivamus malesuada curabitur amet eget a a lobortis urna parturient suspendisse suspendisse scelerisque ullamcorper malesuada. Potenti class tincidunt cum consectetur metus pharetra condimentum laoreet a taciti dis praesent quis praesent habitasse.</p>
+                            <p>Tristique nibh diam curae lacus a placerat netus mauris sapien nam venenatis tempor a facilisis facilisi aptent hac cum eros adipiscing neque eget. Rutrum convallis scelerisque et volutpat sodales commodo amet taciti aliquet sed adipiscing a sodales condimentum nec inceptos phasellus id scelerisque vestibulum nullam cubilia non vestibulum justo nibh eros. Aliquam rutrum in magna curae a posuere litora in cum parturient ad ipsum vestibulum porttitor urna a metus libero. Per nunc commodo suscipit a senectus ullamcorper lacus natoque a elit fermentum tristique vulputate pharetra a a. A dui ad ad nam maecenas nulla hac arcu faucibus orci lacus hendrerit a nibh a condimentum a nec consectetur vulputate a potenti adipiscing.</p>
+                            <p>Massa congue porttitor rhoncus a cubilia a duis sed sed aliquam a montes a ultricies ullamcorper consequat vulputate adipiscing et ullamcorper nam scelerisque sed eu sit iaculis commodo. At libero consectetur ullamcorper ac in sed parturient nibh hendrerit nisi suspendisse ullamcorper ut dictumst. Diam sociis ligula condimentum himenaeos eros interdum vestibulum scelerisque nam mi sagittis nunc imperdiet sodales suscipit eu hendrerit habitant habitasse iaculis. A ullamcorper hendrerit consequat proin eu nam vestibulum quis sagittis euismod parturient vel justo ut rutrum hac suspendisse nec fusce vestibulum ultricies praesent a. Mi a lectus morbi ullamcorper duis a orci conubia parturient euismod parturient enim sodales a per magna ultrices est potenti eu neque eget at mollis sem libero pretium ut. At dictum a sociis taciti consectetur a ullamcorper a consequat dis leo mus fermentum a elit neque platea curae taciti.</p>
+                            <p>Phasellus leo in torquent sodales quisque ad elit ridiculus maecenas a class sit senectus magna ante per ad a consequat auctor auctor. Est nibh id dignissim dui dignissim ac donec dis a varius a duis per venenatis gravida adipiscing duis conubia velit a ultrices mi parturient. Pretium a commodo gravida magna semper metus pharetra hac vestibulum aliquam quis fames dis feugiat condimentum a scelerisque.</p>
+                            <p>Adipiscing feugiat viverra adipiscing sociis a eu vestibulum cras accumsan condimentum adipiscing sapien a diam laoreet sodales ac vehicula eget quam nec condimentum dis egestas scelerisque phasellus. Diam phasellus ut scelerisque parturient viverra parturient a himenaeos elit ad torquent malesuada dis quisque ad a semper. Gravida ad scelerisque convallis magna id sem consectetur id pulvinar neque arcu adipiscing malesuada ut a morbi parturient parturient mi. Ad suspendisse scelerisque habitasse aliquam ante molestie fusce ad sodales varius sem vestibulum fusce vestibulum a sed phasellus dapibus magnis curae nascetur mi. A in hac hac faucibus tristique iaculis parturient vel mi aenean risus a ullamcorper in ad tincidunt parturient nullam magnis pulvinar magna ornare massa cubilia feugiat ac eleifend. Eleifend dapibus dictum in sed quam facilisis elementum lorem mi interdum vestibulum scelerisque adipiscing ad potenti a blandit a a a parturient tellus interdum senectus platea aliquet.</p>
+                            <p>A elit commodo tristique habitant orci platea a ullamcorper scelerisque nisi ipsum cum tortor feugiat cras vestibulum condimentum a diam suspendisse ut parturient blandit praesent. Ultricies a mus posuere suspendisse mollis a fermentum nec non in purus morbi tincidunt ut tristique a. Augue porta venenatis vestibulum ullamcorper sociis commodo imperdiet nunc potenti a mattis interdum mi accumsan praesent interdum litora lacinia a in a ullamcorper nullam tempor. Ut facilisis nostra sociosqu ipsum parturient leo bibendum nisi nec aliquet eu consectetur porttitor sapien suspendisse mi arcu leo elementum augue aenean. Dui scelerisque suspendisse a nam suscipit consectetur scelerisque nunc risus consectetur euismod senectus a et quis mi luctus nulla. Lacus arcu adipiscing parturient tincidunt velit vulputate ad fusce arcu integer at a vestibulum a sociosqu egestas a a in gravida a sodales erat curae vestibulum dictum.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="c-footer__wrapper">
+                <div class="c-footer c-container">
+                    <div class="c-footer__container">
+
+                        <div class="c-footer__buttons">
+                            <div>
+                                <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--sm">Back to pages</a>
+                                <a href="#" class="o-btn o-btn--sm o-btn--primary preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                            </div>
+                            <div>
+                            <button type="submit" class="o-btn o-btn--sm o-btn--primary" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
+                            <button type="submit" class="o-btn o-btn--sm o-btn--success save-publish js-save">Save and Publish</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+

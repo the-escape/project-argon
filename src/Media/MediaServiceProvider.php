@@ -297,7 +297,7 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'argon');
 
-        $this->pluginManager->registerNavLink('Media Library', route('cms:media:manage'), 'cms:content:manage');
+        $this->pluginManager->registerNavLink('Media Library', route('cms:media:manage'), 'cms:content:manage', 'media');
 
         $this->publishes([
             __DIR__ . '/Migrations' => database_path('migrations'),

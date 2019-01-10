@@ -79,5 +79,21 @@ return [
             'enable' => env('IMAGE_OPTIM_ENABLE', true),
         ],
         'fix_thumbs' => false, // set to true on existing projects to update the thumb file name
+    ],
+
+    'dashboard_widgets' => [
+        'order' => [
+            'manage-site-content',
+            'blog-and-media',
+            'recent-activity',
+            'analytics-link',
+            'account-manager',
+            'feedback-form',
+        ],
+        'create_blog_post_link' => '',
+        'create_blog_post_label' => 'Create new blog post',
+        'account_manager_name' => 'The Escape',
+        'account_manager_phone' => '+44 (0) 1256 334567',
+        'account_manager_email' => '',
     ]
 ];

@@ -1,0 +1,67 @@
+.sl-vue-tree {
+    position: relative;
+    cursor: default;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+
+    &-root > &-nodes-list {
+        overflow: hidden;
+        position: relative;
+        padding-bottom: 4px;
+    }
+
+    &-selected > &-node-item {
+        background-color: $grey-offwhite;
+    }
+
+    &-nodes-list {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-node-item {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+    }
+
+    &-node-item.sl-vue-tree-cursor-inside {
+        outline: 1px solid $primary-dark;
+    }
+
+    &-gap {
+        width: 45px;
+        min-height: 1px;
+        background-color: #fff;
+    }
+
+    &-title {
+        width: 100%;
+        position: relative;
+    }
+
+    &-sidebar {
+        display: none;
+    }
+
+    &-cursor {
+        position: absolute;
+        border: 1px solid $primary-dark;
+        height: 1px;
+        width: 100%;
+    }
+
+    &-drag-info {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0.5;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        padding: 5px 10px;
+    }
+}

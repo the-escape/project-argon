@@ -60,6 +60,13 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
             UserController::class,
             'delete'
         );
+        $this->addRoute(
+            'users/upload-profile-image',
+            'cms:user:profile-image',
+            UserController::class,
+            'uploadProfileImage',
+            Request::METHOD_POST
+        );
 
         // Roles
         $this->addRoute(
@@ -112,8 +119,8 @@ class UserManagementServiceProvider extends AbstractPluginServiceProvider
             __DIR__ . '/Commands' => app_path('Console/Commands'),
         ], 'commands');
 
-        $this->pluginManager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage');
-        $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage');
+        $this->pluginManager->registerNavLink('Users', route('cms:user:manage'), 'cms:user:manage', 'users');
+        $this->pluginManager->registerNavLink('Roles', route('cms:role:manage'), 'cms:role:manage', 'user-permisions');
 
         $this->loadViewsFrom(__DIR__ . '/views', 'argon');
 

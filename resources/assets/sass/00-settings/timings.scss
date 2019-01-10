@@ -1,0 +1,12 @@
+//====================
+// timings
+//====================
+
+$userActive: 400ms;
+$userInactive: 250ms;
+$userOut: $userActive;
+$userIn: $userInactive;
+
+$scrollIn: 650ms;
+$scrollInitialDelay: 300ms;
+$scrollDelayInc: 150ms;

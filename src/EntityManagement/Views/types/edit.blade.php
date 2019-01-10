@@ -1,122 +1,208 @@
 @extends('argon::layout.master')
 
+@section('body-class', 'medialib medialib-all')
+
+@section('body-id', 'argon-ui')
+
 @section('content')
-    <div class="main">
-        <h1 class="page-header">Edit Type</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+    <header class="c-header c-container">
+        <div class="c-header__title">
+            <a href="{{ route('cms:types:manage') }}" class="c-header__back">
+                <svg>
+                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
+                </svg>
+            </a>
 
-        <form action="{{ route('cms:types:update', [$type->id]) }}" method="POST" autocomplete="false">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-            <div class="card">
-                <div class="card-header">Details</div>
-                <div class="card-block">
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" class="form-control required {{ Escape\Argon\EntityManagement\Helpers\Validation::getErrorClass(@$errors, 'name') }}" id="name" name="name" placeholder="Name" value="{{ old('name', $type->name) }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Type</label>
-                        <div>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-page" name="type" value="page" @if($type->type == 'page') checked @endif> Page</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="block" @if($type->type == 'block') checked @endif> Block</label>
-                            <label class="checkbox-inline"><input type="radio" class="" id="type-object" name="type" value="email" @if($type->type == 'email') checked @endif> Email</label>
+            <h1>Content Type</h1>
+        </div>
+        <div class="c-tab__nav">
+            <ul>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:types:manage') }}">
+                        <div class="c-tab__btn-container">
+                            <span>All Types</span>
                         </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn" href="{{ route('cms:types:create') }}">
+                        <div class="c-tab__btn-container">
+                            <span>New type</span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="c-tab__btn active" href="{{ route('cms:types:edit', [$type->id]) }}">
+                        <div class="c-tab__btn-container">
+                            <span>Edit {{ $type->name }}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <form action="{{ route('cms:types:update', [$type->id]) }}" method="POST" autocomplete="false">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+        <main class="c-container c-container--main">
+
+            @include('argon::inc.alerts')
+
+            <div class="c-actions__container">
+                <div class="c-actions__content">
+                    <div class="o-form">
+                        <div class="o-form__title">Edit type</div>
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form-status__input">
+                                    <label for="name">Name*</label>
+                                    <input type="text" id="name" name="name" placeholder="Name..." value="{{ old('name', $type->name) }}">
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="name">Error Message</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o-form__title">Type</div>
+                        <div class="o-form__group">
+                            <div class="o-form-status">
+                                <div class="o-form__list">
+
+                                    <div class="o-radio">
+                                        <label>
+                                            <input type="radio" name="type" {{ $type->type == 'page' ? 'checked="checked"' : '' }} id="type-page" value="page">
+                                            <span></span>
+                                        </label>
+                                        <label for="type-page">Page</label>
+                                    </div>
+                                    <div class="o-radio">
+                                        <label>
+                                            <input type="radio" name="type" {{ $type->type == 'block' ? 'checked="checked"' : '' }} id="type-block" value="block">
+                                            <span></span>
+                                        </label>
+                                        <label for="type-block">Block</label>
+                                    </div>
+                                    <div class="o-radio">
+                                        <label>
+                                            <input type="radio" name="type" {{ $type->type == 'email' ? 'checked="checked"' : '' }} id="type-email" value="email">
+                                            <span></span>
+                                        </label>
+                                        <label for="type-email">Email</label>
+                                    </div>
+
+                                </div>
+                                <div class="o-form-status__message">
+                                    <div class="o-form-status__icon">
+                                        <div class="o-form-status__icon--error">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                        </div>
+                                        <div class="o-form-status__icon--success">
+                                            <svg><use xlink:href="/argon/images/svgicons.svg#success"></use></svg>
+                                        </div>
+                                    </div>
+                                    <div class="o-form-status__message-bar">
+                                        <label for="type">Error Message</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o-form__title">Fields</div>
+
+                        <div class="o-form__group">
+                            @if(($groups = $type->groups) && (!$groups->isEmpty()))
+
+                                <input id="order-{{$type->id}}" type="hidden" name="order">
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Slug</th>
+                                        <th>Type</th>
+                                        <th>Group</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="sortable" data-sortable_field="order-{{$type->id}}">
+                                    @foreach ($groups as $group)
+                                        @foreach ($group->fields as $field)
+                                            <tr class="sortable-item" data-sortable_item="{{$field->id}}">
+                                                <td>
+                                                    <span class="sortable-handle btn">&#8645;</span>
+                                                </td>
+                                                <td>
+                                                    <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                                </td>
+                                                <td>
+                                                    {{ $field->field_slug }}
+                                                </td>
+                                                <td>
+                                                    {{ $field->field_type }}
+                                                </td>
+                                                <td>
+                                                    {{ @$field->group->name }}
+
+                                                    @if(empty($lastGroup) || $lastGroup !== $field->group->id)
+                                                        <textarea class="json-textbox">{!! json_encode($field->group->exportJson(), JSON_PRETTY_PRINT)  !!}</textarea>
+                                                        <a class="js-export-copy-to-clipboard text-muted" data-toggle="tooltip" data-placement="top" title="Export Field Group" href="{{ route('cms:types:groups:export', [$type->id,$field->group->id]) }}"><span class="fa fa-files-o"></span></a>
+                                                        <span class="result"></span>
+                                                        {{--<a class="js-export-json text-muted" data-group-id="{{ $field->group->id }}" data-toggle="tooltip" data-placement="top" title="Export Field Group" href="{{ route('cms:types:groups:export', [$type->id,$field->group->id]) }}"><span class="fa fa-files-o"></span></a>--}}
+                                                        <?php $lastGroup = $field->group->id; ?>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($field->field_type == $comboFieldType->getKey())
+                                                        <a class="o-btn o-btn--xs" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
+                                                        <a class="o-btn o-btn--xs o-btn--danger confirm" data-confirm="This will remove combo and all subfields.\nAre you sure you want to continue?" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
+                                                    @else
+                                                        <a class="o-btn o-btn--xs" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
+                                                        <a class="o-btn o-btn--xs o-btn--danger confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
+
+                                <a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="o-btn o-btn--sm">Add Field</a>
+                                <a href="{{ route('cms:types:combos:add', [$type->id]) }}" class="o-btn o-btn--sm">Add Combo</a>
+                                <a href="{{ route('cms:types:groups', [$type->id]) }}" class="o-btn o-btn--sm">Show All Groups</a>
+                                <a href="{{ route('cms:types:groups:import-json', [$type->id]) }}" class="o-btn o-btn--sm">Import Group</a>
+                        </div>
+
+
+                    </div>
+                    <br><br>
+                </div>
+                <div class="c-actions">
+                     <div class="c-actions__group">
+                        <button type="submit" class="o-btn o-btn--primary">save</button>
+                        <a href="{{ route('cms:types:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                        <a href="{{ route('cms:types:delete', ['id' => $type->id]) }}" onclick="return confirm('Are you sure you want to delete this type?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>
             </div>
+        </main>
 
-            <div class="card">
-                <div class="card-header">Fields</div>
-                <div class="card-block">
+    </form>
 
-                    @if(($groups = $type->groups) && (!$groups->isEmpty()))
-
-                    <input id="order-{{$type->id}}" type="hidden" name="order">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Type</th>
-                            <th>Group</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody class="sortable" data-sortable_field="order-{{$type->id}}">
-                        @foreach ($groups as $group)
-                            @foreach ($group->fields as $field)
-                                <tr class="sortable-item" data-sortable_item="{{$field->id}}">
-                                    <td>
-                                        <span class="sortable-handle btn">&#8645;</span>
-                                    </td>
-                                    <td>
-                                        <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
-                                    </td>
-                                    <td>
-                                        {{ $field->field_slug }}
-                                    </td>
-                                    <td>
-                                        {{ $field->field_type }}
-                                    </td>
-                                    <td>
-                                        {{ @$field->group->name }}
-
-                                        @if(empty($lastGroup) || $lastGroup !== $field->group->id)
-                                            <a class="js-export-json text-muted" data-toggle="tooltip" data-placement="top" title="Export Field Group" href="{{ route('cms:types:groups:export', [$type->id,$field->group->id]) }}"><span class="fa fa-files-o"></span></a>
-                                            <?php $lastGroup = $field->group->id; ?>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($field->field_type == $comboFieldType->getKey())
-                                            <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
-                                            <a class="btn btn-link btn-sm confirm" data-confirm="This will remove combo and all subfields.\nAre you sure you want to continue?" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
-                                        @else
-                                            <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
-                                            <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endforeach
-                        </tbody>
-                    </table>
-                    @endif
-
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Add Field
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ route('cms:types:fields:add', [$type->id]) }}" class="btn btn-block">Field</a></li>
-                            <li><a href="{{ route('cms:types:combos:add', [$type->id]) }}" class="btn btn-block">Combo</a></li>
-                        </ul>
-                    </div>
-
-                    {{--<a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-primary-outline">Manage Groups</a>--}}
-
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Manage Groups
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ route('cms:types:groups', [$type->id]) }}" class="btn btn-block">Show All Groups</a></li>
-                            <li><a href="{{ route('cms:types:groups:import-json', [$type->id]) }}" class="btn btn-block">Import Group</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-link" href="{{route('cms:types:manage')}}">Back to types</a>
-        </form>
-    </div>
 @endsection
 
 @section('footer')
@@ -124,27 +210,14 @@
 
     <script>
         $(function(){
-            $('.js-export-json').on('click' ,function(e){
+            $('.js-export-copy-to-clipboard').on('click', function(e){
                 e.preventDefault();
 
                 var $btn = $(this),
-                    url = $btn.attr('href');
+                    $textarea = $btn.parent().find('.json-textbox'),
+                    $result = $btn.parent().find('.result');
 
-                $.ajax(url).done(function(r){
-
-                    if ($('.modals').find('#groupExport').length){
-                        $('.modals').find('#groupExport .modal-content').html($(r).find('.modal-content').html());
-                    } else {
-                        $('.modals').append($(r));
-                    }
-
-                    $('#groupExport').modal('show');
-                });
-            });
-
-            $('.modals').on('click','.js-copy-to-clip', function(e){
-
-                $('[name=group-export-json]').select()
+                $textarea.select()
                     .on("focus", function() {
                         document.execCommand('selectAll',false,null)
                     })
@@ -153,20 +226,31 @@
                 var success = document.execCommand("copy");
 
                 if(success){
-                    $(this).html('Copied!').addClass('btn-success').removeClass('btn-primary').prop('disabled',true);
+                    $result.html('Copied!');
+
+                    setTimeout(function(){
+                        $result.html('');
+                    }, 1000);
                 }
 
-                setTimeout(function(){
-                    $('#groupExport').modal('hide');
-                }, 300);
-
-            })
+            });
         });
     </script>
 @endsection
 
-@section('footer')
+@section('styles')
 
+    <style>
+        .json-textbox {
+            display: inline-block !important;
+            min-width: 1px !important;
+            min-height: 1px !important;
+            width: 1px !important;
+            height: 1px !important;
+            opacity: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
 
-
+    @parent
 @endsection

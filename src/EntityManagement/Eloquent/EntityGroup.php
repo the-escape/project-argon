@@ -43,6 +43,18 @@ class EntityGroup extends Model
         return $fields;
     }
 
+    public function getFieldsWithValues($page = null , $localisation = null, $currentRevision = null)
+    {
+        $fields = [];
+
+        foreach($this->getFields() as $field)
+        {
+            $fields[] = $field->getFieldWithValues($this, $page, $localisation, $currentRevision);
+        }
+
+        return $fields;
+    }
+
     public function setEntity(Entity $entity)
     {
         $this->entity = $entity;
