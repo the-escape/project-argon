@@ -14,6 +14,69 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
     public function registerRoutes()
     {
         $this->addRoute(
+            'media/app',
+            'cms:media:app',
+            MediaController::class,
+            'app'
+        );
+        $this->addRoute(
+            'media/api/folders/add',
+            'cms:media:api:folders:add',
+            MediaController::class,
+            'appFolderAdd',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/folders/edit',
+            'cms:media:api:folders:edit',
+            MediaController::class,
+            'appFolderEdit',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/folders/remove',
+            'cms:media:api:folders:remove',
+            MediaController::class,
+            'appFolderRemove',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/folders/{id?}',
+            'cms:media:api:folders',
+            MediaController::class,
+            'appFolders'
+        );
+        $this->addRoute(
+            'media/api/search/{keywords?}',
+            'cms:media:api:search',
+            MediaController::class,
+            'appSearch'
+        );
+        $this->addRoute(
+            'media/api/upload',
+            'cms:media:api:upload',
+            MediaController::class,
+            'appUpload',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/items/remove',
+            'cms:media:api:items:remove',
+            MediaController::class,
+            'appDeleteItem',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/items/move',
+            'cms:media:api:items:move',
+            MediaController::class,
+            'appMoveItem',
+            Request::METHOD_POST
+        );
+
+
+
+        $this->addRoute(
             'media',
             'cms:media:manage',
             MediaController::class,

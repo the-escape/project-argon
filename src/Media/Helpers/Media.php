@@ -219,6 +219,59 @@ class Media
     }
 
 
+    public static function tree($items, $parent=null)
+    {
+        $tree = [];
+
+        foreach ($items as $item)
+        {
+            if ($parent == $item->parent)
+            {
+                $item->children = Media::tree($items, $item->id);
+                $tree[] = $item;
+            }
+        }
+
+        return $tree;
+    }
+
+    public static function treeLevel($items, $parent=null, $level=null)
+    {
+        $tree = [];
+
+        foreach ($items as $item)
+        {
+            if ($parent == $item->parent)
+            {
+                if ($level)
+                {
+                    $item->children = Media::treeLevel($items, $item->id, $level-1);
+                    $tree[] = $item;
+                }
+            }
+        }
+
+        return $tree;
+    }
+
+    public static function addItems($folder, $media_items)
+    {
+        foreach ($media_items as $media_item)
+        {
+            if ($media_item->folder == $folder->id)
+            {
+                $folder->items[] = $media_item;
+            }
+        }
+
+        foreach ($folder->children as $i => &$child)
+        {
+            $child = Media::addItems($child, $media_items);
+        }
+
+        return $folder;
+    }
+
 
 
 }

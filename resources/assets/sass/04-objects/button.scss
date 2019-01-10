@@ -25,6 +25,7 @@ button.o-btn {
         pointer-events: none;
     }
 
+    &--active,
     &:hover {
         transition: background-color $userActive $easeOut,
             color $userActive $easeOut, border-color $userActive $easeOut;
@@ -114,6 +115,7 @@ button.o-btn {
         }
     }
 
+    &--disabled,
     &:disabled {
         opacity: 0.4;
         cursor: not-allowed;

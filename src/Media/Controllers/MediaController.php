@@ -21,6 +21,250 @@ use Input;
 class MediaController extends BaseController
 {
 
+    public function app()
+    {
+        return View::make('argon::media.app');
+    }
+
+    public function appFolders($id=null)
+    {
+        $media_folders = DB::table("media_folders")->whereNull('deleted_at')->get();
+
+        if (is_null($id))
+        {
+            if (request()->query->has("debug"))
+            {
+                echo "\n\n<pre>" . print_r($media_folders, TRUE) . "</pre>\n\n"; exit;
+            }
+
+            return response()->json($media_folders);
+        }
+
+        $folder = [];
+
+        foreach ($media_folders as $media_folder)
+        {
+            if ($media_folder->id == $id)
+            {
+                $folder = $media_folder;
+                $folder->children = Media::treeLevel($media_folders, $id, 3);
+                $folder->items = [];
+                break;
+            }
+        }
+
+        if ($folder)
+        {
+            $media_items = DB::table("media_items")->whereNull('deleted_at')->get();
+            $folder = Media::addItems($folder, $media_items);
+        }
+
+        if (request()->query->has("debug"))
+        {
+            echo "\n\n<pre>" . print_r($folder, TRUE) . "</pre>\n\n"; exit;
+        }
+
+        return response()->json($folder);
+    }
+
+    public function appSearch($keywords="")
+    {
+        $items = [];
+
+        if ($keywords === '')
+        {
+            return response()->json($items);
+        }
+
+        $like = "%{$keywords}%";
+        $items = DB::table("media_items")->where('filename', 'like', $like)->whereNull('deleted_at')->get();
+
+        // TODO: Perhaps fuzzy search here
+
+        if (request()->query->has("debug"))
+        {
+            echo "\n\n<pre>" . print_r($items, TRUE) . "</pre>\n\n"; exit;
+        }
+
+        return response()->json($items);
+    }
+
+    public function appFolderAdd(Request $request, MediaFolderRepository $folderRepository)
+    {
+        if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
+            return response()->json(['error' => 'Folder exists.'], Response::HTTP_CONFLICT);
+        }
+
+        $folder = $folderRepository->create($request->input());
+
+        return response()->json($folder);
+    }
+
+    public function appFolderEdit(Request $request, MediaFolderRepository $folderRepository)
+    {
+        $folder = $folderRepository->findWhere(['id' => $request->input('folder')])->first();
+
+        if (!$folder)
+        {
+            return response()->json(['error' => "Folder `{$request->input('folder')}` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $folder->name = $request->input('name');
+        $folder->save();
+
+        return response()->json($folder);
+    }
+
+    public function appFolderRemove (
+        Request $request,
+        MediaFolderRepository $folderRepository,
+        MediaItemRepository $itemRepository
+    ) {
+        $folderId = (preg_match('/^[1-9][0-9]*$/', $request->input('id'))) ? (int)$request->input('id') : null;
+
+        if (!$folderId)
+        {
+            return response()->json(["error" => "Invalid folder `$folderId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($folderId === 1)
+        {
+            return response()->json(["error" => "Root folder can't be removed."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if ($itemRepository->getItemsInFolder($folderId)->count() > 0 || $folderRepository->getSubfolders($folderId)->count() > 0)
+        {
+            return response()->json(["error" => "Folder not empty."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $deleted = $folderRepository->delete($folderId);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function appUpload(Request $request, MediaFolderRepository $folderRepository)
+    {
+        $folderId = $request->request->get('folder');
+
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
+
+        if ($folder === null)
+        {
+            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $files = $request->file('files');
+
+        if (empty($files[0]))
+        {
+            return response()->json(['error' => "No file(s) selected for upload."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $userId = $request->user()->id;
+
+        $mediaRepository = app()->make(MediaItemRepository::class);
+
+        $msgErrors = [];
+        $msgSuccess = [];
+
+        foreach ($files as $file)
+        {
+            if ($file->getError() !== 0)
+            {
+                $msgErrors[] = $file->getErrorMessage();
+                continue;
+            }
+
+            $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
+            $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
+        }
+
+        if ($msgErrors)
+        {
+            $messageCombined = [];
+
+            foreach ($msgErrors as $msg)
+            {
+                $messageCombined[] = $msg;
+            }
+
+            if ($msgSuccess)
+            {
+                foreach ($msgSuccess as $msg)
+                {
+                    $messageCombined[] = $msg;
+                }
+            }
+
+            return response()->json(["messages" => $messageCombined], Response::HTTP_NO_CONTENT);
+        }
+
+        //return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
+        return response()->json(["messages" => $msgSuccess], Response::HTTP_OK);
+    }
+
+    public function appDeleteItem(Request $request, MediaItemRepository $itemRepository)
+    {
+        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('id'))) ? (int)$request->request->get('id') : null;
+
+        if (!$itemId)
+        {
+            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // TODO: implement graceful handling of fetching images in blade withohut exceprtions/interruptions
+        $item = $itemRepository->findWhere(["id" => $itemId])->first();
+
+        if (!$item)
+        {
+            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $deleted = $itemRepository->delete($itemId);
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function appMoveItem(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
+    {
+        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('item'))) ? (int)$request->request->get('item') : null;
+
+        if (!$itemId)
+        {
+            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $item = $itemRepository->findWhere(["id" => $itemId])->first();
+
+        if (!$item)
+        {
+            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+        $folderId = $request->request->get('folder');
+
+        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
+
+        if ($folder === null)
+        {
+            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+        }
+
+
+        $item->folder = $folder->id;
+        $saved = $item->save();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+
+
+
+
+
+
+
 
     public function manage(MediaFolderRepository $folderRepository)
     {
@@ -256,7 +500,7 @@ class MediaController extends BaseController
                     unset($results[$i]);
                 }
             }
-            elseif ( in_array($result->field_type, ['image', 'file']))
+            elseif (in_array($result->field_type, ['image', 'file']))
             {
                 $fields = json_decode($result->data_value, true);
 
@@ -289,11 +533,13 @@ class MediaController extends BaseController
 
     public function createFolder(Request $request, MediaFolderRepository $folderRepository)
     {
-        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent'))) {
+        if (!$folderRepository->folderExists($request->input('name'), $request->input('parent')))
+        {
             $folder = $folderRepository->create($request->input());
-
             return response()->json($folder);
-        } else {
+        }
+        else
+        {
             return response()->json(['error' => 'folder exists'], Response::HTTP_CONFLICT);
         }
     }
