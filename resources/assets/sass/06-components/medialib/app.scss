@@ -126,7 +126,7 @@
         align-items: center;
         justify-content: center;
         width: calc(100% / 4 - 15px);
-        height: 300px;
+        height: 220px;
         padding: 10px;
         border: 1px solid $color-grey-dark;
         margin: 6px;
@@ -139,20 +139,40 @@
         }
     }
     &__preview {
-
+        width: 100%;
+        height: 100%;
+        position: relative;
     }
     &__image {
-        width: calc(100% - 20px);
-        height: calc(60% - 10px);
+        position: absolute;
+        width: 100%;
         text-align: center;
+        //background-size: cover;
+        background-size: 100% auto;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
     }
     &__details {
-
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(255, 255, 255, 0.9);
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        padding: 5px 2px;
     }
     &__info {
-        padding-top: 10px;
-        height: calc(40% - 10px);
+        //padding-top: 10px;
+        //height: calc(40% - 10px);
         margin: 0;
+        //color: #fff;
+        color: $black;
+
+        dt {
+            font-weight: normal;
+            font-size: 14px;
+        }
 
         dd {
             margin: 0;
@@ -183,6 +203,12 @@
     }
 
     &__options {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+    }
+
+    &__options-dropdown {
         position: relative;
         text-align: left;
         border: 1px solid $secondary-highlight;
@@ -192,6 +218,7 @@
         cursor: default;
         display: inline-block;
         min-width: 100px;
+
 
         &:hover {
             .folder__options-list {
@@ -225,6 +252,7 @@
         display: none;
         background-color: $color-white;
         border: 1px solid $secondary-highlight;
+        z-index: 1;
 
         button,
         a {
@@ -248,6 +276,33 @@
         }
     }
 
+    &--tiles &__item--folder {
+        position: relative;
+    }
+
+    &--tiles &__item--folder &__info {
+        color: $black;
+
+        dd {
+            color: #fff;
+            margin: 0;
+
+            small {
+                color: #fff;
+            }
+        }
+    }
+
+    &--tiles &__item--folder &__info--overlay {
+        position: absolute;
+        top: 35px;
+        left: 20px;
+        text-align: left;
+    }
+    &--tiles &__item--folder &__icon {
+        width: 150px;
+        position: relative;
+    }
 
 
     &--list {
@@ -308,9 +363,10 @@
         //width: auto;
         //height: auto;
         //text-align: left;
+        width: calc(100% - 20px);
     }
     * + &__options {
-        margin-top: 10px;
+        //margin-top: 10px;
     }
 }
 
