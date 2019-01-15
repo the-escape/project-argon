@@ -43,7 +43,6 @@
 
                 <div class="folder__image" @click="modal(item)" :style="`background-image: url('${item.getUrl()}');`"></div>
 
-
                 <div class="folder__details">
 
                     <dl class="folder__info">
@@ -77,6 +76,8 @@
                 </div>
 
             </div>
+
+
 
             <!--<div class="folder__details">-->
 
