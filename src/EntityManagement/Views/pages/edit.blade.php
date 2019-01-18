@@ -134,7 +134,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             <div class="o-form__list">
                                                 <div class="o-radio">
                                                     <label>
-                                                        <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
+                                                        <input type="radio" name="status" {{ old('status', $page->status) == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
                                                         <span></span>
                                                     </label>
                                                     <label for="status1">Yes</label>
@@ -142,7 +142,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                                 <div class="o-radio">
                                                     <label>
-                                                        <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
+                                                        <input type="radio" name="status" {{ old('status', $page->status) != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
                                                         <span></span>
                                                     </label>
                                                     <label for="status0">No</label>
