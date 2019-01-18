@@ -516,7 +516,14 @@ function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encod
     $url = parse_url($url, PHP_URL_PATH);
     $url = rtrim($url, '?&');
 
-    parse_str($_SERVER['QUERY_STRING'], $qs);
+    if(isset($_SERVER['QUERY_STRING']))
+    {
+        parse_str($_SERVER['QUERY_STRING'], $qs);
+    }
+    else
+    {
+        $qs = array();
+    }
 
     $qs = array_merge($qs, $set);
 
