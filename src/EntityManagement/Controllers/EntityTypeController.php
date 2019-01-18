@@ -167,7 +167,8 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
-            'group' => 'required',
+            'group' => 'required_without:group_new',
+            'group_new' => 'required_without:group',
             'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,0,deleted_at,NULL",
         ]);
 
@@ -177,7 +178,9 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        $groupName = Input::get('group_new') ? Input::get('group_new') : (Input::get('group') ? Input::get('group') : false);
+
+        if ($groupName) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -1403,7 +1406,7 @@ class EntityTypeController extends BaseController
                     $fieldData['entity_type_id'] = $typeId;
                     $fieldData['entity_group_id'] = $group->id;
                     $fieldData['parent_field_id'] = 0;
-                    
+
 
 
                     $fieldType = $fieldTypesManager->getType($fieldData['field_type']);

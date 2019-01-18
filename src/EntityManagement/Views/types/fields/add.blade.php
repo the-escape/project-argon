@@ -118,7 +118,7 @@
                                         <option value="{{$submittedGroup}}" selected="selected">{{$submittedGroup}}</option>
                                     @endif
                                 </select>
-                                <input type="text" class="js-create-new-group" placeholder="... or create new">
+                                <input type="text" name="group_new" id="group_new" class="js-create-new-group" placeholder="... or create new" value="{{ old('group_new') }}">
                             </div>
                         </div>
                         <div class="o-form-status__message">
