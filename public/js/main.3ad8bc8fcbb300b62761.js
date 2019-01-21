@@ -8262,6 +8262,10 @@ function processFields(fields) {
 }
 
 function processValues(values) {
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+
   return values.map(function (value, id) {
     return {
       value: value,
@@ -13198,4 +13202,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.5603df8bb03d0e6c6027.js.map
+//# sourceMappingURL=main.3ad8bc8fcbb300b62761.js.map

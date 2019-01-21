@@ -51,10 +51,15 @@ function processFields (fields) {
 }
 
 function processValues (values) {
+    if (!Array.isArray(values)) {
+        values = [values]
+    }
+
     return values.map((value, id) => ({
         value,
         id
     }))
+
 }
 
 function createEmptyValueObj (field) {
