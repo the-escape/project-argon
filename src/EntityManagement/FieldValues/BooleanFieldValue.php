@@ -6,6 +6,14 @@ class BooleanFieldValue extends AbstractFieldValue
 {
     public function isTrue()
     {
+        if(is_array($this->data))
+        {
+            foreach($this->data as $data)
+            {
+                return $data == 1;
+            }
+        }
+
         return $this->data == 1;
     }
 
