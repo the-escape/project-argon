@@ -360,16 +360,17 @@ abstract class AbstractFieldType
                 }
                 break;
             case 'image':
-                foreach($values as $tmpVal)
+                $tmpValues = $values->toArray();
+                foreach($tmpValues as $tmpVal)
                 {
                     if($tmpVal)
                     {
                         $returnValues[] = [
-                            'id' => $tmpVal->getId(),
-                            'width' => $tmpVal->getWidth(),
-                            'height' => $tmpVal->getHeight(),
-                            'alt' => $tmpVal->getAlt(),
-                            'url' => $tmpVal->getUrl(),
+                            'id' => $tmpVal->id,
+                            'width' => $tmpVal->width,
+                            'height' => $tmpVal->height,
+                            'alt' => $tmpVal->alt,
+                            'url' => $tmpVal->url,
                         ];
                     }
                     else
