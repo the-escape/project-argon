@@ -154,8 +154,8 @@ class PagesController extends BaseController
             'status' => $request->input('status'),
         ]);
 
-        $parentEntity = $entityRepository->where('id', $parentId)->first();
-        $locale = $localeRepository->getFullLocaleById($parentEntity->getId());
+        $parentEntity = EntityCache::where('entity_id', $parentId)->first();
+        $locale = $localeRepository->getFullLocaleById($parentEntity->entity_locale_id);
 
         $localisation = $localisationRepository->create([
             'entity_id' => $entity->getId(),
