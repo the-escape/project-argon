@@ -268,7 +268,8 @@ class EntityTypeController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'field_type' => 'required',
-            'group' => 'required',
+            'group' => 'required_without:group_new',
+            'group_new' => 'required_without:group',
             'field_slug' => "required|unique:entity_fields,field_slug,{$fieldId},id,entity_type_id,{$typeId},parent_field_id,0,deleted_at,NULL",
         ]);
 
@@ -318,7 +319,9 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        $groupName = Input::get('group_new') ? Input::get('group_new') : (Input::get('group') ? Input::get('group') : false);
+
+        if ($groupName) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -549,7 +552,8 @@ class EntityTypeController extends BaseController
     ) {
         $this->validate($this->request, [
             'name' => 'required',
-            'group' => 'required',
+            'group' => 'required_without:group_new',
+            'group_new' => 'required_without:group',
             'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},deleted_at,NULL,parent_field_id,0",
         ]);
 
@@ -557,7 +561,9 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        $groupName = Input::get('group_new') ? Input::get('group_new') : (Input::get('group') ? Input::get('group') : false);
+
+        if ($groupName) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -624,7 +630,8 @@ class EntityTypeController extends BaseController
     ) {
         $this->validate($this->request, [
             'name' => 'required',
-            'group' => 'required',
+            'group' => 'required_without:group_new',
+            'group_new' => 'required_without:group',
             'field_slug' => "required|unique:entity_fields,field_slug,$comboId,id,entity_type_id,{$typeId},deleted_at,NULL,parent_field_id,0",
         ]);
 
@@ -639,7 +646,9 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        $groupName = Input::get('group_new') ? Input::get('group_new') : (Input::get('group') ? Input::get('group') : false);
+
+        if ($groupName) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
