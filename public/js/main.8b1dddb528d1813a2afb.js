@@ -7113,7 +7113,7 @@ booleanvue_type_template_id_49a456a8_render._withStripped = true
       if (value === '') {
         return +field.options.settings.initial_value;
       } else {
-        return value || 0;
+        return +value || 0;
       }
     }
   },
@@ -13202,4 +13202,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3ad8bc8fcbb300b62761.js.map
+//# sourceMappingURL=main.8b1dddb528d1813a2afb.js.map

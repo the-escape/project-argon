@@ -74,7 +74,7 @@ export default {
             if(value === ''){
                 return +field.options.settings.initial_value
             }else{
-                return value || 0
+                return +value || 0
             }
         }
     },
