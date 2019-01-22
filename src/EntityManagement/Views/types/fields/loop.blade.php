@@ -43,7 +43,7 @@
                 <div class="o-form-status">
                     <div class="o-form__list">
                         <div class="o-checkbox">
-                            <input type="hidden" name="{{$name}}" class="js-toggle-value" value="0">
+                            <input type="hidden" name="{{$name}}" class="js-toggle-value" value="{{ $checked ? '1' : '0' }}">
                             @if($parent)
                                 <label><input type="checkbox" value="1" id="{{$name}}" class="parent js-toggle-input" {{ $checked ? 'checked' : '' }}><span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span></label>
                             @else
