@@ -453,7 +453,7 @@ class PagesController extends BaseController
             $currentRevision = $publishedRevision;
         }
 
-        $revisions = $localisation->archivedRevisions(5, ['*'], 'revisions');
+        $revisions = $localisation->archivedRevisions(15, ['*'], 'revisions');
 
         $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage());
 

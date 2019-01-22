@@ -4,6 +4,8 @@ namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\EntityField;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
+use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
+use Escape\Argon\Media\Eloquent\MediaItem;
 
 abstract class AbstractFieldType
 {
@@ -360,27 +362,34 @@ abstract class AbstractFieldType
                 }
                 break;
             case 'image':
-                $tmpValues = $values->toArray();
-                foreach($tmpValues as $tmpVal)
+                foreach($values as $tmpVal)
                 {
-                    if($tmpVal)
+                    if($tmpVal instanceof MediaItem)
                     {
                         $returnValues[] = [
-                            'id' => $tmpVal->id,
-                            'width' => $tmpVal->width,
-                            'height' => $tmpVal->height,
-                            'alt' => $tmpVal->alt,
-                            'url' => $tmpVal->url,
+                            'id' => $tmpVal->getId(),
+                            'width' => $tmpVal->getWidth(),
+                            'height' => $tmpVal->getHeight(),
+                            'alt' => $tmpVal->getAlt(),
+                            'url' => $tmpVal->getUrl(),
+                        ];
+                    }
+                    elseif($tmpVal instanceof CacheMediaItemValue)
+                    {
+                        $returnValues[] = [
+                            'id' => $tmpVal->getId(),
+                            'alt' => $tmpVal->getAlt(),
+                            'url' => $tmpVal->getUrl(['updatedAt' => 1]),
                         ];
                     }
                     else
                     {
                         $returnValues[] = [
-                            'id' => '',
-                            'width' => '',
-                            'height' => '',
-                            'alt' => '',
-                            'url' => '',
+                            'id' => isset($tmpVal->id) ? $tmpVal->id : '',
+                            'width' => isset($tmpVal->width) ? $tmpVal->width : '',
+                            'height' => isset($tmpVal->height) ? $tmpVal->height : '',
+                            'alt' => isset($tmpVal->alt) ? $tmpVal->alt : '',
+                            'url' => isset($tmpVal->url) ? $tmpVal->url : '',
                         ];
                     }
                 }
