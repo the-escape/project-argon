@@ -37,7 +37,16 @@ class EntityRepository extends BaseRepository
                 $node = $node->where('status', '=', $status);
             }
 
-            $node = $node->first();
+            $nodes = $node->with('type')->get();
+
+            foreach ($nodes as $idx => $entity) {
+                if ($entity->type->type != 'page'){
+                    continue;
+                }
+                $node = $entity;
+                break;
+            }
+
         } else {
             $segments = explode('/', $path);
 

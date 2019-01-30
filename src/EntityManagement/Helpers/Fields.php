@@ -123,7 +123,16 @@ class Fields
             // then remove top level field nice name and validation since not needed
             if (@$settings->multiple) {
                 foreach ($request->input($niceName,[]) as $k => $v) {
-                    $niceNames["{$niceName}.{$k}"] = $niceNames[$niceName].self::DIVIDER.($k+1);
+                    // handles multiple buttons in a combo
+                    if (!preg_match('/^[0-9][0-9]*$/', $k))
+                    {
+                        // $k is a unique hash - this is sufficient for multiple too
+                        $niceNames["{$niceName}.{$k}"] = $niceNames[$niceName].self::DIVIDER.($k);
+                    }
+                    else
+                    {
+                        $niceNames["{$niceName}.{$k}"] = $niceNames[$niceName].self::DIVIDER.($k+1);
+                    }
 
                     if (@$rules[$niceName]) {
                         $rules["{$niceName}.{$k}"] = $rules[$niceName];
