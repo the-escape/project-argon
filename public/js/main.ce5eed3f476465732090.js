@@ -3710,7 +3710,10 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
               "button",
               {
                 staticClass: "o-confirm-btn",
-                attrs: { title: "Duplicate" },
+                attrs: {
+                  "data-balloon": "Duplicate" + _vm.tooltipPostfixValue,
+                  title: "Duplicate"
+                },
                 on: {
                   click: function($event) {
                     _vm.duplicate($event)
@@ -3734,7 +3737,12 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
           {
             staticClass: "o-confirm-btn",
             class: { "o-confirm-btn--fade": _vm.fadeDelete },
-            attrs: { title: "Delete" },
+            attrs: {
+              "data-balloon": _vm.fadeDelete
+                ? false
+                : "Delete" + _vm.tooltipPostfixValue,
+              title: "Delete"
+            },
             on: {
               click: function($event) {
                 _vm.toggleConfirmDelete($event)
@@ -3755,7 +3763,10 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
               "button",
               {
                 staticClass: "o-confirm-btn js-add-btn",
-                attrs: { title: "Add" },
+                attrs: {
+                  "data-balloon": "Add" + _vm.tooltipPostfixValue,
+                  title: "Add"
+                },
                 on: {
                   click: function($event) {
                     _vm.add($event)
@@ -3778,7 +3789,12 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
               {
                 staticClass: "o-confirm-btn",
                 class: { "o-confirm-btn--fade": !_vm.viewUrl },
-                attrs: { href: _vm.viewUrl, target: "_blank", title: "view" },
+                attrs: {
+                  href: _vm.viewUrl,
+                  target: "_blank",
+                  "data-balloon": "View" + _vm.tooltipPostfixValue,
+                  title: "view"
+                },
                 on: {
                   click: function($event) {
                     _vm.view($event)
@@ -3890,11 +3906,15 @@ confirm_btnvue_type_template_id_73a6f08d_render._withStripped = true
 //
 //
 /* harmony default export */ var confirm_btnvue_type_script_lang_js_ = ({
-  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView'],
+  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix'],
   data: function data() {
     return {
-      confirmDelete: false
+      confirmDelete: false,
+      tooltipPostfixValue: ''
     };
+  },
+  created: function created() {
+    this.tooltipPostfixValue = this.tooltipPostfix || this.tooltipPostfixValue;
   },
   methods: {
     toggleConfirmDelete: function toggleConfirmDelete(evt) {
@@ -9740,7 +9760,8 @@ Cropper_component.options.__file = "resources/assets/js/src/components/cropper/c
       if (!options.hasOwnProperty('image')) {
         new noty_default.a({
           text: 'No Image was passed to the cropper!',
-          type: 'error'
+          type: 'error',
+          timeout: 3500
         }).show();
         return;
       }
@@ -9961,7 +9982,8 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
               showAdd: "true",
               showView: "true",
               viewUrl: _vm.viewUrl,
-              "fade-delete": _vm.preventDelete
+              "fade-delete": _vm.preventDelete,
+              tooltipPostfix: " Page"
             },
             on: {
               add: _vm.toggleAddForm,
@@ -10029,12 +10051,14 @@ var Bus = new vue_default.a();
         if (typeof this.node.level === 'undefined') {
           new noty_default.a({
             text: "You can't delete the home page",
-            type: 'error'
+            type: 'error',
+            timeout: 3500
           }).show();
         } else {
           new noty_default.a({
             text: "Before you delete this page, move or remove it's child pages",
-            type: 'error'
+            type: 'error',
+            timeout: 3500
           }).show();
         }
 
@@ -10054,14 +10078,16 @@ var Bus = new vue_default.a();
           if (data.success) {
             new noty_default.a({
               text: 'Successfully removed ' + pageName,
-              type: 'success'
+              type: 'success',
+              timeout: 3500
             }).show();
 
             _this.$root.$children[0].removeNode(_this.treeIndex, _this.node.path);
           } else {
             new noty_default.a({
               text: 'An error occured removing: ' + pageName,
-              type: 'error'
+              type: 'error',
+              timeout: 3500
             }).show();
           }
         }).catch(function (error) {
@@ -10072,7 +10098,8 @@ var Bus = new vue_default.a();
     viewError: function viewError() {
       new noty_default.a({
         text: "The Page needs to be published before you can view it",
-        type: 'error'
+        type: 'error',
+        timeout: 3500
       }).show();
     },
     edit: function edit() {
@@ -10294,6 +10321,7 @@ addForm_component.options.__file = "resources/assets/js/src/components/site-tree
 //
 //
 //
+//
 
 
 
@@ -10379,7 +10407,8 @@ var Rowvue_type_template_id_6f236b38_render = function() {
               showAdd: "true",
               showView: "true",
               viewUrl: _vm.viewUrl,
-              "fade-delete": _vm.preventDelete
+              "fade-delete": _vm.preventDelete,
+              tooltipPostfix: " Page"
             },
             on: {
               add: _vm.toggleAddForm,
@@ -10416,6 +10445,7 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -13223,4 +13253,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.4e585bab427b69e94cdf.js.map
+//# sourceMappingURL=main.ce5eed3f476465732090.js.map

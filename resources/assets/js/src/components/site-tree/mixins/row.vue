@@ -19,12 +19,14 @@ export default {
                 if(typeof this.node.level === 'undefined'){
                     new Noty({
                         text: "You can't delete the home page",
-                        type: 'error'
+                        type: 'error',
+                        timeout: 3500
                     }).show()
                 }else{
                     new Noty({
                         text: "Before you delete this page, move or remove it's child pages",
-                        type: 'error'
+                        type: 'error',
+                        timeout: 3500
                     }).show()
                 }
 
@@ -47,13 +49,15 @@ export default {
                         if (data.success) {
                             new Noty({
                                 text: 'Successfully removed ' + pageName,
-                                type: 'success'
+                                type: 'success',
+                                timeout: 3500
                             }).show()
                             this.$root.$children[0].removeNode(this.treeIndex, this.node.path)
                         } else {
                             new Noty({
                                 text: 'An error occured removing: ' + pageName,
-                                type: 'error'
+                                type: 'error',
+                                timeout: 3500
                             }).show()
                         }
                     })
@@ -63,7 +67,8 @@ export default {
         viewError() {
             new Noty({
                 text: "The Page needs to be published before you can view it",
-                type: 'error'
+                type: 'error',
+                timeout: 3500
             }).show()
         },
         edit() {
