@@ -10,7 +10,7 @@
 
         <div class="c-dashboard__welcome-msg">
             <h1>Hi {{ auth()->user()->name }}</h1>
-            <p>Welcome back to your dashboard!</p>
+            <p>Welcome to your dashboard</p>
 
             <div class="c-dashboard__logo">
                 <img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">

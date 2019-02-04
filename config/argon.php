@@ -91,7 +91,7 @@ return [
             'feedback-form',
         ],
         'create_blog_post_link' => '',
-        'create_blog_post_label' => 'Create new blog post',
+        'create_blog_post_label' => 'Create news article',
         'account_manager_name' => 'The Escape',
         'account_manager_phone' => '+44 (0) 1256 334567',
         'account_manager_email' => '',
