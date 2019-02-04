@@ -8,7 +8,8 @@ export function Notifications () {
     return window.notifications.map(notif => {
         return new Noty({
             text: notif.text,
-            type: notif.success ? 'success' : 'error'
+            type: notif.success ? 'success' : 'error',
+            timeout: 3500
         }).show()
     })
 }

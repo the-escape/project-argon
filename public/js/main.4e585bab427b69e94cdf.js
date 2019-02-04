@@ -478,7 +478,7 @@ if(false) {}
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 262 modules ***!
+  !*** ./resources/assets/js/src/index.js + 263 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -1829,7 +1829,8 @@ function Notifications() {
   return window.notifications.map(function (notif) {
     return new noty_default.a({
       text: notif.text,
-      type: notif.success ? 'success' : 'error'
+      type: notif.success ? 'success' : 'error',
+      timeout: 3500
     }).show();
   });
 }
@@ -3753,7 +3754,7 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
           ? _c(
               "button",
               {
-                staticClass: "o-confirm-btn",
+                staticClass: "o-confirm-btn js-add-btn",
                 attrs: { title: "Add" },
                 on: {
                   click: function($event) {
@@ -10003,10 +10004,17 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/RootRow.vue?vue&type=template&id=5870ccf6&
 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/util/bus.js
+
+var Bus = new vue_default.a();
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/mixins/row.vue?vue&type=script&lang=js&
 
 
+
 /* harmony default export */ var rowvue_type_script_lang_js_ = ({
+  mounted: function mounted() {
+    Bus.$on('closeAddForm', this.closeAddForm.bind(this));
+  },
   methods: {
     toggleAddForm: function toggleAddForm() {
       this.addFormOpen = !this.addFormOpen;
@@ -10069,6 +10077,9 @@ RootRowvue_type_template_id_5870ccf6_render._withStripped = true
     },
     edit: function edit() {
       window.location.href = this.editUrl;
+    },
+    closeAddForm: function closeAddForm() {
+      this.addFormOpen = false;
     }
   },
   computed: {
@@ -10118,7 +10129,7 @@ var addFormvue_type_template_id_e8222bfa_render = function() {
   return _c("div", { staticClass: "o-table__dropdown is-active" }, [
     _c("div", { staticClass: "o-table__dropdown-wrap" }, [
       _c("div", { staticClass: "o-form" }, [
-        _c("div", { staticClass: "o-form__inline" }, [
+        _c("div", { staticClass: "o-form__inline choices--page-list" }, [
           _c("label", { attrs: { for: "add" + _vm.inputName } }, [
             _vm._v("Page Type")
           ]),
@@ -10126,24 +10137,19 @@ var addFormvue_type_template_id_e8222bfa_render = function() {
           _c(
             "select",
             { attrs: { id: "add" + _vm.inputName } },
-            [
-              _c("option", { attrs: { value: " " } }, [_vm._v(" ")]),
-              _vm._v(" "),
-              _vm._l(_vm.options, function(option, index) {
-                return _c(
-                  "option",
-                  { key: index, domProps: { value: option.id } },
-                  [_vm._v(_vm._s(option.name))]
-                )
-              })
-            ],
-            2
+            _vm._l(_vm.options, function(option, index) {
+              return _c(
+                "option",
+                { key: index, domProps: { value: option.id } },
+                [_vm._v(_vm._s(option.name))]
+              )
+            })
           ),
           _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "o-btn o-btn--sm o-btn--square o-btn--primary",
+              staticClass: "o-btn o-btn--xs",
               on: {
                 click: function($event) {
                   _vm.add($event)
@@ -10164,7 +10170,6 @@ addFormvue_type_template_id_e8222bfa_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=template&id=e8222bfa&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/addForm.vue?vue&type=script&lang=js&
-//
 //
 //
 //
@@ -10543,6 +10548,9 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
 //
 
 
+
+
+
 /* harmony default export */ var site_tree_Appvue_type_script_lang_js_ = ({
   components: {
     RootRow: RootRow,
@@ -10558,6 +10566,19 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
     this.rootNodes = window.sitemap;
     breadthFirstSearch(this.rootNodes, function (childNode) {
       childNode.isExpanded = false;
+    });
+    Object(_esm5["fromEvent"])(document, 'click').pipe(Object(operators["filter"])(function (evt) {
+      if (evt.target.classList.contains('js-add-btn')) {
+        return false;
+      }
+
+      var hasParentDropdown = evt.target.closest('.o-table__dropdown-wrap');
+
+      if (!hasParentDropdown) {
+        return true;
+      }
+    })).subscribe(function () {
+      Bus.$emit('closeAddForm');
     });
   },
   methods: {
@@ -13202,4 +13223,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8b1dddb528d1813a2afb.js.map
+//# sourceMappingURL=main.4e585bab427b69e94cdf.js.map

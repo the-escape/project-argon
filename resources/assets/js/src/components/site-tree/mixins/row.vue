@@ -1,8 +1,12 @@
 <script>
 import { post } from '../../../util'
 import Noty from 'noty'
+import { Bus } from '../util/bus'
 
 export default {
+    mounted() {
+        Bus.$on('closeAddForm', this.closeAddForm.bind(this))
+    },
     methods: {
         toggleAddForm() {
             this.addFormOpen = !this.addFormOpen
@@ -64,6 +68,9 @@ export default {
         },
         edit() {
             window.location.href = this.editUrl
+        },
+        closeAddForm() {
+            this.addFormOpen = false
         }
     },
     computed: {

@@ -12,7 +12,7 @@
                     <use xlink:href="/argon/images/svgicons.svg#delete"></use>
                 </svg>
             </button>
-            <button class="o-confirm-btn" title="Add" v-if="showAdd" @click="add($event)">
+            <button class="o-confirm-btn js-add-btn" title="Add" v-if="showAdd" @click="add($event)">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#add"></use>
                 </svg>
