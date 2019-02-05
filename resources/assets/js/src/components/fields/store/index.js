@@ -1,11 +1,13 @@
 import Vuex from 'vuex'
-import { createUniqueHash } from '../../../util'
+import { createUniqueHash, deepClone } from '../../../util'
 import { preventPageLeave } from '../../../ui'
 
 export function getStore () {
     return new Vuex.Store({
         state: {
-            fields: []
+            fields: [],
+            oldState: [],
+            header: ''
         },
         getters: {
             getField: state => id => {
@@ -31,6 +33,18 @@ export function getStore () {
         mutations: {
             setFields (state, { fields }) {
                 state.fields = fields
+            },
+
+            setOldState (state) {
+                state.oldState = deepClone(state.fields)
+            },
+
+            restoreOldState (state) {
+                state.fields = deepClone(state.oldState)
+            },
+
+            setHeader (state, { header }) {
+                state.header = header
             },
 
             // Field Mutations

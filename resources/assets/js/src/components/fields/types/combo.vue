@@ -55,6 +55,13 @@ export default {
             this.addEmptyItem()
         }
     },
+    watch: {
+        items: function(){
+            if(!this.items.length){
+                this.addEmptyItem()
+            }
+        }
+    },
     methods: {
         toggleBodyHide: function(evt, scrollID) {
             evt.preventDefault()

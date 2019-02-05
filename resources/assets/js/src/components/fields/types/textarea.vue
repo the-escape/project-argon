@@ -4,7 +4,7 @@
             <label :for="inputName">{{ name }}</label>
             <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
-                    <textarea :id="inputName" :name="inputName" v-on:keyup.stop="updateValue(valueObj, $event.target.value)">{{ valueObj.value }}</textarea>
+                    <textarea :id="inputName" :name="inputName" v-on:keyup.stop="updateValue(valueObj, $event.target.value)" :value="valueObj.value"></textarea>
                 </template>
             </multi>
         </validation>

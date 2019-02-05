@@ -57,9 +57,13 @@ export default {
             tmpValues: []
         }
     },
+    watch:{
+        values: function(){
+            this.filterOptions()
+        }
+    },
     created: function () {
-        this.tmpFiltered = this.options.filter(option => !~this.values.findIndex(value => value === option.value))
-        this.tmpValues = this.options.filter(option => ~this.values.findIndex(value => value === option.value))
+        this.filterOptions()
     },
     computed: {
         filteredOptions: {
@@ -78,6 +82,12 @@ export default {
                 this.tmpValues = values
                 this.values = this.tmpValues.map(value => value.value)
             }
+        }
+    },
+    methods: {
+        filterOptions () {
+            this.tmpFiltered = this.options.filter(option => !~this.values.findIndex(value => value === option.value))
+            this.tmpValues = this.options.filter(option => ~this.values.findIndex(value => value === option.value))
         }
     }
 }

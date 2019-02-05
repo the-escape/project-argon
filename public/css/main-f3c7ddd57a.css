@@ -7417,6 +7417,8 @@ button[data-balloon] {
     -webkit-box-flex: 1;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%; }
+    .c-actions__content h2 + * {
+      margin-top: 30px !important; }
   .c-actions__group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -7939,4 +7941,4 @@ $color-primary-accent: rbga();*/
 
 
 
-//# sourceMappingURL=main-d4beb3f5db.css.map
+//# sourceMappingURL=main-f3c7ddd57a.css.map
