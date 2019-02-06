@@ -62,10 +62,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
-                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
-                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="#" class="o-btn o-btn--grey preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <button type="submit" class="o-btn o-btn--grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--grey">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -191,10 +191,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
-                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
-                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="#" class="o-btn o-btn--grey preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <button type="submit" class="o-btn o-btn--grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--grey">Cancel</a>
                                 </div>
                             </div>
                         </div>

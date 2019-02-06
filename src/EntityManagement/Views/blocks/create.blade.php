@@ -87,8 +87,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">save</button>
-                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--grey">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -103,8 +103,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">save</button>
-                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="{{ route('cms:blocks:manage') }}" class="o-btn o-btn--grey">Cancel</a>
                                 </div>
                             </div>
                         </div>

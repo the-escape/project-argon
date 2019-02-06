@@ -149,8 +149,8 @@
                 </div>
                 <div class="c-actions">
                     <div class="c-actions__group">
-                        <button type="submit" class="o-btn o-btn--primary">save</button>
-                        <a href="{{ route('cms:menus:manage') }}" class="o-btn o-btn--light-grey">Cancel Changes</a>
+                        <button type="submit" class="o-btn o-btn--primary">Save</button>
+                        <a href="{{ route('cms:menus:manage') }}" class="o-btn o-btn--grey">Cancel</a>
                         <a href="{{ route('cms:menus:delete', ['id' => $menu->id]) }}" onclick="return confirm('Are you sure you want to delete this locale?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>
