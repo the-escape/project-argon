@@ -8,11 +8,6 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
-            <a href="{{ route('cms:role:manage') }}" class="c-header__back">
-                <svg>
-                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                </svg>
-            </a>
             <h1>Role</h1>
         </div>
         <div class="c-tab__nav">
@@ -114,8 +109,8 @@
                 </div>
                 <div class="c-actions">
                     <div class="c-actions__group">
-                        <button type="submit" class="o-btn o-btn--primary">save</button>
-                        <a href="{{ route('cms:role:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                        <button type="submit" class="o-btn o-btn--primary">Save</button>
+                        <a href="{{ route('cms:role:manage') }}" class="o-btn ">Cancel</a>
                         <a href="{{ route('cms:role:delete', ['id' => $role->id]) }}" onclick="return confirm('Are you sure you want to delete this role?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>

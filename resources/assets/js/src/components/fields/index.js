@@ -20,11 +20,12 @@ export function Fields () {
 
         const store = getStore()
 
-        let { fields, header } = window.fieldGroups[name]
+        let { fields, header, actions = true } = window.fieldGroups[name]
         fields = processFields(fields)
 
         store.commit('setFields', { fields: fields })
         store.commit('setHeader', { header })
+        store.commit('setShowActions', { actions })
 
         return new Vue({
             store,

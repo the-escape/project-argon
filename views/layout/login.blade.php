@@ -6,10 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>CMS Admin Area</title>
+        @include('argon::inc.primary-colour-css-variable')
         <link rel="stylesheet" href="/argon/css/main.css">
         <link rel="adminroot" href="/admin">
     </head>
-    <body class="c-login__bg">
+    <body class="c-login__bg" style="background-image: url('{{ config('argon.login_bg') }}')">
 
         @section('header')
         @show

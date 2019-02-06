@@ -25,12 +25,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
-                        <svg>
-                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                        </svg>
-                    </a>
-
                     <div class="c-header__local-container">
                         <h1>{{$page->name}}</h1>
                     </div>
@@ -68,10 +62,10 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
-                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
-                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="#" class="o-btn preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <button type="submit" class="o-btn" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +75,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                <h2>Attributes</h2>
+                                <h2>Page properties</h2>
 
                                 <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
                                     <div class="o-form-status">
@@ -193,14 +187,38 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         </div>
                                     </div>
                                 </div>
+
+                                @if(($propertyGroups = $page->getGroups($localisation->getLocaleId())->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
+
+                                    <hr>
+
+                                    @foreach($propertyGroups as $group)
+
+                                        <div class="l-container">
+                                            <?php
+                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                            ?>
+                                            <script>
+                                                window.fieldGroups['{{$group->id}}'] = {
+                                                    fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
+                                                    header: "{{ $group->name }}",
+                                                    actions: false
+                                                }
+                                            </script>
+                                            <div class="js-fields" data-name="{{$group->id}}"></div>
+                                        </div>
+
+                                    @endforeach
+                                @endif
+
                             </div>
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">publish changes</button>
-                                    <a href="#" class="o-btn o-btn--light-grey preview-page" data-preview-id="{{ $currentRevision->id }}">preview changes</a>
-                                    <button type="submit" class="o-btn o-btn--light-grey" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">save draft</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="#" class="o-btn  preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <button type="submit" class="o-btn " data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +326,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     <div class="c-actions__group">
                                         <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
                                     </div>
-                                </back>
+                                </div>
                             </div>
                         </main>
                     </div>
@@ -316,29 +334,35 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                 @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
                     @foreach($page->getGroups($localisation->getLocaleId()) as $group)
-                        <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
-                            <main class="c-tab-panel__container c-container">
-                                <?php
-                                    $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                ?>
-                                <script>
-                                    window.groups.push({
-                                        id: '{{$group->id}}',
-                                        isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                        isRendering: {{ $isRendering }},
-                                        isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                        name: '{{ $group->name }}',
-                                        isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                        image: '{{ $group->getSetting("image") }}'
-                                    });
-                                    window.fieldGroups['{{$group->id}}'] = {
-                                        fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
-                                        header: "{{ $group->name }}"
-                                    }
-                                </script>
-                                <div class="js-fields" data-name="{{$group->id}}"></div>
-                            </main>
-                        </div>
+
+                        @if(!$group->getSetting('isProperty') && !$group->getSetting('isAttribute'))
+
+                            <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
+                                <main class="c-tab-panel__container c-container">
+                                    <?php
+                                        $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                    ?>
+                                    <script>
+                                        window.groups.push({
+                                            id: '{{$group->id}}',
+                                            isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                            isRendering: {{ $isRendering }},
+                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                            name: '{{ $group->name }}',
+                                            isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                            image: '{{ $group->getSetting("image") }}'
+                                        });
+                                        window.fieldGroups['{{$group->id}}'] = {
+                                            fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision), JSON_PRETTY_PRINT) !!},
+                                            header: "{{ $group->name }}"
+                                        }
+                                    </script>
+                                    <div class="js-fields" data-name="{{$group->id}}"></div>
+                                </main>
+                            </div>
+
+                        @endif
+
                     @endforeach
                 @endif
             </div>

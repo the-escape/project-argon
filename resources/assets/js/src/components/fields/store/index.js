@@ -7,7 +7,8 @@ export function getStore () {
         state: {
             fields: [],
             oldState: [],
-            header: ''
+            header: '',
+            showActions: true
         },
         getters: {
             getField: state => id => {
@@ -33,6 +34,10 @@ export function getStore () {
         mutations: {
             setFields (state, { fields }) {
                 state.fields = fields
+            },
+
+            setShowActions(state, { actions }) {
+              state.showActions =  actions
             },
 
             setOldState (state) {

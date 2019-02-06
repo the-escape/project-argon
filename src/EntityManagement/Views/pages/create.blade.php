@@ -18,11 +18,6 @@
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
-                        <svg>
-                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                        </svg>
-                    </a>
                     <h1>Create Page</h1>
                 </div>
                 <div class="c-header__nav c-tab__nav js-tabs-nav">
@@ -45,7 +40,8 @@
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                <h2>Attributes</h2>
+                                <h2>Page properties</h2>
+
                                 <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
                                     <div class="o-form-status">
                                         <div class="o-form-status__input">
@@ -146,8 +142,8 @@
                             </div>
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -162,8 +158,8 @@
 
                             <div class="c-actions">
                                 <div class="c-actions__group">
-                                    <button type="submit" class="o-btn o-btn--primary">save page</button>
-                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn o-btn--light-grey">cancel</a>
+                                    <button type="submit" class="o-btn o-btn--primary">Save</button>
+                                    <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
                             </div>
                         </div>

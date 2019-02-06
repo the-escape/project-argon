@@ -30,7 +30,9 @@
         &.editing {
             opacity: 1;
             border-color: $primary;
+            border-color: var(--primary-color);
             background-color: $primary;
+            background-color: var(--primary-color);
         }
 
         &.show {
@@ -69,6 +71,7 @@
         .editing & {
             background-color: white;
             border-color: $primary;
+            border-color: var(--primary-color);
         }
     }
 

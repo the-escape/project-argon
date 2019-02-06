@@ -43,6 +43,7 @@ ol {
             height: 8px;
             border-radius: 50%;
             background-color: $primary;
+            background-color: var(--primary-color);
             position: absolute;
             top: 0.7em;
             left: -0.85em;
@@ -62,6 +63,7 @@ ol {
             counter-increment: orderedList;
             content: counter(orderedList) ".";
             color: $primary;
+            color: var(--primary-color);
             margin-right: 0.5em;
         }
     }

@@ -152,8 +152,10 @@
         }
 
         &.is-highlighted {
-            background-color: $primary-dark;
-            border: 1px solid $primary-dark;
+            background-color: $primary;
+            background-color: var(--primary-color);
+            border: 1px solid $primary;
+            border: 1px solid var(--primary-color);
         }
 
         .is-disabled & {
@@ -204,6 +206,7 @@
 
     &--plain &__item--selectable.is-highlighted {
         background-color: $primary;
+        background-color: var(--primary-color);
         color: #fff;
     }
 
@@ -212,7 +215,8 @@
         font-size: 1.2rem;
         padding: 10px;
         border-bottom: 1px solid $grey;
-        color: $primary-dark;
+        color: $primary;
+        color: var(--primary-color);
     }
 
     &__button {
@@ -289,6 +293,7 @@
     &:hover &__btn {
         color: #fff;
         background-color: $primary;
+        background-color: var(--primary-color);
         transition: background-color $userActive $easeOut,
             color $userActive $easeOut;
     }

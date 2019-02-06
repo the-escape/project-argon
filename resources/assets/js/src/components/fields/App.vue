@@ -1,17 +1,28 @@
 <template>
-    <div class="c-actions__container">
-        <div class="c-actions__content c-tab-panel__inner-container l-full">
-            <h2>{{ header }}</h2>
+    <div>
+        <template v-if="showActions">
+            <div class="c-actions__container">
+                <div class="c-actions__content c-tab-panel__inner-container l-full">
+                    <h2>Editing: <span class="h-text--primary">{{ header }}</span></h2>
+                    <div class="o-form l-accordion-container">
+                        <types v-for="field in fields" :key="field.id" :field="field"></types>
+                    </div>
+                </div>
+                <div class="c-actions">
+                    <div class="c-actions__group">
+                        <button type="submit" class="o-btn o-btn--primary" @click="apply($event)">Apply</button>
+                        <button type="submit" class="o-btn" @click="cancel($event)">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template v-else>
+            <h3>{{ header }}</h3>
             <div class="o-form l-accordion-container">
                 <types v-for="field in fields" :key="field.id" :field="field"></types>
             </div>
-        </div>
-        <div class="c-actions">
-            <div class="c-actions__group">
-                <button type="submit" class="o-btn o-btn--primary" @click="apply($event)">Apply</button>
-                <button type="submit" class="o-btn" @click="cancel($event)">Cancel</button>
-            </div>
-        </div>
+        </template>
     </div>
 </template>
 
@@ -40,6 +51,9 @@ export default {
         },
         header: function () {
             return this.$store.state.header
+        },
+        showActions: function() {
+            return this.$store.state.showActions
         }
     }
 }

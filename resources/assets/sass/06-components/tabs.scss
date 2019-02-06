@@ -38,13 +38,15 @@
         }
 
         &.active &-container {
-            color: $client-primary;
+            color: $primary;
+            color: var(--primary-color);
             background-color: #fff;
         }
 
         &:not(.active):hover &-container,
         &:not(.active):focus &-container {
-            background-color: $client-primary;
+            background-color: $primary;
+            background-color: var(--primary-color);
         }
     }
 }

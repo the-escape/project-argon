@@ -7,16 +7,16 @@
 
 //	Client colours
 //====================
-$client-primary: #12a3c7;
-$client-primary-acc: #0d728b;
-$client-dark: darken($client-primary, 13%);
-$client-light: lighten($client-primary, 5%);
-$client-offwhite: lighten(desaturate($client-primary, 30%), 55%);
+$client-primary: #12a3c7; // do not use, legacy colour
+$client-primary-acc: #0d728b; // do not use
+$client-dark: darken($client-primary, 13%); // do not use
+$client-light: lighten($client-primary, 5%); // do not use
+$client-offwhite: lighten(desaturate($client-primary, 30%), 55%); // do not use
 
 $primary: $client-primary;
-$primary-dark: $client-dark;
-$primary-light: $client-light;
-$primary-offwhite: $client-offwhite;
+$primary-dark: $client-dark; // do not use
+$primary-light: $client-light; // do not use
+$primary-offwhite: $client-offwhite; // do not use
 
 $secondary: #b6b6b6;
 $secondary-light: #d8d8d8;

@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 279 modules ***!
+  !*** ./resources/assets/js/src/index.js + 280 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -3156,55 +3156,86 @@ var Appvue_type_template_id_6cdc7617_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-actions__container" }, [
-    _c(
-      "div",
-      { staticClass: "c-actions__content c-tab-panel__inner-container l-full" },
-      [
-        _c("h2", [_vm._v(_vm._s(_vm.header))]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "o-form l-accordion-container" },
-          _vm._l(_vm.fields, function(field) {
-            return _c("types", { key: field.id, attrs: { field: field } })
-          })
-        )
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "c-actions" }, [
-      _c("div", { staticClass: "c-actions__group" }, [
-        _c(
-          "button",
-          {
-            staticClass: "o-btn o-btn--primary",
-            attrs: { type: "submit" },
-            on: {
-              click: function($event) {
-                _vm.apply($event)
-              }
-            }
-          },
-          [_vm._v("Apply")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "o-btn",
-            attrs: { type: "submit" },
-            on: {
-              click: function($event) {
-                _vm.cancel($event)
-              }
-            }
-          },
-          [_vm._v("Cancel")]
-        )
-      ])
-    ])
-  ])
+  return _c(
+    "div",
+    [
+      _vm.showActions
+        ? [
+            _c("div", { staticClass: "c-actions__container" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "c-actions__content c-tab-panel__inner-container l-full"
+                },
+                [
+                  _c("h2", [
+                    _vm._v("Editing: "),
+                    _c("span", { staticClass: "h-text--primary" }, [
+                      _vm._v(_vm._s(_vm.header))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "o-form l-accordion-container" },
+                    _vm._l(_vm.fields, function(field) {
+                      return _c("types", {
+                        key: field.id,
+                        attrs: { field: field }
+                      })
+                    })
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "c-actions" }, [
+                _c("div", { staticClass: "c-actions__group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "o-btn o-btn--primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          _vm.apply($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Apply")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "o-btn",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          _vm.cancel($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        : [
+            _c("h3", [_vm._v(_vm._s(_vm.header))]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "o-form l-accordion-container" },
+              _vm._l(_vm.fields, function(field) {
+                return _c("types", { key: field.id, attrs: { field: field } })
+              })
+            )
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 Appvue_type_template_id_6cdc7617_render._withStripped = true
@@ -3213,6 +3244,17 @@ Appvue_type_template_id_6cdc7617_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue?vue&type=template&id=6cdc7617&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/App.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3253,6 +3295,9 @@ Appvue_type_template_id_6cdc7617_render._withStripped = true
     },
     header: function header() {
       return this.$store.state.header;
+    },
+    showActions: function showActions() {
+      return this.$store.state.showActions;
     }
   }
 });
@@ -4873,22 +4918,7 @@ var combovue_type_template_id_90b659e4_render = function() {
     _c("div", { staticClass: "o-combo__head" }, [
       _c("div", { staticClass: "o-combo__label" }, [
         _vm._v(_vm._s(_vm.comboField.options.name))
-      ]),
-      _vm._v(" "),
-      _vm.isMultiple
-        ? _c(
-            "button",
-            {
-              staticClass: "o-btn o-btn--sm o-btn--primary",
-              on: {
-                click: function($event) {
-                  _vm.addEmptyItem($event)
-                }
-              }
-            },
-            [_vm._v("Add " + _vm._s(_vm.comboField.options.comboAddName))]
-          )
-        : _vm._e()
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -5009,7 +5039,7 @@ var combovue_type_template_id_90b659e4_render = function() {
         ? _c(
             "button",
             {
-              staticClass: "o-btn o-btn--sm o-btn--primary",
+              staticClass: "o-btn o-btn--sm",
               on: {
                 click: function($event) {
                   _vm.addEmptyItem($event)
@@ -5029,7 +5059,6 @@ combovue_type_template_id_90b659e4_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/combo.vue?vue&type=template&id=90b659e4&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/combo.vue?vue&type=script&lang=js&
-//
 //
 //
 //
@@ -8099,7 +8128,8 @@ function getStore() {
     state: {
       fields: [],
       oldState: [],
-      header: ''
+      header: '',
+      showActions: true
     },
     getters: {
       getField: function getField(state) {
@@ -8136,20 +8166,24 @@ function getStore() {
         var fields = _ref.fields;
         state.fields = fields;
       },
+      setShowActions: function setShowActions(state, _ref2) {
+        var actions = _ref2.actions;
+        state.showActions = actions;
+      },
       setOldState: function setOldState(state) {
         state.oldState = deepClone(state.fields);
       },
       restoreOldState: function restoreOldState(state) {
         state.fields = deepClone(state.oldState);
       },
-      setHeader: function setHeader(state, _ref2) {
-        var header = _ref2.header;
+      setHeader: function setHeader(state, _ref3) {
+        var header = _ref3.header;
         state.header = header;
       },
       // Field Mutations
-      updateValue: function updateValue(state, _ref3) {
-        var fieldID = _ref3.fieldID,
-            newValue = _ref3.newValue;
+      updateValue: function updateValue(state, _ref4) {
+        var fieldID = _ref4.fieldID,
+            newValue = _ref4.newValue;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -8167,9 +8201,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      updateValues: function updateValues(state, _ref4) {
-        var fieldID = _ref4.fieldID,
-            newValues = _ref4.newValues;
+      updateValues: function updateValues(state, _ref5) {
+        var fieldID = _ref5.fieldID,
+            newValues = _ref5.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -8180,9 +8214,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addValue: function addValue(state, _ref5) {
-        var fieldID = _ref5.fieldID,
-            valueObj = _ref5.valueObj;
+      addValue: function addValue(state, _ref6) {
+        var fieldID = _ref6.fieldID,
+            valueObj = _ref6.valueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -8195,9 +8229,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeValue: function removeValue(state, _ref6) {
-        var fieldID = _ref6.fieldID,
-            valueID = _ref6.valueID;
+      removeValue: function removeValue(state, _ref7) {
+        var fieldID = _ref7.fieldID,
+            valueID = _ref7.valueID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -8211,9 +8245,9 @@ function getStore() {
         preventPageLeave();
       },
       // Combo Item Mutations
-      updateComboItemValues: function updateComboItemValues(state, _ref7) {
-        var comboID = _ref7.comboID,
-            newValues = _ref7.newValues;
+      updateComboItemValues: function updateComboItemValues(state, _ref8) {
+        var comboID = _ref8.comboID,
+            newValues = _ref8.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8224,9 +8258,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addComboItemValue: function addComboItemValue(state, _ref8) {
-        var comboID = _ref8.comboID,
-            newValueObj = _ref8.newValueObj;
+      addComboItemValue: function addComboItemValue(state, _ref9) {
+        var comboID = _ref9.comboID,
+            newValueObj = _ref9.newValueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8251,9 +8285,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeComboItem: function removeComboItem(state, _ref9) {
-        var comboID = _ref9.comboID,
-            comboItemID = _ref9.comboItemID;
+      removeComboItem: function removeComboItem(state, _ref10) {
+        var comboID = _ref10.comboID,
+            comboItemID = _ref10.comboItemID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8267,11 +8301,11 @@ function getStore() {
         preventPageLeave();
       },
       // Combo Field Mutations
-      updateComboFieldValue: function updateComboFieldValue(state, _ref10) {
-        var fieldID = _ref10.fieldID,
-            comboID = _ref10.comboID,
-            comboItemId = _ref10.comboItemId,
-            newValue = _ref10.newValue;
+      updateComboFieldValue: function updateComboFieldValue(state, _ref11) {
+        var fieldID = _ref11.fieldID,
+            comboID = _ref11.comboID,
+            comboItemId = _ref11.comboItemId,
+            newValue = _ref11.newValue;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8296,11 +8330,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      updateComboFieldValues: function updateComboFieldValues(state, _ref11) {
-        var fieldID = _ref11.fieldID,
-            comboID = _ref11.comboID,
-            comboItemId = _ref11.comboItemId,
-            newValues = _ref11.newValues;
+      updateComboFieldValues: function updateComboFieldValues(state, _ref12) {
+        var fieldID = _ref12.fieldID,
+            comboID = _ref12.comboID,
+            comboItemId = _ref12.comboItemId,
+            newValues = _ref12.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8318,11 +8352,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addComboFieldValue: function addComboFieldValue(state, _ref12) {
-        var fieldID = _ref12.fieldID,
-            comboID = _ref12.comboID,
-            comboItemId = _ref12.comboItemId,
-            valueObj = _ref12.valueObj;
+      addComboFieldValue: function addComboFieldValue(state, _ref13) {
+        var fieldID = _ref13.fieldID,
+            comboID = _ref13.comboID,
+            comboItemId = _ref13.comboItemId,
+            valueObj = _ref13.valueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8342,11 +8376,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeComboFieldValue: function removeComboFieldValue(state, _ref13) {
-        var fieldID = _ref13.fieldID,
-            comboID = _ref13.comboID,
-            comboItemId = _ref13.comboItemId,
-            valueID = _ref13.valueID;
+      removeComboFieldValue: function removeComboFieldValue(state, _ref14) {
+        var fieldID = _ref14.fieldID,
+            comboID = _ref14.comboID,
+            comboItemId = _ref14.comboItemId,
+            valueID = _ref14.valueID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -8389,13 +8423,18 @@ function Fields() {
     var store = getStore();
     var _window$fieldGroups$n = window.fieldGroups[name],
         fields = _window$fieldGroups$n.fields,
-        header = _window$fieldGroups$n.header;
+        header = _window$fieldGroups$n.header,
+        _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
+        actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
     fields = processFields(fields);
     store.commit('setFields', {
       fields: fields
     });
     store.commit('setHeader', {
       header: header
+    });
+    store.commit('setShowActions', {
+      actions: actions
     });
     return new vue_default.a({
       store: store,
@@ -9384,7 +9423,7 @@ var Croppervue_type_template_id_761e1e22_render = function() {
         _c(
           "button",
           {
-            staticClass: "o-btn o-btn--sm o-btn--grey",
+            staticClass: "o-btn o-btn--sm",
             on: {
               click: function($event) {
                 _vm.cancel($event)
@@ -10142,7 +10181,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
         _c(
           "a",
           { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
-          [_vm._v("edit post")]
+          [_vm._v("Edit")]
         )
       ]),
       _vm._v(" "),
@@ -10567,7 +10606,7 @@ var Rowvue_type_template_id_6f236b38_render = function() {
         _c(
           "a",
           { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
-          [_vm._v("edit post")]
+          [_vm._v("Edit")]
         )
       ]),
       _vm._v(" "),
@@ -13125,6 +13164,54 @@ function Medialib() {
 var vuebar = __webpack_require__("./node_modules/vuebar/vuebar.js");
 var vuebar_default = /*#__PURE__*/__webpack_require__.n(vuebar);
 
+// CONCATENATED MODULE: ./resources/assets/js/src/dashboard/feedback-form/index.js
+
+
+
+var feedback_form_form;
+var feedback_form_input;
+var feedback_form_msg;
+function feedbackForm() {
+  feedback_form_input = document.querySelector('.js-feedback-form-input');
+  feedback_form_msg = document.querySelector('.js-feedback-form-message');
+  feedback_form_form = createController('.js-feedback-form', onSubmit);
+  Object(_esm5["fromEvent"])(document, 'click').subscribe(function (evt) {
+    if (evt.target.classList.contains('js-feedback-form-input') && document.activeElement.classList.contains('js-feedback-form-input')) {
+      feedback_form_form.el.classList.add('active');
+    } else if (!evt.target.classList.contains('js-feedback-form-btn')) {
+      feedback_form_form.el.classList.remove('active');
+    }
+  });
+}
+
+function onSubmit(data) {
+  if (data.data.success) {
+    // form.el.classList.add('submitted')
+    feedback_form_form.el.classList.remove('active');
+    feedback_form_form.el.reset();
+    new noty_default.a({
+      text: 'Your feedback has been sent successfully.',
+      type: 'success',
+      timeout: 3500
+    }).show(); // setTimeout(function() {
+    //     form.el.classList.remove('submitted')
+    // }, 2000)
+  } else {
+    var error = 'Form could not be submitted right now, please try again later.';
+
+    if (data.data.fields.feedback.length) {
+      error = data.data.fields.feedback;
+    } else if (data.data.msg) {
+      error = data.data.msg;
+    }
+
+    new noty_default.a({
+      text: error,
+      type: 'error',
+      timeout: 1000
+    }).show();
+  }
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/dashboard/index.js
 
 
@@ -13144,9 +13231,6 @@ function activityLog() {
   }
 
   new vue_default.a().$mount(widget);
-}
-
-function feedbackForm() {// controller('.js-feedback-form')
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/index.js
 
@@ -13243,4 +13327,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.2123f9e929a53c9d6b79.js.map
+//# sourceMappingURL=main.d6811634145824a24ce5.js.map

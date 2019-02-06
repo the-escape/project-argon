@@ -60,10 +60,13 @@ button.o-btn {
 
     &--primary {
         background-color: $primary;
+        background-color: var(--primary-color);
         border-color: $primary;
+        border-color: var(--primary-color);
 
         &:hover {
             color: $primary;
+            color: var(--primary-color);
         }
     }
 

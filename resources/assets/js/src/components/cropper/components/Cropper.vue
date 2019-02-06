@@ -5,7 +5,7 @@
         </div>
         <div class="c-cropper__toolbar">
             <div class="c-cropper__tool-group">
-                <button class="o-btn o-btn--sm o-btn--grey" @click="cancel($event)">cancel</button>
+                <button class="o-btn o-btn--sm" @click="cancel($event)">cancel</button>
             </div>
 
             <div class="c-cropper__tool-group">

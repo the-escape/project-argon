@@ -281,6 +281,7 @@ ol {
     height: 8px;
     border-radius: 50%;
     background-color: #12a3c7;
+    background-color: var(--primary-color);
     position: absolute;
     top: 0.7em;
     left: -0.85em;
@@ -297,6 +298,7 @@ ol {
     counter-increment: orderedList;
     content: counter(orderedList) ".";
     color: #12a3c7;
+    color: var(--primary-color);
     margin-right: 0.5em; }
 
 img {
@@ -343,7 +345,8 @@ q {
 #argon-ui blockquote {
   line-height: 1.6;
   padding: 10px 15px;
-  border-left: 4px solid #12a3c7; }
+  border-left: 4px solid #12a3c7;
+  border-left: 4px solid var(--primary-color); }
   #argon-ui blockquote + * {
     margin-top: 18px; }
   #argon-ui blockquote p:last-child,
@@ -432,9 +435,12 @@ button.o-btn {
     border-radius: 0; }
   .o-btn--primary {
     background-color: #12a3c7;
-    border-color: #12a3c7; }
+    background-color: var(--primary-color);
+    border-color: #12a3c7;
+    border-color: var(--primary-color); }
     .o-btn--primary:hover {
-      color: #12a3c7; }
+      color: #12a3c7;
+      color: var(--primary-color); }
   .o-btn--danger {
     background-color: #f66956;
     border-color: #f66956; }

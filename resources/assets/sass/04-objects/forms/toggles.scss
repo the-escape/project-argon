@@ -82,6 +82,7 @@
                 bottom: 4px;
                 right: 4px;
                 background-color: $primary;
+                background-color: var(--primary-color);
                 border-radius: 50%;
             }
         }
@@ -96,6 +97,7 @@
             padding: 8px;
             transition: border-color $userInactive $easeOut;
             color: $primary;
+            color: var(--primary-color);
 
             svg {
                 position: absolute;

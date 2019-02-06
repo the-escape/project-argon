@@ -31,8 +31,8 @@
             @endforeach
         </nav>
 
-        <a class="c-sidebar__logo" href="/">
-            <img alt="logo" src="/argon/images/e.png">
+        <a class="c-sidebar__logo" href="http://www.the-escape.co.uk/?utm_source={{ urlencode(config('argon.client_name','')) }}&amp;utm_medium=website&amp;utm_campaign=cms_link" target="_blank">
+            <svg><use xlink:href="/argon/images/svgicons.svg#escape"></use></svg>
         </a>
     </div>
 </div>

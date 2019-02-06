@@ -20,6 +20,7 @@
         width: 100%;
         height: 100%;
         background-color: $primary;
+        background-color: var(--primary-color);
         color: #fff;
         z-index: 1;
         opacity: 0;
@@ -92,6 +93,7 @@
         &:hover {
             color: #fff;
             background-color: $primary;
+            background-color: var(--primary-color);
         }
 
         &--no-hover:hover {

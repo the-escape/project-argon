@@ -13,6 +13,7 @@ q {
     line-height: $p-line-height;
     padding: 10px 15px;
     border-left: 4px solid $primary;
+    border-left: 4px solid var(--primary-color);
 
     + * {
         margin-top: $paragraphSpace;

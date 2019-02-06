@@ -3,18 +3,25 @@
 .h-background {
     &--primary {
         background-color: $primary !important;
+        background-color: var(--primary-color) !important;
     }
 
     &--primary-dark {
-        background-color: $primary-dark !important;
+        background-color: $primary !important;
+        background-color: var(--primary-color) !important;
+        //background-color: $primary-dark !important;
     }
 
     &--primary-light {
-        background-color: $primary-light !important;
+        background-color: $primary !important;
+        background-color: var(--primary-color) !important;
+        //background-color: $primary-light !important;
     }
 
     &--primary-offwhite {
-        background-color: $primary-offwhite !important;
+        background-color: $primary !important;
+        background-color: var(--primary-color) !important;
+        //background-color: $primary-offwhite !important;
     }
 
     &--danger {

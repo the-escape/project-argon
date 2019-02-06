@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuebar from 'vuebar'
-import { inputGroup, controller } from '../form'
+import { feedbackForm } from './feedback-form'
 
 Vue.config.productionTip = false
 Vue.use(Vuebar)
@@ -21,6 +21,3 @@ function activityLog() {
     new Vue().$mount(widget)
 }
 
-function feedbackForm() {
-    // controller('.js-feedback-form')
-}

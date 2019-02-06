@@ -8,11 +8,6 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
-            <a href="{{ route('cms:locales:manage') }}" class="c-header__back">
-                <svg>
-                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                </svg>
-            </a>
             <h1>Locale</h1>
         </div>
         <div class="c-tab__nav">
@@ -139,8 +134,8 @@
                 </div>
                 <div class="c-actions">
                     <div class="c-actions__group">
-                        <button type="submit" class="o-btn o-btn--primary">save</button>
-                        <a href="{{ route('cms:locales:manage') }}" class="o-btn o-btn--light-grey">Cancel</a>
+                        <button type="submit" class="o-btn o-btn--primary">Save</button>
+                        <a href="{{ route('cms:locales:manage') }}" class="o-btn ">Cancel</a>
                     </div>
                 </div>
             </div>

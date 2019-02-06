@@ -8,11 +8,6 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
-            <a href="{{ route('cms:redirects:manage') }}" class="c-header__back">
-                <svg>
-                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                </svg>
-            </a>
             <h1>Redirection</h1>
         </div>
         <div class="c-tab__nav">
@@ -99,7 +94,7 @@
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">save</button>
-                        <a href="{{ route('cms:redirects:manage') }}" class="o-btn o-btn--light-grey">cancel changes</a>
+                        <a href="{{ route('cms:redirects:manage') }}" class="o-btn ">cancel</a>
                         <a href="{{ route('cms:redirects:delete', ['id' => $redirect->id]) }}" onclick="return confirm('Are you sure you want to delete this redirection?');" class="o-btn o-btn--danger">delete</a>
                     </div>
                 </div>

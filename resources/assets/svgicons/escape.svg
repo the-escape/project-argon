@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+    <g fill="currentColor" stroke="none">
+        <path d="M18 36h8v8h-8z"/>
+        <path d="M18 36h17v8H18zm-9-9h16v8H9z"/>
+        <path d="M18 27h8v8h-8zm0-9h8v8h-8z"/>
+        <path d="M18 18h17v8H18zM9 9h16v8H9z"/>
+        <path d="M18 9h8v8h-8z"/>
+        <path d="M18 0h8v44h-8z"/>
+        <path d="M18 0h17v8H18z"/>
+    </g>
+</svg>
