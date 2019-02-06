@@ -50,6 +50,16 @@ export default {
             }
         }
     },
+    watch: {
+        values: function () {
+            if(this.values === '') {
+                this.selectInstance.highlightAll()
+                this.selectInstance.removeHighlightedItems()
+            }else{
+                this.selectInstance.setValueByChoice(this.values)
+            }
+        }
+    },
     methods: {
         selectChange: function (){
             this.values = this.selectInstance.getValue(true)

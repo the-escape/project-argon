@@ -20,10 +20,11 @@ export function Fields () {
 
         const store = getStore()
 
-        let fieldGroups = window.fieldGroups[name]
-        fieldGroups = processFields(fieldGroups)
+        let { fields, header } = window.fieldGroups[name]
+        fields = processFields(fields)
 
-        store.commit('setFields', { fields: fieldGroups })
+        store.commit('setFields', { fields: fields })
+        store.commit('setHeader', { header })
 
         return new Vue({
             store,
@@ -59,7 +60,6 @@ function processValues (values) {
         value,
         id
     }))
-
 }
 
 function createEmptyValueObj (field) {

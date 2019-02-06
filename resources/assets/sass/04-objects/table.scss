@@ -4,10 +4,6 @@
     &__row {
         display: flex;
         flex-wrap: wrap;
-
-        > * {
-            padding-right: 15px;
-        }
     }
 
     &--tree {
@@ -27,6 +23,10 @@
     &__headers,
     &__row {
         width: 100%;
+
+        > * {
+            padding-right: 15px;
+        }
     }
 
     @for $i from 1 through 15 {
@@ -56,6 +56,13 @@
     // &__row:hover > &__data {
     //     background-color: $grey-offwhite;
     // }
+    &--tree &__row &__data:first-child {
+        padding-left: 15px;
+    }
+
+    &--tree &__row--children &__data:first-child {
+        padding-left: 30px;
+    }
 
     &__row--children > &__data:first-child {
         padding-left: 30px;
@@ -162,26 +169,26 @@
         }
 
         &--1 {
-            grid-template-columns: minmax(0, 100%) 115px 125px;
+            grid-template-columns: minmax(0, 100%) 115px 140px;
         }
 
         &--tree-1 &__headers,
         &--tree-1 &__row {
-            grid-template-columns: minmax(0, 100%) 150px 125px;
+            grid-template-columns: minmax(0, 100%) 150px 140px;
         }
 
         @for $i from 2 through 15 {
             &--#{$i} {
                 grid-template-columns:
                     minmax(0, 100%)
-                    repeat(#{$i - 1}, minmax(0, 700px)) 115px 125px;
+                    repeat(#{$i - 1}, minmax(0, 700px)) 115px 140px;
             }
 
             &--tree-#{$i} &__headers,
             &--tree-#{$i} &__row {
                 grid-template-columns:
                     minmax(0, 100%)
-                    repeat(#{$i - 1}, minmax(0, 700px)) 150px 125px;
+                    repeat(#{$i - 1}, minmax(0, 700px)) 150px 140px;
             }
         }
 

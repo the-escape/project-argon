@@ -2,13 +2,12 @@
     <div class="o-table__dropdown is-active">
         <div class="o-table__dropdown-wrap">
             <div class="o-form">
-                <div class="o-form__inline">
+                <div class="o-form__inline choices--page-list">
                     <label :for="'add' + inputName">Page Type</label>
                     <select :id="'add' + inputName">
-                        <option value=" ">&nbsp;</option>
                         <option v-for="(option, index) in options" :key="index" :value="option.id">{{ option.name }}</option>
                     </select>
-                    <button class="o-btn o-btn--sm o-btn--square o-btn--primary" @click="add($event)">Add</button>
+                    <button class="o-btn o-btn--xs" @click="add($event)">Add</button>
                 </div>
             </div>
         </div>

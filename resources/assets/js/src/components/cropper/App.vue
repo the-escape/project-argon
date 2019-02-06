@@ -22,7 +22,8 @@ export default {
             if(!options.hasOwnProperty('image')){
                 new Noty({
                     text: 'No Image was passed to the cropper!',
-                    type: 'error'
+                    type: 'error',
+                    timeout: 3500
                 }).show()
                 return
             }

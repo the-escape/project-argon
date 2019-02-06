@@ -283,12 +283,23 @@
         }
     }
 
+    &--page-list &__btn {
+        svg {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
     &:hover &__btn {
         color: #fff;
         background-color: $primary;
         background-color: var(--primary-color);
         transition: background-color $userActive $easeOut,
             color $userActive $easeOut;
+    }
+
+    &--page-list &:hover &__btn {
+        background-color: $grey;
     }
 
     &[data-type*="select-one"] {

@@ -25,8 +25,12 @@
 </template>
 
 <script>
+import { fromEvent } from 'rxjs'
+import { filter } from 'rxjs/operators'
+
 import RootRow from './components/RootRow.vue'
 import Row from './components/Row.vue'
+import { Bus } from './util/bus'
 
 export default {
     components: {
@@ -44,6 +48,21 @@ export default {
         breadthFirstSearch(this.rootNodes, childNode => {
             childNode.isExpanded = false
         })
+
+        fromEvent(document, 'click')
+            .pipe(filter(evt => {
+                if(evt.target.classList.contains('js-add-btn')){
+                    return false
+                }
+
+                let hasParentDropdown = evt.target.closest('.o-table__dropdown-wrap')
+                if(!hasParentDropdown){
+                    return true
+                }
+            }))
+            .subscribe(() => {
+                Bus.$emit('closeAddForm')
+            })
     },
     methods: {
         drop: function (node, position) {

@@ -473,47 +473,11 @@ button.o-btn {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none; }
+  #argon-ui .o-form__inline * + .o-btn {
+    margin-left: 15px; }
 
 body {
   padding: 0 15px; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

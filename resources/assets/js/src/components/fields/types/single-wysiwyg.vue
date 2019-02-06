@@ -55,6 +55,11 @@ export default {
             }
         }
     },
+    watch: {
+        valueObj: function () {
+            CKEDITOR.instances[this.wysiwygInstance].setData(this.valueObj.value)
+        }
+    },
     computed: {
         config: function () {
             let field

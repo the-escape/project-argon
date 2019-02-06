@@ -21,16 +21,14 @@ import {
     PageEdit,
     Cropper,
     setCropperImage,
-    SiteTree
+    SiteTree,
+    Medialib
 } from './components'
 import { Dashboard } from './dashboard'
 
 import { fromEvent } from 'rxjs'
 import { filter } from 'rxjs/operators'
 // import resetForm from './form/reset-form'
-// import { trees } from './ui/tree'
-// import { Fields } from './fields'
-import { Medialib } from './medialib/app'
 
 function init () {
     polyfill()

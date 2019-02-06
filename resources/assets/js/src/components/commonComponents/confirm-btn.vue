@@ -2,22 +2,22 @@
     <div class="o-confirm-btn__container" :class="{ 'is-active': confirmDelete, 'o-confirm-btn--block': isBlock }">
         <div class="o-confirm-btn__questions">
             <div class="o-confirm-btn" v-if="hideDuplicate && !showAdd"></div>
-            <button class="o-confirm-btn" title="Duplicate" v-if="!hideDuplicate" @click="duplicate($event)">
+            <button class="o-confirm-btn" :data-balloon="'Duplicate' + tooltipPostfixValue" title="Duplicate" v-if="!hideDuplicate" @click="duplicate($event)">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#duplicate"></use>
                 </svg>
             </button>
-            <button class="o-confirm-btn" title="Delete" :class="{'o-confirm-btn--fade': fadeDelete}" @click="toggleConfirmDelete($event)">
+            <button class="o-confirm-btn" :data-balloon="fadeDelete ? false : 'Delete' + tooltipPostfixValue" title="Delete" :class="{'o-confirm-btn--fade': fadeDelete}" @click="toggleConfirmDelete($event)">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#delete"></use>
                 </svg>
             </button>
-            <button class="o-confirm-btn" title="Add" v-if="showAdd" @click="add($event)">
+            <button class="o-confirm-btn js-add-btn" :data-balloon="'Add' + tooltipPostfixValue" title="Add" v-if="showAdd" @click="add($event)">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#add"></use>
                 </svg>
             </button>
-            <a :href="viewUrl" target="_blank" class="o-confirm-btn" @click="view($event)" :class="{'o-confirm-btn--fade': !viewUrl}" v-if="showView" title="view">
+            <a :href="viewUrl" target="_blank" :data-balloon="'View' + tooltipPostfixValue" class="o-confirm-btn" @click="view($event)" :class="{'o-confirm-btn--fade': !viewUrl}" v-if="showView" title="view">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#see"></use>
                 </svg>
@@ -42,11 +42,15 @@
 
 <script>
 export default {
-    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView'],
+    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix'],
     data() {
         return {
-            confirmDelete: false
+            confirmDelete: false,
+            tooltipPostfixValue: ''
         }
+    },
+    created() {
+        this.tooltipPostfixValue = this.tooltipPostfix || this.tooltipPostfixValue
     },
     methods: {
         toggleConfirmDelete: function(evt) {

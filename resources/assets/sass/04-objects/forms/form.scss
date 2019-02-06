@@ -21,7 +21,6 @@
         }
 
         &--icon-btn {
-
             input {
                 padding-right: 45px !important;
             }
@@ -29,7 +28,6 @@
             svg {
                 width: 44px;
                 height: 44px;
-
                 padding: 15px;
             }
 
@@ -40,7 +38,7 @@
                 padding: 10px;
                 color: $secondary;
 
-                &:hover{
+                &:hover {
                     color: $tertiary-dark;
                 }
             }
@@ -140,6 +138,4 @@
             margin-right: 15px;
         }
     }
-
-
 }

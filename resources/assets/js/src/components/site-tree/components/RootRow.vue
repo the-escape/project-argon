@@ -17,6 +17,7 @@
                 @add="toggleAddForm"
                 @delete="deleteItem"
                 @view="viewError"
+                tooltipPostfix=" Page"
             ></comfirm-btn>
         </div>
         <div class="o-table__data"><a :href="editUrl" class="o-btn o-btn--xs">Edit</a></div>

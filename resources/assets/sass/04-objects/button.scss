@@ -124,4 +124,8 @@ button.o-btn {
         cursor: not-allowed;
         pointer-events: none;
     }
+
+    #argon-ui .o-form__inline * + & {
+        margin-left: 15px;
+    }
 }

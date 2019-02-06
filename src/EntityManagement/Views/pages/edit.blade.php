@@ -318,33 +318,25 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     @foreach($page->getGroups($localisation->getLocaleId()) as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-actions__container">
-                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                        <h2>{{ $group->name }}</h2>
-                                        <?php
-                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                        ?>
-                                        <script>
-                                            window.groups.push({
-                                                id: '{{$group->id}}',
-                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                                isRendering: {{ $isRendering }},
-                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                                name: '{{ $group->name }}',
-                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                                image: '{{ $group->getSetting("image") }}'
-                                            });
-                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!}
-                                        </script>
-                                        <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    </div>
-
-                                    <div class="c-actions">
-                                        <div class="c-actions__group">
-                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php
+                                    $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                ?>
+                                <script>
+                                    window.groups.push({
+                                        id: '{{$group->id}}',
+                                        isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                        isRendering: {{ $isRendering }},
+                                        isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                        name: '{{ $group->name }}',
+                                        isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                        image: '{{ $group->getSetting("image") }}'
+                                    });
+                                    window.fieldGroups['{{$group->id}}'] = {
+                                        fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
+                                        header: "{{ $group->name }}"
+                                    }
+                                </script>
+                                <div class="js-fields" data-name="{{$group->id}}"></div>
                             </main>
                         </div>
                     @endforeach

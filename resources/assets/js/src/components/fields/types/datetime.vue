@@ -26,10 +26,18 @@ export default {
             defaultConfig: {
                 altFormat: 'd F, Y',
                 defaultDate: null,
+                default: false,
                 mode: 'single',
                 dateFormat: 'Y-m-d H:i:S',
                 altInput: true,
                 enableTime: false
+            }
+        }
+    },
+    watch: {
+        singleValue: function () {
+            if(this.singleValue.value === '' && this.config.default){
+                this.updateValue(this.singleValue, new Date())
             }
         }
     },
@@ -52,7 +60,6 @@ export default {
             }
         },
         onChange: function (_, strDate) {
-            console.log(strDate)
             this.updateValue(this.singleValue, strDate)
         }
     },
@@ -73,6 +80,7 @@ export default {
                 config.altFormat = 'd F, Y h:i K'
             }
 
+            config.default = fieldSettings.default
             if(fieldSettings.default){
                 config.defaultDate = new Date()
             }
