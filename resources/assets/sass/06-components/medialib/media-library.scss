@@ -1,0 +1,139 @@
+.c-media-library {
+    height: calc(100vh - 215px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        background-color: $secondary-highlight;
+        border: 1px solid $secondary;
+        padding: 8px;
+    }
+
+    &__btn {
+        width: 40px;
+        height: 40px;
+        color: $secondary;
+        background-color: #fff;
+        border: 1px solid $secondary;
+        padding: 0;
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        &:hover,
+        &.is-active {
+            color: $primary;
+        }
+    }
+
+    &__button-group {
+        display: flex;
+
+        &:first-child {
+            width: calc(#{$col-3} - 8px);
+        }
+
+        &:last-child {
+            margin-left: auto;
+        }
+
+        .o-btn + .o-btn {
+            margin-left: 10px !important;
+        }
+    }
+
+    &__button-group &__btn + &__btn {
+        border-left: 0;
+    }
+
+    &__search {
+        position: relative;
+
+        &-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            color: $grey;
+            pointer-events: none;
+            transition: opacity $userInactive $easeOut;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &.hide-icon &-icon {
+            opacity: 0;
+        }
+
+        input {
+            background-color: #fff;
+            border: 1px solid $secondary;
+            border-left: 0;
+            padding: 7px 10px;
+            line-height: 1.5;
+            min-width: 360px;
+        }
+    }
+
+    &__body {
+        flex: 1 1 100%;
+        display: flex;
+        border: 1px solid $secondary;
+        border-top: 0;
+    }
+
+    &__directory-tree {
+        overflow: auto;
+        flex: 1 1 $col-3;
+        width: $col-3;
+        border-right: 1px solid $secondary;
+        padding: 10px;
+    }
+
+    &__directory-view {
+        overflow: auto;
+        height: 100%;
+        flex: 1 1 $col-9;
+        width: $col-3;
+    }
+
+    &__breadcrumbs {
+        padding: 25px 30px;
+
+        button {
+            display: inline-block;
+            color: $primary;
+            padding: 0;
+
+            &:last-child {
+                color: $text-color;
+            }
+        }
+
+        button + button {
+            &:before {
+                content: "";
+                display: inline-block;
+                width: 1px;
+                height: 0.8em;
+                background-color: $text-color;
+                margin: 0 4px -0.15em 8px;
+            }
+        }
+    }
+
+    &__grid {
+        &-wrap {
+            padding: 0 30px;
+        }
+    }
+}
