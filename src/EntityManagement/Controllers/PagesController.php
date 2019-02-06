@@ -674,8 +674,8 @@ class PagesController extends BaseController
     {
         $tabNav = [];
 
-        $pageContent = [ "name" => 'Page Content', "slug" => "page-content", "isActive" => false];
-        $attributes = [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false];
+        $pageContent = [ "name" => 'Page content', "slug" => "page-content", "isActive" => false];
+        $attributes = [ "name" => 'Page properties', "slug" => "attributes", "isActive" => false];
 
         if($attributesFirst){
             $attributes['isActive'] = true;

@@ -75,7 +75,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                <h2>Attributes</h2>
+                                <h2>Page properties</h2>
 
                                 <div class="o-form__group {{ hasError($errors, 'name') ? 'has-error' : '' }}">
                                     <div class="o-form-status">

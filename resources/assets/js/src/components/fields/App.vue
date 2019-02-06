@@ -1,7 +1,7 @@
 <template>
     <div class="c-actions__container">
         <div class="c-actions__content c-tab-panel__inner-container l-full">
-            <h2>{{ header }}</h2>
+            <h2>Editing: <span class="h-text--primary">{{ header }}</span></h2>
             <div class="o-form l-accordion-container">
                 <types v-for="field in fields" :key="field.id" :field="field"></types>
             </div>

@@ -3162,7 +3162,12 @@ var Appvue_type_template_id_6cdc7617_render = function() {
       "div",
       { staticClass: "c-actions__content c-tab-panel__inner-container l-full" },
       [
-        _c("h2", [_vm._v(_vm._s(_vm.header))]),
+        _c("h2", [
+          _vm._v("Editing: "),
+          _c("span", { staticClass: "h-text--primary" }, [
+            _vm._v(_vm._s(_vm.header))
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -13428,4 +13433,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8cabecb16f378b3216e8.js.map
+//# sourceMappingURL=main.72fe431072c5a71f689d.js.map
