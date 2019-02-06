@@ -18,11 +18,6 @@
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
-                        <svg>
-                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                        </svg>
-                    </a>
                     <h1>Create Page</h1>
                 </div>
                 <div class="c-header__nav c-tab__nav js-tabs-nav">

@@ -25,12 +25,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         <div class="js-tabs c-page">
             <header class="c-header c-container">
                 <div class="c-header__title">
-                    <a href="{{ route('cms:pages:manage') }}" class="c-header__back">
-                        <svg>
-                            <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                        </svg>
-                    </a>
-
                     <div class="c-header__local-container">
                         <h1>{{$page->name}}</h1>
                     </div>

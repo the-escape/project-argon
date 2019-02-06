@@ -8,11 +8,6 @@
 
     <header class="c-header c-container">
         <div class="c-header__title">
-            <a href="{{ route('cms:locales:manage') }}" class="c-header__back">
-                <svg>
-                    <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
-                </svg>
-            </a>
             <h1>Locale</h1>
         </div>
         <div class="c-tab__nav">
