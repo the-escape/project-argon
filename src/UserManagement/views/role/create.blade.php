@@ -99,7 +99,7 @@
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">Save</button>
-                        <a href="{{ route('cms:role:manage') }}" class="o-btn o-btn--grey">Cancel</a>
+                        <a href="{{ route('cms:role:manage') }}" class="o-btn ">Cancel</a>
                     </div>
                 </div>
             </div>

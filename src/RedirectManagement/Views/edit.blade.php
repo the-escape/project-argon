@@ -94,7 +94,7 @@
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">save</button>
-                        <a href="{{ route('cms:redirects:manage') }}" class="o-btn o-btn--grey">cancel</a>
+                        <a href="{{ route('cms:redirects:manage') }}" class="o-btn ">cancel</a>
                         <a href="{{ route('cms:redirects:delete', ['id' => $redirect->id]) }}" onclick="return confirm('Are you sure you want to delete this redirection?');" class="o-btn o-btn--danger">delete</a>
                     </div>
                 </div>

@@ -2,7 +2,6 @@
     <div class="o-combo o-form__group">
         <div class="o-combo__head">
             <div class="o-combo__label">{{comboField.options.name}}</div>
-            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
         </div>
         <div class="o-combo__track">
             <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
@@ -29,7 +28,7 @@
             </draggable>
         </div>
         <div class="o-combo__foot">
-            <button class="o-btn o-btn--sm o-btn--primary" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
+            <button class="o-btn o-btn--sm o-btn--grey" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
         </div>
     </div>
 </template>

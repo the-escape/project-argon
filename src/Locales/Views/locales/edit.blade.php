@@ -138,7 +138,7 @@
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">Save</button>
-                        <a href="{{ route('cms:locales:manage') }}" class="o-btn o-btn--grey">Cancel</a>
+                        <a href="{{ route('cms:locales:manage') }}" class="o-btn ">Cancel</a>
                         <a href="{{ route('cms:locales:delete', ['id' => $locale->id]) }}" onclick="return confirm('Are you sure you want to delete this locale?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>

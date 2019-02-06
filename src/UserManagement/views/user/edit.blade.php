@@ -194,7 +194,7 @@
                 <div class="c-actions">
                     <div class="c-actions__group">
                         <button type="submit" class="o-btn o-btn--primary">Save</button>
-                        <a href="{{ route('cms:user:manage') }}" class="o-btn o-btn--grey">Cancel</a>
+                        <a href="{{ route('cms:user:manage') }}" class="o-btn ">Cancel</a>
                         <a href="{{ route('cms:user:delete', ['userId' => $user->id]) }}" onclick="return confirm('Are you sure you want to delete this user?');" class="o-btn o-btn--danger">Delete</a>
                     </div>
                 </div>

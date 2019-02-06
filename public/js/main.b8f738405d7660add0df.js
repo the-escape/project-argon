@@ -4879,22 +4879,7 @@ var combovue_type_template_id_90b659e4_render = function() {
     _c("div", { staticClass: "o-combo__head" }, [
       _c("div", { staticClass: "o-combo__label" }, [
         _vm._v(_vm._s(_vm.comboField.options.name))
-      ]),
-      _vm._v(" "),
-      _vm.isMultiple
-        ? _c(
-            "button",
-            {
-              staticClass: "o-btn o-btn--sm o-btn--primary",
-              on: {
-                click: function($event) {
-                  _vm.addEmptyItem($event)
-                }
-              }
-            },
-            [_vm._v("Add " + _vm._s(_vm.comboField.options.comboAddName))]
-          )
-        : _vm._e()
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -5015,7 +5000,7 @@ var combovue_type_template_id_90b659e4_render = function() {
         ? _c(
             "button",
             {
-              staticClass: "o-btn o-btn--sm o-btn--primary",
+              staticClass: "o-btn o-btn--sm o-btn--grey",
               on: {
                 click: function($event) {
                   _vm.addEmptyItem($event)
@@ -5035,7 +5020,6 @@ combovue_type_template_id_90b659e4_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/combo.vue?vue&type=template&id=90b659e4&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/combo.vue?vue&type=script&lang=js&
-//
 //
 //
 //
@@ -13433,4 +13417,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.72fe431072c5a71f689d.js.map
+//# sourceMappingURL=main.b8f738405d7660add0df.js.map
