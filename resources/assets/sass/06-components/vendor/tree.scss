@@ -31,7 +31,8 @@
     }
 
     &-node-item.sl-vue-tree-cursor-inside {
-        outline: 1px solid $primary-dark;
+        outline: 1px solid $primary;
+        outline: 1px solid var(--primary-color);
     }
 
     &-gap {
@@ -51,7 +52,8 @@
 
     &-cursor {
         position: absolute;
-        border: 1px solid $primary-dark;
+        border: 1px solid $primary;
+        border: 1px solid var(--primary-color);
         height: 1px;
         width: 100%;
     }

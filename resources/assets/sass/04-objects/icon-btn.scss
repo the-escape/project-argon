@@ -52,15 +52,19 @@
 
     &--primary:hover {
         color: $primary;
+        color: var(--primary-color);
     }
 
     &--primary &__icon {
         background-color: $primary;
+        background-color: var(--primary-color);
         border-color: $primary;
+        border-color: var(--primary-color);
     }
 
     &--primary &__label {
         color: $primary;
+        color: var(--primary-color);
     }
 
     &--danger:hover {

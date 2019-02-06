@@ -10,12 +10,14 @@
     -moz-transform: translate3d(0, 0, 0);
     background-color: #fff;
     border: 2px solid $primary;
+    border: 2px solid var(--primary-color);
     color: $black;
     transition: background-color $userInactive $easeOut,
         color $userInactive $easeOut;
 
     &:hover {
         background-color: $primary;
+        background-color: var(--primary-color);
         color: #fff;
         transition: background-color $userActive $easeOut,
             color $userActive $easeOut;

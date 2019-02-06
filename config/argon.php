@@ -95,5 +95,8 @@ return [
         'account_manager_name' => 'The Escape',
         'account_manager_phone' => '+44 (0) 1256 334567',
         'account_manager_email' => '',
-    ]
+    ],
+
+    'login_bg' => '/argon/images/bg.png',
+    'primary_colour' => '#12a3c7',
 ];

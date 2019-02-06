@@ -13,7 +13,8 @@
 
         h1 {
             margin-bottom: 0;
-            color: $client-primary;
+            color: $primary;
+            color: var(--primary-color);
             font-size: 3.2rem !important;
         }
     }
@@ -41,6 +42,7 @@
 
         a {
             color: $primary;
+            color: var(--primary-color);
             text-decoration: none;
 
             &:hover {
@@ -54,6 +56,7 @@
         top: 0;
         left: -40px;
         color: $primary;
+        color: var(--primary-color);
         width: 48px;
         height: 100%;
         padding: 0;

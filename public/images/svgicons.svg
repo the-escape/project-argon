@@ -52,6 +52,16 @@
     <path d="M7.17 8.94h18v14h-18z"/>
     <path d="M7.17 8.94l7.72 6a2.09 2.09 0 0 0 2.57 0l7.71-6"/>
   </g>
+</symbol><symbol id="escape" viewBox="0 0 44 44">
+    <g fill="currentColor" stroke="none">
+        <path d="M18 36h8v8h-8z"/>
+        <path d="M18 36h17v8H18zm-9-9h16v8H9z"/>
+        <path d="M18 27h8v8h-8zm0-9h8v8h-8z"/>
+        <path d="M18 18h17v8H18zM9 9h16v8H9z"/>
+        <path d="M18 9h8v8h-8z"/>
+        <path d="M18 0h8v44h-8z"/>
+        <path d="M18 0h17v8H18z"/>
+    </g>
 </symbol><symbol id="file-input" viewBox="0 0 32 32">
   <g fill="none" stroke="currentColor" stroke-miterlimit="10">
     <path d="M13.71 9.75l5 9.71L21.2 15l5 8.71h-20z"/>

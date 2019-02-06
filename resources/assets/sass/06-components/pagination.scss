@@ -18,12 +18,14 @@
 		transition: color $userActive $easeOut;
 
 		&:hover {
-			color: $client-light;
+			color: $primary;
+			color: var(--primary-color);
 		}
 
 		&.active {
 			color: #fff;
-			background-color: $client-primary;
+			background-color: $primary;
+			background-color: var(--primary-color);
 		}
 	}
 
@@ -42,7 +44,8 @@
 
 		&.active {
 			color: #fff;
-			background-color: $client-primary;
+			background-color: $primary;
+			background-color: var(--primary-color);
 		}
 	}
 

@@ -13,6 +13,7 @@
 
         &-colour {
             background-color: $primary;
+            background-color: var(--primary-color);
             color: #fff;
             transition: background-color $userInactive $easeOut;
 
@@ -24,6 +25,7 @@
 
         &-opacity {
             background-color: $primary;
+            background-color: var(--primary-color);
             color: #fff;
             opacity: 1;
             transition: opacity $userInactive $easeOut;
@@ -36,6 +38,7 @@
 
         &-translate {
             background-color: $primary;
+            background-color: var(--primary-color);
             color: #fff;
             transition: transform $userInactive $easeOut;
             transform-origin: center;
@@ -51,6 +54,7 @@
         width: 200px;
         height: 60px;
         background-color: $primary;
+        background-color: var(--primary-color);
 
         svg {
             width: 35px;
@@ -119,6 +123,7 @@
         width: 200px;
         height: 60px;
         background-color: $primary;
+        background-color: var(--primary-color);
 
         svg {
             width: 35px;
@@ -182,6 +187,7 @@
             width: 100%;
             height: 100%;
             background-color: $primary;
+            background-color: var(--primary-color);
             transform: translateY(-100%);
             transition: transform $userInactive $easeOut;
         }

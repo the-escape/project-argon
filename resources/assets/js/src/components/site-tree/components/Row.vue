@@ -14,7 +14,7 @@
                 @view="viewError"
             ></comfirm-btn>
         </div>
-        <div class="o-table__data"><a :href="editUrl" class="o-btn o-btn--xs">edit post</a></div>
+        <div class="o-table__data"><a :href="editUrl" class="o-btn o-btn--xs">Edit</a></div>
         <add-form v-if="addFormOpen" :input-name="node.data.id" @add="addItem"></add-form>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <div class="c-widget">
     <div class="c-activity-widget">
         <div class="c-activity-widget__top">
-            <h2>Activity Log <span>({{ $activities->count() }})</span></h2>
+            <h2>Recent revisions <span>({{ $activities->count() }})</span></h2>
         </div>
         <div class="c-activity-widget__bottom" v-bar>
             <div>

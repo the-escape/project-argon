@@ -65,6 +65,7 @@
 		.selected & {
 			color: $grey-white;
 			background-color: $primary;
+			background-color: var(--primary-color);
 		}
 	}
 
@@ -83,6 +84,7 @@
 		&.active {
 			color: $grey-white;
 			background-color: $primary;
+			background-color: var(--primary-color);
 		}
 	}
 

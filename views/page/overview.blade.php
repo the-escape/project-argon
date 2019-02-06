@@ -12,9 +12,9 @@
             <h1>Hi {{ auth()->user()->name }}</h1>
             <p>Welcome to your dashboard</p>
 
-            <div class="c-dashboard__logo">
+            <a class="c-dashboard__logo" href="/" target="_blank">
                 <img class="logo-admin" src="{{config('argon.client_logo_light', '/argon/images/logo.png')}}" alt="{{config('argon.client_name', 'Argon')}}">
-            </div>
+            </a>
         </div>
 
         <div class="c-dashboard__widgets">
@@ -30,6 +30,5 @@
         </div>
 
     </div>
-
 
 @stop

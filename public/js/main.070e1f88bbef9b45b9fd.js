@@ -478,7 +478,7 @@ if(false) {}
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 262 modules ***!
+  !*** ./resources/assets/js/src/index.js + 263 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -9976,7 +9976,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
         _c(
           "a",
           { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
-          [_vm._v("edit post")]
+          [_vm._v("Edit")]
         )
       ]),
       _vm._v(" "),
@@ -10390,7 +10390,7 @@ var Rowvue_type_template_id_6f236b38_render = function() {
         _c(
           "a",
           { staticClass: "o-btn o-btn--xs", attrs: { href: _vm.editUrl } },
-          [_vm._v("edit post")]
+          [_vm._v("Edit")]
         )
       ]),
       _vm._v(" "),
@@ -10712,6 +10712,54 @@ function SiteTree() {
 var vuebar = __webpack_require__("./node_modules/vuebar/vuebar.js");
 var vuebar_default = /*#__PURE__*/__webpack_require__.n(vuebar);
 
+// CONCATENATED MODULE: ./resources/assets/js/src/dashboard/feedback-form/index.js
+
+
+
+var feedback_form_form;
+var feedback_form_input;
+var feedback_form_msg;
+function feedbackForm() {
+  feedback_form_input = document.querySelector('.js-feedback-form-input');
+  feedback_form_msg = document.querySelector('.js-feedback-form-message');
+  feedback_form_form = createController('.js-feedback-form', onSubmit);
+  Object(_esm5["fromEvent"])(document, 'click').subscribe(function (evt) {
+    if (evt.target.classList.contains('js-feedback-form-input') && document.activeElement.classList.contains('js-feedback-form-input')) {
+      feedback_form_form.el.classList.add('active');
+    } else if (!evt.target.classList.contains('js-feedback-form-btn')) {
+      feedback_form_form.el.classList.remove('active');
+    }
+  });
+}
+
+function onSubmit(data) {
+  if (data.data.success) {
+    // form.el.classList.add('submitted')
+    feedback_form_form.el.classList.remove('active');
+    feedback_form_form.el.reset();
+    new noty_default.a({
+      text: 'Your feedback has been sent successfully.',
+      type: 'success',
+      timeout: 3500
+    }).show(); // setTimeout(function() {
+    //     form.el.classList.remove('submitted')
+    // }, 2000)
+  } else {
+    var error = 'Form could not be submitted right now, please try again later.';
+
+    if (data.data.fields.feedback.length) {
+      error = data.data.fields.feedback;
+    } else if (data.data.msg) {
+      error = data.data.msg;
+    }
+
+    new noty_default.a({
+      text: error,
+      type: 'error',
+      timeout: 1000
+    }).show();
+  }
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/dashboard/index.js
 
 
@@ -10731,9 +10779,6 @@ function activityLog() {
   }
 
   new vue_default.a().$mount(widget);
-}
-
-function feedbackForm() {// controller('.js-feedback-form')
 }
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/medialib/components/Media.vue?vue&type=template&id=27b52f8c&
 var Mediavue_type_template_id_27b52f8c_render = function() {
@@ -13202,4 +13247,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8b1dddb528d1813a2afb.js.map
+//# sourceMappingURL=main.070e1f88bbef9b45b9fd.js.map

@@ -21,6 +21,7 @@
 
     .primary {
         background: $primary;
+        background: var(--primary-color);
 
         &:after {
             content: "$primary: #{$primary} ";
@@ -28,31 +29,31 @@
         }
     }
 
-    .primary-dark {
-        background: $primary-dark;
-
-        &:after {
-            content: "$primary-dark: #{$primary-dark} ";
-            color: #fff;
-        }
-    }
-
-    .primary-light {
-        background: $primary-light;
-
-        &:after {
-            content: "$primary: #{$primary-light} ";
-            color: #fff;
-        }
-    }
-
-    .primary-offwhite {
-        background: $primary-offwhite;
-
-        &:after {
-            content: "$primary: #{$primary-offwhite} ";
-        }
-    }
+    //.primary-dark {
+    //    background: $primary-dark;
+    //
+    //    &:after {
+    //        content: "$primary-dark: #{$primary-dark} ";
+    //        color: #fff;
+    //    }
+    //}
+    //
+    //.primary-light {
+    //    background: $primary-light;
+    //
+    //    &:after {
+    //        content: "$primary: #{$primary-light} ";
+    //        color: #fff;
+    //    }
+    //}
+    //
+    //.primary-offwhite {
+    //    background: $primary-offwhite;
+    //
+    //    &:after {
+    //        content: "$primary: #{$primary-offwhite} ";
+    //    }
+    //}
 
     .danger {
         background: $danger;

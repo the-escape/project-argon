@@ -53,9 +53,16 @@ $color-sidebar-divider: rgba(255, 255, 255, 0.1);
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
+		color: $grey;
 
 		img{
 			width: 19px;
+		}
+
+		svg {
+			width: 26px;
+			height: 26px;
+			fill: currentColor;
 		}
 	}
 }

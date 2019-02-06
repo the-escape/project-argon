@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}">
     <title>CMS Admin Area</title>
+    @include('argon::inc.primary-colour-css-variable')
     <link rel="stylesheet" href="/argon/css/fancybox/jquery.fancybox.css">
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
     <link rel="stylesheet" href="/argon/css/old-cms.css">

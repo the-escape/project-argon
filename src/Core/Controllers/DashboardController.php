@@ -55,6 +55,20 @@ class DashboardController extends BaseController
             return $view->with(compact('name', 'phone', 'email'));
         });
 
+        view()->composer('argon::inc.widgets.feedback-form', function($view)
+        {
+            $submittedClass = '';
+
+            //  tbc
+//            session()->forget('throttleFeedbackSubmission');
+//            if (session()->has('throttleFeedbackSubmission') && \Carbon\Carbon::now()->lt(session('throttleFeedbackSubmission')))
+//            {
+//                $submittedClass = 'submitted';
+//            }
+
+            return $view->with(compact('submittedClass'));
+        });
+
         view()->composer('argon::inc.widgets.recent-activity', function($view)
         {
             $activities = collect([]);

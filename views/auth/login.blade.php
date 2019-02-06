@@ -15,7 +15,7 @@
             </div>
         @endif
 
-        <form action="/admin/login" method="post" class="o-form c-login__form">
+        <form action="/admin/login" method="post" class="o-form c-login__form l-full">
             {!! csrf_field() !!}
             <div class="o-form__group">
                 <input type="text" name="email" placeholder="Email*" class="form-control" required>
