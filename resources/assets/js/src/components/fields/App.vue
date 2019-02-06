@@ -26,12 +26,12 @@ export default {
         apply: function (evt) {
             evt.preventDefault()
             this.$store.commit('setOldState')
-            //changeTab('page-content')
+            changeTab('page-content')
         },
         cancel: function (evt) {
             evt.preventDefault()
             this.$store.commit('restoreOldState')
-            //changeTab('page-content')
+            changeTab('page-content')
         }
     },
     computed: {

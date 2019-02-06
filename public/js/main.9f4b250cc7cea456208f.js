@@ -3239,11 +3239,13 @@ Appvue_type_template_id_6cdc7617_render._withStripped = true
   methods: {
     apply: function apply(evt) {
       evt.preventDefault();
-      this.$store.commit('setOldState'); //changeTab('page-content')
+      this.$store.commit('setOldState');
+      changeTab('page-content');
     },
     cancel: function cancel(evt) {
       evt.preventDefault();
-      this.$store.commit('restoreOldState'); //changeTab('page-content')
+      this.$store.commit('restoreOldState');
+      changeTab('page-content');
     }
   },
   computed: {
@@ -13381,4 +13383,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.1ceaaa92a640b0532f25.js.map
+//# sourceMappingURL=main.9f4b250cc7cea456208f.js.map
