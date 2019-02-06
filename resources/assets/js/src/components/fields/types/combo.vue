@@ -28,7 +28,7 @@
             </draggable>
         </div>
         <div class="o-combo__foot">
-            <button class="o-btn o-btn--sm o-btn--grey" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
+            <button class="o-btn o-btn--sm" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
         </div>
     </div>
 </template>

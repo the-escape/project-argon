@@ -116,10 +116,10 @@ class PagesController extends BaseController
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
 
-        $nonSortableGroups = $groups->filter(function($group){
-            return !$group->isSortable();
-        });
-        $tabNav = $this->getTabNav($nonSortableGroups, false, true);
+//        $nonSortableGroups = $groups->filter(function($group){
+//            return !$group->isSortable();
+//        });
+        $tabNav = $this->getTabNav($groups, false, true);
 
         return view(
             'argon::pages.create',
@@ -465,11 +465,11 @@ class PagesController extends BaseController
             return !$currentLocales->contains($locale);
         });
 
-        $nonSortableGroups = false;
-        if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
-            $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
-        }
-        $tabNav = $this->getTabNav($nonSortableGroups, $revisions);
+//        $nonSortableGroups = false;
+//        if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
+//            $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
+//        }
+        $tabNav = $this->getTabNav($groups, $revisions);
 
         return view(
             'argon::pages.edit',
@@ -670,27 +670,32 @@ class PagesController extends BaseController
         return back()->with('message', 'Revision restored.');
     }
 
-    public function getTabNav($nonSortableGroups, $revisions = false, $attributesFirst = false)
+    public function getTabNav($groups, $revisions = false, $attributesFirst = false)
     {
-        $tabNav = [];
-
         $pageContent = [ "name" => 'Page content', "slug" => "page-content", "isActive" => false];
         $attributes = [ "name" => 'Page properties', "slug" => "attributes", "isActive" => false];
 
-        if($attributesFirst){
+        if ($attributesFirst)
+        {
             $attributes['isActive'] = true;
             $tabNav = [$attributes, $pageContent];
-        }else{
+        }
+        else
+        {
             $pageContent['isActive'] = true;
             $tabNav = [$pageContent, $attributes];
         }
 
-        if($nonSortableGroups){
+        $nonSortableGroups = $groups->filter(function($group){
+            return !$group->isSortable();
+        });
+
+        if ($nonSortableGroups) {
             $tabNavGroups = $nonSortableGroups
-                ->filter(function($el){
+                ->filter(function($el) {
                     return $el->getSetting('isTab');
                 })
-                ->map(function($el){
+                ->map(function($el) {
                     $slug = 'group-'.$el->id;
 
                     return [
@@ -703,9 +708,11 @@ class PagesController extends BaseController
             $tabNav = array_merge($tabNav, $tabNavGroups);
         }
 
-        if($revisions){
+        if ($revisions)
+        {
             $revisionsTotal = $revisions->total();
-            if($revisionsTotal){
+            if ($revisionsTotal)
+            {
                 $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
             }
         }

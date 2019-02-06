@@ -187,6 +187,30 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         </div>
                                     </div>
                                 </div>
+
+                                @if(($propertyGroups = $page->getGroups($localisation->getLocaleId())->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
+
+                                    <hr>
+
+                                    @foreach($propertyGroups as $group)
+
+                                        <div class="l-container">
+                                            <?php
+                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                            ?>
+                                            <script>
+                                                window.fieldGroups['{{$group->id}}'] = {
+                                                    fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
+                                                    header: "{{ $group->name }}",
+                                                    actions: false
+                                                }
+                                            </script>
+                                            <div class="js-fields" data-name="{{$group->id}}"></div>
+                                        </div>
+
+                                    @endforeach
+                                @endif
+
                             </div>
 
                             <div class="c-actions">
@@ -302,7 +326,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     <div class="c-actions__group">
                                         <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
                                     </div>
-                                </back>
+                                </div>
                             </div>
                         </main>
                     </div>
@@ -310,29 +334,35 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                 @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
                     @foreach($page->getGroups($localisation->getLocaleId()) as $group)
-                        <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
-                            <main class="c-tab-panel__container c-container">
-                                <?php
-                                    $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                ?>
-                                <script>
-                                    window.groups.push({
-                                        id: '{{$group->id}}',
-                                        isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                        isRendering: {{ $isRendering }},
-                                        isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                        name: '{{ $group->name }}',
-                                        isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                        image: '{{ $group->getSetting("image") }}'
-                                    });
-                                    window.fieldGroups['{{$group->id}}'] = {
-                                        fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
-                                        header: "{{ $group->name }}"
-                                    }
-                                </script>
-                                <div class="js-fields" data-name="{{$group->id}}"></div>
-                            </main>
-                        </div>
+
+                        @if(!$group->getSetting('isProperty') && !$group->getSetting('isAttribute'))
+
+                            <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
+                                <main class="c-tab-panel__container c-container">
+                                    <?php
+                                        $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                    ?>
+                                    <script>
+                                        window.groups.push({
+                                            id: '{{$group->id}}',
+                                            isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                            isRendering: {{ $isRendering }},
+                                            isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                            name: '{{ $group->name }}',
+                                            isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                            image: '{{ $group->getSetting("image") }}'
+                                        });
+                                        window.fieldGroups['{{$group->id}}'] = {
+                                            fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision), JSON_PRETTY_PRINT) !!},
+                                            header: "{{ $group->name }}"
+                                        }
+                                    </script>
+                                    <div class="js-fields" data-name="{{$group->id}}"></div>
+                                </main>
+                            </div>
+
+                        @endif
+
                     @endforeach
                 @endif
             </div>
