@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Media from './components/Media.vue'
+import App from './App.vue'
 import VueResource from 'vue-resource'
 import store from './store/store'
 import VueDragDrop from 'vue-drag-drop'
@@ -20,6 +20,6 @@ export function Medialib () {
     return new Vue({
         el: mediaLibEl,
         store,
-        render: h => h(Media)
+        render: h => h(App)
     })
 }

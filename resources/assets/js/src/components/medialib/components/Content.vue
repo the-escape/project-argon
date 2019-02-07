@@ -1,14 +1,10 @@
 <template>
-
     <div :class="`folder folder--${layout}`">
-
         <div class="folder__item folder__item--folder" v-for="child in folders" :key="child.id">
-
             <div class="folder__icon" @click.stop="folderSelected(child)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 85.04 56.69"><path d="M79.3 9.77H42.2a5.41 5.41 0 0 1-3.56-1.33L29.88.76a3.1 3.1 0 0 0-2-.76H3.54A3.49 3.49 0 0 0 0 3.42v47.73a5.66 5.66 0 0 0 5.74 5.54H79.3a5.64 5.64 0 0 0 5.7-5.54V15.32a5.64 5.64 0 0 0-5.7-5.55z"/></svg>
 
                 <dl class="folder__info folder__info--overlay">
-                    <!--<dt>{{ child.name }}</dt>-->
                     <dd><small>Subfolders: </small> {{ child.children.length }}</dd>
                     <dd><small>Items: </small> {{ (child.items && child.items.length) || 0  }}</dd>
                 </dl>
@@ -17,11 +13,9 @@
             <dl class="folder__info">
                 <dt>{{ child.name }}</dt>
             </dl>
-
         </div>
 
         <drag class="drag" :effect-allowed="['move']" drop-effect="move" :transfer-data="item" :class="`folder__item folder__item--${item.item.extension}`" v-for="item in items" :key="`item-${item.item.id}`">
-
             <div slot="image" class="drag-image">
                 <ul>
                     <li>Drag</li>
@@ -32,22 +26,11 @@
 
             <div class="folder__preview">
 
-                <!--<div class="folder__image" @click="modal(item)">-->
-                    <!--<template v-if="search.hasKeywords() && layout!=='list'">-->
-                        <!--<img :src="item.getUrl()" :alt="item.getName()" :title="`Breadcrumbs: ${item.getFormattedBreadcrumbs(folder)}`">-->
-                    <!--</template>-->
-                    <!--<template v-else>-->
-                        <!--<img :src="item.getUrl()" :alt="item.getName()">-->
-                    <!--</template>-->
-                <!--</div>-->
-
                 <div class="folder__image" @click="modal(item)" :style="`background-image: url('${item.getUrl()}');`"></div>
 
                 <div class="folder__details">
-
                     <dl class="folder__info">
                         <dt>{{ item.getName() }}</dt>
-                        <!--<dd><small>Dimensions:</small> {{ item.getDimensions() }}</dd>-->
                         <dd v-if="search.hasKeywords() && layout==='list'"><small>Breadcrumbs:</small>
                             <span class="breadcrumbs--inline">
                             <template v-for="breadcrumb of item.getBreadcrumbs(folder)">
@@ -59,10 +42,7 @@
                             </template>
                         </span>
                         </dd>
-
-                        <!--<dd><small>Size:</small> {{ item.filesize }}</dd>-->
                     </dl>
-
                 </div>
 
                 <div class="folder__options">
@@ -74,45 +54,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
-            <!--<div class="folder__details">-->
-
-                <!--<dl class="folder__info">-->
-                    <!--<dt>{{ item.getName() }}</dt>-->
-                    <!--<dd><small>Dimensions:</small> {{ item.getDimensions() }}</dd>-->
-                    <!--<dd v-if="search.hasKeywords() && layout==='list'"><small>Breadcrumbs:</small>-->
-                        <!--<span class="breadcrumbs&#45;&#45;inline">-->
-                            <!--<template v-for="breadcrumb of item.getBreadcrumbs(folder)">-->
-                                <!--<span class="breadcrumbs__separator" v-if="breadcrumb.parent">&gt;</span>-->
-
-                                <!--<span class="breadcrumbs__piece" v-bind:class="{'breadcrumbs__child': breadcrumb.parent}" v-on:click="folderSelected(breadcrumb)">-->
-                                    <!--{{ breadcrumb.name }}-->
-                                <!--</span>-->
-                            <!--</template>-->
-                        <!--</span>-->
-                    <!--</dd>-->
-
-                    <!--&lt;!&ndash;<dd><small>Size:</small> {{ item.filesize }}</dd>&ndash;&gt;-->
-                <!--</dl>-->
-
-                <!--<div class="folder__options">-->
-                    <!--<div class="folder__options-title">Actions: <span class="chevron&#45;&#45;bottom"></span></div>-->
-                    <!--<div class="folder__options-list">-->
-                        <!--<button @click="onChange('edit', item)">Edit</button>-->
-                        <!--<button @click="onChange('remove', item)">Remove</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-            <!--</div>-->
-
         </drag>
-
     </div>
-
 </template>
 
 <script>

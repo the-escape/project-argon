@@ -1,6 +1,5 @@
 export class Upload {
-
-    constructor() {
+    constructor () {
         this.files = [] // needs length attribute just as FileList for seamless operations
         this.initialised = false
         this.progress = false
@@ -8,40 +7,39 @@ export class Upload {
         this.ouputMessages = []
     }
 
-    inProgress() {
+    inProgress () {
         return this.progress
     }
 
-    getLabel() {
+    getLabel () {
         return this.label
     }
 
-    hasFiles() {
+    hasFiles () {
         return this.files.length !== 0
     }
 
-    getFiles() {
+    getFiles () {
         return this.files
     }
 
-    getOutputMessages() {
+    getOutputMessages () {
         return this.ouputMessages
     }
 
-    isInitialised() {
+    isInitialised () {
         return this.initialised
     }
 
-    init() {
+    init () {
         this.initialised = true
         this.label = 'Cancel upload'
     }
 
-    reset() {
+    reset () {
         this.files = []
         this.initialised = false
         this.progress = false
         this.label = 'Upload'
     }
-
 }

@@ -1,40 +1,40 @@
-import {Item} from "./folder";
+import { Item } from './folder'
 
 export class Search {
-    constructor(keywords='', results=[]) {
+    constructor (keywords = '', results = []) {
         this.keywords = keywords
         this.setResults(results)
         this.loading = false
     }
 
-    hasResults() {
+    hasResults () {
         return this.results.length !== 0
     }
 
-    getResults() {
+    getResults () {
         return this.results
     }
 
-    setResults(results) {
+    setResults (results) {
         this.results = results.reduce((a, v) => {
             a.push(new Item(v))
             return a
         }, [])
     }
 
-    getResultsCount() {
+    getResultsCount () {
         return this.results.length
     }
 
-    isLoading() {
+    isLoading () {
         return this.loading
     }
 
-    hasKeywords() {
+    hasKeywords () {
         return this.keywords.length !== 0
     }
 
-    reset() {
+    reset () {
         this.results = []
         this.keywords = ''
     }
