@@ -73,6 +73,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'appMoveItem',
             Request::METHOD_POST
         );
+        $this->addRoute(
+            'media/api/items/move-multi',
+            'cms:media:api:items:move-multi',
+            MediaController::class,
+            'appMoveItems',
+            Request::METHOD_POST
+        );
+
 
 
 

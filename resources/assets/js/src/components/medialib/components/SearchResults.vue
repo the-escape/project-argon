@@ -1,11 +1,11 @@
 <template>
-    <div class="c-media-library__directory-view">
+    <div class="c-media-library__directory-view" v-bar>
         <div class="ml__heading">
             Found {{ search.getResultsCount() }} results for `{{ search.keywords }}`
         </div>
         <div class="ml__body">
             <div class="search-results" v-if="search.hasResults()">
-                <Content v-bind:items="search.getResults()" v-bind:folders="{}"/>
+                <file-list v-bind:items="search.getResults()" v-bind:folders="{}"/>
             </div>
             <div class="search-results" v-else>
                 <p>No results found.</p>
@@ -16,14 +16,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import Content from "./Content.vue"
+import FileList from "./FileList.vue"
 
 export default {
     computed: {
         ...mapState(['search'])
     },
     components: {
-        Content
+        FileList
     }
 }
 </script>

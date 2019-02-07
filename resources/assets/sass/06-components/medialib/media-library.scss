@@ -114,8 +114,18 @@
             color: $primary;
             padding: 0;
 
+            &:hover {
+                text-decoration: underline;
+            }
+
             &:last-child {
                 color: $text-color;
+                cursor: default;
+                pointer-events: none;
+
+                &:hover {
+                    text-decoration: none;
+                }
             }
         }
 

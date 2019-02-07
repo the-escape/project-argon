@@ -1,7 +1,7 @@
-import DirectoryTree from './DirectoryTree.vue'
+import Tree from './Tree.vue'
 import ActionBar from './ActionBar.vue'
 import SearchResults from './SearchResults.vue'
 import DirectoryView from './DirectoryView.vue'
-import Modal from './Modal.vue'
+import Edit from './Edit.vue'
 
-export { DirectoryTree, ActionBar, SearchResults, DirectoryView, Modal }
+export { Tree, ActionBar, SearchResults, DirectoryView, Edit }

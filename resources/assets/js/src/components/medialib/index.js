@@ -3,9 +3,11 @@ import App from './App.vue'
 import VueResource from 'vue-resource'
 import store from './store/store'
 import VueDragDrop from 'vue-drag-drop'
+import Vuebar from 'vuebar'
 
 Vue.use(VueResource)
 Vue.use(VueDragDrop)
+Vue.use(Vuebar)
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.head.querySelector(
     'meta[name="csrf-token"]'

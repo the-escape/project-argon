@@ -9,7 +9,8 @@ import {
     removeFolder,
     uploadMedia,
     removeItem,
-    moveItem
+    moveItem,
+    moveItems
 } from '../api/media'
 import { Folder, children, Item } from './folder'
 import { Search } from './search'
@@ -24,7 +25,7 @@ export default new Vuex.Store({
         back: new Folder(),
         data: [],
         search: new Search(),
-        modal: new Item(),
+        editItem: new Item(),
         layout: 'tiles',
         upload: new Upload()
     },
@@ -74,8 +75,12 @@ export default new Vuex.Store({
                 state.search = new Search(keywords, data)
             })
         },
-        modal: (state, item) => {
-            state.modal = item
+        editItem: (state, item) => {
+            if (!item) {
+                state.editItem = new Item()
+            } else {
+                state.editItem = item
+            }
         },
         setLayout: (state, layout) => {
             state.layout = layout
@@ -194,6 +199,23 @@ export default new Vuex.Store({
                     console.log('Refreshed folder content.')
                 })
             })
+        },
+        moveItems: (state, { folder, items, currentFolder }) => {
+            let data = {
+                items: items.map(item => item.item.id),
+                folder: folder.id
+            }
+
+            moveItems(data, function (r) {
+                if (r.status >= 400) {
+                    return alert(r.body.error)
+                }
+
+                getFolders(currentFolder, function (f) {
+                    state.active.setItems(f.items)
+                    console.log('Refreshed folder content.')
+                })
+            })
         }
     },
     actions: {
@@ -209,8 +231,8 @@ export default new Vuex.Store({
         search ({ commit }, keywords) {
             commit('search', keywords)
         },
-        modal ({ commit }, item) {
-            commit('modal', item)
+        editItem ({ commit }, item) {
+            commit('editItem', item)
         },
         setLayout ({ commit }, layout) {
             commit('setLayout', layout)
@@ -232,6 +254,9 @@ export default new Vuex.Store({
         },
         moveItem ({ commit }, payload) {
             commit('moveItem', payload)
+        },
+        moveItems ({ commit }, payload) {
+            commit('moveItems', payload)
         }
     }
 })

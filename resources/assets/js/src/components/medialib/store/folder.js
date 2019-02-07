@@ -13,6 +13,14 @@ export class Folder {
         this.setChildren(children)
         this.parent = parent
         this.active = active
+        this.highlight = false
+        this.treeActive = false
+        this.treeDragOver = false
+        this.dragOver = false
+
+        if (id === 1) {
+            this.treeActive = true
+        }
     }
 
     setChildren (children) {
@@ -131,6 +139,8 @@ export function parents (folder, id = null) {
 
 export class Item {
     constructor (item) {
+        this.highlight = false
+        this.dragging = false
         this.item = item
     }
 

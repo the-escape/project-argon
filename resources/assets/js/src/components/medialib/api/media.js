@@ -87,3 +87,14 @@ export function moveItem (data, cb) {
             cb(e)
         })
 }
+
+export function moveItems (data, cb) {
+    Vue.http
+        .post('/admin/media/api/items/move-multi', data)
+        .then(response => {
+            cb(response)
+        })
+        .catch(e => {
+            cb(e)
+        })
+}

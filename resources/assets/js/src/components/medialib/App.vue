@@ -3,24 +3,24 @@
         <action-bar />
 
         <div class="c-media-library__body">
-            <directory-tree />
+            <tree />
 
             <search-results v-if="search.hasKeywords()" />
             <directory-view v-else />
         </div>
 
-        <modal />
+        <edit v-if="editItem.isSet()" />
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import {
-    DirectoryTree,
+    Tree,
     ActionBar,
     SearchResults,
     DirectoryView,
-    Modal
+    Edit
 } from './components'
 
 export default {
@@ -28,14 +28,14 @@ export default {
         this.$store.dispatch('loadLibrary');
     },
     computed: {
-        ...mapState(['search'])
+        ...mapState(['search', 'editItem'])
     },
     components: {
-        DirectoryTree,
+        Tree,
         ActionBar,
         SearchResults,
         DirectoryView,
-        Modal
+        Edit
     }
 }
 </script>

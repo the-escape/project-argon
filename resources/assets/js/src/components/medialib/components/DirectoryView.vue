@@ -1,5 +1,5 @@
 <template>
-    <div class="c-media-library__directory-view">
+    <div class="c-media-library__directory-view" v-bar>
         <div class="c-media-library__breadcrumbs" v-if="active.isSet()">
             <button v-for="folder of active.breadcrumbs()" :key="folder.id" @click="folderSelected(folder)">
                 {{ folder.name }}
@@ -7,7 +7,7 @@
         </div>
 
         <div class="c-media-library__grid-wrap">
-            <Content v-bind:items="active.items" v-bind:folders="active.children" v-if="active.hasContent()" />
+            <file-list v-bind:items="active.items" v-bind:folders="active.children" v-if="active.hasContent()" />
             <h3 v-else>No content</h3>
         </div>
     </div>
@@ -15,11 +15,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import Content from './Content.vue'
+import FileList from './FileList.vue'
 
 export default {
     components: {
-        Content
+        FileList
     },
     computed: {
         ...mapState(['active', 'back'])
