@@ -226,6 +226,79 @@ class MediaController extends BaseController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
+    public function appDelete(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
+    {
+        $folders = $request->get('folders', []);
+        $items = $request->get('items', []);
+        $deletedFolders = [];
+        $deletedItems = [];
+
+        if (!empty($items))
+        {
+            if (!is_array($items))
+            {
+                $items = [$items];
+            }
+
+            foreach($items as $itemId)
+            {
+                if ($item = $itemRepository->findWhere(["id" => $itemId])->first())
+                {
+                    // mark as deleted if exists and can be deleted
+                    if ($itemRepository->delete($itemId))
+                    {
+                        $deletedItems[] = $itemId;
+                    }
+                }
+                else
+                {
+                    // or if doesn't exist anymore
+                    $deletedItems[] = $itemId;
+                }
+            }
+        }
+
+        if (!empty($folders))
+        {
+            if (!is_array($folders))
+            {
+                $folders = [$folders];
+            }
+
+            foreach($folders as $folderId)
+            {
+                // root folder can't be deleted
+                if ($folderId !== 1)
+                {
+                    // check if folder still exists
+                    if ($folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first())
+                    {
+                        // delete if folder is empty
+                        if ($itemRepository->getItemsInFolder($folderId)->count() === 0 && $folderRepository->getSubfolders($folderId)->count() === 0)
+                        {
+                            if ($folderRepository->delete($folderId))
+                            {
+                                $deletedFolders[] = $folderId;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // mark as deleted if already doesn't exist
+                        $deletedFolders[] = $folderId;
+                    }
+                }
+            }
+        }
+
+        // sending back IDs of folders/items that could not be deleted
+        return response()->json([
+            "folders" => array_diff($folders, $deletedFolders),
+            "items" => array_diff($items, $deletedItems)
+        ], Response::HTTP_NO_CONTENT);
+    }
+
+    
     /**
     * @deprecated
     */
