@@ -89,6 +89,13 @@ class MediaController extends BaseController
         return response()->json($items);
     }
 
+    public function appRecent(MediaItemRepository $itemRepository)
+    {
+        $items = $itemRepository->orderBy('updated_at', 'desc')->paginate(config('argon.medialibrary.recent_items', 30));
+
+        return response()->json($items);
+    }
+
     public function appFolderAdd(Request $request, MediaFolderRepository $folderRepository)
     {
         if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
@@ -298,7 +305,7 @@ class MediaController extends BaseController
         ], Response::HTTP_NO_CONTENT);
     }
 
-    
+
     /**
     * @deprecated
     */
