@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         folderSelected(folder) {
-            this.$store.dispatch('folderSelected', folder)
+            this.$store.dispatch('folderSelected', {folder})
         }
     }
 }

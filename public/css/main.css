@@ -8028,6 +8028,9 @@ $color-primary-accent: rbga();*/
       width: calc(25% - 8px); }
     .c-media-library__button-group:last-child {
       margin-left: auto; }
+    .c-media-library__button-group .o-btn {
+      padding: 8px 15px;
+      line-height: 1.4; }
     .c-media-library__button-group .o-btn + .o-btn {
       margin-left: 10px !important; }
   .c-media-library__button-group .c-media-library__btn + .c-media-library__btn {
@@ -8081,7 +8084,7 @@ $color-primary-accent: rbga();*/
             flex: 1 1 75%;
     width: 25%; }
   .c-media-library__breadcrumbs {
-    padding: 25px 30px; }
+    padding: 25px 30px 0; }
     .c-media-library__breadcrumbs button {
       display: inline-block;
       color: #12a3c7;
@@ -8102,22 +8105,44 @@ $color-primary-accent: rbga();*/
       background-color: #636b6f;
       margin: 0 4px -0.15em 8px; }
   .c-media-library__grid-wrap {
-    padding: 0 30px; }
+    padding: 35px 30px 0; }
 
 .c-file-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, 130px);
   grid-gap: 20px 65px;
   width: 100%;
-  padding: 0 30px 100px;
+  padding-bottom: 100px;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start; }
+  .c-file-list--list {
+    grid-template-columns: 1fr;
+    grid-gap: 0; }
   .c-file-list__item {
     position: relative;
-    overflow: hidden;
     padding: 0;
     width: 100%; }
+  .c-file-list--list .c-file-list__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 10px;
+    border-top: 1px solid #b6b6b6; }
+  .c-file-list__btn {
+    width: 100%;
+    padding: 0;
+    overflow: hidden; }
+  .c-file-list--list .c-file-list__btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
   .c-file-list__image {
     position: relative;
     margin: 10px;
@@ -8154,6 +8179,9 @@ $color-primary-accent: rbga();*/
       height: auto;
       -webkit-transform: translate(-50%, -50%);
               transform: translate(-50%, -50%); }
+  .c-file-list--list .c-file-list__image {
+    width: 30px;
+    margin: 0; }
   .c-file-list__item.is-dragging .c-file-list__image {
     opacity: 0.5; }
   .c-file-list__item.is-highlighted .c-file-list__image:before,
@@ -8163,6 +8191,10 @@ $color-primary-accent: rbga();*/
     text-align: center;
     font-size: 1.4rem;
     font-weight: 500; }
+  .c-file-list--list .c-file-list__label {
+    text-align: left;
+    margin-left: 15px;
+    margin-right: auto; }
   .c-file-list__drag-view {
     width: 130px; }
 

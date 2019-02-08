@@ -42,6 +42,7 @@
 
 <script>
 export default {
+    name: 'comfirm-btn',
     props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix'],
     data() {
         return {

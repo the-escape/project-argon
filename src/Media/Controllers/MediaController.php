@@ -226,73 +226,50 @@ class MediaController extends BaseController
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    /**
-    * @deprecated
-    */
-    public function appMoveItem(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
-    {
-        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('item'))) ? (int)$request->request->get('item') : null;
-
-        if (!$itemId)
-        {
-            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $item = $itemRepository->findWhere(["id" => $itemId])->first();
-
-        if (!$item)
-        {
-            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $folderId = $request->request->get('folder');
-
-        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
-
-        if ($folder === null)
-        {
-            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
-        }
-
-
-        $item->folder = $folder->id;
-        $saved = $item->save();
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-    public function appMoveItems(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
+    public function appMove(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
     {
         $itemIds = $request->request->get('items');
+        $folderIds = $request->request->get('folders');
 
-        if(!is_array($itemIds)){
+        if(!is_array($itemIds))
+        {
             $itemIds = [$itemIds];
         }
 
-        if (!count($itemIds))
+        if(!is_array($folderIds))
         {
-            return response()->json(["error" => "Invalid media items."], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $folderIds = [$folderIds];
+        }
+
+        if(!count($itemIds) && !count($folderIds))
+        {
+            return response()->json(["error" => "No Items or fields received"], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $items = $itemRepository->findWhereIn("id", $itemIds);
+        $folders = $folderRepository->findWhereIn("id", $folderIds);
 
-        if (!count($items))
+        if(!count($items) && !count($folders))
         {
-            return response()->json(['error' => "Media items don't exists."], Response::HTTP_BAD_REQUEST);
+            return response()->json(['error' => "Media items or Folders don't exist."], Response::HTTP_BAD_REQUEST);
         }
 
-        $folderId = $request->request->get('folder');
+        $destinationFolderId = $request->request->get('destinationFolder');
+        $destinationFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $destinationFolderId])->first();
 
-        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
-
-        if ($folder === null)
+        if($destinationFolder === null)
         {
-            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
+            return response()->json(['error' => "Destination Folder `$destinationFolderId` doesn't exist."], Response::HTTP_BAD_REQUEST);
         }
 
         foreach($items as $item){
-            $item->folder = $folder->id;
+            $item->folder = $destinationFolder->id;
             $saved = $item->save();
+        }
+
+        foreach($folders as $folder){
+            $folder->parent = $destinationFolder->id;
+            $saved = $folder->save();
         }
 
         return response()->json([], Response::HTTP_NO_CONTENT);

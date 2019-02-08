@@ -17,6 +17,7 @@ export class Folder {
         this.treeActive = false
         this.treeDragOver = false
         this.dragOver = false
+        this.hide = false
 
         if (id === 1) {
             this.treeActive = true
@@ -101,20 +102,29 @@ export class Folder {
     }
 }
 
-export function children (items, parent = null) {
-    return items.reduce((a, item) => {
-        if (parent === item.parent) {
-            let f = new Folder(
-                item.id,
-                item.name,
-                item.items,
-                children(items, item.id),
-                item.parent
+export function children (folders, parent = null, folderMap = {}) {
+    const newFolders = folders.reduce((a, folder) => {
+        if (parent === folder.parent) {
+            const childFolders = children(folders, folder.id, folderMap)
+            folderMap = { ...folderMap, ...childFolders.folderMap }
+
+            let newFolder = new Folder(
+                folder.id,
+                folder.name,
+                folder.items,
+                childFolders.newItems,
+                folder.parent
             )
-            a.push(f)
+
+            folderMap[newFolder.id] = newFolder
+            a.push(newFolder)
         }
         return a
     }, [])
+    return {
+        newFolders,
+        folderMap
+    }
 }
 
 export function parents (folder, id = null) {
@@ -141,6 +151,7 @@ export class Item {
     constructor (item) {
         this.highlight = false
         this.dragging = false
+        this.hide = false
         this.item = item
     }
 

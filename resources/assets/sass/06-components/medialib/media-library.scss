@@ -42,6 +42,11 @@
             margin-left: auto;
         }
 
+        .o-btn {
+            padding: 8px 15px;
+            line-height: 1.4;
+        }
+
         .o-btn + .o-btn {
             margin-left: 10px !important;
         }
@@ -107,7 +112,7 @@
     }
 
     &__breadcrumbs {
-        padding: 25px 30px;
+        padding: 25px 30px 0;
 
         button {
             display: inline-block;
@@ -143,7 +148,7 @@
 
     &__grid {
         &-wrap {
-            padding: 0 30px;
+            padding: 35px 30px 0;
         }
     }
 }

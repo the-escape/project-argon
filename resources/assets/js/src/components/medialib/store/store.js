@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Noty from 'noty'
 import {
     getFolders,
     getFoldersData,
@@ -9,8 +10,7 @@ import {
     removeFolder,
     uploadMedia,
     removeItem,
-    moveItem,
-    moveItems
+    move
 } from '../api/media'
 import { Folder, children, Item } from './folder'
 import { Search } from './search'
@@ -21,6 +21,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         folder: new Folder(),
+        folderMap: {},
         active: new Folder(),
         back: new Folder(),
         data: [],
@@ -30,38 +31,86 @@ export default new Vuex.Store({
         upload: new Upload()
     },
     mutations: {
-        loadFolders: (state, folder) => {
+        loadFolders: (state, { folder, pushState }) => {
+            if (pushState) {
+                history.pushState(
+                    { folderID: folder.id },
+                    folder.name,
+                    `?folder=${folder.name}&folderID=${folder.id}`
+                )
+            }
+
             getFolders(folder.id, function (f) {
                 state.folder.active = false
                 state.active.active = false
                 state.back = state.active
-                // folder.items = f.items
                 folder.setItems(f.items)
-                folder.setChildrenItems(f.children)
+                folder.setChildren(f.children)
                 folder.active = true
                 state.active = folder
                 state.search.reset()
+
+                state.folderMap = {
+                    ...state.folderMap,
+                    ...folder.children.reduce((acc, folder) => {
+                        acc[folder.id] = folder
+                        return acc
+                    }, {})
+                }
+            })
+        },
+        loadFoldersByID: (state, id) => {
+            const folder = state.folderMap[id]
+
+            if (!folder) {
+                return
+            }
+
+            getFolders(folder.id, function (f) {
+                state.folder.active = false
+                state.active.active = false
+                state.back = state.active
+                folder.setItems(f.items)
+                folder.setChildren(f.children)
+                folder.active = true
+                state.active = folder
+                state.search.reset()
+
+                state.folderMap = {
+                    ...state.folderMap,
+                    ...folder.children.reduce((acc, folder) => {
+                        acc[folder.id] = folder
+                        return acc
+                    }, {})
+                }
             })
         },
         folders: state => {
             getFoldersData(function (data) {
                 state.data = data
 
-                let folders = children(state.data)
+                let { newFolders, folderMap } = children(state.data)
+                state.folderMap = folderMap
 
                 state.folder = new Folder(
-                    folders[0].id,
-                    folders[0].name,
-                    folders[0].items,
-                    folders[0].children,
-                    folders[0].parent,
+                    newFolders[0].id,
+                    newFolders[0].name,
+                    newFolders[0].items,
+                    newFolders[0].children,
+                    newFolders[0].parent,
                     true
                 )
                 state.active = state.folder
 
+                history.pushState(
+                    { folderID: state.folder.id },
+                    state.folder.name,
+                    `?folder=${state.folder.name}&folderID=${state.folder.id}`
+                )
+
                 getFolders(state.folder.id, function (f) {
                     state.active.setItems(f.items)
-                    state.active.setChildrenItems(f.children)
+                    state.active.setChildren(f.children)
                 })
             })
         },
@@ -88,7 +137,12 @@ export default new Vuex.Store({
         createFolder: (state, payload) => {
             addFolder(payload.name, payload.parent.id, function (r) {
                 if (r.status !== 200) {
-                    return alert(r.body.error)
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
 
                 let child = new Folder(
@@ -104,7 +158,12 @@ export default new Vuex.Store({
         editFolder: (state, payload) => {
             editFolder(payload.name, payload.folder.id, function (r) {
                 if (r.status !== 200) {
-                    return alert(r.body.error)
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
 
                 // TODO: finish here
@@ -115,12 +174,13 @@ export default new Vuex.Store({
         removeFolder: (state, folder) => {
             removeFolder(folder.id, function (r) {
                 if (r.status !== 204) {
-                    return alert(r.body.error)
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
-
-                alert(
-                    'Folder removed.\nSwitching directory to parent folder...'
-                )
 
                 let parent = folder.parent
                 parent.active = true
@@ -129,6 +189,12 @@ export default new Vuex.Store({
                 )
                 state.back = new Folder()
                 state.active = parent
+
+                new Noty({
+                    text: `${folder.name} was removed`,
+                    type: 'success',
+                    timeout: 3500
+                }).show()
             })
         },
         uploadItems: (state, payload) => {
@@ -136,7 +202,12 @@ export default new Vuex.Store({
                 console.log(r)
 
                 if (r.status >= 400) {
-                    return alert(r.body.error)
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
 
                 let msg = r.body.messages
@@ -152,78 +223,77 @@ export default new Vuex.Store({
                 state.upload.reset()
 
                 if (msg) {
-                    alert(msg)
+                    new Noty({
+                        text: msg,
+                        type: 'success',
+                        timeout: 3500
+                    }).show()
                 }
             })
         },
         removeItem: (state, item) => {
             removeItem(item.item.id, function (r) {
                 if (r.status >= 400) {
-                    return alert(r.body.error)
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
 
-                alert('Item removed.\nRefreshing directory...')
-
-                getFolders(item.item.folder, function (f) {
-                    state.active.setItems(f.items)
-                    console.log('Refreshed folder content.')
-                })
+                item.hide = true
+                new Noty({
+                    text: `${item.getName()} was removed`,
+                    type: 'success',
+                    timeout: 3500
+                }).show()
             })
         },
-        moveItem: (state, payload) => {
-            if (payload.item.item.folder === payload.folder.id) {
-                console.log(
-                    `Item (${
-                        payload.item.item.filename
-                    }) already exists inside selected folder (${
-                        payload.folder.name
-                    }).`
-                )
-                return
-            }
-
-            let data = {
-                item: payload.item.item.id,
-                folder: payload.folder.id
-            }
-
-            moveItem(data, function (r) {
-                if (r.status >= 400) {
-                    return alert(r.body.error)
-                }
-
-                alert('Item moved.\nRefreshing directory...')
-
-                getFolders(payload.item.item.folder, function (f) {
-                    state.active.setItems(f.items)
-                    console.log('Refreshed folder content.')
-                })
-            })
-        },
-        moveItems: (state, { folder, items, currentFolder }) => {
+        move: (state, { destinationFolder, items, folders }) => {
             let data = {
                 items: items.map(item => item.item.id),
-                folder: folder.id
+                folders: folders.map(folder => folder.id),
+                destinationFolder: destinationFolder.id
             }
 
-            moveItems(data, function (r) {
+            items.forEach(item => {
+                item.hide = true
+            })
+
+            folders.forEach(folder => {
+                folder.hide = true
+            })
+
+            move(data, function (r) {
                 if (r.status >= 400) {
-                    return alert(r.body.error)
+                    items.forEach(item => {
+                        item.hide = false
+                    })
+
+                    folders.forEach(folder => {
+                        folder.hide = false
+                    })
+
+                    new Noty({
+                        text: r.body.error,
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
                 }
 
-                getFolders(currentFolder, function (f) {
-                    state.active.setItems(f.items)
-                    console.log('Refreshed folder content.')
-                })
+                new Noty({
+                    text: `${items.length + folders.length} items were moved`,
+                    type: 'success',
+                    timeout: 3500
+                }).show()
             })
         }
     },
     actions: {
-        loadFolders ({ commit }) {
-            commit('loadFolders', 1)
-        },
-        folderSelected ({ commit }, folder) {
-            commit('loadFolders', folder)
+        folderSelected ({ commit }, { folder, pushState = true }) {
+            commit('loadFolders', { folder, pushState })
         },
         loadLibrary ({ commit }) {
             commit('folders')
@@ -252,11 +322,11 @@ export default new Vuex.Store({
         removeItem ({ commit }, item) {
             commit('removeItem', item)
         },
-        moveItem ({ commit }, payload) {
-            commit('moveItem', payload)
+        move ({ commit }, payload) {
+            commit('move', payload)
         },
-        moveItems ({ commit }, payload) {
-            commit('moveItems', payload)
+        folderSelectByID ({ commit }, id) {
+            commit('loadFoldersByID', id)
         }
     }
 })

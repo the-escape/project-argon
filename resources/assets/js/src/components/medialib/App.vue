@@ -26,6 +26,19 @@ import {
 export default {
     created () {
         this.$store.dispatch('loadLibrary');
+
+        window.addEventListener('popstate', evt => {
+            if(evt.state && evt.state.folderID) {
+                this.$store.dispatch('folderSelectByID', evt.state.folderID)
+            }
+        })
+    },
+    mounted() {
+        const folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/
+        let folderID = folderUrlRegex.exec(window.location.search)
+        if(folderID && folderID[2]){
+            this.$store.dispatch('folderSelectByID', folderID[2])
+        }
     },
     computed: {
         ...mapState(['search', 'editItem'])

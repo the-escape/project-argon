@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li v-if="!folder.hide">
         <drop @dragover="dragOver(folder)" @dragleave="dragLeave(folder)" @dragend="dragLeave(folder)" @drop="handleDrop(folder, ...arguments)">
             <div class="c-directory-tree__content" :class="{ 'is-active': folder.active, 'is-open': folder.treeActive, 'is-dragover': folder.treeDragOver }">
                 <button @click="folderSelected(folder)">
@@ -36,18 +36,29 @@ export default {
     methods: {
         folderSelected(folder) {
             folder.treeActive = true
-            this.$store.dispatch('folderSelected', folder)
+            this.$store.dispatch('folderSelected', {folder})
         },
         toggleChildren(folder) {
             folder.treeActive = !folder.treeActive
         },
-        handleDrop(destinationFolder, transferData) {
+        handleDrop(destinationFolder, { highlighted: {items, folders }, item, folder }) {
             destinationFolder.treeDragOver = false
-            let payload = {
-                folder: destinationFolder,
-                item: transferData
+
+            if(!items.length && item){
+                items = [item]
             }
-            this.$store.dispatch('moveItem', payload)
+
+            if(!folders.length && folder){
+                folders = [folder]
+            }
+
+            folders = folders.filter(folder => folder.id !== destinationFolder.id)
+
+            this.$store.dispatch('move', {
+                destinationFolder,
+                items,
+                folders
+            })
         },
         enter (el) {
             el.style.height = 0

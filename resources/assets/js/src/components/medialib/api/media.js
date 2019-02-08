@@ -77,20 +77,9 @@ export function removeItem (id, cb) {
         })
 }
 
-export function moveItem (data, cb) {
+export function move (data, cb) {
     Vue.http
-        .post('/admin/media/api/items/move', data)
-        .then(response => {
-            cb(response)
-        })
-        .catch(e => {
-            cb(e)
-        })
-}
-
-export function moveItems (data, cb) {
-    Vue.http
-        .post('/admin/media/api/items/move-multi', data)
+        .post('/admin/media/api/move', data)
         .then(response => {
             cb(response)
         })

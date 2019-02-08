@@ -1,60 +1,99 @@
 <template>
     <div :class="`c-file-list c-file-list--${layout}`">
-        <drop
-            v-for="folderItem in folders"
-            :key="folderItem.id"
-            @dragover="dragOver(folderItem)"
-            @dragleave="dragLeave(folderItem)"
-            @drop="handleDrop(folderItem, ...arguments)"
-            @dragend="dragLeave(folderItem)"
-        >
-            <button
-                class="c-file-list__item c-file-list__item--folder"
-                :class="{'is-highlighted': folderItem.highlight, 'is-dragover': folderItem.dragOver}"
-                @click="highlightItem($event, folderItem)"
-                @dblclick="folderSelected(folderItem)"
+        <template v-for="folderItem in folders">
+            <drop
+                @dragover="dragOver(folderItem)"
+                @dragleave="dragLeave(folderItem)"
+                @drop="handleDrop(folderItem, ...arguments)"
+                @dragend="dragLeave(folderItem)"
+                v-if="!folderItem.hide"
+                :key="folderItem.id"
             >
-                <div class="c-file-list__image">
-                    <svg>
-                        <use xlink:href="/argon/images/svgicons.svg#folder"></use>
-                    </svg>
-                </div>
-                <div class="c-file-list__label">
-                    <span>{{ folderItem.name }}</span>
-                </div>
-            </button>
-        </drop>
+                <drag
+                    effect-allowed="move"
+                    drop-effect="move"
+                    :transfer-data="{ highlighted, folder: folderItem }"
+                    @dragstart="dragStart(folderItem)"
+                    @dragend="dragEnd(folderItem)"
+                    :image-x-offset="65"
+                    :image-y-offset="65"
+                >
+                    <div slot="image" class="c-file-list__drag-view">
+                        <div class="c-file-list__image">
+                            <svg>
+                                <use xlink:href="/argon/images/svgicons.svg#folder"></use>
+                            </svg>
+                        </div>
+                    </div>
+                    <div
+                        class="c-file-list__item c-file-list__item--folder"
+                        :class="{'is-highlighted': folderItem.highlight, 'is-dragover': folderItem.dragOver}"
+                    >
+                        <button
+                            class="c-file-list__btn"
+                            @click="highlightItem($event, folderItem)"
+                            @dblclick="folderSelected(folderItem)"
+                        >
+                            <div class="c-file-list__image">
+                                <svg>
+                                    <use xlink:href="/argon/images/svgicons.svg#folder"></use>
+                                </svg>
+                            </div>
+                            <div class="c-file-list__label">
+                                <span>{{ folderItem.name }}</span>
+                            </div>
+                        </button>
+                        <confirm-btn
+                            v-if="layout === 'list'"
+                            hideDuplicate="true"
+                            @delete="deleteFolder(folderItem)"
+                        />
+                    </div>
+                </drag>
+            </drop>
+        </template>
 
-        <drag
-            effect-allowed="move"
-            drop-effect="move"
-            :transfer-data="highlightedItems"
-            @dragstart="dragStart(item)"
-            @dragend="dragEnd(item)"
-            v-for="item in items"
-            :key="`item-${item.item.id}`"
-            :image-x-offset="65"
-            :image-y-offset="65"
-        >
-            <div slot="image" class="c-file-list__drag-view">
-                <div class="c-file-list__image">
-                    <img :src="item.getUrl()" alt="item.getName()">
-                </div>
-            </div>
-            <button
-                class="c-file-list__item"
-                :class="{ 'is-highlighted': item.highlight, 'is-dragging': item.dragging }"
-                @dblclick="editItem(item)"
-                @click="highlightItem($event, item)"
+        <template v-for="item in items">
+            <drag
+                effect-allowed="move"
+                drop-effect="move"
+                :transfer-data="{ highlighted, item }"
+                @dragstart="dragStart(item)"
+                @dragend="dragEnd(item)"
+                :key="`item-${item.item.id}`"
+                :image-x-offset="layout === 'list' ? 15 : 65"
+                :image-y-offset="layout === 'list' ? 15 : 65"
+                v-if="!item.hide"
             >
-                <div class="c-file-list__image">
-                    <img :src="item.getUrl()" alt="item.getName()">
+                <div slot="image" class="c-file-list__drag-view">
+                    <div class="c-file-list__image">
+                        <img :src="item.getUrl()" alt="item.getName()">
+                    </div>
                 </div>
-                <div class="c-file-list__label">
-                    <span>{{ item.getName() }}</span>
+                <div
+                    class="c-file-list__item"
+                    :class="{ 'is-highlighted': item.highlight, 'is-dragging': item.dragging }"
+                >
+                    <button
+                        class="c-file-list__btn"
+                        @dblclick="editItem(item)"
+                        @click="highlightItem($event, item)"
+                    >
+                        <div class="c-file-list__image">
+                            <img :src="item.getUrl()" alt="item.getName()">
+                        </div>
+                        <div class="c-file-list__label">
+                            <span>{{ item.getName() }}</span>
+                        </div>
+                    </button>
+                    <confirm-btn
+                        v-if="layout === 'list'"
+                        hideDuplicate="true"
+                        @delete="deleteItem(item)"
+                    />
                 </div>
-            </button>
-        </drag>
+            </drag>
+        </template>
     </div>
 </template>
 
@@ -86,8 +125,11 @@
                      return item
                  })
             },
-            highlightedItems: function () {
-                return this.combinedItems.filter(el => el.highlight)
+            highlighted: function () {
+                return {
+                    items: this.items.filter(el => el.highlight),
+                    folders: this.folders.filter(el => el.highlight)
+                }
             }
         },
         components: {
@@ -96,12 +138,12 @@
         },
         created (){
             fromEvent(document, 'click')
-                .pipe(filter(evt => !evt.target.classList.contains('c-file-list__item')))
+                .pipe(filter(evt => !evt.target.classList.contains('c-file-list__btn')))
                 .subscribe(this.unhighlightItems.bind(this))
         },
         methods: {
             folderSelected(folder) {
-                this.$store.dispatch('folderSelected', folder)
+                this.$store.dispatch('folderSelected', {folder})
             },
             editItem(item){
                 this.$store.dispatch('editItem', item)
@@ -140,14 +182,30 @@
             dragLeave (folderItem) {
                 folderItem.dragOver = false
             },
-            handleDrop(destinationFolder, transferData) {
+            handleDrop(destinationFolder, { highlighted: {items, folders }, item, folder }) {
                 destinationFolder.dragOver = false
-                let payload = {
-                    folder: destinationFolder,
-                    items: transferData,
-                    currentFolder: this.folder
+
+                if(!items.length && item){
+                    items = [item]
                 }
-                this.$store.dispatch('moveItems', payload)
+
+                if(!folders.length && folder){
+                    folders = [folder]
+                }
+
+                folders = folders.filter(folder => folder.id !== destinationFolder.id)
+
+                this.$store.dispatch('move', {
+                    destinationFolder,
+                    items,
+                    folders
+                })
+            },
+            deleteFolder (folder) {
+                this.$store.dispatch('removeFolder', folder)
+            },
+            deleteItem (item) {
+                this.$store.dispatch('removeItem', item)
             }
         }
     }

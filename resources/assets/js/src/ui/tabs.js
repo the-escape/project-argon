@@ -24,11 +24,11 @@ export function Tabs () {
         changeTab(tab[2], title[2])
     }
 
-    window.onpopstate = evt => {
+    window.addEventListener('popstate', evt => {
         if (evt.state && evt.state.tab) {
             changeTab(evt.state.tab, evt.state.title, false)
         }
-    }
+    })
 
     fromEvent(document, 'click')
         .pipe(

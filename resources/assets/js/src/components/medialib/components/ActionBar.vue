@@ -1,12 +1,12 @@
 <template>
     <div class="c-media-library__header">
         <div class="c-media-library__button-group">
-            <button class="c-media-library__btn" back>
+            <button class="c-media-library__btn" @click="back">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
                 </svg>
             </button>
-            <button class="c-media-library__btn" forward>
+            <button class="c-media-library__btn" @click="forwards">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#arrow-right"></use>
                 </svg>
@@ -36,7 +36,8 @@
 
         <div class="c-media-library__button-group">
             <button class="o-btn o-btn--sm" @click="createFolder(active)">Add folder</button>
-            <button class="o-btn o-btn--primary o-btn--sm">upload media</button>
+            <button class="o-btn o-btn--primary o-btn--sm" @click="$refs.fileInput.click()">upload media</button>
+            <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" hidden>
         </div>
 
         <!-- searchReset() ?? -->
@@ -123,6 +124,7 @@ export default {
         },
         onFileSelected(e) {
             this.upload.files = e.target.files
+            this.onUpload()
         },
         onUpload() {
             if (!this.upload.hasFiles()) {
@@ -146,6 +148,12 @@ export default {
             }
 
             return this.upload.init()
+        },
+        back() {
+            history.back();
+        },
+        forwards() {
+            history.forward();
         }
     }
 }
