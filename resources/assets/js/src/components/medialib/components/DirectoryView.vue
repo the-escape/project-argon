@@ -1,5 +1,5 @@
 <template>
-    <div class="c-media-library__directory-view" v-bar>
+    <div class="c-media-library__directory-view">
         <div class="c-media-library__breadcrumbs" v-if="active.isSet()">
             <button v-for="folder of active.breadcrumbs()" :key="folder.id" @click="folderSelected(folder)">
                 {{ folder.name }}

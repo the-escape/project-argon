@@ -22,8 +22,35 @@ export function Medialib () {
     }
 
     return new Vue({
+        data: {
+            isPicker: false
+        },
         el: mediaLibEl,
         store,
         render: h => h(App)
+    })
+}
+
+let mediaLibPicker
+
+export function setupMedialibPicker () {
+    const mediaLibEl = document.createElement('div')
+    document.body.appendChild(mediaLibEl)
+
+    requestAnimationFrame(() => {
+        mediaLibPicker = new Vue({
+            data: {
+                isPicker: true
+            },
+            store,
+            render: h => h(App)
+        }).$mount(mediaLibEl)
+    })
+}
+
+export function PickMedia () {
+    return new Promise(resolve => {
+        mediaLibPicker.$emit('open')
+        mediaLibPicker.$on('pick', resolve)
     })
 }

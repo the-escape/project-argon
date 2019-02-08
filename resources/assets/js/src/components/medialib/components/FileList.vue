@@ -146,7 +146,11 @@
                 this.$store.dispatch('folderSelected', {folder})
             },
             editItem(item){
-                this.$store.dispatch('editItem', item)
+                if(this.$store.state.isPicker){
+                    this.$root.$emit('pick', item.item.id)
+                }else{
+                    this.$store.dispatch('editItem', item)
+                }
             },
             highlightItem(evt, item) {
                 if(!evt.ctrlKey && !evt.shiftKey){

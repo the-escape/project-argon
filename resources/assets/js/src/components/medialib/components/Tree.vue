@@ -1,5 +1,5 @@
 <template>
-    <div class="c-media-library__directory-tree" v-bar>
+    <div class="c-media-library__directory-tree">
         <ul class="c-directory-tree">
             <tree-item :folder="folder" />
         </ul>

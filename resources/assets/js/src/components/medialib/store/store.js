@@ -20,6 +20,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        isPicker: false,
         folder: new Folder(),
         folderMap: {},
         active: new Folder(),

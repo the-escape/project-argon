@@ -1,26 +1,18 @@
 <template>
-    <div class="c-media-library">
-        <action-bar />
-
-        <div class="c-media-library__body">
-            <tree />
-
-            <search-results v-if="search.hasKeywords()" />
-            <directory-view v-else />
+    <div>
+        <div class="c-media-library__picker" v-if="isPicker && isOpen">
+            <main class="c-container c-container--main">
+                <media-library />
+            </main>
         </div>
-
-        <edit v-if="editItem.isSet()" />
+        <media-library v-if="!isPicker" />
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import {
-    Tree,
-    ActionBar,
-    SearchResults,
-    DirectoryView,
-    Edit
+    MediaLibrary
 } from './components'
 
 export default {
@@ -32,6 +24,16 @@ export default {
                 this.$store.dispatch('folderSelectByID', evt.state.folderID)
             }
         })
+
+        this.$store.state.isPicker = this.$root.$data.isPicker
+
+        this.$root.$on('open', () => {
+            this.isOpen = true
+        })
+
+        this.$root.$on('pick', () => {
+            this.isOpen = false
+        })
     },
     mounted() {
         const folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/
@@ -40,15 +42,25 @@ export default {
             this.$store.dispatch('folderSelectByID', folderID[2])
         }
     },
+    data() {
+        return {
+            isOpen: false
+        }
+    },
     computed: {
-        ...mapState(['search', 'editItem'])
+        isPicker: function () {
+            return this.$store.state.isPicker
+        },
+        showMediaLib: function () {
+            if(!this.isPicker){
+                return true
+            }
+
+            return this.isPicker && this.isOpen
+        }
     },
     components: {
-        Tree,
-        ActionBar,
-        SearchResults,
-        DirectoryView,
-        Edit
+        MediaLibrary
     }
 }
 </script>

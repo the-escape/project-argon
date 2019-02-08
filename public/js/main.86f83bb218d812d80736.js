@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 280 modules ***!
+  !*** ./resources/assets/js/src/index.js + 285 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -10942,22 +10942,19 @@ var Appvue_type_template_id_639a027f_render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "c-media-library" },
     [
-      _c("action-bar"),
+      _vm.isPicker && _vm.isOpen
+        ? _c("div", { staticClass: "c-media-library__picker" }, [
+            _c(
+              "main",
+              { staticClass: "c-container c-container--main" },
+              [_c("media-library")],
+              1
+            )
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "c-media-library__body" },
-        [
-          _c("tree"),
-          _vm._v(" "),
-          _vm.search.hasKeywords() ? _c("search-results") : _c("directory-view")
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.editItem.isSet() ? _c("edit") : _vm._e()
+      !_vm.isPicker ? _c("media-library") : _vm._e()
     ],
     1
   )
@@ -10973,21 +10970,14 @@ var Treevue_type_template_id_57304f95_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [{ name: "bar", rawName: "v-bar" }],
-      staticClass: "c-media-library__directory-tree"
-    },
-    [
-      _c(
-        "ul",
-        { staticClass: "c-directory-tree" },
-        [_c("tree-item", { attrs: { folder: _vm.folder } })],
-        1
-      )
-    ]
-  )
+  return _c("div", { staticClass: "c-media-library__directory-tree" }, [
+    _c(
+      "ul",
+      { staticClass: "c-directory-tree" },
+      [_c("tree-item", { attrs: { folder: _vm.folder } })],
+      1
+    )
+  ])
 }
 var Treevue_type_template_id_57304f95_staticRenderFns = []
 Treevue_type_template_id_57304f95_render._withStripped = true
@@ -12113,7 +12103,11 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       });
     },
     editItem: function editItem(item) {
-      this.$store.dispatch('editItem', item);
+      if (this.$store.state.isPicker) {
+        this.$root.$emit('pick', item.item.id);
+      } else {
+        this.$store.dispatch('editItem', item);
+      }
     },
     highlightItem: function highlightItem(evt, item) {
       var _this = this;
@@ -12273,48 +12267,41 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [{ name: "bar", rawName: "v-bar" }],
-      staticClass: "c-media-library__directory-view"
-    },
-    [
-      _vm.active.isSet()
-        ? _c(
-            "div",
-            { staticClass: "c-media-library__breadcrumbs" },
-            _vm._l(_vm.active.breadcrumbs(), function(folder) {
-              return _c(
-                "button",
-                {
-                  key: folder.id,
-                  on: {
-                    click: function($event) {
-                      _vm.folderSelected(folder)
-                    }
+  return _c("div", { staticClass: "c-media-library__directory-view" }, [
+    _vm.active.isSet()
+      ? _c(
+          "div",
+          { staticClass: "c-media-library__breadcrumbs" },
+          _vm._l(_vm.active.breadcrumbs(), function(folder) {
+            return _c(
+              "button",
+              {
+                key: folder.id,
+                on: {
+                  click: function($event) {
+                    _vm.folderSelected(folder)
                   }
-                },
-                [_vm._v("\n            " + _vm._s(folder.name) + "\n        ")]
-              )
+                }
+              },
+              [_vm._v("\n            " + _vm._s(folder.name) + "\n        ")]
+            )
+          })
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "c-media-library__grid-wrap" },
+      [
+        _vm.active.hasContent()
+          ? _c("file-list", {
+              attrs: { items: _vm.active.items, folders: _vm.active.children }
             })
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "c-media-library__grid-wrap" },
-        [
-          _vm.active.hasContent()
-            ? _c("file-list", {
-                attrs: { items: _vm.active.items, folders: _vm.active.children }
-              })
-            : _c("h3", [_vm._v("No content")])
-        ],
-        1
-      )
-    ]
-  )
+          : _c("h3", [_vm._v("No content")])
+      ],
+      1
+    )
+  ])
 }
 var DirectoryViewvue_type_template_id_6b3caa6a_staticRenderFns = []
 DirectoryViewvue_type_template_id_6b3caa6a_render._withStripped = true
@@ -12512,6 +12499,96 @@ var Edit_component = Object(componentNormalizer["default"])(
 if (false) { var Edit_api; }
 Edit_component.options.__file = "resources/assets/js/src/components/medialib/components/Edit.vue"
 /* harmony default export */ var Edit = (Edit_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
+var MediaLibraryvue_type_template_id_a08506a4_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "c-media-library" },
+    [
+      _c("action-bar"),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "c-media-library__body" },
+        [
+          _c("tree"),
+          _vm._v(" "),
+          _vm.search.hasKeywords() ? _c("search-results") : _c("directory-view")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.editItem.isSet() ? _c("edit") : _vm._e()
+    ],
+    1
+  )
+}
+var MediaLibraryvue_type_template_id_a08506a4_staticRenderFns = []
+MediaLibraryvue_type_template_id_a08506a4_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
+function MediaLibraryvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { MediaLibraryvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+
+function MediaLibraryvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var MediaLibraryvue_type_script_lang_js_ = ({
+  computed: MediaLibraryvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem'])),
+  components: {
+    Tree: Tree,
+    ActionBar: ActionBar,
+    SearchResults: SearchResults,
+    DirectoryView: DirectoryView,
+    Edit: Edit
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_MediaLibraryvue_type_script_lang_js_ = (MediaLibraryvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue
+
+
+
+
+
+/* normalize component */
+
+var MediaLibrary_component = Object(componentNormalizer["default"])(
+  components_MediaLibraryvue_type_script_lang_js_,
+  MediaLibraryvue_type_template_id_a08506a4_render,
+  MediaLibraryvue_type_template_id_a08506a4_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var MediaLibrary_api; }
+MediaLibrary_component.options.__file = "resources/assets/js/src/components/medialib/components/MediaLibrary.vue"
+/* harmony default export */ var MediaLibrary = (MediaLibrary_component.exports);
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/index.js
 
 
@@ -12519,15 +12596,8 @@ Edit_component.options.__file = "resources/assets/js/src/components/medialib/com
 
 
 
+
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/App.vue?vue&type=script&lang=js&
-function Appvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { Appvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
-
-function Appvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
 //
 //
 //
@@ -12551,6 +12621,13 @@ function Appvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in
         _this.$store.dispatch('folderSelectByID', evt.state.folderID);
       }
     });
+    this.$store.state.isPicker = this.$root.$data.isPicker;
+    this.$root.$on('open', function () {
+      _this.isOpen = true;
+    });
+    this.$root.$on('pick', function () {
+      _this.isOpen = false;
+    });
   },
   mounted: function mounted() {
     var folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/;
@@ -12560,13 +12637,25 @@ function Appvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in
       this.$store.dispatch('folderSelectByID', folderID[2]);
     }
   },
-  computed: Appvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem'])),
+  data: function data() {
+    return {
+      isOpen: false
+    };
+  },
+  computed: {
+    isPicker: function isPicker() {
+      return this.$store.state.isPicker;
+    },
+    showMediaLib: function showMediaLib() {
+      if (!this.isPicker) {
+        return true;
+      }
+
+      return this.isPicker && this.isOpen;
+    }
+  },
   components: {
-    Tree: Tree,
-    ActionBar: ActionBar,
-    SearchResults: SearchResults,
-    DirectoryView: DirectoryView,
-    Edit: Edit
+    MediaLibrary: MediaLibrary
   }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/App.vue?vue&type=script&lang=js&
@@ -13135,6 +13224,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
 vue_default.a.use(vuex_esm["default"]);
 /* harmony default export */ var store_store = (new vuex_esm["default"].Store({
   state: {
+    isPicker: false,
     folder: new Folder(),
     folderMap: {},
     active: new Folder(),
@@ -13469,11 +13559,36 @@ function Medialib() {
   }
 
   return new vue_default.a({
+    data: {
+      isPicker: false
+    },
     el: mediaLibEl,
     store: store_store,
     render: function render(h) {
       return h(medialib_App);
     }
+  });
+}
+var mediaLibPicker;
+function setupMedialibPicker() {
+  var mediaLibEl = document.createElement('div');
+  document.body.appendChild(mediaLibEl);
+  requestAnimationFrame(function () {
+    mediaLibPicker = new vue_default.a({
+      data: {
+        isPicker: true
+      },
+      store: store_store,
+      render: function render(h) {
+        return h(medialib_App);
+      }
+    }).$mount(mediaLibEl);
+  });
+}
+function PickMedia() {
+  return new Promise(function (resolve) {
+    mediaLibPicker.$emit('open');
+    mediaLibPicker.$on('pick', resolve);
   });
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/components/index.js
@@ -13590,6 +13705,23 @@ function src_init() {
   formSubmits();
   SiteTree();
   BasicConfirmBtns();
+  testMediaTpicker();
+}
+
+function testMediaTpicker() {
+  setupMedialibPicker();
+  var testBtn = document.querySelector('.js-ml-test');
+  var output = document.querySelector('.js-ml-test-out');
+  var outputImg = output.querySelector('img');
+  var outputLabel = output.querySelector('span');
+  testBtn.addEventListener('click', function () {
+    PickMedia().then(function (id) {
+      $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
+        outputImg.src = r.url;
+        outputLabel.innerHTML = r.url;
+      });
+    });
+  });
 }
 
 function formSubmits() {
@@ -13652,4 +13784,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.72924f70e373d13f99bc.js.map
+//# sourceMappingURL=main.86f83bb218d812d80736.js.map
