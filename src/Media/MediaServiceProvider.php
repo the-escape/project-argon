@@ -73,7 +73,22 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
             'appMove',
             Request::METHOD_POST
         );
+        $this->addRoute(
+            'media/api/delete',
+            'cms:media:api:delete',
+            MediaController::class,
+            'appDelete',
+            Request::METHOD_POST
+        );
+        $this->addRoute(
+            'media/api/recent',
+            'cms:media:api:recent',
+            MediaController::class,
+            'appRecent'
+        );
 
+
+        /* below routes are for the legacy media library */
 
         $this->addRoute(
             'media',

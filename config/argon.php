@@ -75,6 +75,7 @@ return [
 
     'medialibrary' => [
         'perpage' => 20,
+        'recent_items' => 30,
         'optimize' => [
             'enable' => env('IMAGE_OPTIM_ENABLE', true),
         ],
