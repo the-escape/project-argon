@@ -22,9 +22,7 @@ import {
     Cropper,
     setCropperImage,
     SiteTree,
-    Medialib,
-    setupMedialibPicker,
-    PickMedia
+    Medialib
 } from './components'
 import { Dashboard } from './dashboard'
 
@@ -55,25 +53,6 @@ function init () {
     formSubmits()
     SiteTree()
     BasicConfirmBtns()
-
-    testMediaTpicker()
-}
-
-function testMediaTpicker () {
-    setupMedialibPicker()
-    const testBtn = document.querySelector('.js-ml-test')
-    const output = document.querySelector('.js-ml-test-out')
-    const outputImg = output.querySelector('img')
-    const outputLabel = output.querySelector('span')
-
-    testBtn.addEventListener('click', () => {
-        PickMedia().then(id => {
-            $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
-                outputImg.src = r.url
-                outputLabel.innerHTML = r.url
-            })
-        })
-    })
 }
 
 function formSubmits () {

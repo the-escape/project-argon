@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export class Folder {
     constructor (
         id,
@@ -153,6 +155,13 @@ export class Item {
         this.dragging = false
         this.hide = false
         this.item = item
+
+        if (item) {
+            const date = moment(this.item.updated_at)
+            this.item.uploadedDate = `${date.format(
+                'DD MMM YYYY'
+            )} at ${date.format('HH:mm:ss')}`
+        }
     }
 
     getName () {
@@ -172,7 +181,7 @@ export class Item {
     }
 
     getDimensions (suffix = '') {
-        return `${this.getWidth(suffix)} x ${this.getHeight(suffix)}`
+        return `${this.getWidth(suffix)} x ${this.getHeight(suffix)}px`
     }
 
     isSet () {

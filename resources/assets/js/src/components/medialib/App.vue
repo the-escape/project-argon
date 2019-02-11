@@ -1,10 +1,20 @@
 <template>
     <div>
-        <div class="c-media-library__picker" v-if="isPicker && isOpen">
-            <main class="c-container c-container--main">
-                <media-library />
-            </main>
-        </div>
+        <transition name="fade">
+            <div class="c-media-library__picker" v-if="isPicker && isOpen">
+                <div class="c-media-library__picker-bg" @click="closePicker"></div>
+                <div class="c-media-library__picker-btn">
+                    <button @click.prevent="closePicker">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#cross-circle"></use>
+                        </svg>
+                    </button>
+                </div>
+                <main class="c-container c-container--main">
+                    <media-library />
+                </main>
+            </div>
+        </transition>
         <media-library v-if="!isPicker" />
     </div>
 </template>
@@ -22,6 +32,12 @@ export default {
         window.addEventListener('popstate', evt => {
             if(evt.state && evt.state.folderID) {
                 this.$store.dispatch('folderSelectByID', evt.state.folderID)
+            }
+        })
+
+        window.addEventListener('keydown', evt => {
+            if(evt.key === "Escape"){
+                this.closePicker()
             }
         })
 
@@ -61,6 +77,12 @@ export default {
     },
     components: {
         MediaLibrary
+    },
+    methods: {
+        closePicker () {
+            this.isOpen = false
+            this.$root.$emit('pick', null)
+        }
     }
 }
 </script>

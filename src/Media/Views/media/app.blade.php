@@ -18,13 +18,7 @@
 
         @include('argon::inc.new-alerts')
 
-        <button class="o-btn js-ml-test">load medialib</button>
-        <div class="js-ml-test-out">
-            <img src="" alt="">
-            <span></span>
-        </div>
-
-        {{-- <div id="medialibapp">Loading media library...</div> --}}
+        <div id="medialibapp">Loading media library...</div>
 
     </main>
 

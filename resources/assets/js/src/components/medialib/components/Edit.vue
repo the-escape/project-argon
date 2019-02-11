@@ -1,20 +1,49 @@
 <template>
-    <div class="m-details" v-if="editItem.isSet()">
-        <h4 class="modal-title" id="myModalLabel">{{ editItem.getName() }}</h4>
-        <div class="m-details__preview">
-            <img :src="editItem.getUrl()" :alt="editItem.getName()">
-        </div>
-        <dl class="m-details__info">
-            <dt>{{ editItem.getName() }}</dt>
-            <dd><small>File type:</small> {{ editItem.item.extension }}</dd>
-            <dd><small>Uploaded at:</small> {{ editItem.item.updated_at }}</dd>
-            <dd><small>Dimensions:</small> {{ editItem.getDimensions() }}</dd>
-            <dd><small>File Size:</small> {{ editItem.item.filesize }}</dd>
-            <dd><small>Uploaded by:</small> {{ editItem.item.uploaded_by }}</dd>
-        </dl>
-        <button type="button" class="btn btn-default" @click="closeEdit">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-    </div>
+    <dialog class="c-edit">
+        <header class="c-edit__header">
+            <h3 class="c-edit__title">Image Details</h3>
+        </header>
+        <main class="c-edit__body">
+            <div class="c-edit__preview">
+                <div class="c-edit__image">
+                    <img :src="editItem.getUrl()" :alt="editItem.getName()">
+                </div>
+                <!-- <div class="c-edit__replace-image">
+                    <span>Overwrite existing asset?</span>
+                    <button class="o-btn o-btn--xs">choose file</button>
+                </div> -->
+            </div>
+            <div class="c-edit__details">
+                <dl>
+                    <dt>File Name:</dt>
+                    <dd>{{ editItem.getName() }}</dd>
+                    <!-- <dt>Location:</dt>
+                    <dd></dd> -->
+                    <dt>File type:</dt>
+                    <dd>{{ editItem.item.extension }}</dd>
+                    <dt>Uploaded at:</dt>
+                    <dd>{{ editItem.item.uploadedDate }}</dd>
+                    <dt>Dimensions:</dt>
+                    <dd>{{ editItem.getDimensions() }}</dd>
+                    <dt>File Size:</dt>
+                    <dd>{{ editItem.item.filesize_formatted }}</dd>
+                    <dt>Uploaded by:</dt>
+                    <dd>
+                        <div class="c-edit__author">
+                            <div class="c-edit__author-img">
+                                <img src="" alt="">
+                            </div>
+                            <span>{{ editItem.item.uploaded_by }}</span>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </main>
+        <footer class="c-edit__footer">
+            <button class="o-btn o-btn--sm" @click="closeEdit">cancel</button>
+            <!-- <button class="o-btn o-btn--sm o-btn--primary">save</button> -->
+        </footer>
+    </dialog>
 </template>
 
 <script>

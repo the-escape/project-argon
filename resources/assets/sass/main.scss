@@ -96,6 +96,14 @@
 @import "06-components/vendor/tree";
 @import "06-components/vendor/balloon";
 
+// components - media library
+//====================
+@import "06-components/medialib/app";
+@import "06-components/medialib/media-library";
+@import "06-components/medialib/file-list";
+@import "06-components/medialib/directory-tree";
+@import "06-components/medialib/edit";
+
 // components
 //====================
 @import "06-components/sidebar/index";
@@ -119,10 +127,6 @@
 @import "06-components/block-list";
 @import "06-components/cropper";
 @import "06-components/actions";
-@import "06-components/medialib/app";
-@import "06-components/medialib/media-library";
-@import "06-components/medialib/file-list";
-@import "06-components/medialib/directory-tree";
 
 // trumps
 //====================

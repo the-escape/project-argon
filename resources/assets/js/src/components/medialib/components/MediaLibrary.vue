@@ -7,9 +7,10 @@
 
             <search-results v-if="search.hasKeywords()" />
             <directory-view v-else />
+            <transform name="fade">
+                <edit v-if="editItem.isSet()" />
+            </transform>
         </div>
-
-        <edit v-if="editItem.isSet()" />
     </div>
 </template>
 

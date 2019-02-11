@@ -91,10 +91,12 @@
     }
 
     &__body {
+        position: relative;
         flex: 1 1 100%;
         display: flex;
         border: 1px solid $secondary;
         border-top: 0;
+        overflow: hidden;
     }
 
     &__directory-tree {
@@ -159,5 +161,74 @@
         left: 0;
         width: 100%;
         height: 100vh;
+        z-index: $zindex-fixed;
+
+        &.fade-enter-active {
+            transition: opacity $userActive $easeOut;
+        }
+
+        &.fade-leave-active {
+            transition: opacity $userInactive $easeOut;
+        }
+
+        &.fade-enter,
+        &.fade-leave-to {
+            opacity: 0;
+        }
+
+        &-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            background-color: $tertiary;
+            opacity: 0.5;
+            transform: translate(-50%, -50%);
+        }
+
+        &-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+
+            button {
+                width: 48px;
+                height: 48px;
+                padding: 0;
+                color: $secondary;
+
+                &:hover {
+                    color: #fff;
+                }
+            }
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &.fade-enter-active main {
+            transition: transform $userActive $easeOut;
+        }
+
+        &.fade-leave-active main {
+            transition: transform $userInactive $easeOut;
+        }
+
+        &.fade-enter main,
+        &.fade-leave-to main {
+            transform: translateY(50px);
+        }
+
+        main {
+            margin-top: 163px;
+            margin-left: 10%;
+            margin-right: 10%;
+            position: relative;
+            z-index: 1;
+            padding: 0;
+        }
     }
 }

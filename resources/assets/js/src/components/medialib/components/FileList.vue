@@ -103,6 +103,8 @@
     import { mapState } from 'vuex'
     import { Drag, Drop } from 'vue-drag-drop'
 
+    import { pickImage } from '../api/media'
+
     export default {
         data () {
             return {
@@ -147,7 +149,9 @@
             },
             editItem(item){
                 if(this.$store.state.isPicker){
-                    this.$root.$emit('pick', item.item.id)
+                    pickImage(item.item.id, mediaObj => {
+                        this.$root.$emit('pick', mediaObj)
+                    })
                 }else{
                     this.$store.dispatch('editItem', item)
                 }

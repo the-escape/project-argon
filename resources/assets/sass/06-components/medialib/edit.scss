@@ -1,0 +1,124 @@
+.c-edit {
+    position: absolute;
+    width: 75%;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    margin: 0;
+    color: inherit;
+    border: 0;
+    padding: 0;
+    background-color: #fff;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+
+    &.fade-enter-active {
+        transition: transform $userActive $easeOut;
+    }
+
+    &.fade-leave-active {
+        transition: transform $userInactive $easeOut;
+    }
+
+    &.fade-enter,
+    &.fade-leave-to {
+        transform: translateX(100%);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        height: 56px;
+        border-bottom: 1px solid $secondary;
+        padding: 0 30px;
+    }
+
+    &__body {
+        display: flex;
+        padding: 30px 15px 55px;
+    }
+
+    &__preview {
+        padding: 0 15px;
+        flex: 1 1 30%;
+        text-align: center;
+    }
+
+    &__image {
+        background-color: $secondary-highlight;
+        position: relative;
+
+        + * {
+            margin-top: 35px;
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            padding-bottom: 100%;
+        }
+
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: auto;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    &__replace-image {
+        span {
+            font-weight: 500;
+            display: block;
+
+            + * {
+                margin-top: 8px !important;
+            }
+        }
+    }
+
+    &__details {
+        padding: 0 15px;
+        flex: 1 1 70%;
+
+        dl {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            grid-gap: 12px 30px;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 60px;
+        margin-top: auto;
+        padding: 0 30px;
+        border-top: 1px solid $secondary;
+        background-color: $secondary-highlight;
+
+        > * + * {
+            margin-left: 10px !important;
+        }
+    }
+}
+
+@supports (object-fit: contain) {
+    .c-edit {
+        &__image {
+            img {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                transform: none;
+                object-fit: contain;
+            }
+        }
+    }
+}

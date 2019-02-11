@@ -1,5 +1,26 @@
 import Vue from 'vue'
 
+export function pickImage (imageId, cb) {
+    Vue.http
+        .get('/admin/media/items/' + encodeURIComponent(imageId))
+        .then(response => {
+            const {
+                id,
+                url,
+                filename,
+                meta: { width, height }
+            } = response.body
+            const mediaObj = {
+                id,
+                url,
+                filename,
+                width,
+                height
+            }
+            cb(mediaObj)
+        })
+}
+
 export function getFolders (folderId, cb) {
     Vue.http
         .get('/admin/media/api/folders/' + encodeURIComponent(folderId))

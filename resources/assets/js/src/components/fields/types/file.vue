@@ -32,6 +32,7 @@
 import Validation from './util/validation.vue'
 import Multi from './util/multi.vue'
 import FieldValues from './mixins/field-values.vue'
+import { setupMedialibPicker, PickMedia } from '../../medialib'
 
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],
@@ -39,6 +40,9 @@ export default {
     components: {
         'validation': Validation,
         'multi': Multi
+    },
+    created() {
+        setupMedialibPicker()
     },
     methods: {
         updateValue: function(valueObj, newValue) {
@@ -61,31 +65,10 @@ export default {
         selectFile: function(evt, valueObj){
             evt.preventDefault()
 
-            spawnMediaLib().then(value => {
+            PickMedia().then(value => {
                 this.updateValue(valueObj, value)
             })
         }
     }
-}
-
-function spawnMediaLib () {
-    return new Promise(resolve => {
-        $('#medialib').off('hidden.bs.modal')
-        $('#medialib').on('hidden.bs.modal', function () {
-            const id = $(this).data('mlselect')
-            let mediaValueObj
-
-            $.ajax(argon.root() + '/media/items/' + id).done(function (r) {
-                mediaValueObj = {
-                    id: r.id,
-                    url: r.url
-                }
-
-                resolve(mediaValueObj)
-            })
-        })
-
-        $('#medialib').modal()
-    })
 }
 </script>

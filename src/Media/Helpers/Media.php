@@ -260,6 +260,7 @@ class Media
         {
             if ($media_item->folder == $folder->id)
             {
+                $media_item->filesize_formatted = self::sizeFormat($media_item->filesize);
                 $folder->items[] = $media_item;
             }
         }

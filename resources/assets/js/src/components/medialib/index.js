@@ -15,6 +15,8 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.head.querySelector(
     'meta[name="csrf-token"]'
 ).content
 
+let hasSetupPicker = false
+
 export function Medialib () {
     const mediaLibEl = document.querySelector('#medialibapp')
     if (!mediaLibEl) {
@@ -34,6 +36,10 @@ export function Medialib () {
 let mediaLibPicker
 
 export function setupMedialibPicker () {
+    if (hasSetupPicker) {
+        return
+    }
+
     const mediaLibEl = document.createElement('div')
     document.body.appendChild(mediaLibEl)
 
@@ -46,6 +52,8 @@ export function setupMedialibPicker () {
             render: h => h(App)
         }).$mount(mediaLibEl)
     })
+
+    hasSetupPicker = true
 }
 
 export function PickMedia () {
