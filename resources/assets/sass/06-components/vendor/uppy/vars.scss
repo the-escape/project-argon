@@ -1,0 +1,31 @@
+// Colors
+$color-black: #000 !default;
+$color-gray: $secondary;
+$color-red: #d32f2f !default;
+$color-green: #1bb240 !default;
+$color-orange: #f6a623 !default;
+$color-yellow: #ffd600 !default;
+$color-white: #fff !default;
+$color-almost-white: $secondary-highlight !default;
+$color-cornflower-blue: #2275d7 !default;
+$color-asphalt-gray: #525252 !default;
+$color-uppy-pink: #eb2177;
+$color-primary: $primary;
+
+// Sizes
+
+$size-focus-outline: 2px;
+$size-focus-offset: 2px;
+
+// Z-index
+
+$zIndex-negative: -1000 !default;
+$zIndex-1: 100 !default;
+$zIndex-2: 1001 !default;
+$zIndex-3: 1002 !default;
+$zIndex-3: 1003 !default;
+$zIndex-4: 1004 !default;
+$zIndex-5: 1005 !default;
+
+// Media Queries
+$screen-medium: "only screen and (min-width: 820px)" !default;

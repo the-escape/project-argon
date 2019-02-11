@@ -36,8 +36,9 @@
 
         <div class="c-media-library__button-group">
             <button class="o-btn o-btn--sm" @click="createFolder(active)">Add folder</button>
-            <button class="o-btn o-btn--primary o-btn--sm" @click="$refs.fileInput.click()">upload media</button>
-            <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" hidden>
+            <!-- <button class="o-btn o-btn--primary o-btn--sm" @click="$refs.fileInput.click()">upload media</button> -->
+            <button class="o-btn o-btn--primary o-btn--sm" @click.prevent="toggleUpload">{{uploadIsOpen ? 'Close uploads' : 'Upload media' }}</button>
+            <!-- <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" hidden> -->
         </div>
 
         <!-- searchReset() ?? -->
@@ -74,7 +75,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['layout', 'search', 'active', 'upload']),
+        ...mapState(['layout', 'search', 'active', 'uploadIsOpen']),
         keywords: {
             set(keywords) {
                 if(!keywords.length){
@@ -122,33 +123,36 @@ export default {
                 this.$store.dispatch('removeFolder', active)
             }
         },
-        onFileSelected(e) {
-            this.upload.files = e.target.files
-            this.onUpload()
+        // onFileSelected(e) {
+        //     this.upload.files = e.target.files
+        //     this.onUpload()
+        // },
+        toggleUpload() {
+            this.$store.dispatch('toggleUploads')
         },
-        onUpload() {
-            if (!this.upload.hasFiles()) {
-                return alert("Nothing to upload.\nPlease select files to upload and continue...")
-            }
+        // onUpload() {
+        //     if (!this.upload.hasFiles()) {
+        //         return alert("Nothing to upload.\nPlease select files to upload and continue...")
+        //     }
 
-            let fd = new FormData()
-            fd.append('folder', this.active.id)
+        //     let fd = new FormData()
+        //     fd.append('folder', this.active.id)
 
-            Array
-                .from(Array(this.upload.getFiles().length).keys())
-                .map(x => {
-                    fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
-                })
+        //     Array
+        //         .from(Array(this.upload.getFiles().length).keys())
+        //         .map(x => {
+        //             fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
+        //         })
 
-            this.$store.dispatch('uploadItems', fd)
-        },
-        onUploadClick() {
-            if (this.upload.isInitialised()) {
-                return this.upload.reset()
-            }
+        //     this.$store.dispatch('uploadItems', fd)
+        // },
+        // onUploadClick() {
+        //     if (this.upload.isInitialised()) {
+        //         return this.upload.reset()
+        //     }
 
-            return this.upload.init()
-        },
+        //     return this.upload.init()
+        // },
         back() {
             history.back();
         },

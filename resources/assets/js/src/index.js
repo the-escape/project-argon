@@ -29,6 +29,12 @@ import { Dashboard } from './dashboard'
 import { fromEvent } from 'rxjs'
 import { filter } from 'rxjs/operators'
 // import resetForm from './form/reset-form'
+import {
+    Core as Uppy,
+    XHRUpload,
+    Dashboard as UppyDashboard,
+    DragDrop
+} from 'uppy'
 
 function init () {
     polyfill()
@@ -53,6 +59,32 @@ function init () {
     formSubmits()
     SiteTree()
     BasicConfirmBtns()
+
+    // testUppy()
+}
+
+function testUppy () {
+    let metaToken = document.head.querySelector('meta[name="csrf-token"]')
+    metaToken = metaToken && metaToken.content
+
+    const uppy = Uppy()
+        .use(UppyDashboard, {
+            target: '.js-uppy',
+            inline: true,
+            width: '100%',
+            height: '100%'
+        })
+        .use(XHRUpload, {
+            endpoint: '/admin/media/api/upload',
+            headers: {
+                'X-CSRF-TOKEN': metaToken
+            }
+        })
+        .use(DragDrop, {
+            target: '.js-drag-drop'
+        })
+
+    uppy.on('complete', console.log)
 }
 
 function formSubmits () {

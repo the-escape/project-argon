@@ -95,10 +95,11 @@
 @import "06-components/vendor/cropper";
 @import "06-components/vendor/tree";
 @import "06-components/vendor/balloon";
+@import "06-components/vendor/uppy";
 
 // components - media library
 //====================
-@import "06-components/medialib/app";
+// @import "06-components/medialib/app";
 @import "06-components/medialib/media-library";
 @import "06-components/medialib/file-list";
 @import "06-components/medialib/directory-tree";

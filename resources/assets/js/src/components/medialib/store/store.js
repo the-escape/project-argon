@@ -29,7 +29,8 @@ export default new Vuex.Store({
         search: new Search(),
         editItem: new Item(),
         layout: 'tiles',
-        upload: new Upload()
+        upload: new Upload(),
+        uploadIsOpen: false
     },
     mutations: {
         loadFolders: (state, { folder, pushState }) => {
@@ -232,6 +233,37 @@ export default new Vuex.Store({
                 }
             })
         },
+        uploadResult: (state, payload) => {
+            if (!payload.successful.length) {
+                return
+            }
+
+            getFolders(state.active.id, function (f) {
+                state.active.setItems(f.items)
+            })
+
+            state.uploadIsOpen = false
+
+            const maxLen = 3
+            const isOverMax = payload.successful.length > maxLen
+            const len = isOverMax ? maxLen : payload.successful.length
+            const fileNames = []
+            for (let i = 0; i < len; i++) {
+                fileNames.push(payload.successful[i].name)
+            }
+            let msg = fileNames.join(', ')
+            if (isOverMax) {
+                msg += '...'
+            }
+
+            msg += ' uploaded'
+
+            new Noty({
+                text: msg,
+                type: 'success',
+                timeout: 3500
+            }).show()
+        },
         removeItem: (state, item) => {
             removeItem(item.item.id, function (r) {
                 if (r.status >= 400) {
@@ -290,6 +322,9 @@ export default new Vuex.Store({
                     timeout: 3500
                 }).show()
             })
+        },
+        toggleUploads: state => {
+            state.uploadIsOpen = !state.uploadIsOpen
         }
     },
     actions: {
@@ -328,6 +363,12 @@ export default new Vuex.Store({
         },
         folderSelectByID ({ commit }, id) {
             commit('loadFoldersByID', id)
+        },
+        toggleUploads ({ commit }) {
+            commit('toggleUploads')
+        },
+        uploadResult ({ commit }, payload) {
+            commit('uploadResult', payload)
         }
     }
 })

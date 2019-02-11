@@ -1,0 +1,12 @@
+@import "uppy/utils";
+@import "uppy/vars";
+@import "uppy/informer";
+@import "uppy/microtip";
+@import "uppy/status-bar";
+@import "uppy/provider-views";
+@import "uppy/dashboard";
+@import "uppy/drag-drop";
+
+.uppy-Root {
+    height: 100%;
+}

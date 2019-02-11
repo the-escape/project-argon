@@ -495,7 +495,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 285 modules ***!
+  !*** ./resources/assets/js/src/index.js + 289 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -514,6 +514,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuebar/vuebar.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuedraggable/dist/vuedraggable.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuex/dist/vuex.esm.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/uppy/index.mjs */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-loader/lib/runtime/componentNormalizer.js */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7745,6 +7746,43 @@ Appvue_type_template_id_639a027f_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/App.vue?vue&type=template&id=639a027f&
 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
+var MediaLibraryvue_type_template_id_a08506a4_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "c-media-library" },
+    [
+      _c("action-bar"),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "c-media-library__body" },
+        [
+          _c("tree"),
+          _vm._v(" "),
+          _vm.search.hasKeywords()
+            ? _c("search-results")
+            : _c("directory-view"),
+          _vm._v(" "),
+          _vm.editItem.isSet() ? _c("edit") : _vm._e(),
+          _vm._v(" "),
+          _vm.uploadIsOpen ? _c("upload") : _vm._e()
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var MediaLibraryvue_type_template_id_a08506a4_staticRenderFns = []
+MediaLibraryvue_type_template_id_a08506a4_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
+
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/Tree.vue?vue&type=template&id=57304f95&
 var Treevue_type_template_id_57304f95_render = function() {
   var _vm = this
@@ -8208,18 +8246,13 @@ var ActionBarvue_type_template_id_99500dd4_render = function() {
           staticClass: "o-btn o-btn--primary o-btn--sm",
           on: {
             click: function($event) {
-              _vm.$refs.fileInput.click()
+              $event.preventDefault()
+              return _vm.toggleUpload($event)
             }
           }
         },
-        [_vm._v("upload media")]
-      ),
-      _vm._v(" "),
-      _c("input", {
-        ref: "fileInput",
-        attrs: { type: "file", multiple: "", accept: "*/*", hidden: "" },
-        on: { change: _vm.onFileSelected }
-      })
+        [_vm._v(_vm._s(_vm.uploadIsOpen ? "Close uploads" : "Upload media"))]
+      )
     ])
   ])
 }
@@ -8300,6 +8333,7 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
 //
 //
 //
+//
 
 /* harmony default export */ var ActionBarvue_type_script_lang_js_ = ({
   data: function data() {
@@ -8307,7 +8341,7 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
       isSearchFocussed: false
     };
   },
-  computed: ActionBarvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'search', 'active', 'upload']), {
+  computed: ActionBarvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'search', 'active', 'uploadIsOpen']), {
     keywords: {
       set: function set(keywords) {
         if (!keywords.length) {
@@ -8364,31 +8398,32 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
         this.$store.dispatch('removeFolder', active);
       }
     },
-    onFileSelected: function onFileSelected(e) {
-      this.upload.files = e.target.files;
-      this.onUpload();
+    // onFileSelected(e) {
+    //     this.upload.files = e.target.files
+    //     this.onUpload()
+    // },
+    toggleUpload: function toggleUpload() {
+      this.$store.dispatch('toggleUploads');
     },
-    onUpload: function onUpload() {
-      var _this = this;
-
-      if (!this.upload.hasFiles()) {
-        return alert("Nothing to upload.\nPlease select files to upload and continue...");
-      }
-
-      var fd = new FormData();
-      fd.append('folder', this.active.id);
-      Array.from(Array(this.upload.getFiles().length).keys()).map(function (x) {
-        fd.append('files[]', _this.upload.files[x], _this.upload.files[x].name);
-      });
-      this.$store.dispatch('uploadItems', fd);
-    },
-    onUploadClick: function onUploadClick() {
-      if (this.upload.isInitialised()) {
-        return this.upload.reset();
-      }
-
-      return this.upload.init();
-    },
+    // onUpload() {
+    //     if (!this.upload.hasFiles()) {
+    //         return alert("Nothing to upload.\nPlease select files to upload and continue...")
+    //     }
+    //     let fd = new FormData()
+    //     fd.append('folder', this.active.id)
+    //     Array
+    //         .from(Array(this.upload.getFiles().length).keys())
+    //         .map(x => {
+    //             fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
+    //         })
+    //     this.$store.dispatch('uploadItems', fd)
+    // },
+    // onUploadClick() {
+    //     if (this.upload.isInitialised()) {
+    //         return this.upload.reset()
+    //     }
+    //     return this.upload.init()
+    // },
     back: function back() {
       history.back();
     },
@@ -9413,46 +9448,102 @@ var Edit_component = Object(componentNormalizer["default"])(
 if (false) { var Edit_api; }
 Edit_component.options.__file = "resources/assets/js/src/components/medialib/components/Edit.vue"
 /* harmony default export */ var Edit = (Edit_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
-var MediaLibraryvue_type_template_id_a08506a4_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/Upload.vue?vue&type=template&id=562b64b8&
+var Uploadvue_type_template_id_562b64b8_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "c-media-library" },
-    [
-      _c("action-bar"),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "c-media-library__body" },
-        [
-          _c("tree"),
-          _vm._v(" "),
-          _vm.search.hasKeywords()
-            ? _c("search-results")
-            : _c("directory-view"),
-          _vm._v(" "),
-          _c(
-            "transform",
-            { attrs: { name: "fade" } },
-            [_vm.editItem.isSet() ? _c("edit") : _vm._e()],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("div", { staticClass: "c-media-library__upload" }, [
+    _c("div", { ref: "uppy", staticClass: "c-media-library__upload-container" })
+  ])
 }
-var MediaLibraryvue_type_template_id_a08506a4_staticRenderFns = []
-MediaLibraryvue_type_template_id_a08506a4_render._withStripped = true
+var Uploadvue_type_template_id_562b64b8_staticRenderFns = []
+Uploadvue_type_template_id_562b64b8_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=template&id=a08506a4&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Upload.vue?vue&type=template&id=562b64b8&
 
+// EXTERNAL MODULE: ./node_modules/uppy/index.mjs
+var node_modules_uppy = __webpack_require__("./node_modules/uppy/index.mjs");
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/Upload.vue?vue&type=script&lang=js&
+function Uploadvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { Uploadvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+
+function Uploadvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var Uploadvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      uppyInstance: null
+    };
+  },
+  computed: Uploadvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['active'])),
+  mounted: function mounted() {
+    var metaToken = document.head.querySelector('meta[name="csrf-token"]');
+    metaToken = metaToken && metaToken.content;
+    this.uppyInstance = Object(node_modules_uppy["Core"])().use(node_modules_uppy["Dashboard"], {
+      target: this.$refs.uppy,
+      inline: true,
+      width: '100%',
+      height: '100%'
+    }).use(node_modules_uppy["XHRUpload"], {
+      endpoint: '/admin/media/api/upload',
+      headers: {
+        'X-CSRF-TOKEN': metaToken
+      },
+      metaFields: ['folder']
+    });
+    this.uppyInstance.on('file-added', this.addFolderToFile.bind(this));
+    this.uppyInstance.on('complete', this.successfulUpload.bind(this));
+  },
+  destroyed: function destroyed() {
+    this.uppyInstance.off('file-added', this.addFolderToFile.bind(this));
+    this.uppyInstance.off('complete', this.successfulUpload.bind(this));
+  },
+  methods: {
+    successfulUpload: function successfulUpload(evt) {
+      this.$store.dispatch('uploadResult', evt);
+    },
+    addFolderToFile: function addFolderToFile(file) {
+      this.uppyInstance.setFileMeta(file.id, {
+        folder: this.active.id
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Upload.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_Uploadvue_type_script_lang_js_ = (Uploadvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Upload.vue
+
+
+
+
+
+/* normalize component */
+
+var Upload_component = Object(componentNormalizer["default"])(
+  components_Uploadvue_type_script_lang_js_,
+  Uploadvue_type_template_id_562b64b8_render,
+  Uploadvue_type_template_id_562b64b8_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var Upload_api; }
+Upload_component.options.__file = "resources/assets/js/src/components/medialib/components/Upload.vue"
+/* harmony default export */ var Upload = (Upload_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
 function MediaLibraryvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { MediaLibraryvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
@@ -9476,14 +9567,20 @@ function MediaLibraryvue_type_script_lang_js_defineProperty(obj, key, value) { i
 //
 
 
+
+
+
+
+
 /* harmony default export */ var MediaLibraryvue_type_script_lang_js_ = ({
-  computed: MediaLibraryvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem'])),
+  computed: MediaLibraryvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem', 'uploadIsOpen'])),
   components: {
     Tree: Tree,
     ActionBar: ActionBar,
     SearchResults: SearchResults,
     DirectoryView: DirectoryView,
-    Edit: Edit
+    Edit: Edit,
+    Upload: Upload
   }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
@@ -9511,14 +9608,6 @@ var MediaLibrary_component = Object(componentNormalizer["default"])(
 if (false) { var MediaLibrary_api; }
 MediaLibrary_component.options.__file = "resources/assets/js/src/components/medialib/components/MediaLibrary.vue"
 /* harmony default export */ var MediaLibrary = (MediaLibrary_component.exports);
-// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/index.js
-
-
-
-
-
-
-
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/App.vue?vue&type=script&lang=js&
 //
 //
@@ -10027,7 +10116,7 @@ function upload_defineProperties(target, props) { for (var i = 0; i < props.leng
 
 function upload_createClass(Constructor, protoProps, staticProps) { if (protoProps) upload_defineProperties(Constructor.prototype, protoProps); if (staticProps) upload_defineProperties(Constructor, staticProps); return Constructor; }
 
-var Upload =
+var upload_Upload =
 /*#__PURE__*/
 function () {
   function Upload() {
@@ -10039,6 +10128,7 @@ function () {
     this.progress = false;
     this.label = 'Upload';
     this.ouputMessages = [];
+    this.isOpen = false;
   }
 
   upload_createClass(Upload, [{
@@ -10084,6 +10174,7 @@ function () {
       this.initialised = false;
       this.progress = false;
       this.label = 'Upload';
+      this.isOpen = false;
     }
   }]);
 
@@ -10113,7 +10204,8 @@ vue_default.a.use(vuex_esm["default"]);
     search: new search_Search(),
     editItem: new folder_Item(),
     layout: 'tiles',
-    upload: new Upload()
+    upload: new upload_Upload(),
+    uploadIsOpen: false
   },
   mutations: {
     loadFolders: function loadFolders(state, _ref) {
@@ -10294,6 +10386,37 @@ vue_default.a.use(vuex_esm["default"]);
         }
       });
     },
+    uploadResult: function uploadResult(state, payload) {
+      if (!payload.successful.length) {
+        return;
+      }
+
+      getFolders(state.active.id, function (f) {
+        state.active.setItems(f.items);
+      });
+      state.uploadIsOpen = false;
+      var maxLen = 3;
+      var isOverMax = payload.successful.length > maxLen;
+      var len = isOverMax ? maxLen : payload.successful.length;
+      var fileNames = [];
+
+      for (var i = 0; i < len; i++) {
+        fileNames.push(payload.successful[i].name);
+      }
+
+      var msg = fileNames.join(', ');
+
+      if (isOverMax) {
+        msg += '...';
+      }
+
+      msg += ' uploaded';
+      new noty_default.a({
+        text: msg,
+        type: 'success',
+        timeout: 3500
+      }).show();
+    },
     removeItem: function removeItem(state, item) {
       media_removeItem(item.item.id, function (r) {
         if (r.status >= 400) {
@@ -10355,6 +10478,9 @@ vue_default.a.use(vuex_esm["default"]);
           timeout: 3500
         }).show();
       });
+    },
+    toggleUploads: function toggleUploads(state) {
+      state.uploadIsOpen = !state.uploadIsOpen;
     }
   },
   actions: {
@@ -10411,6 +10537,14 @@ vue_default.a.use(vuex_esm["default"]);
     folderSelectByID: function folderSelectByID(_ref15, id) {
       var commit = _ref15.commit;
       commit('loadFoldersByID', id);
+    },
+    toggleUploads: function toggleUploads(_ref16) {
+      var commit = _ref16.commit;
+      commit('toggleUploads');
+    },
+    uploadResult: function uploadResult(_ref17, payload) {
+      var commit = _ref17.commit;
+      commit('uploadResult', payload);
     }
   }
 }));
@@ -10430,7 +10564,9 @@ vue_default.a.use(vue_resource_esm["default"]);
 vue_default.a.use(vue_drag_drop_common_default.a);
 vue_default.a.use(vuebar_default.a);
 vue_default.a.component('confirm-btn', confirm_btn);
-vue_default.a.http.headers.common['X-CSRF-TOKEN'] = document.head.querySelector('meta[name="csrf-token"]').content;
+var medialib_metaToken = document.head.querySelector('meta[name="csrf-token"]');
+medialib_metaToken = medialib_metaToken && medialib_metaToken.content;
+vue_default.a.http.headers.common['X-CSRF-TOKEN'] = medialib_metaToken;
 var hasSetupPicker = false;
 function Medialib() {
   var mediaLibEl = document.querySelector('#medialibapp');
@@ -13788,6 +13924,8 @@ function activityLog() {
 
  // import resetForm from './form/reset-form'
 
+
+
 function src_init() {
   init();
   ui_jump.init(650, 150);
@@ -13811,7 +13949,26 @@ function src_init() {
   cropperTest();
   formSubmits();
   SiteTree();
-  BasicConfirmBtns();
+  BasicConfirmBtns(); // testUppy()
+}
+
+function testUppy() {
+  var metaToken = document.head.querySelector('meta[name="csrf-token"]');
+  metaToken = metaToken && metaToken.content;
+  var uppy = Object(node_modules_uppy["Core"])().use(node_modules_uppy["Dashboard"], {
+    target: '.js-uppy',
+    inline: true,
+    width: '100%',
+    height: '100%'
+  }).use(node_modules_uppy["XHRUpload"], {
+    endpoint: '/admin/media/api/upload',
+    headers: {
+      'X-CSRF-TOKEN': metaToken
+    }
+  }).use(node_modules_uppy["DragDrop"], {
+    target: '.js-drag-drop'
+  });
+  uppy.on('complete', console.log);
 }
 
 function formSubmits() {
@@ -13862,6 +14019,18 @@ if (document.readyState !== 'loading') {
 /***/ }),
 
 /***/ 0:
+/*!********************!*\
+  !*** ws (ignored) ***!
+  \********************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 1:
 /*!*********************!*\
   !*** got (ignored) ***!
   \*********************/
@@ -13874,4 +14043,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.88b5780b097255d211ae.js.map
+//# sourceMappingURL=main.bb2384c4d5a86ed89bf5.js.map

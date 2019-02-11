@@ -5,6 +5,7 @@ export class Upload {
         this.progress = false
         this.label = 'Upload'
         this.ouputMessages = []
+        this.isOpen = false
     }
 
     inProgress () {
@@ -41,5 +42,6 @@ export class Upload {
         this.initialised = false
         this.progress = false
         this.label = 'Upload'
+        this.isOpen = false
     }
 }

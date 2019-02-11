@@ -11,9 +11,9 @@ Vue.use(VueDragDrop)
 Vue.use(Vuebar)
 Vue.component('confirm-btn', ConfirmBtn)
 
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.head.querySelector(
-    'meta[name="csrf-token"]'
-).content
+let metaToken = document.head.querySelector('meta[name="csrf-token"]')
+metaToken = metaToken && metaToken.content
+Vue.http.headers.common['X-CSRF-TOKEN'] = metaToken
 
 let hasSetupPicker = false
 

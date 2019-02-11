@@ -7,33 +7,33 @@
 
             <search-results v-if="search.hasKeywords()" />
             <directory-view v-else />
-            <transform name="fade">
-                <edit v-if="editItem.isSet()" />
-            </transform>
+
+            <edit v-if="editItem.isSet()" />
+            <upload v-if="uploadIsOpen" />
         </div>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import {
-    Tree,
-    ActionBar,
-    SearchResults,
-    DirectoryView,
-    Edit
-} from './index'
+import Tree from './Tree.vue'
+import ActionBar from './ActionBar.vue'
+import SearchResults from './SearchResults.vue'
+import DirectoryView from './DirectoryView.vue'
+import Edit from './Edit.vue'
+import Upload from './Upload.vue'
 
 export default {
     computed: {
-        ...mapState(['search', 'editItem']),
+        ...mapState(['search', 'editItem', 'uploadIsOpen']),
     },
     components: {
         Tree,
         ActionBar,
         SearchResults,
         DirectoryView,
-        Edit
+        Edit,
+        Upload
     }
 }
 </script>

@@ -21,9 +21,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import {
-    MediaLibrary
-} from './components'
+import MediaLibrary from './components/MediaLibrary.vue'
 
 export default {
     created () {
