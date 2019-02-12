@@ -154,26 +154,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&":
-/*!***************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css& ***!
-  \***************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.drag-image {\n    color: #000;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "./node_modules/moment/locale sync recursive ^\\.\\/.*$":
 /*!**************************************************!*\
   !*** ./node_modules/moment/locale sync ^\.\/.*$ ***!
@@ -454,48 +434,9 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css& ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(/*! !../../../../../../../node_modules/css-loader!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./FileList.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var add = __webpack_require__(/*! ../../../../../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("a8dc26c0", content, false, {});
-// Hot Module Replacement
-if(false) {}
-
-/***/ }),
-
-/***/ "./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&":
-/*!**************************************************************************************************************!*\
-  !*** ./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css& ***!
-  \**************************************************************************************************************/
-/*! no static exports found */
-/*! ModuleConcatenation bailout: Module exports are unknown */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-style-loader!../../../../../../../node_modules/css-loader!../../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./FileList.vue?vue&type=style&index=0&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_FileList_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 289 modules ***!
+  !*** ./resources/assets/js/src/index.js + 294 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -7763,9 +7704,11 @@ var MediaLibraryvue_type_template_id_a08506a4_render = function() {
         [
           _c("tree"),
           _vm._v(" "),
-          _vm.search.hasKeywords()
-            ? _c("search-results")
-            : _c("directory-view"),
+          _vm.recentUploads.show
+            ? _c("recent-uploads")
+            : _vm.search.hasKeywords()
+              ? _c("search-results")
+              : _c("directory-view"),
           _vm._v(" "),
           _vm.editItem.isSet() ? _c("edit") : _vm._e(),
           _vm._v(" "),
@@ -7792,7 +7735,35 @@ var Treevue_type_template_id_57304f95_render = function() {
     _c(
       "ul",
       { staticClass: "c-directory-tree" },
-      [_c("tree-item", { attrs: { folder: _vm.folder } })],
+      [
+        _c("li", [
+          _c(
+            "div",
+            {
+              staticClass: "c-directory-tree__content",
+              class: { "is-active": _vm.recentUploads.show }
+            },
+            [
+              _c("button", { on: { click: _vm.openRecentUploads } }, [
+                _c("svg", [
+                  _c("use", {
+                    attrs: { "xlink:href": "/argon/images/svgicons.svg#folder" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("span", [_vm._v("Recent uploads")])
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("tree-item", {
+          attrs: {
+            folder: _vm.folder,
+            "recent-uploads-show": _vm.recentUploads.show
+          }
+        })
+      ],
       1
     )
   ])
@@ -7839,7 +7810,7 @@ var TreeItemvue_type_template_id_10d1a6c8_render = function() {
                 {
                   staticClass: "c-directory-tree__content",
                   class: {
-                    "is-active": _vm.folder.active,
+                    "is-active": _vm.folder.active && !_vm.recentUploadsShow,
                     "is-open": _vm.folder.treeActive,
                     "is-dragover": _vm.folder.treeDragOver
                   }
@@ -7918,7 +7889,10 @@ var TreeItemvue_type_template_id_10d1a6c8_render = function() {
                     _vm._l(_vm.folder.children, function(child) {
                       return _c("tree-item", {
                         key: child.id,
-                        attrs: { folder: child }
+                        attrs: {
+                          folder: child,
+                          "recent-uploads-show": _vm.recentUploadsShow
+                        }
                       })
                     })
                   )
@@ -7970,7 +7944,7 @@ var vue_drag_drop_common_default = /*#__PURE__*/__webpack_require__.n(vue_drag_d
 
 /* harmony default export */ var TreeItemvue_type_script_lang_js_ = ({
   name: 'TreeItem',
-  props: ['folder'],
+  props: ['folder', 'recentUploadsShow'],
   components: {
     Drop: vue_drag_drop_common["Drop"]
   },
@@ -8075,13 +8049,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ var Treevue_type_script_lang_js_ = ({
   components: {
     TreeItem: TreeItem
   },
-  computed: _objectSpread({}, Object(vuex_esm["mapState"])(['folder']))
+  computed: _objectSpread({}, Object(vuex_esm["mapState"])(['folder', 'recentUploads'])),
+  methods: {
+    openRecentUploads: function openRecentUploads() {
+      this.$store.dispatch('recentUploads');
+    }
+  }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Tree.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Treevue_type_script_lang_js_ = (Treevue_type_script_lang_js_); 
@@ -8310,30 +8299,6 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ var ActionBarvue_type_script_lang_js_ = ({
   data: function data() {
@@ -8398,32 +8363,9 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
         this.$store.dispatch('removeFolder', active);
       }
     },
-    // onFileSelected(e) {
-    //     this.upload.files = e.target.files
-    //     this.onUpload()
-    // },
     toggleUpload: function toggleUpload() {
       this.$store.dispatch('toggleUploads');
     },
-    // onUpload() {
-    //     if (!this.upload.hasFiles()) {
-    //         return alert("Nothing to upload.\nPlease select files to upload and continue...")
-    //     }
-    //     let fd = new FormData()
-    //     fd.append('folder', this.active.id)
-    //     Array
-    //         .from(Array(this.upload.getFiles().length).keys())
-    //         .map(x => {
-    //             fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
-    //         })
-    //     this.$store.dispatch('uploadItems', fd)
-    // },
-    // onUploadClick() {
-    //     if (this.upload.isInitialised()) {
-    //         return this.upload.reset()
-    //     }
-    //     return this.upload.init()
-    // },
     back: function back() {
       history.back();
     },
@@ -8462,41 +8404,30 @@ var SearchResultsvue_type_template_id_a0f50172_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [{ name: "bar", rawName: "v-bar" }],
-      staticClass: "c-media-library__directory-view"
-    },
-    [
-      _c("div", { staticClass: "ml__heading" }, [
+  return _c("div", { staticClass: "c-media-library__directory-view" }, [
+    _c("div", { staticClass: "c-media-library__breadcrumbs" }, [
+      _c("p", [
         _vm._v(
-          "\n        Found " +
+          "Found " +
             _vm._s(_vm.search.getResultsCount()) +
             " results for `" +
             _vm._s(_vm.search.keywords) +
-            "`\n    "
+            "`"
         )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "ml__body" }, [
-        _vm.search.hasResults()
-          ? _c(
-              "div",
-              { staticClass: "search-results" },
-              [
-                _c("file-list", {
-                  attrs: { items: _vm.search.getResults(), folders: {} }
-                })
-              ],
-              1
-            )
-          : _c("div", { staticClass: "search-results" }, [
-              _c("p", [_vm._v("No results found.")])
-            ])
       ])
-    ]
-  )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "c-media-library__grid-wrap" },
+      [
+        _vm.search.hasResults()
+          ? _c("file-list", { attrs: { items: _vm.search.getResults() } })
+          : _c("h3", [_vm._v("No results found.")])
+      ],
+      1
+    )
+  ])
 }
 var SearchResultsvue_type_template_id_a0f50172_staticRenderFns = []
 SearchResultsvue_type_template_id_a0f50172_render._withStripped = true
@@ -8552,8 +8483,8 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                           highlighted: _vm.highlighted,
                           folder: folderItem
                         },
-                        "image-x-offset": 65,
-                        "image-y-offset": 65
+                        "image-x-offset": _vm.dragOffset,
+                        "image-y-offset": _vm.dragOffset
                       },
                       on: {
                         dragstart: function($event) {
@@ -8620,13 +8551,100 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                                     }
                                   })
                                 ])
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "c-file-list__label" }, [
-                                _c("span", [_vm._v(_vm._s(folderItem.name))])
                               ])
                             ]
                           ),
+                          _vm._v(" "),
+                          !folderItem.editing
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "c-file-list__edit",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.highlightItem($event, folderItem)
+                                    },
+                                    dblclick: function($event) {
+                                      _vm.editFolder(folderItem)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "c-file-list__label" },
+                                    [
+                                      _c("span", [
+                                        _vm._v(_vm._s(folderItem.name))
+                                      ])
+                                    ]
+                                  )
+                                ]
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "c-file-list__edit c-file-list__edit--editing"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "c-file-list__label" },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: folderItem.name,
+                                            expression: "folderItem.name"
+                                          }
+                                        ],
+                                        ref: "folderEdit-" + folderItem.id,
+                                        refInFor: true,
+                                        attrs: { type: "text" },
+                                        domProps: { value: folderItem.name },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              folderItem,
+                                              "name",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "c-file-list__edit-confirm",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.comfirmEditFolder(folderItem)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("svg", [
+                                            _c("use", {
+                                              attrs: {
+                                                "xlink:href":
+                                                  "/argon/images/svgicons.svg#tick"
+                                              }
+                                            })
+                                          ])
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                           _vm._v(" "),
                           _vm.layout === "list"
                             ? _c("confirm-btn", {
@@ -8664,8 +8682,8 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                       highlighted: _vm.highlighted,
                       item: item
                     },
-                    "image-x-offset": _vm.layout === "list" ? 15 : 65,
-                    "image-y-offset": _vm.layout === "list" ? 15 : 65
+                    "image-x-offset": _vm.dragOffset,
+                    "image-y-offset": _vm.dragOffset
                   },
                   on: {
                     dragstart: function($event) {
@@ -8825,13 +8843,6 @@ function media_removeFolder(id, cb) {
     cb(e);
   });
 }
-function uploadMedia(data, cb) {
-  vue_default.a.http.post('/admin/media/api/upload', data).then(function (response) {
-    cb(response);
-  }).catch(function (e) {
-    cb(e);
-  });
-}
 function media_removeItem(id, cb) {
   vue_default.a.http.post('/admin/media/api/items/remove', {
     id: id
@@ -8844,6 +8855,20 @@ function media_removeItem(id, cb) {
 function media_move(data, cb) {
   vue_default.a.http.post('/admin/media/api/move', data).then(function (response) {
     cb(response);
+  }).catch(function (e) {
+    cb(e);
+  });
+}
+function media_recentUploads(cb) {
+  vue_default.a.http.get('/admin/media/api/recent').then(function (response) {
+    cb(response);
+  }).catch(function (e) {
+    cb(e);
+  });
+}
+function media_remove(data, cb) {
+  vue_default.a.http.post('/admin/media/api/delete', data).then(function (response) {
+    cb(response.body);
   }).catch(function (e) {
     cb(e);
   });
@@ -8960,6 +8985,23 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8972,8 +9014,24 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       lastHighlightIndex: false
     };
   },
-  props: ['items', 'folders'],
+  props: {
+    items: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    },
+    folders: {
+      type: Array,
+      default: function _default() {
+        return [];
+      }
+    }
+  },
   computed: FileListvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'folder']), {
+    dragOffset: function dragOffset() {
+      return 'list' ? 15 : undefined;
+    },
     combinedItems: function combinedItems() {
       return FileListvue_type_script_lang_js_toConsumableArray(this.folders).concat(FileListvue_type_script_lang_js_toConsumableArray(this.items)).map(function (item, index) {
         item.index = index;
@@ -8997,7 +9055,8 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
   },
   created: function created() {
     Object(_esm5["fromEvent"])(document, 'click').pipe(Object(operators["filter"])(function (evt) {
-      return !evt.target.classList.contains('c-file-list__btn');
+      var contains = evt.target.classList.contains('c-file-list__btn') || evt.target.classList.contains('c-file-list__edit');
+      return !contains;
     })).subscribe(this.unhighlightItems.bind(this));
   },
   methods: {
@@ -9084,16 +9143,23 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
     },
     deleteItem: function deleteItem(item) {
       this.$store.dispatch('removeItem', item);
+    },
+    editFolder: function editFolder(folder) {
+      folder.editing = true;
+      folder.originalName = folder.name;
+      this.$nextTick(function () {
+        this.$refs["folderEdit-".concat(folder.id)][0].focus();
+      });
+    },
+    comfirmEditFolder: function comfirmEditFolder(folder) {
+      folder.editing = false;
+      this.$store.dispatch('editFolder', folder);
     }
   }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_FileListvue_type_script_lang_js_ = (FileListvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&
-var FileListvue_type_style_index_0_lang_css_ = __webpack_require__("./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=style&index=0&lang=css&");
-
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/FileList.vue
-
 
 
 
@@ -9121,10 +9187,6 @@ function SearchResultsvue_type_script_lang_js_objectSpread(target) { for (var i 
 
 function SearchResultsvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -9205,7 +9267,37 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
           ? _c("file-list", {
               attrs: { items: _vm.active.items, folders: _vm.active.children }
             })
-          : _c("h3", [_vm._v("No content")])
+          : _c("h3", [_vm._v("No content")]),
+        _vm._v(" "),
+        _c(
+          "drop",
+          {
+            on: {
+              dragover: _vm.dragOver,
+              dragleave: _vm.dragLeave,
+              drop: function($event) {
+                _vm.handleDrop.apply(void 0, arguments)
+              },
+              dragend: _vm.dragLeave
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "c-media-library__delete",
+                class: { "is-dragged-over": _vm.deleteHover }
+              },
+              [
+                _c("svg", [
+                  _c("use", {
+                    attrs: { "xlink:href": "/argon/images/svgicons.svg#delete" }
+                  })
+                ])
+              ]
+            )
+          ]
+        )
       ],
       1
     )
@@ -9237,9 +9329,26 @@ function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ var DirectoryViewvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      deleteHover: false
+    };
+  },
   components: {
     FileList: FileList
   },
@@ -9248,6 +9357,33 @@ function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { 
     folderSelected: function folderSelected(folder) {
       this.$store.dispatch('folderSelected', {
         folder: folder
+      });
+    },
+    dragOver: function dragOver() {
+      this.deleteHover = true;
+    },
+    dragLeave: function dragLeave() {
+      this.deleteHover = false;
+    },
+    handleDrop: function handleDrop(_ref) {
+      var _ref$highlighted = _ref.highlighted,
+          items = _ref$highlighted.items,
+          folders = _ref$highlighted.folders,
+          item = _ref.item,
+          folder = _ref.folder;
+      this.deleteHover = false;
+
+      if (!items.length && item) {
+        items = [item];
+      }
+
+      if (!folders.length && folder) {
+        folders = [folder];
+      }
+
+      this.$store.dispatch('remove', {
+        items: items,
+        folders: folders
       });
     }
   }
@@ -9544,6 +9680,92 @@ var Upload_component = Object(componentNormalizer["default"])(
 if (false) { var Upload_api; }
 Upload_component.options.__file = "resources/assets/js/src/components/medialib/components/Upload.vue"
 /* harmony default export */ var Upload = (Upload_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/RecentUploads.vue?vue&type=template&id=d47bed60&
+var RecentUploadsvue_type_template_id_d47bed60_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "c-media-library__directory-view" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "c-media-library__grid-wrap" },
+      [
+        _vm.recentUploads.items.length
+          ? _c("file-list", { attrs: { items: _vm.recentUploads.items } })
+          : _c("h3", [_vm._v("No content")])
+      ],
+      1
+    )
+  ])
+}
+var RecentUploadsvue_type_template_id_d47bed60_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "c-media-library__breadcrumbs" }, [
+      _c("p", [_vm._v("Recent Uploads")])
+    ])
+  }
+]
+RecentUploadsvue_type_template_id_d47bed60_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/RecentUploads.vue?vue&type=template&id=d47bed60&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/RecentUploads.vue?vue&type=script&lang=js&
+function RecentUploadsvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { RecentUploadsvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+
+function RecentUploadsvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var RecentUploadsvue_type_script_lang_js_ = ({
+  components: {
+    FileList: FileList
+  },
+  computed: RecentUploadsvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['recentUploads']))
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/RecentUploads.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_RecentUploadsvue_type_script_lang_js_ = (RecentUploadsvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/RecentUploads.vue
+
+
+
+
+
+/* normalize component */
+
+var RecentUploads_component = Object(componentNormalizer["default"])(
+  components_RecentUploadsvue_type_script_lang_js_,
+  RecentUploadsvue_type_template_id_d47bed60_render,
+  RecentUploadsvue_type_template_id_d47bed60_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var RecentUploads_api; }
+RecentUploads_component.options.__file = "resources/assets/js/src/components/medialib/components/RecentUploads.vue"
+/* harmony default export */ var RecentUploads = (RecentUploads_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
 function MediaLibraryvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { MediaLibraryvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
@@ -9565,6 +9787,8 @@ function MediaLibraryvue_type_script_lang_js_defineProperty(obj, key, value) { i
 //
 //
 //
+//
+
 
 
 
@@ -9573,14 +9797,15 @@ function MediaLibraryvue_type_script_lang_js_defineProperty(obj, key, value) { i
 
 
 /* harmony default export */ var MediaLibraryvue_type_script_lang_js_ = ({
-  computed: MediaLibraryvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem', 'uploadIsOpen'])),
+  computed: MediaLibraryvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['search', 'editItem', 'uploadIsOpen', 'recentUploads'])),
   components: {
     Tree: Tree,
     ActionBar: ActionBar,
     SearchResults: SearchResults,
     DirectoryView: DirectoryView,
     Edit: Edit,
-    Upload: Upload
+    Upload: Upload,
+    RecentUploads: RecentUploads
   }
 });
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/MediaLibrary.vue?vue&type=script&lang=js&
@@ -9636,7 +9861,10 @@ MediaLibrary_component.options.__file = "resources/assets/js/src/components/medi
   created: function created() {
     var _this = this;
 
-    this.$store.dispatch('loadLibrary');
+    var folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/;
+    var folderID = folderUrlRegex.exec(window.location.search);
+    folderID = folderID && folderID[2] || 1;
+    this.$store.dispatch('loadLibrary', folderID);
     window.addEventListener('popstate', function (evt) {
       if (evt.state && evt.state.folderID) {
         _this.$store.dispatch('folderSelectByID', evt.state.folderID);
@@ -9654,14 +9882,6 @@ MediaLibrary_component.options.__file = "resources/assets/js/src/components/medi
     this.$root.$on('pick', function () {
       _this.isOpen = false;
     });
-  },
-  mounted: function mounted() {
-    var folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/;
-    var folderID = folderUrlRegex.exec(window.location.search);
-
-    if (folderID && folderID[2]) {
-      this.$store.dispatch('folderSelectByID', folderID[2]);
-    }
   },
   data: function data() {
     return {
@@ -9752,6 +9972,8 @@ function () {
     this.treeDragOver = false;
     this.dragOver = false;
     this.hide = false;
+    this.editing = false;
+    this.originalName = name;
 
     if (id === 1) {
       this.treeActive = true;
@@ -10205,7 +10427,11 @@ vue_default.a.use(vuex_esm["default"]);
     editItem: new folder_Item(),
     layout: 'tiles',
     upload: new upload_Upload(),
-    uploadIsOpen: false
+    uploadIsOpen: false,
+    recentUploads: {
+      show: false,
+      items: []
+    }
   },
   mutations: {
     loadFolders: function loadFolders(state, _ref) {
@@ -10218,6 +10444,7 @@ vue_default.a.use(vuex_esm["default"]);
         }, folder.name, "?folder=".concat(folder.name, "&folderID=").concat(folder.id));
       }
 
+      state.recentUploads.show = false;
       getFolders(folder.id, function (f) {
         state.folder.active = false;
         state.active.active = false;
@@ -10255,7 +10482,7 @@ vue_default.a.use(vuex_esm["default"]);
         }, {}));
       });
     },
-    folders: function folders(state) {
+    folders: function folders(state, id) {
       getFoldersData(function (data) {
         state.data = data;
 
@@ -10274,6 +10501,12 @@ vue_default.a.use(vuex_esm["default"]);
           state.active.setChildren(f.children);
         });
       });
+
+      media_recentUploads(function (response) {
+        state.recentUploads.items = response.body.data.map(function (item) {
+          return new folder_Item(item);
+        });
+      });
     },
     search: function search(state, keywords) {
       state.search.loading = true;
@@ -10285,6 +10518,15 @@ vue_default.a.use(vuex_esm["default"]);
 
       media_search(keywords, function (data) {
         state.search = new search_Search(keywords, data);
+      });
+    },
+    recentUploads: function recentUploads(state) {
+      state.recentUploads.show = true;
+
+      media_recentUploads(function (response) {
+        state.recentUploads.items = response.body.data.map(function (item) {
+          return new folder_Item(item);
+        });
       });
     },
     editItem: function editItem(state, item) {
@@ -10312,20 +10554,16 @@ vue_default.a.use(vuex_esm["default"]);
         state.active.children.push(child);
       });
     },
-    editFolder: function editFolder(state, payload) {
-      media_editFolder(payload.name, payload.folder.id, function (r) {
+    editFolder: function editFolder(state, folder) {
+      media_editFolder(folder.name, folder.id, function (r) {
         if (r.status !== 200) {
           new noty_default.a({
             text: r.body.error,
             type: 'error',
             timeout: 3500
           }).show();
-          return;
-        } // TODO: finish here
-
-
-        console.log(r);
-        state.active.name = r.body.name;
+          folder.name = folder.originalName;
+        }
       });
     },
     removeFolder: function removeFolder(state, folder) {
@@ -10351,39 +10589,6 @@ vue_default.a.use(vuex_esm["default"]);
           type: 'success',
           timeout: 3500
         }).show();
-      });
-    },
-    uploadItems: function uploadItems(state, payload) {
-      uploadMedia(payload, function (r) {
-        console.log(r);
-
-        if (r.status >= 400) {
-          new noty_default.a({
-            text: r.body.error,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          return;
-        }
-
-        var msg = r.body.messages;
-
-        if (Array.isArray(msg)) {
-          msg = r.body.messages.join('\n');
-        }
-
-        getFolders(state.active.id, function (f) {
-          state.active.setItems(f.items);
-        });
-        state.upload.reset();
-
-        if (msg) {
-          new noty_default.a({
-            text: msg,
-            type: 'success',
-            timeout: 3500
-          }).show();
-        }
       });
     },
     uploadResult: function uploadResult(state, payload) {
@@ -10481,50 +10686,112 @@ vue_default.a.use(vuex_esm["default"]);
     },
     toggleUploads: function toggleUploads(state) {
       state.uploadIsOpen = !state.uploadIsOpen;
+    },
+    remove: function remove(state, _ref3) {
+      var items = _ref3.items,
+          folders = _ref3.folders;
+      var data = {
+        items: items.map(function (item) {
+          return item.item.id;
+        }),
+        folders: folders.map(function (folder) {
+          return folder.id;
+        })
+      };
+      items.forEach(function (item) {
+        item.hide = true;
+      });
+      folders.forEach(function (folder) {
+        folder.hide = true;
+      });
+
+      media_remove(data, function (r) {
+        if (r.items.length || r.folders.length) {
+          var nonDeleteNames = [];
+
+          if (r.items.length) {
+            items.forEach(function (item) {
+              if (~r.items.indexOf(item.item.id)) {
+                item.hide = false;
+                nonDeleteNames.push(item.getName());
+              }
+            });
+          }
+
+          if (r.folders.length) {
+            folders.forEach(function (folder) {
+              if (~r.folders.indexOf(folder.id)) {
+                folder.hide = false;
+                nonDeleteNames.push(folder.name);
+              }
+            });
+          }
+
+          new noty_default.a({
+            text: nonDeleteNames.slice(0, 3).join(', ') + ' Were unable to be deleted',
+            type: 'error',
+            timeout: 3500
+          }).show();
+          return;
+        }
+
+        var successMsg = "".concat(items.length + folders.length, " ");
+
+        if (items.length && folders.length) {
+          successMsg += 'items/folders ';
+        } else if (items.length) {
+          successMsg += 'item(s) ';
+        } else if (folders.length) {
+          successMsg += 'folder(s) ';
+        }
+
+        successMsg += 'were deleted';
+        new noty_default.a({
+          text: successMsg,
+          type: 'success',
+          timeout: 3500
+        }).show();
+      });
     }
   },
   actions: {
-    folderSelected: function folderSelected(_ref3, _ref4) {
-      var commit = _ref3.commit;
-      var folder = _ref4.folder,
-          _ref4$pushState = _ref4.pushState,
-          pushState = _ref4$pushState === void 0 ? true : _ref4$pushState;
+    folderSelected: function folderSelected(_ref4, _ref5) {
+      var commit = _ref4.commit;
+      var folder = _ref5.folder,
+          _ref5$pushState = _ref5.pushState,
+          pushState = _ref5$pushState === void 0 ? true : _ref5$pushState;
       commit('loadFolders', {
         folder: folder,
         pushState: pushState
       });
     },
-    loadLibrary: function loadLibrary(_ref5) {
-      var commit = _ref5.commit;
-      commit('folders');
-    },
-    search: function search(_ref6, keywords) {
+    loadLibrary: function loadLibrary(_ref6, folderID) {
       var commit = _ref6.commit;
+      commit('folders', folderID);
+    },
+    search: function search(_ref7, keywords) {
+      var commit = _ref7.commit;
       commit('search', keywords);
     },
-    editItem: function editItem(_ref7, item) {
-      var commit = _ref7.commit;
+    editItem: function editItem(_ref8, item) {
+      var commit = _ref8.commit;
       commit('editItem', item);
     },
-    setLayout: function setLayout(_ref8, layout) {
-      var commit = _ref8.commit;
+    setLayout: function setLayout(_ref9, layout) {
+      var commit = _ref9.commit;
       commit('setLayout', layout);
     },
-    createFolder: function createFolder(_ref9, payload) {
-      var commit = _ref9.commit;
+    createFolder: function createFolder(_ref10, payload) {
+      var commit = _ref10.commit;
       commit('createFolder', payload);
     },
-    editFolder: function editFolder(_ref10, payload) {
-      var commit = _ref10.commit;
+    editFolder: function editFolder(_ref11, payload) {
+      var commit = _ref11.commit;
       commit('editFolder', payload);
     },
-    removeFolder: function removeFolder(_ref11, active) {
-      var commit = _ref11.commit;
-      commit('removeFolder', active);
-    },
-    uploadItems: function uploadItems(_ref12, payload) {
+    removeFolder: function removeFolder(_ref12, active) {
       var commit = _ref12.commit;
-      commit('uploadItems', payload);
+      commit('removeFolder', active);
     },
     removeItem: function removeItem(_ref13, item) {
       var commit = _ref13.commit;
@@ -10545,6 +10812,14 @@ vue_default.a.use(vuex_esm["default"]);
     uploadResult: function uploadResult(_ref17, payload) {
       var commit = _ref17.commit;
       commit('uploadResult', payload);
+    },
+    recentUploads: function recentUploads(_ref18) {
+      var commit = _ref18.commit;
+      commit('recentUploads');
+    },
+    remove: function remove(_ref19, payload) {
+      var commit = _ref19.commit;
+      commit('remove', payload);
     }
   }
 }));
@@ -14043,4 +14318,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.bb2384c4d5a86ed89bf5.js.map
+//# sourceMappingURL=main.521b11e49b6bd34fa159.js.map

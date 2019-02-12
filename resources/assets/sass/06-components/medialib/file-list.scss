@@ -22,6 +22,20 @@
         align-items: center;
         padding: 10px;
         border-top: 1px solid $secondary;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 0;
+            bottom: 3px;
+            right: 0;
+            background-color: #000;
+            opacity: 0;
+            transition: opacity $userInactive $easeOut;
+            z-index: 1;
+            pointer-events: none;
+        }
     }
 
     &__btn {
@@ -33,6 +47,10 @@
     &--list &__btn {
         display: flex;
         align-items: center;
+    }
+
+    &--list &__item--folder &__btn {
+        flex: 0 0 45px;
     }
 
     &__image {
@@ -92,6 +110,16 @@
         opacity: 0.3;
     }
 
+    &--list &__item.is-highlighted &__image:before,
+    &--list &__item.is-dragover &__image:before {
+        opacity: 0;
+    }
+
+    &--list &__item.is-highlighted:after,
+    &--list &__item.is-dragover:after {
+        opacity: 0.3;
+    }
+
     &__label {
         text-align: center;
         font-size: 1.4rem;
@@ -106,6 +134,37 @@
 
     &__drag-view {
         width: 130px;
+    }
+
+    &__edit {
+        display: block;
+        padding: 0;
+        width: 100%;
+
+        input {
+            border: 0;
+        }
+
+        &-confirm {
+            position: relative;
+            width: 30px;
+            height: 20px;
+            padding: 0;
+            flex: 0 0 30px;
+
+            svg {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 120%;
+                height: 160%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    &__edit--editing &__label {
+        display: flex;
     }
 }
 

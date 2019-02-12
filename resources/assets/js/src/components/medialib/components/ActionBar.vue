@@ -36,32 +36,8 @@
 
         <div class="c-media-library__button-group">
             <button class="o-btn o-btn--sm" @click="createFolder(active)">Add folder</button>
-            <!-- <button class="o-btn o-btn--primary o-btn--sm" @click="$refs.fileInput.click()">upload media</button> -->
             <button class="o-btn o-btn--primary o-btn--sm" @click.prevent="toggleUpload">{{uploadIsOpen ? 'Close uploads' : 'Upload media' }}</button>
-            <!-- <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" hidden> -->
         </div>
-
-        <!-- searchReset() ?? -->
-
-        <!-- <div class="folder__act" hidden>
-            <button class="o-btn o-btn--xs" @click="createFolder(active)">Add folder</button>
-            <button class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="editFolder(active)">Edit folder</button>
-            <button class="o-btn o-btn--xs" v-if="!active.isRoot()" @click="removeFolder(active)">Remove folder</button>
-            <button class="o-btn o-btn--xs" @click="onUploadClick">{{ upload.getLabel() }}</button>
-
-            <div v-if="upload.isInitialised()" class="ml-upload">
-                <div class="ml-upload__field">
-                    <input type="file" multiple accept="*/*" @change="onFileSelected" ref="fileInput" style="display: none">
-                    <button class="o-btn o-btn--xs" @click="$refs.fileInput.click()">Select file(s)</button>
-                    <button class="o-btn o-btn--xs" v-if="upload.hasFiles()" @click="onUpload()">Upload</button>
-                </div>
-                <div v-if="upload.hasFiles()" class="ml-upload__output">
-                    <ul>
-                        <li v-for="u of upload.getFiles()">{{ u.name }}</li>
-                    </ul>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 
@@ -123,36 +99,9 @@ export default {
                 this.$store.dispatch('removeFolder', active)
             }
         },
-        // onFileSelected(e) {
-        //     this.upload.files = e.target.files
-        //     this.onUpload()
-        // },
         toggleUpload() {
             this.$store.dispatch('toggleUploads')
         },
-        // onUpload() {
-        //     if (!this.upload.hasFiles()) {
-        //         return alert("Nothing to upload.\nPlease select files to upload and continue...")
-        //     }
-
-        //     let fd = new FormData()
-        //     fd.append('folder', this.active.id)
-
-        //     Array
-        //         .from(Array(this.upload.getFiles().length).keys())
-        //         .map(x => {
-        //             fd.append('files[]', this.upload.files[x], this.upload.files[x].name);
-        //         })
-
-        //     this.$store.dispatch('uploadItems', fd)
-        // },
-        // onUploadClick() {
-        //     if (this.upload.isInitialised()) {
-        //         return this.upload.reset()
-        //     }
-
-        //     return this.upload.init()
-        // },
         back() {
             history.back();
         },

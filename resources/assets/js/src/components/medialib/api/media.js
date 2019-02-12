@@ -76,17 +76,6 @@ export function removeFolder (id, cb) {
         })
 }
 
-export function uploadMedia (data, cb) {
-    Vue.http
-        .post('/admin/media/api/upload', data)
-        .then(response => {
-            cb(response)
-        })
-        .catch(e => {
-            cb(e)
-        })
-}
-
 export function removeItem (id, cb) {
     Vue.http
         .post('/admin/media/api/items/remove', { id: id })
@@ -103,6 +92,28 @@ export function move (data, cb) {
         .post('/admin/media/api/move', data)
         .then(response => {
             cb(response)
+        })
+        .catch(e => {
+            cb(e)
+        })
+}
+
+export function recentUploads (cb) {
+    Vue.http
+        .get('/admin/media/api/recent')
+        .then(response => {
+            cb(response)
+        })
+        .catch(e => {
+            cb(e)
+        })
+}
+
+export function remove (data, cb) {
+    Vue.http
+        .post('/admin/media/api/delete', data)
+        .then(response => {
+            cb(response.body)
         })
         .catch(e => {
             cb(e)

@@ -5,7 +5,8 @@
         <div class="c-media-library__body">
             <tree />
 
-            <search-results v-if="search.hasKeywords()" />
+            <recent-uploads v-if="recentUploads.show" />
+            <search-results v-else-if="search.hasKeywords()" />
             <directory-view v-else />
 
             <edit v-if="editItem.isSet()" />
@@ -22,10 +23,11 @@ import SearchResults from './SearchResults.vue'
 import DirectoryView from './DirectoryView.vue'
 import Edit from './Edit.vue'
 import Upload from './Upload.vue'
+import RecentUploads from './RecentUploads.vue'
 
 export default {
     computed: {
-        ...mapState(['search', 'editItem', 'uploadIsOpen']),
+        ...mapState(['search', 'editItem', 'uploadIsOpen', 'recentUploads']),
     },
     components: {
         Tree,
@@ -33,7 +35,8 @@ export default {
         SearchResults,
         DirectoryView,
         Edit,
-        Upload
+        Upload,
+        RecentUploads
     }
 }
 </script>

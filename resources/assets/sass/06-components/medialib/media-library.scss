@@ -100,6 +100,7 @@
     }
 
     &__directory-tree {
+        position: relative;
         overflow: auto;
         flex: 1 1 $col-3;
         width: $col-3;
@@ -243,6 +244,42 @@
         &-container {
             width: 100%;
             height: 100%;
+        }
+    }
+
+    &__delete {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background-color: $danger;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #000;
+            opacity: 0;
+            transition: opacity $userInactive $easeOut;
+        }
+
+        &.is-dragged-over:after {
+            opacity: 0.4;
+        }
+
+        svg {
+            width: 38px;
+            height: 38px;
         }
     }
 }

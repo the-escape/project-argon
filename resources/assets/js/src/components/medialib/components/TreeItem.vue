@@ -1,7 +1,7 @@
 <template>
     <li v-if="!folder.hide">
         <drop @dragover="dragOver(folder)" @dragleave="dragLeave(folder)" @dragend="dragLeave(folder)" @drop="handleDrop(folder, ...arguments)">
-            <div class="c-directory-tree__content" :class="{ 'is-active': folder.active, 'is-open': folder.treeActive, 'is-dragover': folder.treeDragOver }">
+            <div class="c-directory-tree__content" :class="{ 'is-active': folder.active && !recentUploadsShow, 'is-open': folder.treeActive, 'is-dragover': folder.treeDragOver }">
                 <button @click="folderSelected(folder)">
                     <svg>
                         <use xlink:href="/argon/images/svgicons.svg#folder"></use>
@@ -18,7 +18,7 @@
 
         <transition enter-active-class="collapsing" leave-active-class="collapsing" @enter="enter" @afterEnter="afterEnter" @leave="leave" @afterLeave="afterLeave">
             <ul v-if="folder.children && folder.children.length && folder.treeActive">
-                <tree-item v-for="child in folder.children" :key="child.id" :folder="child" />
+                <tree-item v-for="child in folder.children" :key="child.id" :folder="child" :recent-uploads-show="recentUploadsShow" />
             </ul>
         </transition>
     </li>
@@ -29,7 +29,7 @@ import { Drop } from "vue-drag-drop";
 
 export default {
     name: 'TreeItem',
-    props: ['folder'],
+    props: ['folder', 'recentUploadsShow'],
     components: {
         Drop
     },

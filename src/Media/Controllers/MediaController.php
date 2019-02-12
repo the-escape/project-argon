@@ -302,7 +302,7 @@ class MediaController extends BaseController
         return response()->json([
             "folders" => array_diff($folders, $deletedFolders),
             "items" => array_diff($items, $deletedItems)
-        ], Response::HTTP_NO_CONTENT);
+        ]);
     }
 
     public function appMove(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)

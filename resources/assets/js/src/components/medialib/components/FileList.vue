@@ -15,8 +15,8 @@
                     :transfer-data="{ highlighted, folder: folderItem }"
                     @dragstart="dragStart(folderItem)"
                     @dragend="dragEnd(folderItem)"
-                    :image-x-offset="65"
-                    :image-y-offset="65"
+                    :image-x-offset="dragOffset"
+                    :image-y-offset="dragOffset"
                 >
                     <div slot="image" class="c-file-list__drag-view">
                         <div class="c-file-list__image">
@@ -39,10 +39,27 @@
                                     <use xlink:href="/argon/images/svgicons.svg#folder"></use>
                                 </svg>
                             </div>
+                        </button>
+                        <button
+                            class="c-file-list__edit"
+                            @click="highlightItem($event, folderItem)"
+                            @dblclick="editFolder(folderItem)"
+                            v-if="!folderItem.editing"
+                        >
                             <div class="c-file-list__label">
                                 <span>{{ folderItem.name }}</span>
                             </div>
                         </button>
+                        <div class="c-file-list__edit c-file-list__edit--editing" v-else>
+                            <div class="c-file-list__label">
+                                <input type="text" v-model="folderItem.name" :ref="`folderEdit-${folderItem.id}`">
+                                <button class="c-file-list__edit-confirm" @click="comfirmEditFolder(folderItem)">
+                                    <svg>
+                                        <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                         <confirm-btn
                             v-if="layout === 'list'"
                             hideDuplicate="true"
@@ -61,8 +78,8 @@
                 @dragstart="dragStart(item)"
                 @dragend="dragEnd(item)"
                 :key="`item-${item.item.id}`"
-                :image-x-offset="layout === 'list' ? 15 : 65"
-                :image-y-offset="layout === 'list' ? 15 : 65"
+                :image-x-offset="dragOffset"
+                :image-y-offset="dragOffset"
                 v-if="!item.hide"
             >
                 <div slot="image" class="c-file-list__drag-view">
@@ -112,7 +129,20 @@
                 lastHighlightIndex: false
             }
         },
-        props: ['items', 'folders'],
+        props: {
+            items: {
+                type: Array,
+                default: function () {
+                    return []
+                }
+            },
+            folders: {
+                type: Array,
+                default: function () {
+                    return []
+                }
+            }
+        },
         computed: {
             ...mapState([
                 'layout',
@@ -121,6 +151,9 @@
                 'layout',
                 'folder'
             ]),
+            dragOffset: function (){
+                return 'list' ? 15 : 65
+            },
             combinedItems: function (){
                 return [...this.folders, ...this.items].map((item, index) => {
                      item.index = index
@@ -140,7 +173,12 @@
         },
         created (){
             fromEvent(document, 'click')
-                .pipe(filter(evt => !evt.target.classList.contains('c-file-list__btn')))
+                .pipe(filter(evt => {
+                    const contains =
+                    evt.target.classList.contains('c-file-list__btn') ||
+                    evt.target.classList.contains('c-file-list__edit')
+                    return !contains
+                }))
                 .subscribe(this.unhighlightItems.bind(this))
         },
         methods: {
@@ -214,13 +252,19 @@
             },
             deleteItem (item) {
                 this.$store.dispatch('removeItem', item)
+            },
+            editFolder (folder) {
+                folder.editing = true
+                folder.originalName = folder.name
+
+                this.$nextTick(function() {
+                    this.$refs[`folderEdit-${folder.id}`][0].focus()
+                })
+            },
+            comfirmEditFolder (folder) {
+                folder.editing = false
+                this.$store.dispatch('editFolder', folder)
             }
         }
     }
 </script>
-
-<style>
-    .drag-image {
-        color: #000;
-    }
-</style>

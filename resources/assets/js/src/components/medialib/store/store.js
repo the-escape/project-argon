@@ -8,9 +8,10 @@ import {
     addFolder,
     editFolder,
     removeFolder,
-    uploadMedia,
     removeItem,
-    move
+    move,
+    recentUploads,
+    remove
 } from '../api/media'
 import { Folder, children, Item } from './folder'
 import { Search } from './search'
@@ -30,7 +31,11 @@ export default new Vuex.Store({
         editItem: new Item(),
         layout: 'tiles',
         upload: new Upload(),
-        uploadIsOpen: false
+        uploadIsOpen: false,
+        recentUploads: {
+            show: false,
+            items: []
+        }
     },
     mutations: {
         loadFolders: (state, { folder, pushState }) => {
@@ -41,6 +46,8 @@ export default new Vuex.Store({
                     `?folder=${folder.name}&folderID=${folder.id}`
                 )
             }
+
+            state.recentUploads.show = false
 
             getFolders(folder.id, function (f) {
                 state.folder.active = false
@@ -87,7 +94,7 @@ export default new Vuex.Store({
                 }
             })
         },
-        folders: state => {
+        folders: (state, id) => {
             getFoldersData(function (data) {
                 state.data = data
 
@@ -115,6 +122,12 @@ export default new Vuex.Store({
                     state.active.setChildren(f.children)
                 })
             })
+
+            recentUploads(response => {
+                state.recentUploads.items = response.body.data.map(
+                    item => new Item(item)
+                )
+            })
         },
         search: (state, keywords) => {
             state.search.loading = true
@@ -124,6 +137,15 @@ export default new Vuex.Store({
             }
             search(keywords, function (data) {
                 state.search = new Search(keywords, data)
+            })
+        },
+        recentUploads: state => {
+            state.recentUploads.show = true
+
+            recentUploads(response => {
+                state.recentUploads.items = response.body.data.map(
+                    item => new Item(item)
+                )
             })
         },
         editItem: (state, item) => {
@@ -157,20 +179,17 @@ export default new Vuex.Store({
                 state.active.children.push(child)
             })
         },
-        editFolder: (state, payload) => {
-            editFolder(payload.name, payload.folder.id, function (r) {
+        editFolder: (state, folder) => {
+            editFolder(folder.name, folder.id, function (r) {
                 if (r.status !== 200) {
                     new Noty({
                         text: r.body.error,
                         type: 'error',
                         timeout: 3500
                     }).show()
-                    return
-                }
 
-                // TODO: finish here
-                console.log(r)
-                state.active.name = r.body.name
+                    folder.name = folder.originalName
+                }
             })
         },
         removeFolder: (state, folder) => {
@@ -197,40 +216,6 @@ export default new Vuex.Store({
                     type: 'success',
                     timeout: 3500
                 }).show()
-            })
-        },
-        uploadItems: (state, payload) => {
-            uploadMedia(payload, function (r) {
-                console.log(r)
-
-                if (r.status >= 400) {
-                    new Noty({
-                        text: r.body.error,
-                        type: 'error',
-                        timeout: 3500
-                    }).show()
-                    return
-                }
-
-                let msg = r.body.messages
-
-                if (Array.isArray(msg)) {
-                    msg = r.body.messages.join('\n')
-                }
-
-                getFolders(state.active.id, function (f) {
-                    state.active.setItems(f.items)
-                })
-
-                state.upload.reset()
-
-                if (msg) {
-                    new Noty({
-                        text: msg,
-                        type: 'success',
-                        timeout: 3500
-                    }).show()
-                }
             })
         },
         uploadResult: (state, payload) => {
@@ -325,14 +310,75 @@ export default new Vuex.Store({
         },
         toggleUploads: state => {
             state.uploadIsOpen = !state.uploadIsOpen
+        },
+        remove: (state, { items, folders }) => {
+            let data = {
+                items: items.map(item => item.item.id),
+                folders: folders.map(folder => folder.id)
+            }
+
+            items.forEach(item => {
+                item.hide = true
+            })
+            folders.forEach(folder => {
+                folder.hide = true
+            })
+
+            remove(data, function (r) {
+                if (r.items.length || r.folders.length) {
+                    const nonDeleteNames = []
+
+                    if (r.items.length) {
+                        items.forEach(item => {
+                            if (~r.items.indexOf(item.item.id)) {
+                                item.hide = false
+                                nonDeleteNames.push(item.getName())
+                            }
+                        })
+                    }
+                    if (r.folders.length) {
+                        folders.forEach(folder => {
+                            if (~r.folders.indexOf(folder.id)) {
+                                folder.hide = false
+                                nonDeleteNames.push(folder.name)
+                            }
+                        })
+                    }
+
+                    new Noty({
+                        text:
+                            nonDeleteNames.slice(0, 3).join(', ') +
+                            ' Were unable to be deleted',
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+                    return
+                }
+
+                let successMsg = `${items.length + folders.length} `
+                if (items.length && folders.length) {
+                    successMsg += 'items/folders '
+                } else if (items.length) {
+                    successMsg += 'item(s) '
+                } else if (folders.length) {
+                    successMsg += 'folder(s) '
+                }
+                successMsg += 'were deleted'
+
+                new Noty({
+                    text: successMsg,
+                    type: 'success',
+                    timeout: 3500
+                }).show()
+            })
         }
     },
     actions: {
         folderSelected ({ commit }, { folder, pushState = true }) {
             commit('loadFolders', { folder, pushState })
         },
-        loadLibrary ({ commit }) {
-            commit('folders')
+        loadLibrary ({ commit }, folderID) {
+            commit('folders', folderID)
         },
         search ({ commit }, keywords) {
             commit('search', keywords)
@@ -352,9 +398,6 @@ export default new Vuex.Store({
         removeFolder ({ commit }, active) {
             commit('removeFolder', active)
         },
-        uploadItems ({ commit }, payload) {
-            commit('uploadItems', payload)
-        },
         removeItem ({ commit }, item) {
             commit('removeItem', item)
         },
@@ -369,6 +412,12 @@ export default new Vuex.Store({
         },
         uploadResult ({ commit }, payload) {
             commit('uploadResult', payload)
+        },
+        recentUploads ({ commit }) {
+            commit('recentUploads')
+        },
+        remove ({ commit }, payload) {
+            commit('remove', payload)
         }
     }
 })
