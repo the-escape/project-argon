@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 294 modules ***!
+  !*** ./resources/assets/js/src/index.js + 295 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -8251,6 +8251,9 @@ ActionBarvue_type_template_id_99500dd4_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/ActionBar.vue?vue&type=template&id=99500dd4&
 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/util/bus.js
+
+var bus_EventBus = new vue_default.a();
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/ActionBar.vue?vue&type=script&lang=js&
 function ActionBarvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { ActionBarvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
@@ -8300,6 +8303,7 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
 //
 //
 
+
 /* harmony default export */ var ActionBarvue_type_script_lang_js_ = ({
   data: function data() {
     return {
@@ -8335,15 +8339,7 @@ function ActionBarvue_type_script_lang_js_defineProperty(obj, key, value) { if (
       this.$store.dispatch('search', this.keywords);
     },
     createFolder: function createFolder(parent) {
-      var fn = prompt("Please enter the folder name:", "New Folder");
-
-      if (fn) {
-        var payload = {
-          name: fn,
-          parent: parent
-        };
-        this.$store.dispatch('createFolder', payload);
-      }
+      bus_EventBus.$emit('addFolder');
     },
     editFolder: function editFolder(folder) {
       var fn = prompt("Please edit the folder name:", folder.name);
@@ -8606,6 +8602,38 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                                         attrs: { type: "text" },
                                         domProps: { value: folderItem.name },
                                         on: {
+                                          keydown: [
+                                            function($event) {
+                                              if (
+                                                !("button" in $event) &&
+                                                _vm._k(
+                                                  $event.keyCode,
+                                                  "enter",
+                                                  13,
+                                                  $event.key,
+                                                  "Enter"
+                                                )
+                                              ) {
+                                                return null
+                                              }
+                                              _vm.comfirmEditFolder(folderItem)
+                                            },
+                                            function($event) {
+                                              if (
+                                                !("button" in $event) &&
+                                                _vm._k(
+                                                  $event.keyCode,
+                                                  "escape",
+                                                  undefined,
+                                                  $event.key,
+                                                  undefined
+                                                )
+                                              ) {
+                                                return null
+                                              }
+                                              _vm.closeEditFolder(folderItem)
+                                            }
+                                          ],
                                           input: function($event) {
                                             if ($event.target.composing) {
                                               return
@@ -8640,6 +8668,29 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                                             })
                                           ])
                                         ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "c-file-list__edit-close",
+                                          on: {
+                                            click: function($event) {
+                                              _vm.closeEditFolder(folderItem)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("svg", [
+                                            _c("use", {
+                                              attrs: {
+                                                "xlink:href":
+                                                  "/argon/images/svgicons.svg#cross"
+                                              }
+                                            })
+                                          ])
+                                        ]
                                       )
                                     ]
                                   )
@@ -8667,6 +8718,141 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
             : _vm._e()
         ]
       }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder",
+          class: { "is-editing": _vm.editingNewFolder }
+        },
+        [
+          _c(
+            "button",
+            { staticClass: "c-file-list__btn", on: { click: _vm.newFolder } },
+            [
+              _c("div", { staticClass: "c-file-list__image" }, [
+                _c("svg", [
+                  _c("use", {
+                    attrs: {
+                      "xlink:href": "/argon/images/svgicons.svg#folder-add"
+                    }
+                  })
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          !_vm.editingNewFolder
+            ? _c(
+                "button",
+                {
+                  staticClass: "c-file-list__edit",
+                  on: { click: _vm.newFolder }
+                },
+                [_vm._m(0)]
+              )
+            : _c(
+                "div",
+                { staticClass: "c-file-list__edit c-file-list__edit--editing" },
+                [
+                  _c("div", { staticClass: "c-file-list__label" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.newFolderName,
+                          expression: "newFolderName"
+                        }
+                      ],
+                      ref: "newFolder",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.newFolderName },
+                      on: {
+                        keydown: [
+                          function($event) {
+                            if (
+                              !("button" in $event) &&
+                              _vm._k(
+                                $event.keyCode,
+                                "escape",
+                                undefined,
+                                $event.key,
+                                undefined
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.closeNewFolder($event)
+                          },
+                          function($event) {
+                            if (
+                              !("button" in $event) &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            return _vm.comfirmNewFolder($event)
+                          }
+                        ],
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.newFolderName = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "c-file-list__edit-confirm",
+                        on: {
+                          click: function($event) {
+                            _vm.comfirmNewFolder()
+                          }
+                        }
+                      },
+                      [
+                        _c("svg", [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href": "/argon/images/svgicons.svg#tick"
+                            }
+                          })
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "c-file-list__edit-close",
+                        on: { click: _vm.closeNewFolder }
+                      },
+                      [
+                        _c("svg", [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href": "/argon/images/svgicons.svg#cross"
+                            }
+                          })
+                        ])
+                      ]
+                    )
+                  ])
+                ]
+              )
+        ]
+      ),
       _vm._v(" "),
       _vm._l(_vm.items, function(item) {
         return [
@@ -8772,7 +8958,16 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
     2
   )
 }
-var FileListvue_type_template_id_2117e2b1_staticRenderFns = []
+var FileListvue_type_template_id_2117e2b1_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "c-file-list__label" }, [
+      _c("span", [_vm._v("Add new folder")])
+    ])
+  }
+]
 FileListvue_type_template_id_2117e2b1_render._withStripped = true
 
 
@@ -9002,6 +9197,56 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -9011,7 +9256,9 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
   data: function data() {
     return {
       key: "",
-      lastHighlightIndex: false
+      lastHighlightIndex: false,
+      editingNewFolder: false,
+      newFolderName: ''
     };
   },
   props: {
@@ -9028,7 +9275,7 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       }
     }
   },
-  computed: FileListvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'folder']), {
+  computed: FileListvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'active', 'folder']), {
     dragOffset: function dragOffset() {
       return 'list' ? 15 : undefined;
     },
@@ -9058,6 +9305,7 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       var contains = evt.target.classList.contains('c-file-list__btn') || evt.target.classList.contains('c-file-list__edit');
       return !contains;
     })).subscribe(this.unhighlightItems.bind(this));
+    bus_EventBus.$on('addFolder', this.newFolder.bind(this));
   },
   methods: {
     folderSelected: function folderSelected(folder) {
@@ -9154,6 +9402,25 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
     comfirmEditFolder: function comfirmEditFolder(folder) {
       folder.editing = false;
       this.$store.dispatch('editFolder', folder);
+    },
+    closeEditFolder: function closeEditFolder(folder) {
+      folder.editing = false;
+    },
+    newFolder: function newFolder() {
+      this.editingNewFolder = true;
+      this.$nextTick(function () {
+        this.$refs['newFolder'].focus();
+      });
+    },
+    comfirmNewFolder: function comfirmNewFolder() {
+      this.editingNewFolder = false;
+      this.$store.dispatch('createFolder', {
+        name: this.newFolderName,
+        parent: this.active
+      });
+    },
+    closeNewFolder: function closeNewFolder() {
+      this.editingNewFolder = false;
     }
   }
 });
@@ -14319,4 +14586,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.6a676638559f4a7e42d3.js.map
+//# sourceMappingURL=main.94d60c4e31e922ff8b35.js.map

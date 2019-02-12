@@ -17,6 +17,15 @@
         width: 100%;
     }
 
+    &__item--empty-folder &__image {
+        color: $secondary;
+    }
+
+    &__item--empty-folder.is-editing &__image {
+        color: $primary;
+        color: var(--primary-color);
+    }
+
     &--list &__item {
         display: flex;
         align-items: center;
@@ -57,6 +66,7 @@
         position: relative;
         margin: 10px;
         color: $primary;
+        color: var(--primary-color);
         transition: opacity $userInactive $easeOut;
 
         &:after {
@@ -143,9 +153,11 @@
 
         input {
             border: 0;
+            min-width: 0;
         }
 
-        &-confirm {
+        &-confirm,
+        &-close {
             position: relative;
             width: 30px;
             height: 20px;
@@ -165,6 +177,8 @@
 
     &__edit--editing &__label {
         display: flex;
+        margin-left: -15px;
+        width: calc(100% + 30px);
     }
 }
 

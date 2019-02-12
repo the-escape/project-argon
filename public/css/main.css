@@ -6249,6 +6249,7 @@ button[data-balloon] {
 
 .uppy-StatusBar-progress {
   background-color: #12a3c7;
+  background-color: var(--primary-color);
   height: 2px;
   position: absolute;
   z-index: 1001;
@@ -6409,7 +6410,8 @@ button[data-balloon] {
   display: inline-block;
   vertical-align: middle;
   font-size: 10px;
-  color: #12a3c7; }
+  color: #12a3c7;
+  color: var(--primary-color); }
   .uppy-size--md .uppy-StatusBar-actionBtn {
     font-size: 11px; }
 
@@ -6447,7 +6449,8 @@ button[data-balloon] {
 
 .uppy-StatusBar:not(.is-waiting) .uppy-StatusBar-actionBtn--upload {
   background-color: transparent;
-  color: #12a3c7; }
+  color: #12a3c7;
+  color: var(--primary-color); }
 
 .uppy-StatusBar-details {
   line-height: 12px;
@@ -6481,7 +6484,8 @@ button[data-balloon] {
   -webkit-animation-timing-function: linear;
           animation-timing-function: linear;
   margin-right: 10px;
-  fill: #12a3c7; }
+  fill: #12a3c7;
+  fill: var(--primary-color); }
 
 .uppy-StatusBar.is-preprocessing .uppy-StatusBar-spinner,
 .uppy-StatusBar.is-postprocessing .uppy-StatusBar-spinner {
@@ -6773,7 +6777,8 @@ button[data-balloon] {
   .uppy-ProviderBrowser-viewType--list .uppy-ProviderBrowserItem-checkbox label:before {
     border-color: rgba(82, 82, 82, 0.4); }
   .uppy-ProviderBrowser-viewType--list .uppy-ProviderBrowserItem-checkbox input:checked + label:before {
-    border-color: #12a3c7; }
+    border-color: #12a3c7;
+    border-color: var(--primary-color); }
   .uppy-ProviderBrowser-viewType--list .uppy-ProviderBrowserItem-inner {
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -6831,7 +6836,9 @@ button[data-balloon] {
 .uppy-ProviderBrowser-viewType--grid .uppy-ProviderBrowserItem-inner:focus {
   outline: none;
   -webkit-box-shadow: 0 0 0 3px rgba(18, 163, 199, 0.9);
-          box-shadow: 0 0 0 3px rgba(18, 163, 199, 0.9); }
+          box-shadow: 0 0 0 3px rgba(18, 163, 199, 0.9);
+  -webkit-box-shadow: 0 0 0 3px var(--primary-color);
+          box-shadow: 0 0 0 3px var(--primary-color); }
 
 .uppy-ProviderBrowser-viewType--grid .uppy-ProviderBrowserItem img,
 .uppy-ProviderBrowser-viewType--grid .uppy-ProviderBrowserItem svg {
@@ -6859,6 +6866,7 @@ button[data-balloon] {
 
 .uppy-ProviderBrowser-viewType--grid .uppy-ProviderBrowserItem-checkbox label:before {
   background-color: #12a3c7;
+  background-color: var(--primary-color);
   border-radius: 50%;
   width: 26px;
   height: 26px; }
@@ -6905,6 +6913,7 @@ button[data-balloon] {
   width: 18px;
   top: 2px;
   border: 1px solid #12a3c7;
+  border: 1px solid var(--primary-color);
   background-color: #fff;
   border-radius: 2px; }
 
@@ -6927,7 +6936,8 @@ button[data-balloon] {
   content: ""; }
 
 .uppy-ProviderBrowserItem-checkbox input:checked + label:before {
-  background-color: #12a3c7; }
+  background-color: #12a3c7;
+  background-color: var(--primary-color); }
 
 .uppy-ProviderBrowserItem-checkbox input:focus + label:before {
   outline: #3b99fc auto 5px; }
@@ -7258,11 +7268,13 @@ button[data-balloon] {
   border: 0;
   color: inherit;
   cursor: pointer;
-  color: rgba(18, 163, 199, 0.9); }
+  color: rgba(18, 163, 199, 0.9);
+  color: var(--primary-color); }
 
 .uppy-Dashboard-browse:focus {
   outline: none;
-  border-bottom: 2px solid #12a3c7; }
+  border-bottom: 2px solid #12a3c7;
+  border-bottom-color: var(--primary-color); }
 
 .uppy-DashboardTabs-list {
   display: -webkit-box;
@@ -7336,7 +7348,8 @@ button[data-balloon] {
     padding: 0; }
 
 .uppy-DashboardTab-btn:hover {
-  color: #12a3c7; }
+  color: #12a3c7;
+  color: var(--primary-color); }
 
 .uppy-DashboardTab-btn:focus {
   outline-offset: 0; }
@@ -7442,7 +7455,8 @@ button[data-balloon] {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  color: #12a3c7; }
+  color: #12a3c7;
+  color: var(--primary-color); }
   .uppy-size--md .uppy-DashboardContent-back {
     font-size: 15px; }
 
@@ -7459,7 +7473,9 @@ button[data-balloon] {
   font-weight: 500;
   cursor: pointer;
   color: #12a3c7;
+  color: var(--primary-color);
   stroke: #12a3c7;
+  stroke: var(--primary-color);
   stroke-width: 0.7px;
   width: 13px;
   height: 13px; }
@@ -7556,9 +7572,12 @@ button[data-balloon] {
 
 .uppy-Dashboard-next.is-active {
   cursor: pointer;
-  background-color: #12a3c7; }
+  background-color: #12a3c7;
+  background-color: var(--primary-color); }
   .uppy-Dashboard-next.is-active:hover {
-    background-color: #0a5669; }
+    background-color: #0a5669;
+    background-color: var(--primary-color);
+    opacity: 0.8; }
 
 .uppy-Dashboard-filesContainer {
   position: relative;
@@ -8064,6 +8083,7 @@ button.uppy-DashboardItem-progressIndicator {
 .uppy-DashboardItem-progressInner {
   height: 15px;
   background-color: #12a3c7;
+  background-color: var(--primary-color);
   position: absolute;
   top: 0;
   left: 0; }
@@ -8259,7 +8279,8 @@ button.uppy-DashboardItem-progressIndicator {
   color: #d0d0d0; }
 
 .uppy-DragDrop-dragText {
-  color: #12a3c7; }
+  color: #12a3c7;
+  color: var(--primary-color); }
 
 .uppy-Root {
   height: 100%; }
@@ -8296,7 +8317,8 @@ button.uppy-DashboardItem-progressIndicator {
       width: 100%;
       height: 100%; }
     .c-media-library__btn:hover, .c-media-library__btn.is-active {
-      color: #12a3c7; }
+      color: #12a3c7;
+      color: var(--primary-color); }
   .c-media-library__button-group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -8368,6 +8390,7 @@ button.uppy-DashboardItem-progressIndicator {
     .c-media-library__breadcrumbs button {
       display: inline-block;
       color: #12a3c7;
+      color: var(--primary-color);
       padding: 0; }
       .c-media-library__breadcrumbs button:hover {
         text-decoration: underline; }
@@ -8508,6 +8531,11 @@ button.uppy-DashboardItem-progressIndicator {
     position: relative;
     padding: 0;
     width: 100%; }
+  .c-file-list__item--empty-folder .c-file-list__image {
+    color: #b6b6b6; }
+  .c-file-list__item--empty-folder.is-editing .c-file-list__image {
+    color: #12a3c7;
+    color: var(--primary-color); }
   .c-file-list--list .c-file-list__item {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -8549,6 +8577,7 @@ button.uppy-DashboardItem-progressIndicator {
     position: relative;
     margin: 10px;
     color: #12a3c7;
+    color: var(--primary-color);
     -webkit-transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1);
     transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1); }
     .c-file-list__image:after {
@@ -8610,8 +8639,9 @@ button.uppy-DashboardItem-progressIndicator {
     padding: 0;
     width: 100%; }
     .c-file-list__edit input {
-      border: 0; }
-    .c-file-list__edit-confirm {
+      border: 0;
+      min-width: 0; }
+    .c-file-list__edit-confirm, .c-file-list__edit-close {
       position: relative;
       width: 30px;
       height: 20px;
@@ -8619,7 +8649,7 @@ button.uppy-DashboardItem-progressIndicator {
       -webkit-box-flex: 0;
           -ms-flex: 0 0 30px;
               flex: 0 0 30px; }
-      .c-file-list__edit-confirm svg {
+      .c-file-list__edit-confirm svg, .c-file-list__edit-close svg {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -8630,7 +8660,9 @@ button.uppy-DashboardItem-progressIndicator {
   .c-file-list__edit--editing .c-file-list__label {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex; }
+    display: flex;
+    margin-left: -15px;
+    width: calc(100% + 30px); }
 
 @supports ((-o-object-fit: contain) or (object-fit: contain)) {
   .c-file-list__image img {
@@ -8665,6 +8697,7 @@ button.uppy-DashboardItem-progressIndicator {
     width: 20px;
     height: 15px;
     color: #12a3c7;
+    color: var(--primary-color);
     margin-right: 10px; }
   .c-directory-tree__content.is-active span {
     font-weight: 500; }

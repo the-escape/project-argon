@@ -256,6 +256,7 @@
 
     .uppy-ProviderBrowserItem-checkbox input:checked + label:before {
         border-color: $color-primary;
+        border-color: var(--primary-color);
     }
 
     .uppy-ProviderBrowserItem-inner {
@@ -326,6 +327,7 @@
     .uppy-ProviderBrowserItem-inner:focus {
         outline: none;
         box-shadow: 0 0 0 3px rgba($color-primary, 0.9);
+        box-shadow: 0 0 0 3px var(--primary-color);
     }
 
     .uppy-ProviderBrowserItem img,
@@ -357,6 +359,7 @@
 
     .uppy-ProviderBrowserItem-checkbox label:before {
         background-color: $color-primary;
+        background-color: var(--primary-color);
         border-radius: 50%;
         width: 26px;
         height: 26px;
@@ -418,6 +421,7 @@
     width: 18px;
     top: 2px;
     border: 1px solid $color-primary;
+    border: 1px solid var(--primary-color);
     background-color: $color-white;
     border-radius: 2px;
 }
@@ -447,6 +451,7 @@
 
 .uppy-ProviderBrowserItem-checkbox input:checked + label:before {
     background-color: $color-primary;
+    background-color: var(--primary-color);
 }
 
 // Adding focus styles on the outer-box of the fake checkbox*/

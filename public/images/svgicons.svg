@@ -89,6 +89,12 @@
     <path d="M16.001 28.5l-.002-25"/>
     <path stroke-linecap="round" stroke-linejoin="round" d="M10.171 9.285L15.999 3.5l5.83 5.785"/>
   </g>
+</symbol><symbol id="folder-add" viewBox="0 0 111 83.5">
+  <g fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M55.5 17L44.5.5H7.91C3.82.5.5 3.82.5 7.91v67.68C.5 79.68 3.82 83 7.91 83h95.18c4.09 0 7.41-3.32 7.41-7.41V24.41c0-4.09-3.32-7.41-7.41-7.41H55.5z"/>
+    <circle cx="55.5" cy="50.41" r="12"/>
+    <path d="M51.3 50.41h8.4m-4.2 4.2v-8.4"/>
+  </g>
 </symbol><symbol id="folder" viewBox="0 0 20 15">
   <path fill="currentColor" d="M10 3L8 0H1.35C.6 0 0 .6 0 1.35v12.3C0 14.4.6 15 1.35 15h17.3c.75 0 1.35-.6 1.35-1.35v-9.3C20 3.6 19.4 3 18.65 3H10z"/>
 </symbol><symbol id="globe" viewBox="0 0 32 32">

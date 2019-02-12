@@ -43,6 +43,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { EventBus } from '../util/bus'
 
 export default {
     data() {
@@ -79,11 +80,7 @@ export default {
             this.$store.dispatch('search', this.keywords)
         },
         createFolder(parent) {
-            let fn = prompt("Please enter the folder name:", "New Folder")
-            if (fn) {
-                let payload = {name: fn, parent: parent}
-                this.$store.dispatch('createFolder', payload)
-            }
+            EventBus.$emit('addFolder')
         },
         editFolder(folder) {
             let fn = prompt("Please edit the folder name:", folder.name)

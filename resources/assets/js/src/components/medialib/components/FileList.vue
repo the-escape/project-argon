@@ -52,10 +52,22 @@
                         </button>
                         <div class="c-file-list__edit c-file-list__edit--editing" v-else>
                             <div class="c-file-list__label">
-                                <input type="text" v-model="folderItem.name" :ref="`folderEdit-${folderItem.id}`">
-                                <button class="c-file-list__edit-confirm" @click="comfirmEditFolder(folderItem)">
+                                <input type="text"
+                                    v-model="folderItem.name"
+                                    :ref="`folderEdit-${folderItem.id}`"
+                                    @keydown.enter="comfirmEditFolder(folderItem)"
+                                    @keydown.escape="closeEditFolder(folderItem)">
+                                <button
+                                    class="c-file-list__edit-confirm"
+                                    @click="comfirmEditFolder(folderItem)"
+                                >
                                     <svg>
                                         <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                                    </svg>
+                                </button>
+                                <button class="c-file-list__edit-close" @click="closeEditFolder(folderItem)">
+                                    <svg>
+                                        <use xlink:href="/argon/images/svgicons.svg#cross"></use>
                                     </svg>
                                 </button>
                             </div>
@@ -69,6 +81,43 @@
                 </drag>
             </drop>
         </template>
+
+        <div class="c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder" :class="{ 'is-editing': editingNewFolder }">
+            <button
+                class="c-file-list__btn"
+                @click="newFolder"
+            >
+                <div class="c-file-list__image">
+                    <svg>
+                        <use xlink:href="/argon/images/svgicons.svg#folder-add"></use>
+                    </svg>
+                </div>
+            </button>
+            <button
+                class="c-file-list__edit"
+                @click="newFolder"
+                v-if="!editingNewFolder"
+            >
+                <div class="c-file-list__label">
+                    <span>Add new folder</span>
+                </div>
+            </button>
+            <div class="c-file-list__edit c-file-list__edit--editing" v-else>
+                <div class="c-file-list__label">
+                    <input type="text" v-model="newFolderName" ref="newFolder" @keydown.escape="closeNewFolder" @keydown.enter="comfirmNewFolder">
+                    <button class="c-file-list__edit-confirm" @click="comfirmNewFolder()">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#tick"></use>
+                        </svg>
+                    </button>
+                    <button class="c-file-list__edit-close" @click="closeNewFolder">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#cross"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <template v-for="item in items">
             <drag
@@ -119,6 +168,7 @@
     import { filter } from 'rxjs/operators'
     import { mapState } from 'vuex'
     import { Drag, Drop } from 'vue-drag-drop'
+    import { EventBus } from '../util/bus'
 
     import { pickImage } from '../api/media'
 
@@ -126,7 +176,9 @@
         data () {
             return {
                 key: "",
-                lastHighlightIndex: false
+                lastHighlightIndex: false,
+                editingNewFolder: false,
+                newFolderName: ''
             }
         },
         props: {
@@ -149,6 +201,7 @@
                 'data',
                 'search',
                 'layout',
+                'active',
                 'folder'
             ]),
             dragOffset: function (){
@@ -180,6 +233,8 @@
                     return !contains
                 }))
                 .subscribe(this.unhighlightItems.bind(this))
+
+            EventBus.$on('addFolder', this.newFolder.bind(this))
         },
         methods: {
             folderSelected(folder) {
@@ -264,6 +319,23 @@
             comfirmEditFolder (folder) {
                 folder.editing = false
                 this.$store.dispatch('editFolder', folder)
+            },
+            closeEditFolder (folder) {
+                folder.editing = false
+            },
+            newFolder () {
+                this.editingNewFolder = true
+
+                this.$nextTick(function() {
+                    this.$refs['newFolder'].focus()
+                })
+            },
+            comfirmNewFolder () {
+                this.editingNewFolder = false
+                this.$store.dispatch('createFolder', { name: this.newFolderName, parent: this.active })
+            },
+            closeNewFolder () {
+                this.editingNewFolder = false
             }
         }
     }
