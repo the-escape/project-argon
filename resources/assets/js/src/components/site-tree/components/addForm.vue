@@ -58,6 +58,8 @@ export default {
         this.selectInstance = new Choices(select, this.choicesOptions)
         this.selectInstance.setValueByChoice(this.value)
         this.selectElement.addEventListener('change', this.selectChange.bind(this))
+        this.selectedOption = this.selectInstance.getValue(true)
+
     },
     destroyed: function () {
         this.selectElement.removeEventListener('change', this.selectChange.bind(this))
