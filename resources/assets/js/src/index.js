@@ -22,6 +22,7 @@ import {
     Cropper,
     setCropperImage,
     SiteTree,
+    ImportFieldGroups,
     Medialib
 } from './components'
 import { Dashboard } from './dashboard'
@@ -58,6 +59,7 @@ function init () {
     cropperTest()
     formSubmits()
     SiteTree()
+    ImportFieldGroups()
     BasicConfirmBtns()
 
     // testUppy()

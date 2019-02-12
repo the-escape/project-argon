@@ -908,15 +908,15 @@ function setupOldCMSPaths () {
         dest: pkg.paths.plPublic.js + 'ckeditor/'
     }
 
-    const acePaths = {
-        src: 'bower_components/ace-builds/src-min/**/*.*',
-        dest: pkg.paths.public.js + 'ace/'
-    }
+    // const acePaths = {
+    //     src: 'node_modules/ace-builds/src-min/**/*.*',
+    //     dest: pkg.paths.public.js + 'ace/'
+    // }
 
-    const acePathsPL = {
-        src: 'bower_components/ace-builds/src-min/**/*.*',
-        dest: pkg.paths.plPublic.js + 'ace/'
-    }
+    // const acePathsPL = {
+    //     src: 'node_modules/ace-builds/src-min/**/*.*',
+    //     dest: pkg.paths.plPublic.js + 'ace/'
+    // }
 
     const fancyboxPaths = {
         src: 'bower_components/fancybox/source/**/*.*',
@@ -981,8 +981,8 @@ function setupOldCMSPaths () {
         jsTreePathsPL,
         ckeditorPaths,
         ckeditorPathsPL,
-        acePaths,
-        acePathsPL,
+        // acePaths,
+        // acePathsPL,
         fancyboxPaths,
         fancyboxPathsPL,
         argonJSPaths,
@@ -1003,8 +1003,8 @@ function copyCmsAssets () {
         jsTreePathsPL,
         ckeditorPaths,
         ckeditorPathsPL,
-        acePaths,
-        acePathsPL,
+        // acePaths,
+        // acePathsPL,
         fancyboxPaths,
         fancyboxPathsPL,
         argonJSPaths,
@@ -1023,7 +1023,7 @@ function copyCmsAssets () {
         tasks.push(copy(jsPathsPL, 'OLD-CMS JS PL'))
         // tasks.push(copy(jsTreePathsPL, 'OLD-CMS jstree PL'))
         // tasks.push(copy(ckeditorPathsPL, 'OLD-CMS ckeditor PL'))
-        tasks.push(copy(acePathsPL, 'OLD-CMS ace PL'))
+        // tasks.push(copy(acePathsPL, 'OLD-CMS ace PL'))
         tasks.push(copy(fancyboxPathsPL, 'OLD-CMS fancybox PL'))
         tasks.push(inlineJs(argonJSPathsPL, 'argon.js', 'OlD CMD js PL'))
         tasks.push(copy(argonScssPathsPL, 'OLD-CMS css'))
@@ -1034,7 +1034,7 @@ function copyCmsAssets () {
         tasks.push(copy(jsPaths, 'OLD-CMS JS'))
         // tasks.push(copy(jsTreePaths, 'OLD-CMS jstree'))
         // tasks.push(copy(ckeditorPaths, 'OLD-CMS ckeditor'))
-        tasks.push(copy(acePaths, 'OLD-CMS ace'))
+        // tasks.push(copy(acePaths, 'OLD-CMS ace'))
         tasks.push(copy(fancyboxPaths, 'OLD-CMS fancybox'))
         tasks.push(inlineJs(argonJSPaths, 'argon.js', 'OlD CMD js'))
         tasks.push(copy(argonScssPaths, 'OLD-CMS css'))

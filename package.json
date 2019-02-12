@@ -125,7 +125,11 @@
             "./node_modules/promise-polyfill/dist/polyfill.min.js",
             "./node_modules/whatwg-fetch/fetch.js",
             "./resources/assets/vendor/**/*",
-            "./node_modules/jquery/dist/jquery.min.js"
+            "./node_modules/jquery/dist/jquery.min.js",
+            "./node_modules/ace-builds/src-min/ace.js",
+            "./node_modules/ace-builds/src-min/theme-twilight.js",
+            "./node_modules/ace-builds/src-min/mode-json.js",
+            "./node_modules/ace-builds/src-min/mode-php.js"
         ]
     },
     "devDependencies": {
@@ -133,6 +137,7 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
         "@babel/plugin-transform-object-assign": "^7.2.0",
         "@babel/preset-env": "^7.1.6",
+        "ace-builds": "^1.4.2",
         "autoprefixer": "^8.6.0",
         "babel-eslint": "^8.2.3",
         "babel-loader": "^8.0.4",

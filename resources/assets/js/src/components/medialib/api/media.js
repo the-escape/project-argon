@@ -99,7 +99,7 @@ export function removeItem (id, cb) {
 }
 
 export function move (data, cb) {
-    Vue.http
+     Vue.http
         .post('/admin/media/api/move', data)
         .then(response => {
             cb(response)

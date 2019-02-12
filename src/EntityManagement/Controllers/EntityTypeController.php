@@ -1248,6 +1248,17 @@ class EntityTypeController extends BaseController
         return view('argon::groups.import', compact('type', 'types', 'blocks'))->render();
     }
 
+    public function importGroupJsonNew($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
+    {
+        $type = $typeRepository->find($typeId)->toJson();
+
+        $types = $typeRepository->with('groups')->all()->toJson();
+
+        $blocks = json_encode($blocksLibrary->getBlocks());
+
+        return view('argon::groups.import-new', compact('type', 'types', 'blocks'))->render();
+    }
+
     public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository, FieldTypesManager $fieldTypesManager, EntityFieldRepository $fieldRepository, ComboFieldType $comboFieldType, Request $request)
     {
 
