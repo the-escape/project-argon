@@ -13331,6 +13331,7 @@ addFormvue_type_template_id_e8222bfa_render._withStripped = true
     this.selectInstance = new choices_min_default.a(select, this.choicesOptions);
     this.selectInstance.setValueByChoice(this.value);
     this.selectElement.addEventListener('change', this.selectChange.bind(this));
+    this.selectedOption = this.selectInstance.getValue(true);
   },
   destroyed: function destroyed() {
     this.selectElement.removeEventListener('change', this.selectChange.bind(this));
@@ -14043,4 +14044,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.bb2384c4d5a86ed89bf5.js.map
+//# sourceMappingURL=main.1de744012bdf5f58adfb.js.map
