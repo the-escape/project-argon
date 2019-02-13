@@ -40,6 +40,7 @@ import {
 function init () {
     polyfill()
     Jump.init(650, 150)
+    ImportFieldGroups()
     Sidebar()
     Notifications()
     Accordion()
@@ -59,7 +60,7 @@ function init () {
     cropperTest()
     formSubmits()
     SiteTree()
-    ImportFieldGroups()
+
     BasicConfirmBtns()
 
     // testUppy()

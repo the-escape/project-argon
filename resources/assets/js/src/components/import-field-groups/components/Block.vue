@@ -1,28 +1,70 @@
 <template>
-    <div class="c-blocks-library__item js-get-library-block show" :data-block-id="block.id" @click="getBlock">
+    <div class="c-blocks-library__item js-get-library-block show" :class="{ 'editing': isEdited }" :data-block-id="block.id" @dblclick="getBlock">
         <div class="c-blocks-library__item-name">{{ block.name }}</div>
         <div class="c-blocks-library__item-image" :style="bgImage"></div>
     </div>
 </template>
 
 <script>
+    import Vue from 'vue'
+    import { mapState } from 'vuex'
+
     export default {
         name: 'Block',
         props: ['block'],
         methods: {
             getBlock: function() {
-                if (this.isLocal) {
-                    // TODO export local block and add to editor
+                this.$store.commit('showLoading', true)
+
+                if (this.block.isLocal) {
+                    const url = '/admin/types/' + encodeURIComponent(this.block.type) + '/groups/' + encodeURIComponent(this.block.id) + '/export'
+
+                    fetchBlock(url).then(response => {
+                        this.$store.commit('setContent', {
+                            json: JSON.stringify(response.body, null, 4),
+                            blade: '',
+                            mapper: ''
+                        })
+                        this.$store.commit('setSelectedBlock', null)
+                        this.$store.commit('showLoading', false)
+                    })
+
                 } else {
-                    // TODO api call to get block and add it to editor
+                    const url = '/admin/blockslibrary/' + encodeURIComponent(this.block.id)
+
+                    fetchBlock(url).then(response => {
+                        const content = {
+                            json: JSON.stringify(response.body.json, null, 4),
+                            mapper: response.body.mappers,
+                            blade: response.body.blade
+                        }
+
+                        this.$store.commit('setContent', content)
+                        this.$store.commit('setSelectedBlock', response.body)
+                        this.$store.commit('showLoading', false)
+                    })
                 }
             }
         },
         computed: {
+            ...mapState({
+                selectedBlock: 'block'
+            }),
+            isEdited: function() {
+                return this.selectedBlock && this.selectedBlock.id === this.block.id
+            },
             bgImage: function() {
                 return 'background-image: url(' + this.block.image + ')'
             }
         }
+    }
+
+    function fetchBlock (url) {
+        return Vue.http.get(url, {
+                params: {
+                    json: true
+                }
+            })
     }
 </script>
 

@@ -31,6 +31,7 @@
 
 <script>
     import Block from './Block.vue'
+    import { mapState } from 'vuex'
 
     export default {
         components: {
@@ -44,9 +45,13 @@
             }
         },
         computed: {
-            blocks: function() {
-                return this.$store.state.blocks
-            }
+            ...mapState([
+                'blocks',
+                'block'
+            ])
+//            blocks: function() {
+//                return this.$store.state.blocks
+//            }
         }
     }
 </script>

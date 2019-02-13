@@ -48,7 +48,8 @@
                         return {
                             isLocal: true,
                             id: group.id,
-                            name: group.name,
+                            type: type.id,
+                            name: group.name + ' [' + type.name + ']',
                             image: group.settings.image
                         }
                     })
