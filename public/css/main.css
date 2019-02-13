@@ -8344,13 +8344,16 @@ button.uppy-DashboardItem-progressIndicator {
       height: 40px;
       color: #b6b6b6;
       pointer-events: none;
-      -webkit-transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1);
-      transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1); }
+      -webkit-transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1), color 250ms cubic-bezier(0.3, 0.15, 0.18, 1);
+      transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1), color 250ms cubic-bezier(0.3, 0.15, 0.18, 1); }
       .c-media-library__search-icon svg {
         width: 100%;
         height: 100%; }
     .c-media-library__search.hide-icon .c-media-library__search-icon {
       opacity: 0; }
+    .c-media-library__search:hover .c-media-library__search-icon {
+      color: #12a3c7;
+      color: var(--primary-color); }
     .c-media-library__search input {
       background-color: #fff;
       border: 1px solid #b6b6b6;
@@ -8371,12 +8374,12 @@ button.uppy-DashboardItem-progressIndicator {
     overflow: hidden; }
   .c-media-library__directory-tree {
     position: relative;
-    overflow: auto;
     -webkit-box-flex: 1;
         -ms-flex: 1 1 25%;
             flex: 1 1 25%;
     width: 25%;
-    border-right: 1px solid #b6b6b6;
+    border-right: 1px solid #b6b6b6; }
+  .c-media-library__directory-tree .c-media-library__scroller {
     padding: 10px; }
   .c-media-library__directory-view {
     overflow: auto;
@@ -8482,7 +8485,7 @@ button.uppy-DashboardItem-progressIndicator {
   .c-media-library__delete {
     position: absolute;
     bottom: 15px;
-    right: 15px;
+    right: 25px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -8775,17 +8778,25 @@ button.uppy-DashboardItem-progressIndicator {
     -webkit-transform: translateX(100%);
             transform: translateX(100%); }
   .c-edit__header {
+    position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    height: 56px;
-    border-bottom: 1px solid #b6b6b6;
-    padding: 0 30px; }
+    height: 76px;
+    padding: 20px 30px 0; }
+    .c-edit__header:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      height: 1px;
+      width: calc(100% - 60px);
+      left: 30px;
+      background-color: #b6b6b6; }
   .c-edit__title {
-    margin-top: 0 !important; }
+    margin: 0 !important; }
   .c-edit__body {
     display: -webkit-box;
     display: -ms-flexbox;

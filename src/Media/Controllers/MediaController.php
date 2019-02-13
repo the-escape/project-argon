@@ -174,6 +174,7 @@ class MediaController extends BaseController
 
         $msgErrors = [];
         $msgSuccess = [];
+        $fileIds = [];
 
         foreach ($files as $file)
         {
@@ -185,6 +186,7 @@ class MediaController extends BaseController
 
             $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
             $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
+            $fileIds[] = $r->id;
         }
 
         if ($msgErrors)
@@ -204,11 +206,11 @@ class MediaController extends BaseController
                 }
             }
 
-            return response()->json(["messages" => $messageCombined], Response::HTTP_NO_CONTENT);
+            return response()->json(["messages" => $messageCombined, "fileIDs" => []], Response::HTTP_NO_CONTENT);
         }
 
         //return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
-        return response()->json(["messages" => $msgSuccess], Response::HTTP_OK);
+        return response()->json(["messages" => $msgSuccess, "fileIDs" => $fileIds], Response::HTTP_OK);
     }
 
     public function appDeleteItem(Request $request, MediaItemRepository $itemRepository)

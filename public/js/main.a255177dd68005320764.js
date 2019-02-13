@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 295 modules ***!
+  !*** ./resources/assets/js/src/index.js + 296 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -637,7 +637,7 @@ var animationEnd = events_mapEventsToObservable(animationEndEventName);
 function jump_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { jump_typeof = function _typeof(obj) { return typeof obj; }; } else { jump_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return jump_typeof(obj); }
 
 
-var maxDuration, minDuration, maxDurHeight, wheelEventName, jmpTmpMaxDuration, jmpTmpMinDuration, optionsUser, jump_element, start, stop, jump_offset, easing, durationEasing, a11y, distance, duration, timeStart, timeElapsed, nextScroll, callback, animationID;
+var maxDuration, minDuration, maxDurHeight, wheelEventName, jmpTmpMaxDuration, jmpTmpMinDuration, optionsUser, jump_element, jump_start, stop, jump_offset, easing, durationEasing, a11y, jump_distance, jump_duration, timeStart, timeElapsed, jump_nextScroll, callback, animationID;
 
 function jump_init(mxDur, mnDur, mxDurHeight) {
   minDuration = mnDur || 750;
@@ -685,7 +685,7 @@ function getViewportHeight() {
 }
 
 function jump_top(element) {
-  return element.getBoundingClientRect().top + start;
+  return element.getBoundingClientRect().top + jump_start;
 }
 
 function jump_location() {
@@ -698,10 +698,10 @@ function loop(timeCurrent) {
   }
 
   timeElapsed = timeCurrent - timeStart;
-  nextScroll = easing(timeElapsed, start, distance, duration);
-  window.scrollTo(0, nextScroll);
+  jump_nextScroll = easing(timeElapsed, jump_start, jump_distance, jump_duration);
+  window.scrollTo(0, jump_nextScroll);
 
-  if (timeElapsed < duration) {
+  if (timeElapsed < jump_duration) {
     animationID = requestAnimationFrame(loop);
   } else {
     done();
@@ -709,7 +709,7 @@ function loop(timeCurrent) {
 }
 
 function done() {
-  window.scrollTo(0, start + distance);
+  window.scrollTo(0, jump_start + jump_distance);
 
   if (jump_element && a11y) {
     jump_element.setAttribute('tabindex', '-1');
@@ -743,7 +743,7 @@ function jump(target, cb, offset, options) {
     maxDuration = options.maxDuration ? options.maxDuration - minDuration : maxDuration;
   }
 
-  start = jump_location();
+  jump_start = jump_location();
   callback = cb;
   offset = offset || 0;
 
@@ -751,7 +751,7 @@ function jump(target, cb, offset, options) {
     case 'number':
       jump_element = false;
       a11y = false;
-      stop = start + target;
+      stop = jump_start + target;
       break;
 
     case 'object':
@@ -778,8 +778,8 @@ function jump(target, cb, offset, options) {
     maxDuration = dataMaxDuration ? dataMaxDuration - minDuration : maxDuration;
   }
 
-  distance = stop - start + offset;
-  var durDistance = Math.abs(distance);
+  jump_distance = stop - jump_start + offset;
+  var durDistance = Math.abs(jump_distance);
   var distanceChange = durDistance / maxDurHeight;
 
   if (durDistance >= maxDurHeight) {
@@ -787,7 +787,7 @@ function jump(target, cb, offset, options) {
   }
 
   var durationChangeRate = durationEasing(distanceChange, 0, 1, 1);
-  duration = maxDuration * durationChangeRate + minDuration;
+  jump_duration = maxDuration * durationChangeRate + minDuration;
   cancelAnimation();
   animationID = requestAnimationFrame(loop);
 }
@@ -7731,42 +7731,55 @@ var Treevue_type_template_id_57304f95_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-media-library__directory-tree" }, [
-    _c(
-      "ul",
-      { staticClass: "c-directory-tree" },
-      [
-        _c("li", [
+  return _c(
+    "div",
+    {
+      directives: [{ name: "bar", rawName: "v-bar" }],
+      staticClass: "c-media-library__directory-tree"
+    },
+    [
+      _c("div", [
+        _c("div", { staticClass: "c-media-library__scroller" }, [
           _c(
-            "div",
-            {
-              staticClass: "c-directory-tree__content",
-              class: { "is-active": _vm.recentUploads.show }
-            },
+            "ul",
+            { staticClass: "c-directory-tree" },
             [
-              _c("button", { on: { click: _vm.openRecentUploads } }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#folder" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("span", [_vm._v("Recent uploads")])
-              ])
-            ]
+              _c("li", [
+                _c(
+                  "div",
+                  {
+                    staticClass: "c-directory-tree__content",
+                    class: { "is-active": _vm.recentUploads.show }
+                  },
+                  [
+                    _c("button", { on: { click: _vm.openRecentUploads } }, [
+                      _c("svg", [
+                        _c("use", {
+                          attrs: {
+                            "xlink:href": "/argon/images/svgicons.svg#folder"
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Recent uploads")])
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("tree-item", {
+                attrs: {
+                  folder: _vm.folder,
+                  "recent-uploads-show": _vm.recentUploads.show
+                }
+              })
+            ],
+            1
           )
-        ]),
-        _vm._v(" "),
-        _c("tree-item", {
-          attrs: {
-            folder: _vm.folder,
-            "recent-uploads-show": _vm.recentUploads.show
-          }
-        })
-      ],
-      1
-    )
-  ])
+        ])
+      ])
+    ]
+  )
 }
 var Treevue_type_template_id_57304f95_staticRenderFns = []
 Treevue_type_template_id_57304f95_render._withStripped = true
@@ -8041,6 +8054,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -8400,30 +8417,39 @@ var SearchResultsvue_type_template_id_a0f50172_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-media-library__directory-view" }, [
-    _c("div", { staticClass: "c-media-library__breadcrumbs" }, [
-      _c("p", [
-        _vm._v(
-          "Found " +
-            _vm._s(_vm.search.getResultsCount()) +
-            " results for `" +
-            _vm._s(_vm.search.keywords) +
-            "`"
+  return _c(
+    "div",
+    {
+      directives: [{ name: "bar", rawName: "v-bar" }],
+      staticClass: "c-media-library__directory-view"
+    },
+    [
+      _c("div", [
+        _c("div", { staticClass: "c-media-library__breadcrumbs" }, [
+          _c("p", [
+            _vm._v(
+              "Found " +
+                _vm._s(_vm.search.getResultsCount()) +
+                " results for `" +
+                _vm._s(_vm.search.keywords) +
+                "`"
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "c-media-library__grid-wrap" },
+          [
+            _vm.search.hasResults()
+              ? _c("file-list", { attrs: { items: _vm.search.getResults() } })
+              : _c("h3", [_vm._v("No results found.")])
+          ],
+          1
         )
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "c-media-library__grid-wrap" },
-      [
-        _vm.search.hasResults()
-          ? _c("file-list", { attrs: { items: _vm.search.getResults() } })
-          : _c("h3", [_vm._v("No results found.")])
-      ],
-      1
-    )
-  ])
+    ]
+  )
 }
 var SearchResultsvue_type_template_id_a0f50172_staticRenderFns = []
 SearchResultsvue_type_template_id_a0f50172_render._withStripped = true
@@ -8447,6 +8473,8 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                 "drop",
                 {
                   key: folderItem.id,
+                  ref: "folder-" + folderItem.id,
+                  refInFor: true,
                   on: {
                     dragover: function($event) {
                       _vm.dragOver(folderItem)
@@ -8722,6 +8750,7 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
       _c(
         "div",
         {
+          ref: "newFolder",
           staticClass:
             "c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder",
           class: { "is-editing": _vm.editingNewFolder }
@@ -8861,6 +8890,8 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                 "drag",
                 {
                   key: "item-" + item.item.id,
+                  ref: "item-" + item.item.id,
+                  refInFor: true,
                   attrs: {
                     "effect-allowed": "move",
                     "drop-effect": "move",
@@ -8973,6 +9004,44 @@ FileListvue_type_template_id_2117e2b1_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=template&id=2117e2b1&
 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/util/scrollTo.js
+
+var scrollTo_maxDuration = 600;
+var scrollTo_minDuration = 250;
+var minHeightForMaxDuration = 2500;
+function scrollTo(context, element, cb) {
+  var startingY = context.scrollTop;
+  var elementY = element.offsetTop;
+  var distance = elementY - startingY;
+  var duration = cacluateDuration(context.scrollHeight, distance);
+  var start;
+
+  function step(timeStamp) {
+    if (!start) {
+      start = timeStamp;
+    }
+
+    var time = timeStamp - start;
+    var nextScroll = easeOutQuad(time, startingY, distance, duration);
+    context.scrollTo(0, nextScroll);
+
+    if (time < duration) {
+      requestAnimationFrame(step);
+    } else {
+      cb && cb();
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+function cacluateDuration(scrollHeight, distance) {
+  var maxHeight = scrollHeight > minHeightForMaxDuration ? minHeightForMaxDuration : scrollHeight;
+  var alteredMaxDuration = scrollTo_maxDuration * Math.min(scrollHeight / minHeightForMaxDuration, 1);
+  distance = Math.abs(distance) > maxHeight ? maxHeight : Math.abs(distance);
+  var percent = Math.min(maxHeight / distance, 1);
+  return (alteredMaxDuration - scrollTo_minDuration) * percent + scrollTo_minDuration;
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/api/media.js
 
 function pickImage(imageId, cb) {
@@ -9246,6 +9315,9 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
 //
 //
 //
+//
+//
+
 
 
 
@@ -9275,7 +9347,7 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       }
     }
   },
-  computed: FileListvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'active', 'folder']), {
+  computed: FileListvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['layout', 'data', 'search', 'layout', 'active', 'folder', 'newUploadIds']), {
     dragOffset: function dragOffset() {
       return 'list' ? 15 : undefined;
     },
@@ -9307,6 +9379,25 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
     })).subscribe(this.unhighlightItems.bind(this));
     bus_EventBus.$on('addFolder', this.newFolder.bind(this));
   },
+  watch: {
+    items: function items() {
+      this.$nextTick(function () {
+        var _this = this;
+
+        if (this.newUploadIds.length) {
+          var element = this.$refs["item-".concat(this.newUploadIds[0])];
+
+          if (element.length) {
+            element = element && element[0] && element[0].$el;
+            var container = element.closest('.vb-content');
+            scrollTo(container, element, function () {
+              _this.$store.dispatch('clearNewUploadIDs');
+            });
+          }
+        }
+      });
+    }
+  },
   methods: {
     folderSelected: function folderSelected(folder) {
       this.$store.dispatch('folderSelected', {
@@ -9314,18 +9405,18 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       });
     },
     editItem: function editItem(item) {
-      var _this = this;
+      var _this2 = this;
 
       if (this.$store.state.isPicker) {
         pickImage(item.item.id, function (mediaObj) {
-          _this.$root.$emit('pick', mediaObj);
+          _this2.$root.$emit('pick', mediaObj);
         });
       } else {
         this.$store.dispatch('editItem', item);
       }
     },
     highlightItem: function highlightItem(evt, item) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!evt.ctrlKey && !evt.shiftKey) {
         this.unhighlightItems();
@@ -9336,7 +9427,7 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       if (evt.shiftKey && ~this.lastHighlightIndex) {
         var currentIndex = item.index;
         this.combinedItems.forEach(function (item, index) {
-          item.highlight = index >= _this2.lastHighlightIndex && index <= currentIndex;
+          item.highlight = index >= _this3.lastHighlightIndex && index <= currentIndex;
         });
       }
 
@@ -9396,7 +9487,12 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       folder.editing = true;
       folder.originalName = folder.name;
       this.$nextTick(function () {
-        this.$refs["folderEdit-".concat(folder.id)][0].focus();
+        var element = this.$refs["folderEdit-".concat(folder.id)];
+        element = this.$refs["folderEdit-".concat(folder.id)] && this.$refs["folderEdit-".concat(folder.id)][0];
+
+        if (element) {
+          element.focus();
+        }
       });
     },
     comfirmEditFolder: function comfirmEditFolder(folder) {
@@ -9409,11 +9505,21 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
     newFolder: function newFolder() {
       this.editingNewFolder = true;
       this.$nextTick(function () {
-        this.$refs['newFolder'].focus();
+        var element = this.$refs['newFolder'];
+
+        if (!element) {
+          return;
+        }
+
+        var container = element.closest('.vb-content');
+        scrollTo(container, element, function () {
+          element.focus();
+        });
       });
     },
     comfirmNewFolder: function comfirmNewFolder() {
       this.editingNewFolder = false;
+      this.newFolderName = '';
       this.$store.dispatch('createFolder', {
         name: this.newFolderName,
         parent: this.active
@@ -9466,6 +9572,8 @@ function SearchResultsvue_type_script_lang_js_defineProperty(obj, key, value) { 
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ var SearchResultsvue_type_script_lang_js_ = ({
@@ -9504,71 +9612,91 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-media-library__directory-view" }, [
-    _vm.active.isSet()
-      ? _c(
-          "div",
-          { staticClass: "c-media-library__breadcrumbs" },
-          _vm._l(_vm.active.breadcrumbs(), function(folder) {
-            return _c(
-              "button",
-              {
-                key: folder.id,
-                on: {
-                  click: function($event) {
-                    _vm.folderSelected(folder)
-                  }
-                }
-              },
-              [_vm._v("\n            " + _vm._s(folder.name) + "\n        ")]
+  return _c(
+    "div",
+    {
+      directives: [{ name: "bar", rawName: "v-bar" }],
+      staticClass: "c-media-library__directory-view"
+    },
+    [
+      _c("div", [
+        _vm.active.isSet()
+          ? _c(
+              "div",
+              { staticClass: "c-media-library__breadcrumbs" },
+              _vm._l(_vm.active.breadcrumbs(), function(folder) {
+                return _c(
+                  "button",
+                  {
+                    key: folder.id,
+                    on: {
+                      click: function($event) {
+                        _vm.folderSelected(folder)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(folder.name) +
+                        "\n            "
+                    )
+                  ]
+                )
+              })
             )
-          })
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "c-media-library__grid-wrap" },
-      [
-        _vm.active.hasContent()
-          ? _c("file-list", {
-              attrs: { items: _vm.active.items, folders: _vm.active.children }
-            })
-          : _c("h3", [_vm._v("No content")]),
+          : _vm._e(),
         _vm._v(" "),
         _c(
-          "drop",
-          {
-            on: {
-              dragover: _vm.dragOver,
-              dragleave: _vm.dragLeave,
-              drop: function($event) {
-                _vm.handleDrop.apply(void 0, arguments)
-              },
-              dragend: _vm.dragLeave
-            }
-          },
+          "div",
+          { staticClass: "c-media-library__grid-wrap" },
           [
+            _vm.active.hasContent()
+              ? _c("file-list", {
+                  attrs: {
+                    items: _vm.active.items,
+                    folders: _vm.active.children
+                  }
+                })
+              : _c("h3", [_vm._v("No content")]),
+            _vm._v(" "),
             _c(
-              "div",
+              "drop",
               {
-                staticClass: "c-media-library__delete",
-                class: { "is-dragged-over": _vm.deleteHover }
+                on: {
+                  dragover: _vm.dragOver,
+                  dragleave: _vm.dragLeave,
+                  drop: function($event) {
+                    _vm.handleDrop.apply(void 0, arguments)
+                  },
+                  dragend: _vm.dragLeave
+                }
               },
               [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#delete" }
-                  })
-                ])
+                _c(
+                  "div",
+                  {
+                    staticClass: "c-media-library__delete",
+                    class: { "is-dragged-over": _vm.deleteHover }
+                  },
+                  [
+                    _c("svg", [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href": "/argon/images/svgicons.svg#delete"
+                        }
+                      })
+                    ])
+                  ]
+                )
               ]
             )
-          ]
+          ],
+          1
         )
-      ],
-      1
-    )
-  ])
+      ])
+    ]
+  )
 }
 var DirectoryViewvue_type_template_id_6b3caa6a_staticRenderFns = []
 DirectoryViewvue_type_template_id_6b3caa6a_render._withStripped = true
@@ -9581,6 +9709,8 @@ function DirectoryViewvue_type_script_lang_js_objectSpread(target) { for (var i 
 
 function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -9952,20 +10082,29 @@ var RecentUploadsvue_type_template_id_d47bed60_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "c-media-library__directory-view" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "c-media-library__grid-wrap" },
-      [
-        _vm.recentUploads.items.length
-          ? _c("file-list", { attrs: { items: _vm.recentUploads.items } })
-          : _c("h3", [_vm._v("No content")])
-      ],
-      1
-    )
-  ])
+  return _c(
+    "div",
+    {
+      directives: [{ name: "bar", rawName: "v-bar" }],
+      staticClass: "c-media-library__directory-view"
+    },
+    [
+      _c("div", [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "c-media-library__grid-wrap" },
+          [
+            _vm.recentUploads.items.length
+              ? _c("file-list", { attrs: { items: _vm.recentUploads.items } })
+              : _c("h3", [_vm._v("No content")])
+          ],
+          1
+        )
+      ])
+    ]
+  )
 }
 var RecentUploadsvue_type_template_id_d47bed60_staticRenderFns = [
   function() {
@@ -9987,6 +10126,8 @@ function RecentUploadsvue_type_script_lang_js_objectSpread(target) { for (var i 
 
 function RecentUploadsvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
 //
 //
 //
@@ -10670,6 +10811,14 @@ function () {
   return Upload;
 }();
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/store/store.js
+function store_toConsumableArray(arr) { return store_arrayWithoutHoles(arr) || store_iterableToArray(arr) || store_nonIterableSpread(); }
+
+function store_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function store_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function store_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function store_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { store_defineProperty(target, key, source[key]); }); } return target; }
 
 function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -10698,7 +10847,8 @@ vue_default.a.use(vuex_esm["default"]);
     recentUploads: {
       show: false,
       items: []
-    }
+    },
+    newUploadIds: []
   },
   mutations: {
     loadFolders: function loadFolders(state, _ref) {
@@ -10863,6 +11013,12 @@ vue_default.a.use(vuex_esm["default"]);
         return;
       }
 
+      var newFileIds = payload.successful.reduce(function (acc, el) {
+        var newFileIDs = el.response.body.fileIDs;
+        acc = store_toConsumableArray(acc).concat(store_toConsumableArray(newFileIDs));
+        return acc;
+      }, []);
+      state.newUploadIds = newFileIds;
       getFolders(state.active.id, function (f) {
         state.active.setItems(f.items);
       });
@@ -10888,6 +11044,9 @@ vue_default.a.use(vuex_esm["default"]);
         type: 'success',
         timeout: 3500
       }).show();
+    },
+    clearNewUploadIDs: function clearNewUploadIDs(state) {
+      state.newUploadIds = [];
     },
     removeItem: function removeItem(state, item) {
       media_removeItem(item.item.id, function (r) {
@@ -11087,6 +11246,10 @@ vue_default.a.use(vuex_esm["default"]);
     remove: function remove(_ref19, payload) {
       var commit = _ref19.commit;
       commit('remove', payload);
+    },
+    clearNewUploadIDs: function clearNewUploadIDs(_ref20) {
+      var commit = _ref20.commit;
+      commit('clearNewUploadIDs');
     }
   }
 }));
@@ -14586,4 +14749,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.94d60c4e31e922ff8b35.js.map
+//# sourceMappingURL=main.a255177dd68005320764.js.map

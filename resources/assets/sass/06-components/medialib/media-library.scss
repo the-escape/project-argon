@@ -69,7 +69,8 @@
             height: 40px;
             color: $grey;
             pointer-events: none;
-            transition: opacity $userInactive $easeOut;
+            transition: opacity $userInactive $easeOut,
+                color $userInactive $easeOut;
 
             svg {
                 width: 100%;
@@ -79,6 +80,11 @@
 
         &.hide-icon &-icon {
             opacity: 0;
+        }
+
+        &:hover &-icon {
+            color: $primary;
+            color: var(--primary-color);
         }
 
         input {
@@ -102,10 +108,12 @@
 
     &__directory-tree {
         position: relative;
-        overflow: auto;
         flex: 1 1 $col-3;
         width: $col-3;
         border-right: 1px solid $secondary;
+    }
+
+    &__directory-tree &__scroller {
         padding: 10px;
     }
 
@@ -252,7 +260,7 @@
     &__delete {
         position: absolute;
         bottom: 15px;
-        right: 15px;
+        right: 25px;
         width: 48px;
         height: 48px;
         border-radius: 50%;

@@ -8,6 +8,7 @@
                 @dragend="dragLeave(folderItem)"
                 v-if="!folderItem.hide"
                 :key="folderItem.id"
+                :ref="`folder-${folderItem.id}`"
             >
                 <drag
                     effect-allowed="move"
@@ -82,7 +83,7 @@
             </drop>
         </template>
 
-        <div class="c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder" :class="{ 'is-editing': editingNewFolder }">
+        <div class="c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder" ref="newFolder" :class="{ 'is-editing': editingNewFolder }">
             <button
                 class="c-file-list__btn"
                 @click="newFolder"
@@ -130,6 +131,7 @@
                 :image-x-offset="dragOffset"
                 :image-y-offset="dragOffset"
                 v-if="!item.hide"
+                :ref="`item-${item.item.id}`"
             >
                 <div slot="image" class="c-file-list__drag-view">
                     <div class="c-file-list__image">
@@ -169,6 +171,7 @@
     import { mapState } from 'vuex'
     import { Drag, Drop } from 'vue-drag-drop'
     import { EventBus } from '../util/bus'
+    import { scrollTo } from '../util/scrollTo'
 
     import { pickImage } from '../api/media'
 
@@ -202,7 +205,8 @@
                 'search',
                 'layout',
                 'active',
-                'folder'
+                'folder',
+                'newUploadIds'
             ]),
             dragOffset: function (){
                 return 'list' ? 15 : 65
@@ -235,6 +239,22 @@
                 .subscribe(this.unhighlightItems.bind(this))
 
             EventBus.$on('addFolder', this.newFolder.bind(this))
+        },
+        watch: {
+            items: function () {
+                this.$nextTick(function () {
+                    if(this.newUploadIds.length){
+                        let element = this.$refs[`item-${this.newUploadIds[0]}`]
+                        if(element.length){
+                            element = element && element[0] && element[0].$el
+                            const container = element.closest('.vb-content')
+                            scrollTo(container, element, () => {
+                                this.$store.dispatch('clearNewUploadIDs')
+                            })
+                        }
+                    }
+                })
+            }
         },
         methods: {
             folderSelected(folder) {
@@ -313,7 +333,11 @@
                 folder.originalName = folder.name
 
                 this.$nextTick(function() {
-                    this.$refs[`folderEdit-${folder.id}`][0].focus()
+                    let element = this.$refs[`folderEdit-${folder.id}`]
+                    element = this.$refs[`folderEdit-${folder.id}`] && this.$refs[`folderEdit-${folder.id}`][0]
+                    if(element){
+                        element.focus()
+                    }
                 })
             },
             comfirmEditFolder (folder) {
@@ -327,11 +351,19 @@
                 this.editingNewFolder = true
 
                 this.$nextTick(function() {
-                    this.$refs['newFolder'].focus()
+                    const element = this.$refs['newFolder']
+                    if(!element){
+                        return
+                    }
+                    const container = element.closest('.vb-content')
+                    scrollTo(container, element, () => {
+                        element.focus()
+                    })
                 })
             },
             comfirmNewFolder () {
                 this.editingNewFolder = false
+                this.newFolderName = ''
                 this.$store.dispatch('createFolder', { name: this.newFolderName, parent: this.active })
             },
             closeNewFolder () {

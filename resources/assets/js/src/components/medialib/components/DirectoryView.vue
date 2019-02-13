@@ -1,26 +1,28 @@
 <template>
-    <div class="c-media-library__directory-view">
-        <div class="c-media-library__breadcrumbs" v-if="active.isSet()">
-            <button v-for="folder of active.breadcrumbs()" :key="folder.id" @click="folderSelected(folder)">
-                {{ folder.name }}
-            </button>
-        </div>
+    <div class="c-media-library__directory-view" v-bar>
+        <div>
+            <div class="c-media-library__breadcrumbs" v-if="active.isSet()">
+                <button v-for="folder of active.breadcrumbs()" :key="folder.id" @click="folderSelected(folder)">
+                    {{ folder.name }}
+                </button>
+            </div>
 
-        <div class="c-media-library__grid-wrap">
-            <file-list v-bind:items="active.items" v-bind:folders="active.children" v-if="active.hasContent()" />
-            <h3 v-else>No content</h3>
-            <drop
-                @dragover="dragOver"
-                @dragleave="dragLeave"
-                @drop="handleDrop(...arguments)"
-                @dragend="dragLeave"
-            >
-                <div class="c-media-library__delete" :class="{ 'is-dragged-over': deleteHover }">
-                    <svg>
-                        <use xlink:href="/argon/images/svgicons.svg#delete"></use>
-                    </svg>
-                </div>
-            </drop>
+            <div class="c-media-library__grid-wrap">
+                <file-list v-bind:items="active.items" v-bind:folders="active.children" v-if="active.hasContent()" />
+                <h3 v-else>No content</h3>
+                <drop
+                    @dragover="dragOver"
+                    @dragleave="dragLeave"
+                    @drop="handleDrop(...arguments)"
+                    @dragend="dragLeave"
+                >
+                    <div class="c-media-library__delete" :class="{ 'is-dragged-over': deleteHover }">
+                        <svg>
+                            <use xlink:href="/argon/images/svgicons.svg#delete"></use>
+                        </svg>
+                    </div>
+                </drop>
+            </div>
         </div>
     </div>
 </template>

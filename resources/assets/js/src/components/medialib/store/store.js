@@ -35,7 +35,8 @@ export default new Vuex.Store({
         recentUploads: {
             show: false,
             items: []
-        }
+        },
+        newUploadIds: []
     },
     mutations: {
         loadFolders: (state, { folder, pushState }) => {
@@ -223,6 +224,13 @@ export default new Vuex.Store({
                 return
             }
 
+            const newFileIds = payload.successful.reduce((acc, el) => {
+                const newFileIDs = el.response.body.fileIDs
+                acc = [...acc, ...newFileIDs]
+                return acc
+            }, [])
+            state.newUploadIds = newFileIds
+
             getFolders(state.active.id, function (f) {
                 state.active.setItems(f.items)
             })
@@ -248,6 +256,9 @@ export default new Vuex.Store({
                 type: 'success',
                 timeout: 3500
             }).show()
+        },
+        clearNewUploadIDs (state) {
+            state.newUploadIds = []
         },
         removeItem: (state, item) => {
             removeItem(item.item.id, function (r) {
@@ -418,6 +429,9 @@ export default new Vuex.Store({
         },
         remove ({ commit }, payload) {
             commit('remove', payload)
+        },
+        clearNewUploadIDs ({ commit }) {
+            commit('clearNewUploadIDs')
         }
     }
 })
