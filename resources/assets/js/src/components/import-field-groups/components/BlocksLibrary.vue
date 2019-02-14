@@ -49,9 +49,6 @@
                 'blocks',
                 'block'
             ])
-//            blocks: function() {
-//                return this.$store.state.blocks
-//            }
         }
     }
 </script>

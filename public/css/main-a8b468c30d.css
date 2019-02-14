@@ -9419,7 +9419,7 @@ button.uppy-DashboardItem-progressIndicator {
   position: absolute;
   bottom: 25px;
   right: 40px;
-  z-index: 19;
+  z-index: 21;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -9462,9 +9462,8 @@ button.uppy-DashboardItem-progressIndicator {
       color: #f0f0f0;
       background-color: #12a3c7;
       background-color: var(--primary-color); }
-  .c-library-tools__delete {
-    margin-left: 10px; }
-  .c-library-tools__close {
+  .c-library-tools__delete, .c-library-tools__close {
+    margin-left: 10px;
     margin-right: 0; }
   .c-library-tools__toggle {
     padding: 3px 8px;
@@ -9488,12 +9487,12 @@ button.uppy-DashboardItem-progressIndicator {
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 18; }
+      z-index: 20; }
   .c-json-editor__editor-tools {
     position: absolute;
     top: 25px;
     right: 40px;
-    z-index: 19; }
+    z-index: 21; }
     .c-json-editor__editor-tools > * {
       background-color: white;
       padding: 7px 8px;
@@ -9523,7 +9522,7 @@ button.uppy-DashboardItem-progressIndicator {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    z-index: 21;
+    z-index: 22;
     display: none; }
     .c-json-editor__loading-overlay.show {
       display: -webkit-box;
@@ -10586,4 +10585,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-9efa3b69be.css.map
+//# sourceMappingURL=main-a8b468c30d.css.map

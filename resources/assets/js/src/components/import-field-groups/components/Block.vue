@@ -7,43 +7,17 @@
 
 <script>
     import Vue from 'vue'
-    import { mapState } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
 
     export default {
         name: 'Block',
         props: ['block'],
         methods: {
+            ...mapMutations([
+                'getBlockFromLibrary'
+            ]),
             getBlock: function() {
-                this.$store.commit('showLoading', true)
-
-                if (this.block.isLocal) {
-                    const url = '/admin/types/' + encodeURIComponent(this.block.type) + '/groups/' + encodeURIComponent(this.block.id) + '/export'
-
-                    fetchBlock(url).then(response => {
-                        this.$store.commit('setContent', {
-                            json: JSON.stringify(response.body, null, 4),
-                            blade: '',
-                            mapper: ''
-                        })
-                        this.$store.commit('setSelectedBlock', null)
-                        this.$store.commit('showLoading', false)
-                    })
-
-                } else {
-                    const url = '/admin/blockslibrary/' + encodeURIComponent(this.block.id)
-
-                    fetchBlock(url).then(response => {
-                        const content = {
-                            json: JSON.stringify(response.body.json, null, 4),
-                            mapper: response.body.mappers,
-                            blade: response.body.blade
-                        }
-
-                        this.$store.commit('setContent', content)
-                        this.$store.commit('setSelectedBlock', response.body)
-                        this.$store.commit('showLoading', false)
-                    })
-                }
+                this.getBlockFromLibrary(this.block)
             }
         },
         computed: {
@@ -57,14 +31,6 @@
                 return 'background-image: url(' + this.block.image + ')'
             }
         }
-    }
-
-    function fetchBlock (url) {
-        return Vue.http.get(url, {
-                params: {
-                    json: true
-                }
-            })
     }
 </script>
 

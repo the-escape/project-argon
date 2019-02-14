@@ -2,7 +2,7 @@
 	position: absolute;
 	bottom: 25px;
 	right: 40px;
-	z-index: 19;
+	z-index: 21;
 	display: flex;
 	height: 30px;
 
@@ -69,11 +69,9 @@
 		}
 	}
 
-	&__delete {
-		margin-left: 10px;
-	}
-
+	&__delete,
 	&__close {
+		margin-left: 10px;
 		margin-right: 0;
 	}
 

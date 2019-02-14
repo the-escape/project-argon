@@ -16,7 +16,7 @@
 			left: 0;
 			width: 100vw;
 			height: 100vh;
-			z-index: 18;
+			z-index: 20;
 		}
 	}
 
@@ -24,7 +24,7 @@
 		position: absolute;
 		top: 25px;
 		right: 40px;
-		z-index: 19;
+		z-index: 21;
 
 		> *{
 			background-color: white;
@@ -62,7 +62,7 @@
 		background-color: rgba(0,0,0,0.8);
 		align-items: center;
 		justify-content: center;
-		z-index: 21;
+		z-index: 22;
 		display: none;
 
 		&.show{

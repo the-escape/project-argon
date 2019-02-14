@@ -55,8 +55,6 @@
                     })
                 }).reduce((l, n) => l.concat(n), [])
 
-                console.log(blocks)
-
                 return blocks
             }
         }

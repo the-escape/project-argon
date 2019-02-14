@@ -13895,168 +13895,249 @@ var Editorvue_type_template_id_023f68ec_render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "json-editor-wrapper c-json-editor" }, [
-      _c("div", {
-        staticClass:
-          "loading-overlay c-json-editor__loading-overlay js-loading-block",
-        class: { show: _vm.isLoading }
-      }),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "c-library-tools library-tools js-library-tools",
-          class: { show: _vm.selectedBlock }
-        },
-        [
+    _c(
+      "div",
+      {
+        staticClass: "json-editor-wrapper c-json-editor",
+        class: { expanded: _vm.isEditorExpanded }
+      },
+      [
+        _c("div", {
+          staticClass:
+            "loading-overlay c-json-editor__loading-overlay js-loading-block",
+          class: { show: _vm.isLoading }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "editor-tools c-json-editor__editor-tools" }, [
           _c("span", {
-            staticClass:
-              "c-library-tools__button c-library-tools__create create fa fa-plus",
-            on: { click: _vm.createNewBlock }
+            staticClass: "settings fa fa-cog",
+            on: { click: _vm.expandConfig }
           }),
           _vm._v(" "),
           _c("span", {
-            staticClass:
-              "c-library-tools__button c-library-tools__save save fa fa-save"
+            staticClass: "expand fa fa-expand",
+            on: {
+              click: function($event) {
+                _vm.expandEditor(true)
+              }
+            }
           }),
           _vm._v(" "),
-          _c(
-            "span",
-            { staticClass: "c-library-tools__button c-library-tools__input" },
-            [
-              _c("input", {
-                attrs: { type: "text", name: "lib_block_name" },
-                domProps: {
-                  value: _vm.selectedBlock && _vm.selectedBlock.name
-                },
+          _c("span", {
+            staticClass: "collapse fa fa-compress",
+            on: {
+              click: function($event) {
+                _vm.expandEditor(false)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "c-library-tools library-tools js-library-tools",
+            class: { show: _vm.selectedBlock }
+          },
+          [
+            _c("span", {
+              staticClass:
+                "c-library-tools__button c-library-tools__create create fa fa-plus",
+              on: { click: _vm.createNewBlock }
+            }),
+            _vm._v(" "),
+            _c("span", {
+              staticClass:
+                "c-library-tools__button c-library-tools__save save fa fa-save",
+              on: { click: _vm.saveBlock }
+            }),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "c-library-tools__button c-library-tools__input" },
+              [
+                _c("input", {
+                  attrs: {
+                    type: "text",
+                    placeholder: "Block name",
+                    name: "lib_block_name"
+                  },
+                  domProps: {
+                    value: _vm.selectedBlock && _vm.selectedBlock.name
+                  },
+                  on: {
+                    keyup: function($event) {
+                      _vm.updateName($event)
+                    }
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _vm.selectedBlock && _vm.selectedBlock.image
+              ? [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "js-select-image selected",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.unselectImage($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("span", {
+                        staticClass:
+                          "c-library-tools__button c-library-tools__image image fa fa-image"
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticStyle: { display: "none" },
+                        attrs: { type: "file", name: "lib_block_image_tmp" }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        attrs: { type: "hidden", name: "lib_block_image" },
+                        domProps: {
+                          value: _vm.selectedBlock && _vm.selectedBlock.image
+                        }
+                      })
+                    ]
+                  )
+                ]
+              : [
+                  _c("label", { staticClass: "js-select-image" }, [
+                    _c("span", {
+                      staticClass:
+                        "c-library-tools__button c-library-tools__image image fa fa-image"
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticStyle: { display: "none" },
+                      attrs: { type: "file", name: "lib_block_image_tmp" },
+                      on: {
+                        change: function($event) {
+                          _vm.selectImage($event)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      attrs: {
+                        type: "hidden",
+                        name: "lib_block_image",
+                        value: ""
+                      }
+                    })
+                  ])
+                ],
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "c-library-tools__button c-library-tools__toggle toggle toggle-json",
+                class: { active: _vm.editorMode === "json" },
                 on: {
-                  keyup: function($event) {
-                    _vm.updateName($event)
+                  click: function($event) {
+                    _vm.changeMode("json")
                   }
                 }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "js-select-image",
-              class: { selected: _vm.selectedBlock && _vm.selectedBlock.image }
-            },
-            [
-              _c("span", {
+              },
+              [_vm._v("json")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
                 staticClass:
-                  "c-library-tools__button c-library-tools__image image fa fa-image"
-              }),
-              _vm._v(" "),
-              _c("input", {
-                staticStyle: { display: "none" },
-                attrs: { type: "file", name: "lib_block_image_tmp" }
-              }),
-              _vm._v(" "),
-              _c("input", {
-                attrs: { type: "hidden", name: "lib_block_image" }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass:
-                "c-library-tools__button c-library-tools__toggle toggle toggle-json",
-              class: { active: _vm.editorMode === "json" },
-              on: {
-                click: function($event) {
-                  _vm.changeMode("json")
+                  "c-library-tools__button c-library-tools__toggle toggle toggle-blade",
+                class: { active: _vm.editorMode === "blade" },
+                on: {
+                  click: function($event) {
+                    _vm.changeMode("blade")
+                  }
                 }
-              }
-            },
-            [_vm._v("json")]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass:
-                "c-library-tools__button c-library-tools__toggle toggle toggle-blade",
-              class: { active: _vm.editorMode === "blade" },
-              on: {
-                click: function($event) {
-                  _vm.changeMode("blade")
+              },
+              [_vm._v("blade")]
+            ),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass:
+                  "c-library-tools__button c-library-tools__toggle toggle toggle-mappers",
+                class: { active: _vm.editorMode === "mappers" },
+                on: {
+                  click: function($event) {
+                    _vm.changeMode("mappers")
+                  }
                 }
-              }
-            },
-            [_vm._v("blade")]
-          ),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
+              },
+              [_vm._v("php")]
+            ),
+            _vm._v(" "),
+            _vm.selectedBlock && _vm.selectedBlock.id
+              ? [
+                  _c("span", {
+                    staticClass:
+                      "c-library-tools__button c-library-tools__delete delete fa fa-trash",
+                    on: { click: _vm.deleteBlock }
+                  })
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _c("span", {
               staticClass:
-                "c-library-tools__button c-library-tools__toggle toggle toggle-mappers",
-              class: { active: _vm.editorMode === "mapper" },
-              on: {
-                click: function($event) {
-                  _vm.changeMode("mapper")
-                }
-              }
-            },
-            [_vm._v("php")]
-          ),
-          _vm._v(" "),
-          _c("span", {
-            staticClass:
-              "c-library-tools__button c-library-tools__delete delete fa fa-trash"
-          }),
-          _vm._v(" "),
-          _c("span", {
-            staticClass:
-              "c-library-tools__button c-library-tools__close  js-library-close-block fa fa-close",
-            on: { click: _vm.unselectBlock }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "textarea",
-        {
-          staticClass: "form-control hidden js-block-lib-data",
-          attrs: { id: "json-textarea", name: "json" }
-        },
-        [_vm._v(_vm._s(_vm.contentJson))]
-      ),
-      _vm._v(" "),
-      _c(
-        "textarea",
-        {
-          staticClass: "form-control hidden js-block-lib-data",
-          attrs: { id: "blade-textarea", name: "blade" }
-        },
-        [_vm._v(_vm._s(_vm.contentBlade))]
-      ),
-      _vm._v(" "),
-      _c(
-        "textarea",
-        {
-          staticClass: "form-control hidden js-block-lib-data",
-          attrs: { id: "mappers-textarea", name: "mappers" }
-        },
-        [_vm._v(_vm._s(_vm.contentMapper))]
-      ),
-      _vm._v(" "),
-      _c("div", {
-        staticClass: "c-json-editor__editor",
-        attrs: { id: "json-editor" }
-      })
-    ]),
+                "c-library-tools__button c-library-tools__close  js-library-close-block fa fa-close",
+              on: { click: _vm.unselectBlock }
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "textarea",
+          {
+            staticClass: "form-control hidden js-block-lib-data",
+            attrs: { id: "json-textarea", name: "json" }
+          },
+          [_vm._v(_vm._s(_vm.contentJson))]
+        ),
+        _vm._v(" "),
+        _c(
+          "textarea",
+          {
+            staticClass: "form-control hidden js-block-lib-data",
+            attrs: { id: "blade-textarea", name: "blade" }
+          },
+          [_vm._v(_vm._s(_vm.contentBlade))]
+        ),
+        _vm._v(" "),
+        _c(
+          "textarea",
+          {
+            staticClass: "form-control hidden js-block-lib-data",
+            attrs: { id: "mappers-textarea", name: "mappers" }
+          },
+          [_vm._v(_vm._s(_vm.contentMappers))]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "c-json-editor__editor",
+          attrs: { id: "json-editor" }
+        })
+      ]
+    ),
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "c-blocks-library__settings-wrapper js-settings-wrapper" },
+      {
+        staticClass: "c-blocks-library__settings-wrapper js-settings-wrapper",
+        class: { expanded: _vm.isConfigExpanded }
+      },
       [
         _c("div", { staticClass: "o-form__group" }, [
           _c("div", { staticClass: "o-form-status" }, [
@@ -14096,29 +14177,13 @@ var Editorvue_type_template_id_023f68ec_render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _vm._m(0)
         ])
       ]
     )
   ])
 }
 var Editorvue_type_template_id_023f68ec_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "editor-tools c-json-editor__editor-tools" },
-      [
-        _c("span", { staticClass: "settings fa fa-cog" }),
-        _vm._v(" "),
-        _c("span", { staticClass: "expand fa fa-expand" }),
-        _vm._v(" "),
-        _c("span", { staticClass: "collapse fa fa-compress" })
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -14203,6 +14268,19 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ var Editorvue_type_script_lang_js_ = ({
   name: 'Editor',
@@ -14218,13 +14296,13 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
     this.modes.json = ace.require("ace/mode/json").Mode;
     this.modes.php = ace.require("ace/mode/php").Mode;
     this.editor.getSession().on('change', this.changeContent);
-    this.changeMode('json'); // todo event handler blur forom editor -> this.changeContent()
+    this.changeMode('json');
   },
   methods: {
     setMode: function setMode() {
-      if (this.editorMode === 'mapper') {
+      if (this.editorMode === 'mappers') {
         this.editor.session.setMode(new this.modes.php());
-        this.editor.getSession().setValue(this.editorContent.mapper);
+        this.editor.getSession().setValue(this.editorContent.mappers);
       } else if (this.editorMode === 'blade') {
         this.editor.session.setMode(new this.modes.php());
         this.editor.getSession().setValue(this.editorContent.blade);
@@ -14244,8 +14322,8 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
           this.$store.commit('setContentBlade', newContent);
           break;
 
-        case 'mapper':
-          this.$store.commit('setContentMapper', newContent);
+        case 'mappers':
+          this.$store.commit('setContentMappers', newContent);
           break;
 
         case 'json':
@@ -14254,15 +14332,42 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
           break;
       }
     },
+    expandEditor: function expandEditor(bool) {
+      this.$store.commit('expandEditor', bool);
+    },
+    expandConfig: function expandConfig(bool) {
+      this.$store.commit('expandConfig', !this.isConfigExpanded);
+    },
     updateName: function updateName(evt) {
       this.$store.commit('setBlockName', evt.target.value);
     },
     createNewBlock: function createNewBlock() {
       this.$store.commit('createNewBlock');
     },
+    saveBlock: function saveBlock() {
+      this.$store.commit('saveBlockToLibrary');
+    },
+    deleteBlock: function deleteBlock() {
+      this.$store.commit('deleteBlockFromLibrary');
+    },
     unselectBlock: function unselectBlock() {
       this.changeMode('json');
       this.$store.commit('setSelectedBlock', null);
+    },
+    unselectImage: function unselectImage() {
+      this.$store.commit('setBlockImage', '');
+    },
+    selectImage: function selectImage(evt) {
+      var _this = this;
+
+      var file = evt.target.files[0];
+      var reader = new FileReader();
+
+      reader.onloadend = function () {
+        _this.$store.commit('setBlockImage', reader.result);
+      };
+
+      reader.readAsDataURL(file);
     }
   },
   watch: {
@@ -14277,7 +14382,9 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
     editorMode: 'editorMode',
     editorContent: 'content',
     selectedBlock: 'block',
-    isLoading: 'isLoading'
+    isLoading: 'isLoading',
+    isEditorExpanded: 'isEditorExpanded',
+    isConfigExpanded: 'isConfigExpanded'
   }), {
     contentJson: function contentJson() {
       return this.$store.state.content.json;
@@ -14285,8 +14392,8 @@ function Editorvue_type_script_lang_js_defineProperty(obj, key, value) { if (key
     contentBlade: function contentBlade() {
       return this.$store.state.content.blade;
     },
-    contentMapper: function contentMapper() {
-      return this.$store.state.content.mapper;
+    contentMappers: function contentMappers() {
+      return this.$store.state.content.mappers;
     }
   })
 });
@@ -14447,44 +14554,11 @@ function Blockvue_type_script_lang_js_defineProperty(obj, key, value) { if (key 
 /* harmony default export */ var import_field_groups_components_Blockvue_type_script_lang_js_ = ({
   name: 'Block',
   props: ['block'],
-  methods: {
+  methods: Blockvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapMutations"])(['getBlockFromLibrary']), {
     getBlock: function getBlock() {
-      var _this = this;
-
-      this.$store.commit('showLoading', true);
-
-      if (this.block.isLocal) {
-        var url = '/admin/types/' + encodeURIComponent(this.block.type) + '/groups/' + encodeURIComponent(this.block.id) + '/export';
-        fetchBlock(url).then(function (response) {
-          _this.$store.commit('setContent', {
-            json: JSON.stringify(response.body, null, 4),
-            blade: '',
-            mapper: ''
-          });
-
-          _this.$store.commit('setSelectedBlock', null);
-
-          _this.$store.commit('showLoading', false);
-        });
-      } else {
-        var _url = '/admin/blockslibrary/' + encodeURIComponent(this.block.id);
-
-        fetchBlock(_url).then(function (response) {
-          var content = {
-            json: JSON.stringify(response.body.json, null, 4),
-            mapper: response.body.mappers,
-            blade: response.body.blade
-          };
-
-          _this.$store.commit('setContent', content);
-
-          _this.$store.commit('setSelectedBlock', response.body);
-
-          _this.$store.commit('showLoading', false);
-        });
-      }
+      this.getBlockFromLibrary(this.block);
     }
-  },
+  }),
   computed: Blockvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])({
     selectedBlock: 'block'
   }), {
@@ -14496,14 +14570,6 @@ function Blockvue_type_script_lang_js_defineProperty(obj, key, value) { if (key 
     }
   })
 });
-
-function fetchBlock(url) {
-  return vue_default.a.http.get(url, {
-    params: {
-      json: true
-    }
-  });
-}
 // CONCATENATED MODULE: ./resources/assets/js/src/components/import-field-groups/components/Block.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_import_field_groups_components_Blockvue_type_script_lang_js_ = (import_field_groups_components_Blockvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/import-field-groups/components/Block.vue
@@ -14730,7 +14796,6 @@ LocalBlocksvue_type_template_id_11c90404_render._withStripped = true
       }).reduce(function (l, n) {
         return l.concat(n);
       }, []);
-      console.log(blocks);
       return blocks;
     }
   }
@@ -14838,9 +14903,19 @@ if (false) { var import_field_groups_App_api; }
 import_field_groups_App_component.options.__file = "resources/assets/js/src/components/import-field-groups/App.vue"
 /* harmony default export */ var import_field_groups_App = (import_field_groups_App_component.exports);
 // CONCATENATED MODULE: ./resources/assets/js/src/components/import-field-groups/store/index.js
+function store_toConsumableArray(arr) { return store_arrayWithoutHoles(arr) || store_iterableToArray(arr) || store_nonIterableSpread(); }
+
+function store_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function store_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function store_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function import_field_groups_store_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { import_field_groups_store_defineProperty(target, key, source[key]); }); } return target; }
 
 function import_field_groups_store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 function import_field_groups_store_getStore() {
@@ -14853,9 +14928,11 @@ function import_field_groups_store_getStore() {
       content: {
         json: '',
         blade: '',
-        mapper: ''
+        mappers: ''
       },
       isLoading: false,
+      isEditorExpanded: false,
+      isConfigExpanded: false,
       block: null
     },
     getters: {},
@@ -14885,8 +14962,8 @@ function import_field_groups_store_getStore() {
       setContentBlade: function setContentBlade(state, blade) {
         state.content.blade = blade;
       },
-      setContentMapper: function setContentMapper(state, mapper) {
-        state.content.mapper = mapper;
+      setContentMappers: function setContentMappers(state, mappers) {
+        state.content.mappers = mappers;
       },
       setSelectedBlock: function setSelectedBlock(state, block) {
         state.block = block;
@@ -14894,8 +14971,17 @@ function import_field_groups_store_getStore() {
       showLoading: function showLoading(state, bool) {
         state.isLoading = bool;
       },
+      expandEditor: function expandEditor(state, bool) {
+        state.isEditorExpanded = bool;
+      },
+      expandConfig: function expandConfig(state, bool) {
+        state.isConfigExpanded = bool;
+      },
       setBlockName: function setBlockName(state, name) {
         state.block.name = name;
+      },
+      setBlockImage: function setBlockImage(state, image) {
+        state.block.image = image;
       },
       createNewBlock: function createNewBlock(state) {
         state.block = import_field_groups_store_objectSpread({
@@ -14903,6 +14989,121 @@ function import_field_groups_store_getStore() {
           name: null,
           image: null
         }, state.content);
+      },
+      addBlockToLibraryPanel: function addBlockToLibraryPanel(state) {
+        state.blocks.push(state.block);
+      },
+      saveBlockToLibrary: function saveBlockToLibrary(state) {
+        var url = '/admin/blockslibrary';
+
+        if (!state.block.name) {
+          new noty_default.a({
+            text: "Please provide block name",
+            type: 'error',
+            timeout: 3500
+          }).show();
+          return;
+        }
+
+        if (!state.content.json) {
+          new noty_default.a({
+            text: "Please provide json schema",
+            type: 'error',
+            timeout: 3500
+          }).show();
+          return;
+        }
+
+        if (state.block.id) {
+          url += '/' + state.block.id;
+        }
+
+        state.block.json = state.content.json;
+        state.block.blade = state.content.blade;
+        state.block.mappers = state.content.mappers;
+        vue_default.a.http.post(url, state.block).then(function (response) {
+          if (response.body && response.body.success) {
+            if (response.body.block && response.body.block.id) {
+              state.block.id = response.body.block.id;
+              state.blocks = [state.block].concat(store_toConsumableArray(state.blocks));
+              new noty_default.a({
+                text: "Block has been saved in the Blocks Library",
+                type: 'success',
+                timeout: 3500
+              }).show();
+            } else {
+              state.blocks = state.blocks.map(function (block) {
+                if (block.id !== state.block.id) {
+                  return block;
+                }
+
+                return import_field_groups_store_objectSpread({}, state.block);
+              });
+              new noty_default.a({
+                text: "Changes to the block have been saved",
+                type: 'success',
+                timeout: 3500
+              }).show();
+            }
+          } else {
+            new noty_default.a({
+              text: "There was an error while saving the block",
+              type: 'error',
+              timeout: 3500
+            }).show();
+          }
+        });
+      },
+      deleteBlockFromLibrary: function deleteBlockFromLibrary(state) {
+        var url = '/admin/blockslibrary/delete/' + state.block.id;
+        vue_default.a.http.post(url).then(function (response) {
+          if (response.body && response.body.success) {
+            state.blocks = state.blocks.filter(function (block) {
+              return block.id !== state.block.id;
+            });
+            state.block = null;
+            state.editorMode = 'json';
+            new noty_default.a({
+              text: "Block has been removed from the Blocks Library",
+              type: 'success',
+              timeout: 3500
+            }).show();
+          }
+        });
+      },
+      getBlockFromLibrary: function getBlockFromLibrary(state, block) {
+        state.isLoading = true;
+
+        if (block.isLocal) {
+          var url = '/admin/types/' + encodeURIComponent(block.type) + '/groups/' + encodeURIComponent(block.id) + '/export';
+          vue_default.a.http.get(url, {
+            params: {
+              json: true
+            }
+          }).then(function (response) {
+            state.content = {
+              json: JSON.stringify(response.body, null, 4),
+              blade: '',
+              mappers: ''
+            };
+            state.block = null;
+            state.isLoading = false;
+          });
+        } else {
+          var _url = '/admin/blockslibrary/' + encodeURIComponent(block.id);
+
+          vue_default.a.http.get(_url).then(function (response) {
+            var content = {
+              json: JSON.stringify(response.body.json, null, 4),
+              mappers: response.body.mappers,
+              blade: response.body.blade
+            };
+            state.content = content;
+            state.editorMode = 'json';
+            state.block = response.body;
+            state.isLoading = false;
+          });
+        }
       }
     }
   });
@@ -15149,4 +15350,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.ba2bd90d9cbca4d7071a.js.map
+//# sourceMappingURL=main.bdac9c13e4aedd37b875.js.map
