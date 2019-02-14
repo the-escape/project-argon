@@ -1,12 +1,12 @@
 <template>
     <div class="c-media-library__header">
         <div class="c-media-library__button-group">
-            <button class="c-media-library__btn" @click="back">
+            <button class="c-media-library__btn" @click="back" data-balloon="Back">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#arrow-left"></use>
                 </svg>
             </button>
-            <button class="c-media-library__btn" @click="forwards">
+            <button class="c-media-library__btn" @click="forwards" data-balloon="Forwards">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#arrow-right"></use>
                 </svg>
@@ -14,12 +14,12 @@
         </div>
 
         <div class="c-media-library__button-group">
-            <button class="c-media-library__btn" :class="{ 'is-active': layout === 'tiles' }" @click="setLayout('tiles')">
+            <button class="c-media-library__btn" :class="{ 'is-active': layout === 'tiles' }" data-balloon="Tile View" @click="setLayout('tiles')">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#blocks"></use>
                 </svg>
             </button>
-            <button class="c-media-library__btn" :class="{ 'is-active': layout === 'list' }" @click="setLayout('list')">
+            <button class="c-media-library__btn" :class="{ 'is-active': layout === 'list' }" data-balloon="List View" @click="setLayout('list')">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#list"></use>
                 </svg>

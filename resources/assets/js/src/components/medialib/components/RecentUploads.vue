@@ -6,7 +6,7 @@
             </div>
 
             <div class="c-media-library__grid-wrap">
-                <file-list :items="recentUploads.items" v-if="recentUploads.items.length" />
+                <file-list :items="recentUploads.items" v-if="recentUploads.items.length" :show-add-folder="false" />
                 <h3 v-else>No content</h3>
             </div>
         </div>

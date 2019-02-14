@@ -83,7 +83,12 @@
             </drop>
         </template>
 
-        <div class="c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder" ref="newFolder" :class="{ 'is-editing': editingNewFolder }">
+        <div
+            class="c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder"
+            ref="newFolder"
+            :class="{ 'is-editing': editingNewFolder }"
+            v-if="showAddFolder"
+        >
             <button
                 class="c-file-list__btn"
                 @click="newFolder"
@@ -195,6 +200,12 @@
                 type: Array,
                 default: function () {
                     return []
+                }
+            },
+            showAddFolder: {
+                type: Boolean,
+                default: function () {
+                    return true
                 }
             }
         },

@@ -28,7 +28,7 @@ export function Medialib () {
             isPicker: false
         },
         el: mediaLibEl,
-        store,
+        store: store(),
         render: h => h(App)
     })
 }
@@ -48,7 +48,7 @@ export function setupMedialibPicker () {
             data: {
                 isPicker: true
             },
-            store,
+            store: store(),
             render: h => h(App)
         }).$mount(mediaLibEl)
     })

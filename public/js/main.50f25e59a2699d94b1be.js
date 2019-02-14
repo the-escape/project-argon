@@ -8123,7 +8123,11 @@ var ActionBarvue_type_template_id_99500dd4_render = function() {
     _c("div", { staticClass: "c-media-library__button-group" }, [
       _c(
         "button",
-        { staticClass: "c-media-library__btn", on: { click: _vm.back } },
+        {
+          staticClass: "c-media-library__btn",
+          attrs: { "data-balloon": "Back" },
+          on: { click: _vm.back }
+        },
         [
           _c("svg", [
             _c("use", {
@@ -8135,7 +8139,11 @@ var ActionBarvue_type_template_id_99500dd4_render = function() {
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "c-media-library__btn", on: { click: _vm.forwards } },
+        {
+          staticClass: "c-media-library__btn",
+          attrs: { "data-balloon": "Forwards" },
+          on: { click: _vm.forwards }
+        },
         [
           _c("svg", [
             _c("use", {
@@ -8152,6 +8160,7 @@ var ActionBarvue_type_template_id_99500dd4_render = function() {
         {
           staticClass: "c-media-library__btn",
           class: { "is-active": _vm.layout === "tiles" },
+          attrs: { "data-balloon": "Tile View" },
           on: {
             click: function($event) {
               _vm.setLayout("tiles")
@@ -8172,6 +8181,7 @@ var ActionBarvue_type_template_id_99500dd4_render = function() {
         {
           staticClass: "c-media-library__btn",
           class: { "is-active": _vm.layout === "list" },
+          attrs: { "data-balloon": "List View" },
           on: {
             click: function($event) {
               _vm.setLayout("list")
@@ -8747,141 +8757,151 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
         ]
       }),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          ref: "newFolder",
-          staticClass:
-            "c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder",
-          class: { "is-editing": _vm.editingNewFolder }
-        },
-        [
-          _c(
-            "button",
-            { staticClass: "c-file-list__btn", on: { click: _vm.newFolder } },
+      _vm.showAddFolder
+        ? _c(
+            "div",
+            {
+              ref: "newFolder",
+              staticClass:
+                "c-file-list__item c-file-list__item--folder c-file-list__item--empty-folder",
+              class: { "is-editing": _vm.editingNewFolder }
+            },
             [
-              _c("div", { staticClass: "c-file-list__image" }, [
-                _c("svg", [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href": "/argon/images/svgicons.svg#folder-add"
-                    }
-                  })
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          !_vm.editingNewFolder
-            ? _c(
+              _c(
                 "button",
                 {
-                  staticClass: "c-file-list__edit",
+                  staticClass: "c-file-list__btn",
                   on: { click: _vm.newFolder }
                 },
-                [_vm._m(0)]
-              )
-            : _c(
-                "div",
-                { staticClass: "c-file-list__edit c-file-list__edit--editing" },
                 [
-                  _c("div", { staticClass: "c-file-list__label" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.newFolderName,
-                          expression: "newFolderName"
+                  _c("div", { staticClass: "c-file-list__image" }, [
+                    _c("svg", [
+                      _c("use", {
+                        attrs: {
+                          "xlink:href": "/argon/images/svgicons.svg#folder-add"
                         }
-                      ],
-                      ref: "newFolder",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.newFolderName },
-                      on: {
-                        keydown: [
-                          function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k(
-                                $event.keyCode,
-                                "escape",
-                                undefined,
-                                $event.key,
-                                undefined
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.closeNewFolder($event)
-                          },
-                          function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.comfirmNewFolder($event)
-                          }
-                        ],
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.newFolderName = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "c-file-list__edit-confirm",
-                        on: {
-                          click: function($event) {
-                            _vm.comfirmNewFolder()
-                          }
-                        }
-                      },
-                      [
-                        _c("svg", [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href": "/argon/images/svgicons.svg#tick"
-                            }
-                          })
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "c-file-list__edit-close",
-                        on: { click: _vm.closeNewFolder }
-                      },
-                      [
-                        _c("svg", [
-                          _c("use", {
-                            attrs: {
-                              "xlink:href": "/argon/images/svgicons.svg#cross"
-                            }
-                          })
-                        ])
-                      ]
-                    )
+                      })
+                    ])
                   ])
                 ]
-              )
-        ]
-      ),
+              ),
+              _vm._v(" "),
+              !_vm.editingNewFolder
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "c-file-list__edit",
+                      on: { click: _vm.newFolder }
+                    },
+                    [_vm._m(0)]
+                  )
+                : _c(
+                    "div",
+                    {
+                      staticClass:
+                        "c-file-list__edit c-file-list__edit--editing"
+                    },
+                    [
+                      _c("div", { staticClass: "c-file-list__label" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.newFolderName,
+                              expression: "newFolderName"
+                            }
+                          ],
+                          ref: "newFolder",
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.newFolderName },
+                          on: {
+                            keydown: [
+                              function($event) {
+                                if (
+                                  !("button" in $event) &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "escape",
+                                    undefined,
+                                    $event.key,
+                                    undefined
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.closeNewFolder($event)
+                              },
+                              function($event) {
+                                if (
+                                  !("button" in $event) &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.comfirmNewFolder($event)
+                              }
+                            ],
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.newFolderName = $event.target.value
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "c-file-list__edit-confirm",
+                            on: {
+                              click: function($event) {
+                                _vm.comfirmNewFolder()
+                              }
+                            }
+                          },
+                          [
+                            _c("svg", [
+                              _c("use", {
+                                attrs: {
+                                  "xlink:href":
+                                    "/argon/images/svgicons.svg#tick"
+                                }
+                              })
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "c-file-list__edit-close",
+                            on: { click: _vm.closeNewFolder }
+                          },
+                          [
+                            _c("svg", [
+                              _c("use", {
+                                attrs: {
+                                  "xlink:href":
+                                    "/argon/images/svgicons.svg#cross"
+                                }
+                              })
+                            ])
+                          ]
+                        )
+                      ])
+                    ]
+                  )
+            ]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.items, function(item) {
         return [
@@ -9317,6 +9337,11 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -9344,6 +9369,12 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
       type: Array,
       default: function _default() {
         return [];
+      }
+    },
+    showAddFolder: {
+      type: Boolean,
+      default: function _default() {
+        return true;
       }
     }
   },
@@ -9647,6 +9678,28 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
             )
           : _vm._e(),
         _vm._v(" "),
+        _c("div", { staticClass: "c-media-library__info" }, [
+          _c(
+            "div",
+            {
+              staticClass: "o-info",
+              attrs: {
+                "data-balloon-length": "large",
+                "data-balloon":
+                  "ctrl click or shift to select multiple items. double click on folder names to edit them.",
+                "data-balloon-pos": "left"
+              }
+            },
+            [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#info" }
+                })
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "c-media-library__grid-wrap" },
@@ -9676,17 +9729,29 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "c-media-library__delete",
-                    class: { "is-dragged-over": _vm.deleteHover }
+                    staticClass: "c-media-library__delete-container",
+                    attrs: {
+                      "data-balloon-pos": "left",
+                      "data-balloon": "To delete items, drag them over"
+                    }
                   },
                   [
-                    _c("svg", [
-                      _c("use", {
-                        attrs: {
-                          "xlink:href": "/argon/images/svgicons.svg#delete"
-                        }
-                      })
-                    ])
+                    _c(
+                      "div",
+                      {
+                        staticClass: "c-media-library__delete",
+                        class: { "is-dragged-over": _vm.deleteHover }
+                      },
+                      [
+                        _c("svg", [
+                          _c("use", {
+                            attrs: {
+                              "xlink:href": "/argon/images/svgicons.svg#delete"
+                            }
+                          })
+                        ])
+                      ]
+                    )
                   ]
                 )
               ]
@@ -9709,6 +9774,16 @@ function DirectoryViewvue_type_script_lang_js_objectSpread(target) { for (var i 
 
 function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10097,7 +10172,12 @@ var RecentUploadsvue_type_template_id_d47bed60_render = function() {
           { staticClass: "c-media-library__grid-wrap" },
           [
             _vm.recentUploads.items.length
-              ? _c("file-list", { attrs: { items: _vm.recentUploads.items } })
+              ? _c("file-list", {
+                  attrs: {
+                    items: _vm.recentUploads.items,
+                    "show-add-folder": false
+                  }
+                })
               : _c("h3", [_vm._v("No content")])
           ],
           1
@@ -10831,428 +10911,430 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
 
 vue_default.a.use(vuex_esm["default"]);
-/* harmony default export */ var store_store = (new vuex_esm["default"].Store({
-  state: {
-    isPicker: false,
-    folder: new Folder(),
-    folderMap: {},
-    active: new Folder(),
-    back: new Folder(),
-    data: [],
-    search: new search_Search(),
-    editItem: new folder_Item(),
-    layout: 'tiles',
-    upload: new upload_Upload(),
-    uploadIsOpen: false,
-    recentUploads: {
-      show: false,
-      items: []
+/* harmony default export */ var store_store = (function () {
+  return new vuex_esm["default"].Store({
+    state: {
+      isPicker: false,
+      folder: new Folder(),
+      folderMap: {},
+      active: new Folder(),
+      back: new Folder(),
+      data: [],
+      search: new search_Search(),
+      editItem: new folder_Item(),
+      layout: 'tiles',
+      upload: new upload_Upload(),
+      uploadIsOpen: false,
+      recentUploads: {
+        show: false,
+        items: []
+      },
+      newUploadIds: []
     },
-    newUploadIds: []
-  },
-  mutations: {
-    loadFolders: function loadFolders(state, _ref) {
-      var folder = _ref.folder,
-          pushState = _ref.pushState;
+    mutations: {
+      loadFolders: function loadFolders(state, _ref) {
+        var folder = _ref.folder,
+            pushState = _ref.pushState;
 
-      if (pushState) {
-        history.pushState({
-          folderID: folder.id
-        }, folder.name, "?folder=".concat(folder.name, "&folderID=").concat(folder.id));
-      }
+        if (pushState) {
+          history.pushState({
+            folderID: folder.id
+          }, folder.name, "?folder=".concat(folder.name, "&folderID=").concat(folder.id));
+        }
 
-      state.recentUploads.show = false;
-      getFolders(folder.id, function (f) {
-        state.folder.active = false;
-        state.active.active = false;
-        state.back = state.active;
-        folder.setItems(f.items);
-        folder.setChildren(f.children);
-        folder.active = true;
-        state.active = folder;
-        state.search.reset();
-        state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
-          acc[folder.id] = folder;
+        state.recentUploads.show = false;
+        getFolders(folder.id, function (f) {
+          state.folder.active = false;
+          state.active.active = false;
+          state.back = state.active;
+          folder.setItems(f.items);
+          folder.setChildren(f.children);
+          folder.active = true;
+          state.active = folder;
+          state.search.reset();
+          state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
+            acc[folder.id] = folder;
+            return acc;
+          }, {}));
+        });
+      },
+      loadFoldersByID: function loadFoldersByID(state, id) {
+        var folder = state.folderMap[id];
+
+        if (!folder) {
+          return;
+        }
+
+        getFolders(folder.id, function (f) {
+          state.folder.active = false;
+          state.active.active = false;
+          state.back = state.active;
+          folder.setItems(f.items);
+          folder.setChildren(f.children);
+          folder.active = true;
+          state.active = folder;
+          state.search.reset();
+          state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
+            acc[folder.id] = folder;
+            return acc;
+          }, {}));
+        });
+      },
+      loadLibrary: function loadLibrary(state, id) {
+        getFoldersData(function (data) {
+          state.data = data;
+
+          var _children = children(state.data),
+              newFolders = _children.newFolders,
+              folderMap = _children.folderMap;
+
+          state.folderMap = folderMap;
+          state.folder = new Folder(newFolders[0].id, newFolders[0].name, newFolders[0].items, newFolders[0].children, newFolders[0].parent, true);
+          state.active = state.folder;
+          history.pushState({
+            folderID: state.folder.id
+          }, state.folder.name, "?folder=".concat(state.folder.name, "&folderID=").concat(state.folder.id));
+          getFolders(state.folder.id, function (f) {
+            state.active.setItems(f.items);
+            state.active.setChildren(f.children);
+          });
+        });
+
+        media_recentUploads(function (response) {
+          state.recentUploads.items = response.body.data.map(function (item) {
+            return new folder_Item(item);
+          });
+        });
+      },
+      search: function search(state, keywords) {
+        state.search.loading = true;
+
+        if (keywords === '') {
+          state.search = new search_Search();
+          return;
+        }
+
+        media_search(keywords, function (data) {
+          state.search = new search_Search(keywords, data);
+        });
+      },
+      recentUploads: function recentUploads(state) {
+        state.recentUploads.show = true;
+
+        media_recentUploads(function (response) {
+          state.recentUploads.items = response.body.data.map(function (item) {
+            return new folder_Item(item);
+          });
+        });
+      },
+      editItem: function editItem(state, item) {
+        if (!item) {
+          state.editItem = new folder_Item();
+        } else {
+          state.editItem = item;
+        }
+      },
+      setLayout: function setLayout(state, layout) {
+        state.layout = layout;
+      },
+      createFolder: function createFolder(state, payload) {
+        addFolder(payload.name, payload.parent.id, function (r) {
+          if (r.status !== 200) {
+            new noty_default.a({
+              text: r.body.error,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            return;
+          }
+
+          var child = new Folder(r.body.id, r.body.name, [], [], payload.parent);
+          state.active.children.push(child);
+        });
+      },
+      editFolder: function editFolder(state, folder) {
+        media_editFolder(folder.name, folder.id, function (r) {
+          if (r.status !== 200) {
+            new noty_default.a({
+              text: r.body.error,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            folder.name = folder.originalName;
+          }
+        });
+      },
+      removeFolder: function removeFolder(state, folder) {
+        media_removeFolder(folder.id, function (r) {
+          if (r.status !== 204) {
+            new noty_default.a({
+              text: r.body.error,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            return;
+          }
+
+          var parent = folder.parent;
+          parent.active = true;
+          parent.children = parent.children.filter(function (child) {
+            return child.id !== folder.id;
+          });
+          state.back = new Folder();
+          state.active = parent;
+          new noty_default.a({
+            text: "".concat(folder.name, " was removed"),
+            type: 'success',
+            timeout: 3500
+          }).show();
+        });
+      },
+      uploadResult: function uploadResult(state, payload) {
+        if (!payload.successful.length) {
+          return;
+        }
+
+        var newFileIds = payload.successful.reduce(function (acc, el) {
+          var newFileIDs = el.response.body.fileIDs;
+          acc = store_toConsumableArray(acc).concat(store_toConsumableArray(newFileIDs));
           return acc;
-        }, {}));
-      });
-    },
-    loadFoldersByID: function loadFoldersByID(state, id) {
-      var folder = state.folderMap[id];
-
-      if (!folder) {
-        return;
-      }
-
-      getFolders(folder.id, function (f) {
-        state.folder.active = false;
-        state.active.active = false;
-        state.back = state.active;
-        folder.setItems(f.items);
-        folder.setChildren(f.children);
-        folder.active = true;
-        state.active = folder;
-        state.search.reset();
-        state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
-          acc[folder.id] = folder;
-          return acc;
-        }, {}));
-      });
-    },
-    folders: function folders(state, id) {
-      getFoldersData(function (data) {
-        state.data = data;
-
-        var _children = children(state.data),
-            newFolders = _children.newFolders,
-            folderMap = _children.folderMap;
-
-        state.folderMap = folderMap;
-        state.folder = new Folder(newFolders[0].id, newFolders[0].name, newFolders[0].items, newFolders[0].children, newFolders[0].parent, true);
-        state.active = state.folder;
-        history.pushState({
-          folderID: state.folder.id
-        }, state.folder.name, "?folder=".concat(state.folder.name, "&folderID=").concat(state.folder.id));
-        getFolders(state.folder.id, function (f) {
+        }, []);
+        state.newUploadIds = newFileIds;
+        getFolders(state.active.id, function (f) {
           state.active.setItems(f.items);
-          state.active.setChildren(f.children);
         });
-      });
+        state.uploadIsOpen = false;
+        var maxLen = 3;
+        var isOverMax = payload.successful.length > maxLen;
+        var len = isOverMax ? maxLen : payload.successful.length;
+        var fileNames = [];
 
-      media_recentUploads(function (response) {
-        state.recentUploads.items = response.body.data.map(function (item) {
-          return new folder_Item(item);
-        });
-      });
-    },
-    search: function search(state, keywords) {
-      state.search.loading = true;
-
-      if (keywords === '') {
-        state.search = new search_Search();
-        return;
-      }
-
-      media_search(keywords, function (data) {
-        state.search = new search_Search(keywords, data);
-      });
-    },
-    recentUploads: function recentUploads(state) {
-      state.recentUploads.show = true;
-
-      media_recentUploads(function (response) {
-        state.recentUploads.items = response.body.data.map(function (item) {
-          return new folder_Item(item);
-        });
-      });
-    },
-    editItem: function editItem(state, item) {
-      if (!item) {
-        state.editItem = new folder_Item();
-      } else {
-        state.editItem = item;
-      }
-    },
-    setLayout: function setLayout(state, layout) {
-      state.layout = layout;
-    },
-    createFolder: function createFolder(state, payload) {
-      addFolder(payload.name, payload.parent.id, function (r) {
-        if (r.status !== 200) {
-          new noty_default.a({
-            text: r.body.error,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          return;
+        for (var i = 0; i < len; i++) {
+          fileNames.push(payload.successful[i].name);
         }
 
-        var child = new Folder(r.body.id, r.body.name, [], [], payload.parent);
-        state.active.children.push(child);
-      });
-    },
-    editFolder: function editFolder(state, folder) {
-      media_editFolder(folder.name, folder.id, function (r) {
-        if (r.status !== 200) {
-          new noty_default.a({
-            text: r.body.error,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          folder.name = folder.originalName;
-        }
-      });
-    },
-    removeFolder: function removeFolder(state, folder) {
-      media_removeFolder(folder.id, function (r) {
-        if (r.status !== 204) {
-          new noty_default.a({
-            text: r.body.error,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          return;
+        var msg = fileNames.join(', ');
+
+        if (isOverMax) {
+          msg += '...';
         }
 
-        var parent = folder.parent;
-        parent.active = true;
-        parent.children = parent.children.filter(function (child) {
-          return child.id !== folder.id;
-        });
-        state.back = new Folder();
-        state.active = parent;
+        msg += ' uploaded';
         new noty_default.a({
-          text: "".concat(folder.name, " was removed"),
+          text: msg,
           type: 'success',
           timeout: 3500
         }).show();
-      });
-    },
-    uploadResult: function uploadResult(state, payload) {
-      if (!payload.successful.length) {
-        return;
-      }
+      },
+      clearNewUploadIDs: function clearNewUploadIDs(state) {
+        state.newUploadIds = [];
+      },
+      removeItem: function removeItem(state, item) {
+        media_removeItem(item.item.id, function (r) {
+          if (r.status >= 400) {
+            new noty_default.a({
+              text: r.body.error,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            return;
+          }
 
-      var newFileIds = payload.successful.reduce(function (acc, el) {
-        var newFileIDs = el.response.body.fileIDs;
-        acc = store_toConsumableArray(acc).concat(store_toConsumableArray(newFileIDs));
-        return acc;
-      }, []);
-      state.newUploadIds = newFileIds;
-      getFolders(state.active.id, function (f) {
-        state.active.setItems(f.items);
-      });
-      state.uploadIsOpen = false;
-      var maxLen = 3;
-      var isOverMax = payload.successful.length > maxLen;
-      var len = isOverMax ? maxLen : payload.successful.length;
-      var fileNames = [];
-
-      for (var i = 0; i < len; i++) {
-        fileNames.push(payload.successful[i].name);
-      }
-
-      var msg = fileNames.join(', ');
-
-      if (isOverMax) {
-        msg += '...';
-      }
-
-      msg += ' uploaded';
-      new noty_default.a({
-        text: msg,
-        type: 'success',
-        timeout: 3500
-      }).show();
-    },
-    clearNewUploadIDs: function clearNewUploadIDs(state) {
-      state.newUploadIds = [];
-    },
-    removeItem: function removeItem(state, item) {
-      media_removeItem(item.item.id, function (r) {
-        if (r.status >= 400) {
+          item.hide = true;
           new noty_default.a({
-            text: r.body.error,
-            type: 'error',
+            text: "".concat(item.getName(), " was removed"),
+            type: 'success',
             timeout: 3500
           }).show();
-          return;
-        }
+        });
+      },
+      move: function move(state, _ref2) {
+        var destinationFolder = _ref2.destinationFolder,
+            items = _ref2.items,
+            folders = _ref2.folders;
+        var data = {
+          items: items.map(function (item) {
+            return item.item.id;
+          }),
+          folders: folders.map(function (folder) {
+            return folder.id;
+          }),
+          destinationFolder: destinationFolder.id
+        };
+        items.forEach(function (item) {
+          item.hide = true;
+        });
+        folders.forEach(function (folder) {
+          folder.hide = true;
+        });
 
-        item.hide = true;
-        new noty_default.a({
-          text: "".concat(item.getName(), " was removed"),
-          type: 'success',
-          timeout: 3500
-        }).show();
-      });
-    },
-    move: function move(state, _ref2) {
-      var destinationFolder = _ref2.destinationFolder,
-          items = _ref2.items,
-          folders = _ref2.folders;
-      var data = {
-        items: items.map(function (item) {
-          return item.item.id;
-        }),
-        folders: folders.map(function (folder) {
-          return folder.id;
-        }),
-        destinationFolder: destinationFolder.id
-      };
-      items.forEach(function (item) {
-        item.hide = true;
-      });
-      folders.forEach(function (folder) {
-        folder.hide = true;
-      });
-
-      media_move(data, function (r) {
-        if (r.status >= 400) {
-          items.forEach(function (item) {
-            item.hide = false;
-          });
-          folders.forEach(function (folder) {
-            folder.hide = false;
-          });
-          new noty_default.a({
-            text: r.body.error,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          return;
-        }
-
-        new noty_default.a({
-          text: "".concat(items.length + folders.length, " items were moved"),
-          type: 'success',
-          timeout: 3500
-        }).show();
-      });
-    },
-    toggleUploads: function toggleUploads(state) {
-      state.uploadIsOpen = !state.uploadIsOpen;
-    },
-    remove: function remove(state, _ref3) {
-      var items = _ref3.items,
-          folders = _ref3.folders;
-      var data = {
-        items: items.map(function (item) {
-          return item.item.id;
-        }),
-        folders: folders.map(function (folder) {
-          return folder.id;
-        })
-      };
-      items.forEach(function (item) {
-        item.hide = true;
-      });
-      folders.forEach(function (folder) {
-        folder.hide = true;
-      });
-
-      media_remove(data, function (r) {
-        if (r.items.length || r.folders.length) {
-          var nonDeleteNames = [];
-
-          if (r.items.length) {
+        media_move(data, function (r) {
+          if (r.status >= 400) {
             items.forEach(function (item) {
-              if (~r.items.indexOf(item.item.id)) {
-                item.hide = false;
-                nonDeleteNames.push(item.getName());
-              }
+              item.hide = false;
             });
-          }
-
-          if (r.folders.length) {
             folders.forEach(function (folder) {
-              if (~r.folders.indexOf(folder.id)) {
-                folder.hide = false;
-                nonDeleteNames.push(folder.name);
-              }
+              folder.hide = false;
             });
+            new noty_default.a({
+              text: r.body.error,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            return;
           }
 
           new noty_default.a({
-            text: nonDeleteNames.slice(0, 3).join(', ') + ' Were unable to be deleted',
-            type: 'error',
+            text: "".concat(items.length + folders.length, " items were moved"),
+            type: 'success',
             timeout: 3500
           }).show();
-          return;
-        }
+        });
+      },
+      toggleUploads: function toggleUploads(state) {
+        state.uploadIsOpen = !state.uploadIsOpen;
+      },
+      remove: function remove(state, _ref3) {
+        var items = _ref3.items,
+            folders = _ref3.folders;
+        var data = {
+          items: items.map(function (item) {
+            return item.item.id;
+          }),
+          folders: folders.map(function (folder) {
+            return folder.id;
+          })
+        };
+        items.forEach(function (item) {
+          item.hide = true;
+        });
+        folders.forEach(function (folder) {
+          folder.hide = true;
+        });
 
-        var successMsg = "".concat(items.length + folders.length, " ");
+        media_remove(data, function (r) {
+          if (r.items.length || r.folders.length) {
+            var nonDeleteNames = [];
 
-        if (items.length && folders.length) {
-          successMsg += 'items/folders ';
-        } else if (items.length) {
-          successMsg += 'item(s) ';
-        } else if (folders.length) {
-          successMsg += 'folder(s) ';
-        }
+            if (r.items.length) {
+              items.forEach(function (item) {
+                if (~r.items.indexOf(item.item.id)) {
+                  item.hide = false;
+                  nonDeleteNames.push(item.getName());
+                }
+              });
+            }
 
-        successMsg += 'were deleted';
-        new noty_default.a({
-          text: successMsg,
-          type: 'success',
-          timeout: 3500
-        }).show();
-      });
+            if (r.folders.length) {
+              folders.forEach(function (folder) {
+                if (~r.folders.indexOf(folder.id)) {
+                  folder.hide = false;
+                  nonDeleteNames.push(folder.name);
+                }
+              });
+            }
+
+            new noty_default.a({
+              text: nonDeleteNames.slice(0, 3).join(', ') + ' Were unable to be deleted',
+              type: 'error',
+              timeout: 3500
+            }).show();
+            return;
+          }
+
+          var successMsg = "".concat(items.length + folders.length, " ");
+
+          if (items.length && folders.length) {
+            successMsg += 'items/folders ';
+          } else if (items.length) {
+            successMsg += 'item(s) ';
+          } else if (folders.length) {
+            successMsg += 'folder(s) ';
+          }
+
+          successMsg += 'were deleted';
+          new noty_default.a({
+            text: successMsg,
+            type: 'success',
+            timeout: 3500
+          }).show();
+        });
+      }
+    },
+    actions: {
+      folderSelected: function folderSelected(_ref4, _ref5) {
+        var commit = _ref4.commit;
+        var folder = _ref5.folder,
+            _ref5$pushState = _ref5.pushState,
+            pushState = _ref5$pushState === void 0 ? true : _ref5$pushState;
+        commit('loadFolders', {
+          folder: folder,
+          pushState: pushState
+        });
+      },
+      loadLibrary: function loadLibrary(_ref6, folderID) {
+        var commit = _ref6.commit;
+        commit('loadLibrary', folderID);
+      },
+      search: function search(_ref7, keywords) {
+        var commit = _ref7.commit;
+        commit('search', keywords);
+      },
+      editItem: function editItem(_ref8, item) {
+        var commit = _ref8.commit;
+        commit('editItem', item);
+      },
+      setLayout: function setLayout(_ref9, layout) {
+        var commit = _ref9.commit;
+        commit('setLayout', layout);
+      },
+      createFolder: function createFolder(_ref10, payload) {
+        var commit = _ref10.commit;
+        commit('createFolder', payload);
+      },
+      editFolder: function editFolder(_ref11, payload) {
+        var commit = _ref11.commit;
+        commit('editFolder', payload);
+      },
+      removeFolder: function removeFolder(_ref12, active) {
+        var commit = _ref12.commit;
+        commit('removeFolder', active);
+      },
+      removeItem: function removeItem(_ref13, item) {
+        var commit = _ref13.commit;
+        commit('removeItem', item);
+      },
+      move: function move(_ref14, payload) {
+        var commit = _ref14.commit;
+        commit('move', payload);
+      },
+      folderSelectByID: function folderSelectByID(_ref15, id) {
+        var commit = _ref15.commit;
+        commit('loadFoldersByID', id);
+      },
+      toggleUploads: function toggleUploads(_ref16) {
+        var commit = _ref16.commit;
+        commit('toggleUploads');
+      },
+      uploadResult: function uploadResult(_ref17, payload) {
+        var commit = _ref17.commit;
+        commit('uploadResult', payload);
+      },
+      recentUploads: function recentUploads(_ref18) {
+        var commit = _ref18.commit;
+        commit('recentUploads');
+      },
+      remove: function remove(_ref19, payload) {
+        var commit = _ref19.commit;
+        commit('remove', payload);
+      },
+      clearNewUploadIDs: function clearNewUploadIDs(_ref20) {
+        var commit = _ref20.commit;
+        commit('clearNewUploadIDs');
+      }
     }
-  },
-  actions: {
-    folderSelected: function folderSelected(_ref4, _ref5) {
-      var commit = _ref4.commit;
-      var folder = _ref5.folder,
-          _ref5$pushState = _ref5.pushState,
-          pushState = _ref5$pushState === void 0 ? true : _ref5$pushState;
-      commit('loadFolders', {
-        folder: folder,
-        pushState: pushState
-      });
-    },
-    loadLibrary: function loadLibrary(_ref6, folderID) {
-      var commit = _ref6.commit;
-      commit('folders', folderID);
-    },
-    search: function search(_ref7, keywords) {
-      var commit = _ref7.commit;
-      commit('search', keywords);
-    },
-    editItem: function editItem(_ref8, item) {
-      var commit = _ref8.commit;
-      commit('editItem', item);
-    },
-    setLayout: function setLayout(_ref9, layout) {
-      var commit = _ref9.commit;
-      commit('setLayout', layout);
-    },
-    createFolder: function createFolder(_ref10, payload) {
-      var commit = _ref10.commit;
-      commit('createFolder', payload);
-    },
-    editFolder: function editFolder(_ref11, payload) {
-      var commit = _ref11.commit;
-      commit('editFolder', payload);
-    },
-    removeFolder: function removeFolder(_ref12, active) {
-      var commit = _ref12.commit;
-      commit('removeFolder', active);
-    },
-    removeItem: function removeItem(_ref13, item) {
-      var commit = _ref13.commit;
-      commit('removeItem', item);
-    },
-    move: function move(_ref14, payload) {
-      var commit = _ref14.commit;
-      commit('move', payload);
-    },
-    folderSelectByID: function folderSelectByID(_ref15, id) {
-      var commit = _ref15.commit;
-      commit('loadFoldersByID', id);
-    },
-    toggleUploads: function toggleUploads(_ref16) {
-      var commit = _ref16.commit;
-      commit('toggleUploads');
-    },
-    uploadResult: function uploadResult(_ref17, payload) {
-      var commit = _ref17.commit;
-      commit('uploadResult', payload);
-    },
-    recentUploads: function recentUploads(_ref18) {
-      var commit = _ref18.commit;
-      commit('recentUploads');
-    },
-    remove: function remove(_ref19, payload) {
-      var commit = _ref19.commit;
-      commit('remove', payload);
-    },
-    clearNewUploadIDs: function clearNewUploadIDs(_ref20) {
-      var commit = _ref20.commit;
-      commit('clearNewUploadIDs');
-    }
-  }
-}));
+  });
+});
 // EXTERNAL MODULE: ./node_modules/vuebar/vuebar.js
 var vuebar = __webpack_require__("./node_modules/vuebar/vuebar.js");
 var vuebar_default = /*#__PURE__*/__webpack_require__.n(vuebar);
@@ -11285,7 +11367,7 @@ function Medialib() {
       isPicker: false
     },
     el: mediaLibEl,
-    store: store_store,
+    store: store_store(),
     render: function render(h) {
       return h(medialib_App);
     }
@@ -11304,7 +11386,7 @@ function setupMedialibPicker() {
       data: {
         isPicker: true
       },
-      store: store_store,
+      store: store_store(),
       render: function render(h) {
         return h(medialib_App);
       }
@@ -14749,4 +14831,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.a255177dd68005320764.js.map
+//# sourceMappingURL=main.50f25e59a2699d94b1be.js.map

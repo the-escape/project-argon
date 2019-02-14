@@ -4502,6 +4502,28 @@ button.o-btn {
   height: calc(100% - 8px);
   display: block; }
 
+.o-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  background-color: #000;
+  border-radius: 50%;
+  cursor: pointer; }
+  .o-info > * {
+    pointer-events: none; }
+  .o-info svg {
+    width: 12px;
+    height: 12px; }
+
 .l-halves {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -8287,7 +8309,6 @@ button.uppy-DashboardItem-progressIndicator {
 
 .c-media-library {
   height: calc(100vh - 215px);
-  overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -8483,9 +8504,6 @@ button.uppy-DashboardItem-progressIndicator {
       width: 100%;
       height: 100%; }
   .c-media-library__delete {
-    position: absolute;
-    bottom: 15px;
-    right: 25px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -8500,6 +8518,12 @@ button.uppy-DashboardItem-progressIndicator {
             align-items: center;
     color: #fff;
     background-color: #f66956; }
+    .c-media-library__delete-container {
+      position: absolute;
+      bottom: 15px;
+      right: 25px;
+      width: 48px;
+      height: 48px; }
     .c-media-library__delete:after {
       content: "";
       position: absolute;
@@ -8517,6 +8541,10 @@ button.uppy-DashboardItem-progressIndicator {
     .c-media-library__delete svg {
       width: 38px;
       height: 38px; }
+  .c-media-library__info {
+    position: absolute;
+    top: 28px;
+    right: 30px; }
 
 .c-file-list {
   display: grid;
@@ -10715,4 +10743,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-27f25539d9.css.map
+//# sourceMappingURL=main-3d962387ca.css.map

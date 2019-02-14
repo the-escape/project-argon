@@ -1,6 +1,5 @@
 .c-media-library {
     height: calc(100vh - 215px);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -258,9 +257,6 @@
     }
 
     &__delete {
-        position: absolute;
-        bottom: 15px;
-        right: 25px;
         width: 48px;
         height: 48px;
         border-radius: 50%;
@@ -269,6 +265,14 @@
         align-items: center;
         color: #fff;
         background-color: $danger;
+
+        &-container {
+            position: absolute;
+            bottom: 15px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+        }
 
         &:after {
             content: "";
@@ -291,5 +295,11 @@
             width: 38px;
             height: 38px;
         }
+    }
+
+    &__info {
+        position: absolute;
+        top: 28px;
+        right: 30px;
     }
 }
