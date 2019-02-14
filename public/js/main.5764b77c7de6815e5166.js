@@ -13872,7 +13872,12 @@ var Appvue_type_template_id_c56b9336_render = function() {
                 _c("input", {
                   staticClass: "o-btn o-btn--sm o-btn--primary js-import",
                   attrs: { type: "submit", value: "Import" },
-                  on: { click: _vm.submit }
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.submit($event)
+                    }
+                  }
                 })
               ])
             ])
@@ -14868,8 +14873,7 @@ LocalBlocks_component.options.__file = "resources/assets/js/src/components/impor
   },
   methods: {
     submit: function submit(evt) {
-      // todo: import data
-      console.log('submit...');
+      this.$store.commit('importBlock', null);
     },
     cancel: function cancel() {
       return window.location.href = '/admin/types/' + this.$store.state.type.id + '/edit';
@@ -15104,6 +15108,37 @@ function import_field_groups_store_getStore() {
             state.isLoading = false;
           });
         }
+      },
+      importBlock: function importBlock(state) {
+        var url = '/admin/types/' + state.type.id + '/groups/import';
+
+        if (!state.content.json) {
+          new noty_default.a({
+            text: "Please provide json schema",
+            type: 'error',
+            timeout: 3500
+          }).show();
+          return;
+        }
+
+        vue_default.a.http.post(url, {
+          json: state.content.json
+        }).then(function (response) {
+          if (response.body && response.body.success) {
+            new noty_default.a({
+              text: response.body.msg || "New block has imported",
+              type: 'success',
+              timeout: 3500
+            }).show();
+          } else {
+            // todo print actual error message
+            new noty_default.a({
+              text: response.body.error && response.body.error.json || "Block could not be imported",
+              type: 'error',
+              timeout: 3500
+            }).show();
+          }
+        });
       }
     }
   });
@@ -15350,4 +15385,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.bdac9c13e4aedd37b875.js.map
+//# sourceMappingURL=main.5764b77c7de6815e5166.js.map

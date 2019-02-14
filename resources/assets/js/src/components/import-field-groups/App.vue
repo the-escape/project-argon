@@ -14,7 +14,7 @@
                         <div></div>
                         <div>
                             <a class="o-btn o-btn--sm" @click="cancel">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import" @click="submit">
+                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import" @click.prevent="submit">
                         </div>
                     </div>
 
@@ -42,8 +42,7 @@ export default {
     },
     methods: {
         submit: function(evt) {
-            // todo: import data
-            console.log('submit...')
+            this.$store.commit('importBlock', null)
         },
         cancel: function() {
             return window.location.href = '/admin/types/' + this.$store.state.type.id + '/edit'

@@ -199,6 +199,39 @@ export function getStore () {
                         state.isLoading = false
                     })
                 }
+            },
+            importBlock (state) {
+                const url = '/admin/types/' + state.type.id + '/groups/import'
+
+                if (!state.content.json) {
+                    new Noty({
+                        text: "Please provide json schema",
+                        type: 'error',
+                        timeout: 3500
+                    }).show()
+
+                    return
+                }
+
+                Vue.http.post(url, {
+                    json: state.content.json
+                }).then(response => {
+
+                    if (response.body && response.body.success) {
+                        new Noty({
+                            text: response.body.msg || "New block has imported",
+                            type: 'success',
+                            timeout: 3500
+                        }).show()
+                    } else {
+                        // todo print actual error message
+                        new Noty({
+                            text: response.body.error && response.body.error.json || "Block could not be imported",
+                            type: 'error',
+                            timeout: 3500
+                        }).show()
+                    }
+                })
             }
         }
     })
