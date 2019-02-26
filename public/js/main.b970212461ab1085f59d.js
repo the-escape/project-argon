@@ -3883,6 +3883,25 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
                 ])
               ]
             )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.extraAction
+          ? _c(
+              "a",
+              {
+                staticClass: "o-confirm-btn",
+                attrs: {
+                  href: _vm.extraAction.url,
+                  "data-balloon": _vm.extraAction.label,
+                  title: _vm.extraAction.label
+                }
+              },
+              [
+                _c("svg", [
+                  _c("use", { attrs: { "xlink:href": _vm.extraAction.icon } })
+                ])
+              ]
+            )
           : _vm._e()
       ]),
       _vm._v(" "),
@@ -3979,9 +3998,14 @@ confirm_btnvue_type_template_id_73a6f08d_render._withStripped = true
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ var confirm_btnvue_type_script_lang_js_ = ({
   name: 'comfirm-btn',
-  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix'],
+  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix', 'extraAction'],
   data: function data() {
     return {
       confirmDelete: false,
@@ -13851,7 +13875,8 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
               showView: "true",
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
-              tooltipPostfix: " Page"
+              tooltipPostfix: " Page",
+              extraAction: _vm.node.extraAction
             },
             on: {
               add: _vm.toggleAddForm,
@@ -14191,6 +14216,7 @@ addForm_component.options.__file = "resources/assets/js/src/components/site-tree
 //
 //
 //
+//
 
 
 
@@ -14277,7 +14303,8 @@ var Rowvue_type_template_id_6f236b38_render = function() {
               showView: "true",
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
-              tooltipPostfix: " Page"
+              tooltipPostfix: " Page",
+              extraAction: _vm.node.extraAction
             },
             on: {
               add: _vm.toggleAddForm,
@@ -14314,6 +14341,7 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -14831,4 +14859,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.50f25e59a2699d94b1be.js.map
+//# sourceMappingURL=main.b970212461ab1085f59d.js.map

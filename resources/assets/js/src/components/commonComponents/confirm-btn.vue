@@ -22,6 +22,11 @@
                     <use xlink:href="/argon/images/svgicons.svg#see"></use>
                 </svg>
             </a>
+            <a v-if="extraAction" :href="extraAction.url" :data-balloon="extraAction.label" class="o-confirm-btn" :title="extraAction.label">
+                <svg>
+                    <use :xlink:href="extraAction.icon"></use>
+                </svg>
+            </a>
         </div>
         <div class="o-confirm-btn__decline">
             <button class="o-confirm-btn o-confirm-btn--danger" @click="toggleConfirmDelete($event)">
@@ -43,11 +48,11 @@
 <script>
 export default {
     name: 'comfirm-btn',
-    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix'],
+    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix','extraAction'],
     data() {
         return {
             confirmDelete: false,
-            tooltipPostfixValue: ''
+            tooltipPostfixValue: '',
         }
     },
     created() {
