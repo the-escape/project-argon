@@ -89,6 +89,12 @@
     <path d="M16.001 28.5l-.002-25"/>
     <path stroke-linecap="round" stroke-linejoin="round" d="M10.171 9.285L15.999 3.5l5.83 5.785"/>
   </g>
+</symbol><symbol id="folder-add" viewBox="0 0 111 83.5">
+  <g fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10">
+    <path d="M55.5 17L44.5.5H7.91C3.82.5.5 3.82.5 7.91v67.68C.5 79.68 3.82 83 7.91 83h95.18c4.09 0 7.41-3.32 7.41-7.41V24.41c0-4.09-3.32-7.41-7.41-7.41H55.5z"/>
+    <circle cx="55.5" cy="50.41" r="12"/>
+    <path d="M51.3 50.41h8.4m-4.2 4.2v-8.4"/>
+  </g>
 </symbol><symbol id="folder" viewBox="0 0 20 15">
   <path fill="currentColor" d="M10 3L8 0H1.35C.6 0 0 .6 0 1.35v12.3C0 14.4.6 15 1.35 15h17.3c.75 0 1.35-.6 1.35-1.35v-9.3C20 3.6 19.4 3 18.65 3H10z"/>
 </symbol><symbol id="globe" viewBox="0 0 32 32">
@@ -103,6 +109,11 @@
 </symbol><symbol id="hide" viewBox="0 0 32 32">
   <g fill="none" stroke="currentColor" stroke-miterlimit="10">
     <path d="M16.44 19a3 3 0 0 1-3-3M26.44 16a12.12 12.12 0 0 1-5 5.67 9.93 9.93 0 0 1-9.92 0 12.07 12.07 0 0 1-5-5.67 12.07 12.07 0 0 1 5-5.67 9.93 9.93 0 0 1 9.92 0 12.12 12.12 0 0 1 5 5.67zM18.56 18.12L24.44 24M14.32 13.88l4.24 4.24M8.44 8l5.88 5.88M14.32 13.88a3 3 0 1 1 4.24 4.24"/>
+  </g>
+</symbol><symbol id="info" viewBox="0 0 24 24">
+  <g fill="currentColor">
+    <path d="M16.555 20.603l-.306 1.254c-1.038.409-4.634 2.125-6.708.299-.618-.543-.927-1.233-.927-2.069 0-1.567.516-2.933 1.442-6.213.163-.619.363-1.424.363-2.062 0-1.1-.417-1.393-1.55-1.393-.553 0-1.165.197-1.719.404l.307-1.254c1.235-.502 2.786-1.114 4.115-1.114 1.993 0 3.458.994 3.458 2.884 0 .545-.094 1.499-.292 2.159l-1.146 4.054c-.236.82-.666 2.626-.002 3.162.655.529 2.202.249 2.965-.111z"/>
+    <circle cx="14.5" cy="3.5" r="2.5"/>
   </g>
 </symbol><symbol id="link" viewBox="0 0 32 32">
   <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10">

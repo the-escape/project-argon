@@ -14,6 +14,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Events\BeforePageSaved;
+use Escape\Argon\Events\RenderPagesListItemActions;
 use Escape\Argon\Frontend\Page;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
@@ -74,13 +75,21 @@ class PagesController extends BaseController
         foreach($entities as $el){
             $entity = [
                 "title" => $el->name,
-                "children" => [],
                 "data" => [
                     "id" => $el->id,
                     "typeName" => $el->type->name,
-                    "status" => (int)$el->status
-                ]
+                    "status" => (int)$el->status,
+                ],
+                "extraAction" => [],
+                "children" => []
             ];
+
+            $extraActions = event(new RenderPagesListItemActions($el));
+
+            if(array_filter($extraActions))
+            {
+                $entity["extraAction"] = $extraActions[0];
+            }
 
             if($el->hasChildren()){
                 $entity["children"] = $this->collectionToArray($el->getChildren());

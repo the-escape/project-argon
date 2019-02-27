@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueResource from 'vue-resource'
-import { getStore } from './store/store'
+import store from './store/store'
 import VueDragDrop from 'vue-drag-drop'
 import Vuebar from 'vuebar'
 import ConfirmBtn from '../commonComponents/confirm-btn.vue'
@@ -23,14 +23,12 @@ export function Medialib () {
         return
     }
 
-    const store = getStore()
-
     return new Vue({
         data: {
             isPicker: false
         },
         el: mediaLibEl,
-        store,
+        store: store(),
         render: h => h(App)
     })
 }
@@ -50,7 +48,7 @@ export function setupMedialibPicker () {
             data: {
                 isPicker: true
             },
-            store,
+            store: store(),
             render: h => h(App)
         }).$mount(mediaLibEl)
     })

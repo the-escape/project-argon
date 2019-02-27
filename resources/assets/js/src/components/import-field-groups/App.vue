@@ -1,26 +1,22 @@
 <template>
-    <div class="o-form">
-        <editor></editor>
-        <div class="l-halves l-internal-columns c-import-field-groups">
-            <local-blocks></local-blocks>
-            <blocks-library></blocks-library>
-        </div>
+    <div class="c-actions__container">
+        <div class="c-actions__content c-tab-panel__inner-container l-full">
 
-        <footer class="c-footer__wrapper">
-            <div class="c-footer c-container c-footer--fixed">
-                <div class="c-footer__container">
-
-                    <div class="c-footer__buttons">
-                        <div></div>
-                        <div>
-                            <a class="o-btn o-btn--sm" @click="cancel">Cancel</a>
-                            <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import" @click.prevent="submit">
-                        </div>
-                    </div>
-
+            <div class="o-form">
+                <editor></editor>
+                <div class="l-halves l-internal-columns c-import-field-groups">
+                    <local-blocks></local-blocks>
+                    <blocks-library></blocks-library>
                 </div>
             </div>
-        </footer>
+
+        </div>
+        <div class="c-actions c-actions--no-space">
+            <div class="c-actions__group">
+                <input type="submit" class="o-btn o-btn--sm o-btn--primary js-import" value="Import" @click.prevent="submit">
+                <a class="o-btn o-btn--sm" @click="cancel">Cancel</a>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -38,7 +34,7 @@ export default {
         LocalBlocks
     },
     mounted() {
-        console.log(this.$store.state)
+
     },
     methods: {
         submit: function(evt) {

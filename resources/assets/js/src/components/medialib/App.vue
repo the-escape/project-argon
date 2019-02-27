@@ -25,7 +25,10 @@ import MediaLibrary from './components/MediaLibrary.vue'
 
 export default {
     created () {
-        this.$store.dispatch('loadLibrary');
+        const folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/
+        let folderID = folderUrlRegex.exec(window.location.search)
+        folderID = (folderID && folderID[2]) || 1
+        this.$store.dispatch('loadLibrary', folderID);
 
         window.addEventListener('popstate', evt => {
             if(evt.state && evt.state.folderID) {
@@ -48,13 +51,6 @@ export default {
         this.$root.$on('pick', () => {
             this.isOpen = false
         })
-    },
-    mounted() {
-        const folderUrlRegex = /[?&]folderID(=([^&#]*)|&|#|$)/
-        let folderID = folderUrlRegex.exec(window.location.search)
-        if(folderID && folderID[2]){
-            this.$store.dispatch('folderSelectByID', folderID[2])
-        }
     },
     data() {
         return {

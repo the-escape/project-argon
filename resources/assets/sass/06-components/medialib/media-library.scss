@@ -1,6 +1,5 @@
 .c-media-library {
     height: calc(100vh - 215px);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -29,6 +28,7 @@
         &:hover,
         &.is-active {
             color: $primary;
+            color: var(--primary-color);
         }
     }
 
@@ -68,7 +68,8 @@
             height: 40px;
             color: $grey;
             pointer-events: none;
-            transition: opacity $userInactive $easeOut;
+            transition: opacity $userInactive $easeOut,
+                color $userInactive $easeOut;
 
             svg {
                 width: 100%;
@@ -78,6 +79,11 @@
 
         &.hide-icon &-icon {
             opacity: 0;
+        }
+
+        &:hover &-icon {
+            color: $primary;
+            color: var(--primary-color);
         }
 
         input {
@@ -100,10 +106,13 @@
     }
 
     &__directory-tree {
-        overflow: auto;
+        position: relative;
         flex: 1 1 $col-3;
         width: $col-3;
         border-right: 1px solid $secondary;
+    }
+
+    &__directory-tree &__scroller {
         padding: 10px;
     }
 
@@ -120,6 +129,7 @@
         button {
             display: inline-block;
             color: $primary;
+            color: var(--primary-color);
             padding: 0;
 
             &:hover {
@@ -244,5 +254,52 @@
             width: 100%;
             height: 100%;
         }
+    }
+
+    &__delete {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background-color: $danger;
+
+        &-container {
+            position: absolute;
+            bottom: 15px;
+            right: 25px;
+            width: 48px;
+            height: 48px;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #000;
+            opacity: 0;
+            transition: opacity $userInactive $easeOut;
+        }
+
+        &.is-dragged-over:after {
+            opacity: 0.4;
+        }
+
+        svg {
+            width: 38px;
+            height: 38px;
+        }
+    }
+
+    &__info {
+        position: absolute;
+        top: 28px;
+        right: 30px;
     }
 }

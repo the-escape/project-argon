@@ -14,8 +14,8 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
     public function registerRoutes()
     {
         $this->addRoute(
-            'media/app',
-            'cms:media:app',
+            'media',
+            'cms:media:manage',
             MediaController::class,
             'app'
         );
@@ -90,13 +90,13 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
 
         /* below routes are for the legacy media library */
 
-        $this->addRoute(
-            'media',
-            'cms:media:manage',
-            MediaController::class,
-//            'manage'
-            'all'
-        );
+//         $this->addRoute(
+//             'media',
+//             'cms:media:manage',
+//             MediaController::class,
+// //            'manage'
+//             'all'
+//         );
         $this->addRoute(
             'media/upload',
             'cms:media:upload',

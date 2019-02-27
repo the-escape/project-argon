@@ -20,6 +20,8 @@ export class Folder {
         this.treeDragOver = false
         this.dragOver = false
         this.hide = false
+        this.editing = false
+        this.originalName = name
 
         if (id === 1) {
             this.treeActive = true

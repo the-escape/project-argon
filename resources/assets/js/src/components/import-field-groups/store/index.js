@@ -14,6 +14,7 @@ export function getStore () {
                 blade: '',
                 mappers: ''
             },
+            smartImport: 0,
             isLoading: false,
             isEditorExpanded: false,
             isConfigExpanded: false,
@@ -65,6 +66,9 @@ export function getStore () {
             },
             setBlockImage (state, image) {
                 state.block.image = image
+            },
+            setSmartImport (state, value) {
+                state.smartImport = value
             },
             createNewBlock (state) {
                 state.block = {
@@ -214,7 +218,8 @@ export function getStore () {
                 }
 
                 Vue.http.post(url, {
-                    json: state.content.json
+                    json: state.content.json,
+                    smart_import: state.smartImport
                 }).then(response => {
 
                     if (response.body && response.body.success) {

@@ -51,13 +51,16 @@
         </div>
 
         <div class="c-blocks-library__settings-wrapper js-settings-wrapper" :class="{ 'expanded': isConfigExpanded }">
+            <div class="typography l-space">
+                <h3>Import settings</h3>
+            </div>
             <div class="o-form__group">
                 <div class="o-form-status">
                     <div class="o-form__list">
-                        <div class="o-checkbox">
+                        <div class="o-checkbox" @click.stop="toggleSmartImport($event)">
                             <input type="hidden" name="smart_import" class="js-toggle-value" value="0">
                             <label>
-                                <input type="checkbox" value="1" name="" id="smart_import" class="js-toggle-input">
+                                <input type="checkbox" value="1" name="" id="smart_import" class="js-toggle-input" :checked="smartImport">
                                 <span><svg><use xlink:href="/argon/images/svgicons.svg#tick"></use></svg></span>
                             </label>
                             <label for="smart_import">Smart Import</label>
@@ -90,6 +93,7 @@
             this.modes.php = ace.require("ace/mode/php").Mode
             this.editor.getSession().on('change', this.changeContent)
             this.changeMode('json')
+            this.setSmartImport(window.smartImport)
         },
         methods: {
             setMode: function() {
@@ -103,6 +107,18 @@
                     this.editor.session.setMode(new this.modes.json())
                     this.editor.getSession().setValue(this.editorContent.json)
                 }
+            },
+            setSmartImport: function(value) {
+                this.$store.commit('setSmartImport', value)
+            },
+            toggleSmartImport: function(event) {
+                if(!event.target.classList.contains('js-toggle-input')){
+                    return
+                }
+
+                const value = event.target.checked
+
+                this.$store.commit('setSmartImport', value)
             },
             changeMode: function(mode) {
                 this.$store.commit('changeEditorMode', mode)
@@ -124,6 +140,7 @@
             },
             expandEditor: function(bool) {
                 this.$store.commit('expandEditor', bool)
+                setTimeout(() => this.editor.resize(), 100)
             },
             expandConfig: function(bool) {
                 this.$store.commit('expandConfig', !this.isConfigExpanded)
@@ -171,7 +188,8 @@
                 selectedBlock: 'block',
                 isLoading: 'isLoading',
                 isEditorExpanded: 'isEditorExpanded',
-                isConfigExpanded: 'isConfigExpanded'
+                isConfigExpanded: 'isConfigExpanded',
+                smartImport: 'smartImport'
             }),
             contentJson: function() {
                 return this.$store.state.content.json

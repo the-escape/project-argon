@@ -1,14 +1,12 @@
 <template>
     <div class="c-media-library__directory-view" v-bar>
-        <div class="ml__heading">
-            Found {{ search.getResultsCount() }} results for `{{ search.keywords }}`
-        </div>
-        <div class="ml__body">
-            <div class="search-results" v-if="search.hasResults()">
-                <file-list v-bind:items="search.getResults()" v-bind:folders="{}"/>
+        <div>
+            <div class="c-media-library__breadcrumbs">
+                <p>Found {{ search.getResultsCount() }} results for `{{ search.keywords }}`</p>
             </div>
-            <div class="search-results" v-else>
-                <p>No results found.</p>
+            <div class="c-media-library__grid-wrap">
+                <file-list :items="search.getResults()" v-if="search.hasResults()" />
+                <h3 v-else>No results found.</h3>
             </div>
         </div>
     </div>

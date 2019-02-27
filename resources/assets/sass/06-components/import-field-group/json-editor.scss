@@ -14,7 +14,9 @@
 			position: fixed;
 			top: 0;
 			left: 0;
-			width: 100vw;
+			//width: 100vw;
+			width: calc(100vw - 48px);
+			margin-left: 48px;
 			height: 100vh;
 			z-index: 20;
 		}
