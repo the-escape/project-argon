@@ -343,12 +343,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'importGroupJson'
         );
-        $this->addRoute(
-            'types/{typeId}/groups/import-new',
-            'cms:types:groups:import-json-new',
-            EntityTypeController::class,
-            'importGroupJsonNew'
-        );
 
         $this->addRoute(
             'types/{typeId}/groups/import',

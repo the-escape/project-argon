@@ -1237,7 +1237,7 @@ class EntityTypeController extends BaseController
         return view('argon::groups.setting')->render();
     }
 
-    public function importGroupJson($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
+    public function importGroupJsonOld($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
     {
         $type = $typeRepository->find($typeId);
 
@@ -1245,10 +1245,10 @@ class EntityTypeController extends BaseController
 
         $blocks = $blocksLibrary->getBlocks();
 
-        return view('argon::groups.import', compact('type', 'types', 'blocks'))->render();
+        return view('argon::groups.import-old', compact('type', 'types', 'blocks'))->render();
     }
 
-    public function importGroupJsonNew($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
+    public function importGroupJson($typeId, EntityTypeRepository $typeRepository, BlocksLibrary $blocksLibrary)
     {
         $type = $typeRepository->find($typeId)->toJson();
 
@@ -1256,7 +1256,7 @@ class EntityTypeController extends BaseController
 
         $blocks = json_encode($blocksLibrary->getBlocks());
 
-        return view('argon::groups.import-new', compact('type', 'types', 'blocks'))->render();
+        return view('argon::groups.import', compact('type', 'types', 'blocks'))->render();
     }
 
     public function postImportGroupJson($typeId, EntityTypeRepository $typeRepository, EntityGroupRepository $groupRepository, FieldTypesManager $fieldTypesManager, EntityFieldRepository $fieldRepository, ComboFieldType $comboFieldType, Request $request)
