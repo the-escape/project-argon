@@ -201,7 +201,7 @@
         "noty": "^3.2.0-beta",
         "promise-polyfill": "^8.0.0",
         "rxjs": "^6.2.0",
-        "sl-vue-tree": "^1.8.3",
+        "sl-vue-tree": "^1.8.4",
         "svg4everybody": "^2.1.9",
         "uppy": "^0.29.1",
         "vue": "^2.5.17",

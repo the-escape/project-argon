@@ -5,6 +5,7 @@ namespace Escape\Argon\Menus\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Menus\Eloquent\Menu;
 use Escape\Argon\Menus\Eloquent\MenuRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,6 +83,44 @@ class MenusController extends BaseController
     {
         $menu = $menuRepository->find($id);
         return view('argon_menus::edit', ['menu' => $menu]);
+    }
+
+    public function editNew($id, MenuRepository $menuRepository, EntityRepository $entityRepository)
+    {
+        $menu = $menuRepository->find($id);
+        $menuJson = json_encode($menu->menu);
+
+        $entities = $entityRepository->pages();
+        $entities = $entities->keyBy('id');
+
+        foreach ($entities as $id => $entity) {
+            if ($entity->parent_id) {
+                $entities[$entity->parent_id]->addChild($entity);
+            }
+        }
+
+        $entities = $entities->filter(function ($entity) {
+            return $entity->parent_id == null;
+        });
+
+        $pagesJson = json_encode($this->collectionToArray($entities));
+
+        return view('argon_menus::edit-new', compact('menu', 'menuJson', 'pagesJson'));
+    }
+
+    private function collectionToArray($entities, $indent = ''){
+        $out = [];
+        $moreIndent = $indent . "    —";
+        foreach($entities as $el){
+            $out[$el->id] = $indent.' '.$el->name;
+
+            if($el->hasChildren()){
+
+                $children = $this->collectionToArray($el->getChildren(), $moreIndent);
+                $out = $out + $children;
+            }
+        }
+        return $out;
     }
 
     public function update($id, Request $request, MenuRepository $menuRepository)

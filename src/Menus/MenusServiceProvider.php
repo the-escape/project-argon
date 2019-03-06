@@ -38,6 +38,12 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
             'edit'
         );
         $this->addRoute(
+            'menus/{id}/edit-new',
+            'cms:menus:edit-new',
+            MenusController::class,
+            'editNew'
+        );
+        $this->addRoute(
             'menus/{id}/edit',
             'cms:menus:update',
             MenusController::class,

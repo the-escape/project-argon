@@ -1,0 +1,37 @@
+.c-menu-edit {
+    margin: 100px -10px;
+    height: calc(100vh - 660px);
+    overflow: auto;
+
+    &__form {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+
+        >:first-child {
+            flex: 1 1 calc(100% - 140px);
+            width: calc(100% - 140px);
+        }
+
+        >:last-child {
+            flex: 0 0 125px;
+            width: 125px
+        }
+    }
+
+    &__add-wrap {
+        position: relative;
+        padding-left: 45px;
+    }
+
+    &__tree-gap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 45px;
+        height: 100%;
+        min-height: 1px;
+        background-color: #fff;
+    }
+}

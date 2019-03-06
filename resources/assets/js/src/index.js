@@ -22,6 +22,7 @@ import {
     Cropper,
     setCropperImage,
     SiteTree,
+    MenuEdit,
     ImportFieldGroups,
     Medialib
 } from './components'
@@ -57,6 +58,7 @@ function init () {
     Dashboard()
     Tabs()
     PageEdit()
+    MenuEdit()
     cropperTest()
     formSubmits()
     SiteTree()

@@ -17,9 +17,9 @@
                 <main class="c-tab-panel__container c-container">
                     <script>
                         window.type = {!! $type !!}
-                        window.blocks = {!! $blocks !!};
-                        window.types = {!! $types !!};
-                        window.smartImport = {{ (int) session()->get('smartImportFieldGroups')  }};
+                        window.blocks = {!! $blocks !!}
+                        window.types = {!! $types !!}
+                        window.smartImport = {{ (int) session()->get('smartImportFieldGroups')  }}
                     </script>
                     <div class="js-import-field-groups"></div>
                 </main>
