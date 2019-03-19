@@ -106,7 +106,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (!empty($this->data)) {
             foreach ($this->data as $data) {
-                return $data->label;
+                return isset($data->label) ? $data->label : null;
             }
         }
 
@@ -118,7 +118,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (!empty($this->data)) {
             foreach ($this->data as $data) {
-                return $data->url;
+                return isset($data->url) ? $data->url : null;
             }
         }
 
@@ -130,7 +130,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (!empty($this->data)) {
             foreach ($this->data as $data) {
-                return $data->class;
+                return isset($data->class) ? $data->class : null;
             }
         }
 
@@ -142,7 +142,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (!empty($this->data)) {
             foreach ($this->data as $data) {
-                return $data->id;
+                return isset($data->id) ? $data->id : null;
             }
         }
 
@@ -154,7 +154,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
     {
         if (!empty($this->data)) {
             foreach ($this->data as $data) {
-                return $data->target;
+                return isset($data->target) ? $data->target : null;
             }
         }
 
