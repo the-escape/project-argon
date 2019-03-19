@@ -33,6 +33,10 @@
         + * {
             flex: 0 0 auto;
         }
+
+        > div {
+            height: 100%;
+        }
     }
 
     &__inner-container {

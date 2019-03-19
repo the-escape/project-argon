@@ -10229,6 +10229,8 @@ button.uppy-DashboardItem-progressIndicator {
       -webkit-box-flex: 0;
           -ms-flex: 0 0 auto;
               flex: 0 0 auto; }
+    .c-tab-panel__container > div {
+      height: 100%; }
   .c-tab-panel__inner-container {
     overflow: auto;
     height: 100%;
