@@ -78,6 +78,9 @@ export default {
     },
     methods: {
         updateValue: function(valueObj, newValue, prop) {
+            if(!valueObj.value){
+                valueObj.value = {}
+            }
             valueObj.value[prop] = newValue
 
             if(this.comboId){

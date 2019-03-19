@@ -4087,6 +4087,10 @@ confirm_btn_component.options.__file = "resources/assets/js/src/components/commo
 
           if (values.length && values[0][this.fieldId] && values[0][this.fieldId][0]) {
             return values[0][this.fieldId][0];
+          } else {
+            return {
+              id: 0
+            };
           }
         }
       }
@@ -4111,6 +4115,10 @@ confirm_btn_component.options.__file = "resources/assets/js/src/components/commo
 
             if (values.length && values[0][this.fieldId]) {
               return values[0][this.fieldId];
+            } else {
+              return [{
+                id: 0
+              }];
             }
           }
         }
@@ -6115,6 +6123,10 @@ locationvue_type_template_id_27f260e5_render._withStripped = true
   },
   methods: {
     updateValue: function updateValue(valueObj, newValue, prop) {
+      if (!valueObj.value) {
+        valueObj.value = {};
+      }
+
       valueObj.value[prop] = newValue;
 
       if (this.comboId) {
@@ -7028,6 +7040,10 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
   },
   methods: {
     updateValue: function updateValue(valueObj, newValue, prop) {
+      if (!valueObj.value) {
+        valueObj.value = {};
+      }
+
       valueObj.value[prop] = newValue;
 
       if (this.comboId) {
@@ -7202,8 +7218,13 @@ booleanvue_type_template_id_49a456a8_render._withStripped = true
             return value.id === _this.comboItemId;
           });
 
-          if (values.length && values[0][this.fieldId]) {
+          if (values.length && values[0][this.fieldId].length) {
             return values[0][this.fieldId][0];
+          } else {
+            return {
+              id: 0,
+              value: ''
+            };
           }
         }
       } else {
@@ -7229,8 +7250,10 @@ booleanvue_type_template_id_49a456a8_render._withStripped = true
             return value.id === _this2.comboItemId;
           });
 
-          if (values.length && values[0][this.fieldId]) {
+          if (values.length && values[0][this.fieldId].length) {
             value = values[0][this.fieldId][0].value;
+          } else {
+            value = field.options.settings.initial_value;
           }
         }
       } else {
@@ -12026,14 +12049,19 @@ function getStore() {
               return valuesObj;
             }
 
-            valuesObj[fieldID] = valuesObj[fieldID].map(function (value) {
-              if (value.id !== newValue.id) {
-                return value;
-              }
+            if (valuesObj[fieldID].length) {
+              valuesObj[fieldID] = valuesObj[fieldID].map(function (value) {
+                if (value.id !== newValue.id) {
+                  return value;
+                }
 
-              value = store_extends(value, newValue);
-              return value;
-            });
+                value = store_extends(value, newValue);
+                return value;
+              });
+            } else {
+              valuesObj[fieldID].push(newValue);
+            }
+
             return valuesObj;
           });
           return field;
@@ -16284,4 +16312,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.91073b8a72f5186df3e7.js.map
+//# sourceMappingURL=main.6717418761f506c6b0fb.js.map

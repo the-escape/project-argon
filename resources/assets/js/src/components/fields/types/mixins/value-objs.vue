@@ -8,6 +8,10 @@ export default {
                     const values = comboField.values.filter(value => value.id === this.comboItemId)
                     if(values.length && values[0][this.fieldId] && values[0][this.fieldId][0]){
                         return values[0][this.fieldId][0]
+                    } else {
+                        return {
+                            id: 0
+                        }
                     }
                 }
             }
@@ -25,6 +29,10 @@ export default {
                         const values = comboField.values.filter(value => value.id === this.comboItemId)
                         if(values.length && values[0][this.fieldId]){
                             return values[0][this.fieldId]
+                        } else {
+                            return [{
+                                id: 0
+                            }]
                         }
                     }
                 }

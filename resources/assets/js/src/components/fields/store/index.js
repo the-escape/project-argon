@@ -179,14 +179,18 @@ export function getStore () {
                             return valuesObj
                         }
 
-                        valuesObj[fieldID] = valuesObj[fieldID].map(value => {
-                            if (value.id !== newValue.id) {
-                                return value
-                            }
+                        if(valuesObj[fieldID].length){
+                            valuesObj[fieldID] = valuesObj[fieldID].map(value => {
+                                if (value.id !== newValue.id) {
+                                    return value
+                                }
 
-                            value = Object.assign(value, newValue)
-                            return value
-                        })
+                                value = Object.assign(value, newValue)
+                                return value
+                            })
+                        } else {
+                            valuesObj[fieldID].push(newValue)
+                        }
 
                         return valuesObj
                     })

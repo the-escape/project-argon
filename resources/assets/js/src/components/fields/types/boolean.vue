@@ -38,8 +38,13 @@ export default {
                 if(combo && combo.values.length){
                     const values = combo.values.filter(value => value.id === this.comboItemId)
 
-                    if(values.length && values[0][this.fieldId]){
+                    if(values.length && values[0][this.fieldId].length){
                         return values[0][this.fieldId][0]
+                    } else {
+                        return {
+                            id: 0,
+                            value: ''
+                        }
                     }
                 }
             }else{
@@ -59,8 +64,10 @@ export default {
                 if(combo && combo.values.length){
                     const values = combo.values.filter(value => value.id === this.comboItemId)
 
-                    if(values.length && values[0][this.fieldId]){
+                    if(values.length && values[0][this.fieldId].length){
                         value = values[0][this.fieldId][0].value
+                    } else {
+                        value = field.options.settings.initial_value
                     }
                 }
             }else{
