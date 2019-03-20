@@ -21,4 +21,10 @@ class BooleanFieldValue extends AbstractFieldValue
     {
         return !$this->isTrue();
     }
+
+    public function isEmpty()
+    {
+        // This value is never empty, but we return true to prevent multicombo value from spitting out false on isEmpty if the boolean field is present
+        return true;
+    }
 }
