@@ -72,7 +72,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return null;
         }
 
-        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+        if (!isAdminSection() && property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
         {
             return new CacheMediaItemValue([
                 'id' => $value->id,
@@ -88,7 +88,15 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
 
             if (!$media_item)
             {
-                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value->id'.");
+                return null;
+
+                // return new CacheMediaItemValue([
+                //     'id' => '',
+                //     'url' => sprintf('%s?%s', config('argon.medialib.deleted_image', '/argon/images/image-deleted.png'), date('Ymd')),
+                //     'alt' => 'Image deleted',
+                // ]);
+
+                // throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value->id'.");
             }
 
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
@@ -300,7 +308,9 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
                 $itemRepository = app()->make(MediaItemRepository::class);
                 $media_item = $itemRepository->findWhere(['id' => $obj->id])->first();
                 if (!$media_item) {
-                    throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
+                    return "";
+
+                    // throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$obj->id'.");
                 }
                 $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
                 $media_item->meta = json_decode($media_item->meta);

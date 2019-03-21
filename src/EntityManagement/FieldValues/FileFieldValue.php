@@ -41,7 +41,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
 
         $value = @$this->data[$key];
 
-        if (is_object($value))
+        if (!isAdminSection() && is_object($value))
         {
             if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
             {
@@ -58,7 +58,14 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
             $itemRepository = app()->make(MediaItemRepository::class);
             $media_item = $itemRepository->findWhere(['id' => $value])->first();
             if (!$media_item) {
-                throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value'.");
+
+                return new CacheMediaItemValue([
+                    'id' => '',
+                    'url' => 'File deleted',
+                ]);
+
+
+                // throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value'.");
             }
             $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
             $media_item->meta = json_decode($media_item->meta);
@@ -154,7 +161,9 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
                 $itemRepository = app()->make(MediaItemRepository::class);
                 $media_item = $itemRepository->findWhere(['id' => $id])->first();
                 if (!$media_item) {
-                    throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$id'.");
+                    return "";
+
+                    // throw new \RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$id'.");
                 }
                 $media_item->filesize_formatted = $media_item->getFriendlyFilesize();
                 $media_item->meta = json_decode($media_item->meta);

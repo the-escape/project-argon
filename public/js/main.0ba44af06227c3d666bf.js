@@ -7646,7 +7646,36 @@ var imagevue_type_template_id_22a4c74a_render = function() {
                           },
                           [_vm._v("select")]
                         )
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      !_vm.field.options.settings.multiple
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "o-confirm-btn",
+                              attrs: {
+                                "data-balloon": "Delete",
+                                title: "Delete"
+                              },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.clearValue(valueObj)
+                                }
+                              }
+                            },
+                            [
+                              _c("svg", [
+                                _c("use", {
+                                  attrs: {
+                                    "xlink:href":
+                                      "/argon/images/svgicons.svg#delete"
+                                  }
+                                })
+                              ])
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ]
                 }
@@ -9597,11 +9626,11 @@ function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (k
     },
     comfirmNewFolder: function comfirmNewFolder() {
       this.editingNewFolder = false;
-      this.newFolderName = '';
       this.$store.dispatch('createFolder', {
         name: this.newFolderName,
         parent: this.active
       });
+      this.newFolderName = '';
     },
     closeNewFolder: function closeNewFolder() {
       this.editingNewFolder = false;
@@ -11484,6 +11513,7 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
 //
 //
 //
+//
 
 
 
@@ -11515,6 +11545,13 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
           newValue: valueObj
         });
       }
+    },
+    clearValue: function clearValue(valueObj) {
+      this.updateValue(valueObj, {
+        id: '',
+        alt: '',
+        url: ''
+      });
     },
     updateAlt: function updateAlt(valueObj, newAlt) {
       var newValue = imagevue_type_script_lang_js_extends({}, valueObj.value, {
@@ -16312,4 +16349,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.6717418761f506c6b0fb.js.map
+//# sourceMappingURL=main.0ba44af06227c3d666bf.js.map

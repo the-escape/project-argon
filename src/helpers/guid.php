@@ -55,6 +55,11 @@ function menuCache($slug=null, $default=null)
     return $menus;
 }
 
+function isAdminSection()
+{
+    return sprintf('/%s', request()->segment(1)) === config('argon.admin_route_prefix');
+}
+
 function guid()
 {
     return sprintf(

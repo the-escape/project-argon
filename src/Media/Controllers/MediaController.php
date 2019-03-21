@@ -253,8 +253,12 @@ class MediaController extends BaseController
             {
                 if ($item = $itemRepository->findWhere(["id" => $itemId])->first())
                 {
+                    // todo: check if can be deleted
+
+                    $canBeDeleted = !$this->deleteItemCheck($itemId, $itemRepository);
+
                     // mark as deleted if exists and can be deleted
-                    if ($itemRepository->delete($itemId))
+                    if ($canBeDeleted && $itemRepository->delete($itemId))
                     {
                         $deletedItems[] = $itemId;
                     }
@@ -600,7 +604,7 @@ class MediaController extends BaseController
                 $fields = json_decode($result->data_value, true);
 
                 foreach ($fields as $field) {
-                    if ($field['id'] == $id)
+                    if (isset($field['id']) && $field['id'] == $id || $field == $id)
                     {
                         $subfield = new \stdClass();
                         $subfield->field_type = $result->field_type;

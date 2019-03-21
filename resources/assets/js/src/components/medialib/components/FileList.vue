@@ -374,8 +374,8 @@
             },
             comfirmNewFolder () {
                 this.editingNewFolder = false
-                this.newFolderName = ''
                 this.$store.dispatch('createFolder', { name: this.newFolderName, parent: this.active })
+                this.newFolderName = ''
             },
             closeNewFolder () {
                 this.editingNewFolder = false
