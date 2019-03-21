@@ -72,7 +72,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return null;
         }
 
-        if (!isAdminSection() && property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
         {
             return new CacheMediaItemValue([
                 'id' => $value->id,

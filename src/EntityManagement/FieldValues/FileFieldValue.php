@@ -41,7 +41,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
 
         $value = @$this->data[$key];
 
-        if (!isAdminSection() && is_object($value))
+        if (is_object($value))
         {
             if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
             {
@@ -59,10 +59,11 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
             $media_item = $itemRepository->findWhere(['id' => $value])->first();
             if (!$media_item) {
 
-                return new CacheMediaItemValue([
-                    'id' => '',
-                    'url' => 'File deleted',
-                ]);
+                return null;
+                // return new CacheMediaItemValue([
+                //     'id' => '',
+                //     'url' => 'File deleted',
+                // ]);
 
 
                 // throw new RuntimeException("Media item not found. Likely soft deleted. Requsted id: '$value'.");
