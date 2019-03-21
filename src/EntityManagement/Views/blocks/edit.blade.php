@@ -135,7 +135,10 @@
                                                 isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
                                                 image: '{{ $group->getSetting("image") }}'
                                             });
-                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!}
+                                            window.fieldGroups['{{$group->id}}'] = {
+                                                fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!},
+                                                header: "{{ $group->name }}"
+                                            }
                                         </script>
                                         <div class="js-fields" data-name="{{$group->id}}"></div>
                                     </div>
