@@ -189,10 +189,9 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                 </div>
 
                                 @if(($propertyGroups = $page->getGroups($localisation->getLocaleId())->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
-
-                                    <hr>
-
                                     @foreach($propertyGroups as $group)
+
+                                        <hr>
 
                                         <div class="l-container">
                                             <?php
