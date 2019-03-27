@@ -193,7 +193,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                         <hr>
 
-                                        <div class="l-container">
+                                        <div>
                                             <?php
                                             $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
                                             ?>

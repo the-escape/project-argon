@@ -11675,7 +11675,36 @@ var filevue_type_template_id_d9ae71a8_render = function() {
                           },
                           [_vm._v("select")]
                         )
-                      ])
+                      ]),
+                      _vm._v(" "),
+                      !_vm.field.options.settings.multiple
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "o-confirm-btn",
+                              attrs: {
+                                "data-balloon": "Delete",
+                                title: "Delete"
+                              },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.clearValue(valueObj)
+                                }
+                              }
+                            },
+                            [
+                              _c("svg", [
+                                _c("use", {
+                                  attrs: {
+                                    "xlink:href":
+                                      "/argon/images/svgicons.svg#delete"
+                                  }
+                                })
+                              ])
+                            ]
+                          )
+                        : _vm._e()
                     ])
                   ]
                 }
@@ -11703,6 +11732,7 @@ filevue_type_template_id_d9ae71a8_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/file.vue?vue&type=template&id=d9ae71a8&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/file.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -11764,6 +11794,13 @@ filevue_type_template_id_d9ae71a8_render._withStripped = true
           newValue: valueObj
         });
       }
+    },
+    clearValue: function clearValue(valueObj) {
+      this.updateValue(valueObj, {
+        id: '',
+        alt: '',
+        url: ''
+      });
     },
     selectFile: function selectFile(evt, valueObj) {
       var _this = this;
@@ -16349,4 +16386,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.0ba44af06227c3d666bf.js.map
+//# sourceMappingURL=main.3781cccfa6e9b04247f0.js.map

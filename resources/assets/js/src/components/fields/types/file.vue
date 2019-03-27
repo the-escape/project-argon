@@ -20,6 +20,7 @@
                             </div>
                             <button class="o-btn o-btn--sm o-file__btn" @click="selectFile($event, valueObj)">select</button>
                         </div>
+                        <button v-if="!field.options.settings.multiple" @click.prevent="clearValue(valueObj)" data-balloon="Delete" title="Delete" class="o-confirm-btn"><svg><use xlink:href="/argon/images/svgicons.svg#delete"></use></svg></button>
                     </div>
                 </template>
             </multi>
@@ -61,6 +62,13 @@ export default {
                     newValue: valueObj
                 })
             }
+        },
+        clearValue: function(valueObj){
+            this.updateValue(valueObj, {
+                id: '',
+                alt: '',
+                url: ''
+            })
         },
         selectFile: function(evt, valueObj){
             evt.preventDefault()
