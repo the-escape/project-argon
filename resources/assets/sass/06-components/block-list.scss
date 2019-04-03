@@ -1,7 +1,9 @@
 .c-block-list {
     display: flex;
     flex-direction: column;
-    flex: 1 1 0;
+    flex: 1 1 auto;
+    height: 100%;
+    height: calc(100% - 100px);
 
     &__container {
         border: 1px solid $secondary;

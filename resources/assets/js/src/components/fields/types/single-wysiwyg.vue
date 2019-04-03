@@ -73,7 +73,7 @@ export default {
             let config = {}
 
             if(fieldConfig['format-tags']){
-                config.format_tags = fieldConfig['format-tags']
+                config.format_tags = 'p;' + fieldConfig['format-tags']
             }
 
             if(fieldConfig['height']){

@@ -18,6 +18,10 @@
         h2 + * {
             margin-top: 30px !important;
         }
+
+        .l-halves {
+            grid-template-rows: minmax(0, 100%);
+        }
     }
 
     &__group {

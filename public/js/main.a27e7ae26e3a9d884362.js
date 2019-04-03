@@ -6307,7 +6307,7 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
       var config = {};
 
       if (fieldConfig['format-tags']) {
-        config.format_tags = fieldConfig['format-tags'];
+        config.format_tags = 'p;' + fieldConfig['format-tags'];
       }
 
       if (fieldConfig['height']) {
@@ -16386,4 +16386,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.3781cccfa6e9b04247f0.js.map
+//# sourceMappingURL=main.a27e7ae26e3a9d884362.js.map
