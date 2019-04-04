@@ -157,6 +157,9 @@ export class Item {
         this.dragging = false
         this.hide = false
         this.item = item
+        this.cacheBuster = Math.random() // to cache bust images on reload
+            .toString(36)
+            .substr(2, 9)
 
         if (item) {
             const date = moment(this.item.updated_at)
@@ -166,12 +169,20 @@ export class Item {
         }
     }
 
+    updateCacheBuster () {
+        this.cacheBuster = Math.random() // to cache bust images on reload
+            .toString(36)
+            .substr(2, 9)
+    }
+
     getName () {
         return `${this.item.filename}.${this.item.extension}`
     }
 
     getUrl () {
-        return `/media/${this.item.id}/${this.item.slug}.${this.item.extension}`
+        return `/media/${this.item.id}/${this.item.slug}.${
+            this.item.extension
+        }?${this.cacheBuster}`
     }
 
     getWidth (suffix = '') {

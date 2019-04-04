@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 323 modules ***!
+  !*** ./resources/assets/js/src/index.js + 343 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -3316,8 +3316,8 @@ textvue_type_template_id_f9a45346_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/text.vue?vue&type=template&id=f9a45346&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base.vue?vue&type=template&id=58642601&
-var basevue_type_template_id_58642601_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base/index.vue?vue&type=template&id=1a3b3078&
+var basevue_type_template_id_1a3b3078_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -3346,31 +3346,19 @@ var basevue_type_template_id_58642601_render = function() {
                 fn: function(ref) {
                   var valueObj = ref.valueObj
                   return [
-                    _c(
-                      "input-icon",
-                      {
-                        attrs: {
-                          "pre-icon": _vm.icons.preIcon,
-                          "post-icon": _vm.icons.postIcon
-                        }
+                    _c("field-base", {
+                      attrs: {
+                        icons: _vm.icons,
+                        type: _vm.type,
+                        "value-obj": valueObj,
+                        "input-name": _vm.inputName
                       },
-                      [
-                        _c("input", {
-                          attrs: {
-                            type: _vm.type,
-                            id: _vm.inputName,
-                            name: _vm.inputName
-                          },
-                          domProps: { value: valueObj.value },
-                          on: {
-                            keyup: function($event) {
-                              $event.stopPropagation()
-                              _vm.updateValue(valueObj, $event.target.value)
-                            }
-                          }
-                        })
-                      ]
-                    )
+                      on: {
+                        change: function($event) {
+                          _vm.updateValue(valueObj, $event)
+                        }
+                      }
+                    })
                   ]
                 }
               }
@@ -3390,119 +3378,12 @@ var basevue_type_template_id_58642601_render = function() {
     1
   )
 }
-var basevue_type_template_id_58642601_staticRenderFns = []
-basevue_type_template_id_58642601_render._withStripped = true
+var basevue_type_template_id_1a3b3078_staticRenderFns = []
+basevue_type_template_id_1a3b3078_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base.vue?vue&type=template&id=58642601&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/index.vue?vue&type=template&id=1a3b3078&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=template&id=4ecc6a6e&
-var input_iconvue_type_template_id_4ecc6a6e_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "o-form-icon" },
-    [
-      _vm.preIcon
-        ? _c("div", { staticClass: "o-form-icon__icon" }, [
-            _vm.preIcon && _vm.preIcon.svg
-              ? _c("svg", { attrs: { xmlns: "http://www.w3.org/2000/svg" } }, [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href":
-                        "/argon/images/svgicons.svg#" + _vm.preIcon.svg
-                    }
-                  })
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.preIcon && _vm.preIcon.text
-              ? _c("span", [_vm._v(_vm._s(_vm.preIcon.text))])
-              : _vm._e()
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm._t("default"),
-      _vm._v(" "),
-      _vm.postIcon
-        ? _c("div", { staticClass: "o-form-icon__icon" }, [
-            _vm.postIcon && _vm.postIcon.svg
-              ? _c("svg", { attrs: { xmlns: "http://www.w3.org/2000/svg" } }, [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href":
-                        "/argon/images/svgicons.svg#" + _vm.postIcon.svg
-                    }
-                  })
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.postIcon && _vm.postIcon.text
-              ? _c("span", [_vm._v(_vm._s(_vm.postIcon.text))])
-              : _vm._e()
-          ])
-        : _vm._e()
-    ],
-    2
-  )
-}
-var input_iconvue_type_template_id_4ecc6a6e_staticRenderFns = []
-input_iconvue_type_template_id_4ecc6a6e_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=template&id=4ecc6a6e&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ var input_iconvue_type_script_lang_js_ = ({
-  props: ['preIcon', 'postIcon']
-});
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=script&lang=js&
- /* harmony default export */ var util_input_iconvue_type_script_lang_js_ = (input_iconvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue
-
-
-
-
-
-/* normalize component */
-
-var input_icon_component = Object(componentNormalizer["default"])(
-  util_input_iconvue_type_script_lang_js_,
-  input_iconvue_type_template_id_4ecc6a6e_render,
-  input_iconvue_type_template_id_4ecc6a6e_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var input_icon_api; }
-input_icon_component.options.__file = "resources/assets/js/src/components/fields/types/util/input-icon.vue"
-/* harmony default export */ var input_icon = (input_icon_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/util/validation.vue?vue&type=template&id=afceefb4&
 var validationvue_type_template_id_afceefb4_render = function() {
   var _vm = this
@@ -4433,7 +4314,159 @@ var field_values_component = Object(componentNormalizer["default"])(
 if (false) { var field_values_api; }
 field_values_component.options.__file = "resources/assets/js/src/components/fields/types/mixins/field-values.vue"
 /* harmony default export */ var field_values = (field_values_component.exports);
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base/base.vue?vue&type=template&id=db9adf62&
+var basevue_type_template_id_db9adf62_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "input-icon",
+    {
+      attrs: { "pre-icon": _vm.icons.preIcon, "post-icon": _vm.icons.postIcon }
+    },
+    [
+      _vm.type === "checkbox"
+        ? _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.value,
+                expression: "value"
+              }
+            ],
+            attrs: { id: _vm.inputName, name: _vm.inputName, type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.value)
+                ? _vm._i(_vm.value, null) > -1
+                : _vm.value
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.value,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.value = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.value = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.value = $$c
+                }
+              }
+            }
+          })
+        : _vm.type === "radio"
+          ? _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.value,
+                  expression: "value"
+                }
+              ],
+              attrs: { id: _vm.inputName, name: _vm.inputName, type: "radio" },
+              domProps: { checked: _vm._q(_vm.value, null) },
+              on: {
+                change: function($event) {
+                  _vm.value = null
+                }
+              }
+            })
+          : _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.value,
+                  expression: "value"
+                }
+              ],
+              attrs: { id: _vm.inputName, name: _vm.inputName, type: _vm.type },
+              domProps: { value: _vm.value },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.value = $event.target.value
+                }
+              }
+            })
+    ]
+  )
+}
+var basevue_type_template_id_db9adf62_staticRenderFns = []
+basevue_type_template_id_db9adf62_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/base.vue?vue&type=template&id=db9adf62&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=template&id=4ecc6a6e&
+var input_iconvue_type_template_id_4ecc6a6e_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "o-form-icon" },
+    [
+      _vm.preIcon
+        ? _c("div", { staticClass: "o-form-icon__icon" }, [
+            _vm.preIcon && _vm.preIcon.svg
+              ? _c("svg", { attrs: { xmlns: "http://www.w3.org/2000/svg" } }, [
+                  _c("use", {
+                    attrs: {
+                      "xlink:href":
+                        "/argon/images/svgicons.svg#" + _vm.preIcon.svg
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.preIcon && _vm.preIcon.text
+              ? _c("span", [_vm._v(_vm._s(_vm.preIcon.text))])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._t("default"),
+      _vm._v(" "),
+      _vm.postIcon
+        ? _c("div", { staticClass: "o-form-icon__icon" }, [
+            _vm.postIcon && _vm.postIcon.svg
+              ? _c("svg", { attrs: { xmlns: "http://www.w3.org/2000/svg" } }, [
+                  _c("use", {
+                    attrs: {
+                      "xlink:href":
+                        "/argon/images/svgicons.svg#" + _vm.postIcon.svg
+                    }
+                  })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.postIcon && _vm.postIcon.text
+              ? _c("span", [_vm._v(_vm._s(_vm.postIcon.text))])
+              : _vm._e()
+          ])
+        : _vm._e()
+    ],
+    2
+  )
+}
+var input_iconvue_type_template_id_4ecc6a6e_staticRenderFns = []
+input_iconvue_type_template_id_4ecc6a6e_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=template&id=4ecc6a6e&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -4450,15 +4483,120 @@ field_values_component.options.__file = "resources/assets/js/src/components/fiel
 //
 //
 //
+//
+//
+//
+//
+/* harmony default export */ var input_iconvue_type_script_lang_js_ = ({
+  props: ['preIcon', 'postIcon']
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue?vue&type=script&lang=js&
+ /* harmony default export */ var util_input_iconvue_type_script_lang_js_ = (input_iconvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/util/input-icon.vue
 
 
 
+
+
+/* normalize component */
+
+var input_icon_component = Object(componentNormalizer["default"])(
+  util_input_iconvue_type_script_lang_js_,
+  input_iconvue_type_template_id_4ecc6a6e_render,
+  input_iconvue_type_template_id_4ecc6a6e_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var input_icon_api; }
+input_icon_component.options.__file = "resources/assets/js/src/components/fields/types/util/input-icon.vue"
+/* harmony default export */ var input_icon = (input_icon_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base/base.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ var basevue_type_script_lang_js_ = ({
+  props: ['icons', 'type', 'valueObj', 'inputName'],
+  components: {
+    'input-icon': input_icon
+  },
+  data: function data() {
+    return {
+      loading: true,
+      value: ''
+    };
+  },
+  mounted: function mounted() {
+    this.value = this.valueObj.value;
+    this.loading = false;
+  },
+  watch: {
+    value: function value(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.$emit('change', newValue);
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/base.vue?vue&type=script&lang=js&
+ /* harmony default export */ var base_basevue_type_script_lang_js_ = (basevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/base.vue
+
+
+
+
+
+/* normalize component */
+
+var base_component = Object(componentNormalizer["default"])(
+  base_basevue_type_script_lang_js_,
+  basevue_type_template_id_db9adf62_render,
+  basevue_type_template_id_db9adf62_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var base_api; }
+base_component.options.__file = "resources/assets/js/src/components/fields/types/base/base.vue"
+/* harmony default export */ var base = (base_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/base/index.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ var types_basevue_type_script_lang_js_ = ({
   props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
-    'input-icon': input_icon,
+    'field-base': base,
     'validation': validation,
     'multi': multi
   },
@@ -4482,9 +4620,9 @@ field_values_component.options.__file = "resources/assets/js/src/components/fiel
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base.vue?vue&type=script&lang=js&
- /* harmony default export */ var types_basevue_type_script_lang_js_ = (basevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/index.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_types_basevue_type_script_lang_js_ = (types_basevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/base/index.vue
 
 
 
@@ -4492,10 +4630,10 @@ field_values_component.options.__file = "resources/assets/js/src/components/fiel
 
 /* normalize component */
 
-var base_component = Object(componentNormalizer["default"])(
-  types_basevue_type_script_lang_js_,
-  basevue_type_template_id_58642601_render,
-  basevue_type_template_id_58642601_staticRenderFns,
+var types_base_component = Object(componentNormalizer["default"])(
+  fields_types_basevue_type_script_lang_js_,
+  basevue_type_template_id_1a3b3078_render,
+  basevue_type_template_id_1a3b3078_staticRenderFns,
   false,
   null,
   null,
@@ -4504,11 +4642,11 @@ var base_component = Object(componentNormalizer["default"])(
 )
 
 /* hot reload */
-if (false) { var base_api; }
-base_component.options.__file = "resources/assets/js/src/components/fields/types/base.vue"
-/* harmony default export */ var base = (base_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=template&id=9775a42c&
-var textareavue_type_template_id_9775a42c_render = function() {
+if (false) { var types_base_api; }
+types_base_component.options.__file = "resources/assets/js/src/components/fields/types/base/index.vue"
+/* harmony default export */ var types_base = (types_base_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=template&id=d9a3c626&
+var textareavue_type_template_id_d9a3c626_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -4566,13 +4704,13 @@ var textareavue_type_template_id_9775a42c_render = function() {
     1
   )
 }
-var textareavue_type_template_id_9775a42c_staticRenderFns = []
-textareavue_type_template_id_9775a42c_render._withStripped = true
+var textareavue_type_template_id_d9a3c626_staticRenderFns = []
+textareavue_type_template_id_d9a3c626_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=template&id=9775a42c&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=template&id=d9a3c626&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -4617,9 +4755,9 @@ textareavue_type_template_id_9775a42c_render._withStripped = true
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=script&lang=js&
  /* harmony default export */ var types_textareavue_type_script_lang_js_ = (textareavue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue
 
 
 
@@ -4629,8 +4767,8 @@ textareavue_type_template_id_9775a42c_render._withStripped = true
 
 var textarea_component = Object(componentNormalizer["default"])(
   types_textareavue_type_script_lang_js_,
-  textareavue_type_template_id_9775a42c_render,
-  textareavue_type_template_id_9775a42c_staticRenderFns,
+  textareavue_type_template_id_d9a3c626_render,
+  textareavue_type_template_id_d9a3c626_staticRenderFns,
   false,
   null,
   null,
@@ -4640,7 +4778,7 @@ var textarea_component = Object(componentNormalizer["default"])(
 
 /* hot reload */
 if (false) { var textarea_api; }
-textarea_component.options.__file = "resources/assets/js/src/components/fields/types/textarea.vue"
+textarea_component.options.__file = "resources/assets/js/src/components/fields/types/textarea/index.vue"
 /* harmony default export */ var types_textarea = (textarea_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/text.vue?vue&type=script&lang=js&
 //
@@ -4659,7 +4797,7 @@ textarea_component.options.__file = "resources/assets/js/src/components/fields/t
 /* harmony default export */ var textvue_type_script_lang_js_ = ({
   props: ['fieldId', 'comboId', 'comboItemId'],
   components: {
-    'base-input': base,
+    'base-input': types_base,
     'textarea-input': types_textarea
   },
   computed: {
@@ -4755,7 +4893,7 @@ emailvue_type_template_id_bd2f93c8_render._withStripped = true
 /* harmony default export */ var emailvue_type_script_lang_js_ = ({
   props: ['fieldId', 'comboId', 'comboItemId'],
   components: {
-    'base-input': base
+    'base-input': types_base
   },
   computed: {
     icons: function icons() {
@@ -4837,7 +4975,7 @@ phonevue_type_template_id_34a02224_render._withStripped = true
 /* harmony default export */ var phonevue_type_script_lang_js_ = ({
   props: ['fieldId', 'comboId', 'comboItemId'],
   components: {
-    'base-input': base
+    'base-input': types_base
   },
   computed: {
     icons: function icons() {
@@ -5849,8 +5987,8 @@ var select_component = Object(componentNormalizer["default"])(
 if (false) { var select_api; }
 select_component.options.__file = "resources/assets/js/src/components/fields/types/select.vue"
 /* harmony default export */ var types_select = (select_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location.vue?vue&type=template&id=27f260e5&
-var locationvue_type_template_id_27f260e5_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location/index.vue?vue&type=template&id=b32c30b0&
+var locationvue_type_template_id_b32c30b0_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -5871,157 +6009,14 @@ var locationvue_type_template_id_27f260e5_render = function() {
             fn: function(ref) {
               var valueObj = ref.valueObj
               return [
-                _c("div", { staticClass: "o-form__set" }, [
-                  _c("div", { staticClass: "o-form__set-title" }, [
-                    _c(
-                      "label",
-                      {
-                        attrs: {
-                          for:
-                            _vm.inputNameMultiValue +
-                            "[" +
-                            valueObj.id +
-                            "][latitude]"
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.name))]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "o-form__set-container" }, [
-                    _c(
-                      "div",
-                      { staticClass: "o-form__group" },
-                      [
-                        _c(
-                          "validation",
-                          {
-                            attrs: {
-                              "status-error": _vm.errors && _vm.errors.latitude,
-                              "input-name":
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][latitude]"
-                            }
-                          },
-                          [
-                            _c(
-                              "label",
-                              {
-                                attrs: {
-                                  for:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][latitude]"
-                                }
-                              },
-                              [_vm._v("Latitude")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][latitude]",
-                                name:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][latitude]"
-                              },
-                              domProps: {
-                                value: valueObj.value && valueObj.value.latitude
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "latitude"
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "o-form__group" },
-                      [
-                        _c(
-                          "validation",
-                          {
-                            attrs: {
-                              "status-error":
-                                _vm.errors && _vm.errors.longitude,
-                              "input-name":
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][longitude]"
-                            }
-                          },
-                          [
-                            _c(
-                              "label",
-                              {
-                                attrs: {
-                                  for:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][longitude]"
-                                }
-                              },
-                              [_vm._v("Longitude")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              attrs: {
-                                type: "text",
-                                id:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][longitude]",
-                                name:
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][longitude]"
-                              },
-                              domProps: {
-                                value:
-                                  valueObj.value && valueObj.value.longitude
-                              },
-                              on: {
-                                keyup: function($event) {
-                                  $event.stopPropagation()
-                                  _vm.updateValue(
-                                    valueObj,
-                                    $event.target.value,
-                                    "longitude"
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                ])
+                _c("field-location", {
+                  attrs: {
+                    "field-id": _vm.fieldId,
+                    "combo-id": _vm.comboId,
+                    "combo-item-id": _vm.comboItemId,
+                    "value-obj": valueObj
+                  }
+                })
               ]
             }
           }
@@ -6038,116 +6033,283 @@ var locationvue_type_template_id_27f260e5_render = function() {
     1
   )
 }
-var locationvue_type_template_id_27f260e5_staticRenderFns = []
-locationvue_type_template_id_27f260e5_render._withStripped = true
+var locationvue_type_template_id_b32c30b0_staticRenderFns = []
+locationvue_type_template_id_b32c30b0_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location.vue?vue&type=template&id=27f260e5&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/index.vue?vue&type=template&id=b32c30b0&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location/location.vue?vue&type=template&id=abfa8c62&
+var locationvue_type_template_id_abfa8c62_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "o-form__set" }, [
+    _c("div", { staticClass: "o-form__set-title" }, [
+      _c(
+        "label",
+        {
+          attrs: {
+            for: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][latitude]"
+          }
+        },
+        [_vm._v(_vm._s(_vm.name))]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "o-form__set-container" }, [
+      _c(
+        "div",
+        { staticClass: "o-form__group" },
+        [
+          _c(
+            "validation",
+            {
+              attrs: {
+                "status-error": _vm.errors && _vm.errors.latitude,
+                "input-name":
+                  _vm.inputNameMultiValue +
+                  "[" +
+                  _vm.valueObj.id +
+                  "][latitude]"
+              }
+            },
+            [
+              _c(
+                "label",
+                {
+                  attrs: {
+                    for:
+                      _vm.inputNameMultiValue +
+                      "[" +
+                      _vm.valueObj.id +
+                      "][latitude]"
+                  }
+                },
+                [_vm._v("Latitude")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.latitude,
+                    expression: "latitude"
+                  }
+                ],
+                attrs: {
+                  type: "text",
+                  id:
+                    _vm.inputNameMultiValue +
+                    "[" +
+                    _vm.valueObj.id +
+                    "][latitude]",
+                  name:
+                    _vm.inputNameMultiValue +
+                    "[" +
+                    _vm.valueObj.id +
+                    "][latitude]"
+                },
+                domProps: { value: _vm.latitude },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.latitude = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "o-form__group" },
+        [
+          _c(
+            "validation",
+            {
+              attrs: {
+                "status-error": _vm.errors && _vm.errors.longitude,
+                "input-name":
+                  _vm.inputNameMultiValue +
+                  "[" +
+                  _vm.valueObj.id +
+                  "][longitude]"
+              }
+            },
+            [
+              _c(
+                "label",
+                {
+                  attrs: {
+                    for:
+                      _vm.inputNameMultiValue +
+                      "[" +
+                      _vm.valueObj.id +
+                      "][longitude]"
+                  }
+                },
+                [_vm._v("Longitude")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.longitude,
+                    expression: "longitude"
+                  }
+                ],
+                attrs: {
+                  type: "text",
+                  id:
+                    _vm.inputNameMultiValue +
+                    "[" +
+                    _vm.valueObj.id +
+                    "][longitude]",
+                  name:
+                    _vm.inputNameMultiValue +
+                    "[" +
+                    _vm.valueObj.id +
+                    "][longitude]"
+                },
+                domProps: { value: _vm.longitude },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.longitude = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        ],
+        1
+      )
+    ])
+  ])
+}
+var locationvue_type_template_id_abfa8c62_staticRenderFns = []
+locationvue_type_template_id_abfa8c62_render._withStripped = true
 
 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/location.vue?vue&type=template&id=abfa8c62&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location/location.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ var locationvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
   data: function data() {
     return {
-      latIcon: {
-        preIcon: {
-          text: 'Lat'
-        },
-        postIcon: false
-      },
-      lngIcon: {
-        preIcon: {
-          text: 'Lng'
-        },
-        postIcon: false
-      }
+      loading: true,
+      latitude: '',
+      longitude: ''
     };
   },
-  components: {
-    'input-icon': input_icon,
-    'validation': validation,
-    'multi': multi
+  mounted: function mounted() {
+    if (this.valueObj.value) {
+      this.latitude = this.valueObj.value.latitude;
+      this.longitude = this.valueObj.value.longitude;
+    }
+
+    this.loading = false;
   },
-  methods: {
-    updateValue: function updateValue(valueObj, newValue, prop) {
-      if (!valueObj.value) {
-        valueObj.value = {};
+  watch: {
+    latitude: function latitude(newValue) {
+      if (this.loading) {
+        return;
       }
 
-      valueObj.value[prop] = newValue;
+      this.updateValue(newValue, 'latitude');
+    },
+    longitude: function longitude(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'longitude');
+    }
+  },
+  components: {
+    'validation': validation
+  },
+  methods: {
+    updateValue: function updateValue(newValue, prop) {
+      if (!this.valueObj.value) {
+        this.valueObj.value = {};
+      }
+
+      this.valueObj.value[prop] = newValue;
 
       if (this.comboId) {
         this.$store.commit('updateComboFieldValue', {
           fieldID: this.fieldId,
           comboID: this.comboId,
           comboItemId: this.comboItemId,
-          newValue: valueObj
+          newValue: this.valueObj
         });
       } else {
         this.$store.commit('updateValue', {
           fieldID: this.fieldId,
-          newValue: valueObj
+          newValue: this.valueObj
         });
       }
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location.vue?vue&type=script&lang=js&
- /* harmony default export */ var types_locationvue_type_script_lang_js_ = (locationvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/location.vue?vue&type=script&lang=js&
+ /* harmony default export */ var location_locationvue_type_script_lang_js_ = (locationvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/location.vue
 
 
 
@@ -6156,9 +6318,9 @@ locationvue_type_template_id_27f260e5_render._withStripped = true
 /* normalize component */
 
 var location_component = Object(componentNormalizer["default"])(
-  types_locationvue_type_script_lang_js_,
-  locationvue_type_template_id_27f260e5_render,
-  locationvue_type_template_id_27f260e5_staticRenderFns,
+  location_locationvue_type_script_lang_js_,
+  locationvue_type_template_id_abfa8c62_render,
+  locationvue_type_template_id_abfa8c62_staticRenderFns,
   false,
   null,
   null,
@@ -6168,8 +6330,58 @@ var location_component = Object(componentNormalizer["default"])(
 
 /* hot reload */
 if (false) { var location_api; }
-location_component.options.__file = "resources/assets/js/src/components/fields/types/location.vue"
-/* harmony default export */ var types_location = (location_component.exports);
+location_component.options.__file = "resources/assets/js/src/components/fields/types/location/location.vue"
+/* harmony default export */ var location_location = (location_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/location/index.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ var types_locationvue_type_script_lang_js_ = ({
+  props: ['fieldId', 'comboId', 'comboItemId'],
+  mixins: [field_values],
+  components: {
+    'validation': validation,
+    'multi': multi,
+    'field-location': location_location
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/index.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_types_locationvue_type_script_lang_js_ = (types_locationvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/location/index.vue
+
+
+
+
+
+/* normalize component */
+
+var types_location_component = Object(componentNormalizer["default"])(
+  fields_types_locationvue_type_script_lang_js_,
+  locationvue_type_template_id_b32c30b0_render,
+  locationvue_type_template_id_b32c30b0_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var types_location_api; }
+types_location_component.options.__file = "resources/assets/js/src/components/fields/types/location/index.vue"
+/* harmony default export */ var types_location = (types_location_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/wysiwyg.vue?vue&type=template&id=0575760d&
 var wysiwygvue_type_template_id_0575760d_render = function() {
   var _vm = this
@@ -6371,8 +6583,13 @@ function mountEditor() {
   CKEDITOR.replace(this.textareaElement, this.config);
   this.wysiwygInstance = this.textareaElement.name;
   CKEDITOR.instances[this.wysiwygInstance].setData(this.valueObj.value);
+  this.$el.value = this.valueObj.value;
   CKEDITOR.instances[this.wysiwygInstance].on('change', function () {
-    _this2.updateValue(CKEDITOR.instances[_this2.wysiwygInstance].getData());
+    var data = CKEDITOR.instances[_this2.wysiwygInstance].getData();
+
+    _this2.updateValue(data);
+
+    _this2.$el.value = data;
   });
 }
 
@@ -6476,8 +6693,8 @@ var wysiwyg_component = Object(componentNormalizer["default"])(
 if (false) { var wysiwyg_api; }
 wysiwyg_component.options.__file = "resources/assets/js/src/components/fields/types/wysiwyg.vue"
 /* harmony default export */ var wysiwyg = (wysiwyg_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button.vue?vue&type=template&id=550447e2&
-var buttonvue_type_template_id_550447e2_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button/index.vue?vue&type=template&id=237fdce5&
+var buttonvue_type_template_id_237fdce5_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -6498,406 +6715,14 @@ var buttonvue_type_template_id_550447e2_render = function() {
             fn: function(ref) {
               var valueObj = ref.valueObj
               return [
-                _c("div", { staticClass: "o-form__set" }, [
-                  _c("div", { staticClass: "o-form__set-title" }, [
-                    _c(
-                      "label",
-                      {
-                        attrs: {
-                          for:
-                            _vm.inputNameMultiValue +
-                            "[" +
-                            valueObj.id +
-                            "][label]"
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.name))]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "o-form__set-container" },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "o-form__group" },
-                        [
-                          _c(
-                            "validation",
-                            {
-                              attrs: {
-                                "status-error": _vm.errors && _vm.errors.label,
-                                "input-name":
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][label]"
-                              }
-                            },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  attrs: {
-                                    for:
-                                      _vm.inputNameMultiValue +
-                                      "[" +
-                                      valueObj.id +
-                                      "][label]"
-                                  }
-                                },
-                                [_vm._v("Label")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: {
-                                  type: "text",
-                                  id:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][label]",
-                                  name:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][label]"
-                                },
-                                domProps: {
-                                  value: valueObj.value && valueObj.value.label
-                                },
-                                on: {
-                                  keyup: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.updateValue(
-                                      valueObj,
-                                      $event.target.value,
-                                      "label"
-                                    )
-                                  }
-                                }
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "o-form__group" },
-                        [
-                          _c(
-                            "validation",
-                            {
-                              attrs: {
-                                "status-error": _vm.errors && _vm.errors.url,
-                                "input-name":
-                                  _vm.inputNameMultiValue +
-                                  "[" +
-                                  valueObj.id +
-                                  "][url]"
-                              }
-                            },
-                            [
-                              _c(
-                                "label",
-                                {
-                                  attrs: {
-                                    for:
-                                      _vm.inputNameMultiValue +
-                                      "[" +
-                                      valueObj.id +
-                                      "][url]"
-                                  }
-                                },
-                                [_vm._v("Url")]
-                              ),
-                              _vm._v(" "),
-                              _c("input", {
-                                attrs: {
-                                  type: "text",
-                                  id:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][url]",
-                                  name:
-                                    _vm.inputNameMultiValue +
-                                    "[" +
-                                    valueObj.id +
-                                    "][url]"
-                                },
-                                domProps: {
-                                  value: valueObj.value && valueObj.value.url
-                                },
-                                on: {
-                                  keyup: function($event) {
-                                    $event.stopPropagation()
-                                    _vm.updateValue(
-                                      valueObj,
-                                      $event.target.value,
-                                      "url"
-                                    )
-                                  }
-                                }
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "transition",
-                        {
-                          attrs: {
-                            "enter-active-class": "collapsing",
-                            "leave-active-class": "collapsing"
-                          },
-                          on: {
-                            enter: _vm.enter,
-                            afterEnter: _vm.afterEnter,
-                            leave: _vm.leave,
-                            afterLeave: _vm.afterLeave
-                          }
-                        },
-                        [
-                          _vm.show
-                            ? _c(
-                                "div",
-                                { staticClass: "o-form__set-accordion" },
-                                [
-                                  _c(
-                                    "div",
-                                    { staticClass: "o-form__group" },
-                                    [
-                                      _c(
-                                        "validation",
-                                        {
-                                          attrs: {
-                                            "status-error":
-                                              _vm.errors && _vm.errors.class,
-                                            "input-name":
-                                              _vm.inputNameMultiValue +
-                                              "[" +
-                                              valueObj.id +
-                                              "][class]"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "label",
-                                            {
-                                              attrs: {
-                                                for:
-                                                  _vm.inputNameMultiValue +
-                                                  "[" +
-                                                  valueObj.id +
-                                                  "][class]"
-                                              }
-                                            },
-                                            [_vm._v("Class")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            attrs: {
-                                              type: "text",
-                                              id:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][class]",
-                                              name:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][class]"
-                                            },
-                                            domProps: {
-                                              value:
-                                                valueObj.value &&
-                                                valueObj.value.class
-                                            },
-                                            on: {
-                                              keyup: function($event) {
-                                                $event.stopPropagation()
-                                                _vm.updateValue(
-                                                  valueObj,
-                                                  $event.target.value,
-                                                  "class"
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "o-form__group" },
-                                    [
-                                      _c(
-                                        "validation",
-                                        {
-                                          attrs: {
-                                            "status-error":
-                                              _vm.errors && _vm.errors.id,
-                                            "input-name":
-                                              _vm.inputNameMultiValue +
-                                              "[" +
-                                              valueObj.id +
-                                              "][id]"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "label",
-                                            {
-                                              attrs: {
-                                                for:
-                                                  _vm.inputNameMultiValue +
-                                                  "[" +
-                                                  valueObj.id +
-                                                  "][id]"
-                                              }
-                                            },
-                                            [_vm._v("ID")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            attrs: {
-                                              type: "text",
-                                              id:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][id]",
-                                              name:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][id]"
-                                            },
-                                            domProps: {
-                                              value:
-                                                valueObj.value &&
-                                                valueObj.value.id
-                                            },
-                                            on: {
-                                              keyup: function($event) {
-                                                $event.stopPropagation()
-                                                _vm.updateValue(
-                                                  valueObj,
-                                                  $event.target.value,
-                                                  "id"
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "o-form__group" },
-                                    [
-                                      _c(
-                                        "validation",
-                                        {
-                                          attrs: {
-                                            "status-error":
-                                              _vm.errors && _vm.errors.target,
-                                            "input-name":
-                                              _vm.inputNameMultiValue +
-                                              "[" +
-                                              valueObj.id +
-                                              "][target]"
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "label",
-                                            {
-                                              attrs: {
-                                                for:
-                                                  _vm.inputNameMultiValue +
-                                                  "[" +
-                                                  valueObj.id +
-                                                  "][target]"
-                                              }
-                                            },
-                                            [_vm._v("Target")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("input", {
-                                            attrs: {
-                                              type: "text",
-                                              id:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][target]",
-                                              name:
-                                                _vm.inputNameMultiValue +
-                                                "[" +
-                                                valueObj.id +
-                                                "][target]"
-                                            },
-                                            domProps: {
-                                              value:
-                                                valueObj.value &&
-                                                valueObj.value.target
-                                            },
-                                            on: {
-                                              keyup: function($event) {
-                                                $event.stopPropagation()
-                                                _vm.updateValue(
-                                                  valueObj,
-                                                  $event.target.value,
-                                                  "target"
-                                                )
-                                              }
-                                            }
-                                          })
-                                        ]
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ]
-                              )
-                            : _vm._e()
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "o-btn o-btn--sm",
-                          on: {
-                            click: function($event) {
-                              _vm.toggle($event)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            _vm._s(_vm.show ? "less" : "more") + " options"
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ])
+                _c("field-button", {
+                  attrs: {
+                    "value-obj": valueObj,
+                    "field-id": _vm.fieldId,
+                    "combo-id": _vm.comboId,
+                    "combo-item-id": _vm.comboItemId
+                  }
+                })
               ]
             }
           }
@@ -6914,151 +6739,596 @@ var buttonvue_type_template_id_550447e2_render = function() {
     1
   )
 }
-var buttonvue_type_template_id_550447e2_staticRenderFns = []
-buttonvue_type_template_id_550447e2_render._withStripped = true
+var buttonvue_type_template_id_237fdce5_staticRenderFns = []
+buttonvue_type_template_id_237fdce5_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button.vue?vue&type=template&id=550447e2&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/index.vue?vue&type=template&id=237fdce5&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=template&id=37f285af&
+var buttonvue_type_template_id_37f285af_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "o-form__set" }, [
+    _c("div", { staticClass: "o-form__set-title" }, [
+      _c(
+        "label",
+        {
+          attrs: {
+            for: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][label]"
+          }
+        },
+        [_vm._v(_vm._s(_vm.name))]
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "o-form__set-container" },
+      [
+        _c(
+          "div",
+          { staticClass: "o-form__group" },
+          [
+            _c(
+              "validation",
+              {
+                attrs: {
+                  "status-error": _vm.errors && _vm.errors.label,
+                  "input-name":
+                    _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][label]"
+                }
+              },
+              [
+                _c(
+                  "label",
+                  {
+                    attrs: {
+                      for:
+                        _vm.inputNameMultiValue +
+                        "[" +
+                        _vm.valueObj.id +
+                        "][label]"
+                    }
+                  },
+                  [_vm._v("Label")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.label,
+                      expression: "label"
+                    }
+                  ],
+                  attrs: {
+                    type: "text",
+                    id:
+                      _vm.inputNameMultiValue +
+                      "[" +
+                      _vm.valueObj.id +
+                      "][label]",
+                    name:
+                      _vm.inputNameMultiValue +
+                      "[" +
+                      _vm.valueObj.id +
+                      "][label]"
+                  },
+                  domProps: { value: _vm.label },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.label = $event.target.value
+                    }
+                  }
+                })
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "o-form__group" },
+          [
+            _c(
+              "validation",
+              {
+                attrs: {
+                  "status-error": _vm.errors && _vm.errors.url,
+                  "input-name":
+                    _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][url]"
+                }
+              },
+              [
+                _c(
+                  "label",
+                  {
+                    attrs: {
+                      for:
+                        _vm.inputNameMultiValue +
+                        "[" +
+                        _vm.valueObj.id +
+                        "][url]"
+                    }
+                  },
+                  [_vm._v("Url")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.url,
+                      expression: "url"
+                    }
+                  ],
+                  attrs: {
+                    type: "text",
+                    id:
+                      _vm.inputNameMultiValue +
+                      "[" +
+                      _vm.valueObj.id +
+                      "][url]",
+                    name:
+                      _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][url]"
+                  },
+                  domProps: { value: _vm.url },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.url = $event.target.value
+                    }
+                  }
+                })
+              ]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "transition",
+          {
+            attrs: {
+              "enter-active-class": "collapsing",
+              "leave-active-class": "collapsing"
+            },
+            on: {
+              enter: _vm.enter,
+              afterEnter: _vm.afterEnter,
+              leave: _vm.leave,
+              afterLeave: _vm.afterLeave
+            }
+          },
+          [
+            _vm.show
+              ? _c("div", { staticClass: "o-form__set-accordion" }, [
+                  _c(
+                    "div",
+                    { staticClass: "o-form__group" },
+                    [
+                      _c(
+                        "validation",
+                        {
+                          attrs: {
+                            "status-error": _vm.errors && _vm.errors.class,
+                            "input-name":
+                              _vm.inputNameMultiValue +
+                              "[" +
+                              _vm.valueObj.id +
+                              "][class]"
+                          }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              attrs: {
+                                for:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  _vm.valueObj.id +
+                                  "][class]"
+                              }
+                            },
+                            [_vm._v("Class")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.btnclass,
+                                expression: "btnclass"
+                              }
+                            ],
+                            attrs: {
+                              type: "text",
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][class]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][class]"
+                            },
+                            domProps: { value: _vm.btnclass },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.btnclass = $event.target.value
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "o-form__group" },
+                    [
+                      _c(
+                        "validation",
+                        {
+                          attrs: {
+                            "status-error": _vm.errors && _vm.errors.id,
+                            "input-name":
+                              _vm.inputNameMultiValue +
+                              "[" +
+                              _vm.valueObj.id +
+                              "][id]"
+                          }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              attrs: {
+                                for:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  _vm.valueObj.id +
+                                  "][id]"
+                              }
+                            },
+                            [_vm._v("ID")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.id,
+                                expression: "id"
+                              }
+                            ],
+                            attrs: {
+                              type: "text",
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][id]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][id]"
+                            },
+                            domProps: { value: _vm.id },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.id = $event.target.value
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "o-form__group" },
+                    [
+                      _c(
+                        "validation",
+                        {
+                          attrs: {
+                            "status-error": _vm.errors && _vm.errors.target,
+                            "input-name":
+                              _vm.inputNameMultiValue +
+                              "[" +
+                              _vm.valueObj.id +
+                              "][target]"
+                          }
+                        },
+                        [
+                          _c(
+                            "label",
+                            {
+                              attrs: {
+                                for:
+                                  _vm.inputNameMultiValue +
+                                  "[" +
+                                  _vm.valueObj.id +
+                                  "][target]"
+                              }
+                            },
+                            [_vm._v("Target")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.target,
+                                expression: "target"
+                              }
+                            ],
+                            attrs: {
+                              type: "text",
+                              id:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][target]",
+                              name:
+                                _vm.inputNameMultiValue +
+                                "[" +
+                                _vm.valueObj.id +
+                                "][target]"
+                            },
+                            domProps: { value: _vm.target },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.target = $event.target.value
+                              }
+                            }
+                          })
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "o-btn o-btn--sm",
+            on: {
+              click: function($event) {
+                _vm.toggle($event)
+              }
+            }
+          },
+          [_vm._v(_vm._s(_vm.show ? "less" : "more") + " options")]
+        )
+      ],
+      1
+    )
+  ])
+}
+var buttonvue_type_template_id_37f285af_staticRenderFns = []
+buttonvue_type_template_id_37f285af_render._withStripped = true
 
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=template&id=37f285af&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ var buttonvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  components: {
+    'input-icon': input_icon,
+    'validation': validation
+  },
   mixins: [field_values],
   data: function data() {
     return {
       show: false,
-      transitioning: false
+      transitioning: false,
+      loading: true,
+      label: '',
+      url: '',
+      btnclass: '',
+      id: '',
+      target: ''
     };
   },
-  components: {
-    'input-icon': input_icon,
-    'validation': validation,
-    'multi': multi
+  mounted: function mounted() {
+    if (this.valueObj.value) {
+      this.label = this.valueObj.value.label;
+      this.url = this.valueObj.value.url;
+      this.btnclass = this.valueObj.value.class;
+      this.id = this.valueObj.value.id;
+      this.target = this.valueObj.value.target;
+    }
+
+    this.loading = false;
+  },
+  watch: {
+    label: function label(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'label');
+    },
+    url: function url(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'url');
+    },
+    btnclass: function btnclass(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'class');
+    },
+    id: function id(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'id');
+    },
+    target: function target(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      this.updateValue(newValue, 'target');
+    }
   },
   methods: {
-    updateValue: function updateValue(valueObj, newValue, prop) {
-      if (!valueObj.value) {
-        valueObj.value = {};
+    updateValue: function updateValue(newValue, prop) {
+      var _this = this;
+
+      if (!this.valueObj.value) {
+        this.valueObj.value = {};
       }
 
-      valueObj.value[prop] = newValue;
-
-      if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
-          newValue: valueObj
-        });
-      } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
-          newValue: valueObj
-        });
-      }
+      this.valueObj.value[prop] = newValue;
+      this.$nextTick(function () {
+        if (_this.comboId) {
+          _this.$store.commit('updateComboFieldValue', {
+            fieldID: _this.fieldId,
+            comboID: _this.comboId,
+            comboItemId: _this.comboItemId,
+            newValue: _this.valueObj
+          });
+        } else {
+          _this.$store.commit('updateValue', {
+            fieldID: _this.fieldId,
+            newValue: _this.valueObj
+          });
+        }
+      });
     },
     toggle: function toggle(evt) {
       evt.preventDefault();
@@ -7092,9 +7362,9 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button.vue?vue&type=script&lang=js&
- /* harmony default export */ var types_buttonvue_type_script_lang_js_ = (buttonvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=script&lang=js&
+ /* harmony default export */ var button_buttonvue_type_script_lang_js_ = (buttonvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/button.vue
 
 
 
@@ -7103,9 +7373,9 @@ buttonvue_type_template_id_550447e2_render._withStripped = true
 /* normalize component */
 
 var button_component = Object(componentNormalizer["default"])(
-  types_buttonvue_type_script_lang_js_,
-  buttonvue_type_template_id_550447e2_render,
-  buttonvue_type_template_id_550447e2_staticRenderFns,
+  button_buttonvue_type_script_lang_js_,
+  buttonvue_type_template_id_37f285af_render,
+  buttonvue_type_template_id_37f285af_staticRenderFns,
   false,
   null,
   null,
@@ -7115,8 +7385,56 @@ var button_component = Object(componentNormalizer["default"])(
 
 /* hot reload */
 if (false) { var button_api; }
-button_component.options.__file = "resources/assets/js/src/components/fields/types/button.vue"
-/* harmony default export */ var types_button = (button_component.exports);
+button_component.options.__file = "resources/assets/js/src/components/fields/types/button/button.vue"
+/* harmony default export */ var button_button = (button_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button/index.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ var types_buttonvue_type_script_lang_js_ = ({
+  props: ['fieldId', 'comboId', 'comboItemId'],
+  mixins: [field_values],
+  components: {
+    'multi': multi,
+    'field-button': button_button
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/index.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_types_buttonvue_type_script_lang_js_ = (types_buttonvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/index.vue
+
+
+
+
+
+/* normalize component */
+
+var types_button_component = Object(componentNormalizer["default"])(
+  fields_types_buttonvue_type_script_lang_js_,
+  buttonvue_type_template_id_237fdce5_render,
+  buttonvue_type_template_id_237fdce5_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var types_button_api; }
+types_button_component.options.__file = "resources/assets/js/src/components/fields/types/button/index.vue"
+/* harmony default export */ var types_button = (types_button_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/boolean.vue?vue&type=template&id=49a456a8&
 var booleanvue_type_template_id_49a456a8_render = function() {
   var _vm = this
@@ -7487,8 +7805,8 @@ var datetime_component = Object(componentNormalizer["default"])(
 if (false) { var datetime_api; }
 datetime_component.options.__file = "resources/assets/js/src/components/fields/types/datetime.vue"
 /* harmony default export */ var datetime = (datetime_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image.vue?vue&type=template&id=22a4c74a&
-var imagevue_type_template_id_22a4c74a_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image/index.vue?vue&type=template&id=b2a79ac4&
+var imagevue_type_template_id_b2a79ac4_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -7517,166 +7835,14 @@ var imagevue_type_template_id_22a4c74a_render = function() {
                 fn: function(ref) {
                   var valueObj = ref.valueObj
                   return [
-                    _c("div", { staticClass: "o-file" }, [
-                      _c("div", { staticClass: "o-file__preview" }, [
-                        _c("div", { staticClass: "o-file__preview-wrap" }, [
-                          _c("img", {
-                            attrs: { src: valueObj.value.url || "" }
-                          })
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "o-file__help-text" }, [
-                        _c("div", { staticClass: "o-form-icon" }, [
-                          _c("div", { staticClass: "o-form-icon__icon" }, [
-                            _c("span", [_vm._v("Alt")])
-                          ]),
-                          _vm._v(" "),
-                          _c("input", {
-                            attrs: {
-                              type: "text",
-                              id:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][alt]",
-                              name:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][alt]"
-                            },
-                            domProps: {
-                              value: valueObj.value && valueObj.value.alt
-                            },
-                            on: {
-                              keyup: function($event) {
-                                $event.stopPropagation()
-                                _vm.updateAlt(valueObj, $event.target.value)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("input", {
-                            attrs: {
-                              type: "hidden",
-                              id:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][width]",
-                              name:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][width]"
-                            },
-                            domProps: {
-                              value: valueObj.value && valueObj.value.width
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("input", {
-                            attrs: {
-                              type: "hidden",
-                              id:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][height]",
-                              name:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][height]"
-                            },
-                            domProps: {
-                              value: valueObj.value && valueObj.value.height
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("input", {
-                            attrs: {
-                              type: "hidden",
-                              id:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][url]",
-                              name:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][url]"
-                            },
-                            domProps: {
-                              value: valueObj.value && valueObj.value.url
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("input", {
-                            attrs: {
-                              type: "hidden",
-                              id:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][id]",
-                              name:
-                                _vm.inputNameMultiValue +
-                                "[" +
-                                valueObj.id +
-                                "][id]"
-                            },
-                            domProps: {
-                              value: valueObj.value && valueObj.value.id
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "o-btn o-btn--sm o-file__btn",
-                            on: {
-                              click: function($event) {
-                                _vm.selectImage($event, valueObj)
-                              }
-                            }
-                          },
-                          [_vm._v("select")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      !_vm.field.options.settings.multiple
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "o-confirm-btn",
-                              attrs: {
-                                "data-balloon": "Delete",
-                                title: "Delete"
-                              },
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  _vm.clearValue(valueObj)
-                                }
-                              }
-                            },
-                            [
-                              _c("svg", [
-                                _c("use", {
-                                  attrs: {
-                                    "xlink:href":
-                                      "/argon/images/svgicons.svg#delete"
-                                  }
-                                })
-                              ])
-                            ]
-                          )
-                        : _vm._e()
-                    ])
+                    _c("field-image", {
+                      attrs: {
+                        "field-id": _vm.fieldId,
+                        "combo-id": _vm.comboId,
+                        "combo-item-id": _vm.comboItemId,
+                        "value-obj": valueObj
+                      }
+                    })
                   ]
                 }
               }
@@ -7696,11 +7862,143 @@ var imagevue_type_template_id_22a4c74a_render = function() {
     1
   )
 }
-var imagevue_type_template_id_22a4c74a_staticRenderFns = []
-imagevue_type_template_id_22a4c74a_render._withStripped = true
+var imagevue_type_template_id_b2a79ac4_staticRenderFns = []
+imagevue_type_template_id_b2a79ac4_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image.vue?vue&type=template&id=22a4c74a&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/index.vue?vue&type=template&id=b2a79ac4&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image/image.vue?vue&type=template&id=bb1372b2&
+var imagevue_type_template_id_bb1372b2_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "o-file" }, [
+    _c("div", { staticClass: "o-file__preview" }, [
+      _c("div", { staticClass: "o-file__preview-wrap" }, [
+        _c("img", { attrs: { src: _vm.valueObj.value.url || "" } })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "o-file__help-text" }, [
+      _c("div", { staticClass: "o-form-icon" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.alt,
+              expression: "alt"
+            }
+          ],
+          attrs: {
+            type: "text",
+            id: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][alt]",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][alt]"
+          },
+          domProps: { value: _vm.alt },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.alt = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: {
+            type: "hidden",
+            id: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][width]",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][width]"
+          },
+          domProps: { value: _vm.valueObj.value && _vm.valueObj.value.width }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: {
+            type: "hidden",
+            id: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][height]",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][height]"
+          },
+          domProps: { value: _vm.valueObj.value && _vm.valueObj.value.height }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: {
+            type: "hidden",
+            id: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][url]",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][url]"
+          },
+          domProps: { value: _vm.valueObj.value && _vm.valueObj.value.url }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: {
+            type: "hidden",
+            id: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][id]",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][id]"
+          },
+          domProps: { value: _vm.valueObj.value && _vm.valueObj.value.id }
+        })
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "o-btn o-btn--sm o-file__btn",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.selectImage($event)
+            }
+          }
+        },
+        [_vm._v("select")]
+      )
+    ]),
+    _vm._v(" "),
+    !_vm.field.options.settings.multiple
+      ? _c(
+          "button",
+          {
+            staticClass: "o-confirm-btn",
+            attrs: { "data-balloon": "Delete", title: "Delete" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.clearValue($event)
+              }
+            }
+          },
+          [
+            _c("svg", [
+              _c("use", {
+                attrs: { "xlink:href": "/argon/images/svgicons.svg#delete" }
+              })
+            ])
+          ]
+        )
+      : _vm._e()
+  ])
+}
+var imagevue_type_template_id_bb1372b2_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "o-form-icon__icon" }, [
+      _c("span", [_vm._v("Alt")])
+    ])
+  }
+]
+imagevue_type_template_id_bb1372b2_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/image.vue?vue&type=template&id=bb1372b2&
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/App.vue?vue&type=template&id=639a027f&
 var Appvue_type_template_id_639a027f_render = function() {
@@ -9233,6 +9531,20 @@ function media_remove(data, cb) {
     cb(e);
   });
 }
+function update(_ref) {
+  var id = _ref.id,
+      file = _ref.file;
+  var formData = new FormData();
+  formData.append('file', file);
+  formData.append('mediaID', id);
+  return vue_default.a.http.post('/admin/media/api/update', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(function (response) {
+    return response.body;
+  });
+}
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/FileList.vue?vue&type=script&lang=js&
 function FileListvue_type_script_lang_js_toConsumableArray(arr) { return FileListvue_type_script_lang_js_arrayWithoutHoles(arr) || FileListvue_type_script_lang_js_iterableToArray(arr) || FileListvue_type_script_lang_js_nonIterableSpread(); }
 
@@ -9975,6 +10287,26 @@ var Editvue_type_template_id_640e3401_render = function() {
           _c("img", {
             attrs: { src: _vm.editItem.getUrl(), alt: _vm.editItem.getName() }
           })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "c-edit__replace-image" }, [
+          _c("span", [_vm._v("Overwrite existing asset?")]),
+          _vm._v(" "),
+          _c("input", {
+            ref: "editImageInput",
+            attrs: { type: "file", hidden: "", id: "editImage" },
+            on: {
+              change: function($event) {
+                _vm.updateImage($event)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "o-btn o-btn--xs", attrs: { for: "editImage" } },
+            [_vm._v("choose file")]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -10018,7 +10350,11 @@ var Editvue_type_template_id_640e3401_render = function() {
         "button",
         { staticClass: "o-btn o-btn--sm", on: { click: _vm.closeEdit } },
         [_vm._v("cancel")]
-      )
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "o-btn o-btn--sm o-btn--primary" }, [
+        _vm._v("save")
+      ])
     ])
   ])
 }
@@ -10098,12 +10434,24 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
 //
 //
 //
+//
 
 /* harmony default export */ var Editvue_type_script_lang_js_ = ({
   computed: Editvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['editItem'])),
   methods: {
     closeEdit: function closeEdit() {
       this.$store.dispatch('editItem');
+    },
+    updateImage: function updateImage(evt) {
+      if (!evt.target.files.length) {
+        return;
+      }
+
+      this.$store.dispatch('updateMediaItem', {
+        item: this.editItem,
+        file: evt.target.files[0]
+      });
+      this.$refs.editImageInput.value = '';
     }
   }
 });
@@ -10765,6 +11113,8 @@ function () {
     this.dragging = false;
     this.hide = false;
     this.item = item;
+    this.cacheBuster = Math.random() // to cache bust images on reload
+    .toString(36).substr(2, 9);
 
     if (item) {
       var date = moment_default()(this.item.updated_at);
@@ -10773,6 +11123,12 @@ function () {
   }
 
   _createClass(Item, [{
+    key: "updateCacheBuster",
+    value: function updateCacheBuster() {
+      this.cacheBuster = Math.random() // to cache bust images on reload
+      .toString(36).substr(2, 9);
+    }
+  }, {
     key: "getName",
     value: function getName() {
       return "".concat(this.item.filename, ".").concat(this.item.extension);
@@ -10780,7 +11136,7 @@ function () {
   }, {
     key: "getUrl",
     value: function getUrl() {
-      return "/media/".concat(this.item.id, "/").concat(this.item.slug, ".").concat(this.item.extension);
+      return "/media/".concat(this.item.id, "/").concat(this.item.slug, ".").concat(this.item.extension, "?").concat(this.cacheBuster);
     }
   }, {
     key: "getWidth",
@@ -11035,26 +11391,7 @@ vue_default.a.use(vuex_esm["default"]);
         });
       },
       loadFoldersByID: function loadFoldersByID(state, id) {
-        var folder = state.folderMap[id];
-
-        if (!folder) {
-          return;
-        }
-
-        getFolders(folder.id, function (f) {
-          state.folder.active = false;
-          state.active.active = false;
-          state.back = state.active;
-          folder.setItems(f.items);
-          folder.setChildren(f.children);
-          folder.active = true;
-          state.active = folder;
-          state.search.reset();
-          state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
-            acc[folder.id] = folder;
-            return acc;
-          }, {}));
-        });
+        _loadFoldersByID(state, id);
       },
       loadLibrary: function loadLibrary(state, id) {
         getFoldersData(function (data) {
@@ -11335,82 +11672,133 @@ vue_default.a.use(vuex_esm["default"]);
             timeout: 3500
           }).show();
         });
+      },
+      updateMediaItem: function updateMediaItem(state, _ref4) {
+        var item = _ref4.item,
+            file = _ref4.file;
+        update({
+          id: item.item.id,
+          file: file
+        }).then(function (data) {
+          new noty_default.a({
+            text: data.messages,
+            type: 'success',
+            timeout: 3500
+          }).show();
+
+          _loadFoldersByID(state, item.folder);
+
+          item.updateCacheBuster();
+        }).catch(function (e) {
+          new noty_default.a({
+            text: e.body.errors,
+            type: 'error',
+            timeout: 3500
+          }).show();
+        });
       }
     },
     actions: {
-      folderSelected: function folderSelected(_ref4, _ref5) {
-        var commit = _ref4.commit;
-        var folder = _ref5.folder,
-            _ref5$pushState = _ref5.pushState,
-            pushState = _ref5$pushState === void 0 ? true : _ref5$pushState;
+      folderSelected: function folderSelected(_ref5, _ref6) {
+        var commit = _ref5.commit;
+        var folder = _ref6.folder,
+            _ref6$pushState = _ref6.pushState,
+            pushState = _ref6$pushState === void 0 ? true : _ref6$pushState;
         commit('loadFolders', {
           folder: folder,
           pushState: pushState
         });
       },
-      loadLibrary: function loadLibrary(_ref6, folderID) {
-        var commit = _ref6.commit;
+      loadLibrary: function loadLibrary(_ref7, folderID) {
+        var commit = _ref7.commit;
         commit('loadLibrary', folderID);
       },
-      search: function search(_ref7, keywords) {
-        var commit = _ref7.commit;
+      search: function search(_ref8, keywords) {
+        var commit = _ref8.commit;
         commit('search', keywords);
       },
-      editItem: function editItem(_ref8, item) {
-        var commit = _ref8.commit;
+      editItem: function editItem(_ref9, item) {
+        var commit = _ref9.commit;
         commit('editItem', item);
       },
-      setLayout: function setLayout(_ref9, layout) {
-        var commit = _ref9.commit;
+      setLayout: function setLayout(_ref10, layout) {
+        var commit = _ref10.commit;
         commit('setLayout', layout);
       },
-      createFolder: function createFolder(_ref10, payload) {
-        var commit = _ref10.commit;
+      createFolder: function createFolder(_ref11, payload) {
+        var commit = _ref11.commit;
         commit('createFolder', payload);
       },
-      editFolder: function editFolder(_ref11, payload) {
-        var commit = _ref11.commit;
+      editFolder: function editFolder(_ref12, payload) {
+        var commit = _ref12.commit;
         commit('editFolder', payload);
       },
-      removeFolder: function removeFolder(_ref12, active) {
-        var commit = _ref12.commit;
+      removeFolder: function removeFolder(_ref13, active) {
+        var commit = _ref13.commit;
         commit('removeFolder', active);
       },
-      removeItem: function removeItem(_ref13, item) {
-        var commit = _ref13.commit;
+      removeItem: function removeItem(_ref14, item) {
+        var commit = _ref14.commit;
         commit('removeItem', item);
       },
-      move: function move(_ref14, payload) {
-        var commit = _ref14.commit;
+      move: function move(_ref15, payload) {
+        var commit = _ref15.commit;
         commit('move', payload);
       },
-      folderSelectByID: function folderSelectByID(_ref15, id) {
-        var commit = _ref15.commit;
+      folderSelectByID: function folderSelectByID(_ref16, id) {
+        var commit = _ref16.commit;
         commit('loadFoldersByID', id);
       },
-      toggleUploads: function toggleUploads(_ref16) {
-        var commit = _ref16.commit;
+      toggleUploads: function toggleUploads(_ref17) {
+        var commit = _ref17.commit;
         commit('toggleUploads');
       },
-      uploadResult: function uploadResult(_ref17, payload) {
-        var commit = _ref17.commit;
+      uploadResult: function uploadResult(_ref18, payload) {
+        var commit = _ref18.commit;
         commit('uploadResult', payload);
       },
-      recentUploads: function recentUploads(_ref18) {
-        var commit = _ref18.commit;
+      recentUploads: function recentUploads(_ref19) {
+        var commit = _ref19.commit;
         commit('recentUploads');
       },
-      remove: function remove(_ref19, payload) {
-        var commit = _ref19.commit;
+      remove: function remove(_ref20, payload) {
+        var commit = _ref20.commit;
         commit('remove', payload);
       },
-      clearNewUploadIDs: function clearNewUploadIDs(_ref20) {
-        var commit = _ref20.commit;
+      clearNewUploadIDs: function clearNewUploadIDs(_ref21) {
+        var commit = _ref21.commit;
         commit('clearNewUploadIDs');
+      },
+      updateMediaItem: function updateMediaItem(_ref22, payload) {
+        var commit = _ref22.commit;
+        commit('updateMediaItem', payload);
       }
     }
   });
 });
+
+function _loadFoldersByID(state, id) {
+  var folder = state.folderMap[id];
+
+  if (!folder) {
+    return;
+  }
+
+  getFolders(folder.id, function (f) {
+    state.folder.active = false;
+    state.active.active = false;
+    state.back = state.active;
+    folder.setItems(f.items);
+    folder.setChildren(f.children);
+    folder.active = true;
+    state.active = folder;
+    state.search.reset();
+    state.folderMap = store_objectSpread({}, state.folderMap, folder.children.reduce(function (acc, folder) {
+      acc[folder.id] = folder;
+      return acc;
+    }, {}));
+  });
+}
 // EXTERNAL MODULE: ./node_modules/vuebar/vuebar.js
 var vuebar = __webpack_require__("./node_modules/vuebar/vuebar.js");
 var vuebar_default = /*#__PURE__*/__webpack_require__.n(vuebar);
@@ -11476,7 +11864,7 @@ function PickMedia() {
     mediaLibPicker.$on('pick', resolve);
   });
 }
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image/image.vue?vue&type=script&lang=js&
 function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return imagevue_type_script_lang_js_extends.apply(this, arguments); }
 
 //
@@ -11504,75 +11892,78 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
 
 
 /* harmony default export */ var imagevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
-  components: {
-    'validation': validation,
-    'multi': multi
+  data: function data() {
+    return {
+      loading: true,
+      alt: ''
+    };
   },
   created: function created() {
     setupMedialibPicker();
   },
+  mounted: function mounted() {
+    if (this.valueObj.value) {
+      this.alt = this.valueObj.value.alt;
+    }
+
+    this.loading = false;
+  },
+  watch: {
+    alt: function alt(newValue) {
+      if (this.loading) {
+        return;
+      }
+
+      newValue = imagevue_type_script_lang_js_extends({}, this.valueObj.value, {
+        alt: newValue
+      });
+      this.updateValue(newValue);
+    }
+  },
   methods: {
-    updateValue: function updateValue(valueObj, newValue) {
-      valueObj.value = newValue;
+    updateValue: function updateValue(newValue) {
+      this.valueObj.value = newValue;
 
       if (this.comboId) {
         this.$store.commit('updateComboFieldValue', {
           fieldID: this.fieldId,
           comboID: this.comboId,
           comboItemId: this.comboItemId,
-          newValue: valueObj
+          newValue: this.valueObj
         });
       } else {
         this.$store.commit('updateValue', {
           fieldID: this.fieldId,
-          newValue: valueObj
+          newValue: this.valueObj
         });
       }
     },
-    clearValue: function clearValue(valueObj) {
-      this.updateValue(valueObj, {
+    clearValue: function clearValue() {
+      this.updateValue(this.valueObj, {
         id: '',
         alt: '',
         url: ''
       });
     },
-    updateAlt: function updateAlt(valueObj, newAlt) {
-      var newValue = imagevue_type_script_lang_js_extends({}, valueObj.value, {
-        alt: newAlt
-      });
-
-      this.updateValue(valueObj, newValue);
-    },
-    selectImage: function selectImage(evt, valueObj) {
+    selectImage: function selectImage() {
       var _this = this;
 
-      evt.preventDefault();
       PickMedia().then(function (value) {
-        _this.updateValue(valueObj, value);
+        var newValue = imagevue_type_script_lang_js_extends({}, _this.valueObj.value, value);
+
+        _this.updateValue(newValue);
       });
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image.vue?vue&type=script&lang=js&
- /* harmony default export */ var types_imagevue_type_script_lang_js_ = (imagevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/image.vue?vue&type=script&lang=js&
+ /* harmony default export */ var image_imagevue_type_script_lang_js_ = (imagevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/image.vue
 
 
 
@@ -11581,9 +11972,9 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
 /* normalize component */
 
 var image_component = Object(componentNormalizer["default"])(
-  types_imagevue_type_script_lang_js_,
-  imagevue_type_template_id_22a4c74a_render,
-  imagevue_type_template_id_22a4c74a_staticRenderFns,
+  image_imagevue_type_script_lang_js_,
+  imagevue_type_template_id_bb1372b2_render,
+  imagevue_type_template_id_bb1372b2_staticRenderFns,
   false,
   null,
   null,
@@ -11593,8 +11984,61 @@ var image_component = Object(componentNormalizer["default"])(
 
 /* hot reload */
 if (false) { var image_api; }
-image_component.options.__file = "resources/assets/js/src/components/fields/types/image.vue"
-/* harmony default export */ var types_image = (image_component.exports);
+image_component.options.__file = "resources/assets/js/src/components/fields/types/image/image.vue"
+/* harmony default export */ var image_image = (image_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/image/index.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ var types_imagevue_type_script_lang_js_ = ({
+  props: ['fieldId', 'comboId', 'comboItemId'],
+  mixins: [field_values],
+  components: {
+    'validation': validation,
+    'multi': multi,
+    'field-image': image_image
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/index.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_types_imagevue_type_script_lang_js_ = (types_imagevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/image/index.vue
+
+
+
+
+
+/* normalize component */
+
+var types_image_component = Object(componentNormalizer["default"])(
+  fields_types_imagevue_type_script_lang_js_,
+  imagevue_type_template_id_b2a79ac4_render,
+  imagevue_type_template_id_b2a79ac4_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var types_image_api; }
+types_image_component.options.__file = "resources/assets/js/src/components/fields/types/image/index.vue"
+/* harmony default export */ var types_image = (types_image_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/file.vue?vue&type=template&id=d9ae71a8&
 var filevue_type_template_id_d9ae71a8_render = function() {
   var _vm = this
@@ -11836,7 +12280,7 @@ var file_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var file_api; }
 file_component.options.__file = "resources/assets/js/src/components/fields/types/file.vue"
-/* harmony default export */ var file = (file_component.exports);
+/* harmony default export */ var types_file = (file_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/types.vue?vue&type=script&lang=js&
 //
 //
@@ -11890,7 +12334,7 @@ var typeMap = {
     'boolean-input': types_boolean,
     'datetime-input': datetime,
     'image-input': types_image,
-    'file-input': file
+    'file-input': types_file
   },
   computed: {
     type: function type() {
@@ -16386,4 +16830,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.a27e7ae26e3a9d884362.js.map
+//# sourceMappingURL=main.0d68389f0388f66876e2.js.map

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import base from './base.vue'
+import base from './base/index.vue'
 
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],

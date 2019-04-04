@@ -26,345 +26,6 @@ class MediaController extends BaseController
         return View::make('argon::media.app');
     }
 
-    public function appFolders($id=null)
-    {
-        $media_folders = DB::table("media_folders")->whereNull('deleted_at')->get();
-
-        if (is_null($id))
-        {
-            if (request()->query->has("debug"))
-            {
-                echo "\n\n<pre>" . print_r($media_folders, TRUE) . "</pre>\n\n"; exit;
-            }
-
-            return response()->json($media_folders);
-        }
-
-        $folder = [];
-
-        foreach ($media_folders as $media_folder)
-        {
-            if ($media_folder->id == $id)
-            {
-                $folder = $media_folder;
-                $folder->children = Media::treeLevel($media_folders, $id, 3);
-                $folder->items = [];
-                break;
-            }
-        }
-
-        if ($folder)
-        {
-            $media_items = DB::table("media_items")->whereNull('deleted_at')->get();
-            $folder = Media::addItems($folder, $media_items);
-        }
-
-        if (request()->query->has("debug"))
-        {
-            echo "\n\n<pre>" . print_r($folder, TRUE) . "</pre>\n\n"; exit;
-        }
-
-        return response()->json($folder);
-    }
-
-    public function appSearch($keywords="")
-    {
-        $items = [];
-
-        if ($keywords === '')
-        {
-            return response()->json($items);
-        }
-
-        $like = "%{$keywords}%";
-        $items = DB::table("media_items")->where('filename', 'like', $like)->whereNull('deleted_at')->get();
-
-        // TODO: Perhaps fuzzy search here
-
-        if (request()->query->has("debug"))
-        {
-            echo "\n\n<pre>" . print_r($items, TRUE) . "</pre>\n\n"; exit;
-        }
-
-        return response()->json($items);
-    }
-
-    public function appRecent(MediaItemRepository $itemRepository)
-    {
-        $items = $itemRepository->orderBy('updated_at', 'desc')->paginate(config('argon.medialibrary.recent_items', 30));
-
-        return response()->json($items);
-    }
-
-    public function appFolderAdd(Request $request, MediaFolderRepository $folderRepository)
-    {
-        if ($folderRepository->folderExists($request->input('name'), $request->input('parent')))
-        {
-            return response()->json(['error' => 'Folder exists.'], Response::HTTP_CONFLICT);
-        }
-
-        $folder = $folderRepository->create($request->input());
-
-        return response()->json($folder);
-    }
-
-    public function appFolderEdit(Request $request, MediaFolderRepository $folderRepository)
-    {
-        $folder = $folderRepository->findWhere(['id' => $request->input('folder')])->first();
-
-        if (!$folder)
-        {
-            return response()->json(['error' => "Folder `{$request->input('folder')}` doesn't exists."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $folder->name = $request->input('name');
-        $folder->save();
-
-        return response()->json($folder);
-    }
-
-    public function appFolderRemove (
-        Request $request,
-        MediaFolderRepository $folderRepository,
-        MediaItemRepository $itemRepository
-    ) {
-        $folderId = (preg_match('/^[1-9][0-9]*$/', $request->input('id'))) ? (int)$request->input('id') : null;
-
-        if (!$folderId)
-        {
-            return response()->json(["error" => "Invalid folder `$folderId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        if ($folderId === 1)
-        {
-            return response()->json(["error" => "Root folder can't be removed."], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        if ($itemRepository->getItemsInFolder($folderId)->count() > 0 || $folderRepository->getSubfolders($folderId)->count() > 0)
-        {
-            return response()->json(["error" => "Folder not empty."], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $deleted = $folderRepository->delete($folderId);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-    public function appUpload(Request $request, MediaFolderRepository $folderRepository)
-    {
-        $folderId = $request->request->get('folder');
-
-        $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
-
-        if ($folder === null)
-        {
-            return response()->json(['error' => "Folder `$folderId` doesn't exists."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $files = $request->file('files');
-
-        if (empty($files[0]))
-        {
-            return response()->json(['error' => "No file(s) selected for upload."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $userId = $request->user()->id;
-
-        $mediaRepository = app()->make(MediaItemRepository::class);
-
-        $msgErrors = [];
-        $msgSuccess = [];
-        $fileIds = [];
-
-        foreach ($files as $file)
-        {
-            if ($file->getError() !== 0)
-            {
-                $msgErrors[] = $file->getErrorMessage();
-                continue;
-            }
-
-            $r = Media::saveUploadedFile($file, $folder->getId(), $userId, $mediaRepository);
-            $msgSuccess[] = "File '{$file->getClientOriginalName()}'was uploaded successfully as '{$r->getFullName()}'";
-            $fileIds[] = $r->id;
-        }
-
-        if ($msgErrors)
-        {
-            $messageCombined = [];
-
-            foreach ($msgErrors as $msg)
-            {
-                $messageCombined[] = $msg;
-            }
-
-            if ($msgSuccess)
-            {
-                foreach ($msgSuccess as $msg)
-                {
-                    $messageCombined[] = $msg;
-                }
-            }
-
-            return response()->json(["messages" => $messageCombined, "fileIDs" => []], Response::HTTP_NO_CONTENT);
-        }
-
-        //return redirect(route("cms:media:modal:all", ['order=uploaded_at&dir=desc']))->with('message', implode('<br>', $msgSuccess));
-        return response()->json(["messages" => $msgSuccess, "fileIDs" => $fileIds], Response::HTTP_OK);
-    }
-
-    public function appDeleteItem(Request $request, MediaItemRepository $itemRepository)
-    {
-        $itemId = (preg_match('/^[1-9][0-9]*$/', $request->request->get('id'))) ? (int)$request->request->get('id') : null;
-
-        if (!$itemId)
-        {
-            return response()->json(["error" => "Invalid media item `$itemId`."], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        // TODO: implement graceful handling of fetching images in blade withohut exceprtions/interruptions
-        $item = $itemRepository->findWhere(["id" => $itemId])->first();
-
-        if (!$item)
-        {
-            return response()->json(['error' => "Media item `$itemId` doesn't exists."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $deleted = $itemRepository->delete($itemId);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-    public function appDelete(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
-    {
-        $folders = $request->get('folders', []);
-        $items = $request->get('items', []);
-        $deletedFolders = [];
-        $deletedItems = [];
-
-        if (!empty($items))
-        {
-            if (!is_array($items))
-            {
-                $items = [$items];
-            }
-
-            foreach($items as $itemId)
-            {
-                if ($item = $itemRepository->findWhere(["id" => $itemId])->first())
-                {
-                    // todo: check if can be deleted
-
-                    $canBeDeleted = !$this->deleteItemCheck($itemId, $itemRepository);
-
-                    // mark as deleted if exists and can be deleted
-                    if ($canBeDeleted && $itemRepository->delete($itemId))
-                    {
-                        $deletedItems[] = $itemId;
-                    }
-                }
-                else
-                {
-                    // or if doesn't exist anymore
-                    $deletedItems[] = $itemId;
-                }
-            }
-        }
-
-        if (!empty($folders))
-        {
-            if (!is_array($folders))
-            {
-                $folders = [$folders];
-            }
-
-            foreach($folders as $folderId)
-            {
-                // root folder can't be deleted
-                if ($folderId !== 1)
-                {
-                    // check if folder still exists
-                    if ($folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first())
-                    {
-                        // delete if folder is empty
-                        if ($itemRepository->getItemsInFolder($folderId)->count() === 0 && $folderRepository->getSubfolders($folderId)->count() === 0)
-                        {
-                            if ($folderRepository->delete($folderId))
-                            {
-                                $deletedFolders[] = $folderId;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // mark as deleted if already doesn't exist
-                        $deletedFolders[] = $folderId;
-                    }
-                }
-            }
-        }
-
-        // sending back IDs of folders/items that could not be deleted
-        return response()->json([
-            "folders" => array_diff($folders, $deletedFolders),
-            "items" => array_diff($items, $deletedItems)
-        ]);
-    }
-
-    public function appMove(Request $request, MediaItemRepository $itemRepository, MediaFolderRepository $folderRepository)
-    {
-        $itemIds = $request->request->get('items');
-        $folderIds = $request->request->get('folders');
-
-        if(!is_array($itemIds))
-        {
-            $itemIds = [$itemIds];
-        }
-
-        if(!is_array($folderIds))
-        {
-            $folderIds = [$folderIds];
-        }
-
-        if(!count($itemIds) && !count($folderIds))
-        {
-            return response()->json(["error" => "No Items or fields received"], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $items = $itemRepository->findWhereIn("id", $itemIds);
-        $folders = $folderRepository->findWhereIn("id", $folderIds);
-
-        if(!count($items) && !count($folders))
-        {
-            return response()->json(['error' => "Media items or Folders don't exist."], Response::HTTP_BAD_REQUEST);
-        }
-
-        $destinationFolderId = $request->request->get('destinationFolder');
-        $destinationFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $destinationFolderId])->first();
-
-        if($destinationFolder === null)
-        {
-            return response()->json(['error' => "Destination Folder `$destinationFolderId` doesn't exist."], Response::HTTP_BAD_REQUEST);
-        }
-
-        foreach($items as $item){
-            $item->folder = $destinationFolder->id;
-            $saved = $item->save();
-        }
-
-        foreach($folders as $folder){
-            $folder->parent = $destinationFolder->id;
-            $saved = $folder->save();
-        }
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-
-
-
-
-
     public function manage(MediaFolderRepository $folderRepository)
     {
         $media = [];
@@ -1013,11 +674,11 @@ class MediaController extends BaseController
 
         if ($results)
         {
-//            $stop=1;
-//            return response()->json([
-//                'error' => 'Could not delete, media item in use:',
-//                'results' => $results,
-//            ], Response::HTTP_OK);
+            //            $stop=1;
+            //            return response()->json([
+            //                'error' => 'Could not delete, media item in use:',
+            //                'results' => $results,
+            //            ], Response::HTTP_OK);
 
             $message = ["Could not delete, media item in use:"];
 
@@ -1037,13 +698,13 @@ class MediaController extends BaseController
         return back()
             ->with('message', 'Media item deleted!');
 
-//        return redirect(route("cms:media:modal:all"));
-        //return response('', Response::HTTP_NO_CONTENT);
+        //        return redirect(route("cms:media:modal:all"));
+                //return response('', Response::HTTP_NO_CONTENT);
 
-//        return response()->json([
-//            'error' => '',
-//            'results' => '',
-//        ], Response::HTTP_OK);
+        //        return response()->json([
+        //            'error' => '',
+        //            'results' => '',
+        //        ], Response::HTTP_OK);
     }
 
 
@@ -1052,11 +713,11 @@ class MediaController extends BaseController
         $results = $this->deleteItemCheck($id, $itemRepository);
         if ($results)
         {
-//            $stop=1;
-//            return response()->json([
-//                'error' => 'Could not delete, media item in use:',
-//                'results' => $results,
-//            ], Response::HTTP_OK);
+            //            $stop=1;
+            //            return response()->json([
+            //                'error' => 'Could not delete, media item in use:',
+            //                'results' => $results,
+            //            ], Response::HTTP_OK);
 
 
             $message = ["Could not delete, media item in use:"];
@@ -1077,14 +738,14 @@ class MediaController extends BaseController
         return back()
             ->with('message', 'Media item deleted!');
 
-//        $media = $mediaItem->with('mediaFolder')->find($id);
-//
-//        if (!$media)
-//        {
-//            abort(404);
-//        }
-//
-//        throw new RuntimeException('Not implemented');
+            //        $media = $mediaItem->with('mediaFolder')->find($id);
+            //
+            //        if (!$media)
+            //        {
+            //            abort(404);
+            //        }
+            //
+            //        throw new RuntimeException('Not implemented');
     }
 
 

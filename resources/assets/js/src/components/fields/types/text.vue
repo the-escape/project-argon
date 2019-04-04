@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import base from './base.vue'
-import textarea from './textarea.vue'
+import base from './base/index.vue'
+import textarea from './textarea/index.vue'
 
 export default {
     props: ['fieldId', 'comboId', 'comboItemId'],

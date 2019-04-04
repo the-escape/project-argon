@@ -11,7 +11,8 @@ import {
     removeItem,
     move,
     recentUploads,
-    remove
+    remove,
+    update
 } from '../api/media'
 import { Folder, children, Item } from './folder'
 import { Search } from './search'
@@ -71,30 +72,7 @@ export default function () {
                 })
             },
             loadFoldersByID: (state, id) => {
-                const folder = state.folderMap[id]
-
-                if (!folder) {
-                    return
-                }
-
-                getFolders(folder.id, function (f) {
-                    state.folder.active = false
-                    state.active.active = false
-                    state.back = state.active
-                    folder.setItems(f.items)
-                    folder.setChildren(f.children)
-                    folder.active = true
-                    state.active = folder
-                    state.search.reset()
-
-                    state.folderMap = {
-                        ...state.folderMap,
-                        ...folder.children.reduce((acc, folder) => {
-                            acc[folder.id] = folder
-                            return acc
-                        }, {})
-                    }
-                })
+                loadFoldersByID(state, id)
             },
             loadLibrary: (state, id) => {
                 getFoldersData(function (data) {
@@ -118,7 +96,7 @@ export default function () {
                         state.folder.name,
                         `?folder=${state.folder.name}&folderID=${
                             state.folder.id
-                            }`
+                        }`
                     )
 
                     getFolders(state.folder.id, function (f) {
@@ -317,7 +295,7 @@ export default function () {
 
                     new Noty({
                         text: `${items.length +
-                        folders.length} items were moved`,
+                            folders.length} items were moved`,
                         type: 'success',
                         timeout: 3500
                     }).show()
@@ -362,8 +340,8 @@ export default function () {
 
                         new Noty({
                             text:
-                            nonDeleteNames.slice(0, 3).join(', ') +
-                            ' Were unable to be deleted',
+                                nonDeleteNames.slice(0, 3).join(', ') +
+                                ' Were unable to be deleted',
                             type: 'error',
                             timeout: 3500
                         }).show()
@@ -386,6 +364,25 @@ export default function () {
                         timeout: 3500
                     }).show()
                 })
+            },
+            updateMediaItem: (state, { item, file }) => {
+                update({ id: item.item.id, file })
+                    .then(data => {
+                        new Noty({
+                            text: data.messages,
+                            type: 'success',
+                            timeout: 3500
+                        }).show()
+                        loadFoldersByID(state, item.folder)
+                        item.updateCacheBuster()
+                    })
+                    .catch(e => {
+                        new Noty({
+                            text: e.body.errors,
+                            type: 'error',
+                            timeout: 3500
+                        }).show()
+                    })
             }
         },
         actions: {
@@ -436,7 +433,37 @@ export default function () {
             },
             clearNewUploadIDs ({ commit }) {
                 commit('clearNewUploadIDs')
+            },
+            updateMediaItem ({ commit }, payload) {
+                commit('updateMediaItem', payload)
             }
+        }
+    })
+}
+
+function loadFoldersByID (state, id) {
+    const folder = state.folderMap[id]
+
+    if (!folder) {
+        return
+    }
+
+    getFolders(folder.id, function (f) {
+        state.folder.active = false
+        state.active.active = false
+        state.back = state.active
+        folder.setItems(f.items)
+        folder.setChildren(f.children)
+        folder.active = true
+        state.active = folder
+        state.search.reset()
+
+        state.folderMap = {
+            ...state.folderMap,
+            ...folder.children.reduce((acc, folder) => {
+                acc[folder.id] = folder
+                return acc
+            }, {})
         }
     })
 }

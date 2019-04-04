@@ -133,8 +133,11 @@ function mountEditor () {
     CKEDITOR.replace(this.textareaElement, this.config)
     this.wysiwygInstance = this.textareaElement.name
     CKEDITOR.instances[this.wysiwygInstance].setData(this.valueObj.value)
+    this.$el.value = this.valueObj.value
     CKEDITOR.instances[this.wysiwygInstance].on('change', () => {
-        this.updateValue(CKEDITOR.instances[this.wysiwygInstance].getData())
+        const data = CKEDITOR.instances[this.wysiwygInstance].getData()
+        this.updateValue(data)
+        this.$el.value = data
     })
 }
 

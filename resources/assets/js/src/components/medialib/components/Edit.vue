@@ -8,10 +8,11 @@
                 <div class="c-edit__image">
                     <img :src="editItem.getUrl()" :alt="editItem.getName()">
                 </div>
-                <!-- <div class="c-edit__replace-image">
+                <div class="c-edit__replace-image">
                     <span>Overwrite existing asset?</span>
-                    <button class="o-btn o-btn--xs">choose file</button>
-                </div> -->
+                    <input type="file" hidden id="editImage" ref="editImageInput" @change="updateImage($event)">
+                    <label for="editImage" class="o-btn o-btn--xs">choose file</label>
+                </div>
             </div>
             <div class="c-edit__details">
                 <dl>
@@ -41,7 +42,7 @@
         </main>
         <footer class="c-edit__footer">
             <button class="o-btn o-btn--sm" @click="closeEdit">cancel</button>
-            <!-- <button class="o-btn o-btn--sm o-btn--primary">save</button> -->
+            <button class="o-btn o-btn--sm o-btn--primary">save</button>
         </footer>
     </dialog>
 </template>
@@ -58,6 +59,14 @@ export default {
     methods: {
         closeEdit(){
             this.$store.dispatch('editItem')
+        },
+        updateImage(evt){
+            if(!evt.target.files.length){
+                return
+            }
+
+            this.$store.dispatch('updateMediaItem', {item: this.editItem, file: evt.target.files[0]})
+            this.$refs.editImageInput.value = ''
         }
     }
 }

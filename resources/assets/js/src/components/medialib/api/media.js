@@ -119,3 +119,17 @@ export function remove (data, cb) {
             cb(e)
         })
 }
+
+export function update ({ id, file }) {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('mediaID', id)
+
+    return Vue.http
+        .post('/admin/media/api/update', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => response.body)
+}

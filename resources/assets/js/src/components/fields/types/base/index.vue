@@ -4,7 +4,7 @@
             <label :for="inputName">{{ name }}</label>
             <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
-                    <textarea :id="inputName" :name="inputName" v-on:keyup.stop="updateValue(valueObj, $event.target.value)" :value="valueObj.value"></textarea>
+                    <field-base :icons="icons" :type="type" :value-obj="valueObj" :input-name="inputName" @change="updateValue(valueObj, $event)" />
                 </template>
             </multi>
         </validation>
@@ -13,17 +13,19 @@
 </template>
 
 <script>
-import Validation from './util/validation.vue'
-import Multi from './util/multi.vue'
-import FieldValues from './mixins/field-values.vue'
+import Validation from '../util/validation.vue'
+import Multi from '../util/multi.vue'
+import FieldValues from '../mixins/field-values.vue'
+import Base from './base.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
+    mixins: [FieldValues],
     components: {
+        'field-base': Base,
         'validation': Validation,
         'multi': Multi
     },
-    mixins: [FieldValues],
     methods: {
         updateValue: function(valueObj, newValue) {
             valueObj.value = newValue

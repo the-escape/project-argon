@@ -4,6 +4,7 @@ namespace Escape\Argon\Media;
 
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\Media\Controllers\MediaController;
+use Escape\Argon\Media\Controllers\MediaAppController;
 use Escape\Argon\Media\Helpers\ImageOptim;
 use Illuminate\Http\Request;
 
@@ -16,75 +17,82 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         $this->addRoute(
             'media',
             'cms:media:manage',
-            MediaController::class,
+            MediaAppController::class,
             'app'
         );
         $this->addRoute(
             'media/api/folders/add',
             'cms:media:api:folders:add',
-            MediaController::class,
-            'appFolderAdd',
+            MediaAppController::class,
+            'folderAdd',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/folders/edit',
             'cms:media:api:folders:edit',
-            MediaController::class,
-            'appFolderEdit',
+            MediaAppController::class,
+            'folderEdit',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/folders/remove',
             'cms:media:api:folders:remove',
-            MediaController::class,
-            'appFolderRemove',
+            MediaAppController::class,
+            'folderRemove',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/folders/{id?}',
             'cms:media:api:folders',
-            MediaController::class,
-            'appFolders'
+            MediaAppController::class,
+            'folders'
         );
         $this->addRoute(
             'media/api/search/{keywords?}',
             'cms:media:api:search',
-            MediaController::class,
-            'appSearch'
+            MediaAppController::class,
+            'search'
         );
         $this->addRoute(
             'media/api/upload',
             'cms:media:api:upload',
-            MediaController::class,
-            'appUpload',
+            MediaAppController::class,
+            'upload',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/items/remove',
             'cms:media:api:items:remove',
-            MediaController::class,
-            'appDeleteItem',
+            MediaAppController::class,
+            'deleteItem',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/move',
             'cms:media:api:move',
-            MediaController::class,
-            'appMove',
+            MediaAppController::class,
+            'move',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/delete',
             'cms:media:api:delete',
-            MediaController::class,
-            'appDelete',
+            MediaAppController::class,
+            'delete',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/api/recent',
             'cms:media:api:recent',
-            MediaController::class,
-            'appRecent'
+            MediaAppController::class,
+            'recent'
+        );
+        $this->addRoute(
+            'media/api/update',
+            'cms:media:api:update',
+            MediaAppController::class,
+            'update',
+            Request::METHOD_POST
         );
 
 
