@@ -18,11 +18,18 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
             MenusController::class,
             'manage'
         );
+        /* leaving this here for the time being just in case something's not right with vue component, sorry */
+        // $this->addRoute(
+        //     'menus/create',
+        //     'cms:menus:create',
+        //     MenusController::class,
+        //     'create'
+        // );
         $this->addRoute(
             'menus/create',
             'cms:menus:create',
             MenusController::class,
-            'create'
+            'createNew'
         );
         $this->addRoute(
             'menus/create',
@@ -31,11 +38,18 @@ class MenusServiceProvider extends AbstractPluginServiceProvider
             'save',
             Request::METHOD_POST
         );
+        /* leaving this here for the time being just in case something's not right with vue component, sorry */
+        // $this->addRoute(
+        //     'menus/{id}/edit',
+        //     'cms:menus:edit',
+        //     MenusController::class,
+        //     'edit'
+        // );
         $this->addRoute(
             'menus/{id}/edit',
             'cms:menus:edit',
             MenusController::class,
-            'edit'
+            'editNew'
         );
         $this->addRoute(
             'menus/{id}/edit',

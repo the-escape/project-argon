@@ -23,7 +23,7 @@ class DashboardController extends BaseController
     {
         $this->middleware('auth');
         $this->middleware('perm:cms:login');
-        
+
         // setting up the dynamic data needed for some widgets
 
         view()->composer('argon::inc.widgets.manage-site-content', function($view)
@@ -83,16 +83,18 @@ class DashboardController extends BaseController
             foreach($revisions as $revision)
             {
                 $localisation = $revision->localisation;
-                $entity = $localisation->entity;
 
-                $activity = new \stdClass();
-                $activity->user = $revision->userWithTrashed->name;
-                $activity->avatar = $revision->userWithTrashed->profile('image','/argon/images/user-icon.png');
-                $activity->description = sprintf("Amended %s", $entity->name);
-                $activity->revision_link = route('cms:pages:edit_locale', [$entity->id, $localisation->locale_id, $revision->id]);
-                $activity->date = $revision->created_at->format('d M Y');
+                if ($entity = $localisation->entity)
+                {
+                    $activity = new \stdClass();
+                    $activity->user = $revision->userWithTrashed->name;
+                    $activity->avatar = $revision->userWithTrashed->profile('image','/argon/images/user-icon.png');
+                    $activity->description = sprintf("Amended %s", $entity->name);
+                    $activity->revision_link = route('cms:pages:edit_locale', [$entity->id, $localisation->locale_id, $revision->id]);
+                    $activity->date = $revision->created_at->format('d M Y');
 
-                $activities->push($activity);
+                    $activities->push($activity);
+                }
             }
 
             return $view->with(compact('activities'));
@@ -197,7 +199,7 @@ class DashboardController extends BaseController
                 ->with('success', true)
                 ->with('msg', $successMessage);
         }
-        
+
     }
 
 

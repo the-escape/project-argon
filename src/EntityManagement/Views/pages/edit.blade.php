@@ -200,7 +200,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             <script>
                                                 window.fieldGroups['{{$group->id}}'] = {
                                                     fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
-                                                    header: "{{ $group->name }}",
+                                                    header: "{!! $group->name !!}",
                                                     actions: false
                                                 }
                                             </script>
@@ -347,13 +347,13 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
                                             isRendering: {{ $isRendering }},
                                             isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                            name: '{{ $group->name }}',
+                                            name: '{!! $group->name !!}',
                                             isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
                                             image: '{{ $group->getSetting("image") }}'
                                         });
                                         window.fieldGroups['{{$group->id}}'] = {
                                             fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision), JSON_PRETTY_PRINT) !!},
-                                            header: "{{ $group->name }}"
+                                            header: "{!! $group->name !!}"
                                         }
                                     </script>
                                     <div class="js-fields" data-name="{{$group->id}}"></div>

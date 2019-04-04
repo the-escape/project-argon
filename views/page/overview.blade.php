@@ -22,7 +22,7 @@
 
                 @if(view()->exists('argon::inc.widgets.'.$widgetView))
 
-                    @include('argon::inc.widgets.'.$widgetView, compact('widgetData'))
+                    @include('argon::inc.widgets.'.$widgetView)
 
                 @endif
 
