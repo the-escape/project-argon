@@ -106,6 +106,22 @@
         }
     }
 
+    &__details .o-form {
+        + * {
+            margin-top: 10px;
+        }
+
+        label {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 7px;
+
+            + input {
+                margin-top: 0;
+            }
+        }
+    }
+
     &__footer {
         display: flex;
         justify-content: flex-end;
@@ -118,6 +134,22 @@
 
         > * + * {
             margin-left: 10px !important;
+        }
+    }
+
+    &__author {
+        display: flex;
+        align-items: center;
+
+        &-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin-right: 7px;
         }
     }
 }

@@ -120,10 +120,11 @@ export function remove (data, cb) {
         })
 }
 
-export function update ({ id, file }) {
+export function update ({ id, file, name }) {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('mediaID', id)
+    formData.append('name', name)
 
     return Vue.http
         .post('/admin/media/api/update', formData, {

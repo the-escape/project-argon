@@ -365,15 +365,15 @@ export default function () {
                     }).show()
                 })
             },
-            updateMediaItem: (state, { item, file }) => {
-                update({ id: item.item.id, file })
+            updateMediaItem: (state, { item, file, name }) => {
+                update({ id: item.item.id, file, name })
                     .then(data => {
                         new Noty({
                             text: data.messages,
                             type: 'success',
                             timeout: 3500
                         }).show()
-                        loadFoldersByID(state, item.folder)
+                        loadFoldersByID(state, item.item.folder)
                         item.updateCacheBuster()
                     })
                     .catch(e => {

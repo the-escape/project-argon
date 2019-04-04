@@ -9533,10 +9533,12 @@ function media_remove(data, cb) {
 }
 function update(_ref) {
   var id = _ref.id,
-      file = _ref.file;
+      file = _ref.file,
+      name = _ref.name;
   var formData = new FormData();
   formData.append('file', file);
   formData.append('mediaID', id);
+  formData.append('name', name);
   return vue_default.a.http.post('/admin/media/api/update', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -10279,28 +10281,27 @@ var Editvue_type_template_id_640e3401_render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("dialog", { staticClass: "c-edit" }, [
-    _vm._m(0),
+    _c("header", { staticClass: "c-edit__header" }, [
+      _c("h3", { staticClass: "c-edit__title" }, [
+        _vm._v("Image Details "),
+        _vm.isEditing ? _c("span", [_vm._v("- To be saved")]) : _vm._e()
+      ])
+    ]),
     _vm._v(" "),
     _c("main", { staticClass: "c-edit__body" }, [
       _c("div", { staticClass: "c-edit__preview" }, [
         _c("div", { staticClass: "c-edit__image" }, [
-          _c("img", {
-            attrs: { src: _vm.editItem.getUrl(), alt: _vm.editItem.getName() }
-          })
+          _c("img", { attrs: { src: _vm.url, alt: _vm.name } })
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "c-edit__replace-image" }, [
-          _c("span", [_vm._v("Overwrite existing asset?")]),
-          _vm._v(" "),
           _c("input", {
             ref: "editImageInput",
             attrs: { type: "file", hidden: "", id: "editImage" },
-            on: {
-              change: function($event) {
-                _vm.updateImage($event)
-              }
-            }
+            on: { change: _vm.chooseNewImage }
           }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Overwrite existing asset?")]),
           _vm._v(" "),
           _c(
             "label",
@@ -10311,36 +10312,68 @@ var Editvue_type_template_id_640e3401_render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "c-edit__details" }, [
+        _c("div", { staticClass: "o-form" }, [
+          _c("div", { staticClass: "o-form__group" }, [
+            _c("label", { attrs: { for: "name" } }, [_vm._v("File name")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.name,
+                  expression: "name"
+                }
+              ],
+              attrs: { type: "text", id: "name" },
+              domProps: { value: _vm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.name = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
         _c("dl", [
-          _c("dt", [_vm._v("File Name:")]),
-          _vm._v(" "),
-          _c("dd", [_vm._v(_vm._s(_vm.editItem.getName()))]),
-          _vm._v(" "),
           _c("dt", [_vm._v("File type:")]),
           _vm._v(" "),
-          _c("dd", [_vm._v(_vm._s(_vm.editItem.item.extension))]),
+          _c("dd", [_vm._v(_vm._s(_vm.extension))]),
           _vm._v(" "),
           _c("dt", [_vm._v("Uploaded at:")]),
           _vm._v(" "),
-          _c("dd", [_vm._v(_vm._s(_vm.editItem.item.uploadedDate))]),
+          _c("dd", [_vm._v(_vm._s(_vm.uploadedDate))]),
           _vm._v(" "),
           _c("dt", [_vm._v("Dimensions:")]),
           _vm._v(" "),
-          _c("dd", [_vm._v(_vm._s(_vm.editItem.getDimensions()))]),
+          _c("dd", [_vm._v(_vm._s(_vm.dimensions))]),
           _vm._v(" "),
           _c("dt", [_vm._v("File Size:")]),
           _vm._v(" "),
-          _c("dd", [_vm._v(_vm._s(_vm.editItem.item.filesize_formatted))]),
+          _c("dd", [_vm._v(_vm._s(_vm.fileSize))]),
           _vm._v(" "),
           _c("dt", [_vm._v("Uploaded by:")]),
           _vm._v(" "),
-          _c("dd", [
-            _c("div", { staticClass: "c-edit__author" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("span", [_vm._v(_vm._s(_vm.editItem.item.uploaded_by))])
-            ])
-          ])
+          !_vm.isEditing
+            ? _c("dd", [
+                _c("div", { staticClass: "c-edit__author" }, [
+                  _c("div", {
+                    staticClass: "c-edit__author-img",
+                    style: {
+                      "background-image": "url(" + _vm.authorImage + ")"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", [
+                    _vm._v(_vm._s(_vm.authorName) + " fix this shit")
+                  ])
+                ])
+              ])
+            : _vm._e()
         ])
       ])
     ]),
@@ -10352,30 +10385,18 @@ var Editvue_type_template_id_640e3401_render = function() {
         [_vm._v("cancel")]
       ),
       _vm._v(" "),
-      _c("button", { staticClass: "o-btn o-btn--sm o-btn--primary" }, [
-        _vm._v("save")
-      ])
+      _c(
+        "button",
+        {
+          staticClass: "o-btn o-btn--sm o-btn--primary",
+          on: { click: _vm.updateMediaItem }
+        },
+        [_vm._v("save")]
+      )
     ])
   ])
 }
-var Editvue_type_template_id_640e3401_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "c-edit__header" }, [
-      _c("h3", { staticClass: "c-edit__title" }, [_vm._v("Image Details")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "c-edit__author-img" }, [
-      _c("img", { attrs: { src: "", alt: "" } })
-    ])
-  }
-]
+var Editvue_type_template_id_640e3401_staticRenderFns = []
 Editvue_type_template_id_640e3401_render._withStripped = true
 
 
@@ -10438,23 +10459,89 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
 
 /* harmony default export */ var Editvue_type_script_lang_js_ = ({
   computed: Editvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['editItem'])),
+  data: function data() {
+    return {
+      isEditing: false,
+      name: '',
+      url: '',
+      extension: '',
+      uploadedDate: '',
+      dimensions: '',
+      fileSize: '',
+      authorName: 'root',
+      authorImage: '/media/profile_pictures/1/11544457279.png'
+    };
+  },
+  mounted: function mounted() {
+    this.resetCurrentItem();
+  },
   methods: {
-    closeEdit: function closeEdit() {
-      this.$store.dispatch('editItem');
+    resetCurrentItem: function resetCurrentItem() {
+      var _this$editItem$item = this.editItem.item,
+          extension = _this$editItem$item.extension,
+          uploadedDate = _this$editItem$item.uploadedDate,
+          filesize_formatted = _this$editItem$item.filesize_formatted,
+          uploaded_by = _this$editItem$item.uploaded_by;
+      this.name = this.editItem.getName();
+      this.url = this.editItem.getUrl();
+      this.extension = extension;
+      this.uploadedDate = uploadedDate;
+      this.dimensions = this.editItem.getDimensions();
+      this.fileSize = filesize_formatted; // this.authorName = uploaded_by
     },
-    updateImage: function updateImage(evt) {
-      if (!evt.target.files.length) {
+    chooseNewImage: function chooseNewImage() {
+      var _this = this;
+
+      if (!this.$refs.editImageInput.files.length) {
         return;
       }
 
-      this.$store.dispatch('updateMediaItem', {
+      var file = this.$refs.editImageInput.files[0];
+
+      if (!file.type.match('image.*')) {
+        return;
+      }
+
+      var reader = new FileReader();
+
+      reader.onload = function (readerEvt) {
+        var image = new Image();
+        image.src = readerEvt.target.result;
+
+        image.onload = function (imgEvt) {
+          _this.isEditing = true;
+          _this.url = readerEvt.target.result;
+          _this.name = file.name;
+          _this.extension = file.name.split('.')[1];
+          _this.uploadedDate = 'To be saved';
+          _this.dimensions = "".concat(imgEvt.target.width, " x ").concat(imgEvt.target.height, "px");
+          _this.fileSize = fileSize(file.size);
+        };
+      };
+
+      reader.readAsDataURL(file);
+    },
+    closeEdit: function closeEdit() {
+      this.$store.dispatch('editItem');
+    },
+    updateMediaItem: function updateMediaItem() {
+      var data = {
         item: this.editItem,
-        file: evt.target.files[0]
-      });
+        file: this.$refs.editImageInput.files[0],
+        name: this.name.replace('.' + this.extension, '')
+      };
+      this.$store.dispatch('updateMediaItem', data);
       this.$refs.editImageInput.value = '';
+      this.closeEdit();
     }
   }
 });
+
+function fileSize(bytes) {
+  var exp = Math.log(bytes) / Math.log(1024) | 0;
+  var result = (bytes / Math.pow(1024, exp)).toFixed(2);
+  return result + ' ' + (exp == 0 ? 'bytes' : 'KMGTPEZY'[exp - 1] + 'B');
+}
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Edit.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_Editvue_type_script_lang_js_ = (Editvue_type_script_lang_js_); 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/Edit.vue
@@ -11675,10 +11762,12 @@ vue_default.a.use(vuex_esm["default"]);
       },
       updateMediaItem: function updateMediaItem(state, _ref4) {
         var item = _ref4.item,
-            file = _ref4.file;
+            file = _ref4.file,
+            name = _ref4.name;
         update({
           id: item.item.id,
-          file: file
+          file: file,
+          name: name
         }).then(function (data) {
           new noty_default.a({
             text: data.messages,
@@ -11686,7 +11775,7 @@ vue_default.a.use(vuex_esm["default"]);
             timeout: 3500
           }).show();
 
-          _loadFoldersByID(state, item.folder);
+          _loadFoldersByID(state, item.item.folder);
 
           item.updateCacheBuster();
         }).catch(function (e) {
@@ -16830,4 +16919,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.0d68389f0388f66876e2.js.map
+//# sourceMappingURL=main.531cadb16254875dab14.js.map

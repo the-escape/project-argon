@@ -371,11 +371,25 @@ class MediaAppController extends BaseController
             abort(404);
         }
 
+        $name = $request->input('name');
+
+        if($name){
+            $mediaItem->filename = $name;
+        }
+
         $file = $request->file('file');
 
         if (!$file)
         {
-            return response()->json(['errors' => "No file was recieved"], Response::HTTP_BAD_REQUEST);
+            if($name)
+            {
+                $mediaItem->save();
+                return response()->json(['messages' => 'File name successfully changed to '.$name], Response::HTTP_OK);
+            }
+            else
+            {
+                return response()->json(['errors' => "No file was recieved"], Response::HTTP_BAD_REQUEST);
+            }
         }
 
         $isImage =  Media::isImage($file->getMimeType());
@@ -422,6 +436,6 @@ class MediaAppController extends BaseController
             $mediaItem->save();
         }
 
-        return response()->json(["messages" => "successfully updated."], Response::HTTP_OK);
+        return response()->json(["messages" => "successfully updated ".$name], Response::HTTP_OK);
     }
 }
