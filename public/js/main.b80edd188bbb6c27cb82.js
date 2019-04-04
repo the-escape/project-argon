@@ -10361,12 +10361,14 @@ var Editvue_type_template_id_640e3401_render = function() {
           !_vm.isEditing
             ? _c("dd", [
                 _c("div", { staticClass: "c-edit__author" }, [
-                  _c("div", {
-                    staticClass: "c-edit__author-img",
-                    style: {
-                      "background-image": "url(" + _vm.authorImage + ")"
-                    }
-                  }),
+                  _vm.authorImage
+                    ? _c("div", {
+                        staticClass: "c-edit__author-img",
+                        style: {
+                          "background-image": "url(" + _vm.authorImage + ")"
+                        }
+                      })
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("span", [_vm._v(_vm._s(_vm.authorName))])
                 ])
@@ -10467,7 +10469,7 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
       dimensions: '',
       fileSize: '',
       authorName: '',
-      authorImage: '/argon/images/user-icon.png'
+      authorImage: ''
     };
   },
   mounted: function mounted() {
@@ -18035,4 +18037,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.63c5470d241499fa9e4a.js.map
+//# sourceMappingURL=main.b80edd188bbb6c27cb82.js.map

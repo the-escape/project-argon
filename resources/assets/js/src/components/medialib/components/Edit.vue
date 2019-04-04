@@ -33,7 +33,7 @@
                     <dt>Uploaded by:</dt>
                     <dd v-if="!isEditing">
                         <div class="c-edit__author">
-                            <div class="c-edit__author-img" :style="{'background-image': `url(${authorImage})`}"></div>
+                            <div v-if="authorImage" class="c-edit__author-img" :style="{'background-image': `url(${authorImage})`}"></div>
                             <span>{{ authorName }}</span>
                         </div>
                     </dd>
@@ -66,7 +66,7 @@ export default {
             dimensions: '',
             fileSize: '',
             authorName: '',
-            authorImage: '/argon/images/user-icon.png'
+            authorImage: ''
         }
     },
     mounted(){
