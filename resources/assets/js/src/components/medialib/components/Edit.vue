@@ -34,7 +34,7 @@
                     <dd v-if="!isEditing">
                         <div class="c-edit__author">
                             <div class="c-edit__author-img" :style="{'background-image': `url(${authorImage})`}"></div>
-                            <span>{{ authorName }} fix this shit</span>
+                            <span>{{ authorName }}</span>
                         </div>
                     </dd>
                 </dl>
@@ -65,8 +65,8 @@ export default {
             uploadedDate: '',
             dimensions: '',
             fileSize: '',
-            authorName: 'root',
-            authorImage: '/media/profile_pictures/1/11544457279.png'
+            authorName: '',
+            authorImage: '/argon/images/user-icon.png'
         }
     },
     mounted(){
@@ -78,7 +78,8 @@ export default {
                 extension,
                 uploadedDate,
                 filesize_formatted,
-                uploaded_by
+                authorName,
+                authorImage
             } = this.editItem.item
 
             this.name = this.editItem.getName()
@@ -87,7 +88,8 @@ export default {
             this.uploadedDate = uploadedDate
             this.dimensions = this.editItem.getDimensions()
             this.fileSize = filesize_formatted
-            // this.authorName = uploaded_by
+            this.authorName = authorName
+            this.authorImage = authorImage
         },
         chooseNewImage() {
 

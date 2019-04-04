@@ -7,6 +7,7 @@ use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Escape\Argon\Authentication\User;
 use Image;
 use stdClass;
 
@@ -261,6 +262,15 @@ class Media
             if ($media_item->folder == $folder->id)
             {
                 $media_item->filesize_formatted = self::sizeFormat($media_item->filesize);
+                $author = User::withTrashed()->where('id', $media_item->uploaded_by)->first();
+
+                $media_item->authorName = '';
+                $media_item->authorImage = '';
+
+                if($author){
+                    $media_item->authorName = $author->name;
+                    $media_item->authorImage = $author->profile('image','/argon/images/user-icon.png');
+                }
                 $folder->items[] = $media_item;
             }
         }
@@ -272,7 +282,6 @@ class Media
 
         return $folder;
     }
-
-
-
 }
+
+

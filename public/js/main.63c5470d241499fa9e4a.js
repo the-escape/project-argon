@@ -10368,9 +10368,7 @@ var Editvue_type_template_id_640e3401_render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("span", [
-                    _vm._v(_vm._s(_vm.authorName) + " fix this shit")
-                  ])
+                  _c("span", [_vm._v(_vm._s(_vm.authorName))])
                 ])
               ])
             : _vm._e()
@@ -10468,8 +10466,8 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
       uploadedDate: '',
       dimensions: '',
       fileSize: '',
-      authorName: 'root',
-      authorImage: '/media/profile_pictures/1/11544457279.png'
+      authorName: '',
+      authorImage: '/argon/images/user-icon.png'
     };
   },
   mounted: function mounted() {
@@ -10481,13 +10479,16 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
           extension = _this$editItem$item.extension,
           uploadedDate = _this$editItem$item.uploadedDate,
           filesize_formatted = _this$editItem$item.filesize_formatted,
-          uploaded_by = _this$editItem$item.uploaded_by;
+          authorName = _this$editItem$item.authorName,
+          authorImage = _this$editItem$item.authorImage;
       this.name = this.editItem.getName();
       this.url = this.editItem.getUrl();
       this.extension = extension;
       this.uploadedDate = uploadedDate;
       this.dimensions = this.editItem.getDimensions();
-      this.fileSize = filesize_formatted; // this.authorName = uploaded_by
+      this.fileSize = filesize_formatted;
+      this.authorName = authorName;
+      this.authorImage = authorImage;
     },
     chooseNewImage: function chooseNewImage() {
       var _this = this;
@@ -18034,4 +18035,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c68d1967bf943defc677.js.map
+//# sourceMappingURL=main.63c5470d241499fa9e4a.js.map
