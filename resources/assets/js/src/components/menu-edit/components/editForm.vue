@@ -13,7 +13,7 @@
                             <label for="page">Page</label>
                             <select id="page">
                                 <option value="0">-- select page or add custom URL below --</option>
-                                <option v-for="(option, index) in options" :key="index" :value="index">{{ option }}</option>
+                                <option v-for="(option, index) in options" :key="index" :value="index" :selected="item.page == index">{{ option }}</option>
                             </select>
                         </div>
                         <div class="o-form__group" v-if="!+this.item.page">
@@ -101,6 +101,8 @@ export default {
         this.selectInstance.setValueByChoice(this.value)
         this.selectElement.addEventListener('change', this.selectChange.bind(this))
         this.selectedOption = this.selectInstance.getValue(true)
+
+        this.setInitialItem()
     },
     destroyed() {
         this.selectElement.removeEventListener('change', this.selectChange.bind(this))
@@ -136,7 +138,7 @@ export default {
     },
     watch: {
         node: function () {
-            this.setInitialItem()
+            // this.setInitialItem()
         }
     },
     computed: {

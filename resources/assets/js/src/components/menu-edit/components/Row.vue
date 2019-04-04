@@ -7,7 +7,6 @@
                 :fade-delete="preventDelete"
                 @add="toggleAddForm"
                 @delete="deleteItem"
-                @view="viewError"
                 tooltipPostfix=" menu item"
             ></row-actions>
         </div>

@@ -11,7 +11,7 @@
                     <use xlink:href="/argon/images/svgicons.svg#add"></use>
                 </svg>
             </button>
-            <a :href="viewUrl" target="_blank" data-balloon="Preview url" class="o-confirm-btn" @click="view($event)" :class="{'o-confirm-btn--fade': !viewUrl}" title="view">
+            <a :href="viewUrl" target="_blank" data-balloon="Preview url" class="o-confirm-btn" :class="{'o-confirm-btn--fade': !viewUrl}" title="view">
                 <svg>
                     <use xlink:href="/argon/images/svgicons.svg#see"></use>
                 </svg>

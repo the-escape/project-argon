@@ -85,6 +85,36 @@ class MenusController extends BaseController
         return view('argon_menus::edit', ['menu' => $menu]);
     }
 
+    public function createNew(MenuRepository $menuRepository, EntityRepository $entityRepository)
+    {
+        $menuJson = json_encode([[
+            "text" => "New element",
+            "data" => [
+                "label" => "New element",
+            ],
+            "children" => []
+        ]]);
+
+
+
+        $entities = $entityRepository->pages();
+        $entities = $entities->keyBy('id');
+
+        foreach ($entities as $id => $entity) {
+            if ($entity->parent_id) {
+                $entities[$entity->parent_id]->addChild($entity);
+            }
+        }
+
+        $entities = $entities->filter(function ($entity) {
+            return $entity->parent_id == null;
+        });
+
+        $pagesJson = json_encode($this->collectionToArray($entities));
+
+        return view('argon_menus::create-new', compact('menuJson', 'pagesJson'));
+    }
+
     public function editNew($id, MenuRepository $menuRepository, EntityRepository $entityRepository)
     {
         $menu = $menuRepository->find($id);
@@ -147,7 +177,7 @@ class MenusController extends BaseController
     {
         $menuRepository->delete($id);
 
-        return redirect(route('cms:menus:manage'), Response::HTTP_NO_CONTENT);
+        return redirect(route('cms:menus:manage'));
     }
 
     private function getOrder($query, Request $request)
