@@ -26,6 +26,148 @@ class MediaAppController extends BaseController
         return View::make('argon::media.app');
     }
 
+    private function deleteItemCheck($id, MediaItemRepository $itemRepository)
+    {
+        $sql = "select
+                entity_localisations.entity_id,
+                entity_localisations.id as localisation_id,
+                field_data.entity_revision_id as revision_id,
+                field_data.id as data_id,
+                field_data.value as data_value,
+                locales.name as locale_name,
+                entities.name as entity_name,
+                entity_types.type as entity_type,
+                entity_fields.field_type,
+                entity_fields.name as field_name,
+                entity_fields.id as field_id
+                from `field_data`
+                inner join entity_revisions on entity_revisions.id = field_data.entity_revision_id
+                inner join entity_fields on entity_fields.id = field_data.field_id
+                inner join `entity_localisations` on `entity_localisations`.`id` = `entity_revisions`.`entity_localisation_id`
+                inner join `locales` on `locales`.`id` = `entity_localisations`.`locale_id`
+                inner join `entities` on `entities`.`id` = `entity_localisations`.`entity_id`
+                inner join `entity_types` on `entity_types`.`id` = `entities`.`entity_type_id`
+                where 1
+                and `field_data`.`value` LIKE ?
+                and `entity_revisions`.`status` in (1,2)
+                and `entity_fields`.`field_type` in ('image', 'file', 'combo')
+                and `entity_localisations`.`deleted_at` is null
+                and `entity_fields`.`deleted_at` is null
+                group by entity_revisions.entity_localisation_id";
+
+        $results = DB::select(DB::raw($sql), ['%"'.$id.'"%']);
+
+        foreach ($results as $i => &$result)
+        {
+            if ($result->field_type == 'combo')
+            {
+                // validate combo subfields to see if subfield with matching value is image/file field type
+                $comboFields = json_decode($result->data_value, true);
+
+                $valid = false;
+
+                foreach ($comboFields as $instance => $subfields)
+                {
+                    foreach ($subfields['fields'] as $fid => $fval)
+                    {
+                        if (is_array($fval))
+                        {
+                            foreach ($fval as $value)
+                            {
+                                if (is_array($value) && array_key_exists('id', $value))
+                                {
+                                    $value = $value['id'];
+                                }
+                                if (strpos($value, $id) !== false)
+                                {
+                                    // select field type to check if image/file
+                                    $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
+                                        where 1
+                                        and `id` = ?
+                                        and `deleted_at` is null";
+
+                                    $r = DB::select(DB::raw($sql), [$fid]);
+
+                                    if ($r)
+                                    {
+                                        foreach ($r as $subfield)
+                                        {
+                                            if (in_array($subfield->field_type, ['image', 'file']))
+                                            {
+                                                $valid = true;
+                                                $result->{$fid} = $subfield;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (strpos($fval, $id) !== false)
+                            {
+                                // select field type to check if image/file
+                                $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
+                                        where 1
+                                        and `id` = ?
+                                        and `deleted_at` is null";
+
+                                $r = DB::select(DB::raw($sql), [$fid]);
+
+                                if ($r)
+                                {
+                                    foreach ($r as $subfield)
+                                    {
+                                        if (in_array($subfield->field_type, ['image', 'file']))
+                                        {
+                                            $valid = true;
+                                            $result->{$fid} = $subfield;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+
+                if (!$valid)
+                {
+                    unset($results[$i]);
+                }
+            }
+            elseif (in_array($result->field_type, ['image', 'file']))
+            {
+                $fields = json_decode($result->data_value, true);
+
+                foreach ($fields as $field) {
+                    if (isset($field['id']) && $field['id'] == $id || $field == $id)
+                    {
+                        $subfield = new \stdClass();
+                        $subfield->field_type = $result->field_type;
+                        $subfield->field_name = $result->field_name;
+
+                        $valid = true;
+                        $result->{$id} = $subfield;
+                    }
+                }
+
+                if (!$valid)
+                {
+                    unset($results[$i]);
+                }
+
+            }
+            else
+            {
+                unset($results[$i]);
+            }
+        }
+
+        return $results;
+    }
+
     public function folders($id=null)
     {
         $media_folders = DB::table("media_folders")->whereNull('deleted_at')->get();
