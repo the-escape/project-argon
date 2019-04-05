@@ -1785,6 +1785,7 @@ function Notifications() {
 
   return window.notifications.map(function (notif) {
     return new noty_default.a({
+      layout: 'topCenter',
       text: notif.text,
       type: notif.success ? 'success' : 'error',
       timeout: 3500
@@ -11538,6 +11539,7 @@ vue_default.a.use(vuex_esm["default"]);
         addFolder(payload.name, payload.parent.id, function (r) {
           if (r.status !== 200) {
             new noty_default.a({
+              layout: 'topCenter',
               text: r.body.error,
               type: 'error',
               timeout: 3500
@@ -11553,6 +11555,7 @@ vue_default.a.use(vuex_esm["default"]);
         media_editFolder(folder.name, folder.id, function (r) {
           if (r.status !== 200) {
             new noty_default.a({
+              layout: 'topCenter',
               text: r.body.error,
               type: 'error',
               timeout: 3500
@@ -11565,6 +11568,7 @@ vue_default.a.use(vuex_esm["default"]);
         media_removeFolder(folder.id, function (r) {
           if (r.status !== 204) {
             new noty_default.a({
+              layout: 'topCenter',
               text: r.body.error,
               type: 'error',
               timeout: 3500
@@ -11580,6 +11584,7 @@ vue_default.a.use(vuex_esm["default"]);
           state.back = new Folder();
           state.active = parent;
           new noty_default.a({
+            layout: 'topCenter',
             text: "".concat(folder.name, " was removed"),
             type: 'success',
             timeout: 3500
@@ -11618,6 +11623,7 @@ vue_default.a.use(vuex_esm["default"]);
 
         msg += ' uploaded';
         new noty_default.a({
+          layout: 'topCenter',
           text: msg,
           type: 'success',
           timeout: 3500
@@ -11630,6 +11636,7 @@ vue_default.a.use(vuex_esm["default"]);
         media_removeItem(item.item.id, function (r) {
           if (r.status >= 400) {
             new noty_default.a({
+              layout: 'topCenter',
               text: r.body.error,
               type: 'error',
               timeout: 3500
@@ -11639,6 +11646,7 @@ vue_default.a.use(vuex_esm["default"]);
 
           item.hide = true;
           new noty_default.a({
+            layout: 'topCenter',
             text: "".concat(item.getName(), " was removed"),
             type: 'success',
             timeout: 3500
@@ -11674,6 +11682,7 @@ vue_default.a.use(vuex_esm["default"]);
               folder.hide = false;
             });
             new noty_default.a({
+              layout: 'topCenter',
               text: r.body.error,
               type: 'error',
               timeout: 3500
@@ -11682,6 +11691,7 @@ vue_default.a.use(vuex_esm["default"]);
           }
 
           new noty_default.a({
+            layout: 'topCenter',
             text: "".concat(items.length + folders.length, " items were moved"),
             type: 'success',
             timeout: 3500
@@ -11732,6 +11742,7 @@ vue_default.a.use(vuex_esm["default"]);
             }
 
             new noty_default.a({
+              layout: 'topCenter',
               text: nonDeleteNames.slice(0, 3).join(', ') + ' Were unable to be deleted',
               type: 'error',
               timeout: 3500
@@ -11751,6 +11762,7 @@ vue_default.a.use(vuex_esm["default"]);
 
           successMsg += 'were deleted';
           new noty_default.a({
+            layout: 'topCenter',
             text: successMsg,
             type: 'success',
             timeout: 3500
@@ -11767,6 +11779,7 @@ vue_default.a.use(vuex_esm["default"]);
           name: name
         }).then(function (data) {
           new noty_default.a({
+            layout: 'topCenter',
             text: data.messages,
             type: 'success',
             timeout: 3500
@@ -11777,6 +11790,7 @@ vue_default.a.use(vuex_esm["default"]);
           item.updateCacheBuster();
         }).catch(function (e) {
           new noty_default.a({
+            layout: 'topCenter',
             text: e.body.errors,
             type: 'error',
             timeout: 3500
@@ -14283,6 +14297,7 @@ Cropper_component.options.__file = "resources/assets/js/src/components/cropper/c
     this.$root.$on('setOptions', function (options) {
       if (!options.hasOwnProperty('image')) {
         new noty_default.a({
+          layout: 'topCenter',
           text: 'No Image was passed to the cropper!',
           type: 'error',
           timeout: 3500
@@ -14575,12 +14590,14 @@ var Bus = new vue_default.a();
       if (this.preventDelete) {
         if (typeof this.node.level === 'undefined') {
           new noty_default.a({
+            layout: 'topCenter',
             text: "You can't delete the home page",
             type: 'error',
             timeout: 3500
           }).show();
         } else {
           new noty_default.a({
+            layout: 'topCenter',
             text: "Before you delete this page, move or remove it's child pages",
             type: 'error',
             timeout: 3500
@@ -14602,6 +14619,7 @@ var Bus = new vue_default.a();
         }).then(function (data) {
           if (data.success) {
             new noty_default.a({
+              layout: 'topCenter',
               text: 'Successfully removed ' + pageName,
               type: 'success',
               timeout: 3500
@@ -14610,6 +14628,7 @@ var Bus = new vue_default.a();
             _this.$root.$children[0].removeNode(_this.treeIndex, _this.node.path);
           } else {
             new noty_default.a({
+              layout: 'topCenter',
               text: 'An error occured removing: ' + pageName,
               type: 'error',
               timeout: 3500
@@ -14622,6 +14641,7 @@ var Bus = new vue_default.a();
     },
     viewError: function viewError() {
       new noty_default.a({
+        layout: 'topCenter',
         text: "The Page needs to be published before you can view it",
         type: 'error',
         timeout: 3500
@@ -15703,6 +15723,7 @@ var bus_Bus = new vue_default.a();
     deleteItem: function deleteItem() {
       if (this.preventDelete) {
         new noty_default.a({
+          layout: 'topCenter',
           text: "Before you delete this item, move or remove it's child items",
           type: 'error',
           timeout: 3500
@@ -15715,6 +15736,7 @@ var bus_Bus = new vue_default.a();
 
       if (tree.nodes.length === 1 && tree.nodes[0].children.length === 0) {
         new noty_default.a({
+          layout: 'topCenter',
           text: "You cannot delete the last item in the tree",
           type: 'error',
           timeout: 3500
@@ -17645,7 +17667,8 @@ function store_getStore() {
 
         if (!state.block.name) {
           new noty_default.a({
-            text: "Please provide block name",
+            layout: 'topCenter',
+            text: 'Please provide block name',
             type: 'error',
             timeout: 3500
           }).show();
@@ -17654,7 +17677,8 @@ function store_getStore() {
 
         if (!state.content.json) {
           new noty_default.a({
-            text: "Please provide json schema",
+            layout: 'topCenter',
+            text: 'Please provide json schema',
             type: 'error',
             timeout: 3500
           }).show();
@@ -17674,7 +17698,8 @@ function store_getStore() {
               state.block.id = response.body.block.id;
               state.blocks = [state.block].concat(import_field_groups_store_toConsumableArray(state.blocks));
               new noty_default.a({
-                text: "Block has been saved in the Blocks Library",
+                layout: 'topCenter',
+                text: 'Block has been saved in the Blocks Library',
                 type: 'success',
                 timeout: 3500
               }).show();
@@ -17687,14 +17712,16 @@ function store_getStore() {
                 return import_field_groups_store_objectSpread({}, state.block);
               });
               new noty_default.a({
-                text: "Changes to the block have been saved",
+                layout: 'topCenter',
+                text: 'Changes to the block have been saved',
                 type: 'success',
                 timeout: 3500
               }).show();
             }
           } else {
             new noty_default.a({
-              text: "There was an error while saving the block",
+              layout: 'topCenter',
+              text: 'There was an error while saving the block',
               type: 'error',
               timeout: 3500
             }).show();
@@ -17711,7 +17738,8 @@ function store_getStore() {
             state.block = null;
             state.editorMode = 'json';
             new noty_default.a({
-              text: "Block has been removed from the Blocks Library",
+              layout: 'topCenter',
+              text: 'Block has been removed from the Blocks Library',
               type: 'success',
               timeout: 3500
             }).show();
@@ -17757,7 +17785,8 @@ function store_getStore() {
 
         if (!state.content.json) {
           new noty_default.a({
-            text: "Please provide json schema",
+            layout: 'topCenter',
+            text: 'Please provide json schema',
             type: 'error',
             timeout: 3500
           }).show();
@@ -17770,14 +17799,16 @@ function store_getStore() {
         }).then(function (response) {
           if (response.body && response.body.success) {
             new noty_default.a({
-              text: response.body.msg || "New block has imported",
+              layout: 'topCenter',
+              text: response.body.msg || 'New block has imported',
               type: 'success',
               timeout: 3500
             }).show();
           } else {
             // todo print actual error message
             new noty_default.a({
-              text: response.body.error && response.body.error.json || "Block could not be imported",
+              layout: 'topCenter',
+              text: response.body.error && response.body.error.json || 'Block could not be imported',
               type: 'error',
               timeout: 3500
             }).show();
@@ -17859,6 +17890,7 @@ function onSubmit(data) {
     feedback_form_form.el.classList.remove('active');
     feedback_form_form.el.reset();
     new noty_default.a({
+      layout: 'topCenter',
       text: 'Your feedback has been sent successfully.',
       type: 'success',
       timeout: 3500
@@ -17875,6 +17907,7 @@ function onSubmit(data) {
     }
 
     new noty_default.a({
+      layout: 'topCenter',
       text: error,
       type: 'error',
       timeout: 1000
@@ -18031,4 +18064,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c08c9f5cabd40fae41e7.js.map
+//# sourceMappingURL=main.8ba86b1c699a3e07ca28.js.map

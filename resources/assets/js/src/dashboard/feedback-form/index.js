@@ -35,6 +35,7 @@ function onSubmit (data) {
         form.el.reset()
 
         new Noty({
+            layout: 'topCenter',
             text: 'Your feedback has been sent successfully.',
             type: 'success',
             timeout: 3500
@@ -54,6 +55,7 @@ function onSubmit (data) {
         }
 
         new Noty({
+            layout: 'topCenter',
             text: error,
             type: 'error',
             timeout: 1000

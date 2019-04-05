@@ -20,9 +20,7 @@ export function getStore () {
             isConfigExpanded: false,
             block: null
         },
-        getters: {
-
-        },
+        getters: {},
         mutations: {
             setType (state, { type }) {
                 state.type = type
@@ -82,11 +80,12 @@ export function getStore () {
                 state.blocks.push(state.block)
             },
             saveBlockToLibrary (state) {
-                let url = '/admin/blockslibrary';
+                let url = '/admin/blockslibrary'
 
                 if (!state.block.name) {
                     new Noty({
-                        text: "Please provide block name",
+                        layout: 'topCenter',
+                        text: 'Please provide block name',
                         type: 'error',
                         timeout: 3500
                     }).show()
@@ -96,7 +95,8 @@ export function getStore () {
 
                 if (!state.content.json) {
                     new Noty({
-                        text: "Please provide json schema",
+                        layout: 'topCenter',
+                        text: 'Please provide json schema',
                         type: 'error',
                         timeout: 3500
                     }).show()
@@ -113,37 +113,37 @@ export function getStore () {
                 state.block.mappers = state.content.mappers
 
                 Vue.http.post(url, state.block).then(response => {
-
                     if (response.body && response.body.success) {
-
                         if (response.body.block && response.body.block.id) {
                             state.block.id = response.body.block.id
                             state.blocks = [state.block, ...state.blocks]
 
                             new Noty({
-                                text: "Block has been saved in the Blocks Library",
+                                layout: 'topCenter',
+                                text:
+                                    'Block has been saved in the Blocks Library',
                                 type: 'success',
                                 timeout: 3500
                             }).show()
                         } else {
-
                             state.blocks = state.blocks.map(block => {
-                                if (block.id !== state.block.id){
+                                if (block.id !== state.block.id) {
                                     return block
                                 }
-                                return {...state.block}
+                                return { ...state.block }
                             })
 
                             new Noty({
-                                text: "Changes to the block have been saved",
+                                layout: 'topCenter',
+                                text: 'Changes to the block have been saved',
                                 type: 'success',
                                 timeout: 3500
                             }).show()
                         }
-
                     } else {
                         new Noty({
-                            text: "There was an error while saving the block",
+                            layout: 'topCenter',
+                            text: 'There was an error while saving the block',
                             type: 'error',
                             timeout: 3500
                         }).show()
@@ -155,12 +155,16 @@ export function getStore () {
 
                 Vue.http.post(url).then(response => {
                     if (response.body && response.body.success) {
-                        state.blocks = state.blocks.filter(block => block.id !== state.block.id)
+                        state.blocks = state.blocks.filter(
+                            block => block.id !== state.block.id
+                        )
                         state.block = null
                         state.editorMode = 'json'
 
                         new Noty({
-                            text: "Block has been removed from the Blocks Library",
+                            layout: 'topCenter',
+                            text:
+                                'Block has been removed from the Blocks Library',
                             type: 'success',
                             timeout: 3500
                         }).show()
@@ -171,24 +175,31 @@ export function getStore () {
                 state.isLoading = true
 
                 if (block.isLocal) {
-                    const url = '/admin/types/' + encodeURIComponent(block.type) + '/groups/' + encodeURIComponent(block.id) + '/export'
+                    const url =
+                        '/admin/types/' +
+                        encodeURIComponent(block.type) +
+                        '/groups/' +
+                        encodeURIComponent(block.id) +
+                        '/export'
 
-                    Vue.http.get(url, {
-                        params: {
-                            json: true
-                        }
-                    }).then(response => {
-                        state.content = {
-                            json: JSON.stringify(response.body, null, 4),
-                            blade: '',
-                            mappers: ''
-                        }
-                        state.block = null
-                        state.isLoading = false
-                    })
-
+                    Vue.http
+                        .get(url, {
+                            params: {
+                                json: true
+                            }
+                        })
+                        .then(response => {
+                            state.content = {
+                                json: JSON.stringify(response.body, null, 4),
+                                blade: '',
+                                mappers: ''
+                            }
+                            state.block = null
+                            state.isLoading = false
+                        })
                 } else {
-                    const url = '/admin/blockslibrary/' + encodeURIComponent(block.id)
+                    const url =
+                        '/admin/blockslibrary/' + encodeURIComponent(block.id)
 
                     Vue.http.get(url).then(response => {
                         const content = {
@@ -209,7 +220,8 @@ export function getStore () {
 
                 if (!state.content.json) {
                     new Noty({
-                        text: "Please provide json schema",
+                        layout: 'topCenter',
+                        text: 'Please provide json schema',
                         type: 'error',
                         timeout: 3500
                     }).show()
@@ -217,26 +229,34 @@ export function getStore () {
                     return
                 }
 
-                Vue.http.post(url, {
-                    json: state.content.json,
-                    smart_import: state.smartImport
-                }).then(response => {
-
-                    if (response.body && response.body.success) {
-                        new Noty({
-                            text: response.body.msg || "New block has imported",
-                            type: 'success',
-                            timeout: 3500
-                        }).show()
-                    } else {
-                        // todo print actual error message
-                        new Noty({
-                            text: response.body.error && response.body.error.json || "Block could not be imported",
-                            type: 'error',
-                            timeout: 3500
-                        }).show()
-                    }
-                })
+                Vue.http
+                    .post(url, {
+                        json: state.content.json,
+                        smart_import: state.smartImport
+                    })
+                    .then(response => {
+                        if (response.body && response.body.success) {
+                            new Noty({
+                                layout: 'topCenter',
+                                text:
+                                    response.body.msg ||
+                                    'New block has imported',
+                                type: 'success',
+                                timeout: 3500
+                            }).show()
+                        } else {
+                            // todo print actual error message
+                            new Noty({
+                                layout: 'topCenter',
+                                text:
+                                    (response.body.error &&
+                                        response.body.error.json) ||
+                                    'Block could not be imported',
+                                type: 'error',
+                                timeout: 3500
+                            }).show()
+                        }
+                    })
             }
         }
     })

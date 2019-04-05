@@ -144,6 +144,7 @@ export default function () {
                 addFolder(payload.name, payload.parent.id, function (r) {
                     if (r.status !== 200) {
                         new Noty({
+                            layout: 'topCenter',
                             text: r.body.error,
                             type: 'error',
                             timeout: 3500
@@ -165,6 +166,7 @@ export default function () {
                 editFolder(folder.name, folder.id, function (r) {
                     if (r.status !== 200) {
                         new Noty({
+                            layout: 'topCenter',
                             text: r.body.error,
                             type: 'error',
                             timeout: 3500
@@ -178,6 +180,7 @@ export default function () {
                 removeFolder(folder.id, function (r) {
                     if (r.status !== 204) {
                         new Noty({
+                            layout: 'topCenter',
                             text: r.body.error,
                             type: 'error',
                             timeout: 3500
@@ -194,6 +197,7 @@ export default function () {
                     state.active = parent
 
                     new Noty({
+                        layout: 'topCenter',
                         text: `${folder.name} was removed`,
                         type: 'success',
                         timeout: 3500
@@ -233,6 +237,7 @@ export default function () {
                 msg += ' uploaded'
 
                 new Noty({
+                    layout: 'topCenter',
                     text: msg,
                     type: 'success',
                     timeout: 3500
@@ -245,6 +250,7 @@ export default function () {
                 removeItem(item.item.id, function (r) {
                     if (r.status >= 400) {
                         new Noty({
+                            layout: 'topCenter',
                             text: r.body.error,
                             type: 'error',
                             timeout: 3500
@@ -254,6 +260,7 @@ export default function () {
 
                     item.hide = true
                     new Noty({
+                        layout: 'topCenter',
                         text: `${item.getName()} was removed`,
                         type: 'success',
                         timeout: 3500
@@ -286,6 +293,7 @@ export default function () {
                         })
 
                         new Noty({
+                            layout: 'topCenter',
                             text: r.body.error,
                             type: 'error',
                             timeout: 3500
@@ -294,6 +302,7 @@ export default function () {
                     }
 
                     new Noty({
+                        layout: 'topCenter',
                         text: `${items.length +
                             folders.length} items were moved`,
                         type: 'success',
@@ -339,6 +348,7 @@ export default function () {
                         }
 
                         new Noty({
+                            layout: 'topCenter',
                             text:
                                 nonDeleteNames.slice(0, 3).join(', ') +
                                 ' Were unable to be deleted',
@@ -359,6 +369,7 @@ export default function () {
                     successMsg += 'were deleted'
 
                     new Noty({
+                        layout: 'topCenter',
                         text: successMsg,
                         type: 'success',
                         timeout: 3500
@@ -369,6 +380,7 @@ export default function () {
                 update({ id: item.item.id, file, name })
                     .then(data => {
                         new Noty({
+                            layout: 'topCenter',
                             text: data.messages,
                             type: 'success',
                             timeout: 3500
@@ -378,6 +390,7 @@ export default function () {
                     })
                     .catch(e => {
                         new Noty({
+                            layout: 'topCenter',
                             text: e.body.errors,
                             type: 'error',
                             timeout: 3500

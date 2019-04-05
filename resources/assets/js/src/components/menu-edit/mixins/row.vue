@@ -32,6 +32,7 @@ export default {
         deleteItem() {
             if(this.preventDelete){
                 new Noty({
+                    layout: 'topCenter',
                     text: "Before you delete this item, move or remove it's child items",
                     type: 'error',
                     timeout: 3500
@@ -45,6 +46,7 @@ export default {
 
             if(tree.nodes.length === 1 && tree.nodes[0].children.length === 0){
                 new Noty({
+                    layout: 'topCenter',
                     text: "You cannot delete the last item in the tree",
                     type: 'error',
                     timeout: 3500

@@ -21,6 +21,7 @@ export default {
         this.$root.$on('setOptions', options => {
             if(!options.hasOwnProperty('image')){
                 new Noty({
+                    layout: 'topCenter',
                     text: 'No Image was passed to the cropper!',
                     type: 'error',
                     timeout: 3500

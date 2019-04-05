@@ -18,12 +18,14 @@ export default {
             if(this.preventDelete){
                 if(typeof this.node.level === 'undefined'){
                     new Noty({
+                        layout: 'topCenter',
                         text: "You can't delete the home page",
                         type: 'error',
                         timeout: 3500
                     }).show()
                 }else{
                     new Noty({
+                        layout: 'topCenter',
                         text: "Before you delete this page, move or remove it's child pages",
                         type: 'error',
                         timeout: 3500
@@ -48,6 +50,7 @@ export default {
                     .then(data => {
                         if (data.success) {
                             new Noty({
+                                layout: 'topCenter',
                                 text: 'Successfully removed ' + pageName,
                                 type: 'success',
                                 timeout: 3500
@@ -55,6 +58,7 @@ export default {
                             this.$root.$children[0].removeNode(this.treeIndex, this.node.path)
                         } else {
                             new Noty({
+                                layout: 'topCenter',
                                 text: 'An error occured removing: ' + pageName,
                                 type: 'error',
                                 timeout: 3500
@@ -66,6 +70,7 @@ export default {
         },
         viewError() {
             new Noty({
+                layout: 'topCenter',
                 text: "The Page needs to be published before you can view it",
                 type: 'error',
                 timeout: 3500
