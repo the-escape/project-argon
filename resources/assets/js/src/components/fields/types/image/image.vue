@@ -73,11 +73,12 @@ export default {
             }
         },
         clearValue: function(){
-            this.updateValue(this.valueObj, {
+            this.updateValue({
                 id: '',
                 alt: '',
                 url: ''
             })
+            this.alt = ''
         },
         selectImage: function(){
             PickMedia().then(value => {

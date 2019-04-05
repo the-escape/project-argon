@@ -12044,11 +12044,12 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
       }
     },
     clearValue: function clearValue() {
-      this.updateValue(this.valueObj, {
+      this.updateValue({
         id: '',
         alt: '',
         url: ''
       });
+      this.alt = '';
     },
     selectImage: function selectImage() {
       var _this = this;
@@ -18064,4 +18065,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8ba86b1c699a3e07ca28.js.map
+//# sourceMappingURL=main.989df5c65ba0bf17400d.js.map
