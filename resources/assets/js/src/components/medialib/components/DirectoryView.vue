@@ -16,8 +16,7 @@
             </div>
 
             <div class="c-media-library__grid-wrap">
-                <file-list v-bind:items="active.items" v-bind:folders="active.children" v-if="active.hasContent()" />
-                <h3 v-else>No content</h3>
+                <file-list v-bind:items="active.items" v-bind:folders="active.children" />
                 <drop
                     @dragover="dragOver"
                     @dragleave="dragLeave"

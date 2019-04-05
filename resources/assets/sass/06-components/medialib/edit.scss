@@ -52,6 +52,8 @@
     &__body {
         display: flex;
         padding: 30px 15px 55px;
+        overflow: auto;
+        margin-bottom: 60px;
     }
 
     &__preview {
@@ -106,6 +108,15 @@
         }
     }
 
+    &__preview,
+    &__details {
+        > * {
+            &:last-child {
+                padding-bottom: 55px;
+            }
+        }
+    }
+
     &__details .o-form {
         + * {
             margin-top: 10px;
@@ -123,10 +134,14 @@
     }
 
     &__footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        height: 60px;
         margin-top: auto;
         padding: 0 30px;
         border-top: 1px solid $secondary;

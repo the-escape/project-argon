@@ -8829,7 +8829,9 @@ button.uppy-DashboardItem-progressIndicator {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    padding: 30px 15px 55px; }
+    padding: 30px 15px 55px;
+    overflow: auto;
+    margin-bottom: 60px; }
   .c-edit__preview {
     padding: 0 15px;
     -webkit-box-flex: 1;
@@ -8868,6 +8870,8 @@ button.uppy-DashboardItem-progressIndicator {
       grid-template-columns: -webkit-max-content 1fr;
       grid-template-columns: max-content 1fr;
       grid-gap: 12px 30px; }
+  .c-edit__preview > *:last-child, .c-edit__details > *:last-child {
+    padding-bottom: 55px; }
   .c-edit__details .o-form + * {
     margin-top: 10px; }
   .c-edit__details .o-form label {
@@ -8877,6 +8881,11 @@ button.uppy-DashboardItem-progressIndicator {
     .c-edit__details .o-form label + input {
       margin-top: 0; }
   .c-edit__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -8886,7 +8895,6 @@ button.uppy-DashboardItem-progressIndicator {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    height: 60px;
     margin-top: auto;
     padding: 0 30px;
     border-top: 1px solid #b6b6b6;
@@ -10819,4 +10827,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-edd1e3c523.css.map
+//# sourceMappingURL=main-bfa730755b.css.map

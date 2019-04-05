@@ -10094,14 +10094,9 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
           "div",
           { staticClass: "c-media-library__grid-wrap" },
           [
-            _vm.active.hasContent()
-              ? _c("file-list", {
-                  attrs: {
-                    items: _vm.active.items,
-                    folders: _vm.active.children
-                  }
-                })
-              : _c("h3", [_vm._v("No content")]),
+            _c("file-list", {
+              attrs: { items: _vm.active.items, folders: _vm.active.children }
+            }),
             _vm._v(" "),
             _c(
               "drop",
@@ -10164,7 +10159,6 @@ function DirectoryViewvue_type_script_lang_js_objectSpread(target) { for (var i 
 
 function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
 //
 //
 //
@@ -18037,4 +18031,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.b80edd188bbb6c27cb82.js.map
+//# sourceMappingURL=main.c08c9f5cabd40fae41e7.js.map
