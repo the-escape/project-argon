@@ -6543,7 +6543,7 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
       return config;
     },
     inputName: function inputName() {
-      return this.name.replace('[]', "[".concat(this.valueObj.id, "]"));
+      return this.name;
     }
   },
   methods: {
@@ -6574,7 +6574,8 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
 
 function updateEditorHeight() {
   this.totalHeight = this.textareaElement.nextElementSibling.offsetHeight;
-}
+} // TODO: fix multi wysiwyg instances, as it appears as a single ckeditor instance and adding a unique hash to the name breaks the backend
+
 
 function mountEditor() {
   var _this2 = this;
@@ -6595,7 +6596,7 @@ function mountEditor() {
 }
 
 function destoryEditor() {
-  CKEDITOR.instances[this.wysiwygInstance].destroy(true);
+  CKEDITOR.instances[this.wysiwygInstance] && CKEDITOR.instances[this.wysiwygInstance].destroy(true);
 }
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/single-wysiwyg.vue?vue&type=script&lang=js&
  /* harmony default export */ var types_single_wysiwygvue_type_script_lang_js_ = (single_wysiwygvue_type_script_lang_js_); 
@@ -18065,4 +18066,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.989df5c65ba0bf17400d.js.map
+//# sourceMappingURL=main.6442adbc876ff55c3d9c.js.map

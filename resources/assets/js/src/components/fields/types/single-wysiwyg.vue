@@ -96,7 +96,7 @@ export default {
             return config
         },
         inputName: function () {
-            return this.name.replace('[]', `[${this.valueObj.id}]`)
+            return this.name
         }
     },
     methods: {
@@ -126,6 +126,7 @@ function updateEditorHeight(){
     this.totalHeight = this.textareaElement.nextElementSibling.offsetHeight
 }
 
+// TODO: fix multi wysiwyg instances, as it appears as a single ckeditor instance and adding a unique hash to the name breaks the backend
 function mountEditor () {
     const textarea = this.$el
     this.textareaElement = textarea
@@ -142,7 +143,7 @@ function mountEditor () {
 }
 
 function destoryEditor () {
-    CKEDITOR.instances[this.wysiwygInstance].destroy(true)
+    CKEDITOR.instances[this.wysiwygInstance] && CKEDITOR.instances[this.wysiwygInstance].destroy(true)
 }
 </script>
 
