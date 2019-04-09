@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 368 modules ***!
+  !*** ./resources/assets/js/src/index.js + 378 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -12382,6 +12382,404 @@ var file_component = Object(componentNormalizer["default"])(
 if (false) { var file_api; }
 file_component.options.__file = "resources/assets/js/src/components/fields/types/file.vue"
 /* harmony default export */ var types_file = (file_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/icon/index.vue?vue&type=template&id=1a3cab6c&
+var iconvue_type_template_id_1a3cab6c_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "o-form__group" },
+    [
+      _c(
+        "validation",
+        { attrs: { "status-error": _vm.errors, "input-name": _vm.inputName } },
+        [
+          _c("label", { attrs: { for: _vm.inputName } }, [
+            _vm._v(_vm._s(_vm.name))
+          ]),
+          _vm._v(" "),
+          _c("multi", {
+            attrs: {
+              "field-id": _vm.fieldId,
+              "combo-id": _vm.comboId,
+              "combo-item-id": _vm.comboItemId,
+              "input-name": _vm.inputName
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "default",
+                fn: function(ref) {
+                  var valueObj = ref.valueObj
+                  return [
+                    _c("field-icon", {
+                      attrs: {
+                        "value-obj": valueObj,
+                        "field-id": _vm.fieldId,
+                        "combo-id": _vm.comboId,
+                        "combo-item-id": _vm.comboItemId
+                      }
+                    })
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.field.helpText
+        ? _c("div", {
+            staticClass: "o-form__help-text l-full",
+            domProps: { innerHTML: _vm._s(_vm.field.helpText) }
+          })
+        : _vm._e()
+    ],
+    1
+  )
+}
+var iconvue_type_template_id_1a3cab6c_staticRenderFns = []
+iconvue_type_template_id_1a3cab6c_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/index.vue?vue&type=template&id=1a3cab6c&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/icon/icon.vue?vue&type=template&id=b6654d62&
+var iconvue_type_template_id_b6654d62_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "o-item-picker o-item-picker--no-edit o-item-picker--label",
+      class: { "is-open": _vm.pickerOpen }
+    },
+    [
+      _c(
+        "button",
+        {
+          staticClass: "o-item-picker__btn",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.togglePicker($event)
+            }
+          }
+        },
+        [
+          _c("svg", [
+            _c("use", {
+              attrs: { "xlink:href": _vm.svgPath + _vm.value.value }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.value.value,
+            expression: "value.value"
+          }
+        ],
+        attrs: { type: "hidden", name: _vm.inputName, id: _vm.inputName },
+        domProps: { value: _vm.value.value },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.value, "value", $event.target.value)
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "output",
+        {
+          staticClass: "o-item-picker__output",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.launchPicker($event)
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.value.name))]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "o-item-picker__dropdown-btn",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.togglePicker($event)
+            }
+          }
+        },
+        [
+          _c("svg", [
+            _c("use", {
+              attrs: { "xlink:href": "/argon/images/svgicons.svg#select" }
+            })
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "o-item-picker__window" }, [
+        _c("button", {
+          staticClass: "o-item-picker__close",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.closePicker($event)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "o-item-picker__vignette" }),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "o-item-picker__list" },
+          _vm._l(_vm.options, function(option, index) {
+            return _c(
+              "button",
+              {
+                key: index,
+                staticClass: "o-item-picker__item",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.setValue(option)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "o-item-picker__icon" }, [
+                  _c("svg", [
+                    _c("use", {
+                      attrs: { "xlink:href": _vm.svgPath + option.value }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "o-item-picker__label" }, [
+                  _vm._v(_vm._s(option.name))
+                ])
+              ]
+            )
+          })
+        )
+      ])
+    ]
+  )
+}
+var iconvue_type_template_id_b6654d62_staticRenderFns = []
+iconvue_type_template_id_b6654d62_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/icon.vue?vue&type=template&id=b6654d62&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/icon/icon.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var iconvue_type_script_lang_js_ = ({
+  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  mixins: [field_values],
+  data: function data() {
+    return {
+      value: {
+        name: '',
+        value: ''
+      },
+      pickerOpen: false,
+      svgPath: '/images/svgicons.svg#',
+      options: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.options = [];
+
+    if (this.field.options.settings.svg_pat) {
+      this.svgPath = this.field.options.settings.svg_path + '#';
+    }
+
+    if (this.field.options.settings.meta_path) {
+      fetch(this.field.options.settings.meta_path).then(function (res) {
+        return res.json();
+      }).then(function (_ref) {
+        var svgicons = _ref.svgicons;
+        _this.options = svgicons.map(function (el) {
+          return {
+            name: el,
+            value: el
+          };
+        });
+
+        _this.$emit('optionsSet');
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    this.loading = false;
+    this.$on('optionsSet', function () {
+      _this2.value = _this2.options.find(function (option) {
+        return option.value === _this2.valueObj.value;
+      }) || _this2.value;
+    });
+  },
+  methods: {
+    updateValue: function updateValue() {
+      this.valueObj.value = this.value.value;
+
+      if (this.comboId) {
+        this.$store.commit('updateComboFieldValue', {
+          fieldID: this.fieldId,
+          comboID: this.comboId,
+          comboItemId: this.comboItemId,
+          newValue: this.valueObj
+        });
+      } else {
+        this.$store.commit('updateValue', {
+          fieldID: this.fieldId,
+          newValue: this.valueObj
+        });
+      }
+    },
+    launchPicker: function launchPicker() {
+      this.pickerOpen = true;
+    },
+    closePicker: function closePicker() {
+      this.pickerOpen = false;
+    },
+    togglePicker: function togglePicker() {
+      this.pickerOpen = !this.pickerOpen;
+    },
+    setValue: function setValue(newValue) {
+      this.value = newValue;
+      this.updateValue();
+      this.closePicker();
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/icon.vue?vue&type=script&lang=js&
+ /* harmony default export */ var icon_iconvue_type_script_lang_js_ = (iconvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/icon.vue
+
+
+
+
+
+/* normalize component */
+
+var icon_component = Object(componentNormalizer["default"])(
+  icon_iconvue_type_script_lang_js_,
+  iconvue_type_template_id_b6654d62_render,
+  iconvue_type_template_id_b6654d62_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var icon_api; }
+icon_component.options.__file = "resources/assets/js/src/components/fields/types/icon/icon.vue"
+/* harmony default export */ var icon = (icon_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/icon/index.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ var types_iconvue_type_script_lang_js_ = ({
+  props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
+  mixins: [field_values],
+  components: {
+    'field-icon': icon,
+    'validation': validation,
+    'multi': multi
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/index.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_types_iconvue_type_script_lang_js_ = (types_iconvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/icon/index.vue
+
+
+
+
+
+/* normalize component */
+
+var types_icon_component = Object(componentNormalizer["default"])(
+  fields_types_iconvue_type_script_lang_js_,
+  iconvue_type_template_id_1a3cab6c_render,
+  iconvue_type_template_id_1a3cab6c_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var types_icon_api; }
+types_icon_component.options.__file = "resources/assets/js/src/components/fields/types/icon/index.vue"
+/* harmony default export */ var types_icon = (types_icon_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/types.vue?vue&type=script&lang=js&
 //
 //
@@ -12392,6 +12790,7 @@ file_component.options.__file = "resources/assets/js/src/components/fields/types
 //
 //
 //
+
 
 
 
@@ -12418,7 +12817,8 @@ var typeMap = {
   'menu': 'select-input',
   'datetime': 'datetime-input',
   'image': 'image-input',
-  'file': 'file-input'
+  'file': 'file-input',
+  'icon': 'icon-input'
 };
 /* harmony default export */ var typesvue_type_script_lang_js_ = ({
   name: 'types',
@@ -12435,7 +12835,8 @@ var typeMap = {
     'boolean-input': types_boolean,
     'datetime-input': datetime,
     'image-input': types_image,
-    'file-input': types_file
+    'file-input': types_file,
+    'icon-input': types_icon
   },
   computed: {
     type: function type() {
@@ -18065,4 +18466,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.989df5c65ba0bf17400d.js.map
+//# sourceMappingURL=main.6b572db8ecb9ef7790eb.js.map
