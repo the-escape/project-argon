@@ -46,7 +46,7 @@
                     $hasGroups = count($groups) > 0;
                 ?>
 
-                <div class="c-tab-panel<?php if($hasGroups) echo ' active' ?>" data-tab="page-content">
+                <div class="c-tab-panel {{ $hasGroups ? ' active ' : '' }}" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content">
@@ -63,7 +63,7 @@
                         </div>
                     </main>
                 </div>
-                <div class="c-tab-panel<?php if(!$hasGroups) echo ' active' ?>" data-tab="attributes">
+                <div class="c-tab-panel{{ !$hasGroups ? ' active ' : '' }}" data-tab="attributes">
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content c-tab-panel__inner-container l-full">
@@ -121,7 +121,7 @@
                                         <div>
                                             <script>
                                                 window.fieldGroups['{{$group->id}}'] = {
-                                                    fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
+                                                    fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!},
                                                     header: "{!! $group->name !!}",
                                                     actions: false
                                                 }

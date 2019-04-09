@@ -465,7 +465,11 @@ class BlocksController extends BaseController
                     ];
                 })->toArray();
 
-            if(count($nonSortableGroups) == count($tabNavGroups))
+            $activeGroups = $nonSortableGroups->filter(function($el){
+                return !$el->getSetting('isAttribute') && !$el->getSetting('isProperty');
+            });
+
+            if(!count($activeGroups))
             {
                 $attributes['isActive'] = true;
                 $tabNav = [$attributes];
