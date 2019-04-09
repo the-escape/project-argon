@@ -17,7 +17,13 @@ class IconFieldType extends AbstractFieldType
             'type' => 'boolean',
             'default' => false,
             'help' => null,
-        ]
+        ],
+        'meta_path' => [
+            'label' => 'Override the default svgmeta. ',
+            'type' => 'text',
+            'default' => null,
+            'help' => "Provide a path to a different svgmeta.json file (relative to public folder)."
+        ],
     ];
 
     public function parseData($data = null)
@@ -33,7 +39,13 @@ class IconFieldType extends AbstractFieldType
     public function getSettings()
     {
         $settings = parent::getSettings();
-        $settings->meta_path = config('argon.svgicons_meta','/images/svgmeta.json');
+        $settings->svg_path = config('argon.svgicons_path','/images/svgicons.svg');
+
+        if(empty($settings->meta_path))
+        {
+            $settings->meta_path = config('argon.svgicons_meta','/images/svgmeta.json');
+        }
+
         return $settings;
     }
 
