@@ -215,7 +215,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             <div class="c-actions">
                                 <div class="c-actions__group">
                                     <button type="submit" class="o-btn o-btn--primary">Save</button>
-                                    <a href="#" class="o-btn  preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <a href="#" class="o-btn preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
                                     <button type="submit" class="o-btn " data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
                                     <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
@@ -366,7 +366,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                 @endif
             </div>
 
-            <main class="c-container c-container--main" hidden>
+            {{-- <main class="c-container c-container--main" hidden>
 
                 <div class="l-space-between l-space">
                     @foreach ($page->getLocalisations() as $l)
@@ -405,11 +405,11 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                 @endif
 
-            </main>
+            </main> --}}
         </div>
     </form>
 
-    <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -446,11 +446,11 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    @include('argon::pages.partials.medialib')
+    {{-- @include('argon::pages.partials.medialib') --}}
 
-    <div style="display: none;" id="preview-template">
+    {{-- <div style="display: none;" id="preview-template">
         <div class="media-item">
             <img class="thumb" data-dz-thumbnail>
             <span class="filename" data-dz-name></span>
@@ -459,7 +459,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
             <progress class="progress" value="25" max="100"></progress>
         </div>
-    </div>
+    </div> --}}
 
     <div class="modal fade" id="newLocalisationModal" tabindex="-1" role="dialog" aria-labelledby="newLocalisationLabel">
         <div class="modal-dialog" role="document">

@@ -90,26 +90,23 @@
                                     <div class="o-form-status">
                                         <div class="o-form-status__input">
                                             <label for="status1">Published</label>
-                                        </div>
-                                        <div></div>
-                                        <div class="o-form__list">
+                                            <div class="o-form__list">
+                                                <div class="o-radio">
+                                                    <label>
+                                                        <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
+                                                        <span></span>
+                                                    </label>
+                                                    <label for="status1">Yes</label>
+                                                </div>
 
-                                            <div class="o-radio">
-                                                <label>
-                                                    <input type="radio" name="status" {{ old('status') == '1' ? 'checked="checked"' : '' }} id="status1" value="1">
-                                                    <span></span>
-                                                </label>
-                                                <label for="status1">Yes</label>
+                                                <div class="o-radio">
+                                                    <label>
+                                                        <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
+                                                        <span></span>
+                                                    </label>
+                                                    <label for="status0">No</label>
+                                                </div>
                                             </div>
-
-                                            <div class="o-radio">
-                                                <label>
-                                                    <input type="radio" name="status" {{ old('status') != '1' ? 'checked="checked"' : '' }} id="status0" value="0">
-                                                    <span></span>
-                                                </label>
-                                                <label for="status0">No</label>
-                                            </div>
-
                                         </div>
                                         <div class="o-form-status__message">
                                             <div class="o-form-status__icon">
@@ -183,7 +180,10 @@
                                                 isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
                                                 image: '{{ $group->getSetting("image") }}'
                                             });
-                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
+                                            window.fieldGroups['{{$group->id}}'] = {
+                                                fields: {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!},
+                                                header: "{!! $group->name !!}"
+                                            }
                                         </script>
                                         <div class="js-fields" data-name="{{$group->id}}"></div>
                                     </div>
@@ -202,7 +202,7 @@
         </div>
     </form>
 
-    <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -241,9 +241,9 @@
         </div>
     </div>
 
-    @include('argon::pages.partials.medialib')
+    @include('argon::pages.partials.medialib') --}}
 
-    <div style="display: none;" id="preview-template">
+    {{-- <div style="display: none;" id="preview-template">
         <div class="media-item">
             <img class="thumb" data-dz-thumbnail>
             <span class="filename" data-dz-name></span>
@@ -252,7 +252,7 @@
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
             <progress class="progress" value="25" max="100"></progress>
         </div>
-    </div>
+    </div> --}}
 @stop
 
 @section('footer')

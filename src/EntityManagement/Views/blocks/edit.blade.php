@@ -10,7 +10,7 @@
         window.groups = []
     </script>
 
-    <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" class="o-form" method="POST">
+    <form action="{{ route('cms:blocks:update', [$page->getId(), $localisation->getLocaleId()]) }}" class="o-form js-prevent-leave" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         @include('argon::inc.alerts', compact($errors))
@@ -20,7 +20,7 @@
                 <div class="c-header__title">
                     <h1>{{$page->name}}</h1>
                 </div>
-                <div class="c-tab__nav js-tabs-nav">
+                <div class="c-header__nav c-tab__nav js-tabs-nav">
                     <ul>
                         @foreach($tabNav as $tab)
                         <li>
@@ -36,7 +36,17 @@
             </header>
 
             <div class="c-tab-panel__list js-tabs-list">
-                <div class="c-tab-panel active" data-tab="block-content">
+                <?php
+                    $groups = [];
+                    if(!$page->getGroups($localisation->getLocaleId())->isEmpty()){
+                        $groups = $page->getGroups($localisation->getLocaleId())->filter(function($el) {
+                            return !$el->getSetting('isAttribute') && !$el->getSetting('isProperty');
+                        });
+                    }
+                    $hasGroups = count($groups) > 0;
+                ?>
+
+                <div class="c-tab-panel<?php if($hasGroups) echo ' active' ?>" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content">
@@ -53,7 +63,7 @@
                         </div>
                     </main>
                 </div>
-                <div class="c-tab-panel" data-tab="attributes">
+                <div class="c-tab-panel<?php if(!$hasGroups) echo ' active' ?>" data-tab="attributes">
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content c-tab-panel__inner-container l-full">
@@ -102,6 +112,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if(($propertyGroups = $page->getGroups($localisation->getLocaleId())->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
+                                    @foreach($propertyGroups as $group)
+
+                                        <hr>
+
+                                        <div>
+                                            <script>
+                                                window.fieldGroups['{{$group->id}}'] = {
+                                                    fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
+                                                    header: "{!! $group->name !!}",
+                                                    actions: false
+                                                }
+                                            </script>
+                                            <div class="js-fields" data-name="{{$group->id}}"></div>
+                                        </div>
+
+                                    @endforeach
+                                @endif
                             </div>
 
                             <div class="c-actions">
@@ -115,39 +144,29 @@
                     </main>
                 </div>
 
-                @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
-                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
+                @if($hasGroups)
+                    @foreach($groups as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-actions__container">
-                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                        <h2>{{ $group->name }}</h2>
-                                        <?php
-                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                        ?>
-                                        <script>
-                                            window.groups.push({
-                                                id: '{{$group->id}}',
-                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                                isRendering: {{ $isRendering }},
-                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                                name: '{{ $group->name }}',
-                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                                image: '{{ $group->getSetting("image") }}'
-                                            });
-                                            window.fieldGroups['{{$group->id}}'] = {
-                                                fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!},
-                                                header: "{{ $group->name }}"
-                                            }
-                                        </script>
-                                        <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    </div>
-                                    <div class="c-actions">
-                                        <div class="c-actions__group">
-                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="block-content">Back</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php
+                                    $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                ?>
+                                <script>
+                                    window.groups.push({
+                                        id: '{{$group->id}}',
+                                        isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                        isRendering: {{ $isRendering }},
+                                        isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                        name: '{!! $group->name !!}',
+                                        isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                        image: '{{ $group->getSetting("image") }}'
+                                    });
+                                    window.fieldGroups['{{$group->id}}'] = {
+                                        fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $latest),JSON_PRETTY_PRINT) !!},
+                                        header: "{!! $group->name !!}"
+                                    }
+                                </script>
+                                <div class="js-fields" data-name="{{$group->id}}"></div>
                             </main>
                         </div>
                     @endforeach
@@ -179,7 +198,7 @@
         </main> --}}
     </form>
 
-    <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -212,11 +231,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-    @include('argon::pages.partials.medialib')
+    {{-- @include('argon::pages.partials.medialib') --}}
 
-    <div style="display: none;" id="preview-template">
+    {{-- <div style="display: none;" id="preview-template">
         <div class="media-item">
             <img class="thumb" data-dz-thumbnail>
             <span class="filename" data-dz-name></span>
@@ -225,7 +244,7 @@
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
             <progress class="progress" value="25" max="100"></progress>
         </div>
-    </div>
+    </div> --}}
 
     <div class="modal fade" id="newLocalisationModal" tabindex="-1" role="dialog" aria-labelledby="newLocalisationLabel">
         <div class="modal-dialog" role="document">

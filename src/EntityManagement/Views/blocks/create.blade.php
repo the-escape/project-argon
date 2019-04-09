@@ -83,6 +83,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if(($propertyGroups = $groups->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
+                                    @foreach($propertyGroups as $group)
+
+                                        <hr>
+
+                                        <div>
+                                            <script>
+                                                window.fieldGroups['{{$group->id}}'] = {
+                                                    fields: {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!},
+                                                    header: "{!! $group->name !!}",
+                                                    actions: false
+                                                }
+                                            </script>
+                                            <div class="js-fields" data-name="{{$group->id}}"></div>
+                                        </div>
+
+                                    @endforeach
+                                @endif
                             </div>
 
                             <div class="c-actions">
@@ -94,7 +113,7 @@
                         </div>
                     </main>
                 </div>
-                <div class="c-tab-panel" data-tab="block-content">
+                <div class="c-tab-panel" data-tab="page-content">
                     <main class="c-tab-panel__container c-container">
                         <div class="c-actions__container">
                             <div class="c-actions__content">
@@ -112,32 +131,27 @@
                 </div>
 
                 @if(!$groups->isEmpty())
-                    @foreach($groups as $group)
+                    @foreach($groups->filter(function($el) {
+                            return !$el->getSetting('isAttribute') && !$el->getSetting('isProperty');
+                        }) as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-actions__container">
-                                    <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                        <h2>{{ $group->name }}</h2>
-                                        <script>
-                                            window.groups.push({
-                                                id: '{{$group->id}}',
-                                                isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                                isRendering: false,
-                                                isSortable: {{ $group->isSortable() ? 1 : 0 }},
-                                                name: '{{ $group->name }}',
-                                                isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
-                                                image: '{{ $group->getSetting("image") }}'
-                                            });
-                                            window.fieldGroups['{{$group->id}}'] = {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!}
-                                        </script>
-                                        <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    </div>
-                                    <div class="c-actions">
-                                        <div class="c-actions__group">
-                                            <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="block-content">Back</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <script>
+                                    window.groups.push({
+                                        id: '{{$group->id}}',
+                                        isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
+                                        isRendering: false,
+                                        isSortable: {{ $group->isSortable() ? 1 : 0 }},
+                                        name: '{{ $group->name }}',
+                                        isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
+                                        image: '{{ $group->getSetting("image") }}'
+                                    });
+                                    window.fieldGroups['{{$group->id}}'] = {
+                                        fields: {!! json_encode($group->getFieldsWithValues(),JSON_PRETTY_PRINT) !!},
+                                        header: "{!! $group->name !!}"
+                                    }
+                                </script>
+                                <div class="js-fields" data-name="{{$group->id}}"></div>
                             </main>
                         </div>
                     @endforeach
@@ -147,7 +161,7 @@
     </form>
 
 
-    <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
+    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
         <input type="hidden" id="selectedMediaItem" value="">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -182,9 +196,9 @@
         </div>
     </div>
 
-    @include('argon::pages.partials.medialib')
+    @include('argon::pages.partials.medialib') --}}
 
-    <div style="display: none;" id="preview-template">
+    {{-- <div style="display: none;" id="preview-template">
         <div class="media-item">
             <img class="thumb" data-dz-thumbnail>
             <span class="filename" data-dz-name></span>
@@ -193,7 +207,7 @@
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
             <progress class="progress" value="25" max="100"></progress>
         </div>
-    </div>
+    </div> --}}
 @stop
 
 

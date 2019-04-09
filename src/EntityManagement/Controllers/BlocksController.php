@@ -439,7 +439,7 @@ class BlocksController extends BaseController
     {
         $tabNav = [];
 
-        $blockContent = [ "name" => 'Block Content', "slug" => "block-content", "isActive" => false];
+        $blockContent = [ "name" => 'Block Content', "slug" => "page-content", "isActive" => false];
         $attributes = [ "name" => 'Attributes', "slug" => "attributes", "isActive" => false];
 
         if($attributesFirst){
@@ -464,6 +464,12 @@ class BlocksController extends BaseController
                         "isActive" => false
                     ];
                 })->toArray();
+
+            if(count($nonSortableGroups) == count($tabNavGroups))
+            {
+                $attributes['isActive'] = true;
+                $tabNav = [$attributes];
+            }
 
             $tabNav = array_merge($tabNav, $tabNavGroups);
         }
