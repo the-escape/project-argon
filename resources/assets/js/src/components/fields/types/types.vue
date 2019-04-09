@@ -20,6 +20,7 @@ import Switch from './boolean.vue'
 import DateTime from './datetime.vue'
 import Image from './image/index.vue'
 import File from './file.vue'
+import Icon from './icon/index.vue'
 
 const typeMap = {
     'text': 'text-input',
@@ -35,7 +36,8 @@ const typeMap = {
     'menu': 'select-input',
     'datetime' : 'datetime-input',
     'image': 'image-input',
-    'file': 'file-input'
+    'file': 'file-input',
+    'icon': 'icon-input'
 }
 
 export default {
@@ -53,7 +55,8 @@ export default {
         'boolean-input': Switch,
         'datetime-input': DateTime,
         'image-input': Image,
-        'file-input': File
+        'file-input': File,
+        'icon-input': Icon
     },
     computed: {
         type: function () {
