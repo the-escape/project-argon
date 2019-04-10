@@ -3,9 +3,10 @@
 namespace Escape\Argon\EntityManagement\FieldTypes;
 
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
+use Escape\Argon\EntityManagement\Eloquent\EntityCache;
 use Escape\Argon\EntityManagement\Eloquent\FieldData;
 use Escape\Argon\EntityManagement\FieldValues\ItemFieldValue;
-
+use Cache;
 class ItemFieldType extends AbstractFieldType
 {
     protected $name = 'Item';
@@ -45,12 +46,29 @@ class ItemFieldType extends AbstractFieldType
 
         $items = is_array($settings->items) ? $settings->items : [$settings->items];
         $entityRepository = app()->make(EntityRepository::class);
-        $options = $entityRepository->findWhereIn('entity_type_id', $items);
+        $options = EntityCache::whereIn('entity_type_id', $items)->select('entity_id','entity_name','entity_url')->orderBy('entity_name')->get();
 
         $opts = [];
-        foreach($options->sortBy('name')->lists('name','id') as $k => $v)
+        foreach($options as $opt)
         {
-            $opts[] = (object) [$k => $v];
+            $name = $opt->entity_name;
+            if($opt->entity_url)
+            {
+                $slugArray = explode('/', $opt->entity_url);
+                $sep = '/';
+                $slugStr = sprintf('/%s', $slugArray[1]);
+                if(count($slugArray) > 2)
+                {
+                    if(count($slugArray) > 3)
+                    {
+                        $sep = '/.../';
+                    }
+
+                    $slugStr = sprintf('/%s%s%s', $slugArray[1], $sep, end($slugArray));
+                }
+                $name .= sprintf(' (%s)', $slugStr);
+            }
+            $opts[] = (object) [$opt->entity_id => $name];
         }
 
         $settings->options =  $opts;
