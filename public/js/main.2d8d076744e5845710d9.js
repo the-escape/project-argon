@@ -5894,11 +5894,18 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
           return value === option.value;
         });
       });
-      this.tmpValues = this.options.filter(function (option) {
-        return ~_this.values.findIndex(function (value) {
-          return value === option.value;
+      this.tmpValues = this.values.reduce(function (acc, value) {
+        if (!value) {
+          return acc;
+        }
+
+        var option = _this.options.find(function (opt) {
+          return opt.value === value;
         });
-      });
+
+        acc.push(option);
+        return acc;
+      }, []);
     }
   }
 });
@@ -18467,4 +18474,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.e9dc7baf9c9fa822df2d.js.map
+//# sourceMappingURL=main.2d8d076744e5845710d9.js.map

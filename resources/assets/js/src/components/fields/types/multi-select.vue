@@ -87,7 +87,15 @@ export default {
     methods: {
         filterOptions () {
             this.tmpFiltered = this.options.filter(option => !~this.values.findIndex(value => value === option.value))
-            this.tmpValues = this.options.filter(option => ~this.values.findIndex(value => value === option.value))
+            this.tmpValues = this.values.reduce((acc, value) => {
+                if(!value){
+                    return acc
+                }
+
+                const option = this.options.find(opt => opt.value === value)
+                acc.push(option)
+                return acc
+            }, [])
         }
     }
 }
