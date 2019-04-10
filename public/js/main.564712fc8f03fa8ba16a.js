@@ -10345,6 +10345,14 @@ var Editvue_type_template_id_640e3401_render = function() {
         _c("dl", [
           _c("dt", [_vm._v("File type:")]),
           _vm._v(" "),
+          _c("dd", [
+            _c("a", { attrs: { href: _vm.cleanUrl, target: "_blank" } }, [
+              _vm._v(_vm._s(_vm.cleanUrl))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("dt", [_vm._v("File type:")]),
+          _vm._v(" "),
           _c("dd", [_vm._v(_vm._s(_vm.extension))]),
           _vm._v(" "),
           _c("dt", [_vm._v("Uploaded at:")]),
@@ -10459,6 +10467,8 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
 //
 //
 //
+//
+//
 
 /* harmony default export */ var Editvue_type_script_lang_js_ = ({
   computed: Editvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['editItem'])),
@@ -10472,7 +10482,8 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
       dimensions: '',
       fileSize: '',
       authorName: '',
-      authorImage: ''
+      authorImage: '',
+      cleanUrl: ''
     };
   },
   mounted: function mounted() {
@@ -10494,6 +10505,7 @@ function Editvue_type_script_lang_js_defineProperty(obj, key, value) { if (key i
       this.fileSize = filesize_formatted;
       this.authorName = authorName;
       this.authorImage = authorImage;
+      this.cleanUrl = this.editItem.getCleanUrl();
     },
     chooseNewImage: function chooseNewImage() {
       var _this = this;
@@ -11230,6 +11242,11 @@ function () {
     key: "getUrl",
     value: function getUrl() {
       return "/media/".concat(this.item.id, "/").concat(this.item.slug, ".").concat(this.item.extension, "?").concat(this.cacheBuster);
+    }
+  }, {
+    key: "getCleanUrl",
+    value: function getCleanUrl() {
+      return "/media/".concat(this.item.id, "/").concat(this.item.slug, ".").concat(this.item.extension);
     }
   }, {
     key: "getWidth",
@@ -18474,4 +18491,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.2d8d076744e5845710d9.js.map
+//# sourceMappingURL=main.564712fc8f03fa8ba16a.js.map

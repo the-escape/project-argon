@@ -185,6 +185,10 @@ export class Item {
         }?${this.cacheBuster}`
     }
 
+    getCleanUrl () {
+        return `/media/${this.item.id}/${this.item.slug}.${this.item.extension}`
+    }
+
     getWidth (suffix = '') {
         return JSON.parse(this.item.meta).width + suffix
     }

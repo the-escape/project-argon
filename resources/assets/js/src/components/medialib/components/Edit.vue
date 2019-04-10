@@ -23,6 +23,8 @@
                 </div>
                 <dl>
                     <dt>File type:</dt>
+                    <dd><a :href="cleanUrl" target="_blank">{{ cleanUrl }}</a></dd>
+                    <dt>File type:</dt>
                     <dd>{{ extension }}</dd>
                     <dt>Uploaded at:</dt>
                     <dd>{{ uploadedDate }}</dd>
@@ -66,7 +68,8 @@ export default {
             dimensions: '',
             fileSize: '',
             authorName: '',
-            authorImage: ''
+            authorImage: '',
+            cleanUrl: ''
         }
     },
     mounted(){
@@ -90,6 +93,7 @@ export default {
             this.fileSize = filesize_formatted
             this.authorName = authorName
             this.authorImage = authorImage
+            this.cleanUrl = this.editItem.getCleanUrl()
         },
         chooseNewImage() {
 
