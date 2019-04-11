@@ -36,9 +36,20 @@ class Fields
             $combos = $request->input("combo");
         }
 
+        $groups = $request->input('group_render', []);
+        $renderedGroups = array_keys(array_filter($groups, function($v, $k) {
+            return $v === "1";
+        }, ARRAY_FILTER_USE_BOTH));
+
         $hash = null;
 
         foreach ($fields as $field) {
+
+            if (!in_array($field->entity_group_id, $renderedGroups))
+            {
+                continue;
+            }
+
             $settings = $field->settings;
 
             if (@$settings->multiple || ($field->field_type == 'location' && !$field->parent_field_id) || ($field->field_type == 'image' && !$field->parent_field_id)) {
