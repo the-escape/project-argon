@@ -6552,7 +6552,11 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
         contentCss: '',
         // iframe styles
         stylesSet: [],
-        extraPlugins: 'stylesheetparser'
+        extraPlugins: 'stylesheetparser',
+        forcePasteAsPlainText: true,
+        pasteFromWordRemoveStyles: true,
+        pasteFromWordRemoveFontStyles: true,
+        removePlugins: 'pastefromword'
       }
     };
   },
@@ -18596,4 +18600,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.93c0b9c36452e818f99f.js.map
+//# sourceMappingURL=main.d03a4621690c643a8213.js.map

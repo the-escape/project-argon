@@ -51,7 +51,11 @@ export default {
                 colorButton_enableMore: false,
                 contentCss: '', // iframe styles
                 stylesSet: [],
-                extraPlugins: 'stylesheetparser'
+                extraPlugins: 'stylesheetparser',
+                forcePasteAsPlainText: true,
+                pasteFromWordRemoveStyles: true,
+                pasteFromWordRemoveFontStyles: true,
+                removePlugins: 'pastefromword'
             }
         }
     },
