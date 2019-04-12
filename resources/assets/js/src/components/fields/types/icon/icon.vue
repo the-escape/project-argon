@@ -15,7 +15,11 @@
             <button class="o-item-picker__close" @click.prevent="closePicker"></button>
             <div class="o-item-picker__vignette"></div>
             <div class="o-item-picker__list">
-                <button class="o-item-picker__item" v-for="(option, index) in options" :key="index" @click.prevent="setValue(option)">
+                <div class="o-item-picker__search">
+                    <input type="text" v-model="search" placeholder="search...">
+                    <button class="o-item-picker__search-close" @click.prevent="clearSearch"></button>
+                </div>
+                <button class="o-item-picker__item" v-for="(option, index) in filteredOptions" :key="index" @click.prevent="setValue(option)">
                     <div class="o-item-picker__icon">
                         <svg>
                             <use :xlink:href="svgPath + option.value"></use>
@@ -36,6 +40,7 @@ export default {
     mixins: [FieldValues],
     data() {
         return {
+            search: '',
             value: {name: '', value: ''},
             pickerOpen: false,
             svgPath: '/images/svgicons.svg#',
@@ -68,6 +73,14 @@ export default {
             this.value = this.options.find(option => option.value === this.valueObj.value) || this.value
         })
     },
+    computed: {
+        filteredOptions: function () {
+            if(this.search){
+                return this.options.filter(el => el.name.match(new RegExp(this.search)))
+            }
+            return this.options
+        }
+    },
     methods: {
         updateValue: function() {
             this.valueObj.value = this.value.value
@@ -99,6 +112,9 @@ export default {
             this.value = newValue
             this.updateValue()
             this.closePicker()
+        },
+        clearSearch: function (){
+            this.search = ''
         }
     }
 }

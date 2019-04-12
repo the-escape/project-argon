@@ -5653,7 +5653,38 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
                 { staticClass: "o-drag-select__column-wrap" },
                 [
                   _c("div", { staticClass: "o-drag-select__title" }, [
-                    _vm._v(" ")
+                    _c("div", { staticClass: "o-drag-select__search" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.search,
+                            expression: "search"
+                          }
+                        ],
+                        attrs: { type: "text", placeholder: "Search.." },
+                        domProps: { value: _vm.search },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.search = $event.target.value
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("button", {
+                        staticClass: "o-drag-select__search-close",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.clearSearch($event)
+                          }
+                        }
+                      })
+                    ])
                   ]),
                   _vm._v(" "),
                   _c(
@@ -5726,7 +5757,7 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
                 { staticClass: "o-drag-select__column-wrap" },
                 [
                   _c("div", { staticClass: "o-drag-select__title" }, [
-                    _vm._v("Selected")
+                    _c("span", [_vm._v("Selected")])
                   ]),
                   _vm._v(" "),
                   _c(
@@ -5841,6 +5872,11 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -5852,6 +5888,7 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
   },
   data: function data() {
     return {
+      search: '',
       tmpFiltered: [],
       tmpValues: []
     };
@@ -5867,6 +5904,14 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
   computed: {
     filteredOptions: {
       get: function get() {
+        var _this = this;
+
+        if (this.search) {
+          return this.tmpFiltered.filter(function (el) {
+            return el.label.match(new RegExp(_this.search));
+          });
+        }
+
         return this.tmpFiltered;
       },
       set: function set(values) {
@@ -5887,10 +5932,10 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
   },
   methods: {
     filterOptions: function filterOptions() {
-      var _this = this;
+      var _this2 = this;
 
       this.tmpFiltered = this.options.filter(function (option) {
-        return !~_this.values.findIndex(function (value) {
+        return !~_this2.values.findIndex(function (value) {
           return value === option.value;
         });
       });
@@ -5899,13 +5944,16 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
           return acc;
         }
 
-        var option = _this.options.find(function (opt) {
+        var option = _this2.options.find(function (opt) {
           return opt.value === value;
         });
 
         acc.push(option);
         return acc;
       }, []);
+    },
+    clearSearch: function clearSearch() {
+      this.search = '';
     }
   }
 });
@@ -12573,34 +12621,70 @@ var iconvue_type_template_id_b6654d62_render = function() {
         _c(
           "div",
           { staticClass: "o-item-picker__list" },
-          _vm._l(_vm.options, function(option, index) {
-            return _c(
-              "button",
-              {
-                key: index,
-                staticClass: "o-item-picker__item",
+          [
+            _c("div", { staticClass: "o-item-picker__search" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search,
+                    expression: "search"
+                  }
+                ],
+                attrs: { type: "text", placeholder: "search..." },
+                domProps: { value: _vm.search },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "o-item-picker__search-close",
                 on: {
                   click: function($event) {
                     $event.preventDefault()
-                    _vm.setValue(option)
+                    return _vm.clearSearch($event)
                   }
                 }
-              },
-              [
-                _c("div", { staticClass: "o-item-picker__icon" }, [
-                  _c("svg", [
-                    _c("use", {
-                      attrs: { "xlink:href": _vm.svgPath + option.value }
-                    })
+              })
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.filteredOptions, function(option, index) {
+              return _c(
+                "button",
+                {
+                  key: index,
+                  staticClass: "o-item-picker__item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.setValue(option)
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "o-item-picker__icon" }, [
+                    _c("svg", [
+                      _c("use", {
+                        attrs: { "xlink:href": _vm.svgPath + option.value }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "o-item-picker__label" }, [
+                    _vm._v(_vm._s(option.name))
                   ])
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "o-item-picker__label" }, [
-                  _vm._v(_vm._s(option.name))
-                ])
-              ]
-            )
-          })
+                ]
+              )
+            })
+          ],
+          2
         )
       ])
     ]
@@ -12643,12 +12727,17 @@ iconvue_type_template_id_b6654d62_render._withStripped = true
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ var iconvue_type_script_lang_js_ = ({
   props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
   data: function data() {
     return {
+      search: '',
       value: {
         name: '',
         value: ''
@@ -12693,6 +12782,19 @@ iconvue_type_template_id_b6654d62_render._withStripped = true
       }) || _this2.value;
     });
   },
+  computed: {
+    filteredOptions: function filteredOptions() {
+      var _this3 = this;
+
+      if (this.search) {
+        return this.options.filter(function (el) {
+          return el.name.match(new RegExp(_this3.search));
+        });
+      }
+
+      return this.options;
+    }
+  },
   methods: {
     updateValue: function updateValue() {
       this.valueObj.value = this.value.value;
@@ -12724,6 +12826,9 @@ iconvue_type_template_id_b6654d62_render._withStripped = true
       this.value = newValue;
       this.updateValue();
       this.closePicker();
+    },
+    clearSearch: function clearSearch() {
+      this.search = '';
     }
   }
 });
@@ -18491,4 +18596,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.564712fc8f03fa8ba16a.js.map
+//# sourceMappingURL=main.93c0b9c36452e818f99f.js.map

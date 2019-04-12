@@ -5,7 +5,12 @@
             <div class="o-drag-select js-drag">
                 <input type="hidden" v-for="(value, index) in values" :key="index" :name="inputName" :value="value">
                 <div class="o-drag-select__column-wrap">
-                    <div class="o-drag-select__title">&nbsp;</div>
+                    <div class="o-drag-select__title">
+                        <div class="o-drag-select__search">
+                            <input type="text" v-model="search" placeholder="Search..">
+                            <button class="o-drag-select__search-close" @click.prevent="clearSearch"></button>
+                        </div>
+                    </div>
                     <draggable class="o-drag-select__column o-drag-select__column--inactive" v-model="filteredOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 75 }">
                         <div class="o-drag-select__item" v-for="option in filteredOptions" :key="option.value">
                             <div class="o-drag-select__item-wrap">
@@ -23,7 +28,7 @@
                     </svg>
                 </div>
                 <div class="o-drag-select__column-wrap">
-                    <div class="o-drag-select__title">Selected</div>
+                    <div class="o-drag-select__title"><span>Selected</span></div>
                     <draggable class="o-drag-select__column o-drag-select__column--active" v-model="valueOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 75 }">
                         <div class="o-drag-select__item" v-for="option in valueOptions" :key="option.value">
                             <div class="o-drag-select__item-wrap">
@@ -53,6 +58,7 @@ export default {
     },
     data() {
         return {
+            search: '',
             tmpFiltered: [],
             tmpValues: []
         }
@@ -68,6 +74,9 @@ export default {
     computed: {
         filteredOptions: {
             get () {
+                if(this.search){
+                    return this.tmpFiltered.filter(el => el.label.match(new RegExp(this.search)))
+                }
                 return this.tmpFiltered
             },
             set (values) {
@@ -96,6 +105,9 @@ export default {
                 acc.push(option)
                 return acc
             }, [])
+        },
+        clearSearch (){
+            this.search = ''
         }
     }
 }
