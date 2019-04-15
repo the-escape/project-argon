@@ -109,8 +109,13 @@ function formSubmits () {
     const formEls = document.querySelectorAll('form.js-prevent-leave')
     const forms = Array.from(formEls)
     forms.forEach(form => {
-        form.addEventListener('submit', () => {
+        form.addEventListener('submit', (evt) => {
             allowPageLeave()
+            const submitBtnsEls = document.querySelectorAll('[type=submit]')
+            const submitBtns = Array.from(submitBtnsEls)
+            submitBtns.forEach(btn => {
+                btn.disabled = true
+            })
             return true
         })
     })

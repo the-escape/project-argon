@@ -18541,8 +18541,13 @@ function formSubmits() {
   var formEls = document.querySelectorAll('form.js-prevent-leave');
   var forms = Array.from(formEls);
   forms.forEach(function (form) {
-    form.addEventListener('submit', function () {
+    form.addEventListener('submit', function (evt) {
       allowPageLeave();
+      var submitBtnsEls = document.querySelectorAll('[type=submit]');
+      var submitBtns = Array.from(submitBtnsEls);
+      submitBtns.forEach(function (btn) {
+        btn.disabled = true;
+      });
       return true;
     });
   });
@@ -18600,4 +18605,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.d03a4621690c643a8213.js.map
+//# sourceMappingURL=main.f2a1e076852c8283453f.js.map

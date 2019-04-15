@@ -10,7 +10,7 @@
         window.groups = []
     </script>
 
-    <form action="{{ route('cms:blocks:save', [$type->id]) }}" class="o-form" method="POST">
+    <form action="{{ route('cms:blocks:save', [$type->id]) }}" class="o-form js-prevent-leave" method="POST">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         @include('argon::inc.alerts', compact($errors))
