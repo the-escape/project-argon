@@ -63,7 +63,7 @@ class BlocksController extends BaseController
             });
         }
 
-        if ($role = $request->input('type'))
+        if ($role = $request->input('types'))
         {
             $query = $query->where('entity_type_id','=',$role);
         }
