@@ -8687,6 +8687,20 @@ button.uppy-DashboardItem-progressIndicator {
       height: auto;
       -webkit-transform: translate(-50%, -50%);
               transform: translate(-50%, -50%); }
+    .c-file-list__image-bg {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background-color: #d8d8d8;
+      opacity: 0;
+      -webkit-transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1);
+      transition: opacity 250ms cubic-bezier(0.3, 0.15, 0.18, 1); }
+  .c-file-list__btn:hover .c-file-list__image-bg {
+    opacity: 1;
+    -webkit-transition-duration: 400ms;
+            transition-duration: 400ms; }
   .c-file-list--list .c-file-list__image {
     width: 30px;
     margin: 0; }
@@ -10873,4 +10887,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-134b5fe648.css.map
+//# sourceMappingURL=main-bdd1f2f29b.css.map

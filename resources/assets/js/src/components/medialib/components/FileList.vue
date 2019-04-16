@@ -153,6 +153,7 @@
                         @click="highlightItem($event, item)"
                     >
                         <div class="c-file-list__image">
+                            <div class="c-file-list__image-bg"></div>
                             <img :src="item.getUrl()" alt="item.getName()">
                         </div>
                         <div class="c-file-list__label">

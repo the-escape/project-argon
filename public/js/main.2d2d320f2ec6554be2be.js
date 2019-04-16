@@ -9408,6 +9408,8 @@ var FileListvue_type_template_id_2117e2b1_render = function() {
                         },
                         [
                           _c("div", { staticClass: "c-file-list__image" }, [
+                            _c("div", { staticClass: "c-file-list__image-bg" }),
+                            _vm._v(" "),
                             _c("img", {
                               attrs: {
                                 src: item.getUrl(),
@@ -9621,6 +9623,7 @@ function FileListvue_type_script_lang_js_objectSpread(target) { for (var i = 1; 
 
 function FileListvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -18605,4 +18608,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.f2a1e076852c8283453f.js.map
+//# sourceMappingURL=main.2d2d320f2ec6554be2be.js.map
