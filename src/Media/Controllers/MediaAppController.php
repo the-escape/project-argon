@@ -556,26 +556,19 @@ class MediaAppController extends BaseController
         $disk->makeDirectory($mediaItem->id);
 
         $fileHandle = fopen($tmpPath, 'r+');
-
+        $path = "{$mediaItem->id}/{$mediaItem->getSlug()}.{$file->getClientOriginalExtension()}";
         Storage::disk('media')->put(
-            "{$mediaItem->id}/{$mediaItem->getSlug()}.{$file->getClientOriginalExtension()}",
+            $path,
             $fileHandle
         );
 
         fclose($fileHandle);
 
-        // Thumbnail images
         if ($isImage)
         {
-            $thumb = Image::make($file)->fit(100, 100);
+            $mediaItem->optimize(true);
 
-            Storage::disk('media')->put(
-                "{$mediaItem->id}/{$mediaItem->id}.thumb.{$file->getClientOriginalExtension()}",
-                $thumb->encode()
-            );
-
-            $mediaItem->hasThumb = true;
-            $mediaItem->save();
+            Media::createThumb($mediaItem, $file);
         }
 
         return response()->json(["messages" => "successfully updated ".$name], Response::HTTP_OK);

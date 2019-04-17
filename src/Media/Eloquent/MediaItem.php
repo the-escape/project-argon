@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use \Escape\Argon\Media\Helpers\Media as MediaHelpers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use stdClass;
 
 /**
@@ -262,9 +263,9 @@ class MediaItem extends Model implements Arrayable, ImageInterface
      * Will create a copy of the original file for further manipulation.
      * @return boolean
      */
-    public function optimize()
+    public function optimize($reoptimize = false)
     {
-        if ($this->optimized)
+        if ($this->optimized && !$reoptimize)
         {
             return false;
         }
@@ -274,7 +275,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
             return false;
         }
 
-        if (!$this->copyOriginal())
+        if (!$this->copyOriginal($reoptimize))
         {
             return false;
         }
@@ -296,12 +297,12 @@ class MediaItem extends Model implements Arrayable, ImageInterface
      * Creates a copy of the original asset.
      * @return boolean
      */
-    private function copyOriginal()
+    private function copyOriginal($reoptimize)
     {
         $folder_path = config('filesystems.disks.media.root');
         $original_file = sprintf('/%s/%s.original.%s', $this->id, $this->getSlug(), $this->extension);
 
-        if (file_exists($folder_path.$original_file))
+        if (file_exists($folder_path.$original_file) && !$reoptimize)
         {
             return true;
         }
@@ -314,5 +315,37 @@ class MediaItem extends Model implements Arrayable, ImageInterface
         }
 
         return File::copy($folder_path.$file, $folder_path.$original_file);
+    }
+
+    private function getOriginalPath() {
+        $folder_path = config('filesystems.disks.media.root');
+        $original_file = sprintf('/%s/%s.original.%s', $this->id, $this->getSlug(), $this->extension);
+
+        if (file_exists($folder_path.$original_file))
+        {
+            return $folder_path.$original_file;
+        }
+
+        return $this->getPath();
+    }
+
+    /**
+     * refreshes thumbnail
+     */
+    public function recreateThumbnail()
+    {
+        if($this->hasThumb){
+            $path = $this->getOriginalPath();
+
+            if(!$path){
+                return false;
+            }
+
+            $file = new UploadedFile($path, $this->getFullName());
+            MediaHelpers::createThumb($this, $file);
+            return true;
+        }
+
+        return false;
     }
 }

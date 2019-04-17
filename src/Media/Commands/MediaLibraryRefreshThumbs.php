@@ -6,21 +6,21 @@ use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Console\Command;
 
 
-class MediaLibraryFixThumbnails extends Command
+class MediaLibraryRefreshThumbs extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'medialib:fixthumbs';
+    protected $signature = 'medialib:refreshthumbs';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Fix names of old thumbnails (change ID based names to slug based names).';
+    protected $description = 'Refreshes thumbnails for media items.';
 
     protected $mediaRepository;
 
@@ -32,9 +32,9 @@ class MediaLibraryFixThumbnails extends Command
     public function handle()
     {
         $this->mediaRepository = app()->make(MediaItemRepository::class);
-
+        ini_set('memory_limit', '256m');
         $this->info('Fixing thumbnails...');
-        $results = $this->fixThumbs();
+        $results = $this->refreshThumbs();
 
         $count = 0;
 
@@ -47,13 +47,13 @@ class MediaLibraryFixThumbnails extends Command
         }
 
         $msg = ($count === 1)
-            ? "Changed {$count} thumbnail file name."
-            : "Changed {$count} thumbnail file names.";
+            ? "Changed {$count} thumbnail file."
+            : "Changed {$count} thumbnail files.";
 
         $this->info($msg);
     }
 
-    private function fixThumbs()
+    private function refreshThumbs()
     {
         $mediaItems = $this->mediaRepository->findWhere([
             ['hasThumb','=', 1]
@@ -61,10 +61,10 @@ class MediaLibraryFixThumbnails extends Command
 
         foreach ($mediaItems as $mediaItem)
         {
-            $response = $mediaItem->fixThumb();
+            $response = $mediaItem->recreateThumbnail();
 
             yield [
-                'action'      => 'fix-thumbnail',
+                'action'      => 'refresh-thumbnail',
                 'entity_id'   => $mediaItem->id,
                 'filename_changed' => $response,
             ];

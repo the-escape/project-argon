@@ -147,7 +147,6 @@ class Media
         );
         fclose($fileHandle);
 
-
         // create humbnail + optimize original
         if ($isImage)
         {
@@ -156,19 +155,43 @@ class Media
                 $mediaItem->optimize();
             }
 
-            $thumb = Image::make($file)->fit(100, 100);
-            Storage::disk($storageDisk)->put(
-                "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
-                $thumb->encode()
-            );
-
-            $mediaItem->hasThumb = true;
-            $mediaItem->save();
+            Media::createThumb($mediaItem, $file, $storageDisk);
         }
 
         return $mediaItem;
     }
 
+    public static function createThumb($mediaItem, $file, $storageDisk = 'media')
+    {
+        $tmpPath = $file->getRealPath();
+        list($width, $height) = @getimagesize($tmpPath);
+
+        if($width > $height) {
+            $ratioChange = 100 / $width;
+            $newWidth = 100;
+            $newHeight = $height * $ratioChange;
+        } else {
+            $ratioChange = 100 / $height;
+            $newHeight = 100;
+            $newWidth = $width * $ratioChange;
+        }
+
+        $newWidth = ceil($newWidth);
+        $newHeight = ceil($newHeight);
+
+        \Log::debug('before make'.$tmpPath);
+        $thumb = Image::make($file);
+        \Log::debug('after make'.$tmpPath);
+        $thumb = $thumb->fit($newWidth, $newHeight);
+        \Log::debug('after fit'.$tmpPath);
+        Storage::disk($storageDisk)->put(
+            "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
+            $thumb->encode()
+        );
+
+        $mediaItem->hasThumb = true;
+        $mediaItem->save();
+    }
 
     public static function getFolderTree(MediaFolder $folder = null, $level=0, array $tree=[])
     {
