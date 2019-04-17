@@ -198,7 +198,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
                 $this->fixThumb();
             }
 
-            return $this->getUrl([], 'thumb');
+            return $this->getUrl(['option' => 'thumb']);
         }
         else
         {
@@ -214,7 +214,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
     {
         if ($this->optimized)
         {
-            return $this->getUrl([], 'original');
+            return $this->getUrl(['option' => 'original']);
         }
         else
         {
