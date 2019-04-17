@@ -55,9 +55,7 @@ class MediaLibraryRefreshThumbs extends Command
 
     private function refreshThumbs()
     {
-        $mediaItems = $this->mediaRepository->findWhere([
-            ['hasThumb','=', 1]
-        ]);
+        $mediaItems = $this->mediaRepository->all();
 
         foreach ($mediaItems as $mediaItem)
         {

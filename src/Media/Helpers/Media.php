@@ -179,11 +179,8 @@ class Media
         $newWidth = ceil($newWidth);
         $newHeight = ceil($newHeight);
 
-        \Log::debug('before make'.$tmpPath);
         $thumb = Image::make($file);
-        \Log::debug('after make'.$tmpPath);
         $thumb = $thumb->fit($newWidth, $newHeight);
-        \Log::debug('after fit'.$tmpPath);
         Storage::disk($storageDisk)->put(
             "{$mediaItem->id}/{$mediaItem->getSlug()}.thumb.{$file->getClientOriginalExtension()}",
             $thumb->encode()

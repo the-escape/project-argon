@@ -334,14 +334,15 @@ class MediaItem extends Model implements Arrayable, ImageInterface
      */
     public function recreateThumbnail()
     {
-        if($this->hasThumb){
-            $path = $this->getOriginalPath();
+        $path = $this->getOriginalPath();
 
-            if(!$path || !file_exists($path)){
-                return false;
-            }
+        if(!$path || !file_exists($path)){
+            return false;
+        }
 
-            $file = new UploadedFile($path, $this->getFullName());
+        $file = new UploadedFile($path, $this->getFullName());
+        $isImage =  MediaHelpers::isImage($file->getMimeType());
+        if($isImage){
             MediaHelpers::createThumb($this, $file);
             return true;
         }
