@@ -165,14 +165,15 @@ class Media
     {
         $tmpPath = $file->getRealPath();
         list($width, $height) = @getimagesize($tmpPath);
+        $size = config('argon.medialibrary.thumbnail_size', 100);
 
         if($width > $height) {
-            $ratioChange = 100 / $width;
-            $newWidth = 100;
+            $ratioChange = $size / $width;
+            $newWidth = $size;
             $newHeight = $height * $ratioChange;
         } else {
-            $ratioChange = 100 / $height;
-            $newHeight = 100;
+            $ratioChange = $size / $height;
+            $newHeight = $size;
             $newWidth = $width * $ratioChange;
         }
 
