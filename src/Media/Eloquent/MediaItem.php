@@ -337,7 +337,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
         if($this->hasThumb){
             $path = $this->getOriginalPath();
 
-            if(!$path){
+            if(!$path || !file_exists($path)){
                 return false;
             }
 
