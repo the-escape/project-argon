@@ -6828,6 +6828,78 @@ var buttonvue_type_template_id_37f285af_render = function() {
       "div",
       { staticClass: "o-form__set-container" },
       [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.btnclass,
+              expression: "btnclass"
+            }
+          ],
+          attrs: {
+            type: "hidden",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][class]"
+          },
+          domProps: { value: _vm.btnclass },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.btnclass = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.id,
+              expression: "id"
+            }
+          ],
+          attrs: {
+            type: "hidden",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][id]"
+          },
+          domProps: { value: _vm.id },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.id = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.target,
+              expression: "target"
+            }
+          ],
+          attrs: {
+            type: "hidden",
+            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][target]"
+          },
+          domProps: { value: _vm.target },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.target = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "o-form__group" },
@@ -6956,78 +7028,6 @@ var buttonvue_type_template_id_37f285af_render = function() {
           ],
           1
         ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.btnclass,
-              expression: "btnclass"
-            }
-          ],
-          attrs: {
-            type: "hidden",
-            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][class]"
-          },
-          domProps: { value: _vm.btnclass },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.btnclass = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.id,
-              expression: "id"
-            }
-          ],
-          attrs: {
-            type: "hidden",
-            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][id]"
-          },
-          domProps: { value: _vm.id },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.id = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.target,
-              expression: "target"
-            }
-          ],
-          attrs: {
-            type: "hidden",
-            name: _vm.inputNameMultiValue + "[" + _vm.valueObj.id + "][target]"
-          },
-          domProps: { value: _vm.target },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.target = $event.target.value
-            }
-          }
-        }),
         _vm._v(" "),
         _c(
           "transition",
@@ -7266,7 +7266,6 @@ buttonvue_type_template_id_37f285af_render._withStripped = true
 // CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=template&id=37f285af&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/button/button.vue?vue&type=script&lang=js&
-//
 //
 //
 //
@@ -18678,4 +18677,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c87463b3f7e7ca4c126c.js.map
+//# sourceMappingURL=main.9cdfcb075f86605b4c69.js.map

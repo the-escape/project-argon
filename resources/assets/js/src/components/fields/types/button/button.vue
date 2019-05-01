@@ -5,6 +5,21 @@
         </div>
 
         <div class="o-form__set-container">
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][class]`"
+                v-model="btnclass"
+            >
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][id]`"
+                v-model="id"
+            >
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][target]`"
+                v-model="target"
+            >
             <div class="o-form__group">
                 <validation
                     :status-error="errors && errors.label"
@@ -33,22 +48,6 @@
                     >
                 </validation>
             </div>
-
-            <input
-                type="hidden"
-                :name="inputNameMultiValue + `[${valueObj.id}][class]`"
-                v-model="btnclass"
-            >
-            <input
-                type="hidden"
-                :name="inputNameMultiValue + `[${valueObj.id}][id]`"
-                v-model="id"
-            >
-            <input
-                type="hidden"
-                :name="inputNameMultiValue + `[${valueObj.id}][target]`"
-                v-model="target"
-            >
 
             <transition enter-active-class="collapsing" leave-active-class="collapsing" @enter="enter" @afterEnter="afterEnter" @leave="leave" @afterLeave="afterLeave">
                 <div class="o-form__set-accordion" v-if="show">
