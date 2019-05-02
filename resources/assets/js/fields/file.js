@@ -1,4 +1,5 @@
 var folders = $('.media-library .folders');
+var selectedFiles = [];
 
 folders.on("changed.jstree", function (e, data) {
     if (data.selected.length > 0) {
@@ -45,6 +46,7 @@ argon.dialog.medialibrary = function (settings, callback) {
 }
 
 function loadItems(id) {
+    selectedFiles = [];
     $.ajax(
         argon.root() + '/media/items',
         {
@@ -91,16 +93,37 @@ function compareItems(a, b) {
 
 loadItems(1);
 
-$('.files').on('click', '.media-item', function() {
-    $('.files .media-item').removeClass('selected');
 
-    $(this).addClass('selected');
+
+$('.files').on('click', '.media-item', function(e) {
+
+    var alreadySelected = $(this).hasClass('selected');
+
+    if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
+        $('.files .media-item').removeClass('selected');
+        selectedFiles = [];
+    }
 
     var id = $(this).attr('data-id');
+    var idIndex = selectedFiles.indexOf(id);
 
-    $('#selectedMediaItem').val(id);
+    if (alreadySelected && idIndex !== -1) {
 
-    $('#medialibrary .btn-submit').prop('disabled', false);
+        $(this).removeClass('selected');
+        selectedFiles.splice(idIndex, 1);
+    }
+    else {
+
+        $(this).addClass('selected');
+        selectedFiles.push(id);
+
+    }
+
+    $('#selectedMediaItem').val(selectedFiles.join());
+
+    if(selectedFiles.length) {
+        $('#medialibrary .btn-submit').prop('disabled', false);
+    }
 });
 
 $('#medialibrary .btn-submit').on('click', function() {
@@ -112,31 +135,36 @@ $(document).on('click', '.field-file .field-add-file', function(e) {
 
         var field = $(e.target).closest('.field');
 
-        $.ajax(
-            argon.root() + '/media/items/' + selected
-        ).done(function(data) {
+        selected = selected.split(',');
 
-            var settings = JSON.parse(field.attr('data-settings'));
-            var fieldName = field.attr('data-name');
-            var files = field.find('.files');
+        $.each(selected, function(index, value) {
 
-            if (!settings.multiple) {
-               files.empty();
-            }
+            $.ajax(
+                argon.root() + '/media/items/' + value
+            ).done(function(data) {
 
-            var container = $('<div/>').addClass('input-group sortable-item');
+                var settings = JSON.parse(field.attr('data-settings'));
+                var fieldName = field.attr('data-name');
+                var files = field.find('.files');
 
-            $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
+                if (!settings.multiple) {
+                files.empty();
+                }
 
-            if (settings.multiple) {
-                $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
-            }
+                var container = $('<div/>').addClass('input-group sortable-item');
 
-            $('<div/>').addClass('file-name form-control').text(data.filename + '.' + data.extension).appendTo(container);
+                $('<input type="hidden" />').attr('name', fieldName).val(data.id).appendTo(container);
 
-            $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+                if (settings.multiple) {
+                    $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
+                }
 
-            files.append(container);
+                $('<div/>').addClass('file-name form-control').text(data.filename + '.' + data.extension).appendTo(container);
+
+                $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+
+                files.append(container);
+            });
         });
     });
 });
@@ -146,43 +174,48 @@ $(document).on('click', '.field-image .field-add-file', function(e) {
 
         var field = $(e.target).closest('.field');
 
-        $.ajax(
-            argon.root() + '/media/items/' + selected
-        ).done(function(data) {
-            var guid = new Date().valueOf();
-            var settings = JSON.parse(field.attr('data-settings'));
-            var fieldName = field.attr('data-name')+'['+guid+']';
-            var files = field.find('.files');
+        selected = selected.split(',');
 
-            if (!settings.multiple) {
-               files.empty();
-            }
+        $.each(selected, function(index, value) {
 
-            var container = $('<div/>').addClass('input-group sortable-item');
+            $.ajax(
+                argon.root() + '/media/items/' + value
+            ).done(function(data) {
+                var guid = new Date().valueOf();
+                var settings = JSON.parse(field.attr('data-settings'));
+                var fieldName = field.attr('data-name')+'['+guid+']';
+                var files = field.find('.files');
 
-            if (settings.multiple) {
-                $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
-            }
+                if (!settings.multiple) {
+                   files.empty();
+                }
 
-            var $content = $('<div/>').addClass('form-control').appendTo(container);
+                var container = $('<div/>').addClass('input-group sortable-item');
 
-            $('<input type="hidden" />').attr('name', fieldName+'[id]').val(data.id).appendTo($content);
-            $('<input type="hidden" />').attr('name', fieldName+'[width]').val(data.meta.width).appendTo($content);
-            $('<input type="hidden" />').attr('name', fieldName+'[height]').val(data.meta.height).appendTo($content);
+                if (settings.multiple) {
+                    $('<div/>').addClass('input-group-addon sortable-handle').text("⇅").appendTo(container);
+                }
 
-            var $preview = $('<div/>').addClass('media-preview').appendTo($content);
-            $('<img/>').attr('src', data.url).appendTo($preview);
+                var $content = $('<div/>').addClass('form-control').appendTo(container);
 
-            $('<div/>').addClass('file-name').text('Name: ' + data.filename + '.' + data.extension).appendTo($content);
-            $('<div/>').addClass('file-name').text('Size: ' + data.filesize_formatted).appendTo($content);
-            $('<div/>').addClass('file-name').text('Dimensions: ' + data.meta.width + ' x ' + data.meta.height + ' pixels').appendTo($content);
+                $('<input type="hidden" />').attr('name', fieldName+'[id]').val(data.id).appendTo($content);
+                $('<input type="hidden" />').attr('name', fieldName+'[width]').val(data.meta.width).appendTo($content);
+                $('<input type="hidden" />').attr('name', fieldName+'[height]').val(data.meta.height).appendTo($content);
 
-            $('<input type="text"/>').addClass('form-control inline').attr({'name': fieldName+'[alt]', 'placeholder': "Alt text"}).appendTo($content);
+                var $preview = $('<div/>').addClass('media-preview').appendTo($content);
+                $('<img/>').attr('src', data.url).appendTo($preview);
 
-            $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+                $('<div/>').addClass('file-name').text('Name: ' + data.filename + '.' + data.extension).appendTo($content);
+                $('<div/>').addClass('file-name').text('Size: ' + data.filesize_formatted).appendTo($content);
+                $('<div/>').addClass('file-name').text('Dimensions: ' + data.meta.width + ' x ' + data.meta.height + ' pixels').appendTo($content);
 
-            files.append(container);
-            files.find('.hdnImageId').remove();
+                $('<input type="text"/>').addClass('form-control inline').attr({'name': fieldName+'[alt]', 'placeholder': "Alt text"}).appendTo($content);
+
+                $('<div/>').addClass('input-group-addon field-remove').text("\u2715").appendTo(container);
+
+                files.append(container);
+                files.find('.hdnImageId').remove();
+            });
         });
     });
 });
