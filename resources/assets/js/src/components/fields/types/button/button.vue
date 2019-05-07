@@ -5,6 +5,21 @@
         </div>
 
         <div class="o-form__set-container">
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][class]`"
+                v-model="btnclass"
+            >
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][id]`"
+                v-model="id"
+            >
+            <input
+                type="hidden"
+                :name="inputNameMultiValue + `[${valueObj.id}][target]`"
+                v-model="target"
+            >
             <div class="o-form__group">
                 <validation
                     :status-error="errors && errors.label"
@@ -45,7 +60,6 @@
                             <input
                                 type="text"
                                 :id="inputNameMultiValue + `[${valueObj.id}][class]`"
-                                :name="inputNameMultiValue + `[${valueObj.id}][class]`"
                                 v-model="btnclass"
                             >
                         </validation>
@@ -59,7 +73,6 @@
                             <input
                                 type="text"
                                 :id="inputNameMultiValue + `[${valueObj.id}][id]`"
-                                :name="inputNameMultiValue + `[${valueObj.id}][id]`"
                                 v-model="id"
                             >
                         </validation>
@@ -73,7 +86,6 @@
                             <input
                                 type="text"
                                 :id="inputNameMultiValue + `[${valueObj.id}][target]`"
-                                :name="inputNameMultiValue + `[${valueObj.id}][target]`"
                                 v-model="target"
                             >
                         </validation>
