@@ -11,6 +11,7 @@ const TabsObj = {
 }
 
 let tabs
+let tabInitMap = {}
 
 export function Tabs () {
     const tabEl = document.querySelector('.js-tabs')
@@ -41,6 +42,10 @@ export function Tabs () {
         .subscribe(changeTab)
 
     return tabs
+}
+
+export function addTabInit (tabName, cb) {
+    tabInitMap[tabName] = cb
 }
 
 function createTabs (el) {
@@ -114,6 +119,7 @@ export function changeTab (tabName, title = '', pushstate = true) {
     }
 
     tabs.panels[tabName].classList.add('active')
+    tabInitMap[tabName] && tabInitMap[tabName]()
 
     if (!tabs.nav[tabName]) {
         const newTabNav = tabs.navTemplate(tabName, title)

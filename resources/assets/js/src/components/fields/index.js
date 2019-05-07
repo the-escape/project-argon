@@ -5,6 +5,7 @@ import draggable from 'vuedraggable'
 import types from './types/types.vue'
 import { getStore } from './store'
 import { deepClone } from '../../util'
+import { addTabInit } from '../../ui/tabs'
 
 Vue.config.productionTip = false
 Vue.component('draggable', draggable)
@@ -16,21 +17,26 @@ export function Fields () {
     const fields = Array.from(fieldEls)
 
     return fields.map(el => {
-        const name = el.dataset.name
+        const tabPanel = el.closest('[data-tab]')
+        const tabName = tabPanel.dataset.tab
 
-        const store = getStore()
+        addTabInit(tabName, () => {
+            const name = el.dataset.name
 
-        let { fields, header, actions = true } = window.fieldGroups[name]
-        fields = processFields(fields)
+            const store = getStore()
 
-        store.commit('setFields', { fields: fields })
-        store.commit('setHeader', { header })
-        store.commit('setShowActions', { actions })
+            let { fields, header, actions = true } = window.fieldGroups[name]
+            fields = processFields(fields)
 
-        return new Vue({
-            store,
-            render: h => h(App)
-        }).$mount(el)
+            store.commit('setFields', { fields: fields })
+            store.commit('setHeader', { header })
+            store.commit('setShowActions', { actions })
+
+            return new Vue({
+                store,
+                render: h => h(App)
+            }).$mount(el)
+        })
     })
 }
 

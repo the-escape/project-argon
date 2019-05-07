@@ -1652,6 +1652,7 @@ var TabsObj = {
   currentTab: null
 };
 var tabs;
+var tabInitMap = {};
 function Tabs() {
   var tabEl = document.querySelector('.js-tabs');
   tabs = createTabs(tabEl);
@@ -1676,6 +1677,9 @@ function Tabs() {
     return evt.target.dataset.tab;
   })).subscribe(changeTab);
   return tabs;
+}
+function addTabInit(tabName, cb) {
+  tabInitMap[tabName] = cb;
 }
 
 function createTabs(el) {
@@ -1749,6 +1753,7 @@ function changeTab(tabName) {
   }
 
   tabs.panels[tabName].classList.add('active');
+  tabInitMap[tabName] && tabInitMap[tabName]();
 
   if (!tabs.nav[tabName]) {
     var newTabNav = tabs.navTemplate(tabName, title);
@@ -13375,6 +13380,7 @@ function getStore() {
 
 
 
+
 vue_default.a.config.productionTip = false;
 vue_default.a.component('draggable', vuedraggable_default.a);
 vue_default.a.component('types', types_types);
@@ -13383,29 +13389,33 @@ function Fields() {
   var fieldEls = document.querySelectorAll('.js-fields');
   var fields = Array.from(fieldEls);
   return fields.map(function (el) {
-    var name = el.dataset.name;
-    var store = getStore();
-    var _window$fieldGroups$n = window.fieldGroups[name],
-        fields = _window$fieldGroups$n.fields,
-        header = _window$fieldGroups$n.header,
-        _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
-        actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
-    fields = processFields(fields);
-    store.commit('setFields', {
-      fields: fields
+    var tabPanel = el.closest('[data-tab]');
+    var tabName = tabPanel.dataset.tab;
+    addTabInit(tabName, function () {
+      var name = el.dataset.name;
+      var store = getStore();
+      var _window$fieldGroups$n = window.fieldGroups[name],
+          fields = _window$fieldGroups$n.fields,
+          header = _window$fieldGroups$n.header,
+          _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
+          actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
+      fields = processFields(fields);
+      store.commit('setFields', {
+        fields: fields
+      });
+      store.commit('setHeader', {
+        header: header
+      });
+      store.commit('setShowActions', {
+        actions: actions
+      });
+      return new vue_default.a({
+        store: store,
+        render: function render(h) {
+          return h(App);
+        }
+      }).$mount(el);
     });
-    store.commit('setHeader', {
-      header: header
-    });
-    store.commit('setShowActions', {
-      actions: actions
-    });
-    return new vue_default.a({
-      store: store,
-      render: function render(h) {
-        return h(App);
-      }
-    }).$mount(el);
   });
 }
 
@@ -18677,4 +18687,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.9cdfcb075f86605b4c69.js.map
+//# sourceMappingURL=main.f55d575b80df4a62aa8c.js.map
