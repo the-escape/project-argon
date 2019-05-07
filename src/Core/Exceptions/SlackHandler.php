@@ -156,11 +156,12 @@ class SlackHandler extends ExceptionHandler
 
         $https = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'];
         $host = isset($_SERVER['HTTP_HOST']) ? ($https ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'] : config('app.url');
+        $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 
         $attachment = [
             "color" => 'danger',
-            "title" => $e->getMessage().' on '.$host.$_SERVER['REQUEST_URI'],
-            "title_link" => 'http://'.$_SERVER['HTTP_HOST'],
+            "title" => $e->getMessage().' on '.$host.$requestUri,
+            "title_link" => $host.$requestUri,
             "text" => $error_msg,
             "mrkdwn" => true
         ];
