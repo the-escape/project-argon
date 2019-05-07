@@ -353,8 +353,8 @@ abstract class AbstractFieldType
                 foreach($tmpValues as $tmpVal)
                 {
                     $returnValues[] = [
-                        'label' => $tmpVal->label,
-                        'url' => $tmpVal->url,
+                        'label' => !empty($tmpVal->label) ? $tmpVal->label : '',
+                        'url' => !empty($tmpVal->url) ? $tmpVal->url : '',
                         'class' => !empty($tmpVal->class) ? $tmpVal->class : '',
                         'id' => !empty($tmpVal->id) ? $tmpVal->id : '',
                         'target' => !empty($tmpVal->target) ? $tmpVal->target : '',
