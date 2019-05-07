@@ -4,7 +4,7 @@
     <main class="c-login">
 
         <div class="c-login__big-logo">
-            <img alt="logo" src="/argon/images/e.png">
+            <img alt="logo" src="{{ config('argon.login_logo', '/argon/images/e.png') }}">
         </div>
 
         @if(!$errors->isEmpty())
