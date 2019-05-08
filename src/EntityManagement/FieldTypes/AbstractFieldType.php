@@ -454,4 +454,6 @@ abstract class AbstractFieldType
     abstract public function parseData($data);
 
     abstract public function render($value = null, $data = []);
+
+    abstract public function renderHidden($value = null, $data = []);
 }

@@ -85,4 +85,26 @@ class DatetimeFieldType extends AbstractFieldType
 
         return view('argon::fields.type.datetime', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new DatetimeFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new DatetimeFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.datetime', $data)->render();
+    }
 }
