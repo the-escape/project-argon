@@ -32,6 +32,10 @@ import RootRow from './components/RootRow.vue'
 import Row from './components/Row.vue'
 import { Bus } from './util/bus'
 
+import Noty from 'noty'
+import { post } from '../../util'
+
+
 export default {
     components: {
         RootRow,
@@ -66,7 +70,58 @@ export default {
     },
     methods: {
         drop: function (node, position) {
+
+            // todo: show overlay with spinner and prevent other tree changes
+
+            const pageId = node[0].data.id
+            const otherId = position.node.data.id
+            const relation = position.placement
+
+            console.log(node[0], position)
             console.log(node[0].title, position.placement, position.node.title)
+
+            const pageName = node[0].title
+
+            const url = '/pages/'+pageId+'/move/'+otherId+'/'+relation
+            const token = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
+
+            post(argon.root() + url, {
+                    _token: token,
+                    _method: 'GET'
+                })
+                    .then(data => JSON.parse(data))
+                    .then(data => {
+                        if (data.success) {
+                            new Noty({
+                                layout: 'topCenter',
+                                text: 'Successfully moved ' + pageName,
+                                type: 'success',
+                                timeout: 3500
+                            }).show()
+
+                            // todo: highlight the moved page and the related page
+
+                        } else {
+                            new Noty({
+                                layout: 'topCenter',
+                                text: 'An error occured when moving: ' + pageName,
+                                type: 'error',
+                                timeout: 3500
+                            }).show()
+
+                            // todo: undo tree drag'n'drop
+
+                        }
+
+                        // todo: remove overlay
+
+                    })
+                    .catch(error => console.log(error))
+
+
+
         },
         removeNode(treeIndex, paths){
             if(!paths.length){

@@ -94,6 +94,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
 
+        $this->addRoute(
+            'pages/{pageId}/move/{otherId}/{relation}',
+            'cms:pages:move-page',
+            PagesController::class,
+            'movePage',
+            Request::METHOD_GET
+        );
+
         /**
          * Deprecated, as revisions handled within page edit view.
          */

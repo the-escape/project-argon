@@ -609,6 +609,90 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
     }
 
+    public function movePage($pageId, $otherId, $relation,
+        EntityRepository $entityRepository,
+        Solr $solr)
+    {
+        if (!in_array($relation, ['inside', 'before', 'after']))
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'Incorrect action, page could not be moved.'
+            ]);
+        }
+
+        $page = $entityRepository->find($pageId);
+
+        switch($relation)
+        {
+            case 'after':
+            case 'before':
+                $otherPage = $entityRepository->find($otherId);
+                $newParentId = (int) $otherPage->parent_id;
+                $index = 0; // todo: relative to $otherPage->order depending on before or after position
+                break;
+            case 'inside':
+            default:
+                $newParentId = (int) $otherId;
+                $index = 0;
+                break;
+        }
+
+        if ($page->parent_id !== $newParentId)
+        {
+            // comment out for a test run...
+            $page->parent_id = $newParentId;
+            $page->save();
+
+            $this->reindexAndRecacheAllChildren($page);
+
+            // todo: move the page under new parent and reidex/recache all its children and their children to update urls
+        }
+
+        // todo: add order column to entities.. and update order on all the children within the new parent
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Page has been moved successfully.'
+        ]);
+    }
+
+    private function reindexAndRecacheAllChildren(Entity $page)
+    {
+        $this->reindexAndRecache($page);
+
+        $entityRepository = app()->make(EntityRepository::class);
+        $children = $entityRepository->findWhere(['parent_id' => $page->id]);
+
+        foreach($children as $child)
+        {
+            $this->reindexAndRecacheAllChildren($child);
+        }
+    }
+
+    private function reindexAndRecache(Entity $entity)
+    {
+        $solr = app()->make(Solr::class);
+        $localisations = $entity->localisations;
+        $page = $entity->toPage();
+
+        foreach ($localisations as $localisation)
+        {
+            // $solr->indexEntity($entity, $localisation); // todo: create updateEntity which patches only the url in the index instead of recreating it
+            $solr->updateParentAndUrl($entity, $localisation);
+
+            // EntityCache::cache($entity, $localisation); // todo: instead of re-caching, just update the entity_url value
+            $cache = EntityCache::where('entity_id',$entity->id)->where('entity_localisation_id',$localisation->id)->first();
+            if ($cache)
+            {
+                $cache->entity_parent_id = $entity->parent_id;
+                $cache->entity_url = $page->getUrl();
+                $cache->save();
+            }
+        }
+    }
+
 
     // Handles JSTree ajax reorder requests
     public function updateParent($pageId, $parentId, EntityRepository $entityRepository, Solr $solr)

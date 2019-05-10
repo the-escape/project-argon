@@ -15744,6 +15744,8 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
 
 
 
+
+
 /* harmony default export */ var site_tree_Appvue_type_script_lang_js_ = ({
   components: {
     RootRow: RootRow,
@@ -15776,7 +15778,40 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
   },
   methods: {
     drop: function drop(node, position) {
+      // todo: show overlay with spinner and prevent other tree changes
+      var pageId = node[0].data.id;
+      var otherId = position.node.data.id;
+      var relation = position.placement;
+      console.log(node[0], position);
       console.log(node[0].title, position.placement, position.node.title);
+      var pageName = node[0].title;
+      var url = '/pages/' + pageId + '/move/' + otherId + '/' + relation;
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      post(argon.root() + url, {
+        _token: token,
+        _method: 'GET'
+      }).then(function (data) {
+        return JSON.parse(data);
+      }).then(function (data) {
+        if (data.success) {
+          new noty_default.a({
+            layout: 'topCenter',
+            text: 'Successfully moved ' + pageName,
+            type: 'success',
+            timeout: 3500
+          }).show(); // todo: highlight the moved page and the related page
+        } else {
+          new noty_default.a({
+            layout: 'topCenter',
+            text: 'An error occured when moving: ' + pageName,
+            type: 'error',
+            timeout: 3500
+          }).show(); // todo: undo tree drag'n'drop
+        } // todo: remove overlay
+
+      }).catch(function (error) {
+        return console.log(error);
+      });
     },
     removeNode: function removeNode(treeIndex, paths) {
       if (!paths.length) {
@@ -18683,4 +18718,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.da149d23845cb830175f.js.map
+//# sourceMappingURL=main.16d6cfbcf0637a581e43.js.map

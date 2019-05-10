@@ -241,6 +241,26 @@ class Solr
     }
 
 
+    public function updateParentAndUrl(Entity $entity, Localisation $localisation = null)
+    {
+        if ($this->isEnabled())
+        {
+            if ($localisation === null)
+            {
+                $localisation = $entity->getDefaultLocalisation();
+            }
+
+            $entities_to_index = config('solr.entity.types');
+
+            if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index))
+            {
+
+                // todo
+            }
+        }
+    }
+
+
     public function reindex()
     {
         if ($this->isEnabled())
@@ -255,14 +275,18 @@ class Solr
                 {
                     foreach ($entity->localisations as $localisation)
                     {
+                        $start_time = microtime(true);
                         $latestRevision = $localisation->latestRevision();
                         $response = $this->indexEntity($entity, $localisation);
+                        $end_time = microtime(true);
+                        $execution_time = ($end_time - $start_time);
 
                         yield [
                             'action'      => 'reindexing',
                             'entity_id'   => $entity->id,
                             'revision_id' => $latestRevision->id,
                             'solr_status' => $response['solr_status'],
+                            'time' => ceil($execution_time)." sec",
                         ];
                     }
                 }
