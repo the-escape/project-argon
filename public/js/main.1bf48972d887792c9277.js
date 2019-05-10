@@ -13394,33 +13394,32 @@ function Fields() {
   var fieldEls = document.querySelectorAll('.js-fields');
   var fields = Array.from(fieldEls);
   return fields.map(function (el) {
-    var tabPanel = el.closest('[data-tab]');
-    var tabName = tabPanel.dataset.tab;
-    addTabInit(tabName, function () {
-      var name = el.dataset.name;
-      var store = getStore();
-      var _window$fieldGroups$n = window.fieldGroups[name],
-          fields = _window$fieldGroups$n.fields,
-          header = _window$fieldGroups$n.header,
-          _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
-          actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
-      fields = processFields(fields);
-      store.commit('setFields', {
-        fields: fields
-      });
-      store.commit('setHeader', {
-        header: header
-      });
-      store.commit('setShowActions', {
-        actions: actions
-      });
-      return new vue_default.a({
-        store: store,
-        render: function render(h) {
-          return h(App);
-        }
-      }).$mount(el);
+    // const tabPanel = el.closest('[data-tab]')
+    // const tabName = tabPanel.dataset.tab
+    var name = el.dataset.name;
+    var store = getStore();
+    var _window$fieldGroups$n = window.fieldGroups[name],
+        fields = _window$fieldGroups$n.fields,
+        header = _window$fieldGroups$n.header,
+        _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
+        actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
+    fields = processFields(fields);
+    store.commit('setFields', {
+      fields: fields
     });
+    store.commit('setHeader', {
+      header: header
+    });
+    store.commit('setShowActions', {
+      actions: actions
+    });
+    return new vue_default.a({
+      store: store,
+      render: function render(h) {
+        return h(App);
+      }
+    }).$mount(el); // addTabInit(tabName, () => {
+    // })
   });
 }
 
@@ -18692,4 +18691,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.cde72e1bfc8d98094a5b.js.map
+//# sourceMappingURL=main.1bf48972d887792c9277.js.map

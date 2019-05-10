@@ -17,26 +17,27 @@ export function Fields () {
     const fields = Array.from(fieldEls)
 
     return fields.map(el => {
-        const tabPanel = el.closest('[data-tab]')
-        const tabName = tabPanel.dataset.tab
+        // const tabPanel = el.closest('[data-tab]')
+        // const tabName = tabPanel.dataset.tab
+        const name = el.dataset.name
 
-        addTabInit(tabName, () => {
-            const name = el.dataset.name
+        const store = getStore()
 
-            const store = getStore()
+        let { fields, header, actions = true } = window.fieldGroups[name]
+        fields = processFields(fields)
 
-            let { fields, header, actions = true } = window.fieldGroups[name]
-            fields = processFields(fields)
+        store.commit('setFields', { fields: fields })
+        store.commit('setHeader', { header })
+        store.commit('setShowActions', { actions })
 
-            store.commit('setFields', { fields: fields })
-            store.commit('setHeader', { header })
-            store.commit('setShowActions', { actions })
+        return new Vue({
+            store,
+            render: h => h(App)
+        }).$mount(el)
 
-            return new Vue({
-                store,
-                render: h => h(App)
-            }).$mount(el)
-        })
+        // addTabInit(tabName, () => {
+            
+        // })
     })
 }
 

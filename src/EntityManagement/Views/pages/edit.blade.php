@@ -357,13 +357,13 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         }
                                     </script>
                                     <div class="js-fields" data-name="{{$group->id}}">
-                                        <input type="hidden" name="group_render[{{$group->id}}]" value="{{ $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0' }}">
+                                        {{-- <input type="hidden" name="group_render[{{$group->id}}]" value="{{ $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0' }}"> --}}
                                         <?php
-                                            $fields = $group->getFields();
-                                            foreach($fields as $field){
-                                                $fieldValue = $currentRevision->getField($field->getId());
-                                                echo $field->renderHidden($fieldValue);
-                                            }
+                                            // $fields = $group->getFields();
+                                            // foreach($fields as $field){
+                                            //     $fieldValue = $currentRevision->getField($field->getId());
+                                            //     echo $field->renderHidden($fieldValue);
+                                            // }
                                          ?>
                                     </div>
                                 </main>
@@ -519,5 +519,5 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 @section('footer')
     @parent
 
-    @include('argon::fields.templates')
+    {{-- @include('argon::fields.templates') --}}
 @stop
