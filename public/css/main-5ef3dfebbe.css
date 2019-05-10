@@ -9834,7 +9834,7 @@ button.uppy-DashboardItem-progressIndicator {
   .c-dashboard__logo {
     position: absolute;
     right: 0;
-    bottom: 0; }
+    bottom: 7px; }
     .c-dashboard__logo img {
       height: 60px;
       width: auto; }
@@ -10887,4 +10887,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-97bd692ab8.css.map
+//# sourceMappingURL=main-5ef3dfebbe.css.map
