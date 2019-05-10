@@ -5126,24 +5126,29 @@ var combovue_type_template_id_90b659e4_render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                !_vm.isHidingBody
-                  ? _c("div", { staticClass: "o-combo__body" }, [
-                      _c(
-                        "div",
-                        { staticClass: "o-combo__form" },
-                        _vm._l(_vm.comboFields, function(field) {
-                          return _c("types", {
-                            key: field.id,
-                            attrs: {
-                              field: field,
-                              "combo-id": _vm.fieldId,
-                              "combo-item-id": item.id
-                            }
-                          })
+                _c(
+                  "div",
+                  {
+                    staticClass: "o-combo__body",
+                    style: { display: _vm.isHidingBody ? "none" : "block" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "o-combo__form" },
+                      _vm._l(_vm.comboFields, function(field) {
+                        return _c("types", {
+                          key: field.id,
+                          attrs: {
+                            field: field,
+                            "combo-id": _vm.fieldId,
+                            "combo-item-id": item.id
+                          }
                         })
-                      )
-                    ])
-                  : _vm._e()
+                      })
+                    )
+                  ]
+                )
               ]
             )
           })
@@ -18687,4 +18692,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.f55d575b80df4a62aa8c.js.map
+//# sourceMappingURL=main.cde72e1bfc8d98094a5b.js.map
