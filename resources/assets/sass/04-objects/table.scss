@@ -154,6 +154,18 @@
     &__child-btn + &__data {
         padding-left: 30px;
     }
+
+    &__row {
+        transition: background-color 650ms $easeOut;
+    }
+
+    &__row.is-highlighted {
+        background-color: rgba($success, 0.4);
+    }
+
+    &__row.is-error {
+        background-color: rgba($inactive, 0.4);
+    }
 }
 
 @supports (display: grid) {

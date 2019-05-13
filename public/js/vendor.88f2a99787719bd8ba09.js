@@ -53979,6 +53979,242 @@ module.exports = function parseuri(str) {
 
 /***/ }),
 
+/***/ "./node_modules/path-browserify/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/path-browserify/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  } // if the path is allowed to go above the root, restore leading ..s
+
+
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+} // Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+
+
+var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+
+var splitPath = function (filename) {
+  return splitPathRe.exec(filename).slice(1);
+}; // path.resolve([from ...], to)
+// posix version
+
+
+exports.resolve = function () {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = i >= 0 ? arguments[i] : process.cwd(); // Skip empty and invalid entries
+
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  } // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+  // Normalize the path
+
+
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function (p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+  return (resolvedAbsolute ? '/' : '') + resolvedPath || '.';
+}; // path.normalize(path)
+// posix version
+
+
+exports.normalize = function (path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/'; // Normalize the path
+
+  path = normalizeArray(filter(path.split('/'), function (p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+}; // posix version
+
+
+exports.isAbsolute = function (path) {
+  return path.charAt(0) === '/';
+}; // posix version
+
+
+exports.join = function () {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function (p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+
+    return p;
+  }).join('/'));
+}; // path.relative(from, to)
+// posix version
+
+
+exports.relative = function (from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function (path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+exports.basename = function (path, ext) {
+  var f = splitPath(path)[2]; // TODO: make this comparison case-insensitive on windows?
+
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+
+  return f;
+};
+
+exports.extname = function (path) {
+  return splitPath(path)[3];
+};
+
+function filter(xs, f) {
+  if (xs.filter) return xs.filter(f);
+  var res = [];
+
+  for (var i = 0; i < xs.length; i++) {
+    if (f(xs[i], i, xs)) res.push(xs[i]);
+  }
+
+  return res;
+} // String.prototype.substr - negative index don't work in IE8
+
+
+var substr = 'ab'.substr(-1) === 'b' ? function (str, start, len) {
+  return str.substr(start, len);
+} : function (str, start, len) {
+  if (start < 0) start = str.length + start;
+  return str.substr(start, len);
+};
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
 /***/ "./node_modules/preact-css-transition-group/dist/preact-css-transition-group.js":
 /*!**************************************************************************************!*\
   !*** ./node_modules/preact-css-transition-group/dist/preact-css-transition-group.js ***!
@@ -70070,47 +70306,49 @@ function zipAll(project) {
   return function (e) {
     var t = {};
 
-    function s(o) {
-      if (t[o]) return t[o].exports;
-      var i = t[o] = {
-        i: o,
+    function i(n) {
+      if (t[n]) return t[n].exports;
+      var o = t[n] = {
+        i: n,
         l: !1,
         exports: {}
       };
-      return e[o].call(i.exports, i, i.exports, s), i.l = !0, i.exports;
+      return e[n].call(o.exports, o, o.exports, i), o.l = !0, o.exports;
     }
 
-    return s.m = e, s.c = t, s.d = function (e, t, o) {
-      s.o(e, t) || Object.defineProperty(e, t, {
+    return i.m = e, i.c = t, i.d = function (e, t, n) {
+      i.o(e, t) || Object.defineProperty(e, t, {
         configurable: !1,
         enumerable: !0,
-        get: o
+        get: n
       });
-    }, s.r = function (e) {
+    }, i.r = function (e) {
       Object.defineProperty(e, "__esModule", {
         value: !0
       });
-    }, s.n = function (e) {
+    }, i.n = function (e) {
       var t = e && e.__esModule ? function () {
         return e.default;
       } : function () {
         return e;
       };
-      return s.d(t, "a", t), t;
-    }, s.o = function (e, t) {
+      return i.d(t, "a", t), t;
+    }, i.o = function (e, t) {
       return Object.prototype.hasOwnProperty.call(e, t);
-    }, s.p = "", s(s.s = 0);
-  }([function (e, t, s) {
+    }, i.p = "", i(i.s = 0);
+  }([function (e, t, i) {
     "use strict";
 
-    s.r(t);
+    i.r(t);
 
-    var o = {
+    var n = {
       name: "sl-vue-tree",
       props: {
         value: {
           type: Array,
-          default: () => []
+          default: function () {
+            return [];
+          }
         },
         edgeSize: {
           type: Number,
@@ -70141,9 +70379,11 @@ function zipAll(project) {
             return ["ctrlKey", "metaKey"];
           },
           validator: function (e) {
-            let t = ["ctrlKey", "metaKey", "altKey"],
-                s = Array.isArray(e) ? e : [e];
-            return !!(s = s.filter(e => -1 !== t.indexOf(e))).length;
+            var t = ["ctrlKey", "metaKey", "altKey"],
+                i = Array.isArray(e) ? e : [e];
+            return !!(i = i.filter(function (e) {
+              return -1 !== t.indexOf(e);
+            })).length;
           }
         },
         scrollAreaHeight: {
@@ -70155,8 +70395,7 @@ function zipAll(project) {
           default: 20
         }
       },
-
-      data() {
+      data: function () {
         return {
           rootCursorPosition: null,
           scrollIntervalId: 0,
@@ -70172,444 +70411,464 @@ function zipAll(project) {
           currentValue: this.value
         };
       },
-
-      mounted() {
+      mounted: function () {
         this.isRoot && document.addEventListener("mouseup", this.onDocumentMouseupHandler);
       },
-
-      beforeDestroy() {
+      beforeDestroy: function () {
         document.removeEventListener("mouseup", this.onDocumentMouseupHandler);
       },
-
       watch: {
         value: function (e) {
           this.currentValue = e;
         }
       },
       computed: {
-        cursorPosition() {
+        cursorPosition: function () {
           return this.isRoot ? this.rootCursorPosition : this.getParent().cursorPosition;
         },
-
-        nodes() {
+        nodes: function () {
           if (this.isRoot) {
-            const e = this.copy(this.currentValue);
+            var e = this.copy(this.currentValue);
             return this.getNodes(e);
           }
 
           return this.getParent().nodes[this.parentInd].children;
         },
-
-        gaps() {
-          const e = [];
-          let t = this.level - 1;
+        gaps: function () {
+          var e = [],
+              t = this.level - 1;
 
           for (this.showBranches || t++; t-- > 0;) e.push(t);
 
           return e;
         },
-
-        isRoot() {
+        isRoot: function () {
           return !this.level;
         },
-
-        selectionSize() {
+        selectionSize: function () {
           return this.getSelected().length;
         },
-
-        dragSize() {
+        dragSize: function () {
           return this.getDraggable().length;
         }
-
       },
       methods: {
-        setCursorPosition(e) {
+        setCursorPosition: function (e) {
           this.isRoot ? this.rootCursorPosition = e : this.getParent().setCursorPosition(e);
         },
-
-        getNodes(e, t = [], s = !0) {
-          return e.map((o, i) => {
-            const r = t.concat(i);
-            return this.getNode(r, o, e, s);
+        getNodes: function (e) {
+          var t = this,
+              i = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
+              n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+          return e.map(function (o, r) {
+            var s = i.concat(r);
+            return t.getNode(s, o, e, n);
           });
         },
-
-        getNode(e, t = null, s = null, o = null) {
-          const i = e.slice(-1)[0];
-          if (s = s || this.getNodeSiblings(this.currentValue, e), t = t || s && s[i] || null, null == o && (o = this.isVisible(e)), !t) return null;
-          const r = void 0 == t.isExpanded || !!t.isExpanded,
-                n = void 0 == t.isDraggable || !!t.isDraggable,
-                l = void 0 == t.isSelectable || !!t.isSelectable;
+        getNode: function (e) {
+          var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
+              i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
+              n = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null,
+              o = e.slice(-1)[0];
+          if (i = i || this.getNodeSiblings(this.currentValue, e), t = t || i && i[o] || null, null == n && (n = this.isVisible(e)), !t) return null;
+          var r = void 0 == t.isExpanded || !!t.isExpanded,
+              s = void 0 == t.isDraggable || !!t.isDraggable,
+              l = void 0 == t.isSelectable || !!t.isSelectable;
           return {
             title: t.title,
             isLeaf: !!t.isLeaf,
             children: t.children ? this.getNodes(t.children, e, r) : [],
             isSelected: !!t.isSelected,
             isExpanded: r,
-            isVisible: o,
-            isDraggable: n,
+            isVisible: n,
+            isDraggable: s,
             isSelectable: l,
             data: void 0 !== t.data ? t.data : {},
             path: e,
             pathStr: JSON.stringify(e),
             level: e.length,
-            ind: i,
-            isFirstChild: 0 == i,
-            isLastChild: i === s.length - 1
+            ind: o,
+            isFirstChild: 0 == o,
+            isLastChild: o === i.length - 1
           };
         },
-
-        isVisible(e) {
+        isVisible: function (e) {
           if (e.length < 2) return !0;
-          let t = this.currentValue;
 
-          for (let s = 0; s < e.length - 1; s++) {
-            let o = t[e[s]];
-            if (!(void 0 == o.isExpanded || !!o.isExpanded)) return !1;
-            t = o.children;
+          for (var t = this.currentValue, i = 0; i < e.length - 1; i++) {
+            var n = t[e[i]];
+            if (!(void 0 == n.isExpanded || !!n.isExpanded)) return !1;
+            t = n.children;
           }
 
           return !0;
         },
-
-        emitInput(e) {
+        emitInput: function (e) {
           this.currentValue = e, this.getRoot().$emit("input", e);
         },
-
-        emitSelect(e, t) {
+        emitSelect: function (e, t) {
           this.getRoot().$emit("select", e, t);
         },
-
-        emitBeforeDrop(e, t, s) {
-          this.getRoot().$emit("beforedrop", e, t, s);
+        emitBeforeDrop: function (e, t, i) {
+          this.getRoot().$emit("beforedrop", e, t, i);
         },
-
-        emitDrop(e, t, s) {
-          this.getRoot().$emit("drop", e, t, s);
+        emitDrop: function (e, t, i) {
+          this.getRoot().$emit("drop", e, t, i);
         },
-
-        emitToggle(e, t) {
+        emitToggle: function (e, t) {
           this.getRoot().$emit("toggle", e, t);
         },
-
-        emitNodeClick(e, t) {
+        emitNodeClick: function (e, t) {
           this.getRoot().$emit("nodeclick", e, t);
         },
-
-        emitNodeDblclick(e, t) {
+        emitNodeDblclick: function (e, t) {
           this.getRoot().$emit("nodedblclick", e, t);
         },
-
-        emitNodeContextmenu(e, t) {
+        emitNodeContextmenu: function (e, t) {
           this.getRoot().$emit("nodecontextmenu", e, t);
         },
-
-        onExternalDragoverHandler(e, t) {
+        onExternalDragoverHandler: function (e, t) {
           t.preventDefault();
-          const s = this.getRoot(),
-                o = s.getCursorPositionFromCoords(t.clientX, t.clientY);
-          s.setCursorPosition(o), s.$emit("externaldragover", o, t);
+          var i = this.getRoot(),
+              n = i.getCursorPositionFromCoords(t.clientX, t.clientY);
+          i.setCursorPosition(n), i.$emit("externaldragover", n, t);
         },
-
-        onExternalDropHandler(e, t) {
-          const s = this.getRoot(),
-                o = s.getCursorPositionFromCoords(t.clientX, t.clientY);
-          s.$emit("externaldrop", o, t), this.setCursorPosition(null);
+        onExternalDropHandler: function (e, t) {
+          var i = this.getRoot(),
+              n = i.getCursorPositionFromCoords(t.clientX, t.clientY);
+          i.$emit("externaldrop", n, t), this.setCursorPosition(null);
         },
-
-        select(e, t = !1, s = null) {
-          const o = Array.isArray(this.multiselectKey) ? this.multiselectKey : [this.multiselectKey],
-                i = s && !!o.find(e => s[e]);
-          t = (i || t) && this.allowMultiselect;
-          const r = this.getNode(e);
-          if (!r) return null;
-          const n = this.copy(this.currentValue),
-                l = this.allowMultiselect && s && s.shiftKey && this.lastSelectedNode,
-                a = [];
-          let u = !1;
-          return this.traverse((e, s) => {
-            l ? (e.pathStr !== r.pathStr && e.pathStr !== this.lastSelectedNode.pathStr || (s.isSelected = e.isSelectable, u = !u), u && (s.isSelected = e.isSelectable)) : e.pathStr === r.pathStr ? s.isSelected = e.isSelectable : t || s.isSelected && (s.isSelected = !1), s.isSelected && a.push(e);
-          }, n), this.lastSelectedNode = r, this.emitInput(n), this.emitSelect(a, s), r;
-        },
-
-        onMousemoveHandler(e) {
-          if (!this.isRoot) return void this.getRoot().onMousemoveHandler(e);
-          if (this.preventDrag) return;
-          const t = this.isDragging,
-                s = this.isDragging || this.mouseIsDown && (this.lastMousePos.x !== e.clientX || this.lastMousePos.y !== e.clientY),
-                o = !1 === t && !0 === s;
-          if (this.lastMousePos = {
-            x: e.clientX,
-            y: e.clientY
-          }, !s) return;
-          const i = this.getRoot().$el,
-                r = i.getBoundingClientRect(),
-                n = this.$refs.dragInfo,
-                l = e.clientY - r.top + i.scrollTop - (0 | n.style.marginBottom),
-                a = e.clientX - r.left;
-          n.style.top = l + "px", n.style.left = a + "px";
-          const u = this.getCursorPositionFromCoords(e.clientX, e.clientY),
-                d = u.node,
-                c = u.placement;
-          if (o && !d.isSelected && this.select(d.path, !1, e), !this.getDraggable().length) return void (this.preventDrag = !0);
-          this.isDragging = s, this.setCursorPosition({
-            node: d,
-            placement: c
+        select: function (e) {
+          var t = this,
+              i = arguments.length > 1 && void 0 !== arguments[1] && arguments[1],
+              n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
+              o = Array.isArray(this.multiselectKey) ? this.multiselectKey : [this.multiselectKey],
+              r = n && !!o.find(function (e) {
+            return n[e];
           });
-          const h = r.bottom - this.scrollAreaHeight,
-                g = (e.clientY - h) / (r.bottom - h),
-                p = r.top + this.scrollAreaHeight,
-                f = (p - e.clientY) / (p - r.top);
-          g > 0 ? this.startScroll(g) : f > 0 ? this.startScroll(-f) : this.stopScroll();
+          i = (r || i) && this.allowMultiselect;
+          var s = this.getNode(e);
+          if (!s) return null;
+          var l = this.copy(this.currentValue),
+              a = this.allowMultiselect && n && n.shiftKey && this.lastSelectedNode,
+              u = [],
+              c = !1;
+          return this.traverse(function (e, n) {
+            a ? (e.pathStr !== s.pathStr && e.pathStr !== t.lastSelectedNode.pathStr || (n.isSelected = e.isSelectable, c = !c), c && (n.isSelected = e.isSelectable)) : e.pathStr === s.pathStr ? n.isSelected = e.isSelectable : i || n.isSelected && (n.isSelected = !1), n.isSelected && u.push(e);
+          }, l), this.lastSelectedNode = s, this.emitInput(l), this.emitSelect(u, n), s;
         },
+        onMousemoveHandler: function (e) {
+          if (this.isRoot) {
+            if (!this.preventDrag) {
+              var t = this.isDragging,
+                  i = this.isDragging || this.mouseIsDown && (this.lastMousePos.x !== e.clientX || this.lastMousePos.y !== e.clientY),
+                  n = !1 === t && !0 === i;
 
-        getCursorPositionFromCoords(e, t) {
-          const s = document.elementFromPoint(e, t),
-                o = s.getAttribute("path") ? s : this.getClosetElementWithPath(s);
-          let i, r;
+              if (this.lastMousePos = {
+                x: e.clientX,
+                y: e.clientY
+              }, i) {
+                var o = this.getRoot().$el,
+                    r = o.getBoundingClientRect(),
+                    s = this.$refs.dragInfo,
+                    l = e.clientY - r.top + o.scrollTop - (0 | s.style.marginBottom),
+                    a = e.clientX - r.left;
+                s.style.top = l + "px", s.style.left = a + "px";
+                var u = this.getCursorPositionFromCoords(e.clientX, e.clientY),
+                    c = u.node,
+                    d = u.placement;
 
-          if (o) {
-            if (!o) return;
-            i = this.getNode(JSON.parse(o.getAttribute("path")));
-            const e = o.offsetHeight,
-                  s = this.edgeSize,
-                  n = t - o.getBoundingClientRect().top;
-            r = i.isLeaf ? n >= e / 2 ? "after" : "before" : n <= s ? "before" : n >= e - s ? "after" : "inside";
+                if (n && !c.isSelected && this.select(c.path, !1, e), this.getDraggable().length) {
+                  this.isDragging = i, this.setCursorPosition({
+                    node: c,
+                    placement: d
+                  });
+                  var h = r.bottom - this.scrollAreaHeight,
+                      f = (e.clientY - h) / (r.bottom - h),
+                      g = r.top + this.scrollAreaHeight,
+                      p = (g - e.clientY) / (g - r.top);
+                  f > 0 ? this.startScroll(f) : p > 0 ? this.startScroll(-p) : this.stopScroll();
+                } else this.preventDrag = !0;
+              }
+            }
+          } else this.getRoot().onMousemoveHandler(e);
+        },
+        getCursorPositionFromCoords: function (e, t) {
+          var i,
+              n,
+              o = document.elementFromPoint(e, t),
+              r = o.getAttribute("path") ? o : this.getClosetElementWithPath(o);
+
+          if (r) {
+            if (!r) return;
+            i = this.getNode(JSON.parse(r.getAttribute("path")));
+            var s = r.offsetHeight,
+                l = this.edgeSize,
+                a = t - r.getBoundingClientRect().top;
+            n = i.isLeaf ? a >= s / 2 ? "after" : "before" : a <= l ? "before" : a >= s - l ? "after" : "inside";
           } else {
-            const e = this.getRoot().$el.getBoundingClientRect();
-            t > e.top + e.height / 2 ? (r = "after", i = this.getLastNode()) : (r = "before", i = this.getFirstNode());
+            var u = this.getRoot().$el.getBoundingClientRect();
+            t > u.top + u.height / 2 ? (n = "after", i = this.getLastNode()) : (n = "before", i = this.getFirstNode());
           }
 
           return {
             node: i,
-            placement: r
+            placement: n
           };
         },
-
-        getClosetElementWithPath(e) {
+        getClosetElementWithPath: function (e) {
           return e ? e.getAttribute("path") ? e : this.getClosetElementWithPath(e.parentElement) : null;
         },
-
-        onMouseleaveHandler(e) {
-          if (!this.isRoot || !this.isDragging) return;
-          const t = this.getRoot().$el.getBoundingClientRect();
-          e.clientY >= t.bottom ? this.setCursorPosition({
-            node: this.nodes.slice(-1)[0],
-            placement: "after"
-          }) : e.clientY < t.top && this.setCursorPosition({
-            node: this.getFirstNode(),
-            placement: "before"
-          });
+        onMouseleaveHandler: function (e) {
+          if (this.isRoot && this.isDragging) {
+            var t = this.getRoot().$el.getBoundingClientRect();
+            e.clientY >= t.bottom ? this.setCursorPosition({
+              node: this.nodes.slice(-1)[0],
+              placement: "after"
+            }) : e.clientY < t.top && this.setCursorPosition({
+              node: this.getFirstNode(),
+              placement: "before"
+            });
+          }
         },
-
-        getNodeEl(e) {
-          this.getRoot().$el.querySelector(`[path="${JSON.stringify(e)}"]`);
+        getNodeEl: function (e) {
+          this.getRoot().$el.querySelector('[path="'.concat(JSON.stringify(e), '"]'));
         },
-
-        getLastNode() {
-          let e = null;
-          return this.traverse(t => {
+        getLastNode: function () {
+          var e = null;
+          return this.traverse(function (t) {
             e = t;
           }), e;
         },
-
-        getFirstNode() {
+        getFirstNode: function () {
           return this.getNode([0]);
         },
-
-        getNextNode(e, t = null) {
-          let s = null;
-          return this.traverse(o => {
-            if (!(this.comparePaths(o.path, e) < 1)) return !t || t(o) ? (s = o, !1) : void 0;
-          }), s;
+        getNextNode: function (e) {
+          var t = this,
+              i = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
+              n = null;
+          return this.traverse(function (o) {
+            if (!(t.comparePaths(o.path, e) < 1)) return !i || i(o) ? (n = o, !1) : void 0;
+          }), n;
         },
-
-        getPrevNode(e, t) {
-          let s = [];
-          this.traverse(t => {
-            if (this.comparePaths(t.path, e) >= 0) return !1;
-            s.push(t);
+        getPrevNode: function (e, t) {
+          var i = this,
+              n = [];
+          this.traverse(function (t) {
+            if (i.comparePaths(t.path, e) >= 0) return !1;
+            n.push(t);
           });
-          let o = s.length;
 
-          for (; o--;) {
-            const e = s[o];
-            if (!t || t(e)) return e;
+          for (var o = n.length; o--;) {
+            var r = n[o];
+            if (!t || t(r)) return r;
           }
 
           return null;
         },
-
-        comparePaths(e, t) {
-          for (let s = 0; s < e.length; s++) {
-            if (void 0 == t[s]) return 1;
-            if (e[s] > t[s]) return 1;
-            if (e[s] < t[s]) return -1;
+        comparePaths: function (e, t) {
+          for (var i = 0; i < e.length; i++) {
+            if (void 0 == t[i]) return 1;
+            if (e[i] > t[i]) return 1;
+            if (e[i] < t[i]) return -1;
           }
 
           return void 0 == t[e.length] ? 0 : -1;
         },
-
-        onNodeMousedownHandler(e, t) {
+        onNodeMousedownHandler: function (e, t) {
           0 === e.button && (this.isRoot ? this.mouseIsDown = !0 : this.getRoot().onNodeMousedownHandler(e, t));
         },
-
-        startScroll(e) {
-          const t = this.getRoot().$el;
-          this.scrollSpeed !== e && (this.scrollIntervalId && this.stopScroll(), this.scrollSpeed = e, this.scrollIntervalId = setInterval(() => {
-            t.scrollTop += this.maxScrollSpeed * e;
+        startScroll: function (e) {
+          var t = this,
+              i = this.getRoot().$el;
+          this.scrollSpeed !== e && (this.scrollIntervalId && this.stopScroll(), this.scrollSpeed = e, this.scrollIntervalId = setInterval(function () {
+            i.scrollTop += t.maxScrollSpeed * e;
           }, 20));
         },
-
-        stopScroll() {
+        stopScroll: function () {
           clearInterval(this.scrollIntervalId), this.scrollIntervalId = 0, this.scrollSpeed = 0;
         },
-
-        onDocumentMouseupHandler(e) {
+        onDocumentMouseupHandler: function (e) {
           this.isDragging && this.onNodeMouseupHandler(e);
         },
+        onNodeMouseupHandler: function (e) {
+          var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+          if (0 === e.button) if (this.isRoot) {
+            if (this.mouseIsDown = !1, this.isDragging || !t || this.preventDrag || this.select(t.path, !1, e), this.preventDrag = !1, this.cursorPosition) {
+              var i = this.getDraggable(),
+                  n = !0,
+                  o = !1,
+                  r = void 0;
 
-        onNodeMouseupHandler(e, t = null) {
-          if (0 !== e.button) return;
-          if (!this.isRoot) return void this.getRoot().onNodeMouseupHandler(e, t);
-          if (this.mouseIsDown = !1, this.isDragging || !t || this.preventDrag || this.select(t.path, !1, e), this.preventDrag = !1, !this.cursorPosition) return void this.stopDrag();
-          const s = this.getDraggable();
+              try {
+                for (var s, l = i[Symbol.iterator](); !(n = (s = l.next()).done); n = !0) {
+                  var a = s.value;
+                  if (a.pathStr == this.cursorPosition.node.pathStr) return void this.stopDrag();
+                  if (this.checkNodeIsParent(a, this.cursorPosition.node)) return void this.stopDrag();
+                }
+              } catch (e) {
+                o = !0, r = e;
+              } finally {
+                try {
+                  n || null == l.return || l.return();
+                } finally {
+                  if (o) throw r;
+                }
+              }
 
-          for (let e of s) {
-            if (e.pathStr == this.cursorPosition.node.pathStr) return void this.stopDrag();
-            if (this.checkNodeIsParent(e, this.cursorPosition.node)) return void this.stopDrag();
-          }
+              var u = this.copy(this.currentValue),
+                  c = [],
+                  d = !0,
+                  h = !1,
+                  f = void 0;
 
-          const o = this.copy(this.currentValue),
-                i = [];
+              try {
+                for (var g, p = i[Symbol.iterator](); !(d = (g = p.next()).done); d = !0) {
+                  var v = g.value,
+                      m = this.getNodeSiblings(u, v.path)[v.ind];
+                  c.push(m);
+                }
+              } catch (e) {
+                h = !0, f = e;
+              } finally {
+                try {
+                  d || null == p.return || p.return();
+                } finally {
+                  if (h) throw f;
+                }
+              }
 
-          for (let e of s) {
-            const t = this.getNodeSiblings(o, e.path)[e.ind];
-            i.push(t);
-          }
+              var S = !1;
+              if (this.emitBeforeDrop(i, this.cursorPosition, function () {
+                return S = !0;
+              }), S) this.stopDrag();else {
+                for (var y = [], _ = 0; _ < c.length; _++) {
+                  var b = c[_];
+                  y.push(this.copy(b)), b._markToDelete = !0;
+                }
 
-          let r = !1;
-          if (this.emitBeforeDrop(s, this.cursorPosition, () => r = !0), r) return void this.stopDrag();
-          const n = [];
+                var C = this.cursorPosition.node,
+                    N = this.getNodeSiblings(u, C.path),
+                    P = N[C.ind];
 
-          for (let e of i) n.push(this.copy(e)), e._markToDelete = !0;
+                if ("inside" === this.cursorPosition.placement) {
+                  var D;
+                  P.children = P.children || [], (D = P.children).unshift.apply(D, y);
+                } else {
+                  var x = "before" === this.cursorPosition.placement ? C.ind : C.ind + 1;
+                  N.splice.apply(N, [x, 0].concat(y));
+                }
 
-          this.insertModels(this.cursorPosition, n, o), this.traverseModels((e, t, s) => {
-            e._markToDelete && t.splice(s, 1);
-          }, o), this.lastSelectedNode = null, this.emitInput(o), this.emitDrop(s, this.cursorPosition, e), this.stopDrag();
+                this.traverseModels(function (e, t, i) {
+                  e._markToDelete && t.splice(i, 1);
+                }, u), this.lastSelectedNode = null, this.emitInput(u), this.emitDrop(i, this.cursorPosition, e), this.stopDrag();
+              }
+            } else this.stopDrag();
+          } else this.getRoot().onNodeMouseupHandler(e, t);
         },
-
-        onToggleHandler(e, t) {
+        onToggleHandler: function (e, t) {
           this.allowToggleBranch && (this.updateNode(t.path, {
             isExpanded: !t.isExpanded
           }), this.emitToggle(t, e), e.stopPropagation());
         },
-
-        stopDrag() {
+        stopDrag: function () {
           this.isDragging = !1, this.mouseIsDown = !1, this.setCursorPosition(null), this.stopScroll();
         },
-
-        getParent() {
+        getParent: function () {
           return this.$parent;
         },
-
-        getRoot() {
+        getRoot: function () {
           return this.isRoot ? this : this.getParent().getRoot();
         },
-
-        getNodeSiblings(e, t) {
+        getNodeSiblings: function (e, t) {
           return 1 === t.length ? e : this.getNodeSiblings(e[t[0]].children, t.slice(1));
         },
-
-        updateNode(e, t) {
-          if (!this.isRoot) return void this.getParent().updateNode(e, t);
-          const s = JSON.stringify(e),
-                o = this.copy(this.currentValue);
-          this.traverse((e, o) => {
-            e.pathStr === s && Object.assign(o, t);
-          }, o), this.emitInput(o);
+        updateNode: function (e, t) {
+          if (this.isRoot) {
+            var i = JSON.stringify(e),
+                n = this.copy(this.currentValue);
+            this.traverse(function (e, n) {
+              e.pathStr === i && Object.assign(n, t);
+            }, n), this.emitInput(n);
+          } else this.getParent().updateNode(e, t);
         },
-
-        getSelected() {
-          const e = [];
-          return this.traverse(t => {
+        getSelected: function () {
+          var e = [];
+          return this.traverse(function (t) {
             t.isSelected && e.push(t);
           }), e;
         },
-
-        getDraggable() {
-          const e = [];
-          return this.traverse(t => {
+        getDraggable: function () {
+          var e = [];
+          return this.traverse(function (t) {
             t.isSelected && t.isDraggable && e.push(t);
           }), e;
         },
-
-        traverse(e, t = null, s = []) {
+        traverse: function (e) {
+          var t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
+              i = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
           t || (t = this.currentValue);
-          let o = !1;
-          const i = [];
 
-          for (let r = 0; r < t.length; r++) {
-            const n = t[r],
-                  l = s.concat(r),
-                  a = this.getNode(l, n, t);
-            if (o = !1 === e(a, n, t), i.push(a), o) break;
-            if (n.children && (o = !1 === this.traverse(e, n.children, l))) break;
+          for (var n = !1, o = [], r = 0; r < t.length; r++) {
+            var s = t[r],
+                l = i.concat(r),
+                a = this.getNode(l, s, t);
+            if (n = !1 === e(a, s, t), o.push(a), n) break;
+            if (s.children && (n = !1 === this.traverse(e, s.children, l))) break;
           }
 
-          return !o && i;
+          return !n && o;
         },
-
-        traverseModels(e, t) {
-          let s = t.length;
-
-          for (; s--;) {
-            const o = t[s];
-            o.children && this.traverseModels(e, o.children), e(o, t, s);
+        traverseModels: function (e, t) {
+          for (var i = t.length; i--;) {
+            var n = t[i];
+            n.children && this.traverseModels(e, n.children), e(n, t, i);
           }
 
           return t;
         },
+        remove: function (e) {
+          var t = e.map(function (e) {
+            return JSON.stringify(e);
+          }),
+              i = this.copy(this.currentValue);
+          this.traverse(function (e, i, n) {
+            var o = !0,
+                r = !1,
+                s = void 0;
 
-        remove(e) {
-          const t = e.map(e => JSON.stringify(e)),
-                s = this.copy(this.currentValue);
-          this.traverse((e, s, o) => {
-            for (const o of t) e.pathStr === o && (s._markToDelete = !0);
-          }, s), this.traverseModels((e, t, s) => {
-            e._markToDelete && t.splice(s, 1);
-          }, s), this.emitInput(s);
+            try {
+              for (var l, a = t[Symbol.iterator](); !(o = (l = a.next()).done); o = !0) {
+                var u = l.value;
+                e.pathStr === u && (i._markToDelete = !0);
+              }
+            } catch (e) {
+              r = !0, s = e;
+            } finally {
+              try {
+                o || null == a.return || a.return();
+              } finally {
+                if (r) throw s;
+              }
+            }
+          }, i), this.traverseModels(function (e, t, i) {
+            e._markToDelete && t.splice(i, 1);
+          }, i), this.emitInput(i);
         },
-
-        insertModels(e, t, s) {
-          const o = e.node,
-                i = this.getNodeSiblings(s, o.path),
-                r = i[o.ind];
-          if ("inside" === e.placement) r.children = r.children || [], r.children.unshift(...t);else {
-            const s = "before" === e.placement ? o.ind : o.ind + 1;
-            i.splice(s, 0, ...t);
-          }
+        checkNodeIsParent: function (e, t) {
+          var i = t.path;
+          return JSON.stringify(i.slice(0, e.path.length)) == e.pathStr;
         },
-
-        insert(e, t) {
-          const s = Array.isArray(t) ? t : [t],
-                o = this.copy(this.currentValue);
-          this.insertModels(e, s, o), this.emitInput(o);
-        },
-
-        checkNodeIsParent(e, t) {
-          const s = t.path;
-          return JSON.stringify(s.slice(0, e.path.length)) == e.pathStr;
-        },
-
-        copy: e => JSON.parse(JSON.stringify(e))
+        copy: function (e) {
+          return JSON.parse(JSON.stringify(e));
+        }
       }
     },
-        i = function () {
+        o = function () {
       var e = this,
           t = e.$createElement,
-          s = e._self._c || t;
-      return s("div", {
+          i = e._self._c || t;
+      return i("div", {
         staticClass: "sl-vue-tree",
         class: {
           "sl-vue-tree-root": e.isRoot
@@ -70621,16 +70880,16 @@ function zipAll(project) {
             e.onDragendHandler(null, t);
           }
         }
-      }, [s("div", {
+      }, [i("div", {
         ref: "nodes",
         staticClass: "sl-vue-tree-nodes-list"
-      }, [e._l(e.nodes, function (t, o) {
-        return s("div", {
+      }, [e._l(e.nodes, function (t, n) {
+        return i("div", {
           staticClass: "sl-vue-tree-node",
           class: {
             "sl-vue-tree-selected": t.isSelected
           }
-        }, [s("div", {
+        }, [i("div", {
           staticClass: "sl-vue-tree-cursor sl-vue-tree-cursor_before",
           style: {
             visibility: e.cursorPosition && e.cursorPosition.node.pathStr === t.pathStr && "before" === e.cursorPosition.placement ? "visible" : "hidden"
@@ -70640,7 +70899,7 @@ function zipAll(project) {
               e.preventDefault();
             }
           }
-        }), e._v(" "), s("div", {
+        }), e._v(" "), i("div", {
           staticClass: "sl-vue-tree-node-item",
           class: {
             "sl-vue-tree-cursor-hover": e.cursorPosition && e.cursorPosition.node.pathStr === t.pathStr,
@@ -70652,60 +70911,60 @@ function zipAll(project) {
             path: t.pathStr
           },
           on: {
-            mousedown: function (s) {
-              e.onNodeMousedownHandler(s, t);
+            mousedown: function (i) {
+              e.onNodeMousedownHandler(i, t);
             },
-            mouseup: function (s) {
-              e.onNodeMouseupHandler(s, t);
+            mouseup: function (i) {
+              e.onNodeMouseupHandler(i, t);
             },
-            contextmenu: function (s) {
-              e.emitNodeContextmenu(t, s);
+            contextmenu: function (i) {
+              e.emitNodeContextmenu(t, i);
             },
-            dblclick: function (s) {
-              e.emitNodeDblclick(t, s);
+            dblclick: function (i) {
+              e.emitNodeDblclick(t, i);
             },
-            click: function (s) {
-              e.emitNodeClick(t, s);
+            click: function (i) {
+              e.emitNodeClick(t, i);
             },
-            dragover: function (s) {
-              e.onExternalDragoverHandler(t, s);
+            dragover: function (i) {
+              e.onExternalDragoverHandler(t, i);
             },
-            drop: function (s) {
-              e.onExternalDropHandler(t, s);
+            drop: function (i) {
+              e.onExternalDropHandler(t, i);
             }
           }
         }, [e._l(e.gaps, function (e) {
-          return s("div", {
+          return i("div", {
             staticClass: "sl-vue-tree-gap"
           });
-        }), e._v(" "), e.level && e.showBranches ? s("div", {
+        }), e._v(" "), e.level && e.showBranches ? i("div", {
           staticClass: "sl-vue-tree-branch"
-        }, [e._t("branch", [t.isLastChild ? e._e() : s("span", [e._v("\n            " + e._s(String.fromCharCode(9500)) + e._s(String.fromCharCode(9472)) + " \n          ")]), e._v(" "), t.isLastChild ? s("span", [e._v("\n            " + e._s(String.fromCharCode(9492)) + e._s(String.fromCharCode(9472)) + " \n          ")]) : e._e()], {
+        }, [e._t("branch", [t.isLastChild ? e._e() : i("span", [e._v("\n            " + e._s(String.fromCharCode(9500)) + e._s(String.fromCharCode(9472)) + " \n          ")]), e._v(" "), t.isLastChild ? i("span", [e._v("\n            " + e._s(String.fromCharCode(9492)) + e._s(String.fromCharCode(9472)) + " \n          ")]) : e._e()], {
           node: t
-        })], 2) : e._e(), e._v(" "), s("div", {
+        })], 2) : e._e(), e._v(" "), i("div", {
           staticClass: "sl-vue-tree-title"
-        }, [t.isLeaf ? e._e() : s("span", {
+        }, [t.isLeaf ? e._e() : i("span", {
           staticClass: "sl-vue-tree-toggle",
           on: {
-            click: function (s) {
-              e.onToggleHandler(s, t);
+            click: function (i) {
+              e.onToggleHandler(i, t);
             }
           }
-        }, [e._t("toggle", [s("span", [e._v("\n             " + e._s(t.isLeaf ? "" : t.isExpanded ? "-" : "+") + "\n            ")])], {
+        }, [e._t("toggle", [i("span", [e._v("\n             " + e._s(t.isLeaf ? "" : t.isExpanded ? "-" : "+") + "\n            ")])], {
           node: t
         })], 2), e._v(" "), e._t("title", [e._v(e._s(t.title))], {
           node: t
         }), e._v(" "), !t.isLeaf && 0 == t.children.length && t.isExpanded ? e._t("empty-node", null, {
           node: t
-        }) : e._e()], 2), e._v(" "), s("div", {
+        }) : e._e()], 2), e._v(" "), i("div", {
           staticClass: "sl-vue-tree-sidebar"
         }, [e._t("sidebar", null, {
           node: t
-        })], 2)], 2), e._v(" "), t.children && t.children.length && t.isExpanded ? s("sl-vue-tree", {
+        })], 2)], 2), e._v(" "), t.children && t.children.length && t.isExpanded ? i("sl-vue-tree", {
           attrs: {
             value: t.children,
             level: t.level,
-            parentInd: o,
+            parentInd: n,
             allowMultiselect: e.allowMultiselect,
             allowToggleBranch: e.allowToggleBranch,
             edgeSize: e.edgeSize,
@@ -70719,37 +70978,37 @@ function zipAll(project) {
           scopedSlots: e._u([{
             key: "title",
             fn: function (t) {
-              var s = t.node;
-              return [e._t("title", [e._v(e._s(s.title))], {
-                node: s
+              var i = t.node;
+              return [e._t("title", [e._v(e._s(i.title))], {
+                node: i
               })];
             }
           }, {
             key: "toggle",
             fn: function (t) {
-              var o = t.node;
-              return [e._t("toggle", [s("span", [e._v("\n             " + e._s(o.isLeaf ? "" : o.isExpanded ? "-" : "+") + "\n          ")])], {
-                node: o
+              var n = t.node;
+              return [e._t("toggle", [i("span", [e._v("\n             " + e._s(n.isLeaf ? "" : n.isExpanded ? "-" : "+") + "\n          ")])], {
+                node: n
               })];
             }
           }, {
             key: "sidebar",
             fn: function (t) {
-              var s = t.node;
+              var i = t.node;
               return [e._t("sidebar", null, {
-                node: s
+                node: i
               })];
             }
           }, {
             key: "empty-node",
             fn: function (t) {
-              var s = t.node;
-              return [!s.isLeaf && 0 == s.children.length && s.isExpanded ? e._t("empty-node", null, {
-                node: s
+              var i = t.node;
+              return [!i.isLeaf && 0 == i.children.length && i.isExpanded ? e._t("empty-node", null, {
+                node: i
               }) : e._e()];
             }
           }])
-        }) : e._e(), e._v(" "), s("div", {
+        }) : e._e(), e._v(" "), i("div", {
           staticClass: "sl-vue-tree-cursor sl-vue-tree-cursor_after",
           style: {
             visibility: e.cursorPosition && e.cursorPosition.node.pathStr === t.pathStr && "after" === e.cursorPosition.placement ? "visible" : "hidden"
@@ -70760,7 +71019,7 @@ function zipAll(project) {
             }
           }
         })], 1);
-      }), e._v(" "), e.isRoot ? s("div", {
+      }), e._v(" "), e.isRoot ? i("div", {
         directives: [{
           name: "show",
           rawName: "v-show",
@@ -70772,33 +71031,33 @@ function zipAll(project) {
       }, [e._t("draginfo", [e._v("\n        Items: " + e._s(e.selectionSize) + "\n      ")])], 2) : e._e()], 2)]);
     };
 
-    i._withStripped = !0;
+    o._withStripped = !0;
 
-    var r = function (e, t, s, o, i, r, n, l) {
+    var r = function (e, t, i, n, o, r, s, l) {
       var a = typeof (e = e || {}).default;
       "object" !== a && "function" !== a || (e = e.default);
       var u,
-          d = "function" == typeof e ? e.options : e;
-      if (t && (d.render = t, d.staticRenderFns = s, d._compiled = !0), o && (d.functional = !0), r && (d._scopeId = r), n ? (u = function (e) {
-        (e = e || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || "undefined" == typeof __VUE_SSR_CONTEXT__ || (e = __VUE_SSR_CONTEXT__), i && i.call(this, e), e && e._registeredComponents && e._registeredComponents.add(n);
-      }, d._ssrRegister = u) : i && (u = l ? function () {
-        i.call(this, this.$root.$options.shadowRoot);
-      } : i), u) if (d.functional) {
-        d._injectStyles = u;
-        var c = d.render;
+          c = "function" == typeof e ? e.options : e;
+      if (t && (c.render = t, c.staticRenderFns = i, c._compiled = !0), n && (c.functional = !0), r && (c._scopeId = r), s ? (u = function (e) {
+        (e = e || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || "undefined" == typeof __VUE_SSR_CONTEXT__ || (e = __VUE_SSR_CONTEXT__), o && o.call(this, e), e && e._registeredComponents && e._registeredComponents.add(s);
+      }, c._ssrRegister = u) : o && (u = l ? function () {
+        o.call(this, this.$root.$options.shadowRoot);
+      } : o), u) if (c.functional) {
+        c._injectStyles = u;
+        var d = c.render;
 
-        d.render = function (e, t) {
-          return u.call(t), c(e, t);
+        c.render = function (e, t) {
+          return u.call(t), d(e, t);
         };
       } else {
-        var h = d.beforeCreate;
-        d.beforeCreate = h ? [].concat(h, u) : [u];
+        var h = c.beforeCreate;
+        c.beforeCreate = h ? [].concat(h, u) : [u];
       }
       return {
         exports: e,
-        options: d
+        options: c
       };
-    }(o, i, [], !1, null, null, null);
+    }(n, o, [], !1, null, null, null);
 
     r.options.__file = "src\\sl-vue-tree.vue";
     t.default = r.exports;
@@ -93328,4 +93587,4 @@ module.exports = yeast;
 /***/ })
 
 }]);
-//# sourceMappingURL=vendor.69e6e082dc16d2709c32.js.map
+//# sourceMappingURL=vendor.88f2a99787719bd8ba09.js.map
