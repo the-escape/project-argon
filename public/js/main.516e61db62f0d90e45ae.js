@@ -448,6 +448,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/rxjs/_esm5/operators/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/sl-vue-tree/dist/sl-vue-tree.js (<- Module is not an ECMAScript module) */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/timers-browserify/main.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-drag-drop/dist/vue-drag-drop.common.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-resource/dist/vue-resource.esm.js */
@@ -14997,7 +14998,10 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "o-table o-table--tree o-table--tree-2 l-full" },
+    {
+      staticClass:
+        "o-table o-table--tree o-table--tree-2 l-full c-sitetree-overlay__container"
+    },
     [
       _vm._m(0),
       _vm._v(" "),
@@ -15010,7 +15014,7 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
               ? _c("tree", {
                   ref: "tree",
                   refInFor: true,
-                  on: { drop: _vm.drop },
+                  on: { drop: _vm.drop, toggle: _vm.toggle },
                   scopedSlots: _vm._u([
                     {
                       key: "toggle",
@@ -15046,7 +15050,13 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
                         var node = ref.node
                         return [
                           _c("row", {
-                            attrs: { node: node, "tree-index": index }
+                            attrs: {
+                              node: node,
+                              "tree-index": index,
+                              "is-highlight":
+                                _vm.highlightedNodes[node.pathStr],
+                              "is-error": _vm.errorNodes[node.pathStr]
+                            }
                           })
                         ]
                       }
@@ -15064,7 +15074,59 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
           ],
           1
         )
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "c-sitetree-overlay",
+          class: { "is-active": _vm.overlayActive }
+        },
+        [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "c-sitetree-overlay__spinner" }, [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  width: "64",
+                  height: "64",
+                  viewBox: "0 0 64 64"
+                }
+              },
+              [
+                _c(
+                  "g",
+                  {
+                    attrs: {
+                      "stroke-linecap": "square",
+                      "stroke-width": "2",
+                      fill: "none",
+                      stroke: "currentColor",
+                      "stroke-miterlimit": "10"
+                    }
+                  },
+                  [
+                    _c("circle", {
+                      attrs: { cx: "32", cy: "32", r: "30", opacity: ".4" }
+                    }),
+                    _vm._v(" "),
+                    _c("path", {
+                      attrs: {
+                        d: "M32 2a30 30 0 0 1 30 30",
+                        "data-color": "color-2",
+                        "stroke-linecap": "butt"
+                      }
+                    })
+                  ]
+                )
+              ]
+            )
+          ])
+        ]
+      )
     ],
     2
   )
@@ -15085,6 +15147,20 @@ var Appvue_type_template_id_8c54b0cc_staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "o-table__header" })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "c-sitetree-overlay__message typography" },
+      [
+        _c("h1", [_vm._v("Please wait")]),
+        _vm._v(" "),
+        _c("p", [_vm._v("We are moving your page(s)")])
+      ]
+    )
   }
 ]
 Appvue_type_template_id_8c54b0cc_render._withStripped = true
@@ -15548,7 +15624,11 @@ var Rowvue_type_template_id_6f236b38_render = function() {
     "div",
     {
       staticClass: "o-table__row",
-      class: { "o-table__row--children": _vm.node.children.length },
+      class: {
+        "o-table__row--children": _vm.node.children.length,
+        "is-highlighted": _vm.isHighlight,
+        "is-error": _vm.isError
+      },
       on: { mouseover: _vm.mouseOver, mouseout: _vm.mouseOut }
     },
     [
@@ -15614,6 +15694,9 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
 
+// EXTERNAL MODULE: ./node_modules/timers-browserify/main.js
+var main = __webpack_require__("./node_modules/timers-browserify/main.js");
+
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
 //
 //
@@ -15641,9 +15724,10 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 
 
 
+
 /* harmony default export */ var Rowvue_type_script_lang_js_ = ({
   name: 'Row',
-  props: ['node', 'treeIndex', 'isDragging'],
+  props: ['node', 'treeIndex', 'isDragging', 'isError', 'isHighlight'],
   components: {
     ComfirmBtn: confirm_btn,
     AddForm: addForm
@@ -15673,7 +15757,7 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 
       if (!this.isHovering) {
         this.isHovering = true;
-        setTimeout(function () {
+        Object(main["setTimeout"])(function () {
           if (!_this.node.isExpanded && _this.isHovering) {
             _this.$set(_this.node, 'isExpanded', true);
           }
@@ -15710,17 +15794,26 @@ var Row_component = Object(componentNormalizer["default"])(
 if (false) { var Row_api; }
 Row_component.options.__file = "resources/assets/js/src/components/site-tree/components/Row.vue"
 /* harmony default export */ var Row = (Row_component.exports);
+// EXTERNAL MODULE: ./node_modules/path-browserify/index.js
+var path_browserify = __webpack_require__("./node_modules/path-browserify/index.js");
+
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
 function site_tree_Appvue_type_script_lang_js_toConsumableArray(arr) { return site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) || site_tree_Appvue_type_script_lang_js_iterableToArray(arr) || site_tree_Appvue_type_script_lang_js_nonIterableSpread(); }
 
 function site_tree_Appvue_type_script_lang_js_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function site_tree_Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
 function site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return typeof obj; }; } else { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Appvue_type_script_lang_js_typeof(obj); }
 
+function _toArray(arr) { return _arrayWithHoles(arr) || site_tree_Appvue_type_script_lang_js_iterableToArray(arr) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function site_tree_Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -15747,6 +15840,23 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -15762,14 +15872,21 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
   data: function data() {
     return {
       rootNodes: [],
-      isDragging: false
+      highlightedNodes: {},
+      errorNodes: {},
+      cloneNodes: [],
+      isDragging: false,
+      overlayActive: false
     };
   },
   created: function created() {
     this.rootNodes = window.sitemap;
     breadthFirstSearch(this.rootNodes, function (childNode) {
       childNode.isExpanded = false;
+      childNode.data.isHighlighted = false;
+      childNode.data.isError = false;
     });
+    this.cloneNodes = JSON.parse(JSON.stringify(this.rootNodes));
     Object(_esm5["fromEvent"])(document, 'click').pipe(Object(operators["filter"])(function (evt) {
       if (evt.target.classList.contains('js-add-btn')) {
         return false;
@@ -15785,13 +15902,34 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
     });
   },
   methods: {
+    toggle: function toggle() {
+      this.cloneNodes = JSON.parse(JSON.stringify(this.rootNodes));
+    },
     drop: function drop(node, position) {
-      // todo: show overlay with spinner and prevent other tree changes
+      var _this = this;
+
+      this.overlayActive = true;
       var pageId = node[0].data.id;
       var otherId = position.node.data.id;
       var relation = position.placement;
-      console.log(node[0], position);
-      console.log(node[0].title, position.placement, position.node.title);
+      var newPath = position.node.path;
+      var nodePath = node[0].path;
+      var posPath = position.node.path;
+
+      if (nodePath.length === posPath.length && nodePath[nodePath.length - 1] < posPath[posPath.length - 1]) {
+        newPath[newPath.length - 1] -= 1;
+      }
+
+      if (relation === 'inside') {
+        newPath.push(0);
+      } else if (nodePath.length < posPath.length && nodePath[nodePath.length - 1] < posPath[nodePath.length - 1]) {
+        newPath[nodePath.length - 1] -= 1;
+      }
+
+      if (relation === 'after') {
+        newPath[newPath.length - 1] += 1;
+      }
+
       var pageName = node[0].title;
       var url = '/pages/' + pageId + '/move/' + otherId + '/' + relation;
       var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -15807,16 +15945,25 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
             text: 'Successfully moved ' + pageName,
             type: 'success',
             timeout: 3500
-          }).show(); // todo: highlight the moved page and the related page
+          }).show();
+
+          _this.highlightNode(newPath, true);
         } else {
           new noty_default.a({
             layout: 'topCenter',
             text: 'An error occured when moving: ' + pageName,
             type: 'error',
             timeout: 3500
-          }).show(); // todo: undo tree drag'n'drop
-        } // todo: remove overlay
+          }).show();
+          _this.rootNodes = _this.cloneNodes;
 
+          _this.highlightNode(nodePath, false);
+        }
+
+        _this.$nextTick(function () {
+          _this.overlayActive = false;
+          _this.cloneNodes = JSON.parse(JSON.stringify(_this.rootNodes));
+        });
       }).catch(function (error) {
         return console.log(error);
       });
@@ -15834,8 +15981,41 @@ function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "functio
 
       transverse.children.splice(paths[paths.length - 1], 1);
     },
-    mouseOver: function mouseOver(treeIndex) {
-      console.log('mouseover');
+    highlightNode: function highlightNode(path, isSuccess) {
+      var _this2 = this;
+
+      var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+
+      var exspandParents = function exspandParents(node, _ref) {
+        var _ref2 = _toArray(_ref),
+            nextIndex = _ref2[0],
+            indexes = _ref2.slice(1);
+
+        if (!indexes.length) {
+          return;
+        }
+
+        var nextNode = node.children[nextIndex];
+        nextNode.isExpanded = true;
+        exspandParents(nextNode, indexes, isSuccess);
+      };
+
+      var pathName = "[".concat(path, "]");
+      this.$nextTick(function () {
+        exspandParents(_this2.rootNodes[0], path);
+
+        if (isSuccess) {
+          _this2.highlightedNodes[pathName] = true;
+        } else {
+          _this2.errorNodes[pathName] = true;
+        }
+      });
+      Object(main["setTimeout"])(function () {
+        _this2.$nextTick(function () {
+          _this2.highlightedNodes[pathName] = false;
+          _this2.errorNodes[pathName] = false;
+        });
+      }, timeout);
     }
   }
 });
@@ -18726,4 +18906,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.8ccfab8e77d280df20b6.js.map
+//# sourceMappingURL=main.516e61db62f0d90e45ae.js.map

@@ -256,6 +256,8 @@ class Solr
             {
 
                 // todo
+
+
             }
         }
     }

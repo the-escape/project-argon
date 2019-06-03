@@ -1,5 +1,5 @@
 <template>
-    <div class="o-table__row" :class="{'o-table__row--children': node.children.length}" @mouseover="mouseOver" @mouseout="mouseOut">
+    <div class="o-table__row" :class="{'o-table__row--children': node.children.length, 'is-highlighted': isHighlight, 'is-error': isError }" @mouseover="mouseOver" @mouseout="mouseOut">
         <div class="o-table__data" @dblclick="edit">{{ node.title }}</div>
         <div class="o-table__data o-table--center"><div class="o-status" :class="{'o-status--active': node.data.status, 'o-status--inactive': !node.data.status}"></div></div>
         <div class="o-table__data o-table--end">
@@ -25,10 +25,11 @@
 import ComfirmBtn from '../../commonComponents/confirm-btn.vue'
 import RowMixin from '../mixins/row.vue'
 import AddForm from './addForm.vue'
+import { setTimeout } from 'timers';
 
 export default {
     name: 'Row',
-    props: ['node', 'treeIndex', 'isDragging'],
+    props: ['node', 'treeIndex', 'isDragging', 'isError', 'isHighlight'],
     components: {
         ComfirmBtn,
         AddForm
@@ -69,4 +70,3 @@ export default {
     }
 }
 </script>
-

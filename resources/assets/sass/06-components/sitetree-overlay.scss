@@ -1,0 +1,45 @@
+.c-sitetree-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-color: rgba(250, 250, 250, 0.85);
+    padding: 250px 50px;
+    text-align: center;
+    transition: opacity 650ms $easeOut;
+    z-index: 1;
+
+    &.is-active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &__container {
+        position: relative;
+    }
+
+    &__spinner {
+        margin-top: 50px;
+
+        svg {
+            transform-origin: center;
+            animation-name: spin;
+            animation-duration: 1000ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
