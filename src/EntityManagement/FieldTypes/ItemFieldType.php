@@ -126,4 +126,26 @@ class ItemFieldType extends AbstractFieldType
 
         return view('argon::fields.type.item', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new ItemFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new ItemFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.item', $data)->render();
+    }
 }

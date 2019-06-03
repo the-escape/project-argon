@@ -91,4 +91,33 @@ class ImageFieldType extends AbstractFieldType
 
         return view('argon::fields.type.image', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new ImageFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new ImageFieldValue();
+        }
+
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+//            $value = $value->first();
+            $value = $value->firstSlice();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.image', $data)->render();
+    }
 }
