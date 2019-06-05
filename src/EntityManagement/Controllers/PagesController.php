@@ -27,6 +27,7 @@ use Redirect;
 use stdClass;
 use View;
 use Lang;
+use Illuminate\Support\Facades\DB;
 
 class PagesController extends BaseController
 {
@@ -55,7 +56,7 @@ class PagesController extends BaseController
 
         $entities = $entities->keyBy('id');
 
-        foreach ($entities as $id => $entity) {
+        foreach ($entities as $entity) {
             if ($entity->parent_id) {
                 $entities[$entity->parent_id]->addChild($entity);
             }
@@ -178,11 +179,22 @@ class PagesController extends BaseController
 
         $this->validate($request, $rules, [], $niceNames);
 
+        $order = Entity::where('parent_id', $parentId)->max('order');
+        if ($order !== null)
+        {
+            $order++;
+        }
+        else
+        {
+            $order = 0;
+        }
+
         $entity = $entityRepository->create([
             'name' => $request->input('name'),
             'entity_type_id' => $type->id,
             'owner_id' => $request->user()->id,
             'parent_id' => $parentId,
+            'order' => $order,
             'slug' => $slug,
             'status' => $request->input('status'),
         ]);
@@ -609,6 +621,7 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
     }
 
+
     public function movePage($pageId, $otherId, $relation,
         EntityRepository $entityRepository)
     {
@@ -628,7 +641,13 @@ class PagesController extends BaseController
             case 'before':
                 $otherPage = $entityRepository->find($otherId);
                 $newParentId = (int) $otherPage->parent_id;
-                $index = 0; // todo: relative to $otherPage->order depending on before or after position
+                $index = $otherPage->order;
+
+                if ($relation === 'after')
+                {
+                    $index++;
+                }
+
                 break;
             case 'inside':
             default:
@@ -637,16 +656,35 @@ class PagesController extends BaseController
                 break;
         }
 
-        if ($page->parent_id !== $newParentId)
-        {
-            $page->parent_id = $newParentId;
-            $page->save();
+        DB::beginTransaction();
 
-            $this->reindexAndRecacheAllChildren($page);
+        try
+        {
+            // updating the order of new nad old siblings
+            $this->reorderAllChildren($page, $newParentId, $index);
+
+            if ($page->parent_id !== $newParentId)
+            {
+                // this might take a while.. limit to 5mins
+                set_time_limit(300);
+
+                $page->parent_id = $newParentId;
+                $page->save();
+
+                $this->reindexAndRecacheAllChildren($page);
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong, pages have not been moved.'
+            ]);
         }
 
-        // todo: add order column to entities.. and update order on all the children within the new parent
-
+        DB::commit();
 
         return response()->json([
             'success' => true,
@@ -654,6 +692,54 @@ class PagesController extends BaseController
         ]);
     }
 
+    /**
+     * Updates the order column in the lists affected by page move.
+     *
+     * @param Entity $page
+     * @return void
+     */
+    private function reorderAllChildren(Entity $page, $newParentId, $newIndex)
+    {
+        if ($page->parent_id === $newParentId)
+        {
+            if ($newIndex > $page->order)
+            {
+                Entity::where('parent_id', $newParentId)
+                      ->where('order', '>', $page->order)
+                      ->where('order','<',$newIndex)
+                      ->decrement('order');
+
+                $newIndex--;
+            }
+            else
+            {
+                Entity::where('parent_id', $newParentId)
+                      ->where('order', '<', $page->order)
+                      ->where('order','>=',$newIndex)
+                      ->increment('order');
+            }
+        }
+        else
+        {
+            Entity::where('parent_id', $newParentId)
+                    ->where('order', '>=', $newIndex)
+                    ->increment('order');
+
+            Entity::where('parent_id', $page->parent_id)
+                    ->where('order', '>', $page->order)
+                    ->decrement('order');
+        }
+
+        $page->order = $newIndex;
+        $page->save();
+    }
+
+    /**
+     * Traverses all children of the page and calling to reindex and recache them.
+     *
+     * @param Entity $page
+     * @return void
+     */
     private function reindexAndRecacheAllChildren(Entity $page)
     {
         $this->reindexAndRecache($page);
@@ -667,6 +753,12 @@ class PagesController extends BaseController
         }
     }
 
+    /**
+     * Updates the url of a page in the entity_cache and in the Solr index.
+     *
+     * @param Entity $entity
+     * @return void
+     */
     private function reindexAndRecache(Entity $entity)
     {
         $solr = app()->make(Solr::class);
@@ -683,7 +775,7 @@ class PagesController extends BaseController
                 $cache->save();
             }
 
-            $result = $solr->indexEntity($entity, $localisation);
+            $solr->indexEntity($entity, $localisation);
         }
     }
 
