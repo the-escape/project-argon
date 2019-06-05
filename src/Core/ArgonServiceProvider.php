@@ -66,7 +66,10 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(LocalesServiceProvider::class);
 
         $this->app->register(ImageServiceProvider::class);
-        class_alias(Image::class, 'Image');
+        if (!class_exists("Image"))
+        {
+            class_alias(Image::class, 'Image');
+        }
 
         $this->app->register(MediaServiceProvider::class);
 
