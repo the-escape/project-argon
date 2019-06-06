@@ -2865,10 +2865,10 @@ button.o-btn {
   pointer-events: none; }
   @media (min-width: 48em) {
     .o-modal {
-      padding: 60px 30px 90px; } }
+      padding: 60px 30px; } }
   @media (min-width: 64em) {
     .o-modal {
-      padding: 60px 75px 90px; } }
+      padding: 60px 75px; } }
   .o-modal:before {
     content: "";
     position: absolute;

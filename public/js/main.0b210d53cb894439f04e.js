@@ -436,7 +436,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 378 modules ***!
+  !*** ./resources/assets/js/src/index.js + 383 modules ***!
   \********************************************************/
 /*! no exports provided */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
@@ -15118,7 +15118,9 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
             )
           ])
         ]
-      )
+      ),
+      _vm._v(" "),
+      _c("ConfirmModal", { attrs: { options: _vm.confirmOptions } })
     ],
     2
   )
@@ -15786,6 +15788,139 @@ var Row_component = Object(componentNormalizer["default"])(
 if (false) { var Row_api; }
 Row_component.options.__file = "resources/assets/js/src/components/site-tree/components/Row.vue"
 /* harmony default export */ var Row = (Row_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/confirmModal.vue?vue&type=template&id=8d1f0282&
+var confirmModalvue_type_template_id_8d1f0282_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "o-modal__container",
+      class: { active: _vm.options.isOpen },
+      on: {
+        click: function($event) {
+          $event.preventDefault()
+          return _vm.close($event)
+        }
+      }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "o-modal",
+          class: { active: _vm.options.isOpen },
+          on: {
+            click: function($event) {
+              $event.stopPropagation()
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticClass: "o-modal__content typography h-text--centre" },
+            [
+              _c("h1", [_vm._v(_vm._s(_vm.options.title))]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.options.message))]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "o-btn o-btn--primary",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.accept($event)
+                    }
+                  }
+                },
+                [_c("span", [_vm._v("Accept")])]
+              ),
+              _vm._v("\n              \n            "),
+              _c(
+                "button",
+                {
+                  staticClass: "o-btn",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.close($event)
+                    }
+                  }
+                },
+                [_c("span", [_vm._v("Close")])]
+              )
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var confirmModalvue_type_template_id_8d1f0282_staticRenderFns = []
+confirmModalvue_type_template_id_8d1f0282_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/confirmModal.vue?vue&type=template&id=8d1f0282&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/confirmModal.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ var confirmModalvue_type_script_lang_js_ = ({
+  props: ['options'],
+  methods: {
+    accept: function accept() {
+      this.options.res();
+    },
+    close: function close() {
+      this.options.rej();
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/confirmModal.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_confirmModalvue_type_script_lang_js_ = (confirmModalvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/confirmModal.vue
+
+
+
+
+
+/* normalize component */
+
+var confirmModal_component = Object(componentNormalizer["default"])(
+  components_confirmModalvue_type_script_lang_js_,
+  confirmModalvue_type_template_id_8d1f0282_render,
+  confirmModalvue_type_template_id_8d1f0282_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var confirmModal_api; }
+confirmModal_component.options.__file = "resources/assets/js/src/components/site-tree/components/confirmModal.vue"
+/* harmony default export */ var confirmModal = (confirmModal_component.exports);
 // EXTERNAL MODULE: ./node_modules/path-browserify/index.js
 var path_browserify = __webpack_require__("./node_modules/path-browserify/index.js");
 
@@ -15847,6 +15982,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+
 
 
 
@@ -15859,7 +15997,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 /* harmony default export */ var site_tree_Appvue_type_script_lang_js_ = ({
   components: {
     RootRow: RootRow,
-    Row: Row
+    Row: Row,
+    ConfirmModal: confirmModal
   },
   data: function data() {
     return {
@@ -15868,7 +16007,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       errorNodes: {},
       cloneNodes: [],
       isDragging: false,
-      overlayActive: false
+      overlayActive: false,
+      confirmOptions: {
+        isOpen: false,
+        title: '',
+        message: '',
+        rej: function rej(_) {},
+        res: function res(_) {}
+      }
     };
   },
   created: function created() {
@@ -15894,11 +16040,41 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     });
   },
   methods: {
+    closeConfirm: function closeConfirm() {
+      this.confirmOptions.isOpen = false;
+      this.confirmOptions.title = '';
+      this.confirmOptions.message = '';
+
+      this.confirmOptions.rej = function (_) {};
+
+      this.confirmOptions.res = function (_) {};
+    },
+    confirm: function confirm(title, message) {
+      var _this = this;
+
+      return new Promise(function (res, rej) {
+        _this.confirmOptions.isOpen = true;
+        _this.confirmOptions.title = title;
+        _this.confirmOptions.message = message;
+
+        _this.confirmOptions.rej = function () {
+          rej();
+
+          _this.closeConfirm();
+        };
+
+        _this.confirmOptions.res = function () {
+          res();
+
+          _this.closeConfirm();
+        };
+      });
+    },
     toggle: function toggle() {
       this.cloneNodes = JSON.parse(JSON.stringify(this.rootNodes));
     },
     drop: function drop(node, position) {
-      var _this = this;
+      var _this2 = this;
 
       this.overlayActive = true;
       var pageId = node[0].data.id;
@@ -15922,43 +16098,67 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         newPath[newPath.length - 1] += 1;
       }
 
-      var pageName = node[0].title;
-      var url = '/pages/' + pageId + '/move/' + otherId + '/' + relation;
-      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      post(argon.root() + url, {
-        _token: token,
-        _method: 'GET'
-      }).then(function (data) {
-        return JSON.parse(data);
-      }).then(function (data) {
-        if (data.success) {
-          new noty_default.a({
-            layout: 'topCenter',
-            text: 'Successfully moved ' + pageName,
-            type: 'success',
-            timeout: 3500
-          }).show();
+      var isMovingParent = nodePath[nodePath.length - 2] !== posPath[posPath.length - 2];
+      var isMovingDepth = nodePath.length !== posPath.length;
+      var hasChildren = node[0].children.length;
+      var showConfirm = (!isMovingDepth && isMovingParent || isMovingDepth) && hasChildren;
 
-          _this.highlightNode(newPath, true);
-        } else {
-          new noty_default.a({
-            layout: 'topCenter',
-            text: 'An error occured when moving: ' + pageName,
-            type: 'error',
-            timeout: 3500
-          }).show();
-          _this.rootNodes = _this.cloneNodes;
+      var commitChange = function commitChange() {
+        var pageName = node[0].title;
+        var url = '/pages/' + pageId + '/move/' + otherId + '/' + relation;
+        var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        post(argon.root() + url, {
+          _token: token,
+          _method: 'GET'
+        }).then(function (data) {
+          return JSON.parse(data);
+        }).then(function (data) {
+          if (data.success) {
+            new noty_default.a({
+              layout: 'topCenter',
+              text: 'Successfully moved ' + pageName,
+              type: 'success',
+              timeout: 3500
+            }).show();
 
-          _this.highlightNode(nodePath, false);
-        }
+            _this2.highlightNode(newPath, true);
+          } else {
+            new noty_default.a({
+              layout: 'topCenter',
+              text: 'An error occured when moving: ' + pageName,
+              type: 'error',
+              timeout: 3500
+            }).show();
+            _this2.rootNodes = _this2.cloneNodes;
 
-        _this.$nextTick(function () {
-          _this.overlayActive = false;
-          _this.cloneNodes = JSON.parse(JSON.stringify(_this.rootNodes));
+            _this2.highlightNode(nodePath, false);
+          }
+
+          _this2.$nextTick(function () {
+            _this2.overlayActive = false;
+            _this2.cloneNodes = JSON.parse(JSON.stringify(_this2.rootNodes));
+          });
+        }).catch(function (error) {
+          return console.log(error);
         });
-      }).catch(function (error) {
-        return console.log(error);
-      });
+      };
+
+      if (showConfirm) {
+        this.confirm('Warning', 'This change might take a while to complete and is potentially dangerous, do you want to continue?').then(function () {
+          commitChange();
+        }).catch(function () {
+          _this2.rootNodes = _this2.cloneNodes;
+
+          _this2.highlightNode(nodePath, false);
+
+          _this2.$nextTick(function () {
+            _this2.overlayActive = false;
+            _this2.cloneNodes = JSON.parse(JSON.stringify(_this2.rootNodes));
+          });
+        });
+      } else {
+        commitChange();
+      }
     },
     removeNode: function removeNode(treeIndex, paths) {
       if (!paths.length) {
@@ -15974,7 +16174,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       transverse.children.splice(paths[paths.length - 1], 1);
     },
     highlightNode: function highlightNode(path, isSuccess) {
-      var _this2 = this;
+      var _this3 = this;
 
       var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
 
@@ -15994,18 +16194,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       var pathName = "[".concat(path, "]");
       this.$nextTick(function () {
-        exspandParents(_this2.rootNodes[0], path);
+        exspandParents(_this3.rootNodes[0], path);
 
         if (isSuccess) {
-          _this2.highlightedNodes[pathName] = true;
+          _this3.highlightedNodes[pathName] = true;
         } else {
-          _this2.errorNodes[pathName] = true;
+          _this3.errorNodes[pathName] = true;
         }
       });
       Object(main["setTimeout"])(function () {
-        _this2.$nextTick(function () {
-          _this2.highlightedNodes[pathName] = false;
-          _this2.errorNodes[pathName] = false;
+        _this3.$nextTick(function () {
+          _this3.highlightedNodes[pathName] = false;
+          _this3.errorNodes[pathName] = false;
         });
       }, timeout);
     }
@@ -18898,4 +19098,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.b36a1ba563f1d4acbc13.js.map
+//# sourceMappingURL=main.0b210d53cb894439f04e.js.map
