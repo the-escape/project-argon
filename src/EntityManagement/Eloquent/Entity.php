@@ -40,12 +40,18 @@ class Entity extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'order', 'entity_type_id', 'owner_id', 'status', 'redirect_url', 'group_order', 'group_render'];
 
     public function addChild(Entity $child)
     {
-        //TODO add support for ordering.
         $this->children[] = $child;
+
+        if(isset($child->order))
+        {
+            usort($this->children, function($child1, $child2) {
+                return $child1->order > $child2->order;
+            });
+        }
     }
 
     public function hasChildren()

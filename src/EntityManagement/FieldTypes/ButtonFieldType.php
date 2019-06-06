@@ -73,4 +73,32 @@ class ButtonFieldType extends AbstractFieldType
 
         return view('argon::fields.type.button', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new ButtonFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new ButtonFieldValue();
+        }
+
+        // if field is not multiple, get first key->value pair of value array
+        if (!$this->allowMultiple() && !$value->isEmpty())
+        {
+            $value = $value->first();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.button', $data)->render();
+    }
 }

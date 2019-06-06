@@ -73,4 +73,19 @@ class FileFieldType extends AbstractFieldType
 
         return view('argon::fields.type.file', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if ($value === null) {
+            $value = new FileFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.file', $data)->render();
+    }
 }

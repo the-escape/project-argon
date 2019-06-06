@@ -53,4 +53,26 @@ class IconFieldType extends AbstractFieldType
     {
         // todo
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new IconFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new IconFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.icon', $data)->render();
+    }
 }

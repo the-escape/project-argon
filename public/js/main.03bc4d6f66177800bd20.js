@@ -5127,24 +5127,29 @@ var combovue_type_template_id_90b659e4_render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                !_vm.isHidingBody
-                  ? _c("div", { staticClass: "o-combo__body" }, [
-                      _c(
-                        "div",
-                        { staticClass: "o-combo__form" },
-                        _vm._l(_vm.comboFields, function(field) {
-                          return _c("types", {
-                            key: field.id,
-                            attrs: {
-                              field: field,
-                              "combo-id": _vm.fieldId,
-                              "combo-item-id": item.id
-                            }
-                          })
+                _c(
+                  "div",
+                  {
+                    staticClass: "o-combo__body",
+                    style: { display: _vm.isHidingBody ? "none" : "block" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "o-combo__form" },
+                      _vm._l(_vm.comboFields, function(field) {
+                        return _c("types", {
+                          key: field.id,
+                          attrs: {
+                            field: field,
+                            "combo-id": _vm.fieldId,
+                            "combo-item-id": item.id
+                          }
                         })
-                      )
-                    ])
-                  : _vm._e()
+                      })
+                    )
+                  ]
+                )
               ]
             )
           })
@@ -13390,6 +13395,8 @@ function Fields() {
   var fieldEls = document.querySelectorAll('.js-fields');
   var fields = Array.from(fieldEls);
   return fields.map(function (el) {
+    // const tabPanel = el.closest('[data-tab]')
+    // const tabName = tabPanel.dataset.tab
     var name = el.dataset.name;
     var store = getStore();
     var _window$fieldGroups$n = window.fieldGroups[name],
@@ -13412,7 +13419,8 @@ function Fields() {
       render: function render(h) {
         return h(App);
       }
-    }).$mount(el);
+    }).$mount(el); // addTabInit(tabName, () => {
+    // })
   });
 }
 
@@ -19098,4 +19106,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.0b210d53cb894439f04e.js.map
+//# sourceMappingURL=main.03bc4d6f66177800bd20.js.map

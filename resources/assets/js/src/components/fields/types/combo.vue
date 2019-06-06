@@ -19,7 +19,7 @@
                             <confirm-btn @delete="deleteItem(item.id)" @duplicate="duplicateItem(item.id)"></confirm-btn>
                         </div>
                     </div>
-                    <div class="o-combo__body" v-if="!isHidingBody">
+                    <div class="o-combo__body" :style="{ display: isHidingBody ? 'none' : 'block' }">
                         <div class="o-combo__form">
                             <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
                         </div>

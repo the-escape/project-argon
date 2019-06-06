@@ -60,4 +60,26 @@ class BooleanFieldType extends AbstractFieldType
 
         return view('argon::fields.type.boolean', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new BooleanFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new BooleanFieldValue($this->getInitialValue());
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+
+        return view('argon::fields.type.hidden.boolean', $data)->render();
+    }
 }

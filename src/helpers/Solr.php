@@ -241,26 +241,6 @@ class Solr
     }
 
 
-    public function updateParentAndUrl(Entity $entity, Localisation $localisation = null)
-    {
-        if ($this->isEnabled())
-        {
-            if ($localisation === null)
-            {
-                $localisation = $entity->getDefaultLocalisation();
-            }
-
-            $entities_to_index = config('solr.entity.types');
-
-            if (!$entities_to_index || in_array($entity->entity_type_id, $entities_to_index))
-            {
-
-                // todo
-            }
-        }
-    }
-
-
     public function reindex()
     {
         if ($this->isEnabled())

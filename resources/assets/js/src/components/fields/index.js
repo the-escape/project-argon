@@ -17,6 +17,8 @@ export function Fields () {
     const fields = Array.from(fieldEls)
 
     return fields.map(el => {
+        // const tabPanel = el.closest('[data-tab]')
+        // const tabName = tabPanel.dataset.tab
         const name = el.dataset.name
 
         const store = getStore()
@@ -32,6 +34,10 @@ export function Fields () {
             store,
             render: h => h(App)
         }).$mount(el)
+
+        // addTabInit(tabName, () => {
+            
+        // })
     })
 }
 

@@ -78,4 +78,25 @@ class MenuFieldType extends AbstractFieldType
         );
         return view('argon::fields.type.menu', $data)->render();
     }
+
+    public function renderHidden($value = null, $data = [])
+    {
+        if (!$this->isInCombo()) {
+            $submitted = old('fields.' . $this->getId());
+            if ($submitted !== null) {
+                $value = new MenuFieldValue($submitted);
+            }
+        }
+
+        if ($value === null) {
+            $value = new MenuFieldValue();
+        }
+
+        $data = array_merge(
+            ['hash' => ''],
+            $data,
+            ['field' => $this, 'value' => $value]
+        );
+        return view('argon::fields.type.hidden.menu', $data)->render();
+    }
 }
