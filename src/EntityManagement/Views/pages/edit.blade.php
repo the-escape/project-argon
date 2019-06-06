@@ -409,58 +409,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div>
     </form>
 
-    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
-        <input type="hidden" id="selectedMediaItem" value="">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="medialibraryLabel">Media Library</h4>
-                </div>
-                <div class="modal-body">
-
-                    <button type="button" class="btn btn-primary btn-upload">Upload</button>
-                    <button type="button" class="btn btn-primary btn-list">Change View</button>
-
-                    <div class="media-library" style="position: relative;">
-                        <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
-                            <div class="folders">
-                                <ul>
-                                    @each('argon::media.folder', [$root], 'folder')
-                                </ul>
-                            </div>
-                        </div>
-                        <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
-                            <input type="hidden" name="current-folder" id="current-folder" value="1">
-                            <div class="files">
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-submit" disabled>Select</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- @include('argon::pages.partials.medialib') --}}
-
-    {{-- <div style="display: none;" id="preview-template">
-        <div class="media-item">
-            <img class="thumb" data-dz-thumbnail>
-            <span class="filename" data-dz-name></span>
-            <span class="filesize" data-dz-size></span>
-
-            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-            <progress class="progress" value="25" max="100"></progress>
-        </div>
-    </div> --}}
-
     <div class="modal fade" id="newLocalisationModal" tabindex="-1" role="dialog" aria-labelledby="newLocalisationLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
