@@ -60,6 +60,31 @@ function isAdminSection()
     return sprintf('/%s', request()->segment(1)) === config('argon.admin_route_prefix');
 }
 
+function getAssetPath($filename)
+{
+    $url = parse_url($filename);
+    $path = array_key_exists('path', $url) ? $url['path'] : '';
+    $query = array_key_exists('query', $url) ? '?'.$url['query'] : '';
+    $fragment = array_key_exists('fragment', $url) ? '#'.$url['fragment'] : '';
+    $filename = trim($path, ' \t\n\r\0\x0B/');
+    $path = public_path($filename);
+    $pathinfo = pathinfo($path);
+    $manifest = $pathinfo['dirname'].DIRECTORY_SEPARATOR.'manifest.json';
+
+    if (is_readable($manifest))
+    {
+        $manifest = json_decode(file_get_contents($manifest), TRUE);
+        $basename = $pathinfo['basename'];
+
+        if (array_key_exists($basename, $manifest))
+        {
+            $filename = str_replace($basename, $manifest[$basename], $filename);
+        }
+    }
+
+    return '/'.$filename.$query.$fragment;
+}
+
 function guid()
 {
     return sprintf(

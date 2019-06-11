@@ -8,7 +8,7 @@
     <title>CMS Admin Area</title>
     @include('argon::inc.primary-colour-css-variable')
     <link rel="stylesheet" href="/argon/css/old-cms.css">
-    <link rel="stylesheet" href="/argon/css/main.css">
+    <link rel="stylesheet" href="{{ getAssetPath('argon/css/main.css') }}">
     <link rel="adminroot" href="/admin">
     @foreach ($assetsManager->outputStyles() as $styles)
         <link rel="stylesheet" href="{{$styles}}">

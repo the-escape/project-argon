@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>CMS Admin Area</title>
         @include('argon::inc.primary-colour-css-variable')
-        <link rel="stylesheet" href="/argon/css/main.css">
+        <link rel="stylesheet" href="{{ getAssetPath('argon/css/main.css') }}">
         <link rel="adminroot" href="/admin">
     </head>
     <body class="c-login__bg" style="background-image: url('{{ config('argon.login_bg') }}')">

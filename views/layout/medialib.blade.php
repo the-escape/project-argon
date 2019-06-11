@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/argon/css/fancybox/jquery.fancybox.css">
     <link rel="stylesheet" href="/argon/js/jstree/style.min.css">
     <link rel="stylesheet" href="/argon/css/old-cms.css">
-    <link rel="stylesheet" href="/argon/css/main.css">
+    <link rel="stylesheet" href="{{ getAssetPath('argon/css/main.css') }}">
     <link rel="adminroot" href="/admin">
     @foreach ($assetsManager->outputStyles() as $styles)
         <link rel="stylesheet" href="{{$styles}}">
