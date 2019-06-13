@@ -622,6 +622,43 @@ class PagesController extends BaseController
     }
 
 
+    public function clonePage($pageId, EntityRepository $entityRepository)
+    {
+        $page = $entityRepository->find($pageId);
+
+        if ($page && $clone = $page->clonePage())
+        {
+            $entity = [
+                "title" => $clone->name,
+                "data" => [
+                    "id" => $clone->id,
+                    "typeName" => $clone->type->name,
+                    "status" => (int)$clone->status,
+                ],
+                "extraAction" => [],
+                "children" => []
+            ];
+
+            $extraActions = event(new RenderPagesListItemActions($clone));
+
+            if(array_filter($extraActions))
+            {
+                $entity["extraAction"] = $extraActions[0];
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Page has been cloned successfully.',
+                'entity' => $entity
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Page has not been cloned.'
+        ]);
+    }
+
     public function movePage($pageId, $otherId, $relation,
         EntityRepository $entityRepository)
     {

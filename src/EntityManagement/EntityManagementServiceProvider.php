@@ -102,6 +102,14 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_GET
         );
 
+        $this->addRoute(
+            'pages/{pageId}/clone',
+            'cms:pages:clone-page',
+            PagesController::class,
+            'clonePage',
+            Request::METHOD_POST
+        );
+
         /**
          * Deprecated, as revisions handled within page edit view.
          */

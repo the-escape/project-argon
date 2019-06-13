@@ -254,4 +254,9 @@ class Entity extends Model
         return json_decode($value);
     }
 
+    public function clonePage()
+    {
+        return $this;
+    }
+
 }
