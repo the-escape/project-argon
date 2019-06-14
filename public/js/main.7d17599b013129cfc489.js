@@ -15083,7 +15083,13 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
           class: { "is-active": _vm.overlayActive }
         },
         [
-          _vm._m(1),
+          _c("div", { staticClass: "c-sitetree-overlay__message typography" }, [
+            _c("h1", [_vm._v("Please wait")]),
+            _vm._v(" "),
+            _c("p", { attrs: { "v:if": "overlayText" } }, [
+              _vm._v(_vm._s(_vm.overlayText))
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "c-sitetree-overlay__spinner" }, [
             _c(
@@ -15149,20 +15155,6 @@ var Appvue_type_template_id_8c54b0cc_staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "o-table__header" })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "c-sitetree-overlay__message typography" },
-      [
-        _c("h1", [_vm._v("Please wait")]),
-        _vm._v(" "),
-        _c("p", [_vm._v("We are moving your page(s)")])
-      ]
-    )
   }
 ]
 Appvue_type_template_id_8c54b0cc_render._withStripped = true
@@ -15287,6 +15279,9 @@ var Bus = new vue_default.a();
     duplicateItem: function duplicateItem() {
       var _this = this;
 
+      var app = this.$root.$children[0];
+      app.overlayText = 'We are cloning your page';
+      app.overlayActive = true;
       var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       var pageName = this.node.title;
       post(argon.root() + '/pages/' + this.node.data.id + '/clone', {
@@ -15302,7 +15297,6 @@ var Bus = new vue_default.a();
             type: 'success',
             timeout: 3500
           }).show();
-          var app = _this.$root.$children[0];
           var tree = app.$refs.tree[0];
           tree.insert({
             node: _this.node,
@@ -15322,6 +15316,10 @@ var Bus = new vue_default.a();
             timeout: 3500
           }).show();
         }
+
+        _this.$nextTick(function () {
+          app.overlayActive = false;
+        });
       }).catch(function (error) {
         return console.log(error);
       });
@@ -16059,6 +16057,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       errorNodes: {},
       cloneNodes: [],
       isDragging: false,
+      overlayText: 'We are moving your page(s)',
       overlayActive: false,
       confirmOptions: {
         isOpen: false,
@@ -16128,6 +16127,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     drop: function drop(node, position) {
       var _this2 = this;
 
+      this.overlayText = 'We are moving your page(s)';
       this.overlayActive = true;
       var pageId = node[0].data.id;
       var otherId = position.node.data.id;
@@ -19150,4 +19150,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c6059e69c9b6e337559d.js.map
+//# sourceMappingURL=main.7d17599b013129cfc489.js.map

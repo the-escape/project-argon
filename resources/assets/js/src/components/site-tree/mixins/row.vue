@@ -16,6 +16,11 @@ export default {
         },
         duplicateItem() {
 
+            const app = this.$root.$children[0]
+
+            app.overlayText = 'We are cloning your page'
+            app.overlayActive = true
+
             const token = document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute('content')
@@ -36,7 +41,7 @@ export default {
                             timeout: 3500
                         }).show()
 
-                        const app = this.$root.$children[0]
+
                         const tree = app.$refs.tree[0]
 
                         tree.insert({
@@ -46,7 +51,6 @@ export default {
 
                         let newPath = this.node.path
                         newPath[newPath.length - 1] += 1
-
 
                         this.$nextTick(() => {
                             app.highlightNode(newPath, true)
@@ -60,6 +64,10 @@ export default {
                             timeout: 3500
                         }).show()
                     }
+
+                    this.$nextTick(() => {
+                        app.overlayActive = false;
+                    })
                 })
                 .catch(error => console.log(error))
         },

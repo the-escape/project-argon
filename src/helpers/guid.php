@@ -1,6 +1,8 @@
 <?php
 use Escape\Argon\Menus\Eloquent\MenuRepository;
 use Illuminate\Support\ViewErrorBag;
+use Escape\Argon\EntityManagement\Eloquent\Entity;
+
 /**
  * @return Escape\Argon\EntityManagement\Eloquent\EntityCache - registered as singleton in Escape\Argon\EntityManagement\EntityManagementServiceProvider
  */
@@ -83,6 +85,24 @@ function getAssetPath($filename)
     }
 
     return '/'.$filename.$query.$fragment;
+}
+
+function findUniqueSlug($slug, $parentId)
+{
+    $slugs = Entity::where('parent_id',$parentId)
+        ->whereRaw("slug REGEXP '^{$slug}(-[0-9]*)?$'")
+        ->lists('slug');
+
+    if ($slugs->count() === 0)
+    {
+        return $slug;
+    }
+
+    $lastSlugNumber = $slugs->map(function($s) use ($slug) {
+        return intval(str_replace($slug.'-', '', $s));
+    })->sort()->last();
+
+    return $slug.'-'.($lastSlugNumber + 1);
 }
 
 function guid()
