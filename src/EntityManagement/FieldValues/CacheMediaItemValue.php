@@ -64,12 +64,12 @@ class CacheMediaItemValue implements Compressable, Arrayable, Jsonable, ImageInt
                     $url = $tmpUrl;
                 }
             }
+        }
 
-            // appending cache buster back if not explicitly set not to do so
-            if (!isset($args['updatedAt']) || !in_array($args['updatedAt'], [false, 0, 'false', '0']))
-            {
-                $url = sprintf('%s?%s', $url, $queryString);
-            }
+        // appending cache buster back if not explicitly set not to do so
+        if (!isset($args['updatedAt']) || !in_array($args['updatedAt'], [false, 0, 'false', '0']))
+        {
+            $url = sprintf('%s?%s', $url, $queryString);
         }
 
         return $url;
