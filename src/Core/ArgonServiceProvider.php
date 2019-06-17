@@ -66,7 +66,7 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(LocalesServiceProvider::class);
 
         $this->app->register(ImageServiceProvider::class);
-        class_alias(Image::class, 'Image');
+        // class_alias(Image::class, 'Image');
 
         $this->app->register(MediaServiceProvider::class);
 
@@ -76,8 +76,9 @@ class ArgonServiceProvider extends ServiceProvider
 
         $this->app->register(SlackServiceProvider::class);
 
-        // this is how we load the facade in the service provider
+        // this is how we load the facades and aliases in the service provider
         $loader = AliasLoader::getInstance();
         $loader->alias('Slack', 'Maknz\Slack\Laravel\Facade');
+        $loader->alias('Image', 'Intervention\Image\Facades\Image');
     }
 }
