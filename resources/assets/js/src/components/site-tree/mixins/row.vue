@@ -14,6 +14,63 @@ export default {
         addItem(typeid) {
             window.location.href = argon.root() + '/pages/' + this.node.data.id + '/addchild/' + typeid
         },
+        duplicateItem() {
+
+            const app = this.$root.$children[0]
+
+            app.overlayText = 'We are cloning your page'
+            app.overlayActive = true
+
+            const token = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
+
+            const pageName = this.node.title
+
+            post(argon.root() + '/pages/' + this.node.data.id + '/clone', {
+                _token: token,
+                _method: 'POST'
+            })
+                .then(data => JSON.parse(data))
+                .then(data => {
+                    if (data.success && data.entity) {
+                        new Noty({
+                            layout: 'topCenter',
+                            text: 'Successfully cloned page ' + pageName,
+                            type: 'success',
+                            timeout: 3500
+                        }).show()
+
+
+                        const tree = app.$refs.tree[0]
+
+                        tree.insert({
+                            node: this.node,
+                            placement: 'after'
+                        }, data.entity)
+
+                        let newPath = this.node.path
+                        newPath[newPath.length - 1] += 1
+
+                        this.$nextTick(() => {
+                            app.highlightNode(newPath, true)
+                        })
+
+                    } else {
+                        new Noty({
+                            layout: 'topCenter',
+                            text: 'An error occured when cloning: ' + pageName,
+                            type: 'error',
+                            timeout: 3500
+                        }).show()
+                    }
+
+                    this.$nextTick(() => {
+                        app.overlayActive = false;
+                    })
+                })
+                .catch(error => console.log(error))
+        },
         deleteItem() {
             if(this.preventDelete){
                 if(typeof this.node.level === 'undefined'){

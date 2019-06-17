@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Escape\Argon\Core\Http\Request;
 use Illuminate\Support\Collection;
 use stdClass;
+use Illuminate\Support\Facades\DB;
+use Escape\Argon\Helpers\Solr;
+use Escape\Argon\Events\PageSaved;
 
 /**
  * Class Entity
@@ -254,4 +257,63 @@ class Entity extends Model
         return json_decode($value);
     }
 
+    public function clonePage()
+    {
+        DB::beginTransaction();
+
+        try
+        {
+            $solr = app()->make(Solr::class);
+
+            self::where('parent_id', $this->parent_id)
+                      ->where('order', '>', $this->order)
+                      ->increment('order');
+
+            $clonedEntity = $this->replicate();
+            $clonedEntity->order += 1;
+            $clonedEntity->status = 0;
+            $clonedEntity->slug = findUniqueSlug($this->slug, $this->parent_id);
+            $clonedEntity->save();
+
+            $localisations = $this->localisations;
+
+            foreach($localisations as $localisation)
+            {
+                $clonedLocalisation = $localisation->replicate();
+                $clonedLocalisation->entity_id = $clonedEntity->id;
+                $clonedLocalisation->save();
+
+                $revision = $localisation->publishedRevision();
+
+                $clonedRevision = $revision->replicate();
+                $clonedRevision->entity_localisation_id = $clonedLocalisation->id;
+                $clonedRevision->save();
+
+                $fields = $revision->fields;
+
+                foreach($fields as $field)
+                {
+                    $clonedField = $field->replicate();
+                    $clonedField->entity_revision_id = $clonedRevision->id;
+                    $clonedField->save();
+                }
+
+                $solr->indexEntity($clonedEntity, $clonedLocalisation);
+
+                EntityCache::cache($clonedEntity, $clonedLocalisation);
+
+                event(new PageSaved($clonedEntity, $clonedLocalisation, request()));
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+
+            return null;
+        }
+
+        DB::commit();
+
+        return $clonedEntity;
+    }
 }

@@ -9,9 +9,9 @@
         <div class="o-table__data o-table--center"><div class="o-status" :class="{'o-status--active': node.data.status, 'o-status--inactive': !node.data.status}"></div></div>
         <div class="o-table__data o-table--end">
             <comfirm-btn
-                hideDuplicate="true"
-                showAdd="true"
-                showView="true"
+                :hideDuplicate="true"
+                :showAdd="true"
+                :showView="true"
                 :viewUrl="viewUrl"
                 :fade-delete="preventDelete"
                 @add="toggleAddForm"

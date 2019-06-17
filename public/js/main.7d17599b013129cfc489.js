@@ -15083,7 +15083,13 @@ var Appvue_type_template_id_8c54b0cc_render = function() {
           class: { "is-active": _vm.overlayActive }
         },
         [
-          _vm._m(1),
+          _c("div", { staticClass: "c-sitetree-overlay__message typography" }, [
+            _c("h1", [_vm._v("Please wait")]),
+            _vm._v(" "),
+            _c("p", { attrs: { "v:if": "overlayText" } }, [
+              _vm._v(_vm._s(_vm.overlayText))
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "c-sitetree-overlay__spinner" }, [
             _c(
@@ -15149,20 +15155,6 @@ var Appvue_type_template_id_8c54b0cc_staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "o-table__header" })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "c-sitetree-overlay__message typography" },
-      [
-        _c("h1", [_vm._v("Please wait")]),
-        _vm._v(" "),
-        _c("p", [_vm._v("We are moving your page(s)")])
-      ]
-    )
   }
 ]
 Appvue_type_template_id_8c54b0cc_render._withStripped = true
@@ -15217,9 +15209,9 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
         [
           _c("comfirm-btn", {
             attrs: {
-              hideDuplicate: "true",
-              showAdd: "true",
-              showView: "true",
+              hideDuplicate: true,
+              showAdd: true,
+              showView: true,
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
@@ -15284,8 +15276,56 @@ var Bus = new vue_default.a();
     addItem: function addItem(typeid) {
       window.location.href = argon.root() + '/pages/' + this.node.data.id + '/addchild/' + typeid;
     },
-    deleteItem: function deleteItem() {
+    duplicateItem: function duplicateItem() {
       var _this = this;
+
+      var app = this.$root.$children[0];
+      app.overlayText = 'We are cloning your page';
+      app.overlayActive = true;
+      var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      var pageName = this.node.title;
+      post(argon.root() + '/pages/' + this.node.data.id + '/clone', {
+        _token: token,
+        _method: 'POST'
+      }).then(function (data) {
+        return JSON.parse(data);
+      }).then(function (data) {
+        if (data.success && data.entity) {
+          new noty_default.a({
+            layout: 'topCenter',
+            text: 'Successfully cloned page ' + pageName,
+            type: 'success',
+            timeout: 3500
+          }).show();
+          var tree = app.$refs.tree[0];
+          tree.insert({
+            node: _this.node,
+            placement: 'after'
+          }, data.entity);
+          var newPath = _this.node.path;
+          newPath[newPath.length - 1] += 1;
+
+          _this.$nextTick(function () {
+            app.highlightNode(newPath, true);
+          });
+        } else {
+          new noty_default.a({
+            layout: 'topCenter',
+            text: 'An error occured when cloning: ' + pageName,
+            type: 'error',
+            timeout: 3500
+          }).show();
+        }
+
+        _this.$nextTick(function () {
+          app.overlayActive = false;
+        });
+      }).catch(function (error) {
+        return console.log(error);
+      });
+    },
+    deleteItem: function deleteItem() {
+      var _this2 = this;
 
       if (this.preventDelete) {
         if (typeof this.node.level === 'undefined') {
@@ -15325,7 +15365,7 @@ var Bus = new vue_default.a();
               timeout: 3500
             }).show();
 
-            _this.$root.$children[0].removeNode(_this.treeIndex, _this.node.path);
+            _this2.$root.$children[0].removeNode(_this2.treeIndex, _this2.node.path);
           } else {
             new noty_default.a({
               layout: 'topCenter',
@@ -15654,9 +15694,9 @@ var Rowvue_type_template_id_6f236b38_render = function() {
         [
           _c("comfirm-btn", {
             attrs: {
-              hideDuplicate: "true",
-              showAdd: "true",
-              showView: "true",
+              hideDuplicate: false,
+              showAdd: true,
+              showView: true,
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
@@ -15665,6 +15705,7 @@ var Rowvue_type_template_id_6f236b38_render = function() {
             on: {
               add: _vm.toggleAddForm,
               delete: _vm.deleteItem,
+              duplicate: _vm.duplicateItem,
               view: _vm.viewError
             }
           })
@@ -15700,6 +15741,7 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 var main = __webpack_require__("./node_modules/timers-browserify/main.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -16015,6 +16057,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       errorNodes: {},
       cloneNodes: [],
       isDragging: false,
+      overlayText: 'We are moving your page(s)',
       overlayActive: false,
       confirmOptions: {
         isOpen: false,
@@ -16084,6 +16127,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     drop: function drop(node, position) {
       var _this2 = this;
 
+      this.overlayText = 'We are moving your page(s)';
       this.overlayActive = true;
       var pageId = node[0].data.id;
       var otherId = position.node.data.id;
@@ -19106,4 +19150,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c78acd7ce03c22071a2c.js.map
+//# sourceMappingURL=main.7d17599b013129cfc489.js.map

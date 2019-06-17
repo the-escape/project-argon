@@ -25,7 +25,7 @@
     <div class="c-sitetree-overlay" :class="{ 'is-active': overlayActive }">
         <div class="c-sitetree-overlay__message typography">
             <h1>Please wait</h1>
-            <p>We are moving your page(s)</p>
+            <p v:if="overlayText">{{ overlayText }}</p>
         </div>
         <div class="c-sitetree-overlay__spinner">
             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
@@ -68,6 +68,7 @@ export default {
             errorNodes: {},
             cloneNodes: [],
             isDragging: false,
+            overlayText: 'We are moving your page(s)',
             overlayActive: false,
             confirmOptions: {
                 isOpen: false,
@@ -130,6 +131,7 @@ export default {
         },
         drop: function (node, position) {
 
+            this.overlayText = 'We are moving your page(s)'
             this.overlayActive = true
 
             const pageId = node[0].data.id
