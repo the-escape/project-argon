@@ -116,9 +116,14 @@ class Page implements Compressable
         $segments = [];
         $parent = $this->entity;
         if($parent->parent) {
+            $segments[] = $parent->slug;
+
             while ($parent->parent) {
-                $segments[] = $parent->slug;
                 $parent = $parent->parent;
+                if(!is_null($parent->slug))
+                {
+                    $segments[] = $parent->slug;
+                }
             }
         }
         else
