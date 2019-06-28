@@ -40,7 +40,7 @@ class MenuFieldType extends AbstractFieldType
     {
         $settings = parent::getSettings();
         $opts = [];
-        foreach($this->getOptions()->sortBy('name')->lists('name', 'slug') as $k => $v)
+        foreach($this->getOptions()->sortBy('name')->pluck('name', 'slug') as $k => $v)
         {
             $opts[] = (object) [$k => $v];
         }

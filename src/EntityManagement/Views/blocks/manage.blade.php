@@ -36,7 +36,7 @@
 
         @include('argon::inc.listing.filters', [
             'filters' => [
-                'types' => $types->lists('name','id')->all()
+                'types' => $types->pluck('name','id')->all()
             ],
             'resetLinkUrl' => route('cms:blocks:manage'),
             'createLink' => [

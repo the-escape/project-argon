@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use View;
+use Auth;
 
 abstract class BaseController extends Controller
 {
@@ -17,8 +18,8 @@ abstract class BaseController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('auth', ['except' => ['getLogin', 'postLogin', 'forgotPassword']]);
-
+        $this->middleware('auth', ['except' => ['showLoginForm', 'login', 'forgotPassword']]);
+        // dd(Auth::guest());
         View::share('currentUser', $request->user());
         View::share('plugins', app('pluginManager'));
 
@@ -31,10 +32,8 @@ abstract class BaseController extends Controller
     {
         $event = event(new AdminAccess($request));
 
-        if(!empty($event[0]->middleware))
-        {
-            foreach ($event[0]->middleware as $middleware)
-            {
+        if (!empty($event[0]->middleware)) {
+            foreach ($event[0]->middleware as $middleware) {
                 $this->middleware($middleware);
             }
         }

@@ -7,7 +7,7 @@
             <img alt="logo" src="{{ config('argon.login_logo', '/argon/images/e.png') }}">
         </div>
 
-        @if(!$errors->isEmpty())
+        @if(isset($errors) && !$errors->isEmpty())
             <div class="alert alert-danger" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span>

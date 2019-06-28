@@ -88,7 +88,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getProfileAttribute()
     {
-        return $this->profileValues->lists('value','key')->all();
+        return $this->profileValues->pluck('value','key')->all();
     }
 
     public function profile($key, $default = null, $json_decode = false)

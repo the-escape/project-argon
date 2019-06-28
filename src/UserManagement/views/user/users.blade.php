@@ -36,7 +36,7 @@
 
         @include('argon::inc.listing.filters', [
             'filters' => [
-                'role' => $roles->lists('name','id')->all()
+                'role' => $roles->pluck('name','id')->all()
             ],
             'resetLinkUrl' => route('cms:user:manage'),
             'createLink' => [

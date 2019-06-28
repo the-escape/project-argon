@@ -26,28 +26,24 @@ class DashboardController extends BaseController
 
         // setting up the dynamic data needed for some widgets
 
-        view()->composer('argon::inc.widgets.manage-site-content', function($view)
-        {
-            $randomImage = MediaItem::where('mimetype','like',"image%")->orderBy(DB::raw('rand()'))->first();
+        view()->composer('argon::inc.widgets.manage-site-content', function ($view) {
+            $randomImage = MediaItem::where('mimetype', 'like', "image%")->orderBy(DB::raw('rand()'))->first();
 
-            if (!empty($randomImage))
-            {
+            if (!empty($randomImage)) {
                 $bgImage = $randomImage->getUrl();
             }
 
             return $view->with(compact('bgImage'));
         });
 
-        view()->composer('argon::inc.widgets.blog-and-media', function($view)
-        {
+        view()->composer('argon::inc.widgets.blog-and-media', function ($view) {
             $blogLink = config('argon.dashboard_widgets.create_blog_post_link');
-            $blogLabel = config('argon.dashboard_widgets.create_blog_post_label','Create new blog post');
+            $blogLabel = config('argon.dashboard_widgets.create_blog_post_label', 'Create new blog post');
 
             return $view->with(compact('blogLink', 'blogLabel'));
         });
 
-        view()->composer('argon::inc.widgets.account-manager', function($view)
-        {
+        view()->composer('argon::inc.widgets.account-manager', function ($view) {
             $name = config('argon.dashboard_widgets.account_manager_name');
             $phone = config('argon.dashboard_widgets.account_manager_phone');
             $email = config('argon.dashboard_widgets.account_manager_email');
@@ -55,40 +51,36 @@ class DashboardController extends BaseController
             return $view->with(compact('name', 'phone', 'email'));
         });
 
-        view()->composer('argon::inc.widgets.feedback-form', function($view)
-        {
+        view()->composer('argon::inc.widgets.feedback-form', function ($view) {
             $submittedClass = '';
 
             //  tbc
-//            session()->forget('throttleFeedbackSubmission');
-//            if (session()->has('throttleFeedbackSubmission') && \Carbon\Carbon::now()->lt(session('throttleFeedbackSubmission')))
-//            {
-//                $submittedClass = 'submitted';
-//            }
+            // session()->forget('throttleFeedbackSubmission');
+            // if (session()->has('throttleFeedbackSubmission') && \Carbon\Carbon::now()->lt(session('throttleFeedbackSubmission')))
+            // {
+            // $submittedClass = 'submitted';
+            // }
 
             return $view->with(compact('submittedClass'));
         });
 
-        view()->composer('argon::inc.widgets.recent-activity', function($view)
-        {
+        view()->composer('argon::inc.widgets.recent-activity', function ($view) {
             $activities = collect([]);
 
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $revisions = $revisionsRepository->makeModel()
                 ->orderBy('entity_revisions.created_at', 'desc')
                 ->limit(10)
-                ->with(['userWithTrashed','localisation.entity'])->get();
+                ->with(['userWithTrashed', 'localisation.entity'])->get();
 
 
-            foreach($revisions as $revision)
-            {
+            foreach ($revisions as $revision) {
                 $localisation = $revision->localisation;
 
-                if ($entity = $localisation->entity)
-                {
+                if ($entity = $localisation->entity) {
                     $activity = new \stdClass();
                     $activity->user = $revision->userWithTrashed->name;
-                    $activity->avatar = $revision->userWithTrashed->profile('image','/argon/images/user-icon.png');
+                    $activity->avatar = $revision->userWithTrashed->profile('image', '/argon/images/user-icon.png');
                     $activity->description = sprintf("Amended %s", $entity->name);
                     $activity->revision_link = route('cms:pages:edit_locale', [$entity->id, $localisation->locale_id, $revision->id]);
                     $activity->date = $revision->created_at->format('d M Y');
@@ -118,13 +110,11 @@ class DashboardController extends BaseController
 
         $widgets = config('argon.dashboard_widgets.order', $availableWidgets);
 
-        if (count($availableWidgets) <> count($widgets))
-        {
+        if (count($availableWidgets) <> count($widgets)) {
             $widgets = array_merge($widgets, $availableWidgets);
         }
 
-        if ($personalisedOrder = $request->cookie('ordered-widgets'))
-        {
+        if ($personalisedOrder = $request->cookie('ordered-widgets')) {
             $widgets = array_merge($personalisedOrder, $widgets);
         }
 
@@ -133,8 +123,7 @@ class DashboardController extends BaseController
 
     public function submitFeedback(Request $request)
     {
-        if($isBot = $this->_spamCheck())
-        {
+        if ($isBot = $this->_spamCheck()) {
             return $isBot;
         }
 
@@ -149,8 +138,7 @@ class DashboardController extends BaseController
 
         $validator = Validator::make($this->request->all(), $rules, $messages);
 
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return $this->_errorOut($validator);
         }
 
@@ -164,8 +152,7 @@ class DashboardController extends BaseController
         $email .= sprintf("Feedback: %s\n\n", $request->get("feedback"));
 
 
-        try
-        {
+        try {
             $recipient = 'digital@the-escape.co.uk';
 
             Mail::raw($email, function ($message) use ($submissionDate, $recipient, $request) {
@@ -173,9 +160,7 @@ class DashboardController extends BaseController
                     ->to($recipient)
                     ->subject(sprintf("Feedback from %s \n %s", $request->header('host'), $submissionDate));
             });
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             app()->isLocal() ? dd($e) : alert_escape($e);
         }
 
@@ -186,36 +171,29 @@ class DashboardController extends BaseController
         session()->set('throttleFeedbackSubmission', $throttleSubmissions);
 
 
-        if ($this->request->ajax())
-        {
+        if ($this->request->ajax()) {
             return response()->json([
                 'success' => true,
                 'msg' => $successMessage
             ]);
-        }
-        else
-        {
+        } else {
             return back()
                 ->with('success', true)
                 ->with('msg', $successMessage);
         }
-
     }
 
 
     private function _errorOut($validator)
     {
-        if ($this->request->ajax())
-        {
+        if ($this->request->ajax()) {
             return response()->json([
                 'success' => false,
                 'msg' => 'There was a problem with your submission.',
                 'fields' => $validator->errors(),
                 'block' => $this->request->input('_block')
             ]);
-        }
-        else
-        {
+        } else {
             return redirect()
                 ->back()
                 ->withErrors($validator)
@@ -226,22 +204,16 @@ class DashboardController extends BaseController
 
     private function _spamCheck()
     {
-        try
-        {
+        try {
             Validation::spamCheck();
-        }
-        catch(SpamException $e)
-        {
-            if($this->request->ajax())
-            {
+        } catch (SpamException $e) {
+            if ($this->request->ajax()) {
                 return response()->json([
                     'success' => false,
                     'msg' => 'There was a problem with submission, please try again.',
                     'fields' => []
                 ]);
-            }
-            else
-            {
+            } else {
                 return redirect()->back()
                     ->with('error', "There was a problem with submission, please try again.")
                     ->with('success-block', $this->request->input('_block'))
