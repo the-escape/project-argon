@@ -338,8 +338,13 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
-            'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' => RevisionStatus::PREVIEW, // if not $preview then will be published later
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -350,7 +355,8 @@ class PagesController extends BaseController
             return response($previewUrl);
         }
 
-        $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        // $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        $revision->publishRevision();
 
         $localisations = $entity->localisations;
 
@@ -427,8 +433,13 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
-            'status' =>  RevisionStatus::PREVIOUSLY_PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' =>  RevisionStatus::DRAFT,
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -471,14 +482,26 @@ class PagesController extends BaseController
         }
         else
         {
-            $currentRevision = $publishedRevision;
+            $newestDraft = $localisation->newestDraft();
+
+            if ($newestDraft && $newestDraft->created_at > $publishedRevision->created_at)
+            {
+                $currentRevision = $newestDraft;
+            }
+            else
+            {
+                $currentRevision = $publishedRevision;
+            }
+
         }
+
 
         $revisions = $localisation->archivedRevisions(15, ['*'], 'revisions');
 
         $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage());
 
-        $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        // $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        $groups = $currentRevision->getGroups();
 
         $currentLocales = $page->getLocalisations()->getLocales();
 

@@ -31,6 +31,16 @@
 
 <div class="modals">@yield('modals')</div>
 
+<div class="o-modal__container js-modal-container">
+    <script class="js-modal-template" type="text/template">
+        <div class="o-modal" data-modal-item-id="{id}">
+            <div class="o-modal__content typography h-text--centre">
+                {content}
+            </div>
+        </div>
+    </script>
+</div>
+
 <script src="/argon/vendor/jquery.min.js"></script>
 <script src="/argon/js/core.js"></script>
 <script src="/argon/js/widget.js"></script>
@@ -84,49 +94,6 @@
         }
 </script>
 
-<script>
-/*
-    var $formDZ = $('form.dz');
-
-    if ($formDZ && $formDZ.length)
-    {
-        var dropzone = new Dropzone(
-                'form.dz',
-                {
-                    url: '/admin/media/upload',
-                    clickable: '.btn-upload',
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    thumbnailWidth: 100,
-                    thumbnailHeight: 100,
-                    previewTemplate: $('#preview-template').html(),
-                    previewsContainer: '.media-library .files'
-                }
-        );
-        dropzone.on('success', function(e, response) {
-            loadItems($('#current-folder').val());
-        });
-
-        dropzone.on('error', function(file, errorMessage, xhr) {
-            console.log(errorMessage);
-        });
-
-        dropzone.on('uploadprogress', function(file, progress, bytesSent) {
-            $('progress', file.previewElement).val(progress);
-
-            if (progress == 100) {
-                $('progress', file.previewElement).hide();
-            }
-        });
-
-        dropzone.on('addedfile', function(file) {
-            sortItems();
-        });
-    }
-
-*/
-</script>
 
 @foreach($assetsManager->outputScripts() as $script)
     <script src="{{$script}}"></script>

@@ -261,11 +261,15 @@ class BlocksController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
-            'status' => RevisionStatus::PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' => RevisionStatus::PREVIEW, //will be published later
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+            ],
         ]);
 
-        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+        // $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+        $revision->publishRevision();
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 

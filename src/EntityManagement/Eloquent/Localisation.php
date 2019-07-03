@@ -38,6 +38,17 @@ class Localisation extends Model
     /**
      * @return EntityRevision
      */
+    public function newestDraft()
+    {
+        return $this->revisions()
+                    ->whereIn('status', [RevisionStatus::DRAFT])
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+    }
+
+    /**
+     * @return EntityRevision
+     */
     public function publishedRevision($revisionId = null)
     {
         $revision = $this->revisions();
@@ -46,7 +57,7 @@ class Localisation extends Model
             $revision = $revision->where('id', $revisionId);
         } else {
             $revision = $revision
-                ->whereIn('status', [RevisionStatus::DRAFT, RevisionStatus::PUBLISHED])
+                ->whereIn('status', [RevisionStatus::PUBLISHED])
                 ->orderBy('created_at', 'desc');
         }
 
@@ -73,7 +84,7 @@ class Localisation extends Model
             ->with(['user' => function ($query) {
                 $query->withTrashed();
             }])
-            ->whereIn('status', [RevisionStatus::PREVIOUSLY_PUBLISHED])
+            ->whereNotIn('status', [RevisionStatus::PREVIEW])
             ->paginate($perPage, $columns, $pageName, $page);
     }
 

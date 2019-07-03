@@ -9415,10 +9415,18 @@ button.uppy-DashboardItem-progressIndicator {
     text-transform: uppercase;
     -webkit-transition: background-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1);
     transition: background-color 400ms cubic-bezier(0.3, 0.15, 0.18, 1); }
+    .c-tab__btn-container svg {
+      width: 30px;
+      height: 30px;
+      color: #fff; }
   .c-tab__btn.active .c-tab__btn-container {
     color: #12a3c7;
     color: var(--primary-color);
     background-color: #fff; }
+    .c-tab__btn.active .c-tab__btn-container svg {
+      width: 30px;
+      height: 30px;
+      color: #f66956; }
   .c-tab__btn:not(.active):hover .c-tab__btn-container,
   .c-tab__btn:not(.active):focus .c-tab__btn-container {
     background-color: #12a3c7;
@@ -10946,4 +10954,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-c988ccb0a0.css.map
+//# sourceMappingURL=main-d918daf43d.css.map

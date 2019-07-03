@@ -44,6 +44,9 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             <button class="c-tab__btn @if($tab['isActive']) active @endif" data-tab="{{ $tab['slug'] }}">
                                 <div class="c-tab__btn-container">
                                     <span>{{ $tab['name'] }}</span>
+                                    @if($tab['slug'] === 'revisions' && $currentRevision->id != $publishedRevision->id)
+                                        <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
+                                    @endif
                                 </div>
                             </button>
                         </li>
@@ -63,7 +66,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             <div class="c-actions">
                                 <div class="c-actions__group">
                                     <button type="submit" class="o-btn o-btn--primary">Save</button>
-                                    <a href="#" class="o-btn preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <a href="#" class="o-btn" data-preview-id="{{ $currentRevision->id }}" target="_blank">Preview</a>
                                     <button type="submit" class="o-btn" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
                                     <a href="{{ route('cms:pages:manage') }}" class="o-btn">Cancel</a>
                                 </div>
@@ -195,7 +198,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                                         <div>
                                             <?php
-                                            $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                            // $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
                                             ?>
                                             <script>
                                                 window.fieldGroups['{{$group->id}}'] = {
@@ -215,7 +218,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                             <div class="c-actions">
                                 <div class="c-actions__group">
                                     <button type="submit" class="o-btn o-btn--primary">Save</button>
-                                    <a href="#" class="o-btn preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+                                    <a href="#" class="o-btn preview-page1" data-preview-id="{{ $currentRevision->id }}" target="_blank">Preview</a>
                                     <button type="submit" class="o-btn " data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
                                     <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
@@ -231,17 +234,9 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                 <div class="c-actions__content c-tab-panel__inner-container l-full">
                                     <h2>Revisions ({{ $revisionsTotal }})</h2>
 
-                                    @if($currentRevision->id != $publishedRevision->id)
-                                        <span class="accordion-header-details" style="position: relative; top: -2px; float: right; font-size:83%;">
-                                            You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.
-                                            <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
-                                        </span>
-                                    @endif
-
                                     <div class="alert alert-info" role="alert">
                                         @if($currentRevision->id != $publishedRevision->id)
                                             <p>You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.</p>
-                                            <p>This is not currently published revision.</p>
                                         @endif
 
                                         <p>Currently published revision ID: {{ $publishedRevision->id }}, created at {{ $publishedRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$publishedRevision->userWithTrashed->name }}.</p>
@@ -257,6 +252,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Status</th>
                                             <th>Created At</th>
                                             <th>Created By</th>
                                             <th></th>
@@ -265,15 +261,36 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         <tbody>
                                         @foreach ($revisions as $revision)
                                             <tr>
-                                                <td>{{ $revision->id }}</td>
+                                                <td>
+                                                    @if($currentRevision->id === $revision->id)
+                                                        <strong>{{ $revision->id }}</strong>
+                                                    @else
+                                                        {{ $revision->id }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($revision->status != 5)
+                                                        @if($currentRevision->id === $revision->id)
+                                                            <strong>Editing</strong> -
+                                                        @endif
+                                                        {{ $revision->getStatusName() }}
+                                                    @elseif($currentRevision->id === $revision->id)
+                                                        <strong>Editing</strong>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
                                                 <td>{{ $revision->user->name }}</td>
                                                 <td>
-                                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary preview-revision" data-preview-id="{{ $revision->id }}">Preview</a>
 
-                                                    <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
+                                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary" data-preview-id="{{ $revision->id }}" target="_blank">Preview</a>
 
-                                                    <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Restore Revision</a>
+                                                    @if($currentRevision->id != $revision->id)
+                                                        <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
+                                                    @endif
+
+                                                    @if($publishedRevision->id != $revision->id)
+                                                        <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Publish</a>
+                                                    @endif
 
                                                 </td>
                                             </tr>
@@ -331,21 +348,21 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     </div>
                 @endif
 
-                @if(!$page->getGroups($localisation->getLocaleId())->isEmpty())
-                    @foreach($page->getGroups($localisation->getLocaleId()) as $group)
+                @if(!$groups->isEmpty())
+                    @foreach($groups as $group)
 
                         @if(!$group->getSetting('isProperty') && !$group->getSetting('isAttribute'))
 
                             <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                                 <main class="c-tab-panel__container c-container">
                                     <?php
-                                        $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
+                                        // $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
                                     ?>
                                     <script>
                                         window.groups.push({
                                             id: '{{$group->id}}',
                                             isRenderable: {{ $group->isRenderable() ? 1 : 0 }},
-                                            isRendering: {{ $isRendering }},
+                                            isRendering: {{ $currentRevision->isGroupRender($group->id) ? '1' : '0' }},
                                             isSortable: {{ $group->isSortable() ? 1 : 0 }},
                                             name: '{!! $group->name !!}',
                                             isTab: {{ $group->getSetting('isTab') ? 1 : 0 }},
@@ -417,58 +434,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div>
     </form>
 
-    {{-- <div id="medialibrary" class="modal fade" role="dialog" aria-labelledby="medialibraryLabel" aria-hidden="true">
-        <input type="hidden" id="selectedMediaItem" value="">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="medialibraryLabel">Media Library</h4>
-                </div>
-                <div class="modal-body">
-
-                    <button type="button" class="btn btn-primary btn-upload">Upload</button>
-                    <button type="button" class="btn btn-primary btn-list">Change View</button>
-
-                    <div class="media-library" style="position: relative;">
-                        <div class="media-library-sidebar" style="position: absolute; width: 200px; left: 0; top: 0; bottom: 0; background: #ccc;">
-                            <div class="folders">
-                                <ul>
-                                    @each('argon::media.folder', [$root], 'folder')
-                                </ul>
-                            </div>
-                        </div>
-                        <form class="dz" style="border: 1px dashed red; margin-left: 200px; min-height: 100px;">
-                            <input type="hidden" name="current-folder" id="current-folder" value="1">
-                            <div class="files">
-
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-submit" disabled>Select</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    {{-- @include('argon::pages.partials.medialib') --}}
-
-    {{-- <div style="display: none;" id="preview-template">
-        <div class="media-item">
-            <img class="thumb" data-dz-thumbnail>
-            <span class="filename" data-dz-name></span>
-            <span class="filesize" data-dz-size></span>
-
-            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-            <progress class="progress" value="25" max="100"></progress>
-        </div>
-    </div> --}}
-
     <div class="modal fade" id="newLocalisationModal" tabindex="-1" role="dialog" aria-labelledby="newLocalisationLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -519,5 +484,22 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 @section('footer')
     @parent
 
-    {{-- @include('argon::fields.templates') --}}
+    @if($currentRevision->status == \Escape\Argon\EntityManagement\RevisionStatus::DRAFT)
+        <script>
+            window.modals = window.modals || [];
+
+            window.modals.push({
+                id: 'dyn-test',
+                content: `
+                <h1>You're editing a draft</h1>
+                <p>Created by {{ $currentRevision->user->name }} {{ $currentRevision->created_at->diffForHumans() }}. If you want to edit the published version of the page, please click the button below, otherwise click continue.</p>
+                <p>
+                    <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $publishedRevision->id]) }}" class="o-btn o-btn--success">Go to Published</a>
+                    <button class="o-btn o-btn--white js-modal-close">Continue</button>
+                </p>
+                `,
+                open: true
+            })
+        </script>
+    @endif
 @stop
