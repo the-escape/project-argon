@@ -28,6 +28,7 @@ use stdClass;
 use View;
 use Lang;
 use Illuminate\Support\Facades\DB;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 
 class PagesController extends BaseController
 {
@@ -882,6 +883,8 @@ class PagesController extends BaseController
     public function revisionRestore($revisionId, Request $request)
     {
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
+
+        /** @var EntityRevision $revision */
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
         if ($revision === null)
@@ -890,13 +893,30 @@ class PagesController extends BaseController
         }
 
         $localisation = $revision->localisation;
-
-        $revision->status = RevisionStatus::PUBLISHED;
-        $revision->save();
-
-        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
-
         $entity = $localisation->entity;
+
+        // $revision->status = RevisionStatus::PUBLISHED;
+        // $revision->save();
+        // $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+
+        $revision->publishRevision();
+
+        if (!empty($revision->entity_groups->group_render))
+        {
+            $entity->group_render = $revision->entity_groups->group_render;
+        }
+
+        if (!empty($revision->entity_groups->group_order))
+        {
+            $entity->group_order = $revision->entity_groups->group_order;
+        }
+
+        if (!empty($revision->entity_redirects))
+        {
+            $entity->redirect_url = $revision->entity_redirects;
+        }
+
+        $entity->save();
 
         event(new PageSaved($entity, $localisation, $request));
 
