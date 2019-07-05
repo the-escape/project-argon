@@ -191,15 +191,12 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                     </div>
                                 </div>
 
-                                @if(($propertyGroups = $page->getGroups($localisation->getLocaleId())->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
+                                @if(!$groups->isEmpty() && ($propertyGroups = $groups->filter(function($el) { return $el->getSetting('isAttribute') || $el->getSetting('isProperty'); } )) && !$propertyGroups->isEmpty())
                                     @foreach($propertyGroups as $group)
 
                                         <hr>
 
                                         <div>
-                                            <?php
-                                            // $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                            ?>
                                             <script>
                                                 window.fieldGroups['{{$group->id}}'] = {
                                                     fields: {!! json_encode($group->getFieldsWithValues($page, $localisation, $currentRevision),JSON_PRETTY_PRINT) !!},
@@ -234,69 +231,72 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                 <div class="c-actions__content c-tab-panel__inner-container l-full">
                                     <h2>Revisions ({{ $revisionsTotal }})</h2>
 
-                                    <div class="alert alert-info" role="alert">
-                                        @if($currentRevision->id != $publishedRevision->id)
-                                            <p>You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.</p>
-                                        @endif
+                                    @if($currentRevision->id != $publishedRevision->id)
+                                        <div class="l-space">
+                                            <p><span class="o-icon o-icon--danger"><svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg></span> You're editing a {{ $currentRevision->status == 1 ? 'draft' : 'revision' }} created by {{ $currentRevision->user->name }} {{ $currentRevision->created_at->diffForHumans() }}. If you want to edit the published version of the page, please click <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $publishedRevision->id]) }}" class="confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">here</a>.</p>
+                                        </div>
+                                    @endif
 
-                                        <p>Currently published revision ID: {{ $publishedRevision->id }}, created at {{ $publishedRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$publishedRevision->userWithTrashed->name }}.</p>
 
-                                        @if($currentRevision->id != $publishedRevision->id)
-                                            <p>
-                                                <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
-                                            </p>
-                                        @endif
-                                    </div>
+                                    <div class="o-table o-table--max-content--6 l-full">
+                                        <div class="o-table__header o-table--center">ID</div>
+                                        <div class="o-table__header">Status</div>
+                                        <div class="o-table__header">Created At</div>
+                                        <div class="o-table__header o-table--center">Created By</div>
+                                        <div class="o-table__header o-table--end">Actions</div>
+                                        <div class="o-table__header o-table--center"></div>
 
-                                    <table class="table table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Status</th>
-                                            <th>Created At</th>
-                                            <th>Created By</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
                                         @foreach ($revisions as $revision)
-                                            <tr>
-                                                <td>
+                                            <?php
+                                                $rowClass = $currentRevision->id === $revision->id ? ' o-table__data--grey-white ' : '' ;
+                                                $rowClass .= $publishedRevision->id === $revision->id ? ' o-table__data--green ' : '' ;
+                                            ?>
+                                            <div class="o-table__data {{ $rowClass }} o-table--center">
+
+                                                {{ $revision->id }}
+                                            </div>
+                                            <div class="o-table__data {{ $rowClass }}">
+                                                @if($revision->status != 5)
                                                     @if($currentRevision->id === $revision->id)
-                                                        <strong>{{ $revision->id }}</strong>
-                                                    @else
-                                                        {{ $revision->id }}
+                                                        <strong>Editing -&nbsp;</strong>
                                                     @endif
-                                                </td>
-                                                <td>
-                                                    @if($revision->status != 5)
-                                                        @if($currentRevision->id === $revision->id)
-                                                            <strong>Editing</strong> -
+                                                    {{ $revision->getStatusName() }}
+                                                @elseif($currentRevision->id === $revision->id)
+                                                    <strong>Editing</strong>
+                                                @endif
+                                            </div>
+                                            <div class="o-table__data {{ $rowClass }}">
+                                                {{ $revision->created_at->format('d/m/Y H:i:s') }}
+                                            </div>
+                                            <div class="o-table__data {{ $rowClass }} o-table--center">
+                                                {{ $revision->user->name }}
+                                            </div>
+                                            <div class="o-table__data {{ $rowClass }} o-table--end">
+                                                <div class="o-confirm-btn__container">
+                                                    <div class="o-confirm-btn__questions">
+                                                        @if($currentRevision->id != $revision->id)
+                                                            <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="o-confirm-btn confirm" data-balloon="Load/edit revision" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">
+                                                                <svg><use xlink:href="/argon/images/svgicons.svg#edit"></use></svg>
+                                                            </a>
+                                                        @else
+                                                            <button class="o-confirm-btn o-confirm-btn--fade" disabled>
+                                                                <svg><use xlink:href="/argon/images/svgicons.svg#edit"></use></svg>
+                                                            </button>
                                                         @endif
-                                                        {{ $revision->getStatusName() }}
-                                                    @elseif($currentRevision->id === $revision->id)
-                                                        <strong>Editing</strong>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
-                                                <td>{{ $revision->user->name }}</td>
-                                                <td>
 
-                                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="btn btn-primary" data-preview-id="{{ $revision->id }}" target="_blank">Preview</a>
-
-                                                    @if($currentRevision->id != $revision->id)
-                                                        <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $revision->id]) }}" class="btn btn-primary confirm" data-confirm="This will load and allow editing the selected revision from {{ $revision->created_at->format('d/m/Y H:i:s') }} saved by user: {{ @$revision->userWithTrashed->name }} without affecting published page unless 'Save and Publish' button clicked.\nYou can load and edit and click 'Save Revision' to capture as new snapshot for further checks and review without impact on live - published page.\nAre you sure you want to continue?">Load/Edit Revision</a>
-                                                    @endif
-
-                                                    @if($publishedRevision->id != $revision->id)
-                                                        <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="btn btn-warning confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Publish</a>
-                                                    @endif
-
-                                                </td>
-                                            </tr>
+                                                        <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $revision->id }}" class="o-confirm-btn" data-balloon="Preview revision" target="_blank">
+                                                            <svg><use xlink:href="/argon/images/svgicons.svg#see"></use></svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="o-table__data  {{ $rowClass }} o-table--center">
+                                                @if($publishedRevision->id != $revision->id)
+                                                    <a href="{{ route('cms:revisions:restore', [$revision->id]) }}" class="o-btn o-btn--primary o-btn--xs confirm" data-confirm="This will overwrite current page content.\nSelected revision is from {{ $revision->created_at->format('d/m/Y H:i:s') }}.\nAre you sure you want to continue?">Publish</a>
+                                                @endif
+                                            </div>
                                         @endforeach
-                                        </tbody>
-                                    </table>
+                                    </div>
 
                                     @if($revisionsPagination['pages_count'] > 1)
 
@@ -355,9 +355,6 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                                 <main class="c-tab-panel__container c-container">
-                                    <?php
-                                        // $isRendering = $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0';
-                                    ?>
                                     <script>
                                         window.groups.push({
                                             id: '{{$group->id}}',
@@ -373,16 +370,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             header: "{!! $group->name !!}"
                                         }
                                     </script>
-                                    <div class="js-fields" data-name="{{$group->id}}">
-                                        {{-- <input type="hidden" name="group_render[{{$group->id}}]" value="{{ $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0' }}"> --}}
-                                        <?php
-                                            // $fields = $group->getFields();
-                                            // foreach($fields as $field){
-                                            //     $fieldValue = $currentRevision->getField($field->getId());
-                                            //     echo $field->renderHidden($fieldValue);
-                                            // }
-                                         ?>
-                                    </div>
+                                    <div class="js-fields" data-name="{{$group->id}}"></div>
                                 </main>
                             </div>
                         @endif
@@ -494,7 +482,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                 <h1>You're editing a draft</h1>
                 <p>Created by {{ $currentRevision->user->name }} {{ $currentRevision->created_at->diffForHumans() }}. If you want to edit the published version of the page, please click the button below, otherwise click continue.</p>
                 <p>
-                    <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $publishedRevision->id]) }}" class="o-btn o-btn--success">Go to Published</a>
+                    <a href="{{ route('cms:pages:edit_locale', [$page->getId(), $localeId, $publishedRevision->id]) }}" class="o-btn o-btn--danger">Go to Published</a>
                     <button class="o-btn o-btn--white js-modal-close">Continue</button>
                 </p>
                 `,

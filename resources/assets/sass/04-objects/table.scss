@@ -113,6 +113,14 @@
         display: flex;
         align-items: center;
         border-bottom: 1px solid $grey;
+
+        &--grey-white {
+            background-color: $grey-white;
+        }
+
+        &--green {
+            background-color: #f1ffe9;
+        }
     }
 
     &--tree &__row {
@@ -189,6 +197,8 @@
             grid-template-columns: minmax(0, 100%) 150px 140px;
         }
 
+
+
         @for $i from 2 through 15 {
             &--#{$i} {
                 grid-template-columns:
@@ -201,6 +211,10 @@
                 grid-template-columns:
                     minmax(0, 100%)
                     repeat(#{$i - 1}, minmax(0, 700px)) 150px 140px;
+            }
+
+            &--max-content--#{$i} {
+                grid-template-columns: 100px repeat(#{$i - 3}, minmax(max-content, 1fr)) 150px 140px;
             }
         }
 

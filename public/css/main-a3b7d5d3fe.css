@@ -4340,6 +4340,10 @@ button.o-btn {
       -ms-flex-align: center;
           align-items: center;
   border-bottom: 1px solid #b6b6b6; }
+  .o-table__data--grey-white {
+    background-color: #f0f0f0; }
+  .o-table__data--green {
+    background-color: #f1ffe9; }
 
 .o-table--tree .o-table__row {
   position: relative; }
@@ -4409,71 +4413,113 @@ button.o-btn {
   .o-table--tree-2 .o-table__headers,
   .o-table--tree-2 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(1, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--2 {
+    grid-template-columns: 100px repeat(-1, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(-1, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--3 {
     grid-template-columns: minmax(0, 100%) repeat(2, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-3 .o-table__headers,
   .o-table--tree-3 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(2, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--3 {
+    grid-template-columns: 100px repeat(0, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(0, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--4 {
     grid-template-columns: minmax(0, 100%) repeat(3, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-4 .o-table__headers,
   .o-table--tree-4 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(3, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--4 {
+    grid-template-columns: 100px repeat(1, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(1, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--5 {
     grid-template-columns: minmax(0, 100%) repeat(4, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-5 .o-table__headers,
   .o-table--tree-5 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(4, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--5 {
+    grid-template-columns: 100px repeat(2, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(2, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--6 {
     grid-template-columns: minmax(0, 100%) repeat(5, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-6 .o-table__headers,
   .o-table--tree-6 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(5, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--6 {
+    grid-template-columns: 100px repeat(3, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(3, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--7 {
     grid-template-columns: minmax(0, 100%) repeat(6, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-7 .o-table__headers,
   .o-table--tree-7 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(6, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--7 {
+    grid-template-columns: 100px repeat(4, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(4, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--8 {
     grid-template-columns: minmax(0, 100%) repeat(7, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-8 .o-table__headers,
   .o-table--tree-8 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(7, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--8 {
+    grid-template-columns: 100px repeat(5, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(5, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--9 {
     grid-template-columns: minmax(0, 100%) repeat(8, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-9 .o-table__headers,
   .o-table--tree-9 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(8, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--9 {
+    grid-template-columns: 100px repeat(6, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(6, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--10 {
     grid-template-columns: minmax(0, 100%) repeat(9, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-10 .o-table__headers,
   .o-table--tree-10 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(9, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--10 {
+    grid-template-columns: 100px repeat(7, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(7, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--11 {
     grid-template-columns: minmax(0, 100%) repeat(10, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-11 .o-table__headers,
   .o-table--tree-11 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(10, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--11 {
+    grid-template-columns: 100px repeat(8, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(8, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--12 {
     grid-template-columns: minmax(0, 100%) repeat(11, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-12 .o-table__headers,
   .o-table--tree-12 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(11, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--12 {
+    grid-template-columns: 100px repeat(9, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(9, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--13 {
     grid-template-columns: minmax(0, 100%) repeat(12, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-13 .o-table__headers,
   .o-table--tree-13 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(12, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--13 {
+    grid-template-columns: 100px repeat(10, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(10, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--14 {
     grid-template-columns: minmax(0, 100%) repeat(13, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-14 .o-table__headers,
   .o-table--tree-14 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(13, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--14 {
+    grid-template-columns: 100px repeat(11, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(11, minmax(max-content, 1fr)) 150px 140px; }
   .o-table--15 {
     grid-template-columns: minmax(0, 100%) repeat(14, minmax(0, 700px)) 115px 140px; }
   .o-table--tree-15 .o-table__headers,
   .o-table--tree-15 .o-table__row {
     grid-template-columns: minmax(0, 100%) repeat(14, minmax(0, 700px)) 150px 140px; }
+  .o-table--max-content--15 {
+    grid-template-columns: 100px repeat(12, minmax(-webkit-max-content, 1fr)) 150px 140px;
+    grid-template-columns: 100px repeat(12, minmax(max-content, 1fr)) 150px 140px; }
   .o-table__children, .o-table__dropdown {
     grid-column: 1 / -1; } }
 
@@ -4579,6 +4625,28 @@ button.o-btn {
   .o-info svg {
     width: 12px;
     height: 12px; }
+
+.o-icon {
+  position: relative;
+  width: 1.6em;
+  height: 1.6em;
+  display: inline-block;
+  vertical-align: bottom; }
+  .o-icon svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    color: currentColor; }
+  .o-icon--danger svg {
+    color: #f66956; }
+  .o-icon--success svg {
+    color: #51b989; }
+  .o-icon--primary svg {
+    color: #12a3c7; }
 
 .l-halves {
   display: -webkit-box;
@@ -10954,4 +11022,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-d918daf43d.css.map
+//# sourceMappingURL=main-a3b7d5d3fe.css.map
