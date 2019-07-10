@@ -16,7 +16,7 @@
             </div>
 
             <div class="c-media-library__grid-wrap">
-                <file-list v-bind:items="active.items" v-bind:folders="active.children" />
+                <file-list v-bind:items="active.items" v-bind:folders="active.children" ref="fileList" />
                 <drop
                     @dragover="dragOver"
                     @dragleave="dragLeave"
@@ -39,6 +39,7 @@
 <script>
 import { mapState } from 'vuex'
 import FileList from './FileList.vue'
+import { setTimeout } from 'timers';
 
 export default {
     data() {
@@ -74,6 +75,7 @@ export default {
             }
 
             this.$store.dispatch('remove', { items, folders })
+            this.$refs.fileList.unhighlightItems()
         }
     }
 }
