@@ -5651,11 +5651,11 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
             "div",
             { staticClass: "o-drag-select js-drag" },
             [
-              _vm._l(_vm.values, function(value, index) {
+              _vm._l(_vm.valueOptions, function(option, index) {
                 return _c("input", {
                   key: index,
                   attrs: { type: "hidden", name: _vm.inputName },
-                  domProps: { value: value }
+                  domProps: { value: option.value }
                 })
               }),
               _vm._v(" "),
@@ -5958,6 +5958,10 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
         var option = _this2.options.find(function (opt) {
           return opt.value === value;
         });
+
+        if (!option) {
+          return acc;
+        }
 
         acc.push(option);
         return acc;
@@ -19153,4 +19157,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.54d81111fbd0be385f28.js.map
+//# sourceMappingURL=main.f5a5a0ca10bfb4dd3d56.js.map

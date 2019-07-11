@@ -3,7 +3,7 @@
         <validation :status-error="errors" :input-name="inputName">
             <label :for="inputName">{{ name }}</label>
             <div class="o-drag-select js-drag">
-                <input type="hidden" v-for="(value, index) in values" :key="index" :name="inputName" :value="value">
+                <input type="hidden" v-for="(option, index) in valueOptions" :key="index" :name="inputName" :value="option.value">
                 <div class="o-drag-select__column-wrap">
                     <div class="o-drag-select__title">
                         <div class="o-drag-select__search">
@@ -102,6 +102,10 @@ export default {
                 }
 
                 const option = this.options.find(opt => opt.value === value)
+                if(!option){
+                    return acc
+                }
+
                 acc.push(option)
                 return acc
             }, [])
