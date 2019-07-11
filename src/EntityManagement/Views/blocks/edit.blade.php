@@ -166,7 +166,15 @@
                                         header: "{!! $group->name !!}"
                                     }
                                 </script>
-                                <div class="js-fields" data-name="{{$group->id}}"></div>
+                                <div class="js-fields" data-name="{{$group->id}}">
+                                    <input type="hidden" name="group_render[{{$group->id}}]" value="{{ $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0' }}">
+                                    <?php
+                                        $fields = $group->getFields();
+                                        foreach($fields as $field){
+                                            echo $field->renderHidden($latest->getField($field->getId()));
+                                        }
+                                    ?>
+                                </div>
                             </main>
                         </div>
                     @endforeach

@@ -41,14 +41,14 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     <ul>
                         @foreach($tabNav as $tab)
                         <li>
-                            <button class="c-tab__btn @if($tab['isActive']) active @endif" data-tab="{{ $tab['slug'] }}">
+                            <a class="c-tab__btn @if($tab['isActive']) active @endif" data-tab="{{ $tab['slug'] }}">
                                 <div class="c-tab__btn-container">
                                     <span>{{ $tab['name'] }}</span>
                                     @if($tab['slug'] === 'revisions' && $currentRevision->id != $publishedRevision->id)
                                         <svg><use xlink:href="/argon/images/svgicons.svg#alert"></use></svg>
                                     @endif
                                 </div>
-                            </button>
+                            </a>
                         </li>
                         @endforeach
                     </ul>
@@ -370,7 +370,16 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                             header: "{!! $group->name !!}"
                                         }
                                     </script>
-                                    <div class="js-fields" data-name="{{$group->id}}"></div>
+                                    <div class="js-fields" data-name="{{$group->id}}">
+                                        <input type="hidden" name="group_render[{{$group->id}}]" value="{{ $page->isGroupRender($localisation->getLocaleId(), $group->id) ? '1' : '0' }}">
+                                        <?php
+                                            $fields = $group->getFields();
+                                            foreach($fields as $field){
+                                                $fieldValue = $currentRevision->getField($field->getId());
+                                                echo $field->renderHidden($fieldValue);
+                                            }
+                                        ?>
+                                    </div>
                                 </main>
                             </div>
                         @endif
