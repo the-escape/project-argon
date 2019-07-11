@@ -78,6 +78,9 @@ var WYSIWYG = {
         CKEDITOR.config.fontSize_sizes = '12px;13px;14px;16px;18px;20px;22px;24px;26px;27px;28px;30px;32px;';
         CKEDITOR.replaceClass = null; // disable auto initialization by class
 
+        CKEDITOR.config.allowedContent = true;
+        CKEDITOR.config.removeFormatAttributes = '';
+
         CKEDITOR.config.default_height = 150;
         CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
         CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
