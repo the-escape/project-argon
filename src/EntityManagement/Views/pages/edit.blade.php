@@ -32,7 +32,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     @foreach ($page->getLocalisations() as $l)
 
                         @if ($l->getId() == $localisation->getId())
-                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
+                            <a href="@if($localSlug = $l->getLocale()->getSlug()){{ '/'.$localSlug.$defaultFronEndPageUrl }}@else{{ $defaultFronEndPageUrl }}@endif" class="view-page btn btn-primary-outline btn-sm" target="_blank">View page</a>
                         @endif
 
                     @endforeach

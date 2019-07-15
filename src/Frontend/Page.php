@@ -144,11 +144,9 @@ class Page implements Compressable
 
         $segments = array_reverse($segments);
 
-        $url = '/' . implode('/', $segments);
+        $this->url = "/" . ltrim(implode("/", $segments), "/");
 
-
-        $this->url = $url;
-        return $url;
+        return $this->url;
     }
 
     public function getHomeUrl($locale = null)
