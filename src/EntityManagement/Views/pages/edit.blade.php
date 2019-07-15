@@ -298,44 +298,12 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                                         @endforeach
                                     </div>
 
-                                    @if($revisionsPagination['pages_count'] > 1)
-
-                                        <?php
-                                        $revisionsPresenter = paginationPresenter($revisionsPagination, '...', 1, 2, function($element, $hellip, $current_page_number)
-                                        {
-                                            if ($element != $hellip)
-                                            {
-                                                return '<li class="page-item class="'.(($element == $current_page_number) ? "active" : "").'"><a class="page-link" href="'.getUrlWithQueryString(['revisions'=>$element]).'">'.$element.'</a></li>';
-                                            }
-                                            return '<li class="page-item"><span class="page-link">'.$element.'</span></li>';
-                                        });
-                                        ?>
-
-                                        <nav>
-                                            <ul class="pagination pagination-sm">
-                                                <li class="page-item @if(!$revisionsPagination['page_prev']) disabled @endif">
-                                                    @if($revisionsPagination['page_prev'])
-                                                        <a class="page-link" href="{{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_prev']])  }}" tabindex="-1">Previous</a>
-                                                    @else
-                                                        <span class="page-link">Previous</span>
-                                                    @endif
-                                                </li>
-
-                                                @foreach ($revisionsPresenter as $li)
-                                                    {!! $li !!}
-                                                @endforeach
-
-                                                <li class="page-item @if(!$revisionsPagination['page_next']) disabled @endif">
-                                                    @if($revisionsPagination['page_next'])
-                                                        <a class="page-link" href=" {{ getUrlWithQueryString(['revisions'=>$revisionsPagination['page_next']])  }}">Next</a>
-                                                    @else
-                                                        <span class="page-link">Next</span>
-                                                    @endif
-                                                </li>
-                                            </ul>
-                                        </nav>
-
+                                    @if($revisions->lastPage() > 1)
+                                        <div class="l-full">
+                                            @include('argon::inc.listing.pagination', ['items' => $revisions])
+                                        </div>
                                     @endif
+
                                 </div>
 
                                 <div class="c-actions">
