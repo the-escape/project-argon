@@ -75,7 +75,7 @@ class Entity extends Model
 
     protected function localisations()
     {
-        return $this->hasMany(Localisation::class);
+        return $this->hasMany(Localisation::class)->orderBy('created_at', 'ASC');;
     }
 
     public function getDefaultLocalisation()
