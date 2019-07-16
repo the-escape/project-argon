@@ -1,10 +1,4 @@
-<?php
-$fronEndPage = $page->toPage();
-$defaultFronEndPageUrl = $fronEndPage->getUrl();
-$pageLocaleSlug = $localisation->getLocale()->getSlug();
-$localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
-$defaultLocalisation = $page->getDefaultLocalisation();
-?>
+
 @extends('argon::layout.master')
 
 @section('body-class', 'medialib medialib-all')
@@ -24,17 +18,13 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
         <div class="js-tabs c-page">
             <header class="c-header c-container">
-                <div class="c-header__title">
+                <div class="c-header__title c-header__title--deep">
                     <div class="c-header__local-container">
-                        <h1>{{$page->name}}</h1>
+                        <h1>{{ $page->name }}<small>{{ $localisedFrontEndPageUrlNoHttp }}</small></h1>
                     </div>
 
                     <div class="c-header__btns">
-                        @foreach ($page->getLocalisations() as $l)
-                            @if ($l->getId() == $localisation->getId())
-                                <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif"class="o-link" target="_blank">Go to live page</a>
-                            @endif
-                        @endforeach
+                        <a href="{{ url($localisedFrontEndPageUrl) }}" class="o-link" target="_blank">Go to live page</a>
                     </div>
                 </div>
                 <div class="c-header__nav c-tab__nav js-tabs-nav">

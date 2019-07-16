@@ -9369,6 +9369,14 @@ button.uppy-DashboardItem-progressIndicator {
       color: #12a3c7;
       color: var(--primary-color);
       font-size: 3.2rem !important; }
+    .c-header__title h1 > small {
+      display: block;
+      margin-top: 0;
+      font-size: 1.4rem;
+      color: #12a3c7;
+      color: var(--primary-color); }
+    .c-header__title--deep {
+      min-height: 160px; }
   .c-header__local {
     margin-left: 15px;
     display: -webkit-box;
@@ -11022,4 +11030,4 @@ button.uppy-DashboardItem-progressIndicator {
 
 
 
-//# sourceMappingURL=main-a3b7d5d3fe.css.map
+//# sourceMappingURL=main-d01b4905b5.css.map

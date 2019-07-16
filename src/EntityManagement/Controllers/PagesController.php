@@ -516,6 +516,12 @@ class PagesController extends BaseController
 //        }
         $tabNav = $this->getTabNav($groups, $revisions);
 
+        $fronEndPage = $page->toPage();
+        $defaultFronEndPageUrl = $fronEndPage->getUrl();
+        $pageLocaleSlug = $localisation->getLocale()->getSlug();
+        $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+        $localisedFrontEndPageUrlNoHttp = preg_replace('/https{0,1}:\/\//', '', url($localisedFrontEndPageUrl));
+
         return view(
             'argon::pages.edit',
             [
@@ -529,7 +535,13 @@ class PagesController extends BaseController
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
                 'currentRevision' => $currentRevision,
-                'tabNav' => $tabNav
+                'tabNav' => $tabNav,
+                'fronEndPage' => $fronEndPage,
+                'defaultFronEndPageUrl' => $defaultFronEndPageUrl,
+                'pageLocaleSlug' => $pageLocaleSlug,
+                'localisedFrontEndPageUrl' => $localisedFrontEndPageUrl,
+                'defaultLocalisation' => $page->getDefaultLocalisation(),
+                'localisedFrontEndPageUrlNoHttp' => $localisedFrontEndPageUrlNoHttp,
             ]
         );
     }

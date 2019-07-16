@@ -17,6 +17,18 @@
             color: var(--primary-color);
             font-size: 3.2rem !important;
         }
+
+        h1 > small {
+            display: block;
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: $primary;
+            color: var(--primary-color);
+        }
+
+        &--deep {
+            min-height: 160px;
+        }
     }
 
     &__local {
