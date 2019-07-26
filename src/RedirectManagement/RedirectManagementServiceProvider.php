@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\RedirectManagement;
 
+use Illuminate\Routing\Router;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\Core\Plugins\AbstractPluginServiceProvider;
 use Escape\Argon\RedirectManagement\Controllers\RedirectsController;
@@ -64,7 +65,7 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
         // Register our Middleware
         /** @var Router $router */
         $router = $this->app['router'];
-        $router->middleware('redirect', Middleware\RedirectMiddleware::class);
+        $router->aliasMiddleware('redirect', Middleware\RedirectMiddleware::class);
     }
 
     public function startup()
