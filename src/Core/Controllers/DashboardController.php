@@ -168,7 +168,7 @@ class DashboardController extends BaseController
         $successMessage = "<p>Thank you, request has been submitted successfully.</p>";
 
         $throttleSubmissions = Carbon::now()->addMinutes(5);
-        session()->set('throttleFeedbackSubmission', $throttleSubmissions);
+        session()->put('throttleFeedbackSubmission', $throttleSubmissions);
 
 
         if ($this->request->ajax()) {
