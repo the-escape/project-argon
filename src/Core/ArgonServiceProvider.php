@@ -12,17 +12,21 @@ use Escape\Argon\Menus\MenusServiceProvider;
 use Escape\Argon\RedirectManagement\RedirectManagementServiceProvider;
 use Escape\Argon\UserManagement\UserManagementServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
 use Escape\Argon\Libs\Slack\ServiceProvider as SlackServiceProvider;
-use Maknz\Slack\Facades\Slack;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Pagination\Paginator;
+
 
 class ArgonServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Blade::withoutDoubleEncoding();
+        Paginator::useBootstrapThree();
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/../../routes.php';
         }
