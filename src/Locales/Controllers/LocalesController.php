@@ -54,10 +54,10 @@ class LocalesController extends BaseController
         return View::make('argon::locales.create');
     }
 
-    public function save(LocaleRepository $localesRepository)
+    public function save(LocaleRepository $localesRepository, Request $request)
     {
         $locale = $localesRepository->create(
-            Input::all()
+            $request->all()
         );
 
         return Redirect::route('cms:locales:manage');
@@ -77,9 +77,9 @@ class LocalesController extends BaseController
         return View::make('argon::locales.edit', ['locale' => $locale]);
     }
 
-    public function update($localeId, LocaleRepository $localesRepository)
+    public function update($localeId, LocaleRepository $localesRepository, Request $request)
     {
-        $localesRepository->update(Input::all(), $localeId);
+        $localesRepository->update($request->all(), $localeId);
 
         return Redirect::route('cms:locales:manage')
             ->with('message', Lang::get('argon-locales::locale.saved'));

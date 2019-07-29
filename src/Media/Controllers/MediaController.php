@@ -44,9 +44,9 @@ class MediaController extends BaseController
         return View::make('argon::media.browser', ['media' => $media, 'root' => $root]);
     }
 
-    public function items(MediaItemRepository $mediaRepository)
+    public function items(Request $request, MediaItemRepository $mediaRepository)
     {
-        $folderId = Input::get('folderId');
+        $folderId = $request->get('folderId');
         $items = $mediaRepository->getItemsInFolder($folderId);
 
         return response()->json($items);
@@ -54,7 +54,7 @@ class MediaController extends BaseController
 
     public function upload(Request $request, MediaItemRepository $mediaRepository)
     {
-        $folderId = Input::get('current-folder');
+        $folderId = $request->get('current-folder');
 
         $file = $request->file('file');
 

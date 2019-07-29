@@ -68,15 +68,15 @@ class RoleController extends BaseController
         return View::make('argon::role.edit', ['role' => $role, 'permissions' => app('permissions')]);
     }
 
-    public function update($roleId)
+    public function update($roleId, Request $request)
     {
-        $this->validate($this->request, [
+        $this->validate($request, [
             'name' => 'required',
         ]);
 
-        $permissions = Input::get('permissions');
+        $permissions = $request->get('permissions');
 
-        $role = $this->roleRepository->update(Input::all(), $roleId);
+        $role = $this->roleRepository->update($request->all(), $roleId);
 
         $this->grantRepository->syncGrants($role, $permissions);
 
@@ -106,15 +106,15 @@ class RoleController extends BaseController
         return View::make('argon::role.create', ['permissions' => app('permissions')]);
     }
 
-    public function save()
+    public function save(Request $request)
     {
-        $this->validate($this->request, [
+        $this->validate($request, [
             'name' => 'required',
         ]);
 
-        $role = $this->roleRepository->create(Input::all());
+        $role = $this->roleRepository->create($request->all());
 
-        $permissions = Input::get('permissions', []);
+        $permissions = $request->get('permissions', []);
 
         $this->grantRepository->syncGrants($role, $permissions);
 

@@ -233,7 +233,7 @@ class PagesController extends BaseController
         $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
+        $entity = $entityRepository->update($request->only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 

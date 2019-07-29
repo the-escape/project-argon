@@ -89,7 +89,7 @@ class UserController extends BaseController
         return View::make('argon::user.edit', ['user' => $user, 'roles' => $roles]);
     }
 
-    public function update($userId)
+    public function update($userId, Request $request)
     {
         $this->validate($this->request, [
             'name' => 'required',
@@ -97,19 +97,19 @@ class UserController extends BaseController
             'profile_picture' => 'mimes:jpeg,bmp,png,gif,jpg'
         ]);
 
-        if (Input::get('password')) {
-            $user = $this->userRepository->update(Input::all(), $userId);
+        if ($request->get('password')) {
+            $user = $this->userRepository->update($request->all(), $userId);
         } else {
-            $user = $this->userRepository->update(Input::except('password'), $userId);
+            $user = $this->userRepository->update($request->except('password'), $userId);
         }
 
-        $roles = Input::get('roles', []);
+        $roles = $request->get('roles', []);
 
         $user->roles()->sync($roles);
 
-        if (Input::hasFile('profile_picture'))
+        if ($request->hasFile('profile_picture'))
         {
-            $file = Input::file('profile_picture');
+            $file = $request->file('profile_picture');
 
             $disk = Storage::disk('media');
             $filePath = sprintf("profile_pictures/%s", $user->id);
@@ -173,7 +173,7 @@ class UserController extends BaseController
         return View::make('argon::user.create');
     }
 
-    public function save()
+    public function save(Request $request)
     {
         $this->validate($this->request, [
             'name' => 'required',
@@ -182,11 +182,11 @@ class UserController extends BaseController
             'profile_picture' => 'mimes:jpeg,bmp,png,gif,jpg'
         ]);
 
-        $user = $this->userRepository->create(Input::all());
+        $user = $this->userRepository->create($request->all());
 
-        if ($user && Input::hasFile('profile_picture'))
+        if ($user && $request->hasFile('profile_picture'))
         {
-            $file = Input::file('profile_picture');
+            $file = $request->file('profile_picture');
 
             $disk = Storage::disk('media');
             $filePath = sprintf("profile_pictures/%s", $user->id);

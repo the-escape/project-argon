@@ -190,7 +190,8 @@ class BlocksController extends BaseController
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['group_order']), $entity->id);
+
+        $entity = $entityRepository->update($request->only(['group_order']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -257,7 +258,7 @@ class BlocksController extends BaseController
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'group_order']), $pageId);
+        $entity = $entityRepository->update($request->only(['name', 'slug', 'group_order']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
