@@ -28,6 +28,6 @@ class CreateInitialEntity extends Migration
      */
     public function down()
     {
-        Entity::where('name', 'Site')->first()->delete();
+        Entity::where('name', 'Home')->first()->delete();
     }
 }
