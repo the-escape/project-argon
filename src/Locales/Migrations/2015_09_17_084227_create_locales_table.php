@@ -28,7 +28,7 @@ class CreateLocalesTable extends Migration
         $locale = new Locale();
         $locale->name = 'Global';
         $locale->languageCode = 'en_GB';
-        $locale->languageCode = '';
+        $locale->locale_slug = '';
         $locale->region = 'Global';
         $locale->save();
 
