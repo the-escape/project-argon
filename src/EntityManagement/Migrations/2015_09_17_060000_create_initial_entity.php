@@ -18,7 +18,6 @@ class CreateInitialEntity extends Migration
         $entity->slug = '/';
         $entity->entity_type_id = 1;
         $entity->owner_id = 1;
-        $entity->status = 1;
         $entity->save();
     }
 
