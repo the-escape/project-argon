@@ -14,9 +14,11 @@ class CreateInitialEntity extends Migration
     public function up()
     {
         $entity = new Entity;
-        $entity->name = 'Site';
+        $entity->name = 'Home';
+        $entity->slug = '/';
         $entity->entity_type_id = 1;
         $entity->owner_id = 1;
+        $entity->status = 1;
         $entity->save();
     }
 

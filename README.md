@@ -53,34 +53,34 @@ abstract class Controller extends CmsController
 Create **app/Http/Controllers/ContentController.php** and add:
 ```
 <?php
-    
+
 namespace App\Http\Controllers;
-    
+
 use App\Helpers\ThemeHelper;
 use Escape\Argon\Core\Http\Request;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\Frontend\Page;
-    
+
 class ContentController extends Controller
 {
     public function page(Request $request, EntityRepository $entityRepository)
     {
         $cache = entityCache()->findForPath();
-    
+
         $viewName = $this->getViewNameForType($cache->entity_type_id);
-    
+
         return view($viewName, compact('cache'));
     }
 }
 ```
-Replace content in **/app/Http/routes.php** with:
+Replace content in **routes/web.php** with:
 ```
 <?php
-    
+
 Route::get('404', function() {
     abort(404);
 });
-    
+
 // This should be the last route defined.
 Route::any('{catchall}', 'ContentController@page')->where('catchall', '(.*)');
 ```
@@ -92,7 +92,12 @@ Edit **config/auth.php** and change the model property as follows
 ```
 ...
 
-'model' => Escape\Argon\Authentication\User::class,
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => Escape\Argon\Authentication\User::class,
+    ],
+],
 
 ...
 ```
@@ -101,26 +106,26 @@ Add the ArgonServiceProvider to the providers array in **config/app.php** (Make 
 
 ```
 'providers' => [
-    
+
     /*
      * Laravel Framework Service Providers...
      */
     ...
-    
+
     /*
      * Application Service Providers...
      */
     ...
-    
-    Escape\Argon\Core\ArgonServiceProvider::class,   
+
+    Escape\Argon\Core\ArgonServiceProvider::class,
 ],
 ```
 If you want to utilize Slack Error handler then
-change the line in **app/Exceptions/Handler.php** 
+change the line in **app/Exceptions/Handler.php**
 ```
 
 // use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
- 
+
 use Escape\Argon\Core\Exceptions\SlackHandler as ExceptionHandler;
 ```
 Or if you want to utilize an Email Error handler then change the line above to
@@ -165,7 +170,7 @@ php artisan vendor:publish --tag=listeners --force
 ```
 
 Add mapping to your EventServiceProvider.php
- 
+
 ```
 protected $listen = [
         'Escape\Argon\Events\AdminAccess' =>[
@@ -187,7 +192,7 @@ protected $listen = [
             'App\Listeners\OnUserDelete',
         ],
     ];
-    
+
 ```
 
 
@@ -201,7 +206,7 @@ Remove the 'auth' route Middleware from **app/Http/Kernel.php** file (again, Arg
 
 ## Enabling Image Optimization
 
-### System requirements 
+### System requirements
 
 ```bash
 sudo apt-get install jpegoptim
@@ -308,4 +313,4 @@ Unit tests are located in the `Tests/Cases` folder.
 Branch medialib has been merged to master and should not be used from now on.
 The last commit on medialib was 3eef6e1.
 
-Branch oldmedialib has been created as a reference to the legacy media library but it should be maintained only to certain degree. 
+Branch oldmedialib has been created as a reference to the legacy media library but it should be maintained only to certain degree.

@@ -21,13 +21,8 @@ class CreateEntityTypesTable extends Migration
             $table->softDeletes();
         });
 
-        $site = new EntityType();
-        $site->name = 'site';
-        $site->system = true;
-        $site->save();
-
         $page = new EntityType();
-        $page->name = 'page';
+        $page->name = 'Home page';
         $page->system = false;
         $page->save();
     }
