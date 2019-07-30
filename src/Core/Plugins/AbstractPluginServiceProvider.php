@@ -115,9 +115,23 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
     {
         $routes = Route::getRoutes();
 
-        foreach ($routes as $route) {
-            if ($route->uri() == ltrim($prefix.$path, '/')) {
-                if (count(array_intersect($route->methods(), $verbs))) {
+        foreach ($routes as $route)
+        {
+            if(legacyLv())
+            {
+                $uri = $route->getPath();
+                $methods = $route->getMethods();
+            }
+            else
+            {
+                $uri = $route->uri();
+                $methods = $route->methods();
+            }
+
+            if ($uri == ltrim($prefix.$path, '/'))
+            {
+                if (count(array_intersect($methods, $verbs)))
+                {
                     return false;
                 }
             }

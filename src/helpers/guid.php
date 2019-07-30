@@ -3,6 +3,16 @@ use Escape\Argon\Menus\Eloquent\MenuRepository;
 use Illuminate\Support\ViewErrorBag;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 
+function lv()
+{
+    return App::VERSION();
+}
+
+function legacyLv()
+{
+    return version_compare(lv(), "5.2", "lt");
+}
+
 /**
  * @return Escape\Argon\EntityManagement\Eloquent\EntityCache - registered as singleton in Escape\Argon\EntityManagement\EntityManagementServiceProvider
  */

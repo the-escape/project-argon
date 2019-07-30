@@ -12,9 +12,19 @@ class AuthenticationServiceProvider extends ServiceProvider
         // Register our Middleware
         /** @var Router $router */
         $router = $this->app['router'];
-        $router->aliasMiddleware('auth', Middleware\Authenticate::class);
-        $router->aliasMiddleware('role', Middleware\AssertRole::class);
-        $router->aliasMiddleware('perm', Middleware\AssertPermission::class);
+        // dd(auth());
+        if(legacyLv())
+        {
+            $router->middleware('auth', Middleware\Authenticate::class);
+            $router->middleware('role', Middleware\AssertRole::class);
+            $router->middleware('perm', Middleware\AssertPermission::class);
+        }
+        else
+        {
+            $router->aliasMiddleware('auth', Middleware\Authenticate::class);
+            $router->aliasMiddleware('role', Middleware\AssertRole::class);
+            $router->aliasMiddleware('perm', Middleware\AssertPermission::class);
+        }
 
         // Replace the AuthManager class with one of ours.
 //        AliasLoader::getInstance()->alias('Auth', Auth);

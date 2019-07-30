@@ -11,7 +11,11 @@
 
 @if(isset($data))
 
-    {!! (new Symfony\Component\VarDumper\VarDumper())->dump($data) !!}
+    @if(legacyLv())
+        {!! (new Illuminate\Support\Debug\Dumper())->dump($data) !!}
+    @else
+        {!! (new Symfony\Component\VarDumper\VarDumper())->dump($data) !!}
+    @endif
 
 @endif
 
