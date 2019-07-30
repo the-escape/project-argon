@@ -554,11 +554,11 @@ class EntityCache extends Model implements Compressable
         return null;
     }
 
-    public function findForPath($url=null, $status=1, $trigger404=true)
+    public function findForPath($url = null, $status = 1, $trigger404 = true, $ignorePreview = false)
     {
         $preview = request()->query->get("preview_page");
 
-        if($preview)
+        if($preview && !$ignorePreview)
         {
             $entityRepository = app()->make(EntityRepository::class);
 

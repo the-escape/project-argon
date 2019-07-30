@@ -28,6 +28,7 @@ use stdClass;
 use View;
 use Lang;
 use Illuminate\Support\Facades\DB;
+use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 
 class PagesController extends BaseController
 {
@@ -338,8 +339,13 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
-            'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' => RevisionStatus::PREVIEW, // if not $preview then will be published later
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -350,7 +356,8 @@ class PagesController extends BaseController
             return response($previewUrl);
         }
 
-        $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        // $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        $revision->publishRevision();
 
         $localisations = $entity->localisations;
 
@@ -427,8 +434,13 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
-            'status' =>  RevisionStatus::PREVIOUSLY_PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' =>  RevisionStatus::DRAFT,
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -471,14 +483,26 @@ class PagesController extends BaseController
         }
         else
         {
-            $currentRevision = $publishedRevision;
+            $newestDraft = $localisation->newestDraft();
+
+            if ($newestDraft && $newestDraft->created_at > $publishedRevision->created_at)
+            {
+                $currentRevision = $newestDraft;
+            }
+            else
+            {
+                $currentRevision = $publishedRevision;
+            }
+
         }
+
 
         $revisions = $localisation->archivedRevisions(15, ['*'], 'revisions');
 
         $revisionsPagination = easyPagination(range(1, $revisions->total()), $revisions->perPage(), $revisions->currentPage());
 
-        $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        // $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        $groups = $currentRevision->getGroups();
 
         $currentLocales = $page->getLocalisations()->getLocales();
 
@@ -491,6 +515,12 @@ class PagesController extends BaseController
 //            $nonSortableGroups = $page->getNonSortableGroups($localisation->getLocaleId());
 //        }
         $tabNav = $this->getTabNav($groups, $revisions);
+
+        $fronEndPage = $page->toPage();
+        $defaultFronEndPageUrl = $fronEndPage->getUrl();
+        $pageLocaleSlug = $localisation->getLocale()->getSlug();
+        $localisedFrontEndPageUrl = $pageLocaleSlug.$defaultFronEndPageUrl;
+        $localisedFrontEndPageUrlNoHttp = preg_replace('/https{0,1}:\/\//', '', url($localisedFrontEndPageUrl));
 
         return view(
             'argon::pages.edit',
@@ -505,7 +535,13 @@ class PagesController extends BaseController
                 'revisions' => $revisions,
                 'revisionsPagination' => $revisionsPagination,
                 'currentRevision' => $currentRevision,
-                'tabNav' => $tabNav
+                'tabNav' => $tabNav,
+                'fronEndPage' => $fronEndPage,
+                'defaultFronEndPageUrl' => $defaultFronEndPageUrl,
+                'pageLocaleSlug' => $pageLocaleSlug,
+                'localisedFrontEndPageUrl' => $localisedFrontEndPageUrl,
+                'defaultLocalisation' => $page->getDefaultLocalisation(),
+                'localisedFrontEndPageUrlNoHttp' => $localisedFrontEndPageUrlNoHttp,
             ]
         );
     }
@@ -859,6 +895,8 @@ class PagesController extends BaseController
     public function revisionRestore($revisionId, Request $request)
     {
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
+
+        /** @var EntityRevision $revision */
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
         if ($revision === null)
@@ -867,13 +905,30 @@ class PagesController extends BaseController
         }
 
         $localisation = $revision->localisation;
-
-        $revision->status = RevisionStatus::PUBLISHED;
-        $revision->save();
-
-        $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
-
         $entity = $localisation->entity;
+
+        // $revision->status = RevisionStatus::PUBLISHED;
+        // $revision->save();
+        // $revisionsRepository->archiveRevisions($localisation->id, $revision->id);
+
+        $revision->publishRevision();
+
+        if (!empty($revision->entity_groups->group_render))
+        {
+            $entity->group_render = $revision->entity_groups->group_render;
+        }
+
+        if (!empty($revision->entity_groups->group_order))
+        {
+            $entity->group_order = $revision->entity_groups->group_order;
+        }
+
+        if (!empty($revision->entity_redirects))
+        {
+            $entity->redirect_url = $revision->entity_redirects;
+        }
+
+        $entity->save();
 
         event(new PageSaved($entity, $localisation, $request));
 

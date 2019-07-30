@@ -30,15 +30,19 @@ class EntityRepository extends BaseRepository
 
         $node = null;
 
-        if ($path == '/') {
+        if ($path == '/')
+        {
             $node = $this->makeModel()->whereNull('parent_id');
 
-            if (!$preview) {
+            if (!$preview)
+            {
                 $node = $node->where('status', '=', $status);
             }
 
             $node = $node->first();
-        } else {
+        }
+        else
+        {
             $segments = explode('/', $path);
 
             array_unshift($segments, '/');
@@ -46,14 +50,17 @@ class EntityRepository extends BaseRepository
             /** @var Collection $nodes */
             $nodes = $this->model->whereIn('slug', $segments);
 
-            if (!$preview) {
+            if (!$preview)
+            {
                 $nodes = $nodes->where('status','=', $status);
             }
 
             $nodes = $nodes->with('type')->get();
 
-            foreach ($nodes as $idx => $entity) {
-                if ($entity->type->type != 'page'){
+            foreach ($nodes as $idx => $entity)
+            {
+                if ($entity->type->type != 'page')
+                {
                     $nodes->forget($idx);
                 }
             }
@@ -64,37 +71,42 @@ class EntityRepository extends BaseRepository
                 return $n->slug == last($segments);
             });
 
-            $segmentsToCheck = $segments;
-
-            foreach ($leafs as $leaf) {
+            foreach ($leafs as $leaf)
+            {
+                $segmentsToCheck = $segments;
                 $n = $leaf;
-                while ($n->parent_id != null) {
 
-                    if (!isset($nodes[$n->parent_id])) {
+                while ($n->parent_id != null)
+                {
+                    if (!isset($nodes[$n->parent_id]))
+                    {
                         continue 2;
                     }
 
                     $currentSegment = array_pop($segmentsToCheck);
 
-                    if ($n->slug != $currentSegment) {
-                        break;
+                    if ($n->slug != $currentSegment)
+                    {
+                        break 2;
                     }
 
                     $matched = $nodes[$n->parent_id];
-                    if($matched->slug != end($segmentsToCheck)) {
-                        array_push($segmentsToCheck, $currentSegment);
+
+                    if($matched->slug != end($segmentsToCheck))
+                    {
                         continue 2;
                     }
+
                     $n = $matched;
                 }
 
-                if ($n->parent_id == null) {
+                if ($n->parent_id == null)
+                {
                     // Found the leaf.
                     $node = $leaf;
                     break;
                 }
             }
-
         }
 
         return $node;

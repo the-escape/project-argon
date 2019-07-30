@@ -5651,11 +5651,11 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
             "div",
             { staticClass: "o-drag-select js-drag" },
             [
-              _vm._l(_vm.values, function(value, index) {
+              _vm._l(_vm.valueOptions, function(option, index) {
                 return _c("input", {
                   key: index,
                   attrs: { type: "hidden", name: _vm.inputName },
-                  domProps: { value: value }
+                  domProps: { value: option.value }
                 })
               }),
               _vm._v(" "),
@@ -5958,6 +5958,10 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
         var option = _this2.options.find(function (opt) {
           return opt.value === value;
         });
+
+        if (!option) {
+          return acc;
+        }
 
         acc.push(option);
         return acc;
@@ -10239,6 +10243,7 @@ var DirectoryViewvue_type_template_id_6b3caa6a_render = function() {
           { staticClass: "c-media-library__grid-wrap" },
           [
             _c("file-list", {
+              ref: "fileList",
               attrs: { items: _vm.active.items, folders: _vm.active.children }
             }),
             _vm._v(" "),
@@ -10298,6 +10303,9 @@ DirectoryViewvue_type_template_id_6b3caa6a_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/medialib/components/DirectoryView.vue?vue&type=template&id=6b3caa6a&
 
+// EXTERNAL MODULE: ./node_modules/timers-browserify/main.js
+var main = __webpack_require__("./node_modules/timers-browserify/main.js");
+
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/DirectoryView.vue?vue&type=script&lang=js&
 function DirectoryViewvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { DirectoryViewvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
@@ -10343,6 +10351,7 @@ function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { 
 //
 
 
+
 /* harmony default export */ var DirectoryViewvue_type_script_lang_js_ = ({
   data: function data() {
     return {
@@ -10385,6 +10394,7 @@ function DirectoryViewvue_type_script_lang_js_defineProperty(obj, key, value) { 
         items: items,
         folders: folders
       });
+      this.$refs.fileList.unhighlightItems();
     }
   }
 });
@@ -15737,9 +15747,6 @@ Rowvue_type_template_id_6f236b38_render._withStripped = true
 
 // CONCATENATED MODULE: ./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=template&id=6f236b38&
 
-// EXTERNAL MODULE: ./node_modules/timers-browserify/main.js
-var main = __webpack_require__("./node_modules/timers-browserify/main.js");
-
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/components/Row.vue?vue&type=script&lang=js&
 //
 //
@@ -19150,4 +19157,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.871b1c0e0767d348f85b.js.map
+//# sourceMappingURL=main.02f36af1b7baedc730ca.js.map

@@ -17,6 +17,9 @@ class EntityRevisionRepository extends BaseRepository
         return EntityRevision::class;
     }
 
+    /**
+     * @deprecated
+     */
     public function archiveRevisions($localisationId, $except)
     {
         $this->makeModel()

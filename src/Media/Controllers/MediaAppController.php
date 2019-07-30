@@ -78,6 +78,7 @@ class MediaAppController extends BaseController
                                 {
                                     $value = $value['id'];
                                 }
+                                // for instance location has an array for value but we're not interested in that
                                 if (strpos($value, $id) !== false)
                                 {
                                     // select field type to check if image/file
@@ -141,6 +142,7 @@ class MediaAppController extends BaseController
             {
                 $fields = json_decode($result->data_value, true);
 
+                $valid = false;
                 foreach ($fields as $field) {
                     if (isset($field['id']) && $field['id'] == $id || $field == $id)
                     {
@@ -164,7 +166,6 @@ class MediaAppController extends BaseController
                 unset($results[$i]);
             }
         }
-
         return $results;
     }
 
