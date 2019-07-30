@@ -36,7 +36,7 @@
 
         @include('argon::inc.listing.filters', [
             'filters' => [
-                'types' => legacyLv() ? $types->lists('name','id')->all() : $types->pluck('name','id')->all()
+                'types' => isLaravelVersionPre("5.3") ? $types->lists('name','id')->all() : $types->pluck('name','id')->all()
             ],
             'resetLinkUrl' => route('cms:blocks:manage'),
             'createLink' => [
