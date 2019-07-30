@@ -65,7 +65,7 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
         // Register our Middleware
         /** @var Router $router */
         $router = $this->app['router'];
-        if(legacyLv())
+        if(isLaravelVersionPre("5.4"))
         {
             $router->middleware('redirect', Middleware\RedirectMiddleware::class);
         }

@@ -117,7 +117,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
         foreach ($routes as $route)
         {
-            if(legacyLv())
+            if(isLaravelVersionPre("5.3"))
             {
                 $uri = $route->getPath();
                 $methods = $route->getMethods();

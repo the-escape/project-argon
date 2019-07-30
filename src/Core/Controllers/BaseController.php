@@ -18,7 +18,7 @@ abstract class BaseController extends Controller
 
     public function __construct(Request $request)
     {
-        if (legacyLv())
+        if (isLaravelVersionPre("5.3"))
         {
             $this->middleware('auth', ['except' => ['getLogin', 'postLogin', 'forgotPassword']]);
         }

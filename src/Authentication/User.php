@@ -88,7 +88,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getProfileAttribute()
     {
-        if (legacyLv())
+        if (isLaravelVersionPre("5.3"))
         {
             return $this->profileValues->lists('value','key')->all();
         }

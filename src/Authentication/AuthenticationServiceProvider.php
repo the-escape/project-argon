@@ -13,7 +13,7 @@ class AuthenticationServiceProvider extends ServiceProvider
         /** @var Router $router */
         $router = $this->app['router'];
         // dd(auth());
-        if(legacyLv())
+        if(isLaravelVersionPre("5.4"))
         {
             $router->middleware('auth', Middleware\Authenticate::class);
             $router->middleware('role', Middleware\AssertRole::class);

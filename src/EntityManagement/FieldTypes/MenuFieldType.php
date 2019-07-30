@@ -41,7 +41,7 @@ class MenuFieldType extends AbstractFieldType
         $settings = parent::getSettings();
         $opts = [];
 
-        if (legacyLv())
+        if (isLaravelVersionPre("5.3"))
         {
             $options = $this->getOptions()->sortBy('name')->lists('name', 'slug');
         }

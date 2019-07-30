@@ -24,7 +24,7 @@ class ArgonServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if (!legacyLv())
+        if (isLaravelVersionPost("5.5"))
         {
             Blade::withoutDoubleEncoding();
             Paginator::useBootstrapThree();

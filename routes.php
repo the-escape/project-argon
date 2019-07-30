@@ -6,7 +6,7 @@ $options = [
     'middleware' => ['web']
 ];
 
-if(legacyLv())
+if(isLaravelVersionPre("5.3"))
 {
     unset($options['middleware']);
 }
@@ -15,19 +15,19 @@ Route::group($options, function () {
 
     Route::get('login', [
         'as' => 'login',
-        'uses' => legacyLv() ?
+        'uses' => isLaravelVersionPre("5.3") ?
                     'Escape\\Argon\\Authentication\\Controllers\\LegacyAuthController@getLogin' :
                     'Escape\\Argon\\Authentication\\Controllers\\AuthController@showLoginForm'
     ]);
     Route::post('login', [
         'as' => 'login',
-        'uses' => legacyLv() ?
+        'uses' => isLaravelVersionPre("5.3") ?
                     'Escape\\Argon\\Authentication\\Controllers\\LegacyAuthController@postLogin' :
                     'Escape\\Argon\\Authentication\\Controllers\\AuthController@login'
     ]);
     Route::get('logout', [
         'as' => 'logout',
-        'uses' => legacyLv() ?
+        'uses' => isLaravelVersionPre("5.3") ?
                     'Escape\\Argon\\Authentication\\Controllers\\LegacyAuthController@getLogout' :
                     'Escape\\Argon\\Authentication\\Controllers\\AuthController@logout'
     ]);

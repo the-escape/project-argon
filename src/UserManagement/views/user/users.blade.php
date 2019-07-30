@@ -36,7 +36,7 @@
 
         @include('argon::inc.listing.filters', [
             'filters' => [
-                'role' => legacyLv() ? $roles->lists('name','id')->all() : $roles->pluck('name','id')->all()
+                'role' => isLaravelVersionPre("5.3") ? $roles->lists('name','id')->all() : $roles->pluck('name','id')->all()
             ],
             'resetLinkUrl' => route('cms:user:manage'),
             'createLink' => [

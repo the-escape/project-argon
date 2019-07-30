@@ -26,6 +26,7 @@
             "Escape\\Argon\\": "src"
         },
         "files": [
+            "src/helpers/helpers.php",
             "src/helpers/guid.php",
             "src/helpers/Solr.php"
         ]

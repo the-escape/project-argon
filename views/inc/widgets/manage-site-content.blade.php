@@ -1,4 +1,4 @@
-@if(legacyLv())
+@if(isLaravelVersionPre("5.7"))
 <div class="c-widget c-widget--background-image" style="background-image: url('{{ $bgImage or '' }}')">
 @else
 <div class="c-widget c-widget--background-image" style="background-image: url('{{ $bgImage ?? '' }}')">

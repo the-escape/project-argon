@@ -11,7 +11,7 @@
 
 @if(isset($data))
 
-    @if(legacyLv())
+    @if(isLaravelVersionPre("5.7"))
         {!! (new Illuminate\Support\Debug\Dumper())->dump($data) !!}
     @else
         {!! (new Symfony\Component\VarDumper\VarDumper())->dump($data) !!}
