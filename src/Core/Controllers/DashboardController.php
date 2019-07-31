@@ -28,6 +28,7 @@ class DashboardController extends BaseController
 
         view()->composer('argon::inc.widgets.manage-site-content', function ($view) {
             $randomImage = MediaItem::where('mimetype', 'like', "image%")->orderBy(DB::raw('rand()'))->first();
+            $bgImage = null;
 
             if (!empty($randomImage)) {
                 $bgImage = $randomImage->getUrl();
