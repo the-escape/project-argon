@@ -13,14 +13,14 @@ class InitialEntityRevisionLocalisation extends Migration
      */
     public function up()
     {
-//        $localisations = Localisation::all();
-//        foreach ($localisations as $localisation) {
-//            $revision = new EntityRevision();
-//            $revision->entity_localisation_id = $localisation->id;
-//            $revision->status = 2;
-//            $revision->created_by = 1;
-//            $revision->save();
-//        }
+       $localisations = Localisation::all();
+       foreach ($localisations as $localisation) {
+           $revision = new EntityRevision();
+           $revision->entity_localisation_id = $localisation->id;
+           $revision->status = 2;
+           $revision->created_by = 1;
+           $revision->save();
+       }
     }
 
     /**
@@ -30,8 +30,8 @@ class InitialEntityRevisionLocalisation extends Migration
      */
     public function down()
     {
-//        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-//        EntityRevision::truncate();
-//        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+       DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+       EntityRevision::truncate();
+       DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
