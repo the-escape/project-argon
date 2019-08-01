@@ -56,7 +56,7 @@
                             <div class="c-actions">
                                 <div class="c-actions__group">
                                     <button type="submit" class="o-btn o-btn--primary">Save</button>
-                                    <a href="#" class="o-btn" data-preview-id="{{ $currentRevision->id }}" target="_blank">Preview</a>
+                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $currentRevision->id }}" class="o-btn" target="_blank">Preview</a>
                                     <button type="submit" class="o-btn" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
                                     <a href="{{ route('cms:pages:manage') }}" class="o-btn">Cancel</a>
                                 </div>
@@ -205,7 +205,7 @@
                             <div class="c-actions">
                                 <div class="c-actions__group">
                                     <button type="submit" class="o-btn o-btn--primary">Save</button>
-                                    <a href="#" class="o-btn preview-page1" data-preview-id="{{ $currentRevision->id }}" target="_blank">Preview</a>
+                                    <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $currentRevision->id }}" class="o-btn preview-page1" target="_blank">Preview</a>
                                     <button type="submit" class="o-btn " data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save draft</button>
                                     <a href="{{ route('cms:pages:manage') }}" class="o-btn ">Cancel</a>
                                 </div>
