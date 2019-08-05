@@ -23,66 +23,23 @@ import FieldValues from './mixins/field-values.vue'
 import ValueObjs from './mixins/value-objs.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     mixins: [FieldValues, ValueObjs],
     components: {
         'validation': Validation
     },
     computed: {
         valueObj: function () {
-            let value
-            let field
-            if(this.comboId){
-                const combo = this.$store.getters.getField(this.comboId)
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-                if(combo && combo.values.length){
-                    const values = combo.values.filter(value => value.id === this.comboItemId)
-
-                    if(values.length && values[0][this.fieldId].length){
-                        return values[0][this.fieldId][0]
-                    } else {
-                        return {
-                            id: 0,
-                            value: ''
-                        }
-                    }
-                }
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-
-                if(field.values.length){
-                    return field.values[0]
-                }
-            }
+            return this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId])
         },
         checked: function () {
-            let value
-            let field
-            if(this.comboId){
-                const combo = this.$store.getters.getField(this.comboId)
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-                if(combo && combo.values.length){
-                    const values = combo.values.filter(value => value.id === this.comboItemId)
-
-                    if(values.length && values[0][this.fieldId].length){
-                        value = values[0][this.fieldId][0].value
-                    } else {
-                        value = field.options.settings.initial_value
-                    }
-                }
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-
-                if(field.values.length){
-                    value = field.values.map(value => value.value)[0]
-                }
+            let value = this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId])
+            let initialValue = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.initial_value')
+            if(value.value === ''){
+                return +initialValue
             }
 
-            if(value === ''){
-                return +field.options.settings.initial_value
-            }else{
-                return +value || 0
-            }
+            return +value.value
         }
     },
     methods: {
@@ -90,15 +47,17 @@ export default {
             valueObj.value = !newValue ? 1 : 0
 
             if(this.comboId){
-                this.$store.commit('updateComboFieldValue', {
+                this.$store.commit('fields/updateComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     newValue: valueObj
                 })
             } else {
-                this.$store.commit('updateValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/updateValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValue: valueObj
                 })
             }

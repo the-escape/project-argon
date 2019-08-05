@@ -1,0 +1,124 @@
+<form action="#">
+    <script>
+        window.fieldGroups = window.fieldGroups || {}
+        window.fieldGroups['test-group'] = {
+            header: 'Test Text',
+            fields: [
+                {{! {
+                    "id": 1,
+                    "options": {
+                        "typeKey": "text",
+                        "name": "single text",
+                        "settings": {
+                            "required": false,
+                            "multiline": false,
+                            "multiple": true,
+                            "minlength": 0,
+                            "maxlength": 0,
+                            "url": false,
+                            "integer": false,
+                            "float": false,
+                            "email": false,
+                            "phone": false
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": "",
+                    "values": [
+                        "one"
+                    ],
+                    "errors": []
+                }, }}
+                {
+                    "id": 5,
+                    "options": {
+                        "typeKey": "select",
+                        "name": "select",
+                        "settings": {
+                            "required": false,
+                            "multiple": true,
+                            "options": [
+                                {
+                                    "1": "item 1"
+                                },
+                                {
+                                    "2": "item 2"
+                                },
+                                {
+                                    "3": "item 3"
+                                },
+                                {
+                                    "4": "item 4"
+                                },
+                                {
+                                    "5": "item 5"
+                                },
+                                {
+                                    "6": "item 6"
+                                }
+                            ]
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": "",
+                    "values": [
+                        "1"
+                    ],
+                    "errors": []
+                },
+                {{! {
+                    "id": 2,
+                    "options": {
+                        "typeKey": "combo",
+                        "name": "Multi Combo",
+                        "settings": {
+                            "multiple": true
+                        }
+                    },
+                    "helpText": "",
+                    "message": "",
+                    "messageAfter": "",
+                    "fields": [
+                        {
+                            "id": 3,
+                            "options": {
+                                "typeKey": "text",
+                                "name": "single text",
+                                "settings": {
+                                    "required": false,
+                                    "multiline": false,
+                                    "multiple": false,
+                                    "minlength": 0,
+                                    "maxlength": 0,
+                                    "url": false,
+                                    "integer": false,
+                                    "float": false,
+                                    "email": false,
+                                    "phone": false
+                                }
+                            },
+                            "helpText": "",
+                            "message": "",
+                            "messageAfter": ""
+                        }
+                    ],
+                    "values": [
+                        {
+                            "3": {
+                                "id": 0,
+                                "value": 'two'
+                            }
+                        }
+                    ],
+                    "errors": []
+                } }}
+            ]
+        }
+
+
+    </script>
+    <div class="js-fields" data-name="test-group"></div>
+</form>
+

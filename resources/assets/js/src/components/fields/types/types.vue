@@ -1,6 +1,7 @@
 <template>
     <component
     v-bind:is="type"
+    :group-id="groupId"
     :field-id="field.id"
     :combo-id="comboId"
     :combo-item-id="comboItemId"
@@ -42,7 +43,7 @@ const typeMap = {
 
 export default {
     name: 'types',
-    props: ['field', 'comboId', 'comboItemId'],
+    props: ['groupId', 'field', 'comboId', 'comboItemId'],
     components: {
         'text-input': Text,
         'email-input': Email,

@@ -15,7 +15,7 @@ import ValueObjs from './mixins/value-objs.vue'
 import flatPickr from 'vue-flatpickr-component'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     mixins: [FieldValues, ValueObjs],
     components: {
         'validation': Validation,
@@ -46,15 +46,17 @@ export default {
             valueObj.value = newValue
 
             if(this.comboId){
-                this.$store.commit('updateComboFieldValue', {
+                this.$store.commit('fields/updateComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     newValue: valueObj
                 })
             } else {
-                this.$store.commit('updateValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/updateValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValue: valueObj
                 })
             }
@@ -66,14 +68,7 @@ export default {
     computed: {
         config: function () {
             const config = {}
-
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-            }
-            const fieldSettings = field.options.settings
+            const fieldSettings = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings')
 
             if(fieldSettings.time){
                 config.enableTime = true

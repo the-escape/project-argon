@@ -1,6 +1,9 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['boolean-test-group'] = [
+    window.fieldGroups['boolean-test-group'] =
+        {
+            header: 'boolean',
+            fields: [
         {
             "id": 1,
             "options": {
@@ -47,5 +50,7 @@
             "errors": []
         }
     ]
+        }
+
 </script>
 <div class="js-fields" data-name="boolean-test-group"></div>

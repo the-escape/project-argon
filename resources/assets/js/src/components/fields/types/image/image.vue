@@ -28,7 +28,7 @@ import FieldValues from '../mixins/field-values.vue'
 import { setupMedialibPicker, PickMedia } from '../../../medialib'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
     mixins: [FieldValues],
     data() {
         return {
@@ -59,15 +59,17 @@ export default {
             this.valueObj.value = newValue
 
             if(this.comboId){
-                this.$store.commit('updateComboFieldValue', {
+                this.$store.commit('fields/updateComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     newValue: this.valueObj
                 })
             } else {
-                this.$store.commit('updateValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/updateValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValue: this.valueObj
                 })
             }

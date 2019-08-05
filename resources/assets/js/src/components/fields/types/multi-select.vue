@@ -51,7 +51,7 @@ import Validation from './util/validation.vue'
 import SelectValues from './mixins/select-values.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     mixins: [FieldValues, SelectValues],
     components: {
         'validation': Validation

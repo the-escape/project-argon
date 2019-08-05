@@ -1,6 +1,9 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['menu-test-group'] = [
+    window.fieldGroups['menu-test-group'] =
+    {
+        header: 'menu',
+        fields: [
         {
             "id": 20,
             "options": {
@@ -50,5 +53,7 @@
             "errors": []
         }
     ]
+    }
+
 </script>
 <div class="js-fields" data-name="menu-test-group"></div>

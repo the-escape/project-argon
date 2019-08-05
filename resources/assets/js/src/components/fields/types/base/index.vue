@@ -2,7 +2,7 @@
     <div class="o-form__group">
         <validation :status-error="errors" :input-name="inputName">
             <label :for="inputName">{{ name }}</label>
-            <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
+            <multi :field-id="fieldId" :group-id="groupId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
                     <field-base :icons="icons" :type="type" :value-obj="valueObj" :input-name="inputName" @change="updateValue(valueObj, $event)" />
                 </template>
@@ -19,7 +19,7 @@ import FieldValues from '../mixins/field-values.vue'
 import Base from './base.vue'
 
 export default {
-    props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
     mixins: [FieldValues],
     components: {
         'field-base': Base,
@@ -31,15 +31,17 @@ export default {
             valueObj.value = newValue
 
             if(this.comboId){
-                this.$store.commit('updateComboFieldValue', {
+                this.$store.commit('fields/updateComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     newValue: valueObj
                 })
             } else {
-                this.$store.commit('updateValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/updateValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValue: valueObj
                 })
             }

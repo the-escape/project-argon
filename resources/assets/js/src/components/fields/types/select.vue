@@ -1,6 +1,7 @@
 <template>
     <component
     v-bind:is="type"
+    :group-id="groupId"
     :field-id="fieldId"
     :combo-id="comboId"
     :combo-item-id="comboItemId"
@@ -12,23 +13,22 @@ import SingleSelect from './single-select.vue'
 import MultiSelect from './multi-select.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     components: {
         'single': SingleSelect,
         'multi': MultiSelect
     },
     computed: {
         type: function () {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
+            const settings = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings')
+            if(!settings){
+                return 'single'
             }
 
-            if(field.options.settings.multiple || field.options.settings.multiple_instances){
+            if(settings.multiple || settings.multiple_instances){
                 return 'multi'
             }
+
             return 'single'
         }
     }

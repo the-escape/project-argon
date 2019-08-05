@@ -1,6 +1,9 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['button-test-group'] = [
+    window.fieldGroups['button-test-group'] =
+        {
+            header: 'button',
+            fields: [
         {
             "id": 15,
             "options": {
@@ -34,6 +37,8 @@
             "errors": []
         }
     ]
+        }
+
 </script>
 <main class="l-container l-full">
     <div class="js-fields" data-name="button-test-group"></div>

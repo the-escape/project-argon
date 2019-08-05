@@ -1,6 +1,7 @@
 <template>
     <component
     v-bind:is="type"
+    :group-id="groupId"
     :field-id="fieldId"
     :combo-id="comboId"
     :combo-item-id="comboItemId"
@@ -11,35 +12,24 @@
 
 <script>
 import base from './base/index.vue'
-import textarea from './textarea/index.vue'
+import textarea from './textarea.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     components: {
         'base-input': base,
         'textarea-input': textarea
     },
     computed: {
         type: function() {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-            }
-
+            let field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId])
             if(field.options.settings.multiline){
                 return 'textarea-input'
             }
             return 'base-input'
         },
         icons: function () {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-            }
+            let field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId])
 
             return {
                 preIcon: (field && field.options.preIcon) || false,

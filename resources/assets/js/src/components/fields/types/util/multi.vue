@@ -5,7 +5,7 @@
                 <draggable v-model="values" @end="onMove" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
                     <div class="o-multi__item" v-for="value in values" :key="value.id">
                         <div class="o-multi__item-wrap">
-                            <button class="o-multi__drag-handle js-multi-drag" @click="preventDefault($event)">
+                            <button class="o-multi__drag-handle js-multi-drag" @click.prevent>
                                 <div class="o-multi__drag-wrap">
                                     <svg>
                                         <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
@@ -23,7 +23,7 @@
                 </draggable>
             </div>
             <div class="o-multi__foot">
-                <button @click="addEmptyValue($event)" class="o-btn o-btn--sm">Add</button>
+                <button @click.prevent="addEmptyValue" class="o-btn o-btn--sm">Add</button>
             </div>
         </div>
         <template v-if="!isMultiple">
@@ -43,12 +43,9 @@ export default {
     components:{
         'confirm-btn': ConfirmBtn
     },
-    props: ['inputName', 'fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'inputName', 'fieldId', 'comboId', 'comboItemId'],
     mixins: [valueObjs],
     methods: {
-        preventDefault: function(evt){
-            evt.preventDefault()
-        },
         onMove: function () {
             let name = 'move-' + this.fieldId
             if(this.comboId){
@@ -56,38 +53,40 @@ export default {
             }
             EventBus.$emit(name)
         },
-        addEmptyValue: function (evt){
-            evt.preventDefault()
+        addEmptyValue: function (){
+            const field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId])
 
             if(this.comboId){
-                const field = this.$store.getters.getComboField(this.comboId, this.fieldId)
                 const newEmptyValue = deepClone(field.emptyValue)
-                this.$store.commit('addComboFieldValue', {
+                this.$store.commit('fields/addComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
-                    comboItemId: this.comboItemId,
+                    comboItemID: this.comboItemId,
                     valueObj: newEmptyValue
                 })
             }else{
-                const field = this.$store.getters.getField(this.fieldId)
                 const newEmptyValue = deepClone(field.emptyValue)
-                this.$store.commit('addValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/addValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     valueObj: newEmptyValue
                 })
             }
         },
         deleteValue: function(valueID) {
             if(this.comboId){
-                this.$store.commit('removeComboFieldValue', {
+                this.$store.commit('fields/removeComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
-                    comboItemId: this.comboItemId,
+                    comboItemID: this.comboItemId,
                     valueID
                 })
             } else {
-                this.$store.commit('removeValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/removeValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     valueID
                 })
             }
@@ -100,15 +99,17 @@ export default {
             }
 
             if(this.comboId){
-                this.$store.commit('addComboFieldValue', {
+                this.$store.commit('fields/addComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     valueObj: duplicateVal
                 })
             }else{
-                this.$store.commit('addValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/addValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     valueObj: duplicateVal
                 })
             }
@@ -116,13 +117,7 @@ export default {
     },
     computed: {
         isMultiple: function () {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            } else {
-                field = this.$store.getters.getField(this.fieldId)
-            }
-            return field.options.settings.multiple
+            return this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.multiple')
         }
     }
 }

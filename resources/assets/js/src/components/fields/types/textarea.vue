@@ -2,7 +2,7 @@
     <div class="o-form__group">
         <validation :status-error="errors" :input-name="inputName">
             <label :for="inputName">{{ name }}</label>
-            <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
+            <multi :field-id="fieldId" :group-id="groupId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
                     <textarea :id="inputName" :name="inputName" v-on:keyup.stop="updateValue(valueObj, $event.target.value)" :value="valueObj.value"></textarea>
                 </template>
@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import Validation from '../util/validation.vue'
-import Multi from '../util/multi.vue'
-import FieldValues from '../mixins/field-values.vue'
+import Validation from './util/validation.vue'
+import Multi from './util/multi.vue'
+import FieldValues from './mixins/field-values.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     components: {
         'validation': Validation,
         'multi': Multi
@@ -29,15 +29,17 @@ export default {
             valueObj.value = newValue
 
             if(this.comboId){
-                this.$store.commit('updateComboFieldValue', {
+                this.$store.commit('fields/updateComboItemFieldValue', {
+                    groupID: this.groupId,
                     fieldID: this.fieldId,
                     comboID: this.comboId,
                     comboItemId: this.comboItemId,
                     newValue: valueObj
                 })
             } else {
-                this.$store.commit('updateValue', {
-                    fieldID: this.fieldId,
+                this.$store.commit('fields/updateValue', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValue: valueObj
                 })
             }

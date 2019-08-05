@@ -2,9 +2,9 @@
     <div class="o-form__group">
         <validation :status-error="errors" :input-name="inputName">
             <label :for="inputName + '[alt]'">{{ name }}</label>
-            <multi :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
+            <multi :group-id="groupId" :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :input-name="inputName">
                 <template slot-scope="{ valueObj }">
-                    <field-image :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :value-obj="valueObj" />
+                    <field-image :group-id="groupId" :field-id="fieldId" :combo-id="comboId" :combo-item-id="comboItemId" :value-obj="valueObj" />
                 </template>
             </multi>
         </validation>
@@ -19,7 +19,7 @@ import FieldValues from '../mixins/field-values.vue'
 import Image from './image.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     mixins: [FieldValues],
     components: {
         'validation': Validation,

@@ -12,18 +12,13 @@
 import base from './base/index.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
     components: {
         'base-input': base
     },
     computed: {
         icons: function() {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
-            }
+            let field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId])
 
             return {
                 preIcon: (field && field.options.preIcon) || {

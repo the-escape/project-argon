@@ -59,7 +59,7 @@ function init () {
     Tabs()
     PageEdit()
     MenuEdit()
-    cropperTest()
+    // cropperTest()
     formSubmits()
     SiteTree()
 
@@ -109,7 +109,7 @@ function formSubmits () {
     const formEls = document.querySelectorAll('form.js-prevent-leave')
     const forms = Array.from(formEls)
     forms.forEach(form => {
-        form.addEventListener('submit', (evt) => {
+        form.addEventListener('submit', evt => {
             allowPageLeave()
             const submitBtnsEls = document.querySelectorAll('[type=submit]')
             const submitBtns = Array.from(submitBtnsEls)

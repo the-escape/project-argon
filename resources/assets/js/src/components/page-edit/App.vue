@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import Block from './components/Block.vue'
 import { changeTab } from '../../ui/tabs'
 import { preventPageLeave } from '../../ui'
@@ -54,10 +55,6 @@ export default {
     },
     data () {
         return {
-            nonSortableRenderingGroups: [],
-            renderingGroups: [],
-            blockList: [],
-            hasRenderable: false,
             isDragging: false,
             dragOptions: {
                 group: {
@@ -66,16 +63,8 @@ export default {
                     put: true
                 },
                 animation: 75
-            },
-            renderSearch: '',
-            blockSearch: ''
+            }
         }
-    },
-    created: function () {
-        this.nonSortableRenderingGroups = window.groups.filter(el => (!el.isRenderable || el.isRendering) && !el.isSortable && !el.isTab)
-        this.renderingGroups = window.groups.filter(el => (!el.isRenderable || el.isRendering) && el.isSortable && !el.isTab)
-        this.blockList = window.groups.filter(el => el.isRenderable && !el.isRendering)
-        this.hasRenderable = !!window.groups.find(group => group.isRenderable)
     },
     computed: {
         renderingDragGroup: {
@@ -83,10 +72,8 @@ export default {
                 return this.renderingGroups
             },
             set (values) {
-                preventPageLeave()
-                this.renderingGroups = values.map(el => {
-                    el.isRendering = true
-                    return el
+                this.$store.commit('blockSelect/updateRenderingBlockList', {
+                    blocks: values
                 })
             }
         },
@@ -95,48 +82,50 @@ export default {
                 return this.blockList
             },
             set (values) {
-                preventPageLeave()
-                this.blockList = values.map(el => {
-                    el.isRendering = false
-                    return el
+                this.$store.commit('blockSelect/updateBlockList', {
+                    blocks: values
                 })
             }
         },
-        filteredBlockList: function () {
-            return this.blockList.filter(block => {
-                return block.name.toLowerCase().includes(this.blockSearch)
-            })
+        renderSearch: {
+            get () {
+                return this.$store.state.blockSelect.renderSearch
+            },
+            set (value) {
+                this.$store.commit('blockSelect/setRenderSearch', {
+                    searchString: value
+                })
+            }
         },
-        filteredRenderList: function () {
-            return this.renderingGroups.filter(block => {
-                return block.name.toLowerCase().includes(this.renderSearch)
-            })
+        blockSearch: {
+            get () {
+                return this.$store.state.blockSelect.blockSearch
+            },
+            set (value) {
+                this.$store.commit('blockSelect/setBlockSearch',  {
+                    searchString: value
+                })
+            }
         },
-        filteredRenderNonSortList: function () {
-            return this.nonSortableRenderingGroups.filter(block => {
-                return block.name.toLowerCase().includes(this.renderSearch)
-            })
-        },
-        renderOrder: function () {
-            return this.renderingGroups.map(block => block.id).join(',')
-        }
+        ...mapState('blockSelect', [
+            'nonSortableRenderingGroups',
+            'renderingGroups',
+            'blockList',
+            'hasRenderable'
+        ]),
+        ...mapGetters('blockSelect', [
+            'filteredRenderList',
+            'filteredBlockList',
+            'filteredRenderNonSortList',
+            'renderOrder'
+        ])
     },
     methods: {
         addItem: function (id) {
-            const item = this.blockList.find(el => el.id === id)
-            if(!item){
-                return
-            }
-            this.blockList = this.blockList.filter(el => el.id !== id)
-            this.renderingDragGroup = [...this.renderingGroups, item]
+            this.$store.commit('blockSelect/addBlockToRendering', { id })
         },
         removeItem: function (id) {
-            const item = this.renderingGroups.find(el => el.id === id)
-            if(!item){
-                return
-            }
-            this.renderingGroups = this.renderingGroups.filter(el => el.id !== id)
-            this.blockDragList = [...this.blockList, item]
+            this.$store.commit('blockSelect/removeBlockFromRendering', { id })
         },
         editBlock: function (id, title) {
             changeTab(`group-${id}`, title)

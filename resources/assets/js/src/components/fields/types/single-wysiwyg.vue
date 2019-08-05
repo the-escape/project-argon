@@ -66,13 +66,10 @@ export default {
     },
     computed: {
         config: function () {
-            let field
-            if(this.comboId){
-                field = this.$store.getters.getComboField(this.comboId, this.fieldId)
-            }else{
-                field = this.$store.getters.getField(this.fieldId)
+            const fieldConfig = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.editor_options')
+            if(!fieldConfig){
+                return this.defaultConfig
             }
-            const fieldConfig = field.options.settings['editor_options']
 
             let config = {}
 

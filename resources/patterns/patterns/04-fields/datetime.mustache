@@ -1,6 +1,9 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['datetime-test-group'] = [
+    window.fieldGroups['datetime-test-group'] =
+    {
+        headers: 'datetime',
+        fields: [
         {
             "id": 23,
             "options": {
@@ -58,5 +61,7 @@
             "errors": []
         }
     ]
+    }
+
 </script>
 <div class="js-fields" data-name="datetime-test-group"></div>

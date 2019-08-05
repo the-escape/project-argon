@@ -1,6 +1,9 @@
 <script>
     window.fieldGroups = window.fieldGroups || {}
-    window.fieldGroups['select-test-group'] = [
+    window.fieldGroups['select-test-group'] =
+    {
+        header: 'select',
+        fields:     [
         {
             "id": 5,
             "options": {
@@ -74,5 +77,7 @@
             ]
         }
     ]
+    }
+
 </script>
 <div class="js-fields" data-name="select-test-group"></div>

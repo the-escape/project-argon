@@ -103,7 +103,7 @@ import Validation from '../util/validation.vue'
 import FieldValues from '../mixins/field-values.vue'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
     components: {
         'input-icon': InputIcon,
         'validation': Validation,
@@ -172,15 +172,17 @@ export default {
 
             this.$nextTick(() => {
                 if(this.comboId){
-                    this.$store.commit('updateComboFieldValue', {
+                    this.$store.commit('fields/updateComboItemFieldValue', {
+                        groupID: this.groupId,
                         fieldID: this.fieldId,
                         comboID: this.comboId,
                         comboItemId: this.comboItemId,
                         newValue: this.valueObj
                     })
                 } else {
-                    this.$store.commit('updateValue', {
-                        fieldID: this.fieldId,
+                    this.$store.commit('fields/updateValue', {
+                        groupID: this.groupId,
+                        id: this.fieldId,
                         newValue: this.valueObj
                     })
                 }
