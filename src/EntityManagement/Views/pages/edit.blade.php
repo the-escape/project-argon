@@ -63,6 +63,15 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
             @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
 
+                <div class="pull-right clearfix">
+                    <a href="{{ route('cms:pages:download_translation_template', [$page->getId(), $localeId]) }}" class="btn btn-primary-outline btn-sm" target="_blank"><span class="fa fa-download"></span> Translation template</a>
+                    @if($defaultLocalisation->getLocaleId() === (int) $localeId)
+                        <a href="#" dosabled class="btn btn-primary-outline btn-sm disabled"><span class="fa fa-upload"></span> Import translation</a>
+                    @else
+                        <a href="#" class="btn btn-primary-outline btn-sm import-translation"><span class="fa fa-upload"></span> Import translation</a>
+                    @endif
+                </div>
+
                 <ul class="nav nav-tabs">
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
@@ -503,6 +512,39 @@ $defaultLocalisation = $page->getDefaultLocalisation();
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div class="modal fade" id="importTranslationModal" tabindex="-1" role="dialog" aria-labelledby="importTranslationLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="importTranslationLabel">Import {{ $localisation->locale->name }} translation</h4>
+                </div>
+                <form action="{{ route('cms:pages:import_translation', [$page->getId(), $localeId]) }}" method="POST" enctype="multipart/form-data">
+
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="xml-translation">Translation file (XML)</label>
+                                <input type="file" name="xml" id="xml-translation" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 @stop
 
 @section('footer')
@@ -563,6 +605,12 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             @if($page->getSetting($localeId, "pointer"))
                 sitetreeInstance().select_node("node-{{ $page->getSetting($localeId, "pointer") }}");
             @endif
+
+            $('.import-translation').click(function(e) {
+                e.preventDefault();
+
+                $('#importTranslationModal').modal();
+            });
 
         })();
 

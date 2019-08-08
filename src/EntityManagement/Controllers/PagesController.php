@@ -26,6 +26,13 @@ use Redirect;
 use stdClass;
 use View;
 use Lang;
+use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
+use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
+use Illuminate\Support\Facades\Validator;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use DOMDocument;
+use Illuminate\Support\Facades\DB;
 
 class PagesController extends BaseController
 {
@@ -845,5 +852,407 @@ class PagesController extends BaseController
         EntityCache::cache($entity, $localisation, $revision);
 
         return back()->with('message', 'Revision restored.');
+    }
+
+    public function importTranslation($pageId, $localeId, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'xml' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $file = $request->file('xml');
+
+        libxml_use_internal_errors(true);
+
+        $xml = new DOMDocument("1.0", "utf-8");
+        $xml->load($file);
+
+        if ($xml === false)
+        {
+            $errors = libxml_get_errors();
+            libxml_clear_errors();
+
+            $validator->errors()->add('xml', 'The uploaded file is invalid.');
+            foreach($errors as $error)
+            {
+                $validator->errors()->add('xml', $error->message);
+            }
+
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $schema = __DIR__.'/../../../public/translation-schema.xsd';
+
+        if (file_exists($schema) && !$xml->schemaValidate($schema)) {
+            $validator->errors()->add('xml', 'The uploaded file has failed the schema valiadtion.');
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $xmlData = $this->getDataFromImportedTranslationXml($xml);
+
+        $typeRepository = app()->make(EntityTypeRepository::class);
+        $fieldDataRepository = app()->make(FieldDataRepository::class);
+        $entityRepository = app()->make(EntityRepository::class);
+        $revisionRepository = app()->make(EntityRevisionRepository::class);
+        $solr = app()->make(Solr::class);
+
+        $pageData = [];
+
+        $page = $entityRepository->find($pageId);
+        $defaultLocalisation = $page->getDefaultLocalisation();
+        $latestRevision = $defaultLocalisation->publishedRevision();
+        $latestRevisionFields = $latestRevision->getFields();
+
+        $redirect_url = ($page->redirect_url instanceof stdClass) ? $page->redirect_url : new stdClass();
+        $redirect_url->{$localeId} = isset($redirect_url->{$defaultLocalisation->getLocaleId()}) ? $redirect_url->{$defaultLocalisation->getLocaleId()} : null;
+        $pageData['redirect_url'] = $redirect_url;
+
+        $group_order = ($page->group_order instanceof stdClass) ? $page->group_order : new stdClass();
+        $group_order->{$localeId} = isset($group_order->{$defaultLocalisation->getLocaleId()}) ? $group_order->{$defaultLocalisation->getLocaleId()} : null;
+        $pageData['group_order'] = $group_order;
+
+        $group_render = ($page->group_render instanceof stdClass) ? $page->group_render : new stdClass();
+        $group_render->{$localeId} = isset($group_render->{$defaultLocalisation->getLocaleId()}) ? $group_render->{$defaultLocalisation->getLocaleId()} : null;
+        $pageData['group_render'] = $group_render;
+
+        $page->update($pageData);
+
+
+
+        $currentLocale = Locale::find($localeId);
+        $currentLocalisation = $page->getLocalisation($currentLocale);
+
+        DB::beginTransaction();
+
+        try
+        {
+            $revision = $revisionRepository->create([
+                'entity_localisation_id' => $currentLocalisation->getId(),
+                'status' => RevisionStatus::PUBLISHED, // TODO: check if needs to be published straight away
+                'created_by' => $request->user()->id
+            ]);
+
+            $type = $typeRepository->find($page->entity_type_id);
+            $fields = $type->fields;
+
+            foreach ($fields as $field)
+            {
+                if (!$latestRevisionFields->has($field->id))
+                {
+                    continue;
+                }
+
+                switch ($field->field_type)
+                {
+                    case 'image':
+                    case 'file':
+                    case 'location':
+                    case 'select':
+                    case 'item':
+                    case 'grid':
+                        $value = $latestRevisionFields[$field->id]->getData();
+                        break;
+                    case 'combo':
+                        $defaultValue = $latestRevisionFields[$field->id]->getData();
+                        $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : [];
+                        $vKeys = array_keys($value);
+                        $dvKeys = array_keys($defaultValue);
+
+                        foreach($value as $hash => $combo)
+                        {
+                            $valueIndex = array_search($hash, $vKeys);
+                            $defaultHash = $valueIndex !== false && isset($dvKeys[$valueIndex]) ? $dvKeys[$valueIndex] : false;
+
+                            if ($defaultHash)
+                            {
+                                $defaultValueFields = $defaultValue[$defaultHash]->fields;
+
+                                foreach($defaultValueFields as $subfieldId => $subfieldValue)
+                                {
+                                    if (!isset($combo->fields[$subfieldId]))
+                                    {
+                                        $combo->fields[$subfieldId] = $subfieldValue;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
+                    default:
+                        $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : '';
+                        break;
+                }
+
+                FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $currentLocale);
+            }
+
+            $revisionRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+
+            EntityCache::cache($page, $currentLocalisation);
+
+            $solr->indexEntity($page, $currentLocalisation);
+
+            DB::commit();
+
+        }
+        catch(Exception $e)
+        {
+            DB::rollBack();
+
+            dd($e);
+
+            return Redirect::route('cms:pages:edit_locale', [
+                'page' => $pageId,
+                'locale' => $currentLocalisation->getLocaleId(),
+            ])->with('message', 'Something went wrong when saving the translation.');
+        }
+
+        return Redirect::route('cms:pages:edit_locale', [
+            'page' => $pageId,
+            'locale' => $currentLocalisation->getLocaleId(),
+        ])->with('message', 'Translation uploaded successfully.');
+    }
+
+    private function getDataFromImportedTranslationXml($xml)
+    {
+        $dom = $xml->documentElement;
+        $fields = $dom->getElementsByTagName('field');
+        if($fields->length)
+        {
+            foreach($fields as $field)
+            {
+                $xmlFieldId = $field->getAttribute('id');
+                $xmlFieldType = $field->getAttribute('type');
+
+                $translationContent = $field->getElementsByTagName('translationContent');
+                if($xmlFieldType !== 'combo' && $translationContent->length)
+                {
+                    $xmlFieldValue = [];
+                    foreach($translationContent as $node)
+                    {
+                        $xmlFieldValue[] = $node->nodeValue;
+                    }
+
+                    $xmlData[$xmlFieldId] = $xmlFieldValue;
+                }
+
+                $subfieldsWrapper = $field->getElementsByTagName('subfields');
+                if($subfieldsWrapper->length)
+                {
+                    $subfieldsNode = $subfieldsWrapper->item(0); // need multiple!
+                    $subfields = $subfieldsNode->getElementsByTagName('field');
+                    if ($subfields->length)
+                    {
+                        $xmlFieldSubfields = [];
+
+                        foreach($subfields as $subfield)
+                        {
+                            $xmlSubFieldValue = [];
+                            $xmlSubFieldId = $subfield->getAttribute('id');
+                            $xmlSubFieldType = $subfield->getAttribute('type');
+
+                            $translationContent = $subfield->getElementsByTagName('translationContent');
+                            if($translationContent->length)
+                            {
+                                foreach($translationContent as $node)
+                                {
+                                    $xmlSubFieldValue[] = $node->nodeValue;
+                                }
+                            }
+
+                            if($xmlSubFieldType !== 'grid')
+                            {
+                                $xmlFieldSubfields['fields'][$xmlSubFieldId] = $xmlSubFieldValue;
+                            }
+                        }
+
+                        $xmlData[$xmlFieldId][guid()] = (object) $xmlFieldSubfields;
+                    }
+                }
+            }
+        }
+
+        return $xmlData;
+    }
+
+    public function downloadTranslationTemplate($pageId, $localeId)
+    {
+        $entityRepository = app()->make(EntityRepository::class);
+        $groupRepository = app()->make(EntityGroupRepository::class);
+        $localeRepository = app()->make(LocaleRepository::class);
+
+        /** @var Entity $page */
+        $page = $entityRepository->find($pageId);
+
+        $defaultLocale = $localeRepository->getDefault(); // original content
+        $currentLocale = Locale::find($localeId); // translation
+
+        $defaultLocalisation = $page->getLocalisation($defaultLocale);
+        $currentLocalisation = $page->getLocalisation($currentLocale);
+
+        $defaultPublishedRevision = $defaultLocalisation->publishedRevision();
+        $currentPublishedRevision = $currentLocalisation->publishedRevision();
+
+        $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
+        $fields = [];
+
+        foreach($groups as $group)
+        {
+            foreach ($group->getFields() as $field)
+            {
+                $fieldValue = $defaultPublishedRevision->getField($field->getId());
+                $translationFieldValue = $currentPublishedRevision->getField($field->getId());
+
+                $fields[] = [
+                    'field' => $field,
+                    'content' => $fieldValue,
+                    'translation' => $translationFieldValue,
+                ];
+            }
+        }
+
+        $xml = $this->generateXmlFile($fields);
+        $fileName = sprintf('Translation %s %s.xml', strtoupper($currentLocale->language->language_code), $page->name);
+
+        return response($xml, 200, [
+            'Content-Type' => 'application/xml; charset=utf-8',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Disposition' => sprintf('attachment; filename=%s', $fileName),
+        ]);
+    }
+
+    private function generateXmlFile(array $fields)
+    {
+        // TODO: need to reference the schema in an xml
+        $xml = new DOMDocument( "1.0", "utf-8" );
+
+        $xmlFields = $xml->createElement('translation');
+
+        $skipFieldTypes = [
+            'boolean',
+            'item',
+            'image',
+            'file',
+            'video',
+            'user',
+            'select',
+            'colourpicker',
+            'datetime',
+            'location',
+            'button',
+            'grid',
+        ];
+
+        foreach($fields as $field)
+        {
+            if(!empty($field['content']) && !$field['content']->isEmpty())
+            {
+                if ($field['field'] instanceof ComboFieldType)
+                {
+                    $hash = guid();
+                    $originalValue = $field['content'];
+                    $translationValue = $field['translation'];
+
+                    $xmlField = $xml->createElement('field');
+                    $xmlField->setAttribute('label', $field['field']->getFieldName());
+                    $xmlField->setAttribute('name', $field['field']->getFormFieldName($hash));
+                    $xmlField->setAttribute('id', $field['field']->getId());
+                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? "true" : "false");
+                    $xmlField->setAttribute('type', $field['field']->getKey());
+
+                    $subfields = $field['field']->getSubFields();
+
+                    $xmlSubFields = $xml->createElement('subfields');
+
+                    foreach($subfields as $subfield)
+                    {
+                        $subfieldValue = $originalValue->field($subfield->getFieldSlug());
+                        $subfieldTranslationValue = $translationValue ? $translationValue->field($subfield->getFieldSlug()) : null;
+
+                        if(!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty())
+                        {
+                            $xmlSubField = $xml->createElement('field');
+                            $xmlSubField->setAttribute('label', $subfield->getFieldName());
+                            $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
+                            $xmlSubField->setAttribute('id', $subfield->getId());
+                            $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? "true" : "false");
+                            $xmlSubField->setAttribute('type', $subfield->getKey());
+
+                            foreach($subfieldValue as $value)
+                            {
+                                $value = htmlspecialchars($value);
+                                $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                                $xmlSubField->appendChild($xmlOriginalContent);
+                            }
+
+                            if(!empty($subfieldTranslationValue))
+                            {
+                                foreach($subfieldTranslationValue as $value)
+                                {
+                                    $value = htmlspecialchars($value);
+                                    $xmlTranslationContent = $xml->createElement('translationContent', $value);
+                                    $xmlSubField->appendChild($xmlTranslationContent);
+                                }
+                            }
+                            else
+                            {
+                                $xmlTranslationContent = $xml->createElement('translationContent');
+                                $xmlSubField->appendChild($xmlTranslationContent);
+                            }
+
+                            $xmlSubFields->appendChild($xmlSubField);
+                        }
+                    }
+                    $xmlField->appendChild($xmlSubFields);
+                    $xmlFields->appendChild($xmlField);
+                }
+                elseif(!in_array($field['field']->getKey(), $skipFieldTypes))
+                {
+                    $hash = '';
+
+                    $xmlField = $xml->createElement('field');
+                    $xmlField->setAttribute('label', $field['field']->getFieldName());
+                    $xmlField->setAttribute('name', $field['field']->getFormFieldName($hash));
+                    $xmlField->setAttribute('id', $field['field']->getId());
+                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? "true" : "false");
+                    $xmlField->setAttribute('type', $field['field']->getKey());
+
+                    foreach($field['content'] as $value)
+                    {
+                        $value = htmlspecialchars($value);
+                        $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                        $xmlField->appendChild($xmlOriginalContent);
+                    }
+
+
+                    if(!empty($field['translation']))
+                    {
+                        foreach($field['translation'] as $value)
+                        {
+                            $value = htmlspecialchars($value);
+                            $xmlTranslationContent = $xml->createElement('translationContent', $value);
+                            $xmlField->appendChild($xmlTranslationContent);
+                        }
+                    }
+                    else
+                    {
+                        $xmlTranslationContent = $xml->createElement('translationContent');
+                        $xmlField->appendChild($xmlTranslationContent);
+                    }
+
+                    $xmlFields->appendChild($xmlField);
+                }
+
+            }
+        }
+
+        $xml->appendChild($xmlFields);
+
+        return $xml->saveXML();
     }
 }

@@ -1,0 +1,40 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="translation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="originalContent" minOccurs="0"/>
+              <xs:element type="xs:string" name="translationContent" minOccurs="0"/>
+              <xs:element name="subfields" minOccurs="0">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="originalContent" minOccurs="0"/>
+                          <xs:element type="xs:string" name="translationContent" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute type="xs:short" name="id" use="optional"/>
+                        <xs:attribute type="xs:string" name="label" use="optional"/>
+                        <xs:attribute type="xs:string" name="multiple" use="optional"/>
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
+                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:short" name="id" use="optional"/>
+            <xs:attribute type="xs:string" name="label" use="optional"/>
+            <xs:attribute type="xs:string" name="multiple" use="optional"/>
+            <xs:attribute type="xs:string" name="name" use="optional"/>
+            <xs:attribute type="xs:string" name="type" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

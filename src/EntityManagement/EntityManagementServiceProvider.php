@@ -97,6 +97,21 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             Request::METHOD_POST
         );
 
+        $this->addRoute(
+            'pages/{id}/download_translation_template/{locale}',
+            'cms:pages:download_translation_template',
+            PagesController::class,
+            'downloadTranslationTemplate'
+        );
+
+        $this->addRoute(
+            'pages/{id}/import_translation/{locale}',
+            'cms:pages:import_translation',
+            PagesController::class,
+            'importTranslation',
+            Request::METHOD_POST
+        );
+
         /**
          * Deprecated, as revisions handled within page edit view.
          */
@@ -305,7 +320,6 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             EntityTypeController::class,
             'deleteOption'
         );
-
 
         // Groups
         $this->addRoute(
