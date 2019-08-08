@@ -933,7 +933,7 @@ class PagesController extends BaseController
         {
             $revision = $revisionRepository->create([
                 'entity_localisation_id' => $currentLocalisation->getId(),
-                'status' => RevisionStatus::PUBLISHED, // TODO: check if needs to be published straight away
+                'status' => RevisionStatus::PUBLISHED,
                 'created_by' => $request->user()->id
             ]);
 
@@ -1003,8 +1003,6 @@ class PagesController extends BaseController
         catch(Exception $e)
         {
             DB::rollBack();
-
-            dd($e);
 
             return Redirect::route('cms:pages:edit_locale', [
                 'page' => $pageId,
@@ -1132,6 +1130,9 @@ class PagesController extends BaseController
         $xml = new DOMDocument( "1.0", "utf-8" );
 
         $xmlFields = $xml->createElement('translation');
+        $xmlFields->setAttribute('xmlns', config('app.url'));
+        $xmlFields->setAttribute('xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance");
+        $xmlFields->setAttribute('xsi:schemaLocation', sprintf('%s %s', config('app.url'), url('/argon/translation-schema.xsd')));
 
         $skipFieldTypes = [
             'boolean',
