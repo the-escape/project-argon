@@ -1087,10 +1087,9 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-        $defaultLocale = $localeRepository->getDefault(); // original content
         $currentLocale = Locale::find($localeId); // translation
 
-        $defaultLocalisation = $page->getLocalisation($defaultLocale);
+        $defaultLocalisation = $page->getDefaultLocalisation();
         $currentLocalisation = $page->getLocalisation($currentLocale);
 
         $defaultPublishedRevision = $defaultLocalisation->publishedRevision();
