@@ -1,4 +1,4 @@
-import { coreMutations, coreGetters } from './core'
+import { coreMutations, coreGetters, coreActions } from './core'
 import { fieldMutations, fieldGetters } from './fields'
 import { comboMutations, comboActions, comboGetters } from './combo'
 
@@ -27,6 +27,7 @@ export const fields = {
         ...comboMutations
     },
     actions: {
+        ...coreActions,
         ...comboActions
     }
 }

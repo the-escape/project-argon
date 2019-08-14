@@ -47,7 +47,14 @@ function setupWebackConfig (
                 },
                 {
                     test: /\.js$/,
-                    loader: 'babel-loader'
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [['@babel/preset-env', { modules: false }]],
+                        plugins: [
+                            '@babel/plugin-proposal-object-rest-spread',
+                            '@babel/plugin-transform-object-assign'
+                        ]
+                    }
                 },
                 {
                     test: /\.css$/,

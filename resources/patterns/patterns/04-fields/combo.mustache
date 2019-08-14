@@ -5,85 +5,199 @@
             {
                 header: 'combo',
                 fields: [
-            {
-                "id": 2,
-                "options": {
-                    "typeKey": "combo",
-                    "name": "single combo",
-                    "settings": {
-                        "multiple": false
-                    }
-                },
-                "helpText": "",
-                "message": "",
-                "messageAfter": "",
-                "fields": [
                     {
-                        "id": 10,
+                        "id": 20,
                         "options": {
-                            "typeKey": "text",
-                            "name": "single text",
+                            "typeKey": "combo",
+                            "name": "Multi Combo",
                             "settings": {
-                                "required": false,
-                                "multiline": false,
-                                "multiple": false,
-                                "minlength": 0,
-                                "maxlength": 0,
-                                "url": false,
-                                "integer": false,
-                                "float": false,
-                                "email": false,
-                                "phone": false
+                                "multiple": true
                             }
                         },
                         "helpText": "",
                         "message": "",
-                        "messageAfter": ""
-                    },
-                ],
-                "values": [],
-                "errors": []
-            },
-            {
-                "id": 20,
-                "options": {
-                    "typeKey": "combo",
-                    "name": "Multi Combo",
-                    "settings": {
-                        "multiple": true
-                    }
-                },
-                "helpText": "",
-                "message": "",
-                "messageAfter": "",
-                "fields": [
-                    {
-                        "id": 22,
-                        "options": {
-                            "typeKey": "text",
-                            "name": "single text",
-                            "settings": {
-                                "required": false,
-                                "multiline": false,
-                                "multiple": false,
-                                "minlength": 0,
-                                "maxlength": 0,
-                                "url": false,
-                                "integer": false,
-                                "float": false,
-                                "email": false,
-                                "phone": false
+                        "messageAfter": "",
+                        "fields": [
+                            {
+                                "id": 22,
+                                "options": {
+                                    "typeKey": "text",
+                                    "name": "single text",
+                                    "settings": {
+                                        "required": false,
+                                        "multiline": false,
+                                        "multiple": false,
+                                        "minlength": 0,
+                                        "maxlength": 0,
+                                        "url": false,
+                                        "integer": false,
+                                        "float": false,
+                                        "email": false,
+                                        "phone": false
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 1,
+                                "options": {
+                                    "typeKey": "boolean",
+                                    "name": "boolean",
+                                    "settings": {
+                                        "initial_value": "0"
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 15,
+                                "options": {
+                                    "typeKey": "button",
+                                    "name": "button",
+                                    "settings": {
+                                        "required": false,
+                                        "multiple": false
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 23,
+                                "options": {
+                                    "typeKey": "datetime",
+                                    "name": "date",
+                                    "settings": {
+                                        "required": false,
+                                        "time": false,
+                                        "seconds": false,
+                                        "default": false
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 2,
+                                "options": {
+                                    "typeKey": "icon",
+                                    "name": "icon",
+                                    "settings": {
+                                        "required": false,
+                                        "meta_path": "/images/icon-input/svgmeta.json",
+                                        "svg_path": "/images/icon-input/svgicons.svg"
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 18,
+                                "options": {
+                                    "typeKey": "item",
+                                    "name": "item",
+                                    "settings": {
+                                        "required": false,
+                                        "multiple": false,
+                                        "multiple_instances": false,
+                                        "items": [
+                                            "2",
+                                            "3"
+                                        ],
+                                        "options": [
+                                            {
+                                                "2": "sub page"
+                                            },
+                                            {
+                                                "3": "test fields"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                            {
+                                "id": 10,
+                                "options": {
+                                    "typeKey": "location",
+                                    "name": "Location",
+                                    "settings": {
+                                        "required": false,
+                                        "float": false,
+                                        "multiple": false
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": "",
+                                "values": [],
+                                "errors": []
+                            },
+                            {
+                                "id": 13,
+                                "options": {
+                                    "typeKey": "wysiwyg",
+                                    "name": "wysiwyg",
+                                    "settings": {
+                                        "required": false,
+                                        "multiple": true,
+                                        "minlength": 0,
+                                        "maxlength": 0,
+                                        "height": 150,
+                                        "source": false,
+                                        "format": false,
+                                        "h1": "0",
+                                        "h2": "0",
+                                        "h3": "0",
+                                        "h4": "0",
+                                        "h5": "0",
+                                        "h6": "0",
+                                        "styles": false,
+                                        "fontsize": false,
+                                        "bold": false,
+                                        "italic": false,
+                                        "blockquote": false,
+                                        "numberedlist": false,
+                                        "bulletedlist": false,
+                                        "image": false,
+                                        "table": false,
+                                        "link": false,
+                                        "unlink": false,
+                                        "iframe": false,
+                                        "editor_options": {
+                                            "toolbar": "Format,FontSize,NumberedList,Link",
+                                            "format-tags": "h1;h2",
+                                            "height": 150,
+                                            "extra-allowed-content": false,
+                                            "typography-styles": "\/css\/typography.css"
+                                        }
+                                    }
+                                },
+                                "helpText": "",
+                                "message": "",
+                                "messageAfter": ""
+                            },
+                        ],
+                        "values": [
+                            {
+                                13: [
+                                    "<p>some content<\/p>\r\n\r\n<h2>Width headers&nbsp;<\/h2>\r\n\r\n<h1>and stuff<\/h1>\r\n\r\n<ul>\r\n\t<li>12<\/li>\r\n\t<li>123<\/li>\r\n\t<li>456<\/li>\r\n<\/ul>\r\n",
+                                    "<p>some content 2<\/p>\r\n\r\n<h2>Width headers&nbsp;<\/h2>\r\n\r\n<h1>and stuff<\/h1>\r\n\r\n<ul>\r\n\t<li>12<\/li>\r\n\t<li>123<\/li>\r\n\t<li>456<\/li>\r\n<\/ul>\r\n"
+                                ]
                             }
-                        },
-                        "helpText": "",
-                        "message": "",
-                        "messageAfter": ""
+                        ],
+                        "errors": []
                     }
-                ],
-                "values": [],
-                "errors": []
-            }
-        ]
+                ]
             }
 
     </script>

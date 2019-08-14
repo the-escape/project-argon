@@ -436,9 +436,10 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ "./resources/assets/js/src/index.js":
 /*!********************************************************!*\
-  !*** ./resources/assets/js/src/index.js + 383 modules ***!
+  !*** ./resources/assets/js/src/index.js + 413 modules ***!
   \********************************************************/
 /*! no exports provided */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@sentry/browser/esm/index.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/choices.js/assets/scripts/dist/choices.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/cropperjs/dist/cropper.esm.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/dragula/dragula.js (<- Module is not an ECMAScript module) */
@@ -452,6 +453,7 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-drag-drop/dist/vue-drag-drop.common.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-flatpickr-component/dist/vue-flatpickr.min.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-resource/dist/vue-resource.esm.js */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue-router/dist/vue-router.esm.js */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vue/dist/vue.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuebar/vuebar.js (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with ./node_modules/vuedraggable/dist/vuedraggable.js (<- Module is not an ECMAScript module) */
@@ -3106,8 +3108,26 @@ var Appvue_type_template_id_6cdc7617_render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    _vm._l(_vm.groupKeys, function(groupKey) {
+      return _c("group", { key: groupKey, attrs: { groupId: groupKey } })
+    })
+  )
+}
+var staticRenderFns = []
+Appvue_type_template_id_6cdc7617_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue?vue&type=template&id=6cdc7617&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/Group.vue?vue&type=template&id=34c193f5&
+var Groupvue_type_template_id_34c193f5_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
     [
-      _vm.showActions
+      _vm.isShowingActions(_vm.groupId)
         ? [
             _c("div", { staticClass: "c-actions__container" }, [
               _c(
@@ -3120,17 +3140,17 @@ var Appvue_type_template_id_6cdc7617_render = function() {
                   _c("h2", [
                     _vm._v("Editing: "),
                     _c("span", { staticClass: "h-text--primary" }, [
-                      _vm._v(_vm._s(_vm.header))
+                      _vm._v(_vm._s(_vm.header(_vm.groupId)))
                     ])
                   ]),
                   _vm._v(" "),
                   _c(
                     "div",
                     { staticClass: "o-form l-accordion-container" },
-                    _vm._l(_vm.fields, function(field) {
+                    _vm._l(_vm.fields(_vm.groupId), function(field) {
                       return _c("types", {
                         key: field.id,
-                        attrs: { field: field }
+                        attrs: { field: field, "group-id": _vm.groupId }
                       })
                     })
                   )
@@ -3171,13 +3191,16 @@ var Appvue_type_template_id_6cdc7617_render = function() {
             ])
           ]
         : [
-            _c("h3", [_vm._v(_vm._s(_vm.header))]),
+            _c("h3", [_vm._v(_vm._s(_vm.header(_vm.groupId)))]),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "o-form l-accordion-container" },
-              _vm._l(_vm.fields, function(field) {
-                return _c("types", { key: field.id, attrs: { field: field } })
+              _vm._l(_vm.fields(_vm.groupId), function(field) {
+                return _c("types", {
+                  key: field.id,
+                  attrs: { field: field, "group-id": _vm.groupId }
+                })
               })
             )
           ]
@@ -3185,13 +3208,17 @@ var Appvue_type_template_id_6cdc7617_render = function() {
     2
   )
 }
-var staticRenderFns = []
-Appvue_type_template_id_6cdc7617_render._withStripped = true
+var Groupvue_type_template_id_34c193f5_staticRenderFns = []
+Groupvue_type_template_id_34c193f5_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue?vue&type=template&id=6cdc7617&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/Group.vue?vue&type=template&id=34c193f5&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/App.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/Group.vue?vue&type=script&lang=js&
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3221,40 +3248,36 @@ Appvue_type_template_id_6cdc7617_render._withStripped = true
 //
 //
 
-/* harmony default export */ var Appvue_type_script_lang_js_ = ({
+
+/* harmony default export */ var Groupvue_type_script_lang_js_ = ({
+  props: ['groupId'],
   created: function created() {
-    this.$store.commit('setOldState');
+    this.$store.commit('fields/setOldState', {
+      groupID: this.groupId
+    });
   },
   methods: {
     apply: function apply(evt) {
       evt.preventDefault();
-      this.$store.commit('setOldState');
-      changeTab('page-content');
+      this.$store.commit('fields/setOldState', {
+        groupID: this.groupId
+      }); // changeTab('page-content')
     },
     cancel: function cancel(evt) {
       evt.preventDefault();
-      this.$store.commit('restoreOldState');
-      changeTab('page-content');
+      this.$store.commit('fields/restoreOldState', {
+        groupID: this.groupId
+      }); // changeTab('page-content')
     }
   },
-  computed: {
-    fields: function fields() {
-      return this.$store.state.fields;
-    },
-    header: function header() {
-      return this.$store.state.header;
-    },
-    showActions: function showActions() {
-      return this.$store.state.showActions;
-    }
-  }
+  computed: _objectSpread({}, Object(vuex_esm["mapGetters"])('fields', ['fields', 'header', 'isShowingActions']))
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue?vue&type=script&lang=js&
- /* harmony default export */ var fields_Appvue_type_script_lang_js_ = (Appvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/Group.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_Groupvue_type_script_lang_js_ = (Groupvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/Group.vue
 
 
 
@@ -3263,6 +3286,50 @@ var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/run
 /* normalize component */
 
 var component = Object(componentNormalizer["default"])(
+  fields_Groupvue_type_script_lang_js_,
+  Groupvue_type_template_id_34c193f5_render,
+  Groupvue_type_template_id_34c193f5_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/assets/js/src/components/fields/Group.vue"
+/* harmony default export */ var Group = (component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/App.vue?vue&type=script&lang=js&
+function Appvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { Appvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+
+function Appvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var Appvue_type_script_lang_js_ = ({
+  components: {
+    Group: Group
+  },
+  computed: Appvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapGetters"])('fields', ['groupKeys']))
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue?vue&type=script&lang=js&
+ /* harmony default export */ var fields_Appvue_type_script_lang_js_ = (Appvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/App.vue
+
+
+
+
+
+/* normalize component */
+
+var App_component = Object(componentNormalizer["default"])(
   fields_Appvue_type_script_lang_js_,
   Appvue_type_template_id_6cdc7617_render,
   staticRenderFns,
@@ -3274,9 +3341,9 @@ var component = Object(componentNormalizer["default"])(
 )
 
 /* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/assets/js/src/components/fields/App.vue"
-/* harmony default export */ var App = (component.exports);
+if (false) { var App_api; }
+App_component.options.__file = "resources/assets/js/src/components/fields/App.vue"
+/* harmony default export */ var App = (App_component.exports);
 // EXTERNAL MODULE: ./node_modules/vuedraggable/dist/vuedraggable.js
 var vuedraggable = __webpack_require__("./node_modules/vuedraggable/dist/vuedraggable.js");
 var vuedraggable_default = /*#__PURE__*/__webpack_require__.n(vuedraggable);
@@ -3289,6 +3356,7 @@ var typesvue_type_template_id_43058c79_render = function() {
   return _c(_vm.type, {
     tag: "component",
     attrs: {
+      "group-id": _vm.groupId,
       "field-id": _vm.field.id,
       "combo-id": _vm.comboId,
       "combo-item-id": _vm.comboItemId
@@ -3309,6 +3377,7 @@ var textvue_type_template_id_f9a45346_render = function() {
   return _c(_vm.type, {
     tag: "component",
     attrs: {
+      "group-id": _vm.groupId,
       "field-id": _vm.fieldId,
       "combo-id": _vm.comboId,
       "combo-item-id": _vm.comboItemId,
@@ -3343,6 +3412,7 @@ var basevue_type_template_id_1a3b3078_render = function() {
           _c("multi", {
             attrs: {
               "field-id": _vm.fieldId,
+              "group-id": _vm.groupId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
               "input-name": _vm.inputName
@@ -3562,7 +3632,7 @@ var multivue_type_template_id_1793689c_render = function() {
                                   "o-multi__drag-handle js-multi-drag",
                                 on: {
                                   click: function($event) {
-                                    _vm.preventDefault($event)
+                                    $event.preventDefault()
                                   }
                                 }
                               },
@@ -3621,7 +3691,8 @@ var multivue_type_template_id_1793689c_render = function() {
                   staticClass: "o-btn o-btn--sm",
                   on: {
                     click: function($event) {
-                      _vm.addEmptyValue($event)
+                      $event.preventDefault()
+                      return _vm.addEmptyValue($event)
                     }
                   }
                 },
@@ -3963,75 +4034,25 @@ confirm_btn_component.options.__file = "resources/assets/js/src/components/commo
 /* harmony default export */ var value_objsvue_type_script_lang_js_ = ({
   computed: {
     singleValue: function singleValue() {
-      var _this = this;
-
-      if (this.comboId) {
-        var comboField = this.$store.getters.getField(this.comboId);
-
-        if (comboField && comboField.values.length) {
-          var values = comboField.values.filter(function (value) {
-            return value.id === _this.comboItemId;
-          });
-
-          if (values.length && values[0][this.fieldId] && values[0][this.fieldId][0]) {
-            return values[0][this.fieldId][0];
-          } else {
-            return {
-              id: 0
-            };
-          }
-        }
-      }
-
-      var field = this.$store.getters.getField(this.fieldId);
-
-      if (field && field.values[0]) {
-        return field.values[0];
-      }
+      return this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId, this.comboItemId]);
     },
     values: {
       get: function get() {
-        var _this2 = this;
-
-        if (this.comboId) {
-          var comboField = this.$store.getters.getField(this.comboId);
-
-          if (comboField && comboField.values.length) {
-            var values = comboField.values.filter(function (value) {
-              return value.id === _this2.comboItemId;
-            });
-
-            if (values.length && values[0][this.fieldId]) {
-              return values[0][this.fieldId];
-            } else {
-              return [{
-                id: 0
-              }];
-            }
-          }
-        }
-
-        var field = this.$store.getters.getField(this.fieldId);
-
-        if (field) {
-          return field.values;
-        }
-
-        return [];
+        return this.$store.getters['fields/getValues'](this.groupId, [this.fieldId, this.comboId, this.comboItemId]);
       },
       set: function set(values) {
         if (this.comboId) {
-          this.$store.commit('updateComboFieldValues', {
+          this.$store.commit('fields/updateComboFieldValues', {
+            groupID: this.groupId,
             fieldID: this.fieldId,
             comboID: this.comboId,
             comboItemId: this.comboItemId,
             newValues: values
           });
         } else {
-          this.$store.commit('updateValues', {
-            fieldID: this.fieldId,
-            comboID: this.comboId,
-            comboItemId: this.comboItemId,
+          this.$store.commit('fields/updateValues', {
+            groupID: this.groupId,
+            id: this.fieldId,
             newValues: values
           });
         }
@@ -4100,7 +4121,6 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
 //
 //
 //
-//
 
 
 
@@ -4110,12 +4130,9 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
   components: {
     'confirm-btn': confirm_btn
   },
-  props: ['inputName', 'fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'inputName', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [value_objs],
   methods: {
-    preventDefault: function preventDefault(evt) {
-      evt.preventDefault();
-    },
     onMove: function onMove() {
       var name = 'move-' + this.fieldId;
 
@@ -4125,40 +4142,37 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
 
       EventBus.$emit(name);
     },
-    addEmptyValue: function addEmptyValue(evt) {
-      evt.preventDefault();
+    addEmptyValue: function addEmptyValue() {
+      var field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
 
       if (this.comboId) {
-        var field = this.$store.getters.getComboField(this.comboId, this.fieldId);
         var newEmptyValue = deepClone(field.emptyValue);
-        this.$store.commit('addComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/addComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           valueObj: newEmptyValue
         });
       } else {
-        var _field = this.$store.getters.getField(this.fieldId);
+        var _newEmptyValue = deepClone(field.emptyValue);
 
-        var _newEmptyValue = deepClone(_field.emptyValue);
-
-        this.$store.commit('addValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/addValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           valueObj: _newEmptyValue
         });
       }
     },
     deleteValue: function deleteValue(valueID) {
       if (this.comboId) {
-        this.$store.commit('removeComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/removeComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           valueID: valueID
         });
       } else {
-        this.$store.commit('removeValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/removeValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           valueID: valueID
         });
       }
@@ -4174,15 +4188,15 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
       }
 
       if (this.comboId) {
-        this.$store.commit('addComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/addComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           valueObj: duplicateVal
         });
       } else {
-        this.$store.commit('addValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/addValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           valueObj: duplicateVal
         });
       }
@@ -4190,15 +4204,7 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
   },
   computed: {
     isMultiple: function isMultiple() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
-      return field.options.settings.multiple;
+      return this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.multiple');
     }
   }
 });
@@ -4231,68 +4237,28 @@ multi_component.options.__file = "resources/assets/js/src/components/fields/type
 /* harmony default export */ var field_valuesvue_type_script_lang_js_ = ({
   computed: {
     field: function field() {
-      if (this.comboId) {
-        return this.$store.getters.getComboField(this.comboId, this.fieldId);
-      }
-
-      return this.$store.getters.getField(this.fieldId);
+      return this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
     },
     inputName: function inputName() {
-      var field;
-
       if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
         return "combo[".concat(this.comboId, "][").concat(this.comboItemId, "][fields][").concat(this.fieldId, "][]");
       } else {
-        field = this.$store.getters.getField(this.fieldId);
-        return "fields[".concat(field.id, "][]");
+        return "fields[".concat(this.fieldId, "][]");
       }
     },
     inputNameMultiValue: function inputNameMultiValue() {
-      var field;
-
+      // eg: fields[5]['lat']
       if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
         return "combo[".concat(this.comboId, "][").concat(this.comboItemId, "][fields][").concat(this.fieldId, "]");
       } else {
-        field = this.$store.getters.getField(this.fieldId);
-        return "fields[".concat(field.id, "]");
+        return "fields[".concat(this.fieldId, "]");
       }
     },
     name: function name() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
-      if (field) {
-        return field.options.name;
-      }
+      return this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'name');
     },
     errors: function errors() {
-      var _this = this;
-
-      if (this.comboId) {
-        var comboItem = this.$store.getters.getField(this.comboId);
-
-        if (comboItem.errors.length) {
-          var errors = comboItem.errors.filter(function (errorsObj) {
-            return errorsObj.id === _this.comboItemId;
-          });
-
-          if (errors.length && errors[0][this.fieldId]) {
-            return errors[0][this.fieldId];
-          }
-        }
-
-        return [];
-      }
-
-      var field = this.$store.getters.getField(this.fieldId);
-      return field.errors;
+      return this.$store.getters['fields/getFieldErrors'](this.groupId, [this.fieldId, this.comboId, this.comboItemId]);
     }
   }
 });
@@ -4600,7 +4566,7 @@ base_component.options.__file = "resources/assets/js/src/components/fields/types
 
 
 /* harmony default export */ var types_basevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'field-base': base,
@@ -4612,15 +4578,15 @@ base_component.options.__file = "resources/assets/js/src/components/fields/types
       valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
@@ -4652,8 +4618,8 @@ var types_base_component = Object(componentNormalizer["default"])(
 if (false) { var types_base_api; }
 types_base_component.options.__file = "resources/assets/js/src/components/fields/types/base/index.vue"
 /* harmony default export */ var types_base = (types_base_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=template&id=d9a3c626&
-var textareavue_type_template_id_d9a3c626_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=template&id=9775a42c&
+var textareavue_type_template_id_9775a42c_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -4672,6 +4638,7 @@ var textareavue_type_template_id_d9a3c626_render = function() {
           _c("multi", {
             attrs: {
               "field-id": _vm.fieldId,
+              "group-id": _vm.groupId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
               "input-name": _vm.inputName
@@ -4711,13 +4678,13 @@ var textareavue_type_template_id_d9a3c626_render = function() {
     1
   )
 }
-var textareavue_type_template_id_d9a3c626_staticRenderFns = []
-textareavue_type_template_id_d9a3c626_render._withStripped = true
+var textareavue_type_template_id_9775a42c_staticRenderFns = []
+textareavue_type_template_id_9775a42c_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=template&id=d9a3c626&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=template&id=9775a42c&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -4736,7 +4703,7 @@ textareavue_type_template_id_d9a3c626_render._withStripped = true
 
 
 /* harmony default export */ var textareavue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   components: {
     'validation': validation,
     'multi': multi
@@ -4747,24 +4714,24 @@ textareavue_type_template_id_d9a3c626_render._withStripped = true
       valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue?vue&type=script&lang=js&
  /* harmony default export */ var types_textareavue_type_script_lang_js_ = (textareavue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea/index.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/types/textarea.vue
 
 
 
@@ -4774,8 +4741,8 @@ textareavue_type_template_id_d9a3c626_render._withStripped = true
 
 var textarea_component = Object(componentNormalizer["default"])(
   types_textareavue_type_script_lang_js_,
-  textareavue_type_template_id_d9a3c626_render,
-  textareavue_type_template_id_d9a3c626_staticRenderFns,
+  textareavue_type_template_id_9775a42c_render,
+  textareavue_type_template_id_9775a42c_staticRenderFns,
   false,
   null,
   null,
@@ -4785,9 +4752,10 @@ var textarea_component = Object(componentNormalizer["default"])(
 
 /* hot reload */
 if (false) { var textarea_api; }
-textarea_component.options.__file = "resources/assets/js/src/components/fields/types/textarea/index.vue"
+textarea_component.options.__file = "resources/assets/js/src/components/fields/types/textarea.vue"
 /* harmony default export */ var types_textarea = (textarea_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/text.vue?vue&type=script&lang=js&
+//
 //
 //
 //
@@ -4802,20 +4770,14 @@ textarea_component.options.__file = "resources/assets/js/src/components/fields/t
 
 
 /* harmony default export */ var textvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   components: {
     'base-input': types_base,
     'textarea-input': types_textarea
   },
   computed: {
     type: function type() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
+      var field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
 
       if (field.options.settings.multiline) {
         return 'textarea-input';
@@ -4824,14 +4786,7 @@ textarea_component.options.__file = "resources/assets/js/src/components/fields/t
       return 'base-input';
     },
     icons: function icons() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
+      var field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
       return {
         preIcon: field && field.options.preIcon || false,
         postIcon: field && field.options.postIcon || false
@@ -4898,20 +4853,13 @@ emailvue_type_template_id_bd2f93c8_render._withStripped = true
 //
 
 /* harmony default export */ var emailvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   components: {
     'base-input': types_base
   },
   computed: {
     icons: function icons() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
+      var field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
       return {
         preIcon: field && field.options.preIcon || {
           svg: 'email'
@@ -4986,14 +4934,7 @@ phonevue_type_template_id_34a02224_render._withStripped = true
   },
   computed: {
     icons: function icons() {
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
+      var field = this.$store.getters['fields/getField'](this.groupId, [this.fieldId, this.comboId]);
       return {
         preIcon: field && field.options.preIcon || {
           svg: 'phone'
@@ -5141,6 +5082,7 @@ var combovue_type_template_id_90b659e4_render = function() {
                         return _c("types", {
                           key: field.id,
                           attrs: {
+                            "group-id": _vm.groupId,
                             field: field,
                             "combo-id": _vm.fieldId,
                             "combo-item-id": item.id
@@ -5166,7 +5108,8 @@ var combovue_type_template_id_90b659e4_render = function() {
               staticClass: "o-btn o-btn--sm",
               on: {
                 click: function($event) {
-                  _vm.addEmptyItem($event)
+                  $event.preventDefault()
+                  return _vm.addEmptyItem($event)
                 }
               }
             },
@@ -5223,7 +5166,7 @@ combovue_type_template_id_90b659e4_render._withStripped = true
 
 /* harmony default export */ var combovue_type_script_lang_js_ = ({
   name: 'combo',
-  props: ['fieldId'],
+  props: ['groupId', 'fieldId'],
   data: function data() {
     return {
       isHidingBody: false
@@ -5255,58 +5198,55 @@ combovue_type_template_id_90b659e4_render._withStripped = true
       }, 0);
     },
     deleteItem: function deleteItem(comboItemID) {
-      this.$store.commit('removeComboItem', {
-        comboID: this.fieldId,
-        comboItemID: comboItemID
+      this.$store.dispatch('fields/removeComboItem', {
+        groupID: this.groupId,
+        id: this.fieldId,
+        valueID: comboItemID
       });
     },
     duplicateItem: function duplicateItem(comboItemID) {
-      var comboField = this.$store.getters.getField(this.fieldId);
-      var val = comboField.values.filter(function (comboValueObj) {
-        return comboValueObj.id === comboItemID;
-      });
+      var valueObj = this.$store.getters['fields/getComboItem'](this.groupId, this.fieldId, comboItemID);
 
-      if (!val.length) {
+      if (!valueObj) {
         console.warn('could not find value to duplicate');
         return;
       }
 
-      var duplicate = deepClone(val[0]);
-      this.$store.commit('addComboItemValue', {
-        comboID: this.fieldId,
-        newValueObj: duplicate
+      var duplicate = deepClone(valueObj);
+      this.$store.commit('fields/addComboItemValue', {
+        groupID: this.groupId,
+        id: this.fieldId,
+        valueObj: duplicate
       });
     },
-    addEmptyItem: function addEmptyItem(evt) {
-      evt && evt.preventDefault();
-      var comboField = this.$store.getters.getField(this.fieldId);
+    addEmptyItem: function addEmptyItem() {
+      var comboField = this.$store.getters['fields/getCombo'](this.groupId, this.fieldId);
       var emptyValue = deepClone(comboField.emptyValue);
-      this.$store.commit('addComboItemValue', {
-        comboID: this.fieldId,
-        newValueObj: emptyValue
+      this.$store.commit('fields/addComboItemValue', {
+        groupID: this.groupId,
+        id: this.fieldId,
+        valueObj: emptyValue
       });
     }
   },
   computed: {
     comboField: function comboField() {
-      return this.$store.getters.getField(this.fieldId);
+      return this.$store.getters['fields/getCombo'](this.groupId, this.fieldId);
     },
     comboFields: function comboFields() {
-      var comboField = this.$store.getters.getField(this.fieldId);
-      return comboField.fields;
+      return this.$store.getters['fields/getComboFields'](this.groupId, this.fieldId);
     },
     isMultiple: function isMultiple() {
-      var comboField = this.$store.getters.getField(this.fieldId);
-      return comboField.options.settings.multiple;
+      return this.$store.getters['fields/isComboMultiple'](this.groupId, this.fieldId);
     },
     items: {
       get: function get() {
-        var comboField = this.$store.getters.getField(this.fieldId);
-        return comboField.values;
+        return this.$store.getters['fields/getValues'](this.groupId, [this.fieldId]);
       },
       set: function set(values) {
-        this.$store.commit('updateComboItemValues', {
-          comboID: this.fieldId,
+        this.$store.dispatch('fields/updateComboItemValues', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValues: values
         });
       }
@@ -5337,7 +5277,7 @@ var combo_component = Object(componentNormalizer["default"])(
 /* hot reload */
 if (false) { var combo_api; }
 combo_component.options.__file = "resources/assets/js/src/components/fields/types/combo.vue"
-/* harmony default export */ var combo = (combo_component.exports);
+/* harmony default export */ var types_combo = (combo_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/fields/types/select.vue?vue&type=template&id=461d3ea8&
 var selectvue_type_template_id_461d3ea8_render = function() {
   var _vm = this
@@ -5346,6 +5286,7 @@ var selectvue_type_template_id_461d3ea8_render = function() {
   return _c(_vm.type, {
     tag: "component",
     attrs: {
+      "group-id": _vm.groupId,
       "field-id": _vm.fieldId,
       "combo-id": _vm.comboId,
       "combo-item-id": _vm.comboItemId
@@ -5407,15 +5348,12 @@ single_selectvue_type_template_id_8b501bbe_render._withStripped = true
 /* harmony default export */ var select_valuesvue_type_script_lang_js_ = ({
   computed: {
     options: function options() {
-      var field;
+      var options = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.options');
 
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
+      if (!options) {
+        return [];
       }
 
-      var options = field.options.settings.options;
       return options.reduce(function (acc, opt) {
         for (var key in opt) {
           acc.push({
@@ -5429,55 +5367,26 @@ single_selectvue_type_template_id_8b501bbe_render._withStripped = true
     },
     values: {
       get: function get() {
-        var _this = this;
+        var values = this.$store.getters['fields/getValues'](this.groupId, [this.fieldId, this.comboId, this.comboItemId]);
+        var settings = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings');
 
-        var field;
-
-        if (this.comboId) {
-          var combo = this.$store.getters.getField(this.comboId);
-
-          var _field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-
-          var isMultiple = _field.options.settings.multiple || _field.options.settings.multiple_instances;
-
-          if (combo && combo.values.length) {
-            var values = combo.values.filter(function (value) {
-              return value.id === _this.comboItemId;
-            });
-
-            if (values.length && values[0][this.fieldId]) {
-              if (isMultiple) {
-                return values[0][this.fieldId].map(function (value) {
-                  return value.value;
-                });
-              } else if (values[0][this.fieldId][0]) {
-                return values[0][this.fieldId][0].value;
-              }
-            }
-
-            if (isMultiple) {
-              return [];
-            }
-          }
-        } else {
-          field = this.$store.getters.getField(this.fieldId);
-
-          var _isMultiple = field.options.settings.multiple || field.options.settings.multiple_instances;
-
-          if (_isMultiple) {
-            return field.values.map(function (value) {
-              return value.value;
-            });
-          }
-
-          if (field.values.length) {
-            return field.values.map(function (value) {
-              return value.value;
-            })[0];
-          }
+        if (!settings) {
+          return '';
         }
 
-        return '';
+        var isMultiple = settings.multiple || settings.multiple_instances;
+
+        if (isMultiple) {
+          return values.map(function (value) {
+            return value.value;
+          });
+        }
+
+        if (!values.length) {
+          return '';
+        }
+
+        return values[0].value;
       },
       set: function set(values) {
         if (!Array.isArray(values)) {
@@ -5492,15 +5401,15 @@ single_selectvue_type_template_id_8b501bbe_render._withStripped = true
         });
 
         if (this.comboId) {
-          this.$store.commit('updateComboFieldValues', {
-            fieldID: this.fieldId,
-            comboID: this.comboId,
-            comboItemId: this.comboItemId,
-            newValues: valueObjs
+          this.$store.commit('fields/updateComboItemFieldValue', {
+            groupID: this.groupId,
+            ids: [this.fieldId, this.comboId, this.comboItemId],
+            newValue: valueObjs
           });
         } else {
-          this.$store.commit('updateValues', {
-            fieldID: this.fieldId,
+          this.$store.commit('fields/updateValues', {
+            groupID: this.groupId,
+            id: this.fieldId,
             newValues: valueObjs
           });
         }
@@ -5551,7 +5460,7 @@ select_values_component.options.__file = "resources/assets/js/src/components/fie
 
 
 /* harmony default export */ var single_selectvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values, select_values],
   components: {
     'validation': validation
@@ -5892,7 +5801,7 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
 
 
 /* harmony default export */ var multi_selectvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values, select_values],
   components: {
     'validation': validation
@@ -6007,25 +5916,24 @@ multi_select_component.options.__file = "resources/assets/js/src/components/fiel
 //
 //
 //
+//
 
 
 /* harmony default export */ var selectvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   components: {
     'single': single_select,
     'multi': multi_select
   },
   computed: {
     type: function type() {
-      var field;
+      var settings = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings');
 
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
+      if (!settings) {
+        return 'single';
       }
 
-      if (field.options.settings.multiple || field.options.settings.multiple_instances) {
+      if (settings.multiple || settings.multiple_instances) {
         return 'multi';
       }
 
@@ -6069,6 +5977,7 @@ var locationvue_type_template_id_b32c30b0_render = function() {
     [
       _c("multi", {
         attrs: {
+          "group-id": _vm.groupId,
           "field-id": _vm.fieldId,
           "combo-id": _vm.comboId,
           "combo-item-id": _vm.comboItemId,
@@ -6082,6 +5991,7 @@ var locationvue_type_template_id_b32c30b0_render = function() {
               return [
                 _c("field-location", {
                   attrs: {
+                    "group-id": _vm.groupId,
                     "field-id": _vm.fieldId,
                     "combo-id": _vm.comboId,
                     "combo-item-id": _vm.comboItemId,
@@ -6318,7 +6228,7 @@ locationvue_type_template_id_abfa8c62_render._withStripped = true
 
 
 /* harmony default export */ var locationvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
   data: function data() {
     return {
@@ -6363,15 +6273,15 @@ locationvue_type_template_id_abfa8c62_render._withStripped = true
       this.valueObj.value[prop] = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: this.valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: this.valueObj
         });
       }
@@ -6420,7 +6330,7 @@ location_component.options.__file = "resources/assets/js/src/components/fields/t
 
 
 /* harmony default export */ var types_locationvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'validation': validation,
@@ -6473,6 +6383,7 @@ var wysiwygvue_type_template_id_0575760d_render = function() {
           _c("multi", {
             attrs: {
               "field-id": _vm.fieldId,
+              "group-id": _vm.groupId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
               "input-name": _vm.inputName
@@ -6485,6 +6396,7 @@ var wysiwygvue_type_template_id_0575760d_render = function() {
                   return [
                     _c("single-wysiwyg", {
                       attrs: {
+                        "group-id": _vm.groupId,
                         "field-id": _vm.fieldId,
                         "combo-id": _vm.comboId,
                         "combo-item-id": _vm.comboItemId,
@@ -6547,7 +6459,7 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
 //
 
 /* harmony default export */ var single_wysiwygvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId', 'name', 'valueObj'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'name', 'valueObj'],
   data: function data() {
     return {
       textareaElement: null,
@@ -6582,15 +6494,12 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
   },
   computed: {
     config: function config() {
-      var field;
+      var fieldConfig = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.editor_options');
 
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
+      if (!fieldConfig) {
+        return this.defaultConfig;
       }
 
-      var fieldConfig = field.options.settings['editor_options'];
       var config = {};
 
       if (fieldConfig['format-tags']) {
@@ -6648,8 +6557,7 @@ function single_wysiwygvue_type_script_lang_js_extends() { single_wysiwygvue_typ
 
 function updateEditorHeight() {
   this.totalHeight = this.textareaElement.nextElementSibling.offsetHeight;
-} // TODO: fix multi wysiwyg instances, as it appears as a single ckeditor instance and adding a unique hash to the name breaks the backend
-
+}
 
 function mountEditor() {
   var _this2 = this;
@@ -6717,7 +6625,7 @@ single_wysiwyg_component.options.__file = "resources/assets/js/src/components/fi
 
 
 /* harmony default export */ var wysiwygvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   components: {
     'validation': validation,
     'multi': multi,
@@ -6729,15 +6637,15 @@ single_wysiwyg_component.options.__file = "resources/assets/js/src/components/fi
       valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
@@ -6780,6 +6688,7 @@ var buttonvue_type_template_id_237fdce5_render = function() {
     [
       _c("multi", {
         attrs: {
+          "group-id": _vm.groupId,
           "field-id": _vm.fieldId,
           "combo-id": _vm.comboId,
           "combo-item-id": _vm.comboItemId,
@@ -6794,6 +6703,7 @@ var buttonvue_type_template_id_237fdce5_render = function() {
                 _c("field-button", {
                   attrs: {
                     "value-obj": valueObj,
+                    "group-id": _vm.groupId,
                     "field-id": _vm.fieldId,
                     "combo-id": _vm.comboId,
                     "combo-item-id": _vm.comboItemId
@@ -7384,7 +7294,7 @@ buttonvue_type_template_id_37f285af_render._withStripped = true
 
 
 /* harmony default export */ var buttonvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
   components: {
     'input-icon': input_icon,
     'validation': validation
@@ -7461,15 +7371,15 @@ buttonvue_type_template_id_37f285af_render._withStripped = true
       this.valueObj.value[prop] = newValue;
       this.$nextTick(function () {
         if (_this.comboId) {
-          _this.$store.commit('updateComboFieldValue', {
-            fieldID: _this.fieldId,
-            comboID: _this.comboId,
-            comboItemId: _this.comboItemId,
+          _this.$store.commit('fields/updateComboItemFieldValue', {
+            groupID: _this.groupId,
+            ids: [_this.fieldId, _this.comboId, _this.comboItemId],
             newValue: _this.valueObj
           });
         } else {
-          _this.$store.commit('updateValue', {
-            fieldID: _this.fieldId,
+          _this.$store.commit('fields/updateValue', {
+            groupID: _this.groupId,
+            id: _this.fieldId,
             newValue: _this.valueObj
           });
         }
@@ -7548,7 +7458,7 @@ button_component.options.__file = "resources/assets/js/src/components/fields/typ
 
 
 /* harmony default export */ var types_buttonvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'multi': multi,
@@ -7660,80 +7570,24 @@ booleanvue_type_template_id_49a456a8_render._withStripped = true
 
 
 /* harmony default export */ var booleanvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values, value_objs],
   components: {
     'validation': validation
   },
   computed: {
     valueObj: function valueObj() {
-      var _this = this;
-
-      var value;
-      var field;
-
-      if (this.comboId) {
-        var combo = this.$store.getters.getField(this.comboId);
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-
-        if (combo && combo.values.length) {
-          var values = combo.values.filter(function (value) {
-            return value.id === _this.comboItemId;
-          });
-
-          if (values.length && values[0][this.fieldId].length) {
-            return values[0][this.fieldId][0];
-          } else {
-            return {
-              id: 0,
-              value: ''
-            };
-          }
-        }
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-
-        if (field.values.length) {
-          return field.values[0];
-        }
-      }
+      return this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId]);
     },
     checked: function checked() {
-      var _this2 = this;
+      var value = this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId]);
+      var initialValue = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings.initial_value');
 
-      var value;
-      var field;
-
-      if (this.comboId) {
-        var combo = this.$store.getters.getField(this.comboId);
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-
-        if (combo && combo.values.length) {
-          var values = combo.values.filter(function (value) {
-            return value.id === _this2.comboItemId;
-          });
-
-          if (values.length && values[0][this.fieldId].length) {
-            value = values[0][this.fieldId][0].value;
-          } else {
-            value = field.options.settings.initial_value;
-          }
-        }
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-
-        if (field.values.length) {
-          value = field.values.map(function (value) {
-            return value.value;
-          })[0];
-        }
+      if (value.value === '') {
+        return +initialValue;
       }
 
-      if (value === '') {
-        return +field.options.settings.initial_value;
-      } else {
-        return +value || 0;
-      }
+      return +value.value;
     }
   },
   methods: {
@@ -7741,15 +7595,15 @@ booleanvue_type_template_id_49a456a8_render._withStripped = true
       valueObj.value = !newValue ? 1 : 0;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
@@ -7849,7 +7703,7 @@ function datetimevue_type_script_lang_js_extends() { datetimevue_type_script_lan
 
 
 /* harmony default export */ var datetimevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values, value_objs],
   components: {
     'validation': validation,
@@ -7880,15 +7734,15 @@ function datetimevue_type_script_lang_js_extends() { datetimevue_type_script_lan
       valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
@@ -7900,15 +7754,7 @@ function datetimevue_type_script_lang_js_extends() { datetimevue_type_script_lan
   computed: {
     config: function config() {
       var config = {};
-      var field;
-
-      if (this.comboId) {
-        field = this.$store.getters.getComboField(this.comboId, this.fieldId);
-      } else {
-        field = this.$store.getters.getField(this.fieldId);
-      }
-
-      var fieldSettings = field.options.settings;
+      var fieldSettings = this.$store.getters['fields/getFieldOption'](this.groupId, [this.fieldId, this.comboId], 'settings');
 
       if (fieldSettings.time) {
         config.enableTime = true;
@@ -7969,6 +7815,7 @@ var imagevue_type_template_id_b2a79ac4_render = function() {
           _vm._v(" "),
           _c("multi", {
             attrs: {
+              "group-id": _vm.groupId,
               "field-id": _vm.fieldId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
@@ -7982,6 +7829,7 @@ var imagevue_type_template_id_b2a79ac4_render = function() {
                   return [
                     _c("field-image", {
                       attrs: {
+                        "group-id": _vm.groupId,
                         "field-id": _vm.fieldId,
                         "combo-id": _vm.comboId,
                         "combo-item-id": _vm.comboItemId,
@@ -8569,9 +8417,9 @@ if (false) { var TreeItem_api; }
 TreeItem_component.options.__file = "resources/assets/js/src/components/medialib/components/TreeItem.vue"
 /* harmony default export */ var TreeItem = (TreeItem_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/medialib/components/Tree.vue?vue&type=script&lang=js&
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+function Treevue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { Treevue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function Treevue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -8601,7 +8449,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     TreeItem: TreeItem
   },
-  computed: _objectSpread({}, Object(vuex_esm["mapState"])(['folder', 'recentUploads'])),
+  computed: Treevue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapState"])(['folder', 'recentUploads'])),
   methods: {
     openRecentUploads: function openRecentUploads() {
       this.$store.dispatch('recentUploads');
@@ -11082,7 +10930,7 @@ MediaLibrary_component.options.__file = "resources/assets/js/src/components/medi
 
 /* normalize component */
 
-var App_component = Object(componentNormalizer["default"])(
+var medialib_App_component = Object(componentNormalizer["default"])(
   components_medialib_Appvue_type_script_lang_js_,
   Appvue_type_template_id_639a027f_render,
   Appvue_type_template_id_639a027f_staticRenderFns,
@@ -11094,9 +10942,9 @@ var App_component = Object(componentNormalizer["default"])(
 )
 
 /* hot reload */
-if (false) { var App_api; }
-App_component.options.__file = "resources/assets/js/src/components/medialib/App.vue"
-/* harmony default export */ var medialib_App = (App_component.exports);
+if (false) { var medialib_App_api; }
+medialib_App_component.options.__file = "resources/assets/js/src/components/medialib/App.vue"
+/* harmony default export */ var medialib_App = (medialib_App_component.exports);
 // EXTERNAL MODULE: ./node_modules/vue-resource/dist/vue-resource.esm.js
 var vue_resource_esm = __webpack_require__("./node_modules/vue-resource/dist/vue-resource.esm.js");
 
@@ -12165,7 +12013,7 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
 
 
 /* harmony default export */ var imagevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
   data: function data() {
     return {
@@ -12200,15 +12048,15 @@ function imagevue_type_script_lang_js_extends() { imagevue_type_script_lang_js_e
       this.valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: this.valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: this.valueObj
         });
       }
@@ -12277,7 +12125,7 @@ image_component.options.__file = "resources/assets/js/src/components/fields/type
 
 
 /* harmony default export */ var types_imagevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'validation': validation,
@@ -12329,6 +12177,7 @@ var filevue_type_template_id_d9ae71a8_render = function() {
           _vm._v(" "),
           _c("multi", {
             attrs: {
+              "group-id": _vm.groupId,
               "field-id": _vm.fieldId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
@@ -12483,7 +12332,7 @@ filevue_type_template_id_d9ae71a8_render._withStripped = true
 
 
 /* harmony default export */ var filevue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'validation': validation,
@@ -12497,15 +12346,15 @@ filevue_type_template_id_d9ae71a8_render._withStripped = true
       valueObj.value = newValue;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: valueObj
         });
       }
@@ -12571,6 +12420,7 @@ var iconvue_type_template_id_1a3cab6c_render = function() {
           _vm._v(" "),
           _c("multi", {
             attrs: {
+              "group-id": _vm.groupId,
               "field-id": _vm.fieldId,
               "combo-id": _vm.comboId,
               "combo-item-id": _vm.comboItemId,
@@ -12585,6 +12435,7 @@ var iconvue_type_template_id_1a3cab6c_render = function() {
                     _c("field-icon", {
                       attrs: {
                         "value-obj": valueObj,
+                        "group-id": _vm.groupId,
                         "field-id": _vm.fieldId,
                         "combo-id": _vm.comboId,
                         "combo-item-id": _vm.comboItemId
@@ -12830,7 +12681,7 @@ iconvue_type_template_id_b6654d62_render._withStripped = true
 //
 
 /* harmony default export */ var iconvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'comboId', 'comboItemId', 'valueObj'],
+  props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'valueObj'],
   mixins: [field_values],
   data: function data() {
     return {
@@ -12897,15 +12748,15 @@ iconvue_type_template_id_b6654d62_render._withStripped = true
       this.valueObj.value = this.value.value;
 
       if (this.comboId) {
-        this.$store.commit('updateComboFieldValue', {
-          fieldID: this.fieldId,
-          comboID: this.comboId,
-          comboItemId: this.comboItemId,
+        this.$store.commit('fields/updateComboItemFieldValue', {
+          groupID: this.groupId,
+          ids: [this.fieldId, this.comboId, this.comboItemId],
           newValue: this.valueObj
         });
       } else {
-        this.$store.commit('updateValue', {
-          fieldID: this.fieldId,
+        this.$store.commit('fields/updateValue', {
+          groupID: this.groupId,
+          id: this.fieldId,
           newValue: this.valueObj
         });
       }
@@ -12974,7 +12825,7 @@ icon_component.options.__file = "resources/assets/js/src/components/fields/types
 
 
 /* harmony default export */ var types_iconvue_type_script_lang_js_ = ({
-  props: ['fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
+  props: ['groupId', 'fieldId', 'icons', 'type', 'comboId', 'comboItemId'],
   mixins: [field_values],
   components: {
     'field-icon': icon,
@@ -13017,6 +12868,7 @@ types_icon_component.options.__file = "resources/assets/js/src/components/fields
 //
 //
 //
+//
 
 
 
@@ -13049,12 +12901,12 @@ var typeMap = {
 };
 /* harmony default export */ var typesvue_type_script_lang_js_ = ({
   name: 'types',
-  props: ['field', 'comboId', 'comboItemId'],
+  props: ['groupId', 'field', 'comboId', 'comboItemId'],
   components: {
     'text-input': types_text,
     'email-input': email,
     'phone-input': phone,
-    combo: combo,
+    combo: types_combo,
     'select-input': types_select,
     'location-input': types_location,
     'wysiwyg-input': wysiwyg,
@@ -13097,342 +12949,9 @@ var types_component = Object(componentNormalizer["default"])(
 if (false) { var types_api; }
 types_component.options.__file = "resources/assets/js/src/components/fields/types/types.vue"
 /* harmony default export */ var types_types = (types_component.exports);
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/index.js
-function store_extends() { store_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return store_extends.apply(this, arguments); }
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/field/util.js
+function util_extends() { util_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return util_extends.apply(this, arguments); }
 
-
-
-
-function getStore() {
-  return new vuex_esm["default"].Store({
-    state: {
-      fields: [],
-      oldState: [],
-      header: '',
-      showActions: true
-    },
-    getters: {
-      getField: function getField(state) {
-        return function (id) {
-          var field = state.fields.filter(function (field) {
-            return field.id === id;
-          });
-
-          if (field.length) {
-            return field[0];
-          }
-        };
-      },
-      getComboField: function getComboField(state) {
-        return function (comboID, fieldID) {
-          var comboItem = state.fields.filter(function (field) {
-            return field.id === comboID;
-          });
-
-          if (comboItem.length) {
-            var field = comboItem[0].fields.filter(function (field) {
-              return field.id === fieldID;
-            });
-
-            if (field.length) {
-              return field[0];
-            }
-          }
-        };
-      }
-    },
-    mutations: {
-      setFields: function setFields(state, _ref) {
-        var fields = _ref.fields;
-        state.fields = fields;
-      },
-      setShowActions: function setShowActions(state, _ref2) {
-        var actions = _ref2.actions;
-        state.showActions = actions;
-      },
-      setOldState: function setOldState(state) {
-        state.oldState = deepClone(state.fields);
-      },
-      restoreOldState: function restoreOldState(state) {
-        state.fields = deepClone(state.oldState);
-      },
-      setHeader: function setHeader(state, _ref3) {
-        var header = _ref3.header;
-        state.header = header;
-      },
-      // Field Mutations
-      updateValue: function updateValue(state, _ref4) {
-        var fieldID = _ref4.fieldID,
-            newValue = _ref4.newValue;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== fieldID) {
-            return field;
-          }
-
-          field.values = field.values.map(function (value) {
-            if (value.id !== newValue.id) {
-              return value;
-            }
-
-            value = store_extends(value, newValue);
-            return value;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      updateValues: function updateValues(state, _ref5) {
-        var fieldID = _ref5.fieldID,
-            newValues = _ref5.newValues;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== fieldID) {
-            return field;
-          }
-
-          field.values = newValues;
-          return field;
-        });
-        preventPageLeave();
-      },
-      addValue: function addValue(state, _ref6) {
-        var fieldID = _ref6.fieldID,
-            valueObj = _ref6.valueObj;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== fieldID) {
-            return field;
-          }
-
-          field.values.push(store_extends(valueObj, {
-            id: createUniqueHash()
-          }));
-          return field;
-        });
-        preventPageLeave();
-      },
-      removeValue: function removeValue(state, _ref7) {
-        var fieldID = _ref7.fieldID,
-            valueID = _ref7.valueID;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== fieldID) {
-            return field;
-          }
-
-          field.values = field.values.filter(function (value) {
-            return value.id !== valueID;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      // Combo Item Mutations
-      updateComboItemValues: function updateComboItemValues(state, _ref8) {
-        var comboID = _ref8.comboID,
-            newValues = _ref8.newValues;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values = newValues;
-          return field;
-        });
-        preventPageLeave();
-      },
-      addComboItemValue: function addComboItemValue(state, _ref9) {
-        var comboID = _ref9.comboID,
-            newValueObj = _ref9.newValueObj;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          newValueObj = Object.keys(newValueObj).reduce(function (acc, fieldID) {
-            if (fieldID === 'id') {
-              return acc;
-            }
-
-            acc[fieldID] = newValueObj[fieldID].map(function (value) {
-              return store_extends(value, {
-                id: createUniqueHash()
-              });
-            });
-            return acc;
-          }, {});
-          field.values.push(store_extends(newValueObj, {
-            id: field.values.length
-          }));
-          return field;
-        });
-        preventPageLeave();
-      },
-      removeComboItem: function removeComboItem(state, _ref10) {
-        var comboID = _ref10.comboID,
-            comboItemID = _ref10.comboItemID;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values = field.values.filter(function (valueObj) {
-            return valueObj.id !== comboItemID;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      // Combo Field Mutations
-      updateComboFieldValue: function updateComboFieldValue(state, _ref11) {
-        var fieldID = _ref11.fieldID,
-            comboID = _ref11.comboID,
-            comboItemId = _ref11.comboItemId,
-            newValue = _ref11.newValue;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values = field.values.map(function (valuesObj) {
-            if (valuesObj.id !== comboItemId) {
-              return valuesObj;
-            }
-
-            if (valuesObj[fieldID].length) {
-              valuesObj[fieldID] = valuesObj[fieldID].map(function (value) {
-                if (value.id !== newValue.id) {
-                  return value;
-                }
-
-                value = store_extends(value, newValue);
-                return value;
-              });
-            } else {
-              valuesObj[fieldID].push(newValue);
-            }
-
-            return valuesObj;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      updateComboFieldValues: function updateComboFieldValues(state, _ref12) {
-        var fieldID = _ref12.fieldID,
-            comboID = _ref12.comboID,
-            comboItemId = _ref12.comboItemId,
-            newValues = _ref12.newValues;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values.map(function (valuesObj) {
-            if (valuesObj.id !== comboItemId) {
-              return valuesObj;
-            }
-
-            valuesObj[fieldID] = newValues;
-            return valuesObj;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      addComboFieldValue: function addComboFieldValue(state, _ref13) {
-        var fieldID = _ref13.fieldID,
-            comboID = _ref13.comboID,
-            comboItemId = _ref13.comboItemId,
-            valueObj = _ref13.valueObj;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values = field.values.map(function (valuesObj) {
-            if (valuesObj.id !== comboItemId) {
-              return valuesObj;
-            }
-
-            valuesObj[fieldID].push(store_extends(valueObj, {
-              id: createUniqueHash()
-            }));
-            return valuesObj;
-          });
-          return field;
-        });
-        preventPageLeave();
-      },
-      removeComboFieldValue: function removeComboFieldValue(state, _ref14) {
-        var fieldID = _ref14.fieldID,
-            comboID = _ref14.comboID,
-            comboItemId = _ref14.comboItemId,
-            valueID = _ref14.valueID;
-        state.fields = state.fields.map(function (field) {
-          if (field.id !== comboID) {
-            return field;
-          }
-
-          field.values = field.values.map(function (valuesObj) {
-            if (valuesObj.id !== comboItemId) {
-              return valuesObj;
-            }
-
-            valuesObj[fieldID] = valuesObj[fieldID].filter(function (value) {
-              return value.id !== valueID;
-            });
-            return valuesObj;
-          });
-          return field;
-        });
-        preventPageLeave();
-      }
-    }
-  });
-}
-// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/index.js
-
-
-
-
-
-
-
-
-vue_default.a.config.productionTip = false;
-vue_default.a.component('draggable', vuedraggable_default.a);
-vue_default.a.component('types', types_types);
-vue_default.a.use(vuex_esm["default"]);
-function Fields() {
-  var fieldEls = document.querySelectorAll('.js-fields');
-  var fields = Array.from(fieldEls);
-  return fields.map(function (el) {
-    // const tabPanel = el.closest('[data-tab]')
-    // const tabName = tabPanel.dataset.tab
-    var name = el.dataset.name;
-    var store = getStore();
-    var _window$fieldGroups$n = window.fieldGroups[name],
-        fields = _window$fieldGroups$n.fields,
-        header = _window$fieldGroups$n.header,
-        _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
-        actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
-    fields = processFields(fields);
-    store.commit('setFields', {
-      fields: fields
-    });
-    store.commit('setHeader', {
-      header: header
-    });
-    store.commit('setShowActions', {
-      actions: actions
-    });
-    return new vue_default.a({
-      store: store,
-      render: function render(h) {
-        return h(App);
-      }
-    }).$mount(el); // addTabInit(tabName, () => {
-    // })
-  });
-}
 
 function processFields(fields) {
   return fields.map(function (field) {
@@ -13525,8 +13044,1469 @@ function processCombo(combo) {
   }, {});
   return combo;
 }
+
+function assignNewIdsToComboValueObj(valueObj) {
+  return Object.keys(valueObj).reduce(function (acc, fieldID) {
+    if (fieldID === 'id') {
+      return acc;
+    }
+
+    acc[fieldID] = valueObj[fieldID].map(function (value) {
+      return util_extends(value, {
+        id: createUniqueHash()
+      });
+    });
+    return acc;
+  }, {});
+}
+
+function getHelper(state, id, message) {
+  var item = state.fields.find(function (field) {
+    return field.id === id;
+  });
+
+  if (!item) {
+    console.warn(message);
+    return;
+  }
+
+  return item;
+}
+
+function getField(state, id, messagePrefix) {
+  return getHelper(state, id, "".concat(messagePrefix, ", unable find field of ID: ").concat(id));
+}
+function getCombo(state, id, messagePrefix) {
+  return getHelper(state, id, "".concat(messagePrefix, ", unable find Combo of ID: ").concat(id));
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/field/core.js
+
+
+var coreMutations = {
+  setupGroup: function setupGroup(state, _ref) {
+    var groupID = _ref.groupID,
+        fields = _ref.fields,
+        header = _ref.header,
+        isShowingActions = _ref.isShowingActions;
+    state.groups[groupID] = {
+      fields: processFields(fields),
+      header: header,
+      isShowingActions: isShowingActions
+    };
+  },
+  setOldState: function setOldState(state, _ref2) {
+    var groupID = _ref2.groupID;
+    state.groups[groupID].oldState = deepClone(state.groups[groupID].fields);
+  },
+  restoreOldState: function restoreOldState(state, _ref3) {
+    var groupID = _ref3.groupID;
+    state.groups[groupID].fields = deepClone(state.groups[groupID].oldState);
+  }
+};
+var coreGetters = {
+  groupKeys: function groupKeys(state) {
+    return Object.keys(state.groups);
+  },
+  fields: function fields(state) {
+    return function (groupID) {
+      return state.groups[groupID].fields;
+    };
+  },
+  header: function header(state) {
+    return function (groupID) {
+      return state.groups[groupID].header;
+    };
+  },
+  isShowingActions: function isShowingActions(state) {
+    return function (groupID) {
+      return state.groups[groupID].isShowingActions;
+    };
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/field/fields.js
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function fields_extends() { fields_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return fields_extends.apply(this, arguments); }
+
+
+ // const fieldsExample = [
+//     {
+//         id: 1,
+//         options: {
+//             typeKey: 'text',
+//             name: 'single text',
+//             settings: {
+//                 required: false,
+//                 multiline: false,
+//                 multiple: false,
+//                 minlength: 0,
+//                 maxlength: 0,
+//                 url: false,
+//                 integer: false,
+//                 float: false,
+//                 email: false,
+//                 phone: false
+//             }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         values: [{id: 0, value: 'one'}],
+//         errors: []
+//     }
+// ]
+
+var fieldMutations = {
+  updateValue: function updateValue(state, _ref) {
+    var groupID = _ref.groupID,
+        id = _ref.id,
+        newValue = _ref.newValue;
+    var field = getField(state.groups[groupID], id, "Can't update value");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = field.values.map(function (value) {
+      if (value.id !== newValue.id) {
+        return value;
+      }
+
+      return fields_extends(value, newValue);
+    });
+  },
+  updateValues: function updateValues(state, _ref2) {
+    var groupID = _ref2.groupID,
+        id = _ref2.id,
+        newValues = _ref2.newValues;
+    var field = getField(state.groups[groupID], id, "Can't update values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = newValues;
+  },
+  addValue: function addValue(state, _ref3) {
+    var groupID = _ref3.groupID,
+        id = _ref3.id,
+        valueObj = _ref3.valueObj;
+    var field = getField(state.groups[groupID], id, "Can't add values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values.push(fields_extends(valueObj, {
+      id: createUniqueHash()
+    }));
+  },
+  removeValue: function removeValue(state, _ref4) {
+    var groupID = _ref4.groupID,
+        id = _ref4.id,
+        valueID = _ref4.valueID;
+    var field = getField(state.groups[groupID], id, "Can't remove values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = field.values.filter(function (value) {
+      return value.id !== valueID;
+    });
+  }
+};
+var fieldGetters = {
+  getField: function getField(state) {
+    return function (groupID, _ref5) {
+      var _ref6 = _slicedToArray(_ref5, 2),
+          fieldID = _ref6[0],
+          _ref6$ = _ref6[1],
+          comboID = _ref6$ === void 0 ? null : _ref6$;
+
+      var parent = state.groups[groupID];
+
+      if (comboID) {
+        parent = state.groups[groupID].fields.find(function (field) {
+          return field.id === comboID;
+        });
+      }
+
+      if (!parent) {
+        return;
+      }
+
+      return parent.fields.find(function (field) {
+        return field.id === fieldID;
+      });
+    };
+  },
+  getFieldOption: function getFieldOption(state, getters) {
+    return function (groupID, _ref7, option) {
+      var _ref8 = _slicedToArray(_ref7, 2),
+          fieldID = _ref8[0],
+          _ref8$ = _ref8[1],
+          comboID = _ref8$ === void 0 ? null : _ref8$;
+
+      var field = getters.getField(groupID, [fieldID, comboID]);
+
+      if (field) {
+        var optionPath = option.split('.');
+        return optionPath.reduce(function (acc, path) {
+          if (!acc) {
+            return;
+          }
+
+          if (acc[path]) {
+            return acc[path];
+          }
+        }, field.options);
+      }
+    };
+  },
+  getFieldErrors: function getFieldErrors(state, getters) {
+    return function (groupID, _ref9) {
+      var _ref10 = _slicedToArray(_ref9, 3),
+          fieldID = _ref10[0],
+          _ref10$ = _ref10[1],
+          comboID = _ref10$ === void 0 ? null : _ref10$,
+          _ref10$2 = _ref10[2],
+          comboItemID = _ref10$2 === void 0 ? null : _ref10$2;
+
+      if (comboID) {
+        var combo = getters.getCombo(groupID, comboID);
+
+        if (combo.errors.length) {
+          var errors = combo.errors.filter(function (errorsObj) {
+            return errorsObj.id === comboItemID;
+          });
+
+          if (errors.length && errors[0][fieldID]) {
+            return errors[0][fieldID];
+          }
+        }
+
+        return [];
+      } else {
+        var field = getters.getField(groupID, [fieldID, comboID]);
+        return field.errors;
+      }
+    };
+  },
+  getValues: function getValues(state, getters) {
+    return function (groupID, _ref11) {
+      var _ref12 = _slicedToArray(_ref11, 3),
+          fieldID = _ref12[0],
+          _ref12$ = _ref12[1],
+          comboID = _ref12$ === void 0 ? null : _ref12$,
+          _ref12$2 = _ref12[2],
+          comboItemID = _ref12$2 === void 0 ? null : _ref12$2;
+
+      if (comboID) {
+        var combo = getters.getCombo(groupID, comboID);
+
+        if (combo.values.length) {
+          var values = combo.values.find(function (value) {
+            return value.id === comboItemID;
+          });
+
+          if (values && values[fieldID]) {
+            return values[fieldID];
+          }
+        }
+
+        return [{
+          id: 0
+        }];
+      } else {
+        var field = getters.getField(groupID, [fieldID, comboID]);
+
+        if (!field) {
+          return [];
+        }
+
+        return field.values;
+      }
+    };
+  },
+  getSingleValue: function getSingleValue(state, getters) {
+    return function (groupID, _ref13) {
+      var _ref14 = _slicedToArray(_ref13, 3),
+          fieldID = _ref14[0],
+          _ref14$ = _ref14[1],
+          comboID = _ref14$ === void 0 ? null : _ref14$,
+          _ref14$2 = _ref14[2],
+          comboItemID = _ref14$2 === void 0 ? null : _ref14$2;
+
+      var values = getters.getValues(groupID, [fieldID, comboID, comboItemID]);
+
+      if (!values.length) {
+        return;
+      }
+
+      return values[0];
+    };
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/field/combo.js
+function combo_extends() { combo_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return combo_extends.apply(this, arguments); }
+
+function combo_slicedToArray(arr, i) { return combo_arrayWithHoles(arr) || combo_iterableToArrayLimit(arr, i) || combo_nonIterableRest(); }
+
+function combo_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function combo_iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function combo_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+ // const fieldsExample = [
+//     {
+//         id: 2,
+//         options: {
+//             typeKey: 'combo',
+//             name: 'Multi Combo',
+//             settings: { multiple: true }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         fields: [
+//             {
+//                 id: 3,
+//                 options: {
+//                     typeKey: 'text',
+//                     name: 'single text',
+//                     settings: {
+//                         required: false,
+//                         multiline: false,
+//                         multiple: false,
+//                         minlength: 0,
+//                         maxlength: 0,
+//                         url: false,
+//                         integer: false,
+//                         float: false,
+//                         email: false,
+//                         phone: false
+//                     }
+//                 },
+//                 helpText: '',
+//                 message: '',
+//                 messageAfter: ''
+//             }
+//         ],
+//         values: [{ '3': { id: 0, value: 'two' } }],
+//         errors: []
+//     }
+// ]
+
+var comboMutations = {
+  // Combo - Item
+  // Other 2 crud are actions that resuse field mutations
+  addComboItemValue: function addComboItemValue(state, _ref) {
+    var groupID = _ref.groupID,
+        id = _ref.id,
+        valueObj = _ref.valueObj;
+    var combo = getCombo(state.groups[groupID], id, "Can't add values");
+
+    if (!combo) {
+      return;
+    }
+
+    var newValueObj = assignNewIdsToComboValueObj(valueObj);
+    newValueObj.id = combo.values.length;
+    combo.values.push(newValueObj);
+  },
+  // Combo - Item - Field
+  updateComboItemFieldValue: function updateComboItemFieldValue(state, _ref2) {
+    var groupID = _ref2.groupID,
+        _ref2$ids = combo_slicedToArray(_ref2.ids, 3),
+        fieldID = _ref2$ids[0],
+        comboID = _ref2$ids[1],
+        comboItemID = _ref2$ids[2],
+        newValue = _ref2.newValue;
+
+    var combo = getCombo(state.groups[groupID], comboID, "Can't update combo item");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItemValue) {
+      return comboItemValue.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    if (!comboItemValues[fieldID]) {
+      console.warn("Combo Item doesn't have the field id: ".concat(fieldID));
+      return;
+    }
+
+    comboItemValues[fieldID] = comboItemValues[fieldID].map(function (value) {
+      if (value.id !== newValue.id) {
+        return value;
+      }
+
+      return combo_extends(value, newValue);
+    });
+  },
+  addComboItemFieldValue: function addComboItemFieldValue(state, _ref3) {
+    var groupID = _ref3.groupID,
+        _ref3$ids = combo_slicedToArray(_ref3.ids, 3),
+        fieldID = _ref3$ids[0],
+        comboID = _ref3$ids[1],
+        comboItemID = _ref3$ids[2],
+        valueObj = _ref3.valueObj;
+
+    var combo = getCombo(state.groups[groupID], comboID, "Can't add combo item field");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItem) {
+      return comboItem.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    comboItemValues[fieldID].push(combo_extends(valueObj, {
+      id: createUniqueHash()
+    }));
+  },
+  removeComboItemFieldValue: function removeComboItemFieldValue(state, _ref4) {
+    var groupID = _ref4.groupID,
+        _ref4$ids = combo_slicedToArray(_ref4.ids, 3),
+        fieldID = _ref4$ids[0],
+        comboID = _ref4$ids[1],
+        comboItemID = _ref4$ids[2],
+        valueID = _ref4.valueID;
+
+    var combo = getCombo(state.groups[groupID], comboID, "Can't remove combo item field");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItem) {
+      return comboItem.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    if (comboItemValues[fieldID]) {
+      console.warn("Combo Item doesn't have the field id: ".concat(fieldID));
+      return;
+    }
+
+    comboItemValues[fieldID] = comboItemValues[fieldID].filter(function (value) {
+      return value.id !== valueID;
+    });
+  }
+};
+var comboActions = {
+  updateComboItemValues: function updateComboItemValues(context, payload) {
+    context.commit('updateValues', payload);
+  },
+  removeComboItem: function removeComboItem(context, payload) {
+    context.commit('removeValue', payload);
+  }
+};
+var comboGetters = {
+  getCombo: function getCombo(state, getters) {
+    return function (groupID, comboID) {
+      return getters.getField(groupID, [comboID]);
+    };
+  },
+  getComboItem: function getComboItem(state, getters) {
+    return function (groupID, comboID, comboItemID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.values.find(function (val) {
+        return val.id === comboItemID;
+      });
+    };
+  },
+  getComboFields: function getComboFields(state, getters) {
+    return function (groupID, comboID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.fields;
+    };
+  },
+  isComboMultiple: function isComboMultiple(state, getters) {
+    return function (groupID, comboID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.options.settings.multiple;
+    };
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/field/index.js
+function field_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { field_defineProperty(target, key, source[key]); }); } return target; }
+
+function field_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var field_fields = {
+  namespaced: true,
+  state: {
+    groups: {
+      /**
+       *  { groupID }: {
+       *      fields: [],
+       *      oldState: [],
+       *      header: '',
+       *      isShowingActions
+       *  }
+       */
+    }
+  },
+  getters: field_objectSpread({}, coreGetters, fieldGetters, comboGetters),
+  mutations: field_objectSpread({}, coreMutations, fieldMutations, comboMutations),
+  actions: field_objectSpread({}, comboActions)
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/store/index.js
+
+ // const fieldsExample = [
+//     {
+//         id: 1,
+//         options: {
+//             typeKey: 'text',
+//             name: 'single text',
+//             settings: {
+//                 required: false,
+//                 multiline: false,
+//                 multiple: false,
+//                 minlength: 0,
+//                 maxlength: 0,
+//                 url: false,
+//                 integer: false,
+//                 float: false,
+//                 email: false,
+//                 phone: false
+//             }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         values: ['one'],
+//         errors: []
+//     },
+//     {
+//         id: 2,
+//         options: {
+//             typeKey: 'combo',
+//             name: 'Multi Combo',
+//             settings: { multiple: true }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         fields: [
+//             {
+//                 id: 3,
+//                 options: {
+//                     typeKey: 'text',
+//                     name: 'single text',
+//                     settings: {
+//                         required: false,
+//                         multiline: false,
+//                         multiple: false,
+//                         minlength: 0,
+//                         maxlength: 0,
+//                         url: false,
+//                         integer: false,
+//                         float: false,
+//                         email: false,
+//                         phone: false
+//                     }
+//                 },
+//                 helpText: '',
+//                 message: '',
+//                 messageAfter: ''
+//             }
+//         ],
+//         values: [{ '3': { id: 0, value: 'two' } }],
+//         errors: []
+//     }
+// ]
+
+function getStore() {
+  return new vuex_esm["default"].Store({
+    modules: {
+      fields: field_fields
+    }
+  });
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/components/fields/index.js
+
+
+
+
+
+
+
+
+vue_default.a.config.productionTip = false;
+vue_default.a.component('draggable', vuedraggable_default.a);
+vue_default.a.component('types', types_types);
+vue_default.a.use(vuex_esm["default"]);
+function Fields() {
+  var fieldEls = document.querySelectorAll('.js-fields');
+  var fields = Array.from(fieldEls);
+  return fields.map(function (el) {
+    // const tabPanel = el.closest('[data-tab]')
+    // const tabName = tabPanel.dataset.tab
+    var name = el.dataset.name;
+    var store = getStore();
+    var _window$fieldGroups$n = window.fieldGroups[name],
+        fields = _window$fieldGroups$n.fields,
+        header = _window$fieldGroups$n.header,
+        _window$fieldGroups$n2 = _window$fieldGroups$n.actions,
+        actions = _window$fieldGroups$n2 === void 0 ? true : _window$fieldGroups$n2;
+    store.commit('fields/setupGroup', {
+      groupID: name,
+      fields: fields,
+      header: header,
+      isShowingActions: actions
+    });
+    return new vue_default.a({
+      store: store,
+      render: function render(h) {
+        return h(App);
+      }
+    }).$mount(el); // addTabInit(tabName, () => {
+    // })
+  });
+}
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/App.vue?vue&type=template&id=146287be&
 var Appvue_type_template_id_146287be_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_c("router-view")], 1)
+}
+var Appvue_type_template_id_146287be_staticRenderFns = []
+Appvue_type_template_id_146287be_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/App.vue?vue&type=template&id=146287be&
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/App.vue
+
+var script = {}
+
+
+/* normalize component */
+
+var page_edit_App_component = Object(componentNormalizer["default"])(
+  script,
+  Appvue_type_template_id_146287be_render,
+  Appvue_type_template_id_146287be_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var page_edit_App_api; }
+page_edit_App_component.options.__file = "resources/assets/js/src/components/page-edit/App.vue"
+/* harmony default export */ var page_edit_App = (page_edit_App_component.exports);
+// EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
+var vue_router_esm = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/blockSelect.js
+var blockSelect = {
+  namespaced: true,
+  state: {
+    nonSortableRenderingGroups: [],
+    renderingGroups: [],
+    blockList: [],
+    hasRenderable: false,
+    renderSearch: '',
+    blockSearch: ''
+  },
+  mutations: {
+    addGroups: function addGroups(state, _ref) {
+      var groups = _ref.groups;
+      state.nonSortableRenderingGroups = groups.filter(function (el) {
+        return (!el.isRenderable || el.isRendering) && !el.isSortable && !el.isTab;
+      });
+      state.renderingGroups = groups.filter(function (el) {
+        return (!el.isRenderable || el.isRendering) && el.isSortable && !el.isTab;
+      });
+      state.blockList = groups.filter(function (el) {
+        return el.isRenderable && !el.isRendering;
+      });
+      state.hasRenderable = !!groups.find(function (group) {
+        return group.isRenderable;
+      });
+    },
+    setRenderSearch: function setRenderSearch(state, _ref2) {
+      var searchString = _ref2.searchString;
+      state.renderSearch = searchString;
+    },
+    setBlockSearch: function setBlockSearch(state, _ref3) {
+      var searchString = _ref3.searchString;
+      state.blockSearch = searchString;
+    },
+    updateRenderingBlockList: function updateRenderingBlockList(state, _ref4) {
+      var blocks = _ref4.blocks;
+      state.renderingGroups = blocks.map(function (block) {
+        block.isRendering = true;
+        return block;
+      });
+    },
+    updateBlockList: function updateBlockList(state, _ref5) {
+      var blocks = _ref5.blocks;
+      state.blockList = blocks.map(function (block) {
+        block.isRendering = false;
+        return block;
+      });
+    },
+    addBlockToRendering: function addBlockToRendering(state, _ref6) {
+      var id = _ref6.id;
+      var block = state.blockList.find(function (block) {
+        return block.id === id;
+      });
+
+      if (!block) {
+        return;
+      }
+
+      state.blockList = state.blockList.filter(function (block) {
+        return block.id !== id;
+      });
+      block.isRendering = true;
+      state.renderingGroups.push(block);
+    },
+    removeBlockFromRendering: function removeBlockFromRendering(state, _ref7) {
+      var id = _ref7.id;
+      var block = state.renderingGroups.find(function (block) {
+        return block.id === id;
+      });
+
+      if (!block) {
+        return;
+      }
+
+      state.renderingGroups = state.renderingGroups.filter(function (block) {
+        return block.id !== id;
+      });
+      block.isRendering = false;
+      state.blockList.push(block);
+    }
+  },
+  getters: {
+    filteredRenderList: function filteredRenderList(state) {
+      return state.renderingGroups.filter(function (block) {
+        return block.name.toLowerCase().includes(state.renderSearch);
+      });
+    },
+    filteredBlockList: function filteredBlockList(state) {
+      return state.blockList.filter(function (block) {
+        return block.name.toLowerCase().includes(state.blockSearch);
+      });
+    },
+    filteredRenderNonSortList: function filteredRenderNonSortList(state) {
+      return state.nonSortableRenderingGroups.filter(function (block) {
+        return block.name.toLowerCase().includes(state.renderSearch);
+      });
+    },
+    renderOrder: function renderOrder(state) {
+      return state.renderingGroups.map(function (block) {
+        return block.id;
+      }).join(',');
+    }
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/field/util.js
+function field_util_extends() { field_util_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return field_util_extends.apply(this, arguments); }
+
+
+function util_processFields(fields) {
+  return fields.map(function (field) {
+    if (field.options.typeKey === 'combo') {
+      field = util_processCombo(field);
+    } else {
+      field.values = util_processValues(field.values);
+      field.emptyValue = util_createEmptyValueObj(field);
+
+      if (!field.values.length) {
+        var newValue = deepClone(field.emptyValue);
+        newValue.id = 0;
+        field.values.push(newValue);
+      }
+    }
+
+    return field;
+  });
+}
+
+function util_processValues(values) {
+  if (!Array.isArray(values)) {
+    values = [values];
+  }
+
+  return values.map(function (value, id) {
+    return {
+      value: value,
+      id: id
+    };
+  });
+}
+
+function util_createEmptyValueObj(field) {
+  var emptyValue;
+
+  switch (field.options.typeKey) {
+    case 'checkbox':
+      emptyValue = 0;
+      break;
+
+    case 'location':
+      emptyValue = {
+        latitude: '',
+        longitude: ''
+      };
+      break;
+
+    case 'button':
+      emptyValue = {
+        label: '',
+        url: '',
+        class: '',
+        id: '',
+        target: ''
+      };
+      break;
+
+    default:
+      emptyValue = '';
+      break;
+  }
+
+  return {
+    value: emptyValue
+  };
+}
+
+function util_processCombo(combo) {
+  combo.values = combo.values.map(function (comboItemValues, index) {
+    var fieldIds = Object.keys(comboItemValues);
+    var values = fieldIds.reduce(function (acc, fieldID) {
+      acc[fieldID] = util_processValues(comboItemValues[fieldID]);
+      return acc;
+    }, {});
+    values.id = index;
+    return values;
+  });
+  combo.errors = combo.errors.map(function (comboItemErrors, index) {
+    comboItemErrors.id = index;
+    return comboItemErrors;
+  });
+  combo.fields = combo.fields.map(function (field) {
+    field.emptyValue = util_createEmptyValueObj(field);
+    return field;
+  });
+  combo.emptyValue = combo.fields.reduce(function (acc, field) {
+    acc[field.id] = [field.emptyValue];
+    return acc;
+  }, {});
+  return combo;
+}
+
+function util_assignNewIdsToComboValueObj(valueObj) {
+  return Object.keys(valueObj).reduce(function (acc, fieldID) {
+    if (fieldID === 'id') {
+      return acc;
+    }
+
+    acc[fieldID] = valueObj[fieldID].map(function (value) {
+      return field_util_extends(value, {
+        id: createUniqueHash()
+      });
+    });
+    return acc;
+  }, {});
+}
+
+function util_getHelper(state, id, message) {
+  var item = state.fields.find(function (field) {
+    return field.id === id;
+  });
+
+  if (!item) {
+    console.warn(message);
+    return;
+  }
+
+  return item;
+}
+
+function util_getField(state, id, messagePrefix) {
+  return util_getHelper(state, id, "".concat(messagePrefix, ", unable find field of ID: ").concat(id));
+}
+function util_getCombo(state, id, messagePrefix) {
+  return util_getHelper(state, id, "".concat(messagePrefix, ", unable find Combo of ID: ").concat(id));
+}
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/field/core.js
+
+
+var core_coreMutations = {
+  setupGroup: function setupGroup(state, _ref) {
+    var groupID = _ref.groupID,
+        fields = _ref.fields,
+        header = _ref.header,
+        isShowingActions = _ref.isShowingActions;
+    state.groups[groupID] = {
+      fields: util_processFields(fields),
+      header: header,
+      isShowingActions: isShowingActions
+    };
+  },
+  setOldState: function setOldState(state, _ref2) {
+    var groupID = _ref2.groupID;
+    state.groups[groupID].oldState = deepClone(state.groups[groupID].fields);
+  },
+  restoreOldState: function restoreOldState(state, _ref3) {
+    var groupID = _ref3.groupID;
+    state.groups[groupID].fields = deepClone(state.groups[groupID].oldState);
+  }
+};
+var core_coreGetters = {
+  groupKeys: function groupKeys(state) {
+    return Object.keys(state.groups);
+  },
+  fields: function fields(state) {
+    return function (groupID) {
+      return state.groups[groupID].fields;
+    };
+  },
+  header: function header(state) {
+    return function (groupID) {
+      return state.groups[groupID].header;
+    };
+  },
+  isShowingActions: function isShowingActions(state) {
+    return function (groupID) {
+      return state.groups[groupID].isShowingActions;
+    };
+  }
+};
+var coreActions = {
+  setupGroup: function setupGroup(_ref4, _ref5) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+    var groupID = _ref5.groupID;
+
+    if (state.groups[groupID]) {
+      return;
+    }
+
+    var _window$fieldGroups$g = window.fieldGroups[groupID],
+        fields = _window$fieldGroups$g.fields,
+        header = _window$fieldGroups$g.header,
+        _window$fieldGroups$g2 = _window$fieldGroups$g.actions,
+        actions = _window$fieldGroups$g2 === void 0 ? true : _window$fieldGroups$g2;
+    commit('setupGroup', {
+      groupID: groupID,
+      fields: fields,
+      header: header,
+      isShowingActions: actions
+    });
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/field/fields.js
+function fields_slicedToArray(arr, i) { return fields_arrayWithHoles(arr) || fields_iterableToArrayLimit(arr, i) || fields_nonIterableRest(); }
+
+function fields_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function fields_iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function fields_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function field_fields_extends() { field_fields_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return field_fields_extends.apply(this, arguments); }
+
+
+ // const fieldsExample = [
+//     {
+//         id: 1,
+//         options: {
+//             typeKey: 'text',
+//             name: 'single text',
+//             settings: {
+//                 required: false,
+//                 multiline: false,
+//                 multiple: false,
+//                 minlength: 0,
+//                 maxlength: 0,
+//                 url: false,
+//                 integer: false,
+//                 float: false,
+//                 email: false,
+//                 phone: false
+//             }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         values: [{id: 0, value: 'one'}],
+//         errors: []
+//     }
+// ]
+
+var fields_fieldMutations = {
+  updateValue: function updateValue(state, _ref) {
+    var groupID = _ref.groupID,
+        id = _ref.id,
+        newValue = _ref.newValue;
+    var field = util_getField(state.groups[groupID], id, "Can't update value");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = field.values.map(function (value) {
+      if (value.id !== newValue.id) {
+        return value;
+      }
+
+      return field_fields_extends(value, newValue);
+    });
+  },
+  updateValues: function updateValues(state, _ref2) {
+    var groupID = _ref2.groupID,
+        id = _ref2.id,
+        newValues = _ref2.newValues;
+    var field = util_getField(state.groups[groupID], id, "Can't update values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = newValues;
+  },
+  addValue: function addValue(state, _ref3) {
+    var groupID = _ref3.groupID,
+        id = _ref3.id,
+        valueObj = _ref3.valueObj;
+    var field = util_getField(state.groups[groupID], id, "Can't add values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values.push(field_fields_extends(valueObj, {
+      id: createUniqueHash()
+    }));
+  },
+  removeValue: function removeValue(state, _ref4) {
+    var groupID = _ref4.groupID,
+        id = _ref4.id,
+        valueID = _ref4.valueID;
+    var field = util_getField(state.groups[groupID], id, "Can't remove values");
+
+    if (!field) {
+      return;
+    }
+
+    field.values = field.values.filter(function (value) {
+      return value.id !== valueID;
+    });
+  }
+};
+var fields_fieldGetters = {
+  getField: function getField(state) {
+    return function (groupID, _ref5) {
+      var _ref6 = fields_slicedToArray(_ref5, 2),
+          fieldID = _ref6[0],
+          _ref6$ = _ref6[1],
+          comboID = _ref6$ === void 0 ? null : _ref6$;
+
+      var parent = state.groups[groupID];
+
+      if (comboID) {
+        parent = state.groups[groupID].fields.find(function (field) {
+          return field.id === comboID;
+        });
+      }
+
+      if (!parent) {
+        return;
+      }
+
+      return parent.fields.find(function (field) {
+        return field.id === fieldID;
+      });
+    };
+  },
+  getFieldOption: function getFieldOption(state, getters) {
+    return function (groupID, _ref7, option) {
+      var _ref8 = fields_slicedToArray(_ref7, 2),
+          fieldID = _ref8[0],
+          _ref8$ = _ref8[1],
+          comboID = _ref8$ === void 0 ? null : _ref8$;
+
+      var field = getters.getField(groupID, [fieldID, comboID]);
+
+      if (field) {
+        var optionPath = option.split('.');
+        return optionPath.reduce(function (acc, path) {
+          if (!acc) {
+            return;
+          }
+
+          if (acc[path]) {
+            return acc[path];
+          }
+        }, field.options);
+      }
+    };
+  },
+  getFieldErrors: function getFieldErrors(state, getters) {
+    return function (groupID, _ref9) {
+      var _ref10 = fields_slicedToArray(_ref9, 3),
+          fieldID = _ref10[0],
+          _ref10$ = _ref10[1],
+          comboID = _ref10$ === void 0 ? null : _ref10$,
+          _ref10$2 = _ref10[2],
+          comboItemID = _ref10$2 === void 0 ? null : _ref10$2;
+
+      if (comboID) {
+        var combo = getters.getCombo(groupID, comboID);
+
+        if (combo.errors.length) {
+          var errors = combo.errors.filter(function (errorsObj) {
+            return errorsObj.id === comboItemID;
+          });
+
+          if (errors.length && errors[0][fieldID]) {
+            return errors[0][fieldID];
+          }
+        }
+
+        return [];
+      } else {
+        var field = getters.getField(groupID, [fieldID, comboID]);
+        return field.errors;
+      }
+    };
+  },
+  getValues: function getValues(state, getters) {
+    return function (groupID, _ref11) {
+      var _ref12 = fields_slicedToArray(_ref11, 3),
+          fieldID = _ref12[0],
+          _ref12$ = _ref12[1],
+          comboID = _ref12$ === void 0 ? null : _ref12$,
+          _ref12$2 = _ref12[2],
+          comboItemID = _ref12$2 === void 0 ? null : _ref12$2;
+
+      if (comboID) {
+        var combo = getters.getCombo(groupID, comboID);
+
+        if (combo.values.length) {
+          var values = combo.values.find(function (value) {
+            return value.id === comboItemID;
+          });
+
+          if (values && values[fieldID]) {
+            return values[fieldID];
+          }
+        }
+
+        return [{
+          id: 0
+        }];
+      } else {
+        var field = getters.getField(groupID, [fieldID, comboID]);
+
+        if (!field) {
+          return [];
+        }
+
+        return field.values;
+      }
+    };
+  },
+  getSingleValue: function getSingleValue(state, getters) {
+    return function (groupID, _ref13) {
+      var _ref14 = fields_slicedToArray(_ref13, 3),
+          fieldID = _ref14[0],
+          _ref14$ = _ref14[1],
+          comboID = _ref14$ === void 0 ? null : _ref14$,
+          _ref14$2 = _ref14[2],
+          comboItemID = _ref14$2 === void 0 ? null : _ref14$2;
+
+      var values = getters.getValues(groupID, [fieldID, comboID, comboItemID]);
+
+      if (!values.length) {
+        return;
+      }
+
+      return values[0];
+    };
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/field/combo.js
+function field_combo_extends() { field_combo_extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return field_combo_extends.apply(this, arguments); }
+
+function field_combo_slicedToArray(arr, i) { return field_combo_arrayWithHoles(arr) || field_combo_iterableToArrayLimit(arr, i) || field_combo_nonIterableRest(); }
+
+function field_combo_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function field_combo_iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function field_combo_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+ // const fieldsExample = [
+//     {
+//         id: 2,
+//         options: {
+//             typeKey: 'combo',
+//             name: 'Multi Combo',
+//             settings: { multiple: true }
+//         },
+//         helpText: '',
+//         message: '',
+//         messageAfter: '',
+//         fields: [
+//             {
+//                 id: 3,
+//                 options: {
+//                     typeKey: 'text',
+//                     name: 'single text',
+//                     settings: {
+//                         required: false,
+//                         multiline: false,
+//                         multiple: false,
+//                         minlength: 0,
+//                         maxlength: 0,
+//                         url: false,
+//                         integer: false,
+//                         float: false,
+//                         email: false,
+//                         phone: false
+//                     }
+//                 },
+//                 helpText: '',
+//                 message: '',
+//                 messageAfter: ''
+//             }
+//         ],
+//         values: [{ '3': { id: 0, value: 'two' } }],
+//         errors: []
+//     }
+// ]
+
+var combo_comboMutations = {
+  // Combo - Item
+  // Other 2 crud are actions that resuse field mutations
+  addComboItemValue: function addComboItemValue(state, _ref) {
+    var groupID = _ref.groupID,
+        id = _ref.id,
+        valueObj = _ref.valueObj;
+    var combo = util_getCombo(state.groups[groupID], id, "Can't add values");
+
+    if (!combo) {
+      return;
+    }
+
+    var newValueObj = util_assignNewIdsToComboValueObj(valueObj);
+    newValueObj.id = combo.values.length;
+    combo.values.push(newValueObj);
+  },
+  // Combo - Item - Field
+  updateComboItemFieldValue: function updateComboItemFieldValue(state, _ref2) {
+    var groupID = _ref2.groupID,
+        _ref2$ids = field_combo_slicedToArray(_ref2.ids, 3),
+        fieldID = _ref2$ids[0],
+        comboID = _ref2$ids[1],
+        comboItemID = _ref2$ids[2],
+        newValue = _ref2.newValue;
+
+    var combo = util_getCombo(state.groups[groupID], comboID, "Can't update combo item");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItemValue) {
+      return comboItemValue.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    if (!comboItemValues[fieldID]) {
+      console.warn("Combo Item doesn't have the field id: ".concat(fieldID));
+      return;
+    }
+
+    comboItemValues[fieldID] = comboItemValues[fieldID].map(function (value) {
+      if (value.id !== newValue.id) {
+        return value;
+      }
+
+      return field_combo_extends(value, newValue);
+    });
+  },
+  addComboItemFieldValue: function addComboItemFieldValue(state, _ref3) {
+    var groupID = _ref3.groupID,
+        _ref3$ids = field_combo_slicedToArray(_ref3.ids, 3),
+        fieldID = _ref3$ids[0],
+        comboID = _ref3$ids[1],
+        comboItemID = _ref3$ids[2],
+        valueObj = _ref3.valueObj;
+
+    var combo = util_getCombo(state.groups[groupID], comboID, "Can't add combo item field");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItem) {
+      return comboItem.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    comboItemValues[fieldID].push(field_combo_extends(valueObj, {
+      id: createUniqueHash()
+    }));
+  },
+  removeComboItemFieldValue: function removeComboItemFieldValue(state, _ref4) {
+    var groupID = _ref4.groupID,
+        _ref4$ids = field_combo_slicedToArray(_ref4.ids, 3),
+        fieldID = _ref4$ids[0],
+        comboID = _ref4$ids[1],
+        comboItemID = _ref4$ids[2],
+        valueID = _ref4.valueID;
+
+    var combo = util_getCombo(state.groups[groupID], comboID, "Can't remove combo item field");
+
+    if (!combo) {
+      return;
+    }
+
+    var comboItemValues = combo.values.find(function (comboItem) {
+      return comboItem.id === comboItemID;
+    });
+
+    if (!comboItemValues) {
+      console.warn("Can't find combo item for comboID: ".concat(comboID, " with combo Item id: ").concat(comboItemID));
+      return;
+    }
+
+    if (comboItemValues[fieldID]) {
+      console.warn("Combo Item doesn't have the field id: ".concat(fieldID));
+      return;
+    }
+
+    comboItemValues[fieldID] = comboItemValues[fieldID].filter(function (value) {
+      return value.id !== valueID;
+    });
+  }
+};
+var combo_comboActions = {
+  updateComboItemValues: function updateComboItemValues(context, payload) {
+    context.commit('updateValues', payload);
+  },
+  removeComboItem: function removeComboItem(context, payload) {
+    context.commit('removeValue', payload);
+  }
+};
+var combo_comboGetters = {
+  getCombo: function getCombo(state, getters) {
+    return function (groupID, comboID) {
+      return getters.getField(groupID, [comboID]);
+    };
+  },
+  getComboItem: function getComboItem(state, getters) {
+    return function (groupID, comboID, comboItemID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.values.find(function (val) {
+        return val.id === comboItemID;
+      });
+    };
+  },
+  getComboFields: function getComboFields(state, getters) {
+    return function (groupID, comboID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.fields;
+    };
+  },
+  isComboMultiple: function isComboMultiple(state, getters) {
+    return function (groupID, comboID) {
+      var combo = getters.getCombo(groupID, comboID);
+      return combo.options.settings.multiple;
+    };
+  }
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/modules/field/index.js
+function modules_field_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { modules_field_defineProperty(target, key, source[key]); }); } return target; }
+
+function modules_field_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var modules_field_fields = {
+  namespaced: true,
+  state: {
+    groups: {
+      /**
+       *  { groupID }: {
+       *      fields: [],
+       *      oldState: [],
+       *      header: '',
+       *      isShowingActions
+       *  }
+       */
+    }
+  },
+  getters: modules_field_objectSpread({}, core_coreGetters, fields_fieldGetters, combo_comboGetters),
+  mutations: modules_field_objectSpread({}, core_coreMutations, fields_fieldMutations, combo_comboMutations),
+  actions: modules_field_objectSpread({}, coreActions, combo_comboActions)
+};
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/store/index.js
+
+
+
+function store_getStore() {
+  return new vuex_esm["default"].Store({
+    modules: {
+      blockSelect: blockSelect,
+      fields: modules_field_fields
+    }
+  });
+}
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/pages/PageEdit.vue?vue&type=template&id=1a83b9d2&
+var PageEditvue_type_template_id_1a83b9d2_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -13709,7 +14689,7 @@ var Appvue_type_template_id_146287be_render = function() {
     ]
   )
 }
-var Appvue_type_template_id_146287be_staticRenderFns = [
+var PageEditvue_type_template_id_1a83b9d2_staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -13719,10 +14699,10 @@ var Appvue_type_template_id_146287be_staticRenderFns = [
     ])
   }
 ]
-Appvue_type_template_id_146287be_render._withStripped = true
+PageEditvue_type_template_id_1a83b9d2_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/App.vue?vue&type=template&id=146287be&
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/PageEdit.vue?vue&type=template&id=1a83b9d2&
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/components/Block.vue?vue&type=template&id=671e8547&
 var Blockvue_type_template_id_671e8547_render = function() {
@@ -14145,14 +15125,10 @@ var Block_component = Object(componentNormalizer["default"])(
 if (false) { var Block_api; }
 Block_component.options.__file = "resources/assets/js/src/components/page-edit/components/Block.vue"
 /* harmony default export */ var Block = (Block_component.exports);
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/App.vue?vue&type=script&lang=js&
-function Appvue_type_script_lang_js_toConsumableArray(arr) { return Appvue_type_script_lang_js_arrayWithoutHoles(arr) || Appvue_type_script_lang_js_iterableToArray(arr) || Appvue_type_script_lang_js_nonIterableSpread(); }
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/pages/PageEdit.vue?vue&type=script&lang=js&
+function PageEditvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { PageEditvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
 
-function Appvue_type_script_lang_js_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function PageEditvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
 //
@@ -14201,17 +15177,12 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
 //
 
 
-
-/* harmony default export */ var page_edit_Appvue_type_script_lang_js_ = ({
+/* harmony default export */ var PageEditvue_type_script_lang_js_ = ({
   components: {
     'block-item': Block
   },
   data: function data() {
     return {
-      nonSortableRenderingGroups: [],
-      renderingGroups: [],
-      blockList: [],
-      hasRenderable: false,
       isDragging: false,
       dragOptions: {
         group: {
@@ -14220,35 +15191,17 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
           put: true
         },
         animation: 75
-      },
-      renderSearch: '',
-      blockSearch: ''
+      }
     };
   },
-  created: function created() {
-    this.nonSortableRenderingGroups = window.groups.filter(function (el) {
-      return (!el.isRenderable || el.isRendering) && !el.isSortable && !el.isTab;
-    });
-    this.renderingGroups = window.groups.filter(function (el) {
-      return (!el.isRenderable || el.isRendering) && el.isSortable && !el.isTab;
-    });
-    this.blockList = window.groups.filter(function (el) {
-      return el.isRenderable && !el.isRendering;
-    });
-    this.hasRenderable = !!window.groups.find(function (group) {
-      return group.isRenderable;
-    });
-  },
-  computed: {
+  computed: PageEditvue_type_script_lang_js_objectSpread({
     renderingDragGroup: {
       get: function get() {
         return this.renderingGroups;
       },
       set: function set(values) {
-        preventPageLeave();
-        this.renderingGroups = values.map(function (el) {
-          el.isRendering = true;
-          return el;
+        this.$store.commit('blockSelect/updateRenderingBlockList', {
+          blocks: values
         });
       }
     },
@@ -14257,71 +15210,47 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
         return this.blockList;
       },
       set: function set(values) {
-        preventPageLeave();
-        this.blockList = values.map(function (el) {
-          el.isRendering = false;
-          return el;
+        this.$store.commit('blockSelect/updateBlockList', {
+          blocks: values
         });
       }
     },
-    filteredBlockList: function filteredBlockList() {
-      var _this = this;
-
-      return this.blockList.filter(function (block) {
-        return block.name.toLowerCase().includes(_this.blockSearch);
-      });
+    renderSearch: {
+      get: function get() {
+        return this.$store.state.blockSelect.renderSearch;
+      },
+      set: function set(value) {
+        this.$store.commit('blockSelect/setRenderSearch', {
+          searchString: value
+        });
+      }
     },
-    filteredRenderList: function filteredRenderList() {
-      var _this2 = this;
-
-      return this.renderingGroups.filter(function (block) {
-        return block.name.toLowerCase().includes(_this2.renderSearch);
-      });
-    },
-    filteredRenderNonSortList: function filteredRenderNonSortList() {
-      var _this3 = this;
-
-      return this.nonSortableRenderingGroups.filter(function (block) {
-        return block.name.toLowerCase().includes(_this3.renderSearch);
-      });
-    },
-    renderOrder: function renderOrder() {
-      return this.renderingGroups.map(function (block) {
-        return block.id;
-      }).join(',');
+    blockSearch: {
+      get: function get() {
+        return this.$store.state.blockSelect.blockSearch;
+      },
+      set: function set(value) {
+        this.$store.commit('blockSelect/setBlockSearch', {
+          searchString: value
+        });
+      }
     }
-  },
+  }, Object(vuex_esm["mapState"])('blockSelect', ['nonSortableRenderingGroups', 'renderingGroups', 'blockList', 'hasRenderable']), Object(vuex_esm["mapGetters"])('blockSelect', ['filteredRenderList', 'filteredBlockList', 'filteredRenderNonSortList', 'renderOrder'])),
   methods: {
     addItem: function addItem(id) {
-      var item = this.blockList.find(function (el) {
-        return el.id === id;
+      this.$store.commit('blockSelect/addBlockToRendering', {
+        id: id
       });
-
-      if (!item) {
-        return;
-      }
-
-      this.blockList = this.blockList.filter(function (el) {
-        return el.id !== id;
-      });
-      this.renderingDragGroup = Appvue_type_script_lang_js_toConsumableArray(this.renderingGroups).concat([item]);
     },
     removeItem: function removeItem(id) {
-      var item = this.renderingGroups.find(function (el) {
-        return el.id === id;
+      this.$store.commit('blockSelect/removeBlockFromRendering', {
+        id: id
       });
-
-      if (!item) {
-        return;
-      }
-
-      this.renderingGroups = this.renderingGroups.filter(function (el) {
-        return el.id !== id;
-      });
-      this.blockDragList = Appvue_type_script_lang_js_toConsumableArray(this.blockList).concat([item]);
     },
     editBlock: function editBlock(id, title) {
-      changeTab("group-".concat(id), title);
+      this.$router.push({
+        path: "/edit/".concat(id)
+      });
     },
     startDragging: function startDragging() {
       this.isDragging = true;
@@ -14331,9 +15260,9 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
     }
   }
 });
-// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/App.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_page_edit_Appvue_type_script_lang_js_ = (page_edit_Appvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/App.vue
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/PageEdit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var pages_PageEditvue_type_script_lang_js_ = (PageEditvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/PageEdit.vue
 
 
 
@@ -14341,10 +15270,10 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
 
 /* normalize component */
 
-var page_edit_App_component = Object(componentNormalizer["default"])(
-  components_page_edit_Appvue_type_script_lang_js_,
-  Appvue_type_template_id_146287be_render,
-  Appvue_type_template_id_146287be_staticRenderFns,
+var PageEdit_component = Object(componentNormalizer["default"])(
+  pages_PageEditvue_type_script_lang_js_,
+  PageEditvue_type_template_id_1a83b9d2_render,
+  PageEditvue_type_template_id_1a83b9d2_staticRenderFns,
   false,
   null,
   null,
@@ -14353,23 +15282,289 @@ var page_edit_App_component = Object(componentNormalizer["default"])(
 )
 
 /* hot reload */
-if (false) { var page_edit_App_api; }
-page_edit_App_component.options.__file = "resources/assets/js/src/components/page-edit/App.vue"
-/* harmony default export */ var page_edit_App = (page_edit_App_component.exports);
+if (false) { var PageEdit_api; }
+PageEdit_component.options.__file = "resources/assets/js/src/components/page-edit/pages/PageEdit.vue"
+/* harmony default export */ var PageEdit = (PageEdit_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/pages/GroupEdit.vue?vue&type=template&id=a6b9bf8a&
+var GroupEditvue_type_template_id_a6b9bf8a_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_c("group", { attrs: { groupId: _vm.groupKey } })], 1)
+}
+var GroupEditvue_type_template_id_a6b9bf8a_staticRenderFns = []
+GroupEditvue_type_template_id_a6b9bf8a_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/GroupEdit.vue?vue&type=template&id=a6b9bf8a&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/components/group.vue?vue&type=template&id=63474e59&
+var groupvue_type_template_id_63474e59_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.isShowingActions(_vm.groupId)
+        ? [
+            _c("div", { staticClass: "c-actions__container" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "c-actions__content c-tab-panel__inner-container l-full"
+                },
+                [
+                  _c("h2", [
+                    _vm._v("Editing: "),
+                    _c("span", { staticClass: "h-text--primary" }, [
+                      _vm._v(_vm._s(_vm.header(_vm.groupId)))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "o-form l-accordion-container" },
+                    _vm._l(_vm.fields(_vm.groupId), function(field) {
+                      return _c("types", {
+                        key: field.id,
+                        attrs: { field: field, "group-id": _vm.groupId }
+                      })
+                    })
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "c-actions" }, [
+                _c("div", { staticClass: "c-actions__group" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "o-btn o-btn--primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          _vm.apply($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Apply")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "o-btn",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function($event) {
+                          _vm.cancel($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Cancel")]
+                  )
+                ])
+              ])
+            ])
+          ]
+        : [
+            _c("h3", [_vm._v(_vm._s(_vm.header(_vm.groupId)))]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "o-form l-accordion-container" },
+              _vm._l(_vm.fields(_vm.groupId), function(field) {
+                return _c("types", {
+                  key: field.id,
+                  attrs: { field: field, "group-id": _vm.groupId }
+                })
+              })
+            )
+          ]
+    ],
+    2
+  )
+}
+var groupvue_type_template_id_63474e59_staticRenderFns = []
+groupvue_type_template_id_63474e59_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/components/group.vue?vue&type=template&id=63474e59&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/components/group.vue?vue&type=script&lang=js&
+function groupvue_type_script_lang_js_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { groupvue_type_script_lang_js_defineProperty(target, key, source[key]); }); } return target; }
+
+function groupvue_type_script_lang_js_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ var groupvue_type_script_lang_js_ = ({
+  props: ['groupId'],
+  created: function created() {
+    this.$store.commit('fields/setOldState', {
+      groupID: this.groupId
+    });
+  },
+  methods: {
+    apply: function apply(evt) {
+      evt.preventDefault();
+      this.$store.commit('fields/setOldState', {
+        groupID: this.groupId
+      });
+      this.$router.push('/');
+    },
+    cancel: function cancel(evt) {
+      evt.preventDefault();
+      this.$store.commit('fields/restoreOldState', {
+        groupID: this.groupId
+      });
+      this.$router.push('/');
+    }
+  },
+  computed: groupvue_type_script_lang_js_objectSpread({}, Object(vuex_esm["mapGetters"])('fields', ['fields', 'header', 'isShowingActions']))
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/components/group.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_groupvue_type_script_lang_js_ = (groupvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/components/group.vue
+
+
+
+
+
+/* normalize component */
+
+var group_component = Object(componentNormalizer["default"])(
+  components_groupvue_type_script_lang_js_,
+  groupvue_type_template_id_63474e59_render,
+  groupvue_type_template_id_63474e59_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var group_api; }
+group_component.options.__file = "resources/assets/js/src/components/page-edit/components/group.vue"
+/* harmony default export */ var group = (group_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/page-edit/pages/GroupEdit.vue?vue&type=script&lang=js&
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ var GroupEditvue_type_script_lang_js_ = ({
+  components: {
+    Group: group
+  },
+  created: function created() {
+    this.$store.dispatch('fields/setupGroup', {
+      groupID: this.$route.params.id
+    });
+  },
+  computed: {
+    groupKey: function groupKey() {
+      return this.$route.params.id;
+    }
+  }
+});
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/GroupEdit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var pages_GroupEditvue_type_script_lang_js_ = (GroupEditvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/pages/GroupEdit.vue
+
+
+
+
+
+/* normalize component */
+
+var GroupEdit_component = Object(componentNormalizer["default"])(
+  pages_GroupEditvue_type_script_lang_js_,
+  GroupEditvue_type_template_id_a6b9bf8a_render,
+  GroupEditvue_type_template_id_a6b9bf8a_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var GroupEdit_api; }
+GroupEdit_component.options.__file = "resources/assets/js/src/components/page-edit/pages/GroupEdit.vue"
+/* harmony default export */ var GroupEdit = (GroupEdit_component.exports);
 // CONCATENATED MODULE: ./resources/assets/js/src/components/page-edit/index.js
 
 
 
-vue_default.a.config.productionTip = false;
+
+
+
+
+
+ // Vue.config.productionTip = false
+
+vue_default.a.use(vue_router_esm["default"]);
 vue_default.a.component('draggable', vuedraggable_default.a);
-function PageEdit() {
+vue_default.a.component('types', types_types);
+vue_default.a.use(vuex_esm["default"]);
+function page_edit_PageEdit() {
   var pageEdit = document.querySelector('.js-page-edit');
 
   if (!pageEdit) {
     return;
   }
 
+  var store = store_getStore();
+  store.commit('blockSelect/addGroups', {
+    groups: window.groups
+  });
+  var routes = [{
+    path: '/',
+    component: PageEdit
+  }, {
+    path: '/edit/:id',
+    component: GroupEdit
+  }];
+  var router = new vue_router_esm["default"]({
+    routes: routes
+  });
   return new vue_default.a({
+    store: store,
+    router: router,
     render: function render(h) {
       return h(page_edit_App);
     }
@@ -15982,21 +17177,21 @@ confirmModal_component.options.__file = "resources/assets/js/src/components/site
 var path_browserify = __webpack_require__("./node_modules/path-browserify/index.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/src/components/site-tree/App.vue?vue&type=script&lang=js&
-function site_tree_Appvue_type_script_lang_js_toConsumableArray(arr) { return site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) || site_tree_Appvue_type_script_lang_js_iterableToArray(arr) || site_tree_Appvue_type_script_lang_js_nonIterableSpread(); }
+function Appvue_type_script_lang_js_toConsumableArray(arr) { return Appvue_type_script_lang_js_arrayWithoutHoles(arr) || Appvue_type_script_lang_js_iterableToArray(arr) || Appvue_type_script_lang_js_nonIterableSpread(); }
 
-function site_tree_Appvue_type_script_lang_js_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function Appvue_type_script_lang_js_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
-function site_tree_Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function Appvue_type_script_lang_js_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return typeof obj; }; } else { Appvue_type_script_lang_js_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Appvue_type_script_lang_js_typeof(obj); }
 
-function _toArray(arr) { return _arrayWithHoles(arr) || site_tree_Appvue_type_script_lang_js_iterableToArray(arr) || _nonIterableRest(); }
+function _toArray(arr) { return Appvue_type_script_lang_js_arrayWithHoles(arr) || Appvue_type_script_lang_js_iterableToArray(arr) || Appvue_type_script_lang_js_nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function Appvue_type_script_lang_js_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
 
-function site_tree_Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function Appvue_type_script_lang_js_iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function Appvue_type_script_lang_js_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 //
 //
@@ -16325,7 +17520,7 @@ function breadthFirstSearch(obj, handler) {
         };
       });
 
-      (_stack = stack).push.apply(_stack, site_tree_Appvue_type_script_lang_js_toConsumableArray(pushStack));
+      (_stack = stack).push.apply(_stack, Appvue_type_script_lang_js_toConsumableArray(pushStack));
     }
   };
 
@@ -18671,7 +19866,7 @@ function import_field_groups_store_defineProperty(obj, key, value) { if (key in 
 
 
 
-function store_getStore() {
+function import_field_groups_store_getStore() {
   return new vuex_esm["default"].Store({
     state: {
       type: null,
@@ -18920,7 +20115,7 @@ function ImportFieldGroups() {
     return;
   }
 
-  var store = store_getStore();
+  var store = import_field_groups_store_getStore();
   store.commit('setType', {
     type: type
   });
@@ -19022,6 +20217,9 @@ function activityLog() {
 
   new vue_default.a().$mount(widget);
 }
+// EXTERNAL MODULE: ./node_modules/@sentry/browser/esm/index.js + 34 modules
+var esm = __webpack_require__("./node_modules/@sentry/browser/esm/index.js");
+
 // CONCATENATED MODULE: ./resources/assets/js/src/index.js
 
 
@@ -19032,6 +20230,11 @@ function activityLog() {
  // import resetForm from './form/reset-form'
 
 
+
+esm["init"]({
+  dsn: 'https://92b24e70f7ff4be29808e4e75aec3d5d@sentry.io/1530757'
+});
+sometimesIerror();
 
 function src_init() {
   init();
@@ -19053,9 +20256,9 @@ function src_init() {
   Medialib();
   Dashboard();
   Tabs();
-  PageEdit();
-  MenuEdit();
-  cropperTest();
+  page_edit_PageEdit();
+  MenuEdit(); // cropperTest()
+
   formSubmits();
   SiteTree();
   BasicConfirmBtns(); // testUppy()
@@ -19157,4 +20360,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.f5a5a0ca10bfb4dd3d56.js.map
+//# sourceMappingURL=main.76e15e26e3db4e1c9096.js.map

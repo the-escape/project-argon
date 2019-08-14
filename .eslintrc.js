@@ -1,7 +1,7 @@
 module.exports = {
     parser: 'vue-eslint-parser',
-    extends: ['standard', 'plugin:vue/essential'],
-    plugins: ['import', 'node', 'promise', 'standard'],
+    extends: ['standard', 'plugin:vue/essential', 'plugin:jest/recommended'],
+    plugins: ['import', 'node', 'promise', 'standard', 'jest'],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',
@@ -9,7 +9,8 @@ module.exports = {
     },
     env: {
         browser: true,
-        jquery: true
+        jquery: true,
+        'jest/globals': true
     },
     rules: {
         indent: ['error', 4]

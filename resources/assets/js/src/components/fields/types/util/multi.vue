@@ -12,7 +12,6 @@
                                     </svg>
                                 </div>
                             </button>
-
                             <slot :value-obj="value"></slot>
 
                             <div class="o-multi__actions">
@@ -60,9 +59,7 @@ export default {
                 const newEmptyValue = deepClone(field.emptyValue)
                 this.$store.commit('fields/addComboItemFieldValue', {
                     groupID: this.groupId,
-                    fieldID: this.fieldId,
-                    comboID: this.comboId,
-                    comboItemID: this.comboItemId,
+                    ids: [this.fieldId, this.comboId, this.comboItemId],
                     valueObj: newEmptyValue
                 })
             }else{
@@ -78,9 +75,7 @@ export default {
             if(this.comboId){
                 this.$store.commit('fields/removeComboItemFieldValue', {
                     groupID: this.groupId,
-                    fieldID: this.fieldId,
-                    comboID: this.comboId,
-                    comboItemID: this.comboItemId,
+                    ids: [this.fieldId, this.comboId, this.comboItemId],
                     valueID
                 })
             } else {
@@ -101,9 +96,7 @@ export default {
             if(this.comboId){
                 this.$store.commit('fields/addComboItemFieldValue', {
                     groupID: this.groupId,
-                    fieldID: this.fieldId,
-                    comboID: this.comboId,
-                    comboItemId: this.comboItemId,
+                    ids: [this.fieldId, this.comboId, this.comboItemId],
                     valueObj: duplicateVal
                 })
             }else{

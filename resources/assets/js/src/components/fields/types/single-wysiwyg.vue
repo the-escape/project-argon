@@ -6,7 +6,7 @@
 import { EventBus } from './util/bus'
 
 export default {
-    props: ['fieldId', 'comboId', 'comboItemId', 'name', 'valueObj'],
+    props: ['groupId', 'fieldId', 'comboId', 'comboItemId', 'name', 'valueObj'],
     data () {
         return {
             textareaElement: null,
@@ -127,7 +127,6 @@ function updateEditorHeight(){
     this.totalHeight = this.textareaElement.nextElementSibling.offsetHeight
 }
 
-// TODO: fix multi wysiwyg instances, as it appears as a single ckeditor instance and adding a unique hash to the name breaks the backend
 function mountEditor () {
     const textarea = this.$el
     this.textareaElement = textarea

@@ -1,4 +1,4 @@
-import { createUniqueHash } from '../../../../util'
+import { createUniqueHash } from '../../../../../util'
 import { getField } from './util'
 
 // const fieldsExample = [

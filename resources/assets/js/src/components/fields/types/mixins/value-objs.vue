@@ -20,9 +20,7 @@ export default {
                 }else{
                     this.$store.commit('fields/updateValues', {
                         groupID: this.groupId,
-                        fieldID: this.fieldId,
-                        comboID: this.comboId,
-                        comboItemId: this.comboItemId,
+                        id: this.fieldId,
                         newValues: values
                     })
                 }

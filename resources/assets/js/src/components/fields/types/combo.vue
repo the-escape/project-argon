@@ -21,14 +21,14 @@
                     </div>
                     <div class="o-combo__body" :style="{ display: isHidingBody ? 'none' : 'block' }">
                         <div class="o-combo__form">
-                            <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
+                            <types v-for="field in comboFields" :group-id="groupId" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
                         </div>
                     </div>
                 </div>
             </draggable>
         </div>
         <div class="o-combo__foot">
-            <button class="o-btn o-btn--sm" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>
+            <button class="o-btn o-btn--sm" v-if="isMultiple" @click.prevent="addEmptyItem">Add {{comboField.options.comboAddName}}</button>
         </div>
     </div>
 </template>
@@ -40,7 +40,7 @@ import Jump from '../../../ui/jump'
 
 export default {
     name: 'combo',
-    props: ['fieldId'],
+    props: ['groupId', 'fieldId'],
     data() {
         return {
             isHidingBody: false
@@ -74,56 +74,55 @@ export default {
             }, 0)
         },
         deleteItem: function (comboItemID) {
-            this.$store.commit('removeComboItem', {
-                comboID: this.fieldId,
-                comboItemID
+            this.$store.dispatch('fields/removeComboItem', {
+                groupID: this.groupId,
+                id: this.fieldId,
+                valueID: comboItemID
             })
         },
         duplicateItem: function (comboItemID) {
-            const comboField = this.$store.getters.getField(this.fieldId)
-            const val = comboField.values.filter(comboValueObj => comboValueObj.id === comboItemID)
-            if(!val.length){
+            const valueObj = this.$store.getters['fields/getComboItem'](this.groupId, this.fieldId, comboItemID)
+
+            if(!valueObj){
                 console.warn('could not find value to duplicate')
                 return
             }
 
-            const duplicate = deepClone(val[0])
-            this.$store.commit('addComboItemValue', {
-                comboID: this.fieldId,
-                newValueObj: duplicate
+            const duplicate = deepClone(valueObj)
+            this.$store.commit('fields/addComboItemValue', {
+                groupID: this.groupId,
+                id: this.fieldId,
+                valueObj: duplicate
             })
         },
-        addEmptyItem: function (evt) {
-            evt && evt.preventDefault()
-
-            const comboField = this.$store.getters.getField(this.fieldId)
+        addEmptyItem: function () {
+            const comboField = this.$store.getters['fields/getCombo'](this.groupId, this.fieldId)
             const emptyValue = deepClone(comboField.emptyValue)
-            this.$store.commit('addComboItemValue', {
-                comboID: this.fieldId,
-                newValueObj: emptyValue
+            this.$store.commit('fields/addComboItemValue', {
+                groupID: this.groupId,
+                id: this.fieldId,
+                valueObj: emptyValue
             })
         }
     },
     computed: {
         comboField: function () {
-            return this.$store.getters.getField(this.fieldId)
+            return this.$store.getters['fields/getCombo'](this.groupId, this.fieldId)
         },
         comboFields: function () {
-            const comboField = this.$store.getters.getField(this.fieldId)
-            return comboField.fields
+            return this.$store.getters['fields/getComboFields'](this.groupId, this.fieldId)
         },
         isMultiple: function () {
-            const comboField = this.$store.getters.getField(this.fieldId)
-            return comboField.options.settings.multiple
+            return this.$store.getters['fields/isComboMultiple'](this.groupId, this.fieldId)
         },
         items: {
             get () {
-                const comboField = this.$store.getters.getField(this.fieldId)
-                return comboField.values
+                return this.$store.getters['fields/getValues'](this.groupId, [this.fieldId])
             },
             set (values) {
-                this.$store.commit('updateComboItemValues', {
-                    comboID: this.fieldId,
+                this.$store.dispatch('fields/updateComboItemValues', {
+                    groupID: this.groupId,
+                    id: this.fieldId,
                     newValues: values
                 })
             }

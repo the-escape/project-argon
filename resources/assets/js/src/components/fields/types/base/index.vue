@@ -33,9 +33,7 @@ export default {
             if(this.comboId){
                 this.$store.commit('fields/updateComboItemFieldValue', {
                     groupID: this.groupId,
-                    fieldID: this.fieldId,
-                    comboID: this.comboId,
-                    comboItemId: this.comboItemId,
+                    ids: [this.fieldId, this.comboId, this.comboItemId],
                     newValue: valueObj
                 })
             } else {

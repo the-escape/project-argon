@@ -38,6 +38,12 @@ import {
     DragDrop
 } from 'uppy'
 
+// import * as Sentry from '@sentry/browser'
+
+// Sentry.init({
+//     dsn: 'https://7b4a1aa5129a40e48fb01135d540bccb@sentry.io/1530777'
+// })
+
 function init () {
     polyfill()
     Jump.init(650, 150)
