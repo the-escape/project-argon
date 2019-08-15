@@ -12,7 +12,7 @@
         "doctrine/dbal": "^2.5",
         "solarium/solarium":"^3.5.1",
         "maknz/slack-laravel": "^1.0",
-        "symfony/options-resolver": "2.1.*",
+        "symfony/options-resolver": "2.1.* || 2.7.*",
         "ps/image-optimizer": "^1.2"
     },
     "require-dev": {
