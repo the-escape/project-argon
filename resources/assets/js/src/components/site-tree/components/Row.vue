@@ -14,7 +14,7 @@
                 @duplicate="duplicateItem"
                 @view="viewError"
                 tooltipPostfix=" Page"
-                :extraActions="node.extraActions"
+                :extraActions="node.data.extraActions"
             ></comfirm-btn>
         </div>
         <div class="o-table__data"><a :href="editUrl" class="o-btn o-btn--xs">Edit</a></div>

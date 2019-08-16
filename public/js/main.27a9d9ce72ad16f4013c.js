@@ -15232,7 +15232,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
-              extraActions: _vm.node.extraActions
+              extraActions: _vm.node.data.extraActions
             },
             on: {
               add: _vm.toggleAddForm,
@@ -15717,7 +15717,7 @@ var Rowvue_type_template_id_6f236b38_render = function() {
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
-              extraActions: _vm.node.extraActions
+              extraActions: _vm.node.data.extraActions
             },
             on: {
               add: _vm.toggleAddForm,
@@ -19164,4 +19164,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.c8df9286e7dc134976e3.js.map
+//# sourceMappingURL=main.27a9d9ce72ad16f4013c.js.map
