@@ -3662,136 +3662,142 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
       }
     },
     [
-      _c("div", { staticClass: "o-confirm-btn__questions" }, [
-        _vm.hideDuplicate && !_vm.showAdd
-          ? _c("div", { staticClass: "o-confirm-btn" })
-          : _vm._e(),
-        _vm._v(" "),
-        !_vm.hideDuplicate
-          ? _c(
-              "button",
-              {
-                staticClass: "o-confirm-btn",
-                attrs: {
-                  "data-balloon": "Duplicate" + _vm.tooltipPostfixValue,
-                  title: "Duplicate"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.duplicate($event)
-                  }
-                }
-              },
-              [
-                _c("svg", [
-                  _c("use", {
-                    attrs: {
-                      "xlink:href": "/argon/images/svgicons.svg#duplicate"
+      _c(
+        "div",
+        { staticClass: "o-confirm-btn__questions" },
+        [
+          _vm.hideDuplicate && !_vm.showAdd
+            ? _c("div", { staticClass: "o-confirm-btn" })
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.hideDuplicate
+            ? _c(
+                "button",
+                {
+                  staticClass: "o-confirm-btn",
+                  attrs: {
+                    "data-balloon": "Duplicate" + _vm.tooltipPostfixValue,
+                    title: "Duplicate"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.duplicate($event)
                     }
-                  })
-                ])
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "o-confirm-btn",
-            class: { "o-confirm-btn--fade": _vm.fadeDelete },
-            attrs: {
-              "data-balloon": _vm.fadeDelete
-                ? false
-                : "Delete" + _vm.tooltipPostfixValue,
-              title: "Delete"
-            },
-            on: {
-              click: function($event) {
-                _vm.toggleConfirmDelete($event)
+                  }
+                },
+                [
+                  _c("svg", [
+                    _c("use", {
+                      attrs: {
+                        "xlink:href": "/argon/images/svgicons.svg#duplicate"
+                      }
+                    })
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "o-confirm-btn",
+              class: { "o-confirm-btn--fade": _vm.fadeDelete },
+              attrs: {
+                "data-balloon": _vm.fadeDelete
+                  ? false
+                  : "Delete" + _vm.tooltipPostfixValue,
+                title: "Delete"
+              },
+              on: {
+                click: function($event) {
+                  _vm.toggleConfirmDelete($event)
+                }
               }
-            }
-          },
-          [
-            _c("svg", [
-              _c("use", {
-                attrs: { "xlink:href": "/argon/images/svgicons.svg#delete" }
-              })
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _vm.showAdd
-          ? _c(
-              "button",
-              {
-                staticClass: "o-confirm-btn js-add-btn",
-                attrs: {
-                  "data-balloon": "Add" + _vm.tooltipPostfixValue,
-                  title: "Add"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.add($event)
+            },
+            [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#delete" }
+                })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm.showAdd
+            ? _c(
+                "button",
+                {
+                  staticClass: "o-confirm-btn js-add-btn",
+                  attrs: {
+                    "data-balloon": "Add" + _vm.tooltipPostfixValue,
+                    title: "Add"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.add($event)
+                    }
                   }
-                }
-              },
-              [
-                _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#add" }
-                  })
-                ])
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.showView
-          ? _c(
+                },
+                [
+                  _c("svg", [
+                    _c("use", {
+                      attrs: { "xlink:href": "/argon/images/svgicons.svg#add" }
+                    })
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.showView
+            ? _c(
+                "a",
+                {
+                  staticClass: "o-confirm-btn",
+                  class: { "o-confirm-btn--fade": !_vm.viewUrl },
+                  attrs: {
+                    href: _vm.viewUrl,
+                    target: "_blank",
+                    "data-balloon": "View" + _vm.tooltipPostfixValue,
+                    title: "view"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.view($event)
+                    }
+                  }
+                },
+                [
+                  _c("svg", [
+                    _c("use", {
+                      attrs: { "xlink:href": "/argon/images/svgicons.svg#see" }
+                    })
+                  ])
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.extraActions, function(extraAction, index) {
+            return _c(
               "a",
               {
+                key: index,
                 staticClass: "o-confirm-btn",
-                class: { "o-confirm-btn--fade": !_vm.viewUrl },
                 attrs: {
-                  href: _vm.viewUrl,
-                  target: "_blank",
-                  "data-balloon": "View" + _vm.tooltipPostfixValue,
-                  title: "view"
-                },
-                on: {
-                  click: function($event) {
-                    _vm.view($event)
-                  }
+                  href: extraAction.url,
+                  "data-balloon": extraAction.label,
+                  title: extraAction.label
                 }
               },
               [
                 _c("svg", [
-                  _c("use", {
-                    attrs: { "xlink:href": "/argon/images/svgicons.svg#see" }
-                  })
+                  _c("use", { attrs: { "xlink:href": extraAction.icon } })
                 ])
               ]
             )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.extraAction
-          ? _c(
-              "a",
-              {
-                staticClass: "o-confirm-btn",
-                attrs: {
-                  href: _vm.extraAction.url,
-                  "data-balloon": _vm.extraAction.label,
-                  title: _vm.extraAction.label
-                }
-              },
-              [
-                _c("svg", [
-                  _c("use", { attrs: { "xlink:href": _vm.extraAction.icon } })
-                ])
-              ]
-            )
-          : _vm._e()
-      ]),
+          })
+        ],
+        2
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "o-confirm-btn__decline" }, [
         _c(
@@ -3893,7 +3899,7 @@ confirm_btnvue_type_template_id_73a6f08d_render._withStripped = true
 //
 /* harmony default export */ var confirm_btnvue_type_script_lang_js_ = ({
   name: 'comfirm-btn',
-  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix', 'extraAction'],
+  props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix', 'extraActions'],
   data: function data() {
     return {
       confirmDelete: false,
@@ -15225,7 +15231,7 @@ var RootRowvue_type_template_id_5870ccf6_render = function() {
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
-              extraAction: _vm.node.extraAction
+              extraActions: _vm.node.extraActions
             },
             on: {
               add: _vm.toggleAddForm,
@@ -15710,7 +15716,7 @@ var Rowvue_type_template_id_6f236b38_render = function() {
               viewUrl: _vm.viewUrl,
               "fade-delete": _vm.preventDelete,
               tooltipPostfix: " Page",
-              extraAction: _vm.node.extraAction
+              extraActions: _vm.node.extraActions
             },
             on: {
               add: _vm.toggleAddForm,
@@ -19157,4 +19163,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.f5a5a0ca10bfb4dd3d56.js.map
+//# sourceMappingURL=main.cc28c393db894e13e230.js.map

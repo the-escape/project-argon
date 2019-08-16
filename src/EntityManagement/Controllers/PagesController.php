@@ -82,7 +82,7 @@ class PagesController extends BaseController
                     "typeName" => $el->type->name,
                     "status" => (int)$el->status,
                 ],
-                "extraAction" => [],
+                "extraActions" => [],
                 "children" => []
             ];
 
@@ -90,7 +90,14 @@ class PagesController extends BaseController
 
             if(array_filter($extraActions))
             {
-                $entity["extraAction"] = $extraActions[0];
+                if (isset($extraActions[0]['url']))
+                {
+                    $entity["extraActions"] = [$extraActions[0]];
+                }
+                else
+                {
+                    $entity["extraActions"] = $extraActions[0];
+                }
             }
 
             if($el->hasChildren()){

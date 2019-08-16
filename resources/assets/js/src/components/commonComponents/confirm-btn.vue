@@ -22,7 +22,7 @@
                     <use xlink:href="/argon/images/svgicons.svg#see"></use>
                 </svg>
             </a>
-            <a v-if="extraAction" :href="extraAction.url" :data-balloon="extraAction.label" class="o-confirm-btn" :title="extraAction.label">
+            <a v-for="(extraAction, index) in extraActions" :key="index" :href="extraAction.url" :data-balloon="extraAction.label" class="o-confirm-btn" :title="extraAction.label">
                 <svg>
                     <use :xlink:href="extraAction.icon"></use>
                 </svg>
@@ -48,7 +48,7 @@
 <script>
 export default {
     name: 'comfirm-btn',
-    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix','extraAction'],
+    props: ['hideDuplicate', 'fadeDelete', 'isBlock', 'showAdd', 'viewUrl', 'showView', 'tooltipPostfix','extraActions'],
     data() {
         return {
             confirmDelete: false,
