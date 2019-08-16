@@ -3786,7 +3786,7 @@ var confirm_btnvue_type_template_id_73a6f08d_render = function() {
                   href: extraAction.url,
                   "data-balloon": extraAction.label,
                   title: extraAction.label,
-                  target: _vm.extraActions.target
+                  target: extraAction.target
                 }
               },
               [
@@ -19164,4 +19164,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.27a9d9ce72ad16f4013c.js.map
+//# sourceMappingURL=main.e3a9edb26601e2e8466e.js.map

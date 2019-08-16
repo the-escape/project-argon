@@ -22,7 +22,7 @@
                     <use xlink:href="/argon/images/svgicons.svg#see"></use>
                 </svg>
             </a>
-            <a v-for="(extraAction, index) in extraActions" :key="index" :href="extraAction.url" :data-balloon="extraAction.label" class="o-confirm-btn" :title="extraAction.label" :target="extraActions.target">
+            <a v-for="(extraAction, index) in extraActions" :key="index" :href="extraAction.url" :data-balloon="extraAction.label" class="o-confirm-btn" :title="extraAction.label" :target="extraAction.target">
                 <svg>
                     <use :xlink:href="extraAction.icon"></use>
                 </svg>
