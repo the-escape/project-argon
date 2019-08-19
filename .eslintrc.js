@@ -1,7 +1,7 @@
 module.exports = {
     parser: 'vue-eslint-parser',
-    extends: ['standard', 'plugin:vue/essential', 'plugin:jest/recommended'],
-    plugins: ['import', 'node', 'promise', 'standard', 'jest'],
+    extends: ['standard', 'prettier-standard', 'plugin:vue/essential', 'plugin:jest/recommended'],
+    plugins: ['prettier', 'import', 'node', 'promise', 'standard', 'jest'],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: 'module',

@@ -9,19 +9,21 @@ export const blockSelect = {
         blockSearch: ''
     },
     mutations: {
-        addGroups (state, { groups }) {
+        addGroups(state, {
+            groups
+        }) {
             state.nonSortableRenderingGroups = groups.filter(
                 el =>
-                    (!el.isRenderable || el.isRendering) &&
-                    !el.isSortable &&
-                    !el.isTab
+                (!el.isRenderable || el.isRendering) &&
+                !el.isSortable &&
+                !el.isTab
             )
 
             state.renderingGroups = groups.filter(
                 el =>
-                    (!el.isRenderable || el.isRendering) &&
-                    el.isSortable &&
-                    !el.isTab
+                (!el.isRenderable || el.isRendering) &&
+                el.isSortable &&
+                !el.isTab
             )
 
             state.blockList = groups.filter(
@@ -30,25 +32,35 @@ export const blockSelect = {
 
             state.hasRenderable = !!groups.find(group => group.isRenderable)
         },
-        setRenderSearch (state, { searchString }) {
+        setRenderSearch(state, {
+            searchString
+        }) {
             state.renderSearch = searchString
         },
-        setBlockSearch (state, { searchString }) {
+        setBlockSearch(state, {
+            searchString
+        }) {
             state.blockSearch = searchString
         },
-        updateRenderingBlockList (state, { blocks }) {
+        updateRenderingBlockList(state, {
+            blocks
+        }) {
             state.renderingGroups = blocks.map(block => {
                 block.isRendering = true
                 return block
             })
         },
-        updateBlockList (state, { blocks }) {
+        updateBlockList(state, {
+            blocks
+        }) {
             state.blockList = blocks.map(block => {
                 block.isRendering = false
                 return block
             })
         },
-        addBlockToRendering (state, { id }) {
+        addBlockToRendering(state, {
+            id
+        }) {
             const block = state.blockList.find(block => block.id === id)
             if (!block) {
                 return
@@ -57,7 +69,9 @@ export const blockSelect = {
             block.isRendering = true
             state.renderingGroups.push(block)
         },
-        removeBlockFromRendering (state, { id }) {
+        removeBlockFromRendering(state, {
+            id
+        }) {
             const block = state.renderingGroups.find(block => block.id === id)
             if (!block) {
                 return
@@ -72,15 +86,15 @@ export const blockSelect = {
     getters: {
         filteredRenderList: state =>
             state.renderingGroups.filter(block =>
-                block.name.toLowerCase().includes(state.renderSearch)
+                block.name.toLowerCase().includes(state.renderSearch.toLowerCase())
             ),
         filteredBlockList: state =>
             state.blockList.filter(block =>
-                block.name.toLowerCase().includes(state.blockSearch)
+                block.name.toLowerCase().includes(state.blockSearch.toLowerCase())
             ),
         filteredRenderNonSortList: state =>
             state.nonSortableRenderingGroups.filter(block => {
-                return block.name.toLowerCase().includes(state.renderSearch)
+                return block.name.toLowerCase().includes(state.renderSearch.toLowerCase())
             }),
         renderOrder: state =>
             state.renderingGroups.map(block => block.id).join(',')
