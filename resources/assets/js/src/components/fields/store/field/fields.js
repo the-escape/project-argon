@@ -1,84 +1,63 @@
 import { createUniqueHash } from '../../../../util'
-import { getField } from './util'
-
-// const fieldsExample = [
-//     {
-//         id: 1,
-//         options: {
-//             typeKey: 'text',
-//             name: 'single text',
-//             settings: {
-//                 required: false,
-//                 multiline: false,
-//                 multiple: false,
-//                 minlength: 0,
-//                 maxlength: 0,
-//                 url: false,
-//                 integer: false,
-//                 float: false,
-//                 email: false,
-//                 phone: false
-//             }
-//         },
-//         helpText: '',
-//         message: '',
-//         messageAfter: '',
-//         values: [{id: 0, value: 'one'}],
-//         errors: []
-//     }
-// ]
+import Vue from 'vue'
 
 export const fieldMutations = {
     updateValue (state, { groupID, id, newValue }) {
-        const field = getField(state.groups[groupID], id, `Can't update value`)
-        if (!field) {
+        if (!state.values[groupID] || !state.values[groupID][id]) {
             return
         }
 
-        field.values = field.values.map(value => {
+        const newStateValues = Object.assign({}, state.values)
+        newStateValues[groupID][id] = newStateValues[groupID][id].map(value => {
             if (value.id !== newValue.id) {
                 return value
             }
 
-            return Object.assign(value, newValue)
+            return Object.assign({}, value, newValue)
         })
+
+        state.values = newStateValues
     },
 
     updateValues (state, { groupID, id, newValues }) {
-        const field = getField(state.groups[groupID], id, `Can't update values`)
-        if (!field) {
+        if (!state.values[groupID] || !state.values[groupID][id]) {
             return
         }
 
-        field.values = newValues
+        Vue.set(state.values[groupID], id, newValues)
     },
 
     addValue (state, { groupID, id, valueObj }) {
-        const field = getField(state.groups[groupID], id, `Can't add values`)
-        if (!field) {
+        if (!state.values[groupID]) {
             return
         }
 
-        field.values.push(Object.assign(valueObj, { id: createUniqueHash() }))
+        const newStateValues = Object.assign({}, state.values)
+        const newValue = Object.assign({}, valueObj, { id: createUniqueHash() })
+
+        if (!newStateValues[groupID][id]) {
+            newStateValues[groupID][id] = [newValue]
+        } else {
+            newStateValues[groupID][id].push(newValue)
+        }
+
+        state.values = newStateValues
     },
 
     removeValue (state, { groupID, id, valueID }) {
-        const field = getField(state.groups[groupID], id, `Can't remove values`)
-        if (!field) {
+        if (!state.values[groupID] || !state.values[groupID][id]) {
             return
         }
 
-        field.values = field.values.filter(value => value.id !== valueID)
+        state.values[groupID][id] = state.values[groupID][id].filter(value => value.id !== valueID)
     }
 }
 
 export const fieldGetters = {
     getField: state => (groupID, [fieldID, comboID = null]) => {
-        let parent = state.groups[groupID]
+        let parent = state.groupOptions[groupID]
         if (comboID) {
-            parent = state.groups[groupID].fields.find(
-                field => field.id === comboID
-            )
+            parent = state.groupOptions[groupID].fields.find(field => field.id === comboID)
         }
 
         if (!parent) {
@@ -87,11 +66,7 @@ export const fieldGetters = {
 
         return parent.fields.find(field => field.id === fieldID)
     },
-    getFieldOption: (state, getters) => (
-        groupID,
-        [fieldID, comboID = null],
-        option
-    ) => {
+    getFieldOption: (state, getters) => (groupID, [fieldID, comboID = null], option) => {
         const field = getters.getField(groupID, [fieldID, comboID])
         if (field) {
             const optionPath = option.split('.')
@@ -105,62 +80,44 @@ export const fieldGetters = {
             }, field.options)
         }
     },
-    getFieldErrors: (state, getters) => (
-        groupID,
-        [fieldID, comboID = null, comboItemID = null]
-    ) => {
+    getFieldErrors: state => (groupID, [fieldID, comboID = null, comboItemID = null]) => {
         if (comboID) {
-            const combo = getters.getCombo(groupID, comboID)
+            const comboErrors = state.errors[groupID][comboID]
 
-            if (combo.errors.length) {
-                const errors = combo.errors.filter(
-                    errorsObj => errorsObj.id === comboItemID
-                )
+            if (comboErrors.length) {
+                const errors = comboErrors.filter(errorsObj => errorsObj.id === comboItemID)
                 if (errors.length && errors[0][fieldID]) {
                     return errors[0][fieldID]
                 }
             }
             return []
         } else {
-            const field = getters.getField(groupID, [fieldID, comboID])
-            return field.errors
+            return state.errors[groupID][fieldID]
         }
     },
-    getValues: (state, getters) => (
-        groupID,
-        [fieldID, comboID = null, comboItemID = null]
-    ) => {
+    getValues: state => (groupID, [fieldID, comboID = null, comboItemID = null]) => {
         if (comboID) {
-            const combo = getters.getCombo(groupID, comboID)
+            const comboValues = state.values[groupID][comboID]
 
-            if (combo.values.length) {
-                const values = combo.values.find(
-                    value => value.id === comboItemID
-                )
+            if (comboValues.length) {
+                const values = comboValues.find(value => value.id === comboItemID)
                 if (values && values[fieldID]) {
                     return values[fieldID]
                 }
             }
             return [{ id: 0 }]
         } else {
-            const field = getters.getField(groupID, [fieldID, comboID])
+            const fieldValues = state.values[groupID][fieldID]
 
-            if (!field) {
+            if (!fieldValues) {
                 return []
             }
 
-            return field.values
+            return fieldValues
         }
     },
-    getSingleValue: (state, getters) => (
-        groupID,
-        [fieldID, comboID = null, comboItemID = null]
-    ) => {
-        const values = getters.getValues(groupID, [
-            fieldID,
-            comboID,
-            comboItemID
-        ])
+    getSingleValue: (state, getters) => (groupID, [fieldID, comboID = null, comboItemID = null]) => {
+        const values = getters.getValues(groupID, [fieldID, comboID, comboItemID])
 
         if (!values.length) {
             return

@@ -1,102 +1,107 @@
 export const blockSelect = {
     namespaced: true,
     state: {
+        tabGroups: [],
         nonSortableRenderingGroups: [],
         renderingGroups: [],
         blockList: [],
         hasRenderable: false,
-        renderSearch: '',
-        blockSearch: ''
+        renderSearch: "",
+        blockSearch: ""
     },
     mutations: {
-        addGroups(state, {
-            groups
-        }) {
+        addGroups(state, { groups }) {
             state.nonSortableRenderingGroups = groups.filter(
                 el =>
-                (!el.isRenderable || el.isRendering) &&
-                !el.isSortable &&
-                !el.isTab
-            )
+                    (!el.isRenderable || el.isRendering) &&
+                    !el.isSortable &&
+                    !el.isTab
+            );
 
             state.renderingGroups = groups.filter(
                 el =>
-                (!el.isRenderable || el.isRendering) &&
-                el.isSortable &&
-                !el.isTab
-            )
+                    (!el.isRenderable || el.isRendering) &&
+                    el.isSortable &&
+                    !el.isTab
+            );
 
             state.blockList = groups.filter(
-                el => el.isRenderable && !el.isRendering
-            )
+                el => el.isRenderable && !el.isRendering && !el.isTab
+            );
 
-            state.hasRenderable = !!groups.find(group => group.isRenderable)
+            state.tabGroups = groups.filter(el => el.isTab);
+
+            state.hasRenderable = !!groups.find(group => group.isRenderable);
         },
-        setRenderSearch(state, {
-            searchString
-        }) {
-            state.renderSearch = searchString
+        setRenderSearch(state, { searchString }) {
+            state.renderSearch = searchString;
         },
-        setBlockSearch(state, {
-            searchString
-        }) {
-            state.blockSearch = searchString
+        setBlockSearch(state, { searchString }) {
+            state.blockSearch = searchString;
         },
-        updateRenderingBlockList(state, {
-            blocks
-        }) {
+        updateRenderingBlockList(state, { blocks }) {
             state.renderingGroups = blocks.map(block => {
-                block.isRendering = true
-                return block
-            })
+                block.isRendering = true;
+                return block;
+            });
         },
-        updateBlockList(state, {
-            blocks
-        }) {
+        updateBlockList(state, { blocks }) {
             state.blockList = blocks.map(block => {
-                block.isRendering = false
-                return block
-            })
+                block.isRendering = false;
+                return block;
+            });
         },
-        addBlockToRendering(state, {
-            id
-        }) {
-            const block = state.blockList.find(block => block.id === id)
+        addBlockToRendering(state, { id }) {
+            const block = state.blockList.find(block => block.id === id);
             if (!block) {
-                return
+                return;
             }
-            state.blockList = state.blockList.filter(block => block.id !== id)
-            block.isRendering = true
-            state.renderingGroups.push(block)
+            state.blockList = state.blockList.filter(block => block.id !== id);
+            block.isRendering = true;
+            state.renderingGroups.push(block);
         },
-        removeBlockFromRendering(state, {
-            id
-        }) {
-            const block = state.renderingGroups.find(block => block.id === id)
+        removeBlockFromRendering(state, { id }) {
+            const block = state.renderingGroups.find(block => block.id === id);
             if (!block) {
-                return
+                return;
             }
             state.renderingGroups = state.renderingGroups.filter(
                 block => block.id !== id
-            )
-            block.isRendering = false
-            state.blockList.push(block)
+            );
+            block.isRendering = false;
+            state.blockList.push(block);
         }
     },
     getters: {
         filteredRenderList: state =>
             state.renderingGroups.filter(block =>
-                block.name.toLowerCase().includes(state.renderSearch.toLowerCase())
+                block.name
+                    .toLowerCase()
+                    .includes(state.renderSearch.toLowerCase())
             ),
         filteredBlockList: state =>
             state.blockList.filter(block =>
-                block.name.toLowerCase().includes(state.blockSearch.toLowerCase())
+                block.name
+                    .toLowerCase()
+                    .includes(state.blockSearch.toLowerCase())
             ),
         filteredRenderNonSortList: state =>
             state.nonSortableRenderingGroups.filter(block => {
-                return block.name.toLowerCase().includes(state.renderSearch.toLowerCase())
+                return block.name
+                    .toLowerCase()
+                    .includes(state.renderSearch.toLowerCase());
             }),
         renderOrder: state =>
-            state.renderingGroups.map(block => block.id).join(',')
+            state.renderingGroups.map(block => block.id).join(",")
+    },
+    actions: {
+        getPageGroups({ commit }, pageID) {
+            const groups = window.groups[pageID];
+            if (!groups) {
+                console.warn("no groups found for page id:" + pageID);
+                return;
+            }
+            commit("addGroups", { groups });
+        }
     }
-}
+};

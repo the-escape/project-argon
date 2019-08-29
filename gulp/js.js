@@ -9,21 +9,14 @@ const MinifyPlugin = require('babel-minify-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
 const WebpackDevMiddleware = require('webpack-dev-middleware')
 const rimraf = require('rimraf')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const { onError } = require('./util')
 const banner = require('../banner')
 
-function setupWebackConfig (
-    paths,
-    filename,
-    chunkName,
-    productionBuild = false,
-    isDevMiddleware = false
-) {
+function setupWebackConfig (paths, filename, chunkName, productionBuild = false, isDevMiddleware = false) {
     const config = {
         entry: paths.src,
         output: {
@@ -50,18 +43,13 @@ function setupWebackConfig (
                     loader: 'babel-loader',
                     options: {
                         presets: [['@babel/preset-env', { modules: false }]],
-                        plugins: [
-                            '@babel/plugin-proposal-object-rest-spread',
-                            '@babel/plugin-transform-object-assign'
-                        ]
+                        plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-transform-object-assign']
                     }
                 },
                 {
                     test: /\.css$/,
                     use: [
-                        process.env.NODE_ENV !== 'production'
-                            ? 'vue-style-loader'
-                            : MiniCssExtractPlugin.loader,
+                        process.env.NODE_ENV !== 'production' ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
                         'css-loader'
                     ]
                 }
@@ -138,19 +126,8 @@ function setupWebackConfig (
     return config
 }
 
-function compileJS (
-    paths,
-    filename,
-    chunkName,
-    productionBuild = false,
-    logName = 'JS'
-) {
-    const webpackConfig = setupWebackConfig(
-        paths,
-        filename,
-        chunkName,
-        productionBuild
-    )
+function compileJS (paths, filename, chunkName, productionBuild = false, logName = 'JS') {
+    const webpackConfig = setupWebackConfig(paths, filename, chunkName, productionBuild)
 
     return function compileJS () {
         fancyLog(' ')

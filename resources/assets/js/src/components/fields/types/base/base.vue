@@ -1,6 +1,7 @@
 <template>
     <input-icon :pre-icon="icons.preIcon" :post-icon="icons.postIcon">
         <input :type="type" :id="inputName" :name="inputName" v-model="value">
+        {{ valueObj.value }}
     </input-icon>
 </template>
 
@@ -15,11 +16,10 @@ export default {
     data() {
         return {
             loading: true,
-            value: ''
+            value: this.valueObj.value
         }
     },
     mounted() {
-        this.value = this.valueObj.value
         this.loading = false
     },
     watch: {

@@ -179,6 +179,7 @@
         "mini-css-extract-plugin": "^0.4.4",
         "moment": "^2.22.2",
         "patternlab-node": "2.12.0",
+        "prettier-config-standard": "^1.0.1",
         "prettier-stylelint": "^0.4.2",
         "styleguidekit-assets-default": "^3.5.2",
         "styleguidekit-mustache-default": "^3.1.0",
@@ -200,6 +201,7 @@
         "bower": "^1.8.4",
         "choices.js": "3.0.3",
         "ckeditor": "^4.9.2",
+        "date-fns": "^1.30.1",
         "dragula": "^3.7.2",
         "filepond-plugin-image-preview": "^3.1.4",
         "flatpickr": "^4.5.0",
@@ -213,7 +215,7 @@
         "sl-vue-tree": "^1.8.4",
         "svg4everybody": "^2.1.9",
         "uppy": "^0.29.1",
-        "vue": "^2.5.17",
+        "vue": "^2.6.10",
         "vue-cropperjs": "^3.0.0",
         "vue-drag-drop": "^1.1.4",
         "vue-flatpickr-component": "^8.0.0",
@@ -221,7 +223,7 @@
         "vue-router": "^3.1.2",
         "vuebar": "0.0.20",
         "vuedraggable": "^2.16.0",
-        "vuex": "^3.0.1",
+        "vuex": "^3.1.1",
         "webpack-bundle-analyzer": "^2.13.1",
         "whatwg-fetch": "^2.0.4"
     }

@@ -345,47 +345,6 @@
                     @endforeach
                 @endif
             </div>
-
-            {{-- <main class="c-container c-container--main" hidden>
-
-                <div class="l-space-between l-space">
-                    @foreach ($page->getLocalisations() as $l)
-                        @if ($l->getId() == $localisation->getId())
-                            <a href="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif" class="o-btn o-btn--sm o-btn--primary" target="_blank">View page</a>
-                        @endif
-                    @endforeach
-
-                    @if(!$groups->isEmpty())
-                        <button class="accordion-expand-collapse o-btn o-btn--sm" data-expand="Expand All" data-collapse="Collapse All">Expand all</button>
-                    @endif
-                </div>
-
-                @if(\Escape\Argon\Locales\Eloquent\Locale::count() > 1)
-
-                    <ul class="nav nav-tabs">
-                        @foreach ($page->getLocalisations() as $l)
-                            <li class="nav-item">
-                                <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
-                                href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
-                                    {{$l->getLocale()->getName()}}
-                                </a>
-                                @if($defaultLocalisation->getLocaleId() !== $l->getLocaleId())
-                                    <a href="{{ route('cms:pages:delete_locale', [$page->getId(), $l->getLocaleId()]) }}" class="locale-delete confirm" data-confirm="Are you sure you want to delete '{{$l->getLocale()->getName()}}' locale."><i class="fa fa-times" aria-hidden="true"></i></a>
-                                @endif
-                            </li>
-                        @endforeach
-                        @if (!$locales->isEmpty())
-                            <li class="nav-item">
-                                <a class="nav-link add-localisation" href="">+ Add Localisation</a>
-                            </li>
-                        @endif
-                    </ul>
-
-                    <br>
-
-                @endif
-
-            </main> --}}
         </div>
     </form>
 

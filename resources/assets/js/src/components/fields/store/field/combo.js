@@ -1,58 +1,18 @@
-import { assignNewIdsToComboValueObj, getCombo } from './util'
+import { assignNewIdsToComboValueObj } from './util'
 import { createUniqueHash } from '../../../../util'
-
-// const fieldsExample = [
-//     {
-//         id: 2,
-//         options: {
-//             typeKey: 'combo',
-//             name: 'Multi Combo',
-//             settings: { multiple: true }
-//         },
-//         helpText: '',
-//         message: '',
-//         messageAfter: '',
-//         fields: [
-//             {
-//                 id: 3,
-//                 options: {
-//                     typeKey: 'text',
-//                     name: 'single text',
-//                     settings: {
-//                         required: false,
-//                         multiline: false,
-//                         multiple: false,
-//                         minlength: 0,
-//                         maxlength: 0,
-//                         url: false,
-//                         integer: false,
-//                         float: false,
-//                         email: false,
-//                         phone: false
-//                     }
-//                 },
-//                 helpText: '',
-//                 message: '',
-//                 messageAfter: ''
-//             }
-//         ],
-//         values: [{ '3': { id: 0, value: 'two' } }],
-//         errors: []
-//     }
-// ]
 
 export const comboMutations = {
     // Combo - Item
     // Other 2 crud are actions that resuse field mutations
     addComboItemValue (state, { groupID, id, valueObj }) {
-        const combo = getCombo(state.groups[groupID], id, `Can't add values`)
-        if (!combo) {
+        const comboValues = state.values[groupID][id]
+        if (!comboValues || !comboValues.length) {
             return
         }
 
         const newValueObj = assignNewIdsToComboValueObj(valueObj)
-        newValueObj.id = combo.values.length
-        combo.values.push(newValueObj)
+        newValueObj.id = comboValues.length
+        comboValues.push(newValueObj)
     },
 
     // Combo - Item - Field
@@ -64,16 +24,12 @@ export const comboMutations = {
             newValue
         }
     ) {
-        const combo = getCombo(
-            state.groups[groupID],
-            comboID,
-            `Can't update combo item`
-        )
-        if (!combo) {
+        const comboValues = state.values[groupID][comboID]
+        if (!comboValues || !comboValues.length) {
             return
         }
 
-        const comboItemValues = combo.values.find(
+        const comboItemValues = comboValues.find(
             comboItemValue => comboItemValue.id === comboItemID
         )
         if (!comboItemValues) {
@@ -104,16 +60,12 @@ export const comboMutations = {
             valueObj
         }
     ) {
-        const combo = getCombo(
-            state.groups[groupID],
-            comboID,
-            `Can't add combo item field`
-        )
-        if (!combo) {
+        const comboValues = state.values[groupID][comboID]
+        if (!comboValues || !comboValues.length) {
             return
         }
 
-        const comboItemValues = combo.values.find(
+        const comboItemValues = comboValues.find(
             comboItem => comboItem.id === comboItemID
         )
         if (!comboItemValues) {
@@ -135,16 +87,12 @@ export const comboMutations = {
             valueID
         }
     ) {
-        const combo = getCombo(
-            state.groups[groupID],
-            comboID,
-            `Can't remove combo item field`
-        )
-        if (!combo) {
+        const comboValues = state.values[groupID][comboID]
+        if (!comboValues || !comboValues.length) {
             return
         }
 
-        const comboItemValues = combo.values.find(
+        const comboItemValues = comboValues.find(
             comboItem => comboItem.id === comboItemID
         )
         if (!comboItemValues) {

@@ -1,11 +1,14 @@
 <template>
-    <component
-    v-bind:is="type"
-    :group-id="groupId"
-    :field-id="field.id"
-    :combo-id="comboId"
-    :combo-item-id="comboItemId"
-    ></component>
+    <div>
+        <pre>{{ values[groupId][field.id] }}</pre>
+        <component
+        v-bind:is="type"
+        :group-id="groupId"
+        :field-id="field.id"
+        :combo-id="comboId"
+        :combo-item-id="comboItemId"
+        ></component>
+    </div>
 </template>
 
 <script>
@@ -22,6 +25,8 @@ import DateTime from './datetime.vue'
 import Image from './image/index.vue'
 import File from './file.vue'
 import Icon from './icon/index.vue'
+
+import { mapState } from 'vuex'
 
 const typeMap = {
     'text': 'text-input',
@@ -60,6 +65,7 @@ export default {
         'icon-input': Icon
     },
     computed: {
+        ...mapState('fields', ['values']),
         type: function () {
             const type = typeMap[this.field.options.typeKey]
             return type || 'text-input'

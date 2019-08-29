@@ -1,12 +1,15 @@
 <script>
 export default {
     computed: {
+        valuesVals: function() {
+            return this.$store.getters['fields/getValues'](this.groupId, [this.fieldId, this.comboId, this.comboItemId])
+        },
         singleValue: function() {
             return this.$store.getters['fields/getSingleValue'](this.groupId, [this.fieldId, this.comboId, this.comboItemId])
         },
         values: {
             get() {
-                return this.$store.getters['fields/getValues'](this.groupId, [this.fieldId, this.comboId, this.comboItemId])
+                return this.valuesVals
             },
             set(values) {
                 if(this.comboId){

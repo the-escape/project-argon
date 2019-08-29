@@ -1,33 +1,76 @@
 <script>
-    window.groups = [
-        {
-            id: "text_test",
-            isRenderable: true,
-            isRendering: false,
-            isSortable: true,
-            name: "text",
-            isTab: false,
-            image: ""
-        },
-        {
-            id: "button_test",
-            isRenderable: true,
-            isRendering: false,
-            isSortable: true,
-            name: "button",
-            isTab: false,
-            image: ""
-        },
-        {
-            id: "combo_test",
-            isRenderable: true,
-            isRendering: false,
-            isSortable: true,
-            name: "combo",
-            isTab: false,
-            image: ""
+    window.page = {
+        3: {
+            title: 'Dicovery',
+            path: 'argon.local/discovery',
+            link: 'http://argon.local/discovery',
+            isEditingPublishedRevision: true,
+            fieldIds: [2, 1, 3, 15, 16, 5, 20] // used for sending back what has not been touched to copy old revision data to new revision
         }
-    ]
+    }
+
+    window.revisions = {
+        3: {
+            currentRevisionID: 2022,
+            publishedRevisionID: 2022,
+            revisions: [
+                {
+                    id: 2022,
+                    status: 2,
+                    statusName: 'a status name',
+                    user: {
+                        name: 'Root'
+                    },
+                    createdAt: '2019-08-19T15:06:46.537Z'
+                },
+                {
+                    id: 1751,
+                    status: 2,
+                    statusName: 'a status name',
+                    user: {
+                        name: 'Root'
+                    },
+                    createdAt: '2019-08-19T15:06:46.537Z'
+                }
+            ]
+        }
+    }
+
+    window.groups = {
+        3: [
+            {
+                id: "text_test",
+                isRenderable: true,
+                isRendering: false,
+                isSortable: true,
+                name: "text",
+                isTab: false,
+                isProperty: false,
+                image: ""
+            },
+            {
+                id: "button_test",
+                isRenderable: true,
+                isRendering: false,
+                isSortable: true,
+                name: "button",
+                isTab: false,
+                isProperty: false,
+                image: ""
+            },
+            {
+                id: "combo_test",
+                isRenderable: true,
+                isRendering: false,
+                isSortable: true,
+                name: "combo",
+                isTab: false,
+                isProperty: false,
+                image: ""
+            }
+        ]
+    }
+
 
     window.fieldGroups = window.fieldGroups || {}
     window.fieldGroups['text_test'] = {
@@ -160,7 +203,7 @@
         header: 'Combo Test',
         fields: [
             {
-                "id": 2,
+                "id": 5,
                 "options": {
                     "typeKey": "combo",
                     "name": "single combo",
@@ -240,4 +283,4 @@
         ]
     }
 </script>
-<div class="js-page-edit"></div>
+<div class="js-page-edit" data-page-id="3"></div>

@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <group :groupId="groupKey" />
+    <div class="c-tab-panel active">
+        <main class="c-tab-panel__container c-container">
+            <group :groupId="groupKey" />
+        </main>
     </div>
 </template>
 

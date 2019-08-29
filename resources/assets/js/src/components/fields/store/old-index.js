@@ -18,13 +18,9 @@ export function getStore () {
                 }
             },
             getComboField: state => (comboID, fieldID) => {
-                const comboItem = state.fields.filter(
-                    field => field.id === comboID
-                )
+                const comboItem = state.fields.filter(field => field.id === comboID)
                 if (comboItem.length) {
-                    const field = comboItem[0].fields.filter(
-                        field => field.id === fieldID
-                    )
+                    const field = comboItem[0].fields.filter(field => field.id === fieldID)
                     if (field.length) {
                         return field[0]
                     }
@@ -36,8 +32,8 @@ export function getStore () {
                 state.fields = fields
             },
 
-            setShowActions(state, { actions }) {
-              state.showActions =  actions
+            setShowActions (state, { actions }) {
+                state.showActions = actions
             },
 
             setOldState (state) {
@@ -88,9 +84,7 @@ export function getStore () {
                         return field
                     }
 
-                    field.values.push(
-                        Object.assign(valueObj, { id: createUniqueHash() })
-                    )
+                    field.values.push(Object.assign(valueObj, { id: createUniqueHash() }))
                     return field
                 })
                 preventPageLeave()
@@ -101,9 +95,7 @@ export function getStore () {
                         return field
                     }
 
-                    field.values = field.values.filter(
-                        value => value.id !== valueID
-                    )
+                    field.values = field.values.filter(value => value.id !== valueID)
                     return field
                 })
                 preventPageLeave()
@@ -127,25 +119,20 @@ export function getStore () {
                         return field
                     }
 
-                    newValueObj = Object.keys(newValueObj).reduce(
-                        (acc, fieldID) => {
-                            if (fieldID === 'id') {
-                                return acc
-                            }
-
-                            acc[fieldID] = newValueObj[fieldID].map(value =>
-                                Object.assign(value, {
-                                    id: createUniqueHash()
-                                })
-                            )
+                    newValueObj = Object.keys(newValueObj).reduce((acc, fieldID) => {
+                        if (fieldID === 'id') {
                             return acc
-                        },
-                        {}
-                    )
+                        }
 
-                    field.values.push(
-                        Object.assign(newValueObj, { id: field.values.length })
-                    )
+                        acc[fieldID] = newValueObj[fieldID].map(value =>
+                            Object.assign(value, {
+                                id: createUniqueHash()
+                            })
+                        )
+                        return acc
+                    }, {})
+
+                    field.values.push(Object.assign(newValueObj, { id: field.values.length }))
                     return field
                 })
                 preventPageLeave()
@@ -156,19 +143,14 @@ export function getStore () {
                         return field
                     }
 
-                    field.values = field.values.filter(
-                        valueObj => valueObj.id !== comboItemID
-                    )
+                    field.values = field.values.filter(valueObj => valueObj.id !== comboItemID)
                     return field
                 })
                 preventPageLeave()
             },
 
             // Combo Field Mutations
-            updateComboFieldValue (
-                state,
-                { fieldID, comboID, comboItemId, newValue }
-            ) {
+            updateComboFieldValue (state, { fieldID, comboID, comboItemId, newValue }) {
                 state.fields = state.fields.map(field => {
                     if (field.id !== comboID) {
                         return field
@@ -179,7 +161,7 @@ export function getStore () {
                             return valuesObj
                         }
 
-                        if(valuesObj[fieldID].length){
+                        if (valuesObj[fieldID].length) {
                             valuesObj[fieldID] = valuesObj[fieldID].map(value => {
                                 if (value.id !== newValue.id) {
                                     return value
@@ -199,10 +181,7 @@ export function getStore () {
                 })
                 preventPageLeave()
             },
-            updateComboFieldValues (
-                state,
-                { fieldID, comboID, comboItemId, newValues }
-            ) {
+            updateComboFieldValues (state, { fieldID, comboID, comboItemId, newValues }) {
                 state.fields = state.fields.map(field => {
                     if (field.id !== comboID) {
                         return field
@@ -220,10 +199,7 @@ export function getStore () {
                 })
                 preventPageLeave()
             },
-            addComboFieldValue (
-                state,
-                { fieldID, comboID, comboItemId, valueObj }
-            ) {
+            addComboFieldValue (state, { fieldID, comboID, comboItemId, valueObj }) {
                 state.fields = state.fields.map(field => {
                     if (field.id !== comboID) {
                         return field
@@ -234,19 +210,14 @@ export function getStore () {
                             return valuesObj
                         }
 
-                        valuesObj[fieldID].push(
-                            Object.assign(valueObj, { id: createUniqueHash() })
-                        )
+                        valuesObj[fieldID].push(Object.assign(valueObj, { id: createUniqueHash() }))
                         return valuesObj
                     })
                     return field
                 })
                 preventPageLeave()
             },
-            removeComboFieldValue (
-                state,
-                { fieldID, comboID, comboItemId, valueID }
-            ) {
+            removeComboFieldValue (state, { fieldID, comboID, comboItemId, valueID }) {
                 state.fields = state.fields.map(field => {
                     if (field.id !== comboID) {
                         return field
@@ -257,9 +228,7 @@ export function getStore () {
                             return valuesObj
                         }
 
-                        valuesObj[fieldID] = valuesObj[fieldID].filter(
-                            value => value.id !== valueID
-                        )
+                        valuesObj[fieldID] = valuesObj[fieldID].filter(value => value.id !== valueID)
                         return valuesObj
                     })
                     return field

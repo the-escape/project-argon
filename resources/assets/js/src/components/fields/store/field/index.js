@@ -1,11 +1,12 @@
-import { coreMutations, coreGetters } from './core'
+import { coreMutations, coreGetters, coreActions } from './core'
 import { fieldMutations, fieldGetters } from './fields'
 import { comboMutations, comboActions, comboGetters } from './combo'
 
 export const fields = {
     namespaced: true,
     state: {
-        groups: {
+        useInputNames: false,
+        groupOptions: {
             /**
              *  { groupID }: {
              *      fields: [],
@@ -13,6 +14,27 @@ export const fields = {
              *      header: '',
              *      isShowingActions
              *  }
+             */
+        },
+        values: {
+            /**
+             * { groupID }: {
+             *   { fieldID }: [...values]
+             * }
+             */
+        },
+        oldValues: {
+            /**
+             * { groupID } : {
+             *   used for cancel feature
+             * }
+             */
+        },
+        errors: {
+            /**
+             * { groupID }: {
+             *   { fieldID }: [...errors]
+             * }
              */
         }
     },
@@ -27,6 +49,7 @@ export const fields = {
         ...comboMutations
     },
     actions: {
+        ...coreActions,
         ...comboActions
     }
 }

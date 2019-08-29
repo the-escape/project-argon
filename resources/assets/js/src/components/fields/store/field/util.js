@@ -1,21 +1,50 @@
 import { deepClone, createUniqueHash } from '../../../../util'
 
 export function processFields (fields) {
-    return fields.map(field => {
-        if (field.options.typeKey === 'combo') {
-            field = processCombo(field)
-        } else {
-            field.values = processValues(field.values)
-            field.emptyValue = createEmptyValueObj(field)
+    const fieldOptions = []
+    const values = {}
+    const errors = {}
 
-            if (!field.values.length) {
-                const newValue = deepClone(field.emptyValue)
-                newValue.id = 0
-                field.values.push(newValue)
+    return fields.reduce(
+        ({ fieldOptions, values, errors }, field) => {
+            let parsedField = []
+            let parsedValues = []
+            let parsedErrors = []
+
+            if (field.options.typeKey === 'combo') {
+                const { combo, values, errors } = processCombo(field)
+                parsedField = combo
+                parsedValues = values
+                parsedErrors = errors
+            } else {
+                parsedValues = processValues(field.values)
+                parsedErrors = field.errors
+                field.emptyValue = createEmptyValueObj(field)
+
+                if (!parsedValues.length) {
+                    const newValue = deepClone(field.emptyValue)
+                    newValue.id = 0
+                    parsedValues.push(newValue)
+                }
+
+                parsedField = field
             }
+
+            fieldOptions.push(parsedField)
+            values[field.id] = parsedValues
+            errors[field.id] = parsedErrors
+            return {
+                fieldOptions,
+                values,
+                errors
+            }
+        },
+        {
+            fieldOptions,
+            values,
+            errors
         }
-        return field
-    })
+    )
 }
 
 function processValues (values) {
@@ -33,27 +62,27 @@ function createEmptyValueObj (field) {
     let emptyValue
 
     switch (field.options.typeKey) {
-    case 'checkbox':
-        emptyValue = 0
-        break
-    case 'location':
-        emptyValue = {
-            latitude: '',
-            longitude: ''
-        }
-        break
-    case 'button':
-        emptyValue = {
-            label: '',
-            url: '',
-            class: '',
-            id: '',
-            target: ''
-        }
-        break
-    default:
-        emptyValue = ''
-        break
+        case 'checkbox':
+            emptyValue = 0
+            break
+        case 'location':
+            emptyValue = {
+                latitude: '',
+                longitude: ''
+            }
+            break
+        case 'button':
+            emptyValue = {
+                label: '',
+                url: '',
+                class: '',
+                id: '',
+                target: ''
+            }
+            break
+        default:
+            emptyValue = ''
+            break
     }
 
     return {
@@ -62,7 +91,7 @@ function createEmptyValueObj (field) {
 }
 
 function processCombo (combo) {
-    combo.values = combo.values.map((comboItemValues, index) => {
+    let values = combo.values.map((comboItemValues, index) => {
         const fieldIds = Object.keys(comboItemValues)
         const values = fieldIds.reduce((acc, fieldID) => {
             acc[fieldID] = processValues(comboItemValues[fieldID])
@@ -72,7 +101,7 @@ function processCombo (combo) {
         return values
     })
 
-    combo.errors = combo.errors.map((comboItemErrors, index) => {
+    const errors = combo.errors.map((comboItemErrors, index) => {
         comboItemErrors.id = index
         return comboItemErrors
     })
@@ -87,7 +116,11 @@ function processCombo (combo) {
         return acc
     }, {})
 
-    return combo
+    values = values.map(value => {
+        return Object.assign(combo.emptyValue, value)
+    })
+
+    return { combo, values, errors }
 }
 
 export function assignNewIdsToComboValueObj (valueObj) {
@@ -102,30 +135,4 @@ export function assignNewIdsToComboValueObj (valueObj) {
 
         return acc
     }, {})
-}
-
-function getHelper (state, id, message) {
-    const item = state.fields.find(field => field.id === id)
-    if (!item) {
-        console.warn(message)
-        return
-    }
-
-    return item
-}
-
-export function getField (state, id, messagePrefix) {
-    return getHelper(
-        state,
-        id,
-        `${messagePrefix}, unable find field of ID: ${id}`
-    )
-}
-
-export function getCombo (state, id, messagePrefix) {
-    return getHelper(
-        state,
-        id,
-        `${messagePrefix}, unable find Combo of ID: ${id}`
-    )
 }

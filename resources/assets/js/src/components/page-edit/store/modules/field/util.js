@@ -33,27 +33,27 @@ function createEmptyValueObj (field) {
     let emptyValue
 
     switch (field.options.typeKey) {
-    case 'checkbox':
-        emptyValue = 0
-        break
-    case 'location':
-        emptyValue = {
-            latitude: '',
-            longitude: ''
-        }
-        break
-    case 'button':
-        emptyValue = {
-            label: '',
-            url: '',
-            class: '',
-            id: '',
-            target: ''
-        }
-        break
-    default:
-        emptyValue = ''
-        break
+        case 'checkbox':
+            emptyValue = 0
+            break
+        case 'location':
+            emptyValue = {
+                latitude: '',
+                longitude: ''
+            }
+            break
+        case 'button':
+            emptyValue = {
+                label: '',
+                url: '',
+                class: '',
+                id: '',
+                target: ''
+            }
+            break
+        default:
+            emptyValue = ''
+            break
     }
 
     return {

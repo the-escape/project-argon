@@ -1,4 +1,6 @@
-import { polyfill } from './util'
+import {
+    polyfill
+} from './util'
 import {
     Accordion,
     Video,
@@ -14,7 +16,10 @@ import {
     allowPageLeave,
     BasicConfirmBtns
 } from './ui'
-import { initialiseFormElements, registerFormSaveEvents } from './form'
+import {
+    initialiseFormElements,
+    registerFormSaveEvents
+} from './form'
 
 import {
     Fields,
@@ -26,10 +31,16 @@ import {
     ImportFieldGroups,
     Medialib
 } from './components'
-import { Dashboard } from './dashboard'
+import {
+    Dashboard
+} from './dashboard'
 
-import { fromEvent } from 'rxjs'
-import { filter } from 'rxjs/operators'
+import {
+    fromEvent
+} from 'rxjs'
+import {
+    filter
+} from 'rxjs/operators'
 // import resetForm from './form/reset-form'
 import {
     Core as Uppy,
@@ -38,13 +49,7 @@ import {
     DragDrop
 } from 'uppy'
 
-// import * as Sentry from '@sentry/browser'
-
-// Sentry.init({
-//     dsn: 'https://7b4a1aa5129a40e48fb01135d540bccb@sentry.io/1530777'
-// })
-
-function init () {
+function init() {
     polyfill()
     Jump.init(650, 150)
     ImportFieldGroups()
@@ -74,7 +79,7 @@ function init () {
     // testUppy()
 }
 
-function testUppy () {
+function testUppy() {
     let metaToken = document.head.querySelector('meta[name="csrf-token"]')
     metaToken = metaToken && metaToken.content
 
@@ -98,7 +103,7 @@ function testUppy () {
     uppy.on('complete', console.log)
 }
 
-function formSubmits () {
+function formSubmits() {
     setupPageLeave()
 
     fromEvent(document, 'click')
@@ -127,7 +132,7 @@ function formSubmits () {
     })
 }
 
-function cropperTest () {
+function cropperTest() {
     Cropper()
 
     const btn = document.querySelector('.js-spawn-cropper')

@@ -8,6 +8,8 @@ import types from '../fields/types/types.vue'
 
 import PageEditComponent from './pages/PageEdit.vue'
 import GroupEditComponent from './pages/GroupEdit.vue'
+import RevisionsComponent from './pages/Revisions.vue'
+import PageAttributesComponent from './pages/PageAttributes.vue'
 
 // Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -22,12 +24,16 @@ export function PageEdit () {
         return
     }
 
+    const pageID = pageEdit.dataset.pageId
+
     const store = getStore()
-    store.commit('blockSelect/addGroups', { groups: window.groups })
+    store.dispatch('page/setPage', pageID)
 
     const routes = [
         { path: '/', component: PageEditComponent },
-        { path: '/edit/:id', component: GroupEditComponent }
+        { path: '/edit/page-properties', component: PageAttributesComponent },
+        { path: '/edit/:id', component: GroupEditComponent },
+        { path: '/revisions', component: RevisionsComponent }
     ]
 
     const router = new VueRouter({

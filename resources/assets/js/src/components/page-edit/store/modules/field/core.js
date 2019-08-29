@@ -21,7 +21,9 @@ export const coreGetters = {
     groupKeys: state => Object.keys(state.groups),
     fields: state => groupID => state.groups[groupID].fields,
     header: state => groupID => state.groups[groupID].header,
-    isShowingActions: state => groupID => state.groups[groupID].isShowingActions
+    isShowingActions: state => groupID =>
+        state.groups[groupID].isShowingActions,
+    getFieldValues: state => state.groups // TODO: after another refactor to fields
 }
 
 export const coreActions = {
