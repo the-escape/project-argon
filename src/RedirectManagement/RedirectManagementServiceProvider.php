@@ -63,7 +63,7 @@ class RedirectManagementServiceProvider extends AbstractPluginServiceProvider
         // Register our Middleware
         /** @var Router $router */
         $router = $this->app['router'];
-        $router->middleware('redirect', Middleware\RedirectMiddleware::class);
+        $router->aliasMiddleware('redirect', Middleware\RedirectMiddleware::class);
     }
 
     public function startup()
