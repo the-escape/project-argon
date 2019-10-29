@@ -10,6 +10,8 @@ use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\Media\MediaServiceProvider;
 use Escape\Argon\RedirectManagement\RedirectManagementServiceProvider;
 use Escape\Argon\UserManagement\UserManagementServiceProvider;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
@@ -19,6 +21,9 @@ class ArgonServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Blade::withoutDoubleEncoding();
+        Paginator::useBootstrapThree();
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/../../routes.php';
         }
