@@ -16,11 +16,17 @@ abstract class BaseController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware('auth', ['except' => ['getLogin', 'postLogin', 'forgotPassword']]);
+        $this->middleware('auth', ['except' => ['showLoginForm', 'login', 'forgotPassword']]);
 
-        View::share('currentUser', $request->user());
-        View::share('plugins', app('pluginManager'));
+        $this->middleware(function ($request, $next) {
 
-        $this->request = $request;
+            View::share('currentUser', $request->user());
+            View::share('plugins', app('pluginManager'));
+
+            $this->request = $request;
+
+            return $next($request);
+        });
+
     }
 }

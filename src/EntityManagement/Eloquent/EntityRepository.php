@@ -22,8 +22,13 @@ class EntityRepository extends BaseRepository
      * @param Request $request
      * @return Entity|null
      */
-    public function findForPath($request, $status=1)
+    public function findForPath($request, $status = '1')
     {
+        if (!is_string($status))
+        {
+            $status = (string) $status;
+        }
+
         $path = $request->path();
 
         $preview = $request->has('preview_page');
@@ -31,13 +36,15 @@ class EntityRepository extends BaseRepository
         $node = null;
 
         if ($path == '/') {
-            $node = $this->makeModel()->whereNull('parent_id');
+            // $node = $this->makeModel()->where('slug','/')->whereNull('parent_id');
+            $node = $this->momakeModel()->where('slug', '=', '/')->whereNull('parent_id');
 
             if (!$preview) {
                 $node = $node->where('status', '=', $status);
             }
 
             $node = $node->first();
+
         } else {
             $segments = explode('/', $path);
 

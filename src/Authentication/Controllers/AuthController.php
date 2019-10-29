@@ -8,8 +8,7 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
 use Lang;
 use Validator;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends BaseController
 {
@@ -26,10 +25,7 @@ class AuthController extends BaseController
     |
     */
 
-    use AuthenticatesAndRegistersUsers {
-//        postLogin as traitPostLogin;
-    }
-    use ThrottlesLogins;
+    use AuthenticatesUsers;
 
     /**
      * Get a validator for an incoming registration request.
@@ -66,19 +62,34 @@ class AuthController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function getLogin()
+    public function showLoginForm()
     {
         return view('argon::auth.login');
     }
 
+    // /**
+    //  * Get the failed login message.
+    //  *
+    //  * @return string
+    //  */
+    // protected function getFailedLoginMessage()
+    // {
+    //     return Lang::get('argon-auth::auth.failed');
+    // }
+
     /**
-     * Get the failed login message.
+     * Get the failed login response instance.
      *
-     * @return string
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function getFailedLoginMessage()
+    protected function sendFailedLoginResponse(Request $request)
     {
-        return Lang::get('argon-auth::auth.failed');
+        return redirect()->back()
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors([
+                $this->username() => Lang::get('argon-auth::auth.failed'),
+            ]);
     }
 
     protected function authenticated(Request $request, User $user)

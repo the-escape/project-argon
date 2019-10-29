@@ -57,7 +57,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
                     // added to allow easy access while looping through multiple combos
                     $field = $this->subfields->first(
-                        function ($i, $f) use ($id) {
+                        function ($f, $i) use ($id) {
                             return $f->getId() == $id;
                         }
                     );
@@ -74,7 +74,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     public function getValueForSubField($hash, $fieldId)
     {
         $field = $this->subfields->first(
-            function ($i, $f) use ($fieldId) {
+            function ($f, $i) use ($fieldId) {
                 return $f->getId() == $fieldId;
             }
         );
@@ -104,7 +104,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     {
         /** @var AbstractFieldType $field */
         $field = $this->subfields->first(
-            function ($i, AbstractFieldType $f) use ($fieldName) {
+            function (AbstractFieldType $f, $i) use ($fieldName) {
                 return $f->getFieldSlug() == $fieldName;
             }
         );
@@ -119,7 +119,6 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
             } else {
                 throw new \RuntimeException("Requested field '{$fieldName}' doesn't have offset '{$k}'.");
             }
-
         } else {
             $currentIteration = current($this->data);
         }
