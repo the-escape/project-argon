@@ -7,6 +7,7 @@ use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use RuntimeException;
 
 class Page
@@ -92,7 +93,7 @@ class Page
             $url = trim($url, '/');
         }
 
-        if ($this->entity->type->type === 'page' && str_is($this->request->path(), $url)) {
+        if ($this->entity->type->type === 'page' && Str::is($this->request->path(), $url)) {
             $revision = $this->revisionId;
         }
 

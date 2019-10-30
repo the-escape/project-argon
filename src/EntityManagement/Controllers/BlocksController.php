@@ -17,6 +17,7 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Input;
 use Redirect;
 use stdClass;
@@ -87,7 +88,7 @@ class BlocksController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug($request->input('slug', $request->input('name')));
+        $slug = Str::slug($request->input('slug', $request->input('name')));;
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -172,7 +173,7 @@ class BlocksController extends BaseController
             'slug' => 'URL Slug'
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));

@@ -19,7 +19,7 @@ use Carbon\Carbon;
  * @property-read DateTimeZone $tz alias of timezone
  * @property-read integer $micro
  * @property-read integer $dayOfWeek 0 (for Sunday) through 6 (for Saturday)
- * @property-read integer $dayOfYear 0 through 365
+ * @property-read integer $dayOfYear 1 through 366
  * @property-read integer $weekOfMonth 1 through 5
  * @property-read integer $weekOfYear ISO-8601 week number of year, weeks starting on Monday
  * @property-read integer $daysInMonth number of days in the given month
