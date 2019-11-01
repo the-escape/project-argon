@@ -7,7 +7,6 @@ use Escape\Argon\Authentication\UserRepository;
 use Escape\Argon\Core\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
-use Input;
 use Redirect;
 use View;
 
@@ -55,13 +54,13 @@ class UserController extends BaseController
             'email' => 'required'
         ]);
 
-        if (Input::get('password')) {
-            $user = $this->userRepository->update(Input::all(), $userId);
+        if ($this->request->input('password')) {
+            $user = $this->userRepository->update($this->request->all(), $userId);
         } else {
-            $user = $this->userRepository->update(Input::except('password'), $userId);
+            $user = $this->userRepository->update($this->request->except('password'), $userId);
         }
 
-        $roles = Input::get('roles', []);
+        $roles = $this->request->input('roles', []);
 
         $user->roles()->sync($roles);
 
@@ -96,7 +95,7 @@ class UserController extends BaseController
             'password' => 'required'
         ]);
 
-        $this->userRepository->create(Input::all());
+        $this->userRepository->create($this->request->all());
 
         return Redirect::route('cms:user:manage')->with('message', Lang::get('argon-users::user.created'));
     }

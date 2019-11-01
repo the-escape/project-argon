@@ -10,11 +10,16 @@
     if (session('message'))
     {
         $message = session('message');
+
+        if (is_string($message))
+        {
+            $message = [$message];
+        }
     }
 
 ?>
 
-@if (isset($message) && count($message) > 0)
+@if (!empty($message) && count($message) > 0)
 
     <div class="alert alert-success">
 

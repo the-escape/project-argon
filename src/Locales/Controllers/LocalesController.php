@@ -5,7 +5,6 @@ namespace Escape\Argon\Locales\Controllers;
 use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
-use Input;
 use Lang;
 use Redirect;
 use View;
@@ -35,7 +34,7 @@ class LocalesController extends BaseController
     public function save(LocaleRepository $localesRepository)
     {
         $locale = $localesRepository->create(
-            Input::all()
+            $this->request->all()
         );
 
         return Redirect::route('cms:locales:manage');
@@ -57,7 +56,7 @@ class LocalesController extends BaseController
 
     public function update($localeId, LocaleRepository $localesRepository)
     {
-        $localesRepository->update(Input::all(), $localeId);
+        $localesRepository->update($this->request->all(), $localeId);
 
         return Redirect::route('cms:locales:manage')
             ->with('message', Lang::get('argon-locales::locale.saved'));
