@@ -351,7 +351,7 @@ export default function () {
                             layout: 'topCenter',
                             text:
                                 nonDeleteNames.slice(0, 3).join(', ') +
-                                ' Were unable to be deleted',
+                                ' Were unable to be deleted, folders must be empty before deleting',
                             type: 'error',
                             timeout: 3500
                         }).show()

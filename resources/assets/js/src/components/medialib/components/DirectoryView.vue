@@ -2,9 +2,18 @@
     <div class="c-media-library__directory-view" v-bar>
         <div>
             <div class="c-media-library__breadcrumbs" v-if="active.isSet()">
-                <button v-for="folder of active.breadcrumbs()" :key="folder.id" @click="folderSelected(folder)">
-                    {{ folder.name }}
-                </button>
+                <drop
+                    v-for="folder of active.breadcrumbs()"
+                    :key="folder.id"
+                    @dragover="crumbDragOver(folder)"
+                    @dragleave="crumbDragLeave(folder)"
+                    @drop="crumbHandleDrop(folder, ...arguments)"
+                    @dragend="crumbDragLeave(folder)"
+                >
+                    <button :class="{'drag-over': folder.dragOver }" @click="folderSelected(folder)">
+                        {{ folder.name }}
+                    </button>
+                </drop>
             </div>
 
             <div class="c-media-library__info">
@@ -76,6 +85,31 @@ export default {
 
             this.$store.dispatch('remove', { items, folders })
             this.$refs.fileList.unhighlightItems()
+        },
+        crumbDragOver (folderItem) {
+            folderItem.dragOver = true
+        },
+        crumbDragLeave (folderItem) {
+            folderItem.dragOver = false
+        },
+        crumbHandleDrop(destinationFolder, { highlighted: {items, folders }, item, folder }) {
+            destinationFolder.dragOver = false
+
+            if(!items.length && item){
+                items = [item]
+            }
+
+            if(!folders.length && folder){
+                folders = [folder]
+            }
+
+            folders = folders.filter(folder => folder.id !== destinationFolder.id)
+
+            this.$store.dispatch('move', {
+                destinationFolder,
+                items,
+                folders
+            })
         }
     }
 }
