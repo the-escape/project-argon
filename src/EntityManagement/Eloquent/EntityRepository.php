@@ -36,8 +36,7 @@ class EntityRepository extends BaseRepository
         $node = null;
 
         if ($path == '/') {
-            // $node = $this->makeModel()->where('slug','/')->whereNull('parent_id');
-            $node = $this->momakeModel()->where('slug', '=', '/')->whereNull('parent_id');
+            $node = $this->makeModel()->where('slug', '=', '/')->whereNull('parent_id');
 
             if (!$preview) {
                 $node = $node->where('status', '=', $status);
