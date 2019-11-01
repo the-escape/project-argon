@@ -66,6 +66,23 @@ export class Folder {
             a.push(new Item(v))
             return a
         }, [])
+
+        let compareFnc
+        if (window.Intl && window.Intl.Collator) {
+            compareFnc = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
+        }
+
+        this.items.sort((a, b) => {
+            if (compareFnc) {
+                return compareFnc.compare(a.item.filename, b.item.filename)
+            }
+
+            if (a.item.filename === b.item.filename) {
+                return 0
+            }
+
+            return a.item.filename > b.item.filename ? 1 : -1
+        })
     }
 
     isRoot () {

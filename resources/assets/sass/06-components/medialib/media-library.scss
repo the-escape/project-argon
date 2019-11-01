@@ -126,28 +126,36 @@
     &__breadcrumbs {
         padding: 25px 30px 0;
 
+        div {
+            display: inline-block;
+        }
+
         button {
             display: inline-block;
             color: $primary;
             color: var(--primary-color);
-            padding: 0;
+            padding: 0 3px;
 
             &:hover {
                 text-decoration: underline;
             }
 
-            &:last-child {
-                color: $text-color;
-                cursor: default;
-                pointer-events: none;
-
-                &:hover {
-                    text-decoration: none;
-                }
+            &.drag-over {
+                background-color: rgba(0, 0, 0, 0.2);
             }
         }
 
-        button + button {
+        div:last-child button {
+            color: $text-color;
+            cursor: default;
+            pointer-events: none;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+
+        div + div button {
             &:before {
                 content: "";
                 display: inline-block;
