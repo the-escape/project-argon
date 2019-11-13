@@ -159,7 +159,7 @@ export default function () {
                         [],
                         payload.parent
                     )
-                    state.active.children.push(child)
+                    state.active.addNewFolder(child)
                 })
             },
             editFolder: (state, folder) => {
@@ -173,6 +173,8 @@ export default function () {
                         }).show()
 
                         folder.name = folder.originalName
+                    } else {
+                        folder.parent.sortChildFolders()
                     }
                 })
             },

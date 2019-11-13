@@ -40,7 +40,9 @@ export class Folder {
             )
             c.push(childF)
         }
+
         this.children = c
+        this.sortChildFolders()
     }
 
     setChildrenItems (children) {
@@ -59,6 +61,30 @@ export class Folder {
                 }
             }
         }
+    }
+
+    sortChildFolders () {
+        let compareFnc
+        if (window.Intl && window.Intl.Collator) {
+            compareFnc = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
+        }
+
+        this.children.sort((a, b) => {
+            if (compareFnc) {
+                return compareFnc.compare(a.name, b.name)
+            }
+
+            if (a.name === b.name) {
+                return 0
+            }
+
+            return a.name > b.name ? 1 : -1
+        })
+    }
+
+    addNewFolder (folder) {
+        this.children.push(folder)
+        this.sortChildFolders()
     }
 
     setItems (items) {
