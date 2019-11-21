@@ -40,24 +40,21 @@ class UserController extends BaseController
         $model = $this->userRepository->model();
         $query = $model::orderBy($orderBy, $orderDir);
 
-        if ($search = $request->input('keywords'))
-        {
+        if ($search = $request->input('keywords')) {
             $search = trim($search);
-            $query = $query->where(function($q) use ($search) {
+            $query = $query->where(function ($q) use ($search) {
                 $q->where('email', 'LIKE', "%{$search}%")
                     ->orWhere('name', 'LIKE', "%{$search}%");
             });
         }
 
-        if ($role = $request->input('role'))
-        {
-            $query = $query->whereHas('roles', function($q) use ($role) {
-                $q->where('role_id','=',$role);
+        if ($role = $request->input('role')) {
+            $query = $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('role_id', '=', $role);
             });
         }
 
-        if ($request->has('order'))
-        {
+        if ($request->has('order')) {
             $query = $this->getOrder($query, $request);
         }
 
@@ -90,7 +87,7 @@ class UserController extends BaseController
     public function update($userId)
     {
         $this->validate($this->request, [
-            'name' => 'required',
+            // 'name' => 'required',
             'email' => 'required'
         ]);
 
@@ -117,13 +114,11 @@ class UserController extends BaseController
 
         $result = event(new BeforeUserDelete($user, $request));
 
-        if (!empty($result[0]->errors))
-        {
+        if (!empty($result[0]->errors)) {
             return Redirect::route('cms:user:manage')->with('errors', $result[0]->errors);
         }
 
-        if (isset($result[0]->request))
-        {
+        if (isset($result[0]->request)) {
             $request = $result[0]->request;
         }
 
@@ -165,8 +160,7 @@ class UserController extends BaseController
     {
         $dir = (in_array($request->input('dir'), ['asc', 'desc'])) ? $request->input('dir') : 'asc';
 
-        switch ($request->input('order'))
-        {
+        switch ($request->input('order')) {
             case 'id':
                 $query = $query->orderBy('id', $dir);
                 break;

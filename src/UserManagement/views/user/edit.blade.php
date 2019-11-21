@@ -10,6 +10,18 @@
             </div>
         @endif
 
+        @if (!empty($errors) && $errorMessages = $errors->getMessages())
+            <div class="alert alert-danger" role="alert">
+                <ul>
+                    @foreach($errorMessages as $fieldSlug => $errorItems)
+                        @foreach($errorItems as $item)
+                            <li>{{ $item }}</li>
+                        @endforeach
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('cms:user:update', [$user->id]) }}" method="POST" autocomplete="false">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
