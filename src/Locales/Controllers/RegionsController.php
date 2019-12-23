@@ -81,10 +81,7 @@ class RegionsController extends BaseController
      */
     public function edit($regionId, RegionRepository $regionRepository, CountryRepository $countryRepository)
     {
-        $region = $regionRepository->find($regionId)->with([
-            'locale'
-        ])->first();
-
+        $region = $regionRepository->getByRegionId($regionId);
         return View::make('argon::regions.edit', ['region' => $region]);
     }
 
