@@ -16,7 +16,7 @@
     @section('styles')
     @show
     <style>
-        {{ config('argon.admin_css', '') }}
+        {!! config('argon.admin_css', '') !!}
     </style>
 </head>
 
