@@ -38,6 +38,8 @@ import {
     DragDrop
 } from 'uppy'
 
+let pageEditApp
+
 function init () {
     polyfill()
     Jump.init(650, 150)
@@ -56,8 +58,19 @@ function init () {
     Fields()
     Medialib()
     Dashboard()
-    Tabs()
-    PageEdit()
+    pageEditApp = PageEdit()
+
+    const tabActions = {
+        'page-content': function () {
+            pageEditApp.$children[0].enableDragging()
+        }
+    }
+    const tabOutActions = {
+        'page-content': function () {
+            pageEditApp.$children[0].disableDragging()
+        }
+    }
+    Tabs(tabActions, tabOutActions)
     MenuEdit()
     cropperTest()
     formSubmits()

@@ -16,3 +16,4 @@ export function PageEdit () {
         render: h => h(App)
     }).$mount(pageEdit)
 }
+

@@ -1662,9 +1662,13 @@ var TabsObj = {
 };
 var tabs;
 var tabInitMap = {};
-function Tabs() {
+var tabs_tabActions = {};
+var tabs_tabOutActions = {};
+function Tabs(actions, outActions) {
   var tabEl = document.querySelector('.js-tabs');
   tabs = createTabs(tabEl);
+  tabs_tabActions = actions;
+  tabs_tabOutActions = outActions;
   var tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/;
   var titleUrlParamRegex = /[?&]title(=([^&#]*)|&|#|$)/;
   var tab = tabUrlParamRegex.exec(window.location.search);
@@ -1778,6 +1782,16 @@ function changeTab(tabName) {
   }
 
   tabs.currentTab = tabName;
+
+  if (tabs_tabActions[tabName]) {
+    tabs_tabActions[tabName]();
+  }
+
+  Object.keys(tabs_tabOutActions).filter(function (outActionName) {
+    return outActionName !== tabName;
+  }).forEach(function (outActionName) {
+    tabs_tabOutActions[outActionName]();
+  });
 
   if (pushstate) {
     history.pushState({
@@ -13766,52 +13780,54 @@ var Appvue_type_template_id_146287be_render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "c-block-list__container" },
-            [
-              _c(
+          _vm.canDrag
+            ? _c(
                 "div",
-                {
-                  staticClass:
-                    "c-block-list__inner-list c-block-list__inner-list--no-grow"
-                },
-                _vm._l(_vm.filteredRenderNonSortList, function(block) {
-                  return _c("block-item", {
-                    key: block.id,
-                    attrs: { block: block },
-                    on: { edit: _vm.editBlock }
-                  })
-                }),
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "draggable",
-                {
-                  staticClass: "c-block-list__inner-list",
-                  attrs: { options: _vm.dragOptions },
-                  on: { start: _vm.startDragging, end: _vm.endDragging },
-                  model: {
-                    value: _vm.renderingDragGroup,
-                    callback: function($$v) {
-                      _vm.renderingDragGroup = $$v
+                { staticClass: "c-block-list__container" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "c-block-list__inner-list c-block-list__inner-list--no-grow"
                     },
-                    expression: "renderingDragGroup"
-                  }
-                },
-                _vm._l(_vm.filteredRenderList, function(block) {
-                  return _c("block-item", {
-                    key: block.id,
-                    attrs: { block: block },
-                    on: { delete: _vm.removeItem, edit: _vm.editBlock }
-                  })
-                }),
+                    _vm._l(_vm.filteredRenderNonSortList, function(block) {
+                      return _c("block-item", {
+                        key: block.id,
+                        attrs: { block: block },
+                        on: { edit: _vm.editBlock }
+                      })
+                    }),
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "draggable",
+                    {
+                      staticClass: "c-block-list__inner-list",
+                      attrs: { options: _vm.dragOptions },
+                      on: { start: _vm.startDragging, end: _vm.endDragging },
+                      model: {
+                        value: _vm.renderingDragGroup,
+                        callback: function($$v) {
+                          _vm.renderingDragGroup = $$v
+                        },
+                        expression: "renderingDragGroup"
+                      }
+                    },
+                    _vm._l(_vm.filteredRenderList, function(block) {
+                      return _c("block-item", {
+                        key: block.id,
+                        attrs: { block: block },
+                        on: { delete: _vm.removeItem, edit: _vm.editBlock }
+                      })
+                    }),
+                    1
+                  )
+                ],
                 1
               )
-            ],
-            1
-          )
+            : _vm._e()
         ])
       ]),
       _vm._v(" "),
@@ -13858,36 +13874,41 @@ var Appvue_type_template_id_146287be_render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "c-block-list__container" },
-                [
-                  _c(
-                    "draggable",
-                    {
-                      staticClass: "c-block-list__inner-list",
-                      attrs: { options: _vm.dragOptions },
-                      on: { start: _vm.startDragging, end: _vm.endDragging },
-                      model: {
-                        value: _vm.blockDragList,
-                        callback: function($$v) {
-                          _vm.blockDragList = $$v
+              _vm.canDrag
+                ? _c(
+                    "div",
+                    { staticClass: "c-block-list__container" },
+                    [
+                      _c(
+                        "draggable",
+                        {
+                          staticClass: "c-block-list__inner-list",
+                          attrs: { options: _vm.dragOptions },
+                          on: {
+                            start: _vm.startDragging,
+                            end: _vm.endDragging
+                          },
+                          model: {
+                            value: _vm.blockDragList,
+                            callback: function($$v) {
+                              _vm.blockDragList = $$v
+                            },
+                            expression: "blockDragList"
+                          }
                         },
-                        expression: "blockDragList"
-                      }
-                    },
-                    _vm._l(_vm.filteredBlockList, function(block) {
-                      return _c("block-item", {
-                        key: block.id,
-                        attrs: { block: block },
-                        on: { add: _vm.addItem }
-                      })
-                    }),
+                        _vm._l(_vm.filteredBlockList, function(block) {
+                          return _c("block-item", {
+                            key: block.id,
+                            attrs: { block: block },
+                            on: { add: _vm.addItem }
+                          })
+                        }),
+                        1
+                      )
+                    ],
                     1
                   )
-                ],
-                1
-              )
+                : _vm._e()
             ])
           ])
         : _vm._e()
@@ -14393,6 +14414,7 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
   },
   data: function data() {
     return {
+      canDrag: true,
       nonSortableRenderingGroups: [],
       renderingGroups: [],
       blockList: [],
@@ -14513,6 +14535,12 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
     },
     endDragging: function endDragging() {
       this.isDragging = false;
+    },
+    disableDragging: function disableDragging() {
+      this.canDrag = false;
+    },
+    enableDragging: function enableDragging() {
+      this.canDrag = true;
     }
   }
 });
@@ -19240,6 +19268,7 @@ function activityLog() {
  // import resetForm from './form/reset-form'
 
 
+var pageEditApp;
 
 function src_init() {
   init();
@@ -19260,8 +19289,18 @@ function src_init() {
   Fields();
   Medialib();
   Dashboard();
-  Tabs();
-  PageEdit();
+  pageEditApp = PageEdit();
+  var tabActions = {
+    'page-content': function pageContent() {
+      pageEditApp.$children[0].enableDragging();
+    }
+  };
+  var tabOutActions = {
+    'page-content': function pageContent() {
+      pageEditApp.$children[0].disableDragging();
+    }
+  };
+  Tabs(tabActions, tabOutActions);
   MenuEdit();
   cropperTest();
   formSubmits();
@@ -19365,4 +19404,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.a4ba334fdf57984360c7.js.map
+//# sourceMappingURL=main.92d3e0c0e8ed5c687119.js.map

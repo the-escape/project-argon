@@ -12,7 +12,7 @@
                         <svg><use xlink:href="/argon/images/svgicons.svg#search"></use></svg>
                     </div>
                 </div>
-                <div class="c-block-list__container">
+                <div class="c-block-list__container" v-if="canDrag">
                     <div class="c-block-list__inner-list c-block-list__inner-list--no-grow">
                         <block-item v-for="block in filteredRenderNonSortList" :key="block.id" :block="block" @edit="editBlock" />
                     </div>
@@ -33,7 +33,7 @@
                         <svg><use xlink:href="/argon/images/svgicons.svg#search"></use></svg>
                     </div>
                 </div>
-                <div class="c-block-list__container">
+                <div class="c-block-list__container" v-if="canDrag">
                     <draggable class="c-block-list__inner-list" v-model="blockDragList" :options="dragOptions" @start="startDragging" @end="endDragging">
                         <block-item v-for="block in filteredBlockList" :key="block.id" :block="block" @add="addItem" />
                     </draggable>
@@ -54,6 +54,7 @@ export default {
     },
     data () {
         return {
+            canDrag: true,
             nonSortableRenderingGroups: [],
             renderingGroups: [],
             blockList: [],
@@ -146,6 +147,12 @@ export default {
         },
         endDragging: function () {
             this.isDragging = false
+        },
+        disableDragging: function () {
+            this.canDrag = false
+        },
+        enableDragging: function () {
+            this.canDrag = true
         }
     }
 }
