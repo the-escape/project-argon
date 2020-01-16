@@ -1662,13 +1662,11 @@ var TabsObj = {
 };
 var tabs;
 var tabInitMap = {};
-var tabs_tabActions = {};
-var tabs_tabOutActions = {};
-function Tabs(actions, outActions) {
+var tabActions;
+function Tabs(actions) {
   var tabEl = document.querySelector('.js-tabs');
   tabs = createTabs(tabEl);
-  tabs_tabActions = actions;
-  tabs_tabOutActions = outActions;
+  tabActions = actions;
   var tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/;
   var titleUrlParamRegex = /[?&]title(=([^&#]*)|&|#|$)/;
   var tab = tabUrlParamRegex.exec(window.location.search);
@@ -1782,16 +1780,7 @@ function changeTab(tabName) {
   }
 
   tabs.currentTab = tabName;
-
-  if (tabs_tabActions[tabName]) {
-    tabs_tabActions[tabName]();
-  }
-
-  Object.keys(tabs_tabOutActions).filter(function (outActionName) {
-    return outActionName !== tabName;
-  }).forEach(function (outActionName) {
-    tabs_tabOutActions[outActionName]();
-  });
+  tabActions(tabName);
 
   if (pushstate) {
     history.pushState({
@@ -3260,6 +3249,11 @@ Appvue_type_template_id_6cdc7617_render._withStripped = true
       evt.preventDefault();
       this.$store.commit('restoreOldState');
       changeTab('page-content');
+    },
+    toggleDraggables: function toggleDraggables(tabName) {
+      this.$store.commit('toggleDraggables', {
+        tabName: tabName
+      });
     }
   },
   computed: {
@@ -3548,97 +3542,99 @@ var multivue_type_template_id_1793689c_render = function() {
     [
       _vm.isMultiple
         ? _c("div", { staticClass: "o-multi" }, [
-            _c(
-              "div",
-              { staticClass: "o-multi__track" },
-              [
-                _c(
-                  "draggable",
-                  {
-                    attrs: {
-                      options: {
-                        group: { pull: true, put: true },
-                        animation: 150,
-                        handle: ".js-multi-drag"
-                      }
-                    },
-                    on: { end: _vm.onMove },
-                    model: {
-                      value: _vm.values,
-                      callback: function($$v) {
-                        _vm.values = $$v
+            _vm.showDraggables
+              ? _c(
+                  "div",
+                  { staticClass: "o-multi__track" },
+                  [
+                    _c(
+                      "draggable",
+                      {
+                        attrs: {
+                          options: {
+                            group: { pull: true, put: true },
+                            animation: 150,
+                            handle: ".js-multi-drag"
+                          }
+                        },
+                        on: { end: _vm.onMove },
+                        model: {
+                          value: _vm.values,
+                          callback: function($$v) {
+                            _vm.values = $$v
+                          },
+                          expression: "values"
+                        }
                       },
-                      expression: "values"
-                    }
-                  },
-                  _vm._l(_vm.values, function(value) {
-                    return _c(
-                      "div",
-                      { key: value.id, staticClass: "o-multi__item" },
-                      [
-                        _c(
+                      _vm._l(_vm.values, function(value) {
+                        return _c(
                           "div",
-                          { staticClass: "o-multi__item-wrap" },
+                          { key: value.id, staticClass: "o-multi__item" },
                           [
                             _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "o-multi__drag-handle js-multi-drag",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.preventDefault($event)
-                                  }
-                                }
-                              },
+                              "div",
+                              { staticClass: "o-multi__item-wrap" },
                               [
                                 _c(
-                                  "div",
-                                  { staticClass: "o-multi__drag-wrap" },
-                                  [
-                                    _c("svg", [
-                                      _c("use", {
-                                        attrs: {
-                                          "xlink:href":
-                                            "/argon/images/svgicons.svg#reorder"
-                                        }
-                                      })
-                                    ])
-                                  ]
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm._t("default", null, { valueObj: value }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "o-multi__actions" },
-                              [
-                                _c("confirm-btn", {
-                                  on: {
-                                    delete: function($event) {
-                                      return _vm.deleteValue(value.id)
-                                    },
-                                    duplicate: function($event) {
-                                      return _vm.duplicateValue(value.id)
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "o-multi__drag-handle js-multi-drag",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.preventDefault($event)
+                                      }
                                     }
-                                  }
-                                })
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "o-multi__drag-wrap" },
+                                      [
+                                        _c("svg", [
+                                          _c("use", {
+                                            attrs: {
+                                              "xlink:href":
+                                                "/argon/images/svgicons.svg#reorder"
+                                            }
+                                          })
+                                        ])
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _vm._t("default", null, { valueObj: value }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "o-multi__actions" },
+                                  [
+                                    _c("confirm-btn", {
+                                      on: {
+                                        delete: function($event) {
+                                          return _vm.deleteValue(value.id)
+                                        },
+                                        duplicate: function($event) {
+                                          return _vm.duplicateValue(value.id)
+                                        }
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
                               ],
-                              1
+                              2
                             )
-                          ],
-                          2
+                          ]
                         )
-                      ]
+                      }),
+                      0
                     )
-                  }),
-                  0
+                  ],
+                  1
                 )
-              ],
-              1
-            ),
+              : _vm._e(),
             _vm._v(" "),
             _c("div", { staticClass: "o-multi__foot" }, [
               _c(
@@ -4232,6 +4228,9 @@ function multivue_type_script_lang_js_extends() { multivue_type_script_lang_js_e
       }
 
       return field.options.settings.multiple;
+    },
+    showDraggables: function showDraggables() {
+      return this.$store.state.showDraggables;
     }
   }
 });
@@ -5073,125 +5072,127 @@ var combovue_type_template_id_90b659e4_render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "o-combo__track" },
-      [
-        _c(
-          "draggable",
-          {
-            attrs: {
-              options: {
-                group: { pull: true, put: true },
-                animation: 150,
-                handle: ".js-combo-drag"
-              }
-            },
-            model: {
-              value: _vm.items,
-              callback: function($$v) {
-                _vm.items = $$v
-              },
-              expression: "items"
-            }
-          },
-          _vm._l(_vm.items, function(item) {
-            return _c(
-              "div",
+    _vm.showDraggables
+      ? _c(
+          "div",
+          { staticClass: "o-combo__track" },
+          [
+            _c(
+              "draggable",
               {
-                key: item.id,
-                staticClass: "o-combo__item",
-                attrs: { id: "combo-" + item.id }
+                attrs: {
+                  options: {
+                    group: { pull: true, put: true },
+                    animation: 150,
+                    handle: ".js-combo-drag"
+                  }
+                },
+                model: {
+                  value: _vm.items,
+                  callback: function($$v) {
+                    _vm.items = $$v
+                  },
+                  expression: "items"
+                }
               },
-              [
-                _c("div", { staticClass: "o-combo__header" }, [
-                  _vm.isMultiple
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "o-combo__drag-handle js-combo-drag",
-                          on: {
-                            click: function($event) {
-                              return _vm.toggleBodyHide($event, item.id)
-                            }
-                          }
-                        },
-                        [
-                          _c("div", { staticClass: "o-combo__drag-wrap" }, [
-                            _c("svg", [
-                              _c("use", {
-                                attrs: {
-                                  "xlink:href":
-                                    "/argon/images/svgicons.svg#reorder"
-                                }
-                              })
-                            ])
-                          ])
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.isMultiple
-                    ? _c(
-                        "div",
-                        { staticClass: "o-combo__title js-combo-title" },
-                        [_vm._v("Item " + _vm._s(item.id + 1))]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.isMultiple
-                    ? _c(
-                        "div",
-                        { staticClass: "o-combo__actions" },
-                        [
-                          _c("confirm-btn", {
-                            on: {
-                              delete: function($event) {
-                                return _vm.deleteItem(item.id)
-                              },
-                              duplicate: function($event) {
-                                return _vm.duplicateItem(item.id)
-                              }
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c(
+              _vm._l(_vm.items, function(item) {
+                return _c(
                   "div",
                   {
-                    staticClass: "o-combo__body",
-                    style: { display: _vm.isHidingBody ? "none" : "block" }
+                    key: item.id,
+                    staticClass: "o-combo__item",
+                    attrs: { id: "combo-" + item.id }
                   },
                   [
+                    _c("div", { staticClass: "o-combo__header" }, [
+                      _vm.isMultiple
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "o-combo__drag-handle js-combo-drag",
+                              on: {
+                                click: function($event) {
+                                  return _vm.toggleBodyHide($event, item.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("div", { staticClass: "o-combo__drag-wrap" }, [
+                                _c("svg", [
+                                  _c("use", {
+                                    attrs: {
+                                      "xlink:href":
+                                        "/argon/images/svgicons.svg#reorder"
+                                    }
+                                  })
+                                ])
+                              ])
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.isMultiple
+                        ? _c(
+                            "div",
+                            { staticClass: "o-combo__title js-combo-title" },
+                            [_vm._v("Item " + _vm._s(item.id + 1))]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.isMultiple
+                        ? _c(
+                            "div",
+                            { staticClass: "o-combo__actions" },
+                            [
+                              _c("confirm-btn", {
+                                on: {
+                                  delete: function($event) {
+                                    return _vm.deleteItem(item.id)
+                                  },
+                                  duplicate: function($event) {
+                                    return _vm.duplicateItem(item.id)
+                                  }
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "o-combo__form" },
-                      _vm._l(_vm.comboFields, function(field) {
-                        return _c("types", {
-                          key: field.id,
-                          attrs: {
-                            field: field,
-                            "combo-id": _vm.fieldId,
-                            "combo-item-id": item.id
-                          }
-                        })
-                      }),
-                      1
+                      {
+                        staticClass: "o-combo__body",
+                        style: { display: _vm.isHidingBody ? "none" : "block" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "o-combo__form" },
+                          _vm._l(_vm.comboFields, function(field) {
+                            return _c("types", {
+                              key: field.id,
+                              attrs: {
+                                field: field,
+                                "combo-id": _vm.fieldId,
+                                "combo-item-id": item.id
+                              }
+                            })
+                          }),
+                          1
+                        )
+                      ]
                     )
                   ]
                 )
-              ]
+              }),
+              0
             )
-          }),
-          0
+          ],
+          1
         )
-      ],
-      1
-    ),
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "o-combo__foot" }, [
       _vm.isMultiple
@@ -5345,6 +5346,9 @@ combovue_type_template_id_90b659e4_render._withStripped = true
           newValues: values
         });
       }
+    },
+    showDraggables: function showDraggables() {
+      return this.$store.state.showDraggables;
     }
   }
 });
@@ -5694,100 +5698,102 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
                 })
               }),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "o-drag-select__column-wrap" },
-                [
-                  _c("div", { staticClass: "o-drag-select__title" }, [
-                    _c("div", { staticClass: "o-drag-select__search" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.search,
-                            expression: "search"
-                          }
-                        ],
-                        attrs: { type: "text", placeholder: "Search.." },
-                        domProps: { value: _vm.search },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+              _vm.showDraggables
+                ? _c(
+                    "div",
+                    { staticClass: "o-drag-select__column-wrap" },
+                    [
+                      _c("div", { staticClass: "o-drag-select__title" }, [
+                        _c("div", { staticClass: "o-drag-select__search" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.search,
+                                expression: "search"
+                              }
+                            ],
+                            attrs: { type: "text", placeholder: "Search.." },
+                            domProps: { value: _vm.search },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.search = $event.target.value
+                              }
                             }
-                            _vm.search = $event.target.value
-                          }
-                        }
-                      }),
+                          }),
+                          _vm._v(" "),
+                          _c("button", {
+                            staticClass: "o-drag-select__search-close",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.clearSearch($event)
+                              }
+                            }
+                          })
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("button", {
-                        staticClass: "o-drag-select__search-close",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.clearSearch($event)
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "draggable",
-                    {
-                      staticClass:
-                        "o-drag-select__column o-drag-select__column--inactive",
-                      attrs: {
-                        options: {
-                          group: {
-                            name: "multiselect-" + _vm.inputName,
-                            pull: true,
-                            put: true
-                          },
-                          animation: 75
-                        }
-                      },
-                      model: {
-                        value: _vm.filteredOptions,
-                        callback: function($$v) {
-                          _vm.filteredOptions = $$v
-                        },
-                        expression: "filteredOptions"
-                      }
-                    },
-                    _vm._l(_vm.filteredOptions, function(option) {
-                      return _c(
-                        "div",
+                      _c(
+                        "draggable",
                         {
-                          key: option.value,
-                          staticClass: "o-drag-select__item"
+                          staticClass:
+                            "o-drag-select__column o-drag-select__column--inactive",
+                          attrs: {
+                            options: {
+                              group: {
+                                name: "multiselect-" + _vm.inputName,
+                                pull: true,
+                                put: true
+                              },
+                              animation: 75
+                            }
+                          },
+                          model: {
+                            value: _vm.filteredOptions,
+                            callback: function($$v) {
+                              _vm.filteredOptions = $$v
+                            },
+                            expression: "filteredOptions"
+                          }
                         },
-                        [
-                          _c(
+                        _vm._l(_vm.filteredOptions, function(option) {
+                          return _c(
                             "div",
-                            { staticClass: "o-drag-select__item-wrap" },
+                            {
+                              key: option.value,
+                              staticClass: "o-drag-select__item"
+                            },
                             [
-                              _c("span", [_vm._v(_vm._s(option.label))]),
-                              _vm._v(" "),
-                              _c("svg", [
-                                _c("use", {
-                                  attrs: {
-                                    "xlink:href":
-                                      "/argon/images/svgicons.svg#move"
-                                  }
-                                })
-                              ])
+                              _c(
+                                "div",
+                                { staticClass: "o-drag-select__item-wrap" },
+                                [
+                                  _c("span", [_vm._v(_vm._s(option.label))]),
+                                  _vm._v(" "),
+                                  _c("svg", [
+                                    _c("use", {
+                                      attrs: {
+                                        "xlink:href":
+                                          "/argon/images/svgicons.svg#move"
+                                      }
+                                    })
+                                  ])
+                                ]
+                              )
                             ]
                           )
-                        ]
+                        }),
+                        0
                       )
-                    }),
-                    0
+                    ],
+                    1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
               _vm._v(" "),
               _c("div", { staticClass: "o-drag-select__arrow" }, [
                 _c("svg", [
@@ -5799,69 +5805,71 @@ var multi_selectvue_type_template_id_84e61080_render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "o-drag-select__column-wrap" },
-                [
-                  _c("div", { staticClass: "o-drag-select__title" }, [
-                    _c("span", [_vm._v("Selected")])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "draggable",
-                    {
-                      staticClass:
-                        "o-drag-select__column o-drag-select__column--active",
-                      attrs: {
-                        options: {
-                          group: {
-                            name: "multiselect-" + _vm.inputName,
-                            pull: true,
-                            put: true
-                          },
-                          animation: 75
-                        }
-                      },
-                      model: {
-                        value: _vm.valueOptions,
-                        callback: function($$v) {
-                          _vm.valueOptions = $$v
-                        },
-                        expression: "valueOptions"
-                      }
-                    },
-                    _vm._l(_vm.valueOptions, function(option) {
-                      return _c(
-                        "div",
+              _vm.showDraggables
+                ? _c(
+                    "div",
+                    { staticClass: "o-drag-select__column-wrap" },
+                    [
+                      _c("div", { staticClass: "o-drag-select__title" }, [
+                        _c("span", [_vm._v("Selected")])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "draggable",
                         {
-                          key: option.value,
-                          staticClass: "o-drag-select__item"
+                          staticClass:
+                            "o-drag-select__column o-drag-select__column--active",
+                          attrs: {
+                            options: {
+                              group: {
+                                name: "multiselect-" + _vm.inputName,
+                                pull: true,
+                                put: true
+                              },
+                              animation: 75
+                            }
+                          },
+                          model: {
+                            value: _vm.valueOptions,
+                            callback: function($$v) {
+                              _vm.valueOptions = $$v
+                            },
+                            expression: "valueOptions"
+                          }
                         },
-                        [
-                          _c(
+                        _vm._l(_vm.valueOptions, function(option) {
+                          return _c(
                             "div",
-                            { staticClass: "o-drag-select__item-wrap" },
+                            {
+                              key: option.value,
+                              staticClass: "o-drag-select__item"
+                            },
                             [
-                              _c("span", [_vm._v(_vm._s(option.label))]),
-                              _vm._v(" "),
-                              _c("svg", [
-                                _c("use", {
-                                  attrs: {
-                                    "xlink:href":
-                                      "/argon/images/svgicons.svg#move"
-                                  }
-                                })
-                              ])
+                              _c(
+                                "div",
+                                { staticClass: "o-drag-select__item-wrap" },
+                                [
+                                  _c("span", [_vm._v(_vm._s(option.label))]),
+                                  _vm._v(" "),
+                                  _c("svg", [
+                                    _c("use", {
+                                      attrs: {
+                                        "xlink:href":
+                                          "/argon/images/svgicons.svg#move"
+                                      }
+                                    })
+                                  ])
+                                ]
+                              )
                             ]
                           )
-                        ]
+                        }),
+                        0
                       )
-                    }),
-                    0
+                    ],
+                    1
                   )
-                ],
-                1
-              )
+                : _vm._e()
             ],
             2
           )
@@ -5976,6 +5984,9 @@ multi_selectvue_type_template_id_84e61080_render._withStripped = true
           return value.value;
         });
       }
+    },
+    showDraggables: function showDraggables() {
+      return this.$store.state.showDraggables;
     }
   },
   methods: {
@@ -13305,7 +13316,9 @@ function getStore() {
       fields: [],
       oldState: [],
       header: '',
-      showActions: true
+      showActions: true,
+      showDraggables: true,
+      tabName: ''
     },
     getters: {
       getField: function getField(state) {
@@ -13338,12 +13351,25 @@ function getStore() {
       }
     },
     mutations: {
-      setFields: function setFields(state, _ref) {
-        var fields = _ref.fields;
+      setDataTabName: function setDataTabName(state, _ref) {
+        var tabName = _ref.tabName;
+        state.tabName = tabName;
+      },
+      toggleDraggables: function toggleDraggables(state, _ref2) {
+        var tabName = _ref2.tabName;
+
+        if (state.tabName === tabName) {
+          state.showDraggables = true;
+        } else {
+          state.showDraggables = false;
+        }
+      },
+      setFields: function setFields(state, _ref3) {
+        var fields = _ref3.fields;
         state.fields = fields;
       },
-      setShowActions: function setShowActions(state, _ref2) {
-        var actions = _ref2.actions;
+      setShowActions: function setShowActions(state, _ref4) {
+        var actions = _ref4.actions;
         state.showActions = actions;
       },
       setOldState: function setOldState(state) {
@@ -13352,14 +13378,14 @@ function getStore() {
       restoreOldState: function restoreOldState(state) {
         state.fields = deepClone(state.oldState);
       },
-      setHeader: function setHeader(state, _ref3) {
-        var header = _ref3.header;
+      setHeader: function setHeader(state, _ref5) {
+        var header = _ref5.header;
         state.header = header;
       },
       // Field Mutations
-      updateValue: function updateValue(state, _ref4) {
-        var fieldID = _ref4.fieldID,
-            newValue = _ref4.newValue;
+      updateValue: function updateValue(state, _ref6) {
+        var fieldID = _ref6.fieldID,
+            newValue = _ref6.newValue;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -13377,9 +13403,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      updateValues: function updateValues(state, _ref5) {
-        var fieldID = _ref5.fieldID,
-            newValues = _ref5.newValues;
+      updateValues: function updateValues(state, _ref7) {
+        var fieldID = _ref7.fieldID,
+            newValues = _ref7.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -13390,9 +13416,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addValue: function addValue(state, _ref6) {
-        var fieldID = _ref6.fieldID,
-            valueObj = _ref6.valueObj;
+      addValue: function addValue(state, _ref8) {
+        var fieldID = _ref8.fieldID,
+            valueObj = _ref8.valueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -13405,9 +13431,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeValue: function removeValue(state, _ref7) {
-        var fieldID = _ref7.fieldID,
-            valueID = _ref7.valueID;
+      removeValue: function removeValue(state, _ref9) {
+        var fieldID = _ref9.fieldID,
+            valueID = _ref9.valueID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== fieldID) {
             return field;
@@ -13421,9 +13447,9 @@ function getStore() {
         preventPageLeave();
       },
       // Combo Item Mutations
-      updateComboItemValues: function updateComboItemValues(state, _ref8) {
-        var comboID = _ref8.comboID,
-            newValues = _ref8.newValues;
+      updateComboItemValues: function updateComboItemValues(state, _ref10) {
+        var comboID = _ref10.comboID,
+            newValues = _ref10.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13434,9 +13460,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addComboItemValue: function addComboItemValue(state, _ref9) {
-        var comboID = _ref9.comboID,
-            newValueObj = _ref9.newValueObj;
+      addComboItemValue: function addComboItemValue(state, _ref11) {
+        var comboID = _ref11.comboID,
+            newValueObj = _ref11.newValueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13461,9 +13487,9 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeComboItem: function removeComboItem(state, _ref10) {
-        var comboID = _ref10.comboID,
-            comboItemID = _ref10.comboItemID;
+      removeComboItem: function removeComboItem(state, _ref12) {
+        var comboID = _ref12.comboID,
+            comboItemID = _ref12.comboItemID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13477,11 +13503,11 @@ function getStore() {
         preventPageLeave();
       },
       // Combo Field Mutations
-      updateComboFieldValue: function updateComboFieldValue(state, _ref11) {
-        var fieldID = _ref11.fieldID,
-            comboID = _ref11.comboID,
-            comboItemId = _ref11.comboItemId,
-            newValue = _ref11.newValue;
+      updateComboFieldValue: function updateComboFieldValue(state, _ref13) {
+        var fieldID = _ref13.fieldID,
+            comboID = _ref13.comboID,
+            comboItemId = _ref13.comboItemId,
+            newValue = _ref13.newValue;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13511,11 +13537,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      updateComboFieldValues: function updateComboFieldValues(state, _ref12) {
-        var fieldID = _ref12.fieldID,
-            comboID = _ref12.comboID,
-            comboItemId = _ref12.comboItemId,
-            newValues = _ref12.newValues;
+      updateComboFieldValues: function updateComboFieldValues(state, _ref14) {
+        var fieldID = _ref14.fieldID,
+            comboID = _ref14.comboID,
+            comboItemId = _ref14.comboItemId,
+            newValues = _ref14.newValues;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13533,11 +13559,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      addComboFieldValue: function addComboFieldValue(state, _ref13) {
-        var fieldID = _ref13.fieldID,
-            comboID = _ref13.comboID,
-            comboItemId = _ref13.comboItemId,
-            valueObj = _ref13.valueObj;
+      addComboFieldValue: function addComboFieldValue(state, _ref15) {
+        var fieldID = _ref15.fieldID,
+            comboID = _ref15.comboID,
+            comboItemId = _ref15.comboItemId,
+            valueObj = _ref15.valueObj;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13557,11 +13583,11 @@ function getStore() {
         });
         preventPageLeave();
       },
-      removeComboFieldValue: function removeComboFieldValue(state, _ref14) {
-        var fieldID = _ref14.fieldID,
-            comboID = _ref14.comboID,
-            comboItemId = _ref14.comboItemId,
-            valueID = _ref14.valueID;
+      removeComboFieldValue: function removeComboFieldValue(state, _ref16) {
+        var fieldID = _ref16.fieldID,
+            comboID = _ref16.comboID,
+            comboItemId = _ref16.comboItemId,
+            valueID = _ref16.valueID;
         state.fields = state.fields.map(function (field) {
           if (field.id !== comboID) {
             return field;
@@ -13619,6 +13645,10 @@ function Fields() {
     });
     store.commit('setShowActions', {
       actions: actions
+    });
+    var tabName = el.closest('[data-tab]').dataset.tab;
+    store.commit('setDataTabName', {
+      tabName: tabName
     });
     return new vue_default.a({
       store: store,
@@ -13743,107 +13773,16 @@ var Appvue_type_template_id_146287be_render = function() {
           })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "c-block-list" }, [
-          _c("div", { staticClass: "c-block-list__search o-form" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.renderSearch,
-                  expression: "renderSearch"
-                }
-              ],
-              attrs: {
-                type: "text",
-                id: "search",
-                name: "search",
-                placeholder: "Search blocks"
-              },
-              domProps: { value: _vm.renderSearch },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.renderSearch = $event.target.value
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "c-block-list__search-icon" }, [
-              _c("svg", [
-                _c("use", {
-                  attrs: { "xlink:href": "/argon/images/svgicons.svg#search" }
-                })
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.canDrag
-            ? _c(
-                "div",
-                { staticClass: "c-block-list__container" },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "c-block-list__inner-list c-block-list__inner-list--no-grow"
-                    },
-                    _vm._l(_vm.filteredRenderNonSortList, function(block) {
-                      return _c("block-item", {
-                        key: block.id,
-                        attrs: { block: block },
-                        on: { edit: _vm.editBlock }
-                      })
-                    }),
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "draggable",
-                    {
-                      staticClass: "c-block-list__inner-list",
-                      attrs: { options: _vm.dragOptions },
-                      on: { start: _vm.startDragging, end: _vm.endDragging },
-                      model: {
-                        value: _vm.renderingDragGroup,
-                        callback: function($$v) {
-                          _vm.renderingDragGroup = $$v
-                        },
-                        expression: "renderingDragGroup"
-                      }
-                    },
-                    _vm._l(_vm.filteredRenderList, function(block) {
-                      return _c("block-item", {
-                        key: block.id,
-                        attrs: { block: block },
-                        on: { delete: _vm.removeItem, edit: _vm.editBlock }
-                      })
-                    }),
-                    1
-                  )
-                ],
-                1
-              )
-            : _vm._e()
-        ])
-      ]),
-      _vm._v(" "),
-      _vm.hasRenderable
-        ? _c("div", { staticClass: "c-block-list__wrap" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("div", { staticClass: "c-block-list" }, [
+        _vm.showDraggables
+          ? _c("div", { staticClass: "c-block-list" }, [
               _c("div", { staticClass: "c-block-list__search o-form" }, [
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.blockSearch,
-                      expression: "blockSearch"
+                      value: _vm.renderSearch,
+                      expression: "renderSearch"
                     }
                   ],
                   attrs: {
@@ -13852,13 +13791,13 @@ var Appvue_type_template_id_146287be_render = function() {
                     name: "search",
                     placeholder: "Search blocks"
                   },
-                  domProps: { value: _vm.blockSearch },
+                  domProps: { value: _vm.renderSearch },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.blockSearch = $event.target.value
+                      _vm.renderSearch = $event.target.value
                     }
                   }
                 }),
@@ -13880,6 +13819,22 @@ var Appvue_type_template_id_146287be_render = function() {
                     { staticClass: "c-block-list__container" },
                     [
                       _c(
+                        "div",
+                        {
+                          staticClass:
+                            "c-block-list__inner-list c-block-list__inner-list--no-grow"
+                        },
+                        _vm._l(_vm.filteredRenderNonSortList, function(block) {
+                          return _c("block-item", {
+                            key: block.id,
+                            attrs: { block: block },
+                            on: { edit: _vm.editBlock }
+                          })
+                        }),
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
                         "draggable",
                         {
                           staticClass: "c-block-list__inner-list",
@@ -13889,18 +13844,18 @@ var Appvue_type_template_id_146287be_render = function() {
                             end: _vm.endDragging
                           },
                           model: {
-                            value: _vm.blockDragList,
+                            value: _vm.renderingDragGroup,
                             callback: function($$v) {
-                              _vm.blockDragList = $$v
+                              _vm.renderingDragGroup = $$v
                             },
-                            expression: "blockDragList"
+                            expression: "renderingDragGroup"
                           }
                         },
-                        _vm._l(_vm.filteredBlockList, function(block) {
+                        _vm._l(_vm.filteredRenderList, function(block) {
                           return _c("block-item", {
                             key: block.id,
                             attrs: { block: block },
-                            on: { add: _vm.addItem }
+                            on: { delete: _vm.removeItem, edit: _vm.editBlock }
                           })
                         }),
                         1
@@ -13910,6 +13865,90 @@ var Appvue_type_template_id_146287be_render = function() {
                   )
                 : _vm._e()
             ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _vm.hasRenderable
+        ? _c("div", { staticClass: "c-block-list__wrap" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm.showDraggables
+              ? _c("div", { staticClass: "c-block-list" }, [
+                  _c("div", { staticClass: "c-block-list__search o-form" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.blockSearch,
+                          expression: "blockSearch"
+                        }
+                      ],
+                      attrs: {
+                        type: "text",
+                        id: "search",
+                        name: "search",
+                        placeholder: "Search blocks"
+                      },
+                      domProps: { value: _vm.blockSearch },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.blockSearch = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "c-block-list__search-icon" }, [
+                      _c("svg", [
+                        _c("use", {
+                          attrs: {
+                            "xlink:href": "/argon/images/svgicons.svg#search"
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.canDrag
+                    ? _c(
+                        "div",
+                        { staticClass: "c-block-list__container" },
+                        [
+                          _c(
+                            "draggable",
+                            {
+                              staticClass: "c-block-list__inner-list",
+                              attrs: { options: _vm.dragOptions },
+                              on: {
+                                start: _vm.startDragging,
+                                end: _vm.endDragging
+                              },
+                              model: {
+                                value: _vm.blockDragList,
+                                callback: function($$v) {
+                                  _vm.blockDragList = $$v
+                                },
+                                expression: "blockDragList"
+                              }
+                            },
+                            _vm._l(_vm.filteredBlockList, function(block) {
+                              return _c("block-item", {
+                                key: block.id,
+                                attrs: { block: block },
+                                on: { add: _vm.addItem }
+                              })
+                            }),
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e()
           ])
         : _vm._e()
     ]
@@ -14496,6 +14535,9 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
       return this.renderingGroups.map(function (block) {
         return block.id;
       }).join(',');
+    },
+    showDraggables: function showDraggables() {
+      return this.$store.state.showDraggables;
     }
   },
   methods: {
@@ -19269,6 +19311,7 @@ function activityLog() {
 
 
 var pageEditApp;
+var fieldsApps;
 
 function src_init() {
   init();
@@ -19286,26 +19329,30 @@ function src_init() {
   initialiseFormElements();
   registerFormSaveEvents(); // resetForm()
 
-  Fields();
+  fieldsApps = Fields();
   Medialib();
   Dashboard();
   pageEditApp = PageEdit();
-  var tabActions = {
-    'page-content': function pageContent() {
-      pageEditApp.$children[0].enableDragging();
-    }
-  };
-  var tabOutActions = {
-    'page-content': function pageContent() {
-      pageEditApp.$children[0].disableDragging();
-    }
-  };
-  Tabs(tabActions, tabOutActions);
+  Tabs(tabAction);
   MenuEdit();
   cropperTest();
   formSubmits();
   SiteTree();
   BasicConfirmBtns(); // testUppy()
+}
+
+function tabAction(tabName) {
+  if (tabName === 'page-content') {
+    pageEditApp.$children[0].enableDragging();
+  }
+
+  if (tabName !== 'page-content') {
+    pageEditApp.$children[0].disableDragging();
+  }
+
+  fieldsApps.forEach(function (app) {
+    app.$children[0].toggleDraggables(tabName);
+  });
 }
 
 function testUppy() {
@@ -19404,4 +19451,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.92d3e0c0e8ed5c687119.js.map
+//# sourceMappingURL=main.f3b76c4b39cd8cd09328.js.map

@@ -8,7 +8,9 @@ export function getStore () {
             fields: [],
             oldState: [],
             header: '',
-            showActions: true
+            showActions: true,
+            showDraggables: true,
+            tabName: ''
         },
         getters: {
             getField: state => id => {
@@ -32,6 +34,16 @@ export function getStore () {
             }
         },
         mutations: {
+            setDataTabName (state, { tabName }) {
+                state.tabName = tabName
+            },
+            toggleDraggables (state, { tabName }) {
+                if (state.tabName === tabName) {
+                    state.showDraggables = true
+                } else {
+                    state.showDraggables = false
+                }
+            },
             setFields (state, { fields }) {
                 state.fields = fields
             },

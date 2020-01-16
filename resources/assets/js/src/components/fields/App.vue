@@ -43,6 +43,9 @@ export default {
             evt.preventDefault()
             this.$store.commit('restoreOldState')
             changeTab('page-content')
+        },
+        toggleDraggables: function (tabName) {
+            this.$store.commit('toggleDraggables', {tabName})
         }
     },
     computed: {

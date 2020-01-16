@@ -12,15 +12,13 @@ const TabsObj = {
 
 let tabs
 let tabInitMap = {}
-let tabActions = {}
-let tabOutActions = {}
+let tabActions
 
-export function Tabs (actions, outActions) {
+export function Tabs (actions) {
     const tabEl = document.querySelector('.js-tabs')
     tabs = createTabs(tabEl)
 
     tabActions = actions
-    tabOutActions = outActions
 
     const tabUrlParamRegex = /[?&]tab(=([^&#]*)|&|#|$)/
     const titleUrlParamRegex = /[?&]title(=([^&#]*)|&|#|$)/
@@ -143,16 +141,7 @@ export function changeTab (tabName, title = '', pushstate = true) {
     }
 
     tabs.currentTab = tabName
-
-    if (tabActions[tabName]) {
-        tabActions[tabName]()
-    }
-
-    Object.keys(tabOutActions)
-        .filter(outActionName => outActionName !== tabName)
-        .forEach(outActionName => {
-            tabOutActions[outActionName]()
-        })
+    tabActions(tabName)
 
     if (pushstate) {
         history.pushState(

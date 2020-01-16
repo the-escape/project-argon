@@ -39,6 +39,7 @@ import {
 } from 'uppy'
 
 let pageEditApp
+let fieldsApps
 
 function init () {
     polyfill()
@@ -55,22 +56,11 @@ function init () {
     initialiseFormElements()
     registerFormSaveEvents()
     // resetForm()
-    Fields()
+    fieldsApps = Fields()
     Medialib()
     Dashboard()
     pageEditApp = PageEdit()
-
-    const tabActions = {
-        'page-content': function () {
-            pageEditApp.$children[0].enableDragging()
-        }
-    }
-    const tabOutActions = {
-        'page-content': function () {
-            pageEditApp.$children[0].disableDragging()
-        }
-    }
-    Tabs(tabActions, tabOutActions)
+    Tabs(tabAction)
     MenuEdit()
     cropperTest()
     formSubmits()
@@ -79,6 +69,20 @@ function init () {
     BasicConfirmBtns()
 
     // testUppy()
+}
+
+function tabAction (tabName) {
+    if (tabName === 'page-content') {
+        pageEditApp.$children[0].enableDragging()
+    }
+
+    if (tabName !== 'page-content') {
+        pageEditApp.$children[0].disableDragging()
+    }
+
+    fieldsApps.forEach(app => {
+        app.$children[0].toggleDraggables(tabName)
+    })
 }
 
 function testUppy () {

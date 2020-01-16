@@ -3,7 +3,7 @@
         <div class="o-combo__head">
             <div class="o-combo__label">{{comboField.options.name}}</div>
         </div>
-        <div class="o-combo__track">
+        <div class="o-combo__track" v-if="showDraggables">
             <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
                 <div class="o-combo__item" v-for="item in items" :key="item.id" :id="'combo-' + item.id">
                     <div class="o-combo__header">
@@ -127,6 +127,9 @@ export default {
                     newValues: values
                 })
             }
+        },
+        showDraggables: function () {
+            return this.$store.state.showDraggables
         }
     }
 }

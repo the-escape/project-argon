@@ -4,7 +4,7 @@
             <label :for="inputName">{{ name }}</label>
             <div class="o-drag-select js-drag">
                 <input type="hidden" v-for="(option, index) in valueOptions" :key="index" :name="inputName" :value="option.value">
-                <div class="o-drag-select__column-wrap">
+                <div class="o-drag-select__column-wrap" v-if="showDraggables">
                     <div class="o-drag-select__title">
                         <div class="o-drag-select__search">
                             <input type="text" v-model="search" placeholder="Search..">
@@ -27,7 +27,7 @@
                         <use xlink:href="/argon/images/svgicons.svg#arrow-right"></use>
                     </svg>
                 </div>
-                <div class="o-drag-select__column-wrap">
+                <div class="o-drag-select__column-wrap" v-if="showDraggables">
                     <div class="o-drag-select__title"><span>Selected</span></div>
                     <draggable class="o-drag-select__column o-drag-select__column--active" v-model="valueOptions" :options="{ group: { name: 'multiselect-' + inputName, pull:true, put:true }, animation: 75 }">
                         <div class="o-drag-select__item" v-for="option in valueOptions" :key="option.value">
@@ -91,6 +91,9 @@ export default {
                 this.tmpValues = values
                 this.values = this.tmpValues.map(value => value.value)
             }
+        },
+        showDraggables: function () {
+            return this.$store.state.showDraggables
         }
     },
     methods: {

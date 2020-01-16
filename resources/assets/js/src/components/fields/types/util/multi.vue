@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="o-multi" v-if="isMultiple">
-            <div class="o-multi__track">
+            <div class="o-multi__track" v-if="showDraggables">
                 <draggable v-model="values" @end="onMove" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
                     <div class="o-multi__item" v-for="value in values" :key="value.id">
                         <div class="o-multi__item-wrap">
@@ -123,6 +123,9 @@ export default {
                 field = this.$store.getters.getField(this.fieldId)
             }
             return field.options.settings.multiple
+        },
+        showDraggables: function () {
+            return this.$store.state.showDraggables
         }
     }
 }

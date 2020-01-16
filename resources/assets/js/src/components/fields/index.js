@@ -29,6 +29,8 @@ export function Fields () {
         store.commit('setFields', { fields: fields })
         store.commit('setHeader', { header })
         store.commit('setShowActions', { actions })
+        const tabName = el.closest('[data-tab]').dataset.tab
+        store.commit('setDataTabName', { tabName })
 
         return new Vue({
             store,
@@ -36,7 +38,7 @@ export function Fields () {
         }).$mount(el)
 
         // addTabInit(tabName, () => {
-            
+
         // })
     })
 }
