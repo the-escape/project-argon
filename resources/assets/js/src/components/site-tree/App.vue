@@ -15,6 +15,7 @@
                         <use xlink:href="/argon/images/svgicons.svg#select"></use>
                     </svg>
                 </div>
+                <div v-if="!node.children || !node.children.length"></div>
             </template>
             <template slot="title" slot-scope="{ node }">
                 <row :node="node" :tree-index="index" :is-highlight="highlightedNodes[node.pathStr]" :is-error="errorNodes[node.pathStr]"></row>
