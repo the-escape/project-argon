@@ -74,9 +74,7 @@ function init () {
 function tabAction (tabName) {
     if (tabName === 'page-content') {
         pageEditApp.$children[0].enableDragging()
-    }
-
-    if (tabName !== 'page-content') {
+    } else {
         pageEditApp.$children[0].disableDragging()
     }
 

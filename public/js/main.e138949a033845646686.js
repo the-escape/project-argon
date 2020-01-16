@@ -13773,16 +13773,107 @@ var Appvue_type_template_id_146287be_render = function() {
           })
         ]),
         _vm._v(" "),
-        _vm.showDraggables
-          ? _c("div", { staticClass: "c-block-list" }, [
+        _c("div", { staticClass: "c-block-list" }, [
+          _c("div", { staticClass: "c-block-list__search o-form" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.renderSearch,
+                  expression: "renderSearch"
+                }
+              ],
+              attrs: {
+                type: "text",
+                id: "search",
+                name: "search",
+                placeholder: "Search blocks"
+              },
+              domProps: { value: _vm.renderSearch },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.renderSearch = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "c-block-list__search-icon" }, [
+              _c("svg", [
+                _c("use", {
+                  attrs: { "xlink:href": "/argon/images/svgicons.svg#search" }
+                })
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.canDrag
+            ? _c(
+                "div",
+                { staticClass: "c-block-list__container" },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "c-block-list__inner-list c-block-list__inner-list--no-grow"
+                    },
+                    _vm._l(_vm.filteredRenderNonSortList, function(block) {
+                      return _c("block-item", {
+                        key: block.id,
+                        attrs: { block: block },
+                        on: { edit: _vm.editBlock }
+                      })
+                    }),
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "draggable",
+                    {
+                      staticClass: "c-block-list__inner-list",
+                      attrs: { options: _vm.dragOptions },
+                      on: { start: _vm.startDragging, end: _vm.endDragging },
+                      model: {
+                        value: _vm.renderingDragGroup,
+                        callback: function($$v) {
+                          _vm.renderingDragGroup = $$v
+                        },
+                        expression: "renderingDragGroup"
+                      }
+                    },
+                    _vm._l(_vm.filteredRenderList, function(block) {
+                      return _c("block-item", {
+                        key: block.id,
+                        attrs: { block: block },
+                        on: { delete: _vm.removeItem, edit: _vm.editBlock }
+                      })
+                    }),
+                    1
+                  )
+                ],
+                1
+              )
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.hasRenderable
+        ? _c("div", { staticClass: "c-block-list__wrap" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "c-block-list" }, [
               _c("div", { staticClass: "c-block-list__search o-form" }, [
                 _c("input", {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.renderSearch,
-                      expression: "renderSearch"
+                      value: _vm.blockSearch,
+                      expression: "blockSearch"
                     }
                   ],
                   attrs: {
@@ -13791,13 +13882,13 @@ var Appvue_type_template_id_146287be_render = function() {
                     name: "search",
                     placeholder: "Search blocks"
                   },
-                  domProps: { value: _vm.renderSearch },
+                  domProps: { value: _vm.blockSearch },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.renderSearch = $event.target.value
+                      _vm.blockSearch = $event.target.value
                     }
                   }
                 }),
@@ -13819,22 +13910,6 @@ var Appvue_type_template_id_146287be_render = function() {
                     { staticClass: "c-block-list__container" },
                     [
                       _c(
-                        "div",
-                        {
-                          staticClass:
-                            "c-block-list__inner-list c-block-list__inner-list--no-grow"
-                        },
-                        _vm._l(_vm.filteredRenderNonSortList, function(block) {
-                          return _c("block-item", {
-                            key: block.id,
-                            attrs: { block: block },
-                            on: { edit: _vm.editBlock }
-                          })
-                        }),
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
                         "draggable",
                         {
                           staticClass: "c-block-list__inner-list",
@@ -13844,18 +13919,18 @@ var Appvue_type_template_id_146287be_render = function() {
                             end: _vm.endDragging
                           },
                           model: {
-                            value: _vm.renderingDragGroup,
+                            value: _vm.blockDragList,
                             callback: function($$v) {
-                              _vm.renderingDragGroup = $$v
+                              _vm.blockDragList = $$v
                             },
-                            expression: "renderingDragGroup"
+                            expression: "blockDragList"
                           }
                         },
-                        _vm._l(_vm.filteredRenderList, function(block) {
+                        _vm._l(_vm.filteredBlockList, function(block) {
                           return _c("block-item", {
                             key: block.id,
                             attrs: { block: block },
-                            on: { delete: _vm.removeItem, edit: _vm.editBlock }
+                            on: { add: _vm.addItem }
                           })
                         }),
                         1
@@ -13865,90 +13940,6 @@ var Appvue_type_template_id_146287be_render = function() {
                   )
                 : _vm._e()
             ])
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _vm.hasRenderable
-        ? _c("div", { staticClass: "c-block-list__wrap" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _vm.showDraggables
-              ? _c("div", { staticClass: "c-block-list" }, [
-                  _c("div", { staticClass: "c-block-list__search o-form" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.blockSearch,
-                          expression: "blockSearch"
-                        }
-                      ],
-                      attrs: {
-                        type: "text",
-                        id: "search",
-                        name: "search",
-                        placeholder: "Search blocks"
-                      },
-                      domProps: { value: _vm.blockSearch },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.blockSearch = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "c-block-list__search-icon" }, [
-                      _c("svg", [
-                        _c("use", {
-                          attrs: {
-                            "xlink:href": "/argon/images/svgicons.svg#search"
-                          }
-                        })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm.canDrag
-                    ? _c(
-                        "div",
-                        { staticClass: "c-block-list__container" },
-                        [
-                          _c(
-                            "draggable",
-                            {
-                              staticClass: "c-block-list__inner-list",
-                              attrs: { options: _vm.dragOptions },
-                              on: {
-                                start: _vm.startDragging,
-                                end: _vm.endDragging
-                              },
-                              model: {
-                                value: _vm.blockDragList,
-                                callback: function($$v) {
-                                  _vm.blockDragList = $$v
-                                },
-                                expression: "blockDragList"
-                              }
-                            },
-                            _vm._l(_vm.filteredBlockList, function(block) {
-                              return _c("block-item", {
-                                key: block.id,
-                                attrs: { block: block },
-                                on: { add: _vm.addItem }
-                              })
-                            }),
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    : _vm._e()
-                ])
-              : _vm._e()
           ])
         : _vm._e()
     ]
@@ -14535,9 +14526,6 @@ function Appvue_type_script_lang_js_arrayWithoutHoles(arr) { if (Array.isArray(a
       return this.renderingGroups.map(function (block) {
         return block.id;
       }).join(',');
-    },
-    showDraggables: function showDraggables() {
-      return this.$store.state.showDraggables;
     }
   },
   methods: {
@@ -19344,9 +19332,7 @@ function src_init() {
 function tabAction(tabName) {
   if (tabName === 'page-content') {
     pageEditApp.$children[0].enableDragging();
-  }
-
-  if (tabName !== 'page-content') {
+  } else {
     pageEditApp.$children[0].disableDragging();
   }
 
@@ -19451,4 +19437,4 @@ if (document.readyState !== 'loading') {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=main.f3b76c4b39cd8cd09328.js.map
+//# sourceMappingURL=main.e138949a033845646686.js.map

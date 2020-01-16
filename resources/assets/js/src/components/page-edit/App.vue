@@ -5,7 +5,7 @@
                 <h3>Active blocks</h3>
                 <input type="hidden" name="group_order" :value="renderOrder">
             </div>
-            <div class="c-block-list" v-if="showDraggables">
+            <div class="c-block-list">
                 <div class="c-block-list__search o-form">
                     <input type="text" id="search" name="search" placeholder="Search blocks" v-model="renderSearch">
                     <div class="c-block-list__search-icon">
@@ -26,7 +26,7 @@
             <div class="typography l-space">
                 <h3>Inactive blocks</h3>
             </div>
-            <div class="c-block-list" v-if="showDraggables">
+            <div class="c-block-list">
                 <div class="c-block-list__search o-form">
                     <input type="text" id="search" name="search" placeholder="Search blocks" v-model="blockSearch">
                     <div class="c-block-list__search-icon">
@@ -120,9 +120,6 @@ export default {
         },
         renderOrder: function () {
             return this.renderingGroups.map(block => block.id).join(',')
-        },
-        showDraggables: function () {
-            return this.$store.state.showDraggables
         }
     },
     methods: {
