@@ -1,8 +1,29 @@
 <template>
     <div>
         <div class="o-multi" v-if="isMultiple">
-            <div class="o-multi__track" v-if="showDraggables">
-                <draggable v-model="values" @end="onMove" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
+            <div class="o-multi__track">
+                <template v-if="showDraggables">
+                    <draggable v-model="values" @end="onMove" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-multi-drag' }">
+                        <div class="o-multi__item" v-for="value in values" :key="value.id">
+                            <div class="o-multi__item-wrap">
+                                <button class="o-multi__drag-handle js-multi-drag" @click="preventDefault($event)">
+                                    <div class="o-multi__drag-wrap">
+                                        <svg>
+                                            <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                <slot :value-obj="value"></slot>
+
+                                <div class="o-multi__actions">
+                                    <confirm-btn @delete="deleteValue(value.id)" @duplicate="duplicateValue(value.id)"></confirm-btn>
+                                </div>
+                            </div>
+                        </div>
+                    </draggable>
+                </template>
+                <template v-if="!showDraggables">
                     <div class="o-multi__item" v-for="value in values" :key="value.id">
                         <div class="o-multi__item-wrap">
                             <button class="o-multi__drag-handle js-multi-drag" @click="preventDefault($event)">
@@ -20,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                </draggable>
+                </template>
             </div>
             <div class="o-multi__foot">
                 <button @click="addEmptyValue($event)" class="o-btn o-btn--sm">Add</button>

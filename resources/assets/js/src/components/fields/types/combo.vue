@@ -3,29 +3,34 @@
         <div class="o-combo__head">
             <div class="o-combo__label">{{comboField.options.name}}</div>
         </div>
-        <div class="o-combo__track" v-if="showDraggables">
-            <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
-                <div class="o-combo__item" v-for="item in items" :key="item.id" :id="'combo-' + item.id">
-                    <div class="o-combo__header">
-                        <button class="o-combo__drag-handle js-combo-drag" v-if="isMultiple" @click="toggleBodyHide($event, item.id)">
-                            <div class="o-combo__drag-wrap">
-                                <svg>
-                                    <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
-                                </svg>
+        <div class="o-combo__track">
+            <template v-if="showDraggables">
+                <draggable v-model="items" :options="{ group: { pull:true, put:true }, animation: 150, handle: '.js-combo-drag' }">
+                    <div class="o-combo__item" v-for="item in items" :key="item.id" :id="'combo-' + item.id">
+                        <div class="o-combo__header">
+                            <button class="o-combo__drag-handle js-combo-drag" v-if="isMultiple" @click="toggleBodyHide($event, item.id)">
+                                <div class="o-combo__drag-wrap">
+                                    <svg>
+                                        <use xlink:href="/argon/images/svgicons.svg#reorder"></use>
+                                    </svg>
+                                </div>
+                            </button>
+                            <div class="o-combo__title js-combo-title" v-if="isMultiple">Item {{ item.id + 1 }}</div>
+                            <div class="o-combo__actions" v-if="isMultiple">
+                                <confirm-btn @delete="deleteItem(item.id)" @duplicate="duplicateItem(item.id)"></confirm-btn>
                             </div>
-                        </button>
-                        <div class="o-combo__title js-combo-title" v-if="isMultiple">Item {{ item.id + 1 }}</div>
-                        <div class="o-combo__actions" v-if="isMultiple">
-                            <confirm-btn @delete="deleteItem(item.id)" @duplicate="duplicateItem(item.id)"></confirm-btn>
+                        </div>
+                        <div class="o-combo__body" :style="{ display: isHidingBody ? 'none' : 'block' }">
+                            <div class="o-combo__form">
+                                <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
+                            </div>
                         </div>
                     </div>
-                    <div class="o-combo__body" :style="{ display: isHidingBody ? 'none' : 'block' }">
-                        <div class="o-combo__form">
-                            <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
-                        </div>
-                    </div>
-                </div>
-            </draggable>
+                </draggable>
+            </template>
+            <template v-if="!showDraggables">
+                <types v-for="field in comboFields" :key="field.id" :field="field" :combo-id="fieldId" :combo-item-id="item.id"></types>
+            </template>
         </div>
         <div class="o-combo__foot">
             <button class="o-btn o-btn--sm" v-if="isMultiple" @click="addEmptyItem($event)">Add {{comboField.options.comboAddName}}</button>

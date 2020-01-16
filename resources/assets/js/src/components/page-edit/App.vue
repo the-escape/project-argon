@@ -12,13 +12,18 @@
                         <svg><use xlink:href="/argon/images/svgicons.svg#search"></use></svg>
                     </div>
                 </div>
-                <div class="c-block-list__container" v-if="canDrag">
+                <div class="c-block-list__container" >
                     <div class="c-block-list__inner-list c-block-list__inner-list--no-grow">
                         <block-item v-for="block in filteredRenderNonSortList" :key="block.id" :block="block" @edit="editBlock" />
                     </div>
-                    <draggable class="c-block-list__inner-list" v-model="renderingDragGroup" :options="dragOptions" @start="startDragging" @end="endDragging">
+                    <template v-if="canDrag">
+                        <draggable class="c-block-list__inner-list" v-model="renderingDragGroup" :options="dragOptions" @start="startDragging" @end="endDragging">
+                            <block-item v-for="block in filteredRenderList" :key="block.id" :block="block" @delete="removeItem" @edit="editBlock" />
+                        </draggable>
+                    </template>
+                    <template v-if="!canDrag">
                         <block-item v-for="block in filteredRenderList" :key="block.id" :block="block" @delete="removeItem" @edit="editBlock" />
-                    </draggable>
+                    </template>
                 </div>
             </div>
         </div>
@@ -34,9 +39,14 @@
                     </div>
                 </div>
                 <div class="c-block-list__container" v-if="canDrag">
-                    <draggable class="c-block-list__inner-list" v-model="blockDragList" :options="dragOptions" @start="startDragging" @end="endDragging">
+                    <template v-if="canDrag">
+                        <draggable class="c-block-list__inner-list" v-model="blockDragList" :options="dragOptions" @start="startDragging" @end="endDragging">
+                            <block-item v-for="block in filteredBlockList" :key="block.id" :block="block" @add="addItem" />
+                        </draggable>
+                    </template>
+                    <template v-if="!canDrag">
                         <block-item v-for="block in filteredBlockList" :key="block.id" :block="block" @add="addItem" />
-                    </draggable>
+                    </template>
                 </div>
             </div>
         </div>
