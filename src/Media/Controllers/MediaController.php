@@ -502,6 +502,8 @@ class MediaController extends BaseController
         $name = $request->input('name', '');
         $folderId = $request->input('parent');
 
+        $mediaItem->description = $request->input('description');
+
         $folder = $folderRepository->findWhere(['deleted_at' => null, 'id'=>$folderId])->first();
 
         if ($folder === null)

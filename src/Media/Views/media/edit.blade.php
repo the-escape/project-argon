@@ -51,6 +51,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="description" class="required">Description / Alt Tag</label>
+                            <input type="text" id="description" class="form-control" name="description" value="{{ $media->description }}">
+                        </div>
+
+                        <div class="form-group">
                             <label for="parent" class="required">Parent Folder</label>
 
                             <select name="parent" id="parent" class="form-control">

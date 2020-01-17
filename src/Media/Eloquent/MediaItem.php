@@ -40,6 +40,7 @@ class MediaItem extends Model implements Arrayable, ImageInterface
         'uploaded_by',
         'hasThumb',
         'optimized',
+        'description'
     ];
 
     public function mediaFolder()
@@ -142,7 +143,9 @@ class MediaItem extends Model implements Arrayable, ImageInterface
 
     public function getAlt($default='')
     {
-        return (isset($this->data->alt) && $this->data->alt != "") ? $this->data->alt : $default;
+        $description = $this->description;
+        $value = (isset($this->data->alt) && $this->data->alt != "") ? $this->data->alt : ($default && $default != '' ? $default : $description);
+        return $value;
     }
 
     public function getFriendlyFilesize()

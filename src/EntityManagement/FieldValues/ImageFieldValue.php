@@ -72,7 +72,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             return null;
         }
 
-        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt'))
+        if (property_exists($value, 'id') && property_exists($value, 'url') && property_exists($value, 'alt') && $value->alt != "")
         {
             return new CacheMediaItemValue([
                 'id' => $value->id,
@@ -95,7 +95,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
             $media_item->meta = json_decode($media_item->meta);
             $media_item->data = new stdClass();
             $media_item->data->alt = @$value->alt;
-
+            
             return $media_item;
         }
 
