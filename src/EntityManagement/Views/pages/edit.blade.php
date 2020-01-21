@@ -296,11 +296,11 @@
 
                                 </div>
 
-                                <div class="c-actions">
+                                {{-- <div class="c-actions">
                                     <div class="c-actions__group">
                                         <button type="submit" class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">Back</button>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </main>
                     </div>

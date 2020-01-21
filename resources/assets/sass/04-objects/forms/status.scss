@@ -1,5 +1,5 @@
 .o-form-status {
-    display: grid;
+    // display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-gap: $gutter;
     //padding-left: $gutter;
@@ -11,7 +11,7 @@
 
     &__message {
         align-self: flex-end;
-        display: flex;
+        display: none;
         align-items: center;
         min-height: 45px;
 

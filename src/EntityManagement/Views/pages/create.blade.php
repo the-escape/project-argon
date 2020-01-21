@@ -167,9 +167,9 @@
                     @foreach($groups as $group)
                         <div class="c-tab-panel" data-tab="group-{{ $group->id }}">
                             <main class="c-tab-panel__container c-container">
-                                <div class="c-actions__container">
+                                {{-- <div class="c-actions__container">
                                     <div class="c-actions__content c-tab-panel__inner-container l-full">
-                                        <h2>{{ $group->name }}</h2>
+                                        <h2>{{ $group->name }}</h2> --}}
                                         <script>
                                             window.groups.push({
                                                 id: '{{$group->id}}',
@@ -186,14 +186,14 @@
                                             }
                                         </script>
                                         <div class="js-fields" data-name="{{$group->id}}"></div>
-                                    </div>
+                                    {{-- </div> --}}
 
-                                    <div class="c-actions">
+                                    {{-- <div class="c-actions">
                                         <div class="c-actions__group">
                                             <button class="o-btn o-btn--primary js-tab-btn" data-tab="page-content">back</button>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div> --}}
+                                {{-- </div> --}}
                             </main>
                         </div>
                     @endforeach
