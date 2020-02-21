@@ -73,7 +73,7 @@
                     data-wysiwyg_format_tags="{{$wysiwyg_config_format_tags}}"
                     data-wysiwyg_extraAllowedContent="{{$wysiwyg_config_extraAllowedContent}}"
                     data-wysiwyg_typography_styles="{{config('argon.typography_styles','/css/typography.css')}}"
-            >{{ $v }}</textarea>
+            >{{ is_object($v) ? current($v) : $v }}</textarea>
 
         @if($field->allowMultiple())
                 <div class="input-group-addon field-remove">&#10005;</div>
