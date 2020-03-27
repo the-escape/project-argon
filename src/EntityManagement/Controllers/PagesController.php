@@ -47,9 +47,9 @@ class PagesController extends BaseController
         EntityRepository $entityRepository
     ) {
         $types = $typeRepository->page();
-        $typesJson = $types->map(function($item) {
+        $typesJson = $types->sortBy('name')->map(function ($item) {
             return array_only($item->toArray(), ['id','name']);
-        })->toJson();
+        })->values()->toJson();
 
         $locales = $localeRepository->all();
 
@@ -72,9 +72,10 @@ class PagesController extends BaseController
         return view('argon::pages.manage', ['types' => $types, 'typesJson' => $typesJson, 'entities' => $entities, 'locales' => $locales, 'sitemapJson' => $sitemapJson]);
     }
 
-    private function collectionToArray($entities){
+    private function collectionToArray($entities)
+    {
         $out = [];
-        foreach($entities as $el){
+        foreach ($entities as $el) {
             $entity = [
                 "title" => $el->name,
                 "data" => [
@@ -88,19 +89,15 @@ class PagesController extends BaseController
 
             $extraActions = event(new RenderPagesListItemActions($el));
 
-            if(array_filter($extraActions))
-            {
-                if (isset($extraActions[0]['url']))
-                {
+            if (array_filter($extraActions)) {
+                if (isset($extraActions[0]['url'])) {
                     $entity["data"]["extraActions"] = [$extraActions[0]];
-                }
-                else
-                {
+                } else {
                     $entity["data"]["extraActions"] = $extraActions[0];
                 }
             }
 
-            if($el->hasChildren()){
+            if ($el->hasChildren()) {
                 $entity["children"] = $this->collectionToArray($el->getChildren());
             }
             $out[] = $entity;
@@ -114,8 +111,7 @@ class PagesController extends BaseController
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
 
-        if (request()->ajax())
-        {
+        if (request()->ajax()) {
             return response()->json([
                 'success' => true
             ]);
@@ -188,12 +184,9 @@ class PagesController extends BaseController
         $this->validate($request, $rules, [], $niceNames);
 
         $order = Entity::where('parent_id', $parentId)->max('order');
-        if ($order !== null)
-        {
+        if ($order !== null) {
             $order++;
-        }
-        else
-        {
+        } else {
             $order = 0;
         }
 
@@ -216,8 +209,7 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $localisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
@@ -281,8 +273,8 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request,
-        Solr $solr)
-    {
+        Solr $solr
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -291,8 +283,7 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $currentLocalisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
@@ -368,8 +359,7 @@ class PagesController extends BaseController
 
         $localisations = $entity->localisations;
 
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($entity, $localisation);
 
             EntityCache::cache($entity, $localisation);
@@ -389,8 +379,7 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request
-    )
-    {
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -468,39 +457,31 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-            //if ($clone) {
-            //$localisation = $page->getDefaultLocalisation();
-            //} else {
-                        $currentLocale = Locale::find($localeId);
-                        $localisation = $page->getLocalisation($currentLocale);
-            //}
+        //if ($clone) {
+        //$localisation = $page->getDefaultLocalisation();
+        //} else {
+        $currentLocale = Locale::find($localeId);
+        $localisation = $page->getLocalisation($currentLocale);
+        //}
 
         $currentRevision = null;
         $publishedRevision = $localisation->publishedRevision();
 
-        if ($revisionId)
-        {
+        if ($revisionId) {
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-            if ($currentRevision === null)
-            {
+            if ($currentRevision === null) {
                 return back()->with('message', 'Invalid revision.');
             }
-        }
-        else
-        {
+        } else {
             $newestDraft = $localisation->newestDraft();
 
-            if ($newestDraft && $newestDraft->created_at > $publishedRevision->created_at)
-            {
+            if ($newestDraft && $newestDraft->created_at > $publishedRevision->created_at) {
                 $currentRevision = $newestDraft;
-            }
-            else
-            {
+            } else {
                 $currentRevision = $publishedRevision;
             }
-
         }
 
 
@@ -566,8 +547,7 @@ class PagesController extends BaseController
 
         $locale = Locale::find($localeId);
 
-        if (!$locale)
-        {
+        if (!$locale) {
             return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
@@ -584,8 +564,7 @@ class PagesController extends BaseController
 
         $page = $entityRepository->find($pageId);
 
-        if ($clone)
-        {
+        if ($clone) {
             $typeRepository = app()->make(EntityTypeRepository::class);
             $fieldDataRepository = app()->make(FieldDataRepository::class);
 
@@ -612,15 +591,12 @@ class PagesController extends BaseController
             $type = $typeRepository->find($page->entity_type_id);
             $fields = $type->fields;
 
-            foreach ($fields as $field)
-            {
-                if (!$latestRevisionFields->has($field->id))
-                {
+            foreach ($fields as $field) {
+                if (!$latestRevisionFields->has($field->id)) {
                     continue;
                 }
 
-                switch ($field->field_type)
-                {
+                switch ($field->field_type) {
                     case 'combo':
                     case 'image':
                     case 'file':
@@ -669,8 +645,7 @@ class PagesController extends BaseController
     {
         $page = $entityRepository->find($pageId);
 
-        if ($page && $clone = $page->clonePage())
-        {
+        if ($page && $clone = $page->clonePage()) {
             $entity = [
                 "title" => $clone->name,
                 "data" => [
@@ -684,8 +659,7 @@ class PagesController extends BaseController
 
             $extraActions = event(new RenderPagesListItemActions($clone));
 
-            if(array_filter($extraActions))
-            {
+            if (array_filter($extraActions)) {
                 $entity["extraAction"] = $extraActions[0];
             }
 
@@ -702,11 +676,13 @@ class PagesController extends BaseController
         ]);
     }
 
-    public function movePage($pageId, $otherId, $relation,
-        EntityRepository $entityRepository)
-    {
-        if (!in_array($relation, ['inside', 'before', 'after']))
-        {
+    public function movePage(
+        $pageId,
+        $otherId,
+        $relation,
+        EntityRepository $entityRepository
+    ) {
+        if (!in_array($relation, ['inside', 'before', 'after'])) {
             return response()->json([
                 'success' => false,
                 'message' => 'Incorrect action, page could not be moved.'
@@ -715,16 +691,14 @@ class PagesController extends BaseController
 
         $page = $entityRepository->find($pageId);
 
-        switch($relation)
-        {
+        switch ($relation) {
             case 'after':
             case 'before':
                 $otherPage = $entityRepository->find($otherId);
                 $newParentId = (int) $otherPage->parent_id;
                 $index = $otherPage->order;
 
-                if ($relation === 'after')
-                {
+                if ($relation === 'after') {
                     $index++;
                 }
 
@@ -738,13 +712,11 @@ class PagesController extends BaseController
 
         DB::beginTransaction();
 
-        try
-        {
+        try {
             // updating the order of new nad old siblings
             $this->reorderAllChildren($page, $newParentId, $index);
 
-            if ($page->parent_id !== $newParentId)
-            {
+            if ($page->parent_id !== $newParentId) {
                 // this might take a while.. limit to 5mins
                 set_time_limit(300);
 
@@ -753,9 +725,7 @@ class PagesController extends BaseController
 
                 $this->reindexAndRecacheAllChildren($page);
             }
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollback();
 
             return response()->json([
@@ -780,27 +750,21 @@ class PagesController extends BaseController
      */
     private function reorderAllChildren(Entity $page, $newParentId, $newIndex)
     {
-        if ($page->parent_id === $newParentId)
-        {
-            if ($newIndex > $page->order)
-            {
+        if ($page->parent_id === $newParentId) {
+            if ($newIndex > $page->order) {
                 Entity::where('parent_id', $newParentId)
                       ->where('order', '>', $page->order)
-                      ->where('order','<',$newIndex)
+                      ->where('order', '<', $newIndex)
                       ->decrement('order');
 
                 $newIndex--;
-            }
-            else
-            {
+            } else {
                 Entity::where('parent_id', $newParentId)
                       ->where('order', '<', $page->order)
-                      ->where('order','>=',$newIndex)
+                      ->where('order', '>=', $newIndex)
                       ->increment('order');
             }
-        }
-        else
-        {
+        } else {
             Entity::where('parent_id', $newParentId)
                     ->where('order', '>=', $newIndex)
                     ->increment('order');
@@ -827,8 +791,7 @@ class PagesController extends BaseController
         $entityRepository = app()->make(EntityRepository::class);
         $children = $entityRepository->findWhere(['parent_id' => $page->id]);
 
-        foreach($children as $child)
-        {
+        foreach ($children as $child) {
             $this->reindexAndRecacheAllChildren($child);
         }
     }
@@ -845,11 +808,9 @@ class PagesController extends BaseController
         $localisations = $entity->localisations;
         $page = $entity->toPage();
 
-        foreach ($localisations as $localisation)
-        {
-            $cache = EntityCache::where('entity_id',$entity->id)->where('entity_localisation_id',$localisation->id)->first();
-            if ($cache)
-            {
+        foreach ($localisations as $localisation) {
+            $cache = EntityCache::where('entity_id', $entity->id)->where('entity_localisation_id', $localisation->id)->first();
+            if ($cache) {
                 $cache->entity_parent_id = $entity->parent_id;
                 $cache->entity_url = $page->getUrl();
                 $cache->save();
@@ -871,8 +832,7 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($page, $localisation);
             EntityCache::cache($page, $localisation);
         }
@@ -906,8 +866,7 @@ class PagesController extends BaseController
         /** @var EntityRevision $revision */
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-        if ($revision === null)
-        {
+        if ($revision === null) {
             return back()->with('message', 'Invalid revision.');
         }
 
@@ -920,18 +879,15 @@ class PagesController extends BaseController
 
         $revision->publishRevision();
 
-        if (!empty($revision->entity_groups->group_render))
-        {
+        if (!empty($revision->entity_groups->group_render)) {
             $entity->group_render = $revision->entity_groups->group_render;
         }
 
-        if (!empty($revision->entity_groups->group_order))
-        {
+        if (!empty($revision->entity_groups->group_order)) {
             $entity->group_order = $revision->entity_groups->group_order;
         }
 
-        if (!empty($revision->entity_redirects))
-        {
+        if (!empty($revision->entity_redirects)) {
             $entity->redirect_url = $revision->entity_redirects;
         }
 
@@ -953,27 +909,24 @@ class PagesController extends BaseController
         $pageContent = [ "name" => 'Page content', "slug" => "page-content", "isActive" => false];
         $attributes = [ "name" => 'Page properties', "slug" => "attributes", "isActive" => false];
 
-        if ($attributesFirst)
-        {
+        if ($attributesFirst) {
             $attributes['isActive'] = true;
             $tabNav = [$attributes, $pageContent];
-        }
-        else
-        {
+        } else {
             $pageContent['isActive'] = true;
             $tabNav = [$pageContent, $attributes];
         }
 
-        $nonSortableGroups = $groups->filter(function($group){
+        $nonSortableGroups = $groups->filter(function ($group) {
             return !$group->isSortable();
         });
 
         if ($nonSortableGroups) {
             $tabNavGroups = $nonSortableGroups
-                ->filter(function($el) {
+                ->filter(function ($el) {
                     return $el->getSetting('isTab');
                 })
-                ->map(function($el) {
+                ->map(function ($el) {
                     $slug = 'group-'.$el->id;
 
                     return [
@@ -986,11 +939,9 @@ class PagesController extends BaseController
             $tabNav = array_merge($tabNav, $tabNavGroups);
         }
 
-        if ($revisions)
-        {
+        if ($revisions) {
             $revisionsTotal = $revisions->total();
-            if ($revisionsTotal)
-            {
+            if ($revisionsTotal) {
                 $tabNav[] = ["name" => 'Revisions', "slug" => "revisions", "isActive" => false];
             }
         }
