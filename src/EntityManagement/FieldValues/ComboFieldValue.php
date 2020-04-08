@@ -10,17 +10,17 @@ use Traversable;
 
 class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, \Countable
 {
-    /** @var  Collection */
+    /** @var Collection */
     protected $subfields;
 
-    public function __construct($data, $subfields=null)
+    public function __construct($data, $subfields = null)
     {
         $newData = [];
         if ($data) {
             foreach ($data as $k => $v) {
                 $newV = new stdClass();
                 $newV->fields = [];
-                $v = (array)$v;
+                $v = (array) $v;
                 foreach ($v['fields'] as $fk => $fv) {
                     $newV->fields[$fk] = $fv;
                 }
@@ -30,11 +30,34 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
         parent::__construct($newData);
 
-        if (is_null($subfields))
-        {
+        if (is_null($subfields)) {
             $subfields = new Collection();
         }
         $this->subfields = $subfields;
+    }
+
+    public function __toString()
+    {
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        $string = [];
+
+        foreach ($this as $subfields) {
+            if (is_array($subfields)) {
+                foreach ($subfields as $subfield) {
+                    if (!$subfield instanceof AbstractFieldValue) {
+                        continue;
+                    }
+                    if (!$subfield->isEmpty()) {
+                        $string[] = (string) $subfield;
+                    }
+                }
+            }
+        }
+
+        return json_encode($string);
     }
 
     public function count()
@@ -43,47 +66,39 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     }
 
     /**
-     * Retrieve an external iterator
-     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * Retrieve an external iterator.
+     *
+     * @see http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     *                     <b>Traversable</b>
+     *
      * @since 5.0.0
      */
     public function getIterator()
     {
         $data = [];
 
-        if ($this->data !== null) {
+        if (null !== $this->data) {
             foreach ($this->data as $k => $v) {
                 $data[$k] = [];
 
                 foreach ($v->fields as $id => $d) {
-
                     // check if handling cached combo
-                    if ($this->subfields->isEmpty() && $this->data)
-                    {
-                        if ($k)
-                        {
-                            if (array_key_exists($k, $this->data))
-                            {
+                    if ($this->subfields->isEmpty() && $this->data) {
+                        if ($k) {
+                            if (array_key_exists($k, $this->data)) {
                                 $currentIteration = $this->data[$k];
-                            }
-                            else
-                            {
+                            } else {
                                 throw new \RuntimeException("Requested field '{$id}' doesn't have offset '{$k}'.");
                             }
-                        }
-                        else
-                        {
+                        } else {
                             $currentIteration = @array_values($this->data)[0];
                         }
 
-                        if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($id, $currentIteration->fields))
-                        {
+                        if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($id, $currentIteration->fields)) {
                             $value = $currentIteration->fields[$id]->value;
-                        }
-                        else
-                        {
+                        } else {
                             $value = null;
                         }
 
@@ -125,14 +140,15 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         } else {
             $fieldData->value = $field->getInitialValue();
         }
-        $data = $field->parseData($fieldData);
-        return $data;
+
+        return $field->parseData($fieldData);
     }
 
     public function first()
     {
         if (is_array($this->data) && (count($this->data) > 1)) {
             $this->data = array_slice($this->data, 0, 1);
+
             return $this;
         }
 
@@ -142,36 +158,26 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     public function field($fieldName, $k = null)
     {
         // check if handling cached combo
-        if ($this->subfields->isEmpty() && $this->data)
-        {
-            if ($k)
-            {
-                if (array_key_exists($k, $this->data))
-                {
+        if ($this->subfields->isEmpty() && $this->data) {
+            if ($k) {
+                if (array_key_exists($k, $this->data)) {
                     $currentIteration = $this->data[$k];
-                }
-                else
-                {
+                } else {
                     throw new \RuntimeException("Requested field '{$fieldName}' doesn't have offset '{$k}'.");
                 }
-            }
-            else
-            {
+            } else {
                 $currentIteration = @array_values($this->data)[0];
             }
 
-            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($fieldName, $currentIteration->fields))
-            {
+            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($fieldName, $currentIteration->fields)) {
                 $value = $currentIteration->fields[$fieldName]->value;
-            }
-            else
-            {
+            } else {
                 $value = null;
             }
 
             $fieldType = app('fieldTypes')->getType($currentIteration->fields[$fieldName]->type);
-            $fieldValue = $fieldType->parseData($value);
-            return $fieldValue;
+
+            return $fieldType->parseData($value);
         }
 
         /** @var AbstractFieldType $field */
@@ -191,7 +197,6 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
             } else {
                 throw new \RuntimeException("Requested field '{$fieldName}' doesn't have offset '{$k}'.");
             }
-
         } else {
             reset($this->data);
             $currentIteration = current($this->data);
@@ -205,20 +210,19 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
 
         $fieldData = new FieldData();
         $fieldData->value = $value;
+
         return $field->parseData($fieldData);
     }
-
 
     public function fieldExists($field_slug)
     {
         // check if handling cached combo
-        if ($this->subfields->isEmpty() && $this->data)
-        {
+        if ($this->subfields->isEmpty() && $this->data) {
             $currentIteration = @array_values($this->data)[0];
-            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($field_slug, $currentIteration->fields))
-            {
+            if (is_object($currentIteration) && property_exists($currentIteration, 'fields') && array_key_exists($field_slug, $currentIteration->fields)) {
                 return true;
             }
+
             return false;
         }
 
@@ -230,55 +234,19 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
                 return true;
             }
         }
+
         return false;
     }
 
-
-    public function __toString()
-    {
-        if ($this->isEmpty())
-        {
-            return "";
-        }
-
-        $string = [];
-
-        foreach ($this as $subfields)
-        {
-            if (is_array($subfields))
-            {
-                foreach ($subfields as $subfield)
-                {
-                    if (!$subfield instanceof AbstractFieldValue)
-                    {
-                        continue;
-                    }
-                    if (!$subfield->isEmpty())
-                    {
-                        $string[] = (string)$subfield;
-                    }
-                }
-            }
-        }
-
-        return json_encode($string);
-    }
-
-
     public function isEmpty()
     {
-        foreach ($this as $subfields)
-        {
-            if (is_array($subfields))
-            {
-                foreach ($subfields as $subfield)
-                {
-                    if (!$subfield instanceof AbstractFieldValue)
-                    {
+        foreach ($this as $subfields) {
+            if (is_array($subfields)) {
+                foreach ($subfields as $subfield) {
+                    if (!$subfield instanceof AbstractFieldValue) {
                         continue;
                     }
-                    if (!$subfield->isEmpty())
-                    {
+                    if (!$subfield->isEmpty()) {
                         return false;
                     }
                 }
@@ -288,36 +256,26 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         return true;
     }
 
-
     public function compress()
     {
         $values = [];
 
         // check if handling cached combo
-        if ($this->subfields->isEmpty() && $this->data)
-        {
-            foreach ($this->data as $subfields)
-            {
+        if ($this->subfields->isEmpty() && $this->data) {
+            foreach ($this->data as $subfields) {
                 $subfieldValues = [];
 
-                foreach ($subfields->fields as $subfieldKey => $subfieldValue)
-                {
+                foreach ($subfields->fields as $subfieldKey => $subfieldValue) {
                     $subfieldValues[$subfieldKey] = $subfieldValue->value;
                 }
                 $values[] = $subfieldValues;
             }
-        }
-        else
-        {
-            foreach ($this as $subfields)
-            {
-                if (is_array($subfields))
-                {
+        } else {
+            foreach ($this as $subfields) {
+                if (is_array($subfields)) {
                     $subfieldValues = [];
-                    foreach ($subfields as $fieldName => $fieldValue)
-                    {
-                        if (!$fieldValue instanceof AbstractFieldValue)
-                        {
+                    foreach ($subfields as $fieldName => $fieldValue) {
+                        if (!$fieldValue instanceof AbstractFieldValue) {
                             continue;
                         }
 
@@ -334,8 +292,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
     public function toJson($options = 0)
     {
         $values = $this->compress();
+
         return json_encode($values, $options);
     }
-
-
 }

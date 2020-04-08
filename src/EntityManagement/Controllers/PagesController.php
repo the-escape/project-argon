@@ -2,37 +2,35 @@
 
 namespace Escape\Argon\EntityManagement\Controllers;
 
+use DOMDocument;
+use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityCache;
-use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
-use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
-use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
-use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
+use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
+use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
+use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\EntityManagement\Helpers\Pages;
 use Escape\Argon\EntityManagement\RevisionStatus;
 use Escape\Argon\Events\BeforePageSaved;
+use Escape\Argon\Events\PageSaved;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
-use Escape\Argon\Events\PageSaved;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Input;
+use Lang;
 use Redirect;
 use stdClass;
 use View;
-use Lang;
-use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
-use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
-use Illuminate\Support\Facades\Validator;
-use Exception;
-use Illuminate\Support\Facades\Log;
-use DOMDocument;
-use Illuminate\Support\Facades\DB;
 
 class PagesController extends BaseController
 {
@@ -63,17 +61,15 @@ class PagesController extends BaseController
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
+
         return Redirect::route('cms:pages:manage');
     }
 
     /**
-     * create a new child node in the site tree
+     * create a new child node in the site tree.
      *
      * @param $parentId
      * @param $typeId
-     * @param EntityTypeRepository $typeRepository
-     * @param EntityGroupRepository $groupRepository
-     * @param MediaFolderRepository $folderRepository
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -98,23 +94,15 @@ class PagesController extends BaseController
     }
 
     /**
-     * save new child node in the site tree
+     * save new child node in the site tree.
      *
      * @param $parentId
      * @param $typeId
-     * @param EntityTypeRepository $typeRepository
-     * @param EntityRepository $entityRepository
-     * @param EntityRevisionRepository $revisionRepository
-     * @param FieldDataRepository $fieldDataRepository
-     * @param LocalisationRepository $localisationRepository
-     * @param LocaleRepository $localeRepository
-     * @param Request $request
-     * @param Solr $solr
-     *
-     * @return mixed
      *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     *
+     * @return mixed
      */
     public function save(
         $parentId,
@@ -134,17 +122,17 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         // use submitted slug or auto-generate from name
         $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
-            'name' => "required",
+            'name' => 'required',
             'slug' => "required|unique:entities,slug,NULL,id,parent_id,{$parentId},deleted_at,NULL",
         ];
 
@@ -171,15 +159,14 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $localisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
             'status' => RevisionStatus::PUBLISHED,
-            'created_by' => $request->user()->id
+            'created_by' => $request->user()->id,
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
@@ -209,19 +196,16 @@ class PagesController extends BaseController
 
         event(new PageSaved($entity, $localisation, $request));
 
-        return Redirect::route('cms:pages:edit_locale',[
+        return Redirect::route('cms:pages:edit_locale', [
             'page' => $entity->id,
             'locale' => $localisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.created'));
     }
 
     /**
-     * create a new root node in the site tree
+     * create a new root node in the site tree.
      *
      * @param $typeId
-     * @param EntityTypeRepository $typeRepository
-     * @param EntityGroupRepository $groupRepository
-     * @param MediaFolderRepository $folderRepository
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -245,22 +229,14 @@ class PagesController extends BaseController
     }
 
     /**
-     * save new root node in the site tree
+     * save new root node in the site tree.
      *
      * @param $typeId
-     * @param EntityTypeRepository $typeRepository
-     * @param EntityRepository $entityRepository
-     * @param EntityRevisionRepository $revisionRepository
-     * @param FieldDataRepository $fieldDataRepository
-     * @param LocalisationRepository $localisationRepository
-     * @param LocaleRepository $localeRepository
-     * @param Request $request
-     * @param Solr $solr
-     *
-     * @return mixed
      *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     *
+     * @return mixed
      */
     public function saveRoot(
         $typeId,
@@ -279,18 +255,18 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         // use submitted slug or auto-generate from name
         $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
-            'name' => "required",
-            'slug' => "required|unique:entities,slug,NULL,id,deleted_at,NULL",
+            'name' => 'required',
+            'slug' => 'required|unique:entities,slug,NULL,id,deleted_at,NULL',
         ];
 
         list($niceNames, $rules) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules);
@@ -315,15 +291,14 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $localisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
             'status' => RevisionStatus::PUBLISHED,
-            'created_by' => $request->user()->id
+            'created_by' => $request->user()->id,
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
@@ -353,7 +328,7 @@ class PagesController extends BaseController
 
         event(new PageSaved($entity, $localisation, $request));
 
-        return Redirect::route('cms:pages:edit_locale',[
+        return Redirect::route('cms:pages:edit_locale', [
             'page' => $entity->id,
             'locale' => $localisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.created'));
@@ -379,8 +354,8 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request,
-        Solr $solr)
-    {
+        Solr $solr
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -389,8 +364,7 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $currentLocalisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
@@ -402,27 +376,24 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         $slug = str_slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
-            'name' => "required",
+            'name' => 'required',
         ];
 
-        if ($entity->parent_id != null) {
+        if (null != $entity->parent_id) {
             $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
         } else {
-            if (empty($entity->slug) || $entity->slug == '/')
-            {
+            if (empty($entity->slug) || '/' == $entity->slug) {
                 $request->merge(['slug' => '/']);
-            }
-            else
-            {
+            } else {
                 $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,NULL,deleted_at,NULL";
             }
         }
@@ -446,8 +417,7 @@ class PagesController extends BaseController
         $request->merge(['group_render' => $group_render]);
 
         $settings = ($entity->settings instanceof stdClass) ? $entity->settings : new stdClass();
-        if (!isset($settings->{$localeId}))
-        {
+        if (!isset($settings->{$localeId})) {
             $settings->{$localeId} = new stdClass();
         }
         $settings->{$localeId}->pointer = $request->has('entity_pointer') ? $request->input('entity_pointer') : null;
@@ -460,7 +430,7 @@ class PagesController extends BaseController
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
             'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'created_by' => $this->request->user()->id,
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -468,6 +438,7 @@ class PagesController extends BaseController
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
             $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
+
             return response($previewUrl);
         }
 
@@ -475,8 +446,7 @@ class PagesController extends BaseController
 
         $localisations = $entity->localisations;
 
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($entity, $localisation);
             EntityCache::cache($entity, $localisation);
         }
@@ -485,7 +455,7 @@ class PagesController extends BaseController
 
         return Redirect::route('cms:pages:edit_locale', [
             'page' => $entity->id,
-            'locale'=>$currentLocalisation->getLocaleId(),
+            'locale' => $currentLocalisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.updated'));
     }
 
@@ -497,8 +467,7 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request
-    )
-    {
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -511,27 +480,24 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         $slug = str_slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
-            'name' => "required",
+            'name' => 'required',
         ];
 
-        if ($entity->parent_id != null) {
+        if (null != $entity->parent_id) {
             $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
         } else {
-            if($entity->slug !== '/')
-            {
-                $request->merge(['slug' => '/' . $entity->slug]);
-            }
-            else
-            {
+            if ('/' !== $entity->slug) {
+                $request->merge(['slug' => '/'.$entity->slug]);
+            } else {
                 $request->merge(['slug' => '/']);
             }
         }
@@ -556,33 +522,33 @@ class PagesController extends BaseController
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,
-            'status' =>  RevisionStatus::PREVIOUSLY_PUBLISHED,
-            'created_by' => $this->request->user()->id
+            'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,
+            'created_by' => $this->request->user()->id,
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
         return Redirect::route('cms:pages:edit_locale', [
             'page' => $entity->id,
-            'locale'=>$currentLocalisation->getLocaleId(),
-        ])->with('message', "Revision has been saved.");
+            'locale' => $currentLocalisation->getLocaleId(),
+        ])->with('message', 'Revision has been saved.');
     }
 
     /**
-     * edit the details of an existing locale (country / language)
+     * edit the details of an existing locale (country / language).
      *
      * @param $pageId
      * @param $localeId
      * @param null $revisionId
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     *
      * @throws \Exception
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function editLocale(
         $pageId,
         $localeId,
-        $revisionId=null
+        $revisionId = null
     ) {
         $entityRepository = app()->make(EntityRepository::class);
         $groupRepository = app()->make(EntityGroupRepository::class);
@@ -601,18 +567,14 @@ class PagesController extends BaseController
         $currentRevision = null;
         $publishedRevision = $localisation->publishedRevision();
 
-        if ($revisionId)
-        {
+        if ($revisionId) {
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-            if ($currentRevision === null)
-            {
+            if (null === $currentRevision) {
                 return back()->with('message', 'Invalid revision.');
             }
-        }
-        else
-        {
+        } else {
             $currentRevision = $publishedRevision;
         }
 
@@ -646,18 +608,13 @@ class PagesController extends BaseController
     }
 
     /**
-     * create a new locale (country / language)
+     * create a new locale (country / language).
      *
      * @param $pageId
-     * @param Request $request
-     * @param LocalisationRepository $localisationRepository
-     * @param EntityRevisionRepository $revisionRepository
-     * @param EntityRepository $entityRepository
-     * @param Solr $solr
-     *
-     * @return mixed
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     *
+     * @return mixed
      */
     public function createLocale(
         $pageId,
@@ -667,31 +624,29 @@ class PagesController extends BaseController
         EntityRepository $entityRepository,
         Solr $solr
     ) {
-        $localeId = (int)$request->input('locale');
-        $clone = (int)$request->input('clone');
+        $localeId = (int) $request->input('locale');
+        $clone = (int) $request->input('clone');
 
         $locale = Locale::find($localeId);
 
-        if (!$locale)
-        {
+        if (!$locale) {
             return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
-            'entity_id' => $pageId
+            'entity_id' => $pageId,
         ]);
 
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
             'status' => RevisionStatus::DRAFT,
-            'created_by' => $request->user()->id
+            'created_by' => $request->user()->id,
         ]);
 
         $page = $entityRepository->find($pageId);
 
-        if ($clone)
-        {
+        if ($clone) {
             $typeRepository = app()->make(EntityTypeRepository::class);
             $fieldDataRepository = app()->make(FieldDataRepository::class);
 
@@ -718,15 +673,12 @@ class PagesController extends BaseController
             $type = $typeRepository->find($page->entity_type_id);
             $fields = $type->fields;
 
-            foreach ($fields as $field)
-            {
-                if (!$latestRevisionFields->has($field->id))
-                {
+            foreach ($fields as $field) {
+                if (!$latestRevisionFields->has($field->id)) {
                     continue;
                 }
 
-                switch ($field->field_type)
-                {
+                switch ($field->field_type) {
                     case 'combo':
                     case 'image':
                     case 'file':
@@ -734,16 +686,16 @@ class PagesController extends BaseController
                     case 'select':
                     case 'item':
                         $value = $latestRevisionFields[$field->id]->getData();
-                        break;
 
+                        break;
                     default:
-                        $value = (string)$latestRevisionFields[$field->id];
+                        $value = (string) $latestRevisionFields[$field->id];
                 }
 
                 FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
             }
 
-            if ($page->status == 1) {
+            if (1 == $page->status) {
                 event(new PageSaved($page, $localisation, $request));
             }
         }
@@ -759,7 +711,7 @@ class PagesController extends BaseController
     }
 
     /**
-     * delete an existing locale
+     * delete an existing locale.
      *
      * @param $pageId
      * @param $localeId
@@ -783,7 +735,6 @@ class PagesController extends BaseController
         ]);
     }
 
-
     // Handles JSTree ajax reorder requests
     public function updateParent($pageId, $parentId, EntityRepository $entityRepository, Solr $solr)
     {
@@ -795,8 +746,7 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($page, $localisation);
             EntityCache::cache($page, $localisation);
         }
@@ -806,6 +756,7 @@ class PagesController extends BaseController
 
     /**
      * Deprecated, as revisions handled within page edit view.
+     *
      * @param $pageId
      * @param $localeId
      *
@@ -829,8 +780,7 @@ class PagesController extends BaseController
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-        if ($revision === null)
-        {
+        if (null === $revision) {
             return back()->with('message', 'Invalid revision.');
         }
 
@@ -857,11 +807,10 @@ class PagesController extends BaseController
     public function importTranslation($pageId, $localeId, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'xml' => 'required'
+            'xml' => 'required',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors());
         }
 
@@ -869,17 +818,15 @@ class PagesController extends BaseController
 
         libxml_use_internal_errors(true);
 
-        $xml = new DOMDocument("1.0", "utf-8");
+        $xml = new DOMDocument('1.0', 'utf-8');
         $xml->load($file);
 
-        if ($xml === false)
-        {
+        if (false === $xml) {
             $errors = libxml_get_errors();
             libxml_clear_errors();
 
             $validator->errors()->add('xml', 'The uploaded file is invalid.');
-            foreach($errors as $error)
-            {
+            foreach ($errors as $error) {
                 $validator->errors()->add('xml', $error->message);
             }
 
@@ -890,6 +837,7 @@ class PagesController extends BaseController
 
         if (file_exists($schema) && !$xml->schemaValidate($schema)) {
             $validator->errors()->add('xml', 'The uploaded file has failed the schema valiadtion.');
+
             return redirect()->back()->withErrors($validator->errors());
         }
 
@@ -922,40 +870,36 @@ class PagesController extends BaseController
 
         $page->update($pageData);
 
-
-
         $currentLocale = Locale::find($localeId);
         $currentLocalisation = $page->getLocalisation($currentLocale);
 
         DB::beginTransaction();
 
-        try
-        {
+        try {
             $revision = $revisionRepository->create([
                 'entity_localisation_id' => $currentLocalisation->getId(),
                 'status' => RevisionStatus::PUBLISHED,
-                'created_by' => $request->user()->id
+                'created_by' => $request->user()->id,
             ]);
 
             $type = $typeRepository->find($page->entity_type_id);
             $fields = $type->fields;
 
-            foreach ($fields as $field)
-            {
-                if (!$latestRevisionFields->has($field->id))
-                {
+            foreach ($fields as $field) {
+                if (!$latestRevisionFields->has($field->id)) {
                     continue;
                 }
 
-                switch ($field->field_type)
-                {
+                switch ($field->field_type) {
                     case 'image':
                     case 'file':
                     case 'location':
                     case 'select':
                     case 'item':
                     case 'grid':
+                    case 'boolean':
                         $value = $latestRevisionFields[$field->id]->getData();
+
                         break;
                     case 'combo':
                         $defaultValue = $latestRevisionFields[$field->id]->getData();
@@ -963,28 +907,25 @@ class PagesController extends BaseController
                         $vKeys = array_keys($value);
                         $dvKeys = array_keys($defaultValue);
 
-                        foreach($value as $hash => $combo)
-                        {
+                        foreach ($value as $hash => $combo) {
                             $valueIndex = array_search($hash, $vKeys);
-                            $defaultHash = $valueIndex !== false && isset($dvKeys[$valueIndex]) ? $dvKeys[$valueIndex] : false;
+                            $defaultHash = false !== $valueIndex && isset($dvKeys[$valueIndex]) ? $dvKeys[$valueIndex] : false;
 
-                            if ($defaultHash)
-                            {
+                            if ($defaultHash) {
                                 $defaultValueFields = $defaultValue[$defaultHash]->fields;
 
-                                foreach($defaultValueFields as $subfieldId => $subfieldValue)
-                                {
-                                    if (!isset($combo->fields[$subfieldId]))
-                                    {
+                                foreach ($defaultValueFields as $subfieldId => $subfieldValue) {
+                                    if (!isset($combo->fields[$subfieldId])) {
                                         $combo->fields[$subfieldId] = $subfieldValue;
                                     }
                                 }
                             }
                         }
-                        break;
 
+                        break;
                     default:
                         $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : '';
+
                         break;
                 }
 
@@ -998,10 +939,7 @@ class PagesController extends BaseController
             $solr->indexEntity($page, $currentLocalisation);
 
             DB::commit();
-
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return Redirect::route('cms:pages:edit_locale', [
@@ -1014,68 +952,6 @@ class PagesController extends BaseController
             'page' => $pageId,
             'locale' => $currentLocalisation->getLocaleId(),
         ])->with('message', 'Translation uploaded successfully.');
-    }
-
-    private function getDataFromImportedTranslationXml($xml)
-    {
-        $dom = $xml->documentElement;
-        $fields = $dom->getElementsByTagName('field');
-        if($fields->length)
-        {
-            foreach($fields as $field)
-            {
-                $xmlFieldId = $field->getAttribute('id');
-                $xmlFieldType = $field->getAttribute('type');
-
-                $translationContent = $field->getElementsByTagName('translationContent');
-                if($xmlFieldType !== 'combo' && $translationContent->length)
-                {
-                    $xmlFieldValue = [];
-                    foreach($translationContent as $node)
-                    {
-                        $xmlFieldValue[] = $node->nodeValue;
-                    }
-
-                    $xmlData[$xmlFieldId] = $xmlFieldValue;
-                }
-
-                $subfieldsWrapper = $field->getElementsByTagName('subfields');
-                if($subfieldsWrapper->length)
-                {
-                    $subfieldsNode = $subfieldsWrapper->item(0); // need multiple!
-                    $subfields = $subfieldsNode->getElementsByTagName('field');
-                    if ($subfields->length)
-                    {
-                        $xmlFieldSubfields = [];
-
-                        foreach($subfields as $subfield)
-                        {
-                            $xmlSubFieldValue = [];
-                            $xmlSubFieldId = $subfield->getAttribute('id');
-                            $xmlSubFieldType = $subfield->getAttribute('type');
-
-                            $translationContent = $subfield->getElementsByTagName('translationContent');
-                            if($translationContent->length)
-                            {
-                                foreach($translationContent as $node)
-                                {
-                                    $xmlSubFieldValue[] = $node->nodeValue;
-                                }
-                            }
-
-                            if($xmlSubFieldType !== 'grid')
-                            {
-                                $xmlFieldSubfields['fields'][$xmlSubFieldId] = $xmlSubFieldValue;
-                            }
-                        }
-
-                        $xmlData[$xmlFieldId][guid()] = (object) $xmlFieldSubfields;
-                    }
-                }
-            }
-        }
-
-        return $xmlData;
     }
 
     public function downloadTranslationTemplate($pageId, $localeId)
@@ -1098,10 +974,8 @@ class PagesController extends BaseController
         $groups = $groupRepository->getUsedGroupsByEntityType($page->entity_type_id, ['order']);
         $fields = [];
 
-        foreach($groups as $group)
-        {
-            foreach ($group->getFields() as $field)
-            {
+        foreach ($groups as $group) {
+            foreach ($group->getFields() as $field) {
                 $fieldValue = $defaultPublishedRevision->getField($field->getId());
                 $translationFieldValue = $currentPublishedRevision->getField($field->getId());
 
@@ -1123,14 +997,91 @@ class PagesController extends BaseController
         ]);
     }
 
+    private function getDataFromImportedTranslationXml($xml)
+    {
+        $dom = $xml->documentElement;
+        $fields = $dom->getElementsByTagName('field');
+        if ($fields->length) {
+            foreach ($fields as $field) {
+                $xmlFieldId = $field->getAttribute('id');
+                $xmlFieldType = $field->getAttribute('type');
+
+                $translationContent = $field->getElementsByTagName('translationContent');
+                if ('combo' !== $xmlFieldType && $translationContent->length) {
+                    $xmlFieldValue = [];
+                    foreach ($translationContent as $node) {
+                        $xmlFieldValue[] = $node->nodeValue;
+                    }
+
+                    $xmlData[$xmlFieldId] = $xmlFieldValue;
+                }
+
+                $subfieldsWrapper = $field->getElementsByTagName('subfields');
+                if ($subfieldsWrapper->length) {
+                    if ($subfieldsWrapper->length > 0) {
+                        foreach ($subfieldsWrapper as $subfieldsNode) {
+                            $xmlFieldSubfields = $this->getTranslationDataFromNode($subfieldsNode);
+                            $xmlData[$xmlFieldId][guid()] = (object) $xmlFieldSubfields;
+                        }
+                    } else {
+                        $subfieldsNode = $subfieldsWrapper->item(0); // need multiple!
+                        $xmlFieldSubfields = $this->getTranslationDataFromNode($subfieldsNode);
+                        $xmlData[$xmlFieldId][guid()] = (object) $xmlFieldSubfields;
+                    }
+                }
+            }
+        }
+
+        return $xmlData;
+    }
+
+    private function getTranslationDataFromNode($node)
+    {
+        $subfields = $node->getElementsByTagName('field');
+        if ($subfields->length) {
+            $xmlFieldSubfields = [];
+
+            foreach ($subfields as $subfield) {
+                $xmlSubFieldValue = [];
+                $xmlSubFieldId = $subfield->getAttribute('id');
+                $xmlSubFieldType = $subfield->getAttribute('type');
+
+                $translationContent = $subfield->getElementsByTagName('translationContent');
+                if ($translationContent->length) {
+                    foreach ($translationContent as $node) {
+                        $xmlSubFieldValue[] = $node->nodeValue;
+                    }
+                }
+
+                if ('grid' !== $xmlSubFieldType) {
+                    $xmlFieldSubfields['fields'][] = $xmlSubFieldValue;
+                }
+            }
+
+            return $xmlFieldSubfields;
+        }
+    }
+
+    private function getSubfieldFromSlug($slug, $fields)
+    {
+        $result = false;
+        foreach ($fields as $field) {
+            if ($field->getFieldSlug() == $slug) {
+                $result = $field;
+            }
+        }
+
+        return $result;
+    }
+
     private function generateXmlFile(array $fields)
     {
         // TODO: need to reference the schema in an xml
-        $xml = new DOMDocument( "1.0", "utf-8" );
+        $xml = new DOMDocument('1.0', 'utf-8');
 
         $xmlFields = $xml->createElement('translation');
         $xmlFields->setAttribute('xmlns', config('app.url'));
-        $xmlFields->setAttribute('xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance");
+        $xmlFields->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $xmlFields->setAttribute('xsi:schemaLocation', sprintf('%s %s', config('app.url'), url('/argon/translation-schema.xsd')));
 
         $skipFieldTypes = [
@@ -1148,12 +1099,9 @@ class PagesController extends BaseController
             'grid',
         ];
 
-        foreach($fields as $field)
-        {
-            if(!empty($field['content']) && !$field['content']->isEmpty())
-            {
-                if ($field['field'] instanceof ComboFieldType)
-                {
+        foreach ($fields as $field) {
+            if (!empty($field['content']) && !$field['content']->isEmpty()) {
+                if ($field['field'] instanceof ComboFieldType) {
                     $hash = guid();
                     $originalValue = $field['content'];
                     $translationValue = $field['translation'];
@@ -1162,92 +1110,123 @@ class PagesController extends BaseController
                     $xmlField->setAttribute('label', $field['field']->getFieldName());
                     $xmlField->setAttribute('name', $field['field']->getFormFieldName($hash));
                     $xmlField->setAttribute('id', $field['field']->getId());
-                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? "true" : "false");
+                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? 'true' : 'false');
                     $xmlField->setAttribute('type', $field['field']->getKey());
 
                     $subfields = $field['field']->getSubFields();
 
-                    $xmlSubFields = $xml->createElement('subfields');
+                    if ($field['field']->allowMultiple()) {
+                        foreach ($originalValue as $key => $combo) {
+                            $empty = true;
+                            $xmlSubFields = $xml->createElement('subfields');
 
-                    foreach($subfields as $subfield)
-                    {
-                        $subfieldValue = $originalValue->field($subfield->getFieldSlug());
-                        $subfieldTranslationValue = $translationValue ? $translationValue->field($subfield->getFieldSlug()) : null;
+                            foreach ($combo as $fieldSlug => $fieldValue) {
+                                $xmlSubField = $xml->createElement('field');
 
-                        if(!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty())
-                        {
-                            $xmlSubField = $xml->createElement('field');
-                            $xmlSubField->setAttribute('label', $subfield->getFieldName());
-                            $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
-                            $xmlSubField->setAttribute('id', $subfield->getId());
-                            $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? "true" : "false");
-                            $xmlSubField->setAttribute('type', $subfield->getKey());
+                                $subfield = $this->getSubFieldFromSlug($fieldSlug, $subfields);
+                                $xmlSubField->setAttribute('label', $subfield->getFieldName());
+                                $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
+                                $xmlSubField->setAttribute('id', $subfield->getId());
+                                $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? 'true' : 'false');
+                                $xmlSubField->setAttribute('type', $subfield->getKey());
 
-                            foreach($subfieldValue as $value)
-                            {
-                                $value = htmlspecialchars($value);
-                                $xmlOriginalContent = $xml->createElement('originalContent', $value);
-                                $xmlSubField->appendChild($xmlOriginalContent);
-                            }
+                                if (!in_array($subfield->getKey(), $skipFieldTypes)) {
+                                    foreach ($fieldValue->getData() as $value) {
+                                        $value = htmlspecialchars($value);
+                                        $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                                        $xmlSubField->appendChild($xmlOriginalContent);
+                                    }
 
-                            if(!empty($subfieldTranslationValue))
-                            {
-                                foreach($subfieldTranslationValue as $value)
-                                {
-                                    $value = htmlspecialchars($value);
-                                    $xmlTranslationContent = $xml->createElement('translationContent', $value);
-                                    $xmlSubField->appendChild($xmlTranslationContent);
+                                    if (!$fieldValue->isEmpty()) {
+                                        foreach ($fieldValue->getData() as $value) {
+                                            $value = htmlspecialchars($value);
+                                            $xmlOriginalContent = $xml->createElement('translationContent', $value);
+                                            $xmlSubField->appendChild($xmlOriginalContent);
+                                        }
+                                    } else {
+                                        $xmlTranslationContent = $xml->createElement('translationContent');
+                                        $xmlSubField->appendChild($xmlTranslationContent);
+                                    }
+
+                                    $xmlSubFields->appendChild($xmlSubField);
+                                    $empty = false;
                                 }
                             }
-                            else
-                            {
-                                $xmlTranslationContent = $xml->createElement('translationContent');
-                                $xmlSubField->appendChild($xmlTranslationContent);
+                            if (false === $empty) {
+                                $xmlField->appendChild($xmlSubFields);
+                                $xmlFields->appendChild($xmlField);
                             }
+                        }
+                    } else {
+                        $xmlSubFields = $xml->createElement('subfields');
 
-                            $xmlSubFields->appendChild($xmlSubField);
+                        $empty = true;
+                        foreach ($subfields as $subfield) {
+                            $subfieldValue = $originalValue->field($subfield->getFieldSlug());
+                            $subfieldTranslationValue = $translationValue ? $translationValue->field($subfield->getFieldSlug()) : null;
+
+                            if (!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty()) {
+                                $xmlSubField = $xml->createElement('field');
+                                $xmlSubField->setAttribute('label', $subfield->getFieldName());
+                                $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
+                                $xmlSubField->setAttribute('id', $subfield->getId());
+                                $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? 'true' : 'false');
+                                $xmlSubField->setAttribute('type', $subfield->getKey());
+
+                                foreach ($subfieldValue as $value) {
+                                    $value = htmlspecialchars($value);
+                                    $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                                    $xmlSubField->appendChild($xmlOriginalContent);
+                                }
+
+                                if (!empty($subfieldTranslationValue)) {
+                                    foreach ($subfieldTranslationValue as $value) {
+                                        $value = htmlspecialchars($value);
+                                        $xmlTranslationContent = $xml->createElement('translationContent', $value);
+                                        $xmlSubField->appendChild($xmlTranslationContent);
+                                    }
+                                } else {
+                                    $xmlTranslationContent = $xml->createElement('translationContent');
+                                    $xmlSubField->appendChild($xmlTranslationContent);
+                                }
+                                $xmlSubFields->appendChild($xmlSubField);
+                                $empty = false;
+                            }
+                        }
+                        if (false === $empty) {
+                            $xmlField->appendChild($xmlSubFields);
+                            $xmlFields->appendChild($xmlField);
                         }
                     }
-                    $xmlField->appendChild($xmlSubFields);
-                    $xmlFields->appendChild($xmlField);
-                }
-                elseif(!in_array($field['field']->getKey(), $skipFieldTypes))
-                {
+                } elseif (!in_array($field['field']->getKey(), $skipFieldTypes)) {
                     $hash = '';
 
                     $xmlField = $xml->createElement('field');
                     $xmlField->setAttribute('label', $field['field']->getFieldName());
                     $xmlField->setAttribute('name', $field['field']->getFormFieldName($hash));
                     $xmlField->setAttribute('id', $field['field']->getId());
-                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? "true" : "false");
+                    $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? 'true' : 'false');
                     $xmlField->setAttribute('type', $field['field']->getKey());
 
-                    foreach($field['content'] as $value)
-                    {
+                    foreach ($field['content'] as $value) {
                         $value = htmlspecialchars($value);
                         $xmlOriginalContent = $xml->createElement('originalContent', $value);
                         $xmlField->appendChild($xmlOriginalContent);
                     }
 
-
-                    if(!empty($field['translation']))
-                    {
-                        foreach($field['translation'] as $value)
-                        {
+                    if (!empty($field['translation'])) {
+                        foreach ($field['translation'] as $value) {
                             $value = htmlspecialchars($value);
                             $xmlTranslationContent = $xml->createElement('translationContent', $value);
                             $xmlField->appendChild($xmlTranslationContent);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         $xmlTranslationContent = $xml->createElement('translationContent');
                         $xmlField->appendChild($xmlTranslationContent);
                     }
 
                     $xmlFields->appendChild($xmlField);
                 }
-
             }
         }
 
