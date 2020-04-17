@@ -1140,8 +1140,8 @@ class PagesController extends BaseController
                                     if (!$fieldValue->isEmpty()) {
                                         foreach ($fieldValue->getData() as $value) {
                                             $value = htmlspecialchars($value);
-                                            $xmlOriginalContent = $xml->createElement('translationContent', $value);
-                                            $xmlSubField->appendChild($xmlOriginalContent);
+                                            $xmlTranslationContent = $xml->createElement('translationContent', $value);
+                                            $xmlSubField->appendChild($xmlTranslationContent);
                                         }
                                     } else {
                                         $xmlTranslationContent = $xml->createElement('translationContent');
@@ -1163,16 +1163,17 @@ class PagesController extends BaseController
                         $empty = true;
                         foreach ($subfields as $subfield) {
                             $subfieldValue = $originalValue->field($subfield->getFieldSlug());
+
                             $subfieldTranslationValue = $translationValue ? $translationValue->field($subfield->getFieldSlug()) : null;
 
-                            if (!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty()) {
-                                $xmlSubField = $xml->createElement('field');
-                                $xmlSubField->setAttribute('label', $subfield->getFieldName());
-                                $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
-                                $xmlSubField->setAttribute('id', $subfield->getId());
-                                $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? 'true' : 'false');
-                                $xmlSubField->setAttribute('type', $subfield->getKey());
+                            $xmlSubField = $xml->createElement('field');
+                            $xmlSubField->setAttribute('label', $subfield->getFieldName());
+                            $xmlSubField->setAttribute('name', $subfield->getFormFieldName($hash));
+                            $xmlSubField->setAttribute('id', $subfield->getId());
+                            $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? 'true' : 'false');
+                            $xmlSubField->setAttribute('type', $subfield->getKey());
 
+                            if (!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty()) {
                                 foreach ($subfieldValue as $value) {
                                     $value = htmlspecialchars($value);
                                     $xmlOriginalContent = $xml->createElement('originalContent', $value);
