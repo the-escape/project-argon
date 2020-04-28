@@ -15,7 +15,7 @@ use Illuminate\Support\ServiceProvider;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageServiceProvider;
 use Prettus\Repository\Providers\RepositoryServiceProvider;
-use Maknz\Slack\Laravel\ServiceProvider as SlackServiceProvider;
+use Escape\Argon\Libs\Slack\ServiceProvider as SlackServiceProvider;
 use Maknz\Slack\Facades\Slack;
 use Illuminate\Foundation\AliasLoader;
 
@@ -66,7 +66,7 @@ class ArgonServiceProvider extends ServiceProvider
         $this->app->register(LocalesServiceProvider::class);
 
         $this->app->register(ImageServiceProvider::class);
-        class_alias(Image::class, 'Image');
+        // class_alias(Image::class, 'Image');
 
         $this->app->register(MediaServiceProvider::class);
 
@@ -78,6 +78,7 @@ class ArgonServiceProvider extends ServiceProvider
 
         // this is how we load the facade in the service provider
         $loader = AliasLoader::getInstance();
-        $loader->alias('Slack', 'Maknz\Slack\Laravel\Facade');
+        $loader->alias('Slack', 'Escape\Argon\Libs\Slack\Facade');
+        $loader->alias('Image', 'Intervention\Image\Facades\Image');
     }
 }
