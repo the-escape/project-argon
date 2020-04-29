@@ -11,7 +11,7 @@
 
 @if(isset($data))
 
-    {!! (new Illuminate\Support\Debug\Dumper())->dump($data) !!}
+    {!! (new Symfony\Component\VarDumper\VarDumper())->dump($data) !!}
 
 @endif
 
