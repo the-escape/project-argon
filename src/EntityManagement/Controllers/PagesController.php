@@ -20,7 +20,7 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Events\PageSaved;
 use Illuminate\Http\Request;
-use Input;
+use Illuminate\Support\Str;
 use Redirect;
 use stdClass;
 use View;
@@ -113,7 +113,7 @@ class PagesController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -170,7 +170,7 @@ class PagesController extends BaseController
         $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render']), $entity->id);
+        $entity = $entityRepository->update($request->only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -180,7 +180,7 @@ class PagesController extends BaseController
 
         return Redirect::route(
             'cms:pages:edit_locale',
-            ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
+            ['id' => $entity->id, 'locale' => $localisation->getLocaleId()]
         )->with('message', Lang::get('argon-entities::page.created'));
     }
 
@@ -190,7 +190,7 @@ class PagesController extends BaseController
         $page = $entityRepository->find($pageId);
         $locale = $page->getDefaultLocalisation();
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+        return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => $locale->getLocaleId()]);
     }
 
     public function update(
@@ -227,7 +227,7 @@ class PagesController extends BaseController
             'slug' => 'URL Slug'
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -291,7 +291,7 @@ class PagesController extends BaseController
 
         event(new PageSaved($entity, $currentLocalisation, $request));
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
@@ -320,7 +320,7 @@ class PagesController extends BaseController
             'slug' => 'URL Slug'
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -361,7 +361,7 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
             ->with('message', "Revision has been saved.");
     }
 
@@ -446,7 +446,7 @@ class PagesController extends BaseController
 
         if (!$locale)
         {
-            return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
+            return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
         $localisation = $localisationRepository->create([
@@ -524,7 +524,7 @@ class PagesController extends BaseController
 
         EntityCache::cache($page, $localisation);
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
+        return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => $localeId]);
     }
 
 
@@ -539,7 +539,7 @@ class PagesController extends BaseController
         $localisation->delete();
         EntityCache::uncache($pageId, $localeId);
 
-        return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
+        return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => $defaultLocale->getLocaleId()]);
     }
 
 

@@ -18,7 +18,7 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Illuminate\Http\Request;
-use Input;
+use Illuminate\Support\Str;
 use Redirect;
 use stdClass;
 use RuntimeException;
@@ -135,7 +135,7 @@ class BlocksController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug($request->input('slug', $request->input('name')));
+        $slug = Str::slug($request->input('slug', $request->input('name')));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -176,7 +176,7 @@ class BlocksController extends BaseController
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['group_order']), $entity->id);
+        $entity = $entityRepository->update($request->only(['group_order']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -184,7 +184,7 @@ class BlocksController extends BaseController
 
         return Redirect::route(
             'cms:blocks:edit_locale',
-            ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
+            ['id' => $entity->id, 'locale' => $localisation->getLocaleId()]
         )->with('message', Lang::get('argon-entities::page.created'));
     }
 
@@ -194,7 +194,7 @@ class BlocksController extends BaseController
         $page = $entityRepository->find($pageId);
         $locale = $page->getDefaultLocalisation();
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $pageId, 'locale' => $locale->getLocaleId()]);
     }
 
     public function update(
@@ -222,7 +222,7 @@ class BlocksController extends BaseController
             'slug' => 'URL Slug'
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
         $request->merge(array('slug' => $slug));
@@ -243,7 +243,7 @@ class BlocksController extends BaseController
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'group_order']), $pageId);
+        $entity = $entityRepository->update($request->only(['name', 'slug', 'group_order']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
@@ -265,7 +265,7 @@ class BlocksController extends BaseController
             EntityCache::cache($entity, $localisation);
         }
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
@@ -384,7 +384,7 @@ class BlocksController extends BaseController
 
         EntityCache::cache($page, $localisation);
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $pageId, 'locale' => $localeId]);
     }
 
     private function getOrder($query, Request $request)

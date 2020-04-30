@@ -41,7 +41,7 @@
 
                     </div>
                 </div>
-
+                b:
                 <a href="{{ route("cms:blocks:manage") }}" class="btn btn-primary-outline">Reset filers</a>
 
                 <form method="get" class="form-inline search-form">
@@ -115,8 +115,8 @@
                             <td>{{$block->type->name}}</td>
                             <td>{{$block->created_at}}</td>
                             <td class="actions">
-                                <a href="{{ route('cms:blocks:edit', ['blockId' => $block->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                                <a href="{{ route('cms:blocks:delete', ['blockId' => $block->id]) }}" onclick="return confirm('Are you sure you want to delete this block?');" class="btn btn-danger-outline btn-sm">Delete</a>
+                                <a href="{{ route('cms:blocks:edit', ['id' => $block->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
+                                <a href="{{ route('cms:blocks:delete', ['id' => $block->id]) }}" onclick="return confirm('Are you sure you want to delete this block?');" class="btn btn-danger-outline btn-sm">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -166,37 +166,6 @@
                 @endif
 
             </div>
-
-
-
-
-
-
-
-
-            {{--<div class="dashboard-content">--}}
-                {{--<table class="table table-striped">--}}
-                    {{--<thead>--}}
-                    {{--<tr>--}}
-                        {{--<th>Name</th>--}}
-                        {{--<th>Content Type</th>--}}
-                    {{--</tr>--}}
-                    {{--</thead>--}}
-                    {{--<tbody>--}}
-                    {{--@foreach ($blocks as $block)--}}
-                        {{--<tr>--}}
-                            {{--<td>{{$block->name}}</td>--}}
-                            {{--<td>{{$block->type->name}}</td>--}}
-                            {{--<td>--}}
-                                {{--<a href="{{ route('cms:blocks:edit', ['blockId'=>$block->id, ]) }}" class="btn btn-primary-outline btn-sm">Edit</a>--}}
-                                {{--<a href="{{ route('cms:blocks:delete', ['blockId'=>$block->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>--}}
-                            {{--</td>--}}
-                        {{--</tr>--}}
-                    {{--@endforeach--}}
-                    {{--</tbody>--}}
-                {{--</table>--}}
-            {{--</div>--}}
-
         @endif
 
     </div>

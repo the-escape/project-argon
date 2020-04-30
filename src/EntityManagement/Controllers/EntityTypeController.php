@@ -13,7 +13,6 @@ use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
 use Escape\Argon\Helpers\BlocksLibrary;
 use Illuminate\Http\Request;
 use Validator;
-use Input;
 use Lang;
 use Redirect;
 use View;
@@ -54,7 +53,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
         ]);
 
-        $type = $this->typeRepository->create(Input::all());
+        $type = $this->typeRepository->create($this->request->all());
 
         return Redirect::route('cms:types:edit', [$type->id])
             ->with('message', Lang::get('argon-entities::type.created'));
@@ -66,9 +65,9 @@ class EntityTypeController extends BaseController
             'name' => 'required',
         ]);
 
-        $type = $this->typeRepository->update(Input::all(), $typeId);
+        $type = $this->typeRepository->update($this->request->all(), $typeId);
 
-        if ($order = Input::get('order')) {
+        if ($order = $this->request->input('order')) {
             // get type fields for extra validation checks
             $fields = $type->fields->keyBy('id');
 
@@ -148,13 +147,13 @@ class EntityTypeController extends BaseController
             'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,0,deleted_at,NULL",
         ]);
 
-        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+        $fieldType = $fieldTypesManager->getType($this->request->input('field_type'));
 
         $settings = $fieldType->getDefaultSettings();
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        if ($groupName = $this->request->input('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -176,7 +175,7 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
@@ -249,7 +248,7 @@ class EntityTypeController extends BaseController
         $type = $typeRepository->find($typeId);
         $field = $fieldRepository->find($fieldId);
 
-        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+        $fieldType = $fieldTypesManager->getType($this->request->input('field_type'));
 
         $settings = $fieldType->getDefaultSettings();
 
@@ -266,14 +265,14 @@ class EntityTypeController extends BaseController
                         continue;
                     }
 
-                    $settingValue = Input::get($settingKey, $fieldSettingValue);
+                    $settingValue = $this->request->input($settingKey, $fieldSettingValue);
                     break;
                 }
             }
         }
 
         // update order on options
-        if ($order = Input::get('options_order')) {
+        if ($order = $this->request->input('options_order')) {
             if ($order = explode(',', $order)) {
                 $fieldSettings = $field->settings;
                 $settings->options = [];
@@ -292,7 +291,7 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        if ($groupName = $this->request->input('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -314,7 +313,7 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
@@ -361,7 +360,7 @@ class EntityTypeController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
 
-        if ($order = Input::get('order')) {
+        if ($order = $this->request->input('order')) {
             // get type fields for extra validation checks
             $groups = $type->groups->keyBy('id');
 
@@ -395,7 +394,7 @@ class EntityTypeController extends BaseController
             'name' => 'required',
         ]);
 
-        $groupName = Input::get('name');
+        $groupName = $this->request->input('name');
 
         $group = $groupRepository->create([
             'name'=>$groupName,
@@ -530,7 +529,7 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        if ($groupName = $this->request->input('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -552,7 +551,7 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
@@ -607,12 +606,12 @@ class EntityTypeController extends BaseController
         // update settings
         $settings = $combo->settings;
         foreach ($settings as $k => &$v) {
-            $v = Input::get($k, $v);
+            $v = $this->request->input($k, $v);
         }
 
         $groupId = 0;
 
-        if ($groupName = Input::get('group')) {
+        if ($groupName = $this->request->input('group')) {
             $groups = $groupRepository->findByField('entity_type_id', $typeId);
 
             $found = false;
@@ -634,7 +633,7 @@ class EntityTypeController extends BaseController
             $groupId = $found->id;
         }
 
-        if ($order = Input::get('subfields_order')) {
+        if ($order = $this->request->input('subfields_order')) {
             // get subfields for extra validation checks
             $subfields = $combo->subfields->keyBy('id');
 
@@ -653,7 +652,7 @@ class EntityTypeController extends BaseController
         }
 
         // reject order since not related to combo itself
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $type->id,
             'entity_group_id' => $groupId,
             'parent_field_id' => 0,
@@ -735,14 +734,14 @@ class EntityTypeController extends BaseController
             'field_slug' => "required|unique:entity_fields,field_slug,NULL,id,entity_type_id,{$typeId},parent_field_id,{$comboId},deleted_at,NULL",
         ]);
 
-        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+        $fieldType = $fieldTypesManager->getType($this->request->input('field_type'));
         $combo = $fieldRepository->find($comboId);
 
         $settings = $fieldType->getDefaultSettings();
 
         $groupId = 0;
 
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
             'parent_field_id' => $combo->id,
@@ -804,7 +803,7 @@ class EntityTypeController extends BaseController
 
         $type = $typeRepository->find($typeId);
 
-        $fieldType = $fieldTypesManager->getType(Input::get('field_type'));
+        $fieldType = $fieldTypesManager->getType($this->request->input('field_type'));
 
         $combo = $fieldRepository->find($comboId);
 
@@ -825,14 +824,14 @@ class EntityTypeController extends BaseController
                         continue;
                     }
 
-                    $settingValue = Input::get($settingKey, $fieldSettingValue);
+                    $settingValue = $this->request->input($settingKey, $fieldSettingValue);
                     break;
                 }
             }
         }
 
         // update order on options
-        if ($order = Input::get('options_order')) {
+        if ($order = $this->request->input('options_order')) {
             if ($order = explode(',', $order)) {
                 $fieldSettings = $field->settings;
                 $settings->options = [];
@@ -851,7 +850,7 @@ class EntityTypeController extends BaseController
 
         $groupId = 0;
 
-        $attributes = array_merge_recursive(Input::all(), [
+        $attributes = array_merge_recursive($this->request->all(), [
             'entity_type_id' => $typeId,
             'entity_group_id' => $groupId,
             'parent_field_id' => $combo->id,
@@ -931,7 +930,7 @@ class EntityTypeController extends BaseController
 
 
         $settings = $field->settings;
-        $settings->options[] = Input::get('name');
+        $settings->options[] = $this->request->input('name');
 
         $field = $fieldRepository->update(['settings' => $settings], $field->id);
 
@@ -999,8 +998,8 @@ class EntityTypeController extends BaseController
 
         $option = new \stdClass();
         $option->id = $optionId;
-        $option->name = Input::get('name');
-        $option->value = Input::get('value', $optionId);
+        $option->name = $this->request->input('name');
+        $option->value = $this->request->input('value', $optionId);
 
         $settings->options[$option->id] = [$option->value => $option->name];
 
@@ -1071,7 +1070,7 @@ class EntityTypeController extends BaseController
         $field = $fieldRepository->find($fieldId);
 
         $settings = $field->settings;
-        $settings->options[] = Input::get('name');
+        $settings->options[] = $this->request->input('name');
 
         $field = $fieldRepository->update(['settings' => $settings], $field->id);
 
@@ -1141,8 +1140,8 @@ class EntityTypeController extends BaseController
 
         $option = new \stdClass();
         $option->id = $optionId;
-        $option->name = Input::get('name');
-        $option->value = Input::get('value', $optionId);
+        $option->name = $this->request->input('name');
+        $option->value = $this->request->input('value', $optionId);
 
         $settings->options[$option->id] = [$option->value => $option->name];
 
