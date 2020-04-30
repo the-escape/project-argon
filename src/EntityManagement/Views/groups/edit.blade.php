@@ -60,7 +60,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ str_slug(old('name', $group->name)) }}" value="">
+                                        <input type="text" class="form-control" name="settings[slug][value]" placeholder="{{ Str::slug(old('name', $group->name)) }}" value="">
                                     </div>
                                 </div>
 

@@ -8,6 +8,7 @@ use Escape\Argon\Menus\Eloquent\MenuRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class MenusController extends BaseController
 {
@@ -33,7 +34,7 @@ class MenusController extends BaseController
     public function save(Request $request)
     {
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         $request->merge(['slug' => $slug]);
 
@@ -65,7 +66,7 @@ class MenusController extends BaseController
     public function update($id, Request $request, MenuRepository $menuRepository)
     {
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         $request->merge(['slug' => $slug]);
 
