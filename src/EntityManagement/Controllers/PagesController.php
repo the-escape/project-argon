@@ -524,6 +524,11 @@ class PagesController extends BaseController
             'entity_localisation_id' => $currentLocalisation->id,
             'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,
             'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -570,6 +575,13 @@ class PagesController extends BaseController
         if ($revisionId) {
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
+
+            if ($page) {
+                if (!is_null($currentRevision->entity_groups)) {
+                    $page->group_order  = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_order) ? $currentRevision->entity_groups->group_order : $page->group_order;
+                    $page->group_render  = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_render) ? $currentRevision->entity_groups->group_render : $page->group_render;
+                }
+            }
 
             if (null === $currentRevision) {
                 return back()->with('message', 'Invalid revision.');

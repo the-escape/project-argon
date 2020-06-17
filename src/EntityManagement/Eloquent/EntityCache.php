@@ -211,8 +211,8 @@ class EntityCache extends Model implements Compressable
         $values['cache'] = $cacheFields;
         $values['entity_redirect'] = $entity->redirect_url;
         $values['entity_settings'] = $entity->settings;
-        $values['entity_groups']['group_order'] = $entity->group_order;
-        $values['entity_groups']['group_render'] = $entity->group_render;
+        $values['entity_groups']['group_order'] = !is_null($revision) && $revision->entity_groups && !is_null($revision->entity_groups->group_order) ? $revision->entity_groups->group_order : $entity->group_order;
+        $values['entity_groups']['group_render'] = !is_null($revision) && $revision->entity_groups && !is_null($revision->entity_groups->group_render) ? $revision->entity_groups->group_render : $entity->group_render;
 
 
         $groups = $entity->getGroups($localisation->locale_id);
