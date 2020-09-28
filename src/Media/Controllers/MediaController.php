@@ -170,6 +170,7 @@ class MediaController extends BaseController
                 and `field_data`.`value` LIKE ?
                 and `entity_revisions`.`status` in (1,2)
                 and `entity_fields`.`field_type` in ('image', 'file', 'combo')
+                and `entities`.`deleted_at` is null
                 and `entity_localisations`.`deleted_at` is null
                 and `entity_fields`.`deleted_at` is null
                 group by entity_revisions.entity_localisation_id";
