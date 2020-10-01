@@ -2,6 +2,7 @@
 
 namespace Escape\Argon\Media\Eloquent;
 
+use Escape\Argon\Authentication\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,6 +38,11 @@ class MediaItem extends Model implements Arrayable
         'hasThumb',
         'description'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uploaded_by')->withTrashed();
+    }
 
     public function mediaFolder()
     {

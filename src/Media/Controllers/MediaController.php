@@ -347,7 +347,13 @@ class MediaController extends BaseController
                 $query = $query->orderBy('created_at', $dir);
                 $query = $query->orderBy('id', $dir);
                 break;
-
+        
+            case 'uploaded_by':
+                $query = $query->join('users', 'media_items.uploaded_by', '=', 'users.id');
+                $query = $query->select('media_items.*');
+                $query = $query->orderBy('users.name', $dir);
+                break;
+                
             case 'size':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('filesize', $dir);

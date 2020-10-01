@@ -119,6 +119,21 @@
                             <a href="{{ $request->has('folder') ? '?order=folder&dir=asc&folder='.$request->input('folder') : '?order=folder&dir=asc' }}">Folder <i class="fa fa-sort" aria-hidden="true"></i></a>
                         @endif
                     </th>
+                    @if(auth()->user()->hasRole('Admin'))
+                        <th>
+                            @if($request->input('order') == 'uploaded_by')
+                                @if($request->input('dir') == 'asc')
+                                    <a href="{{ $request->has('folder') ? '?order=uploaded_by&dir=desc&folder='.$request->input('folder') : '?order=uploaded_by&dir=desc' }}">Uploaded By <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                                @elseif($request->input('dir') == 'desc')
+                                    <a href="{{ $request->has('folder') ? '?order=uploaded_by&dir=asc&folder='.$request->input('folder') : '?order=uploaded_by&dir=asc' }}">Uploaded By <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                                @else
+                                    <a href="{{ $request->has('folder') ? '?order=uploaded_by&dir=asc&folder='.$request->input('folder') : '?order=uploaded_by&dir=asc' }}">Uploaded By <i class="fa fa-sort" aria-hidden="true"></i></a>
+                                @endif
+                            @else
+                                <a href="{{ $request->has('folder') ? '?order=uploaded_by&dir=asc&folder='.$request->input('folder') : '?order=uploaded_by&dir=asc' }}">Uploaded By <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            @endif
+                        </th>
+                    @endif
                     <th>
                         @if($request->input('order') == 'uploaded_at')
                             @if($request->input('dir') == 'asc')
@@ -156,6 +171,9 @@
                         </td>
                         <td>{{ $mediaItem->getFriendlyFilesize() }}</td>
                         <td data-folder-id="{{ $mediaItem->mediaFolder->id }}"><a href="{{ route('cms:media:folders:edit', [$mediaItem->mediaFolder->id]) }}" title="Edit folder">{{ $mediaItem->mediaFolder->name }}</a></td>
+                        @if(auth()->user()->hasRole('Admin'))
+                            <td>{{ $mediaItem->user->name or 'unknown' }}</td>
+                        @endif
                         <td>{{ $mediaItem->created_at }}</td>
                         <td class="actions">
                             <a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline btn-sm">View</a>
