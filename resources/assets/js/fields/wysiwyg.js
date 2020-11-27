@@ -75,7 +75,7 @@ var WYSIWYG = {
         CKEDITOR.replaceClass = null; // disable auto initialization by class
 
         CKEDITOR.config.default_height = 150;
-        CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6';
+        CKEDITOR.config.default_format_tags = 'p;h1;h2;h3;h4;h5;h6;iframe';
         CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
         CKEDITOR.config.default_extraAllowedContent = 'iframe[*]';
 
