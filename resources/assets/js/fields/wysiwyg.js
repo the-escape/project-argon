@@ -79,6 +79,9 @@ var WYSIWYG = {
         CKEDITOR.config.default_toolbar = ['Source', 'Format', 'FontSize', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', '-', 'Bold','Italic', 'Blockquote', 'NumberedList','BulletedList', 'Image', 'Table', 'Link', 'Unlink'];
         CKEDITOR.config.default_extraAllowedContent = 'iframe[*]';
 
+        // This doesn't force p's around tags
+        CKEDITOR.config.autoParagraph = false;
+
         var toolOpts = WYSIWYG.getToolbarOptions(el);
 
         if($.inArray("Styles", toolOpts[0]) !== -1){
