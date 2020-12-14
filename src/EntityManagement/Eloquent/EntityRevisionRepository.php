@@ -18,6 +18,19 @@ class EntityRevisionRepository extends BaseRepository
     }
 
     /**
+     * Get currently published revision
+     * @param int $localisationId
+     * @return EntityRevision|null
+     */
+    public function getPublishedByLocalisation($localisationId)
+    {
+        return $this->makeModel()
+            ->where('entity_localisation_id', $localisationId)
+            ->where('status', RevisionStatus::PUBLISHED)
+            ->first();
+    }
+
+    /**
      * @deprecated
      */
     public function archiveRevisions($localisationId, $except)

@@ -83,7 +83,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
             'pages/{id}/edit/{locale}',
             'cms:pages:update',
             PagesController::class,
-            'update',
+            'patch',
             Request::METHOD_POST
         );
         $this->addRoute(

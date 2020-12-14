@@ -22,11 +22,11 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Events\PageSaved;
 use Illuminate\Http\Request;
-use Input;
-use Redirect;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use stdClass;
-use View;
-use Lang;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevision;
 
@@ -362,6 +362,140 @@ class PagesController extends BaseController
         foreach ($localisations as $localisation) {
             $solr->indexEntity($entity, $localisation);
 
+            EntityCache::cache($entity, $localisation);
+        }
+
+        event(new PageSaved($entity, $currentLocalisation, $request));
+
+        return Redirect::route('cms:pages:edit_locale', ['page' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+            ->with('message', Lang::get('argon-entities::page.updated'));
+    }
+
+    /**
+     * Saving the revision by patching only the changed values to the values from the previous revision
+     */
+    public function patch(
+        $pageId,
+        $localeId,
+        EntityRepository $entityRepository,
+        EntityRevisionRepository $revisionsRepository,
+        FieldDataRepository $fieldDataRepository,
+        EntityTypeRepository $typeRepository,
+        Request $request,
+        Solr $solr
+    ) 
+    {
+        $entity = $entityRepository->find($pageId);
+        $currentLocale = Locale::find($localeId);
+        $currentLocalisation = $entity->getLocalisation($currentLocale);
+
+        /** @var BeforePageSaved */
+        $result = event(new BeforePageSaved($entity, $currentLocalisation, $request));
+        if (isset($result->request)) {
+            $request = $result->request;
+        }
+        
+        $type = $typeRepository->find($entity->entity_type_id);
+        $fields = $type->fields;
+        $preview = $request->exists('preview_page');
+
+        $publishedRevision = $revisionsRepository->getPublishedByLocalisation($currentLocalisation->id);
+        if ($publishedRevision->fields->count()) {
+            $requestFields = $request->input('fields');
+            $requestCombos = $request->input('combo');
+
+            foreach($publishedRevision->fields as $fieldData) {
+                $field = $fields->find($fieldData->field_id);
+                if ($field) {
+                    $isCombo = $field->field_type === 'combo';
+                    if ($isCombo && !array_key_exists($field->id, $requestCombos)) {
+                        $requestCombos[$field->id] = $fieldData->value;
+                    } elseif (!$isCombo && !array_key_exists($field->id, $requestFields)) {
+                        $settings = $field->settings;
+                        if (
+                            (isset($settings->multiple) && $settings->multiple) || 
+                            ($field->field_type == 'location' && !$field->parent_field_id) || 
+                            ($field->field_type == 'image' && !$field->parent_field_id)
+                        )
+                        {
+                            if (is_array($fieldData->value)) {    
+                                $requestFields[$field->id] = array_map(function($v) {
+                                    return (array) $v;
+                                }, $fieldData->value);
+                            } elseif (!empty($fieldData->value)) {
+                                $requestFields[$field->id] = (array) $fieldData->value;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $request->merge(['fields' => $requestFields]);
+            $request->merge(['combo' => $requestCombos]);
+        }
+        
+        $niceNames = [
+            'name' => 'Name',
+            'slug' => 'URL Slug'
+        ];
+
+        $messages = [];
+
+        $rules = [
+            'name' => "required",
+        ];
+
+        $slug = str_slug($request->input('slug'));
+        $request->merge(['slug' => $slug]);
+
+        if ($entity->parent_id != null) {
+            $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
+        } else {
+            $request->merge(['slug' => '/']);
+        }
+
+        list($niceNames, $rules, $messages) = FieldsHelpers::validationFieldsSetup($request, $fields, $niceNames, $rules, $messages);
+        $this->validate($this->request, $rules, $messages, $niceNames);
+
+        $redirect_url = ($entity->redirect_url instanceof stdClass) ? $entity->redirect_url : new stdClass();
+        $redirect_url->{$localeId} = $request->input('redirect_url');
+        $request->merge(['redirect_url' => $redirect_url]);
+
+        $group_order = ($entity->group_order instanceof stdClass) ? $entity->group_order : new stdClass();
+        $group_order->{$localeId} = $request->input('group_order', $entity->getGroupOrderString($localeId));
+        $request->merge(['group_order' => $group_order]);
+
+        $group_render = ($entity->group_render instanceof stdClass) ? $entity->group_render : new stdClass();
+        $group_render->{$localeId} = $request->input('group_render', []);
+        $request->merge(['group_render' => $group_render]);
+
+        if (!$preview) {
+            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+        }
+
+        $revision = $revisionsRepository->create([
+            'entity_localisation_id' => $currentLocalisation->id,
+            'status' => RevisionStatus::PREVIEW, // if not $preview then will be published later
+            'created_by' => $this->request->user()->id,
+            'entity_groups' => [
+                "group_order" => $request->get('group_order'),
+                "group_render" => $request->get('group_render')
+            ],
+            'entity_redirects' => $request->get('redirect_url')
+        ]);
+
+        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
+
+        if ($preview) {
+            $revisionsRepository->deletePreviews([$revision->id]);
+            $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
+            return response($previewUrl);
+        }
+
+        $revision->publishRevision();
+        $localisations = $entity->localisations;
+        foreach ($localisations as $localisation) {
+            $solr->indexEntity($entity, $localisation);
             EntityCache::cache($entity, $localisation);
         }
 
