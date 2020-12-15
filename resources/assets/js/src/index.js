@@ -18,6 +18,7 @@ import { initialiseFormElements, registerFormSaveEvents } from './form'
 
 import {
     Fields,
+    fieldApps,
     PageEdit,
     Cropper,
     setCropperImage,
@@ -39,7 +40,6 @@ import {
 } from 'uppy'
 
 let pageEditApp
-let fieldsApps
 
 function init () {
     polyfill()
@@ -56,7 +56,7 @@ function init () {
     initialiseFormElements()
     registerFormSaveEvents()
     // resetForm()
-    fieldsApps = Fields()
+    Fields()
     Medialib()
     Dashboard()
     pageEditApp = PageEdit()
@@ -69,6 +69,7 @@ function init () {
     BasicConfirmBtns()
 
     // testUppy()
+    window.fieldApps = fieldApps
 }
 
 function tabAction (tabName) {
@@ -78,8 +79,8 @@ function tabAction (tabName) {
         pageEditApp.$children[0].disableDragging()
     }
 
-    fieldsApps.forEach(app => {
-        app.$children[0].toggleDraggables(tabName)
+    Object.keys(fieldApps).forEach(appKey => {
+        fieldApps[appKey] && fieldApps[appKey].$children[0].toggleDraggables(tabName)
     })
 }
 

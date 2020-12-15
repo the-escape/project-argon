@@ -1,4 +1,4 @@
-import { Fields } from './fields'
+import { Fields, fieldApps } from './fields'
 import { PageEdit } from './page-edit'
 import { Cropper, setCropperImage } from './cropper'
 import { SiteTree } from './site-tree'
@@ -8,6 +8,7 @@ import { Medialib, setupMedialibPicker, PickMedia } from './medialib'
 
 export {
     Fields,
+    fieldApps,
     PageEdit,
     Cropper,
     setCropperImage,

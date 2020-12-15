@@ -49,13 +49,13 @@ export default {
         }
     },
     computed: {
-        fields: function() {
+        fields: function () {
             return this.$store.state.fields
         },
         header: function () {
             return this.$store.state.header
         },
-        showActions: function() {
+        showActions: function () {
             return this.$store.state.showActions
         }
     }

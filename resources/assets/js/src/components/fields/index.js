@@ -12,34 +12,39 @@ Vue.component('draggable', draggable)
 Vue.component('types', types)
 Vue.use(Vuex)
 
+export let fieldApps = {}
+
 export function Fields () {
     const fieldEls = document.querySelectorAll('.js-fields')
     const fields = Array.from(fieldEls)
 
-    return fields.map(el => {
-        // const tabPanel = el.closest('[data-tab]')
-        // const tabName = tabPanel.dataset.tab
-        const name = el.dataset.name
+    fields.forEach(el => {
+        const tabPanel = el.closest('[data-tab]')
+        const tabName = tabPanel.dataset.tab
 
-        const store = getStore()
+        addTabInit(tabName, () => {
+            if (fieldApps[tabName]) {
+                return
+            }
 
-        let { fields, header, actions = true } = window.fieldGroups[name]
-        fields = processFields(fields)
+            const name = el.dataset.name
 
-        store.commit('setFields', { fields: fields })
-        store.commit('setHeader', { header })
-        store.commit('setShowActions', { actions })
-        const tabName = el.closest('[data-tab]').dataset.tab
-        store.commit('setDataTabName', { tabName })
+            const store = getStore()
 
-        return new Vue({
-            store,
-            render: h => h(App)
-        }).$mount(el)
+            let { fields, header, actions = true } = window.fieldGroups[name]
+            fields = processFields(fields)
 
-        // addTabInit(tabName, () => {
+            store.commit('setFields', { fields: fields })
+            store.commit('setHeader', { header })
+            store.commit('setShowActions', { actions })
+            const tbname = el.closest('[data-tab]').dataset.tab
+            store.commit('setDataTabName', { tabName: tbname })
 
-        // })
+            fieldApps[tabName] = new Vue({
+                store,
+                render: h => h(App)
+            }).$mount(el)
+        })
     })
 }
 

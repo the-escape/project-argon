@@ -383,7 +383,7 @@ class PagesController extends BaseController
         EntityTypeRepository $typeRepository,
         Request $request,
         Solr $solr
-    ) 
+    )
     {
         $entity = $entityRepository->find($pageId);
         $currentLocale = Locale::find($localeId);
@@ -394,15 +394,15 @@ class PagesController extends BaseController
         if (isset($result->request)) {
             $request = $result->request;
         }
-        
+
         $type = $typeRepository->find($entity->entity_type_id);
         $fields = $type->fields;
         $preview = $request->exists('preview_page');
 
         $publishedRevision = $revisionsRepository->getPublishedByLocalisation($currentLocalisation->id);
         if ($publishedRevision->fields->count()) {
-            $requestFields = $request->input('fields');
-            $requestCombos = $request->input('combo');
+            $requestFields = $request->input('fields', []);
+            $requestCombos = $request->input('combo', []);
 
             foreach($publishedRevision->fields as $fieldData) {
                 $field = $fields->find($fieldData->field_id);
@@ -413,18 +413,20 @@ class PagesController extends BaseController
                     } elseif (!$isCombo && !array_key_exists($field->id, $requestFields)) {
                         $settings = $field->settings;
                         if (
-                            (isset($settings->multiple) && $settings->multiple) || 
-                            ($field->field_type == 'location' && !$field->parent_field_id) || 
+                            (isset($settings->multiple) && $settings->multiple) ||
+                            ($field->field_type == 'location' && !$field->parent_field_id) ||
                             ($field->field_type == 'image' && !$field->parent_field_id)
                         )
                         {
-                            if (is_array($fieldData->value)) {    
+                            if (is_array($fieldData->value)) {
                                 $requestFields[$field->id] = array_map(function($v) {
                                     return (array) $v;
                                 }, $fieldData->value);
                             } elseif (!empty($fieldData->value)) {
                                 $requestFields[$field->id] = (array) $fieldData->value;
                             }
+                        } else {
+                            $requestFields[$field->id] = (array) $fieldData->value;
                         }
                     }
                 }
@@ -433,7 +435,7 @@ class PagesController extends BaseController
             $request->merge(['fields' => $requestFields]);
             $request->merge(['combo' => $requestCombos]);
         }
-        
+
         $niceNames = [
             'name' => 'Name',
             'slug' => 'URL Slug'
