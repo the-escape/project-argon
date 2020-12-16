@@ -409,7 +409,7 @@ class PagesController extends BaseController
                 if ($field) {
                     $isCombo = $field->field_type === 'combo';
                     if ($isCombo && !array_key_exists($field->id, $requestCombos)) {
-                        $requestCombos[$field->id] = $fieldData->value;
+                        $requestCombos[$field->id] = (array) $fieldData->value;
                     } elseif (!$isCombo && !array_key_exists($field->id, $requestFields)) {
                         $settings = $field->settings;
                         if (
