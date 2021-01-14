@@ -151,7 +151,7 @@
             editor.getSession().setValue(jsonTextarea.val());
             editor.getSession().on('change', function(){
 
-                switch(mode){
+                switch(BlocksLib.mode){
                     case 'blade':
                         bladeTextarea.val(editor.getSession().getValue());
                         break;
