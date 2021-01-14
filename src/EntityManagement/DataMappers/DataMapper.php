@@ -4,7 +4,7 @@ namespace Escape\Argon\EntityManagement\DataMappers;
 
 
 use Escape\Argon\EntityManagement\Eloquent\EntityCache;
-use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
+use InvalidArgumentException;
 
 /**
  * Class DataMapper
@@ -52,19 +52,29 @@ use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
  */
 class DataMapper
 {
+    protected $DataMapper__Key;
+    protected $DataMapper__KeyMapFormat = "%s:%d";
+    protected $DataMapper__KeyRegex = '/^[1-9][0-9]*$/';
+
     /**
      * Maps $cache fields/combos to class properties.
      * For more effective combo mapping see Combo class and MultiCombo class.
      * @param EntityCache $cache
      */
-    public function map(EntityCache $cache)
+    protected function map(EntityCache $cache)
     {
-        foreach ($this->getClassProperties() as $property)
+        $properties = $this->getClassProperties();
+
+        foreach ($properties as $property)
         {
-            if ($cache->fieldExists($property))
+            $field = is_null($this->DataMapper__Key)
+                ? $property
+                : sprintf($this->DataMapper__KeyMapFormat, $property, $this->DataMapper__Key);
+
+            if ($cache->fieldExists($field))
             {
                 $setter = $this->setter($property);
-                $this->$setter($cache->field($property));
+                $this->$setter($cache->field($field));
             }
         }
     }
@@ -73,9 +83,11 @@ class DataMapper
      * Maps $cache combo fields to class properties.
      * @param array $data
      */
-    public function mapArray(array $data)
+    protected function mapArray(array $data)
     {
-        foreach ($this->getClassProperties() as $property)
+        $properties = $this->getClassProperties();
+
+        foreach ($properties as $property)
         {
             if (isset($data[$property]))
             {
@@ -85,9 +97,40 @@ class DataMapper
         }
     }
 
+    protected function setDataMapperKey($key=null)
+    {
+        if (!is_null($key))
+        {
+            if (!preg_match($this->DataMapper__KeyRegex, $key))
+            {
+                throw new InvalidArgumentException(sprintf("Invalid `key` agrument. Expected integer, received %s", $key));
+            }
+
+            $this->DataMapper__Key = (int)$key;
+        }
+    }
+
     protected function getClassProperties()
     {
-        return array_keys(get_class_vars(static::class));
+        // caching variable for performance
+        if (isset($this->DataMapper__ClassProperties))
+        {
+            return $this->DataMapper__ClassProperties;
+        }
+
+        $properties = get_class_vars(static::class);
+
+        foreach ($properties as $k => $v)
+        {
+            if ((strpos($k, "DataMapper__") === 0))
+            {
+                unset($properties[$k]);
+            }
+        }
+
+        $this->DataMapper__ClassProperties = array_keys($properties);
+
+        return $this->DataMapper__ClassProperties;
     }
 
     /**
@@ -145,7 +188,9 @@ class DataMapper
      */
     public function __call($method, $arguments)
     {
-        foreach ($this->getClassProperties() as $property)
+        $properties = $this->getClassProperties();
+
+        foreach ($properties as $property)
         {
             $getter = $this->getter($property);
 
