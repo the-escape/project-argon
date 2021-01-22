@@ -255,7 +255,15 @@ class EntityCache extends Model implements Compressable
 
         foreach ($fieldValue as $key => $value)
         {
-            $id = is_object($value) ? $value->id : $value;
+            $id = false;
+
+            if (is_object($value)) {
+                if(isset($value->id)) {
+                    $id = $value->id;
+                }
+            } else {
+                $id = $value;
+            }
 
             if ($id)
             {
