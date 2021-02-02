@@ -525,10 +525,10 @@ class PagesController extends BaseController
             'status' => RevisionStatus::PREVIOUSLY_PUBLISHED,
             'created_by' => $this->request->user()->id,
             'entity_groups' => [
-                "group_order" => $request->get('group_order'),
-                "group_render" => $request->get('group_render')
+                'group_order' => $request->get('group_order'),
+                'group_render' => $request->get('group_render'),
             ],
-            'entity_redirects' => $request->get('redirect_url')
+            'entity_redirects' => $request->get('redirect_url'),
         ]);
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
@@ -578,8 +578,8 @@ class PagesController extends BaseController
 
             if ($page) {
                 if (!is_null($currentRevision->entity_groups)) {
-                    $page->group_order  = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_order) ? $currentRevision->entity_groups->group_order : $page->group_order;
-                    $page->group_render  = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_render) ? $currentRevision->entity_groups->group_render : $page->group_render;
+                    $page->group_order = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_order) ? $currentRevision->entity_groups->group_order : $page->group_order;
+                    $page->group_render = !is_null($currentRevision) && $currentRevision->entity_groups && !is_null($currentRevision->entity_groups->group_render) ? $currentRevision->entity_groups->group_render : $page->group_render;
                 }
             }
 
@@ -700,6 +700,7 @@ class PagesController extends BaseController
                         $value = $latestRevisionFields[$field->id]->getData();
 
                         break;
+
                     default:
                         $value = (string) $latestRevisionFields[$field->id];
                 }
@@ -913,6 +914,7 @@ class PagesController extends BaseController
                         $value = $latestRevisionFields[$field->id]->getData();
 
                         break;
+
                     case 'combo':
                         $defaultValue = $latestRevisionFields[$field->id]->getData();
                         $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : [];
@@ -935,6 +937,7 @@ class PagesController extends BaseController
                         }
 
                         break;
+
                     default:
                         $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : '';
 
@@ -1103,7 +1106,7 @@ class PagesController extends BaseController
             'file',
             'video',
             'user',
-            'select',
+            // 'select',
             'colourpicker',
             'datetime',
             'location',
@@ -1112,7 +1115,8 @@ class PagesController extends BaseController
         ];
 
         foreach ($fields as $field) {
-            if (!empty($field['content']) && !$field['content']->isEmpty()) {
+            // if (!empty($field['content']) && !$field['content']->isEmpty()) {
+            if (true) {
                 if ($field['field'] instanceof ComboFieldType) {
                     $hash = guid();
                     $originalValue = $field['content'];
@@ -1144,14 +1148,14 @@ class PagesController extends BaseController
 
                                 if (!in_array($subfield->getKey(), $skipFieldTypes)) {
                                     foreach ($fieldValue->getData() as $value) {
-                                        $value = htmlspecialchars($value);
+                                        $value = !is_object($value) ? htmlspecialchars($value) : '';
                                         $xmlOriginalContent = $xml->createElement('originalContent', $value);
                                         $xmlSubField->appendChild($xmlOriginalContent);
                                     }
 
                                     if (!$fieldValue->isEmpty()) {
                                         foreach ($fieldValue->getData() as $value) {
-                                            $value = htmlspecialchars($value);
+                                            $value = !is_object($value) ? htmlspecialchars($value) : '';
                                             $xmlTranslationContent = $xml->createElement('translationContent', $value);
                                             $xmlSubField->appendChild($xmlTranslationContent);
                                         }
@@ -1185,16 +1189,17 @@ class PagesController extends BaseController
                             $xmlSubField->setAttribute('multiple', $subfield->allowMultiple() ? 'true' : 'false');
                             $xmlSubField->setAttribute('type', $subfield->getKey());
 
-                            if (!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty()) {
+                            // if (!in_array($subfield->getKey(), $skipFieldTypes) && !empty($subfieldValue) && !$subfieldValue->isEmpty()) {
+                            if (!in_array($subfield->getKey(), $skipFieldTypes)) {
                                 foreach ($subfieldValue as $value) {
-                                    $value = htmlspecialchars($value);
+                                    $value = !is_object($value) ? htmlspecialchars($value) : '';
                                     $xmlOriginalContent = $xml->createElement('originalContent', $value);
                                     $xmlSubField->appendChild($xmlOriginalContent);
                                 }
 
                                 if (!empty($subfieldTranslationValue)) {
                                     foreach ($subfieldTranslationValue as $value) {
-                                        $value = htmlspecialchars($value);
+                                        $value = !is_object($value) ? htmlspecialchars($value) : '';
                                         $xmlTranslationContent = $xml->createElement('translationContent', $value);
                                         $xmlSubField->appendChild($xmlTranslationContent);
                                     }
@@ -1222,14 +1227,14 @@ class PagesController extends BaseController
                     $xmlField->setAttribute('type', $field['field']->getKey());
 
                     foreach ($field['content'] as $value) {
-                        $value = htmlspecialchars($value);
+                        $value = !is_object($value) ? htmlspecialchars($value) : '';
                         $xmlOriginalContent = $xml->createElement('originalContent', $value);
                         $xmlField->appendChild($xmlOriginalContent);
                     }
 
                     if (!empty($field['translation'])) {
                         foreach ($field['translation'] as $value) {
-                            $value = htmlspecialchars($value);
+                            $value = !is_object($value) ? htmlspecialchars($value) : '';
                             $xmlTranslationContent = $xml->createElement('translationContent', $value);
                             $xmlField->appendChild($xmlTranslationContent);
                         }
@@ -1245,6 +1250,6 @@ class PagesController extends BaseController
 
         $xml->appendChild($xmlFields);
 
-        return $xml->saveXML();
+        return $xml->saveXML(null, LIBXML_NOEMPTYTAG);
     }
 }
