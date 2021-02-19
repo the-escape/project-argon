@@ -516,7 +516,7 @@ class MediaController extends BaseController
 
         $file = $request->file('file');
 
-        if (!$file)
+        if (!$request->hasFile('file'))
         {
             $mediaItem->save();
             return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
