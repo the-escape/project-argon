@@ -155,11 +155,19 @@
                     <tr>
                         <td>{{ $mediaItem->getId() }}</td>
                         @if($mediaItem->isImage())
-                            <td><a href="{{ $mediaItem->getUrl() }}" target="_blank" title="Open in new tab"><img src="{{ $mediaItem->getUrl() }}"></a></td>
+                            <td><a href="{{ $mediaItem->getUrl() }}" target="_blank" title="Open in new tab"><img src="{{ $mediaItem->getUrl() }}"
+                            @if ($mediaItem->description != '')
+                            alt="{{ $mediaItem->description }}"
+                            @endif
+                            ></a></td>
                         @else
                             <td><i class="fa fa-file-o" aria-hidden="true" style="font-size: 50px; color: #aaa;"></i></td>
                         @endif
-                        <td>{{ $mediaItem->getName() }}</td>
+                        <td>{{ $mediaItem->getName() }}
+                        @if ($mediaItem->description != '')
+                        <br><small>Alt: {{ $mediaItem->description }}</small>
+                        @endif
+                        </td>
                         <td>{{ $mediaItem->getExtension() }}</td>
                         <td><a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab">{{ $mediaItem->getUrl(['updatedAt'=>false]) }}</a></td>
                         <td>
