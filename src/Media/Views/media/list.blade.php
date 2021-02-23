@@ -79,6 +79,19 @@
                         @endif
                     </th>
                     <th>
+                        @if($request->input('order') == 'description')
+                            @if($request->input('dir') == 'asc')
+                                <a href="{{ $request->has('folder') ? '?order=description&dir=desc&folder='.$request->input('folder') : '?order=description&dir=desc' }}">Has Alt? <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            @elseif($request->input('dir') == 'desc')
+                                <a href="{{ $request->has('folder') ? '?order=description&dir=asc&folder='.$request->input('folder') : '?order=description&dir=asc' }}">Has Alt? <i class="fa fa-caret-up" aria-hidden="true"></i></a>
+                            @else
+                                <a href="{{ $request->has('folder') ? '?order=description&dir=asc&folder='.$request->input('folder') : '?order=description&dir=asc' }}">Has Alt? <i class="fa fa-sort" aria-hidden="true"></i></a>
+                            @endif
+                        @else
+                            <a href="{{ $request->has('folder') ? '?order=description&dir=asc&folder='.$request->input('folder') : '?order=description&dir=asc' }}">Has Alt? <i class="fa fa-sort" aria-hidden="true"></i></a>
+                        @endif
+                    </th>
+                    <th>
                         @if($request->input('order') == 'extension')
                             @if($request->input('dir') == 'asc')
                                 <a href="{{ $request->has('folder') ? '?order=extension&dir=desc&folder='.$request->input('folder') : '?order=extension&dir=desc' }}">Extension <i class="fa fa-caret-down" aria-hidden="true"></i></a>
@@ -168,6 +181,7 @@
                         <br><small>Alt: {{ $mediaItem->description }}</small>
                         @endif
                         </td>
+                        <td style="text-align: center;">@if ($mediaItem->description != '')<i class="fa fa-check" aria-hidden="true" style="font-size: 20px; color: Green;" title="{{ $mediaItem->description }}"></i>@else<i class="fa fa-close" aria-hidden="true" style="font-size: 20px; color: #f00;"></i>@endif</td>
                         <td>{{ $mediaItem->getExtension() }}</td>
                         <td><a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab">{{ $mediaItem->getUrl(['updatedAt'=>false]) }}</a></td>
                         <td>

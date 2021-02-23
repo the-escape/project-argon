@@ -1075,39 +1075,52 @@ class MediaController extends BaseController
                 $query = $query->orderBy('id', $dir);
 
                 break;
+
             case 'name':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('filename', $dir);
 
                 break;
+
             case 'extension':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('extension', $dir);
 
                 break;
+
             case 'uploaded_at':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('created_at', $dir);
                 $query = $query->orderBy('id', $dir);
 
                 break;
+
             case 'uploaded_by':
                 $query = $query->join('users', 'media_items.uploaded_by', '=', 'users.id');
                 $query = $query->select('media_items.*');
                 $query = $query->orderBy('users.name', $dir);
 
                 break;
+
             case 'size':
                 $query = $query->with('mediaFolder');
                 $query = $query->orderBy('filesize', $dir);
 
                 break;
+
             case 'folder':
                 $query = $query->join('media_folders', 'media_items.folder', '=', 'media_folders.id');
                 $query = $query->select('media_items.*');
                 $query = $query->orderBy('media_folders.name', $dir);
 
                 break;
+
+            case 'description':
+                $query = $query->with('mediaFolder');
+                $query = $query->orderBy('description', $dir);
+
+                break;
+
             default:
                 throw new RuntimeException('Unknown order argument!');
         }
