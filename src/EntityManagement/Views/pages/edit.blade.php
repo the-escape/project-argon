@@ -409,6 +409,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             <button type="submit" class="btn btn-primary save-publish" onclick="this.disabled=true; this.textContent='Submitting ...'; this.form.submit();">Save and Publish</button>
             <button type="submit" class="btn btn-primary-outline save-revision" data-form-action="{{ route('cms:revisions:create', [$page->getId(), $localeId]) }}">Save Revision</button>
             <a href="#" class="btn btn-warning preview-page" data-preview-id="{{ $currentRevision->id }}">Preview</a>
+            <a href="{{ url($localisedFrontEndPageUrl) }}?preview_page={{ $currentRevision->id }}" class="btn btn-warning-outline" target="_blank">Preview (Full)</a>
 
             <a href="{{ route('cms:pages:manage') }}" class="btn btn-link">Back to pages</a>
 
