@@ -260,6 +260,8 @@ class MediaController extends BaseController
             {
                 $fields = json_decode($result->data_value, true);
 
+		$valid = false;
+
                 foreach ($fields as $field) {
                     if ($field['id'] == $id)
                     {
