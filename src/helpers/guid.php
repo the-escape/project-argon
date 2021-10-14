@@ -251,7 +251,7 @@ function email_escape($data, $subject=null, $template='argon::emails.error', $fr
     {
         if (is_null($subject))
         {
-            $subject = "Error @ ".url();
+            $subject = "Error @ ".url('/');
         }
 
         if (is_null($recepients))
