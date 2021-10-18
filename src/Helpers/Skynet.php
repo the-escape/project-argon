@@ -1,4 +1,6 @@
-<?php namespace Escape\Argon\Helpers;
+<?php 
+
+namespace Escape\Argon\Helpers;
 
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Log;

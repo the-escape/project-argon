@@ -1,4 +1,6 @@
-<?php namespace Escape\Argon\Helpers;
+<?php 
+
+namespace Escape\Argon\Helpers;
 
 use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
