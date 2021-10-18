@@ -194,7 +194,7 @@
                         <td>{{ $mediaItem->getFriendlyFilesize() }}</td>
                         <td data-folder-id="{{ $mediaItem->mediaFolder->id }}"><a href="{{ route('cms:media:folders:edit', [$mediaItem->mediaFolder->id]) }}" title="Edit folder">{{ $mediaItem->mediaFolder->name }}</a></td>
                         @if(auth()->user()->hasRole('Admin'))
-                            <td>{{ $mediaItem->user->name or 'unknown' }}</td>
+                            <td>{{ $mediaItem->user->name ?? 'unknown' }}</td>
                         @endif
                         <td>{{ $mediaItem->created_at }}</td>
                         <td class="actions">

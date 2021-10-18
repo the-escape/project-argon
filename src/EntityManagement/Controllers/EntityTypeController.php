@@ -11,6 +11,7 @@ use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldTypes\ItemFieldType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Validator;
 use Input;
 use Lang;
@@ -1234,9 +1235,9 @@ class EntityTypeController extends BaseController
 
         // prepare default settings for the group
         $defaultGroupSettings = [
-            'slug' => str_slug($data['name']),
+            'slug' => Str::slug($data['name']),
             'location' => 'main',
-            'image' => '/images/blocks/'.str_slug($data['name']).'.png',
+            'image' => '/images/blocks/'.Str::slug($data['name']).'.png',
         ];
 
         $checkName = $data['name'];

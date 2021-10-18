@@ -24,6 +24,7 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Input;
@@ -126,9 +127,9 @@ class PagesController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
-        // update input slug value to reflect str_slug, then validate it
+        // update input slug value to reflect Str::slug, then validate it
         $request->merge(['slug' => $slug]);
 
         $rules = [
@@ -259,9 +260,9 @@ class PagesController extends BaseController
         ];
 
         // use submitted slug or auto-generate from name
-        $slug = str_slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
+        $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
-        // update input slug value to reflect str_slug, then validate it
+        // update input slug value to reflect Str::slug, then validate it
         $request->merge(['slug' => $slug]);
 
         $rules = [
@@ -379,9 +380,9 @@ class PagesController extends BaseController
             'slug' => 'URL Slug',
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
-        // update input slug value to reflect str_slug, then validate it
+        // update input slug value to reflect Str::slug, then validate it
         $request->merge(['slug' => $slug]);
 
         $rules = [
@@ -483,9 +484,9 @@ class PagesController extends BaseController
             'slug' => 'URL Slug',
         ];
 
-        $slug = str_slug($request->input('slug'));
+        $slug = Str::slug($request->input('slug'));
 
-        // update input slug value to reflect str_slug, then validate it
+        // update input slug value to reflect Str::slug, then validate it
         $request->merge(['slug' => $slug]);
 
         $rules = [

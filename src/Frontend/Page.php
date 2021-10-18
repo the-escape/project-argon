@@ -8,6 +8,7 @@ use Escape\Argon\EntityManagement\Eloquent\Entity;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\Localisation;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use RuntimeException;
 
 class Page implements Compressable
@@ -95,7 +96,7 @@ class Page implements Compressable
 
         $requestPath = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-        if ($this->entity->type->type === 'page' && str_is($requestPath, $url)) {
+        if ($this->entity->type->type === 'page' && Str::is($requestPath, $url)) {
             $revision = $this->revisionId;
         }
 

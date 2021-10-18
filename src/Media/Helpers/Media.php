@@ -7,6 +7,7 @@ use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Image;
 use stdClass;
 
@@ -129,7 +130,7 @@ class Media
         $mediaItem = $mediaRepository->create([
             'folder' => $folderId,
             'filename' => $name,
-            'slug' => str_slug($name),
+            'slug' => Str::slug($name),
             'extension' => $file->getClientOriginalExtension(),
             'filesize' => $file->getSize(),
             'mimetype' => $file->getMimeType(),
