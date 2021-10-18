@@ -40,8 +40,8 @@
                             <td>{{$block->name}}</td>
                             <td>{{$block->type->name}}</td>
                             <td>
-                                <a href="{{ route('cms:blocks:edit', ['blockId'=>$block->id, ]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                                <a href="{{ route('cms:blocks:delete', ['blockId'=>$block->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
+                                <a href="{{ route('cms:blocks:edit', ['id'=>$block->id, ]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
+                                <a href="{{ route('cms:blocks:delete', ['id'=>$block->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
                             </td>
                         </tr>
                     @endforeach

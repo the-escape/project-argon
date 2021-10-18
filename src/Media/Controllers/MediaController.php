@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Image;
-use Input;
 use RuntimeException;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,7 +38,7 @@ class MediaController extends BaseController
 
     public function items(MediaItemRepository $mediaRepository)
     {
-        $folderId = Input::get('folderId');
+        $folderId = $this->request->get('folderId');
         $items = $mediaRepository->getItemsInFolder($folderId);
 
         return response()->json($items);
@@ -47,7 +46,7 @@ class MediaController extends BaseController
 
     public function upload(Request $request, MediaItemRepository $mediaRepository)
     {
-        $folderId = Input::get('current-folder');
+        $folderId = $this->request->get('current-folder');
 
         $file = $request->file('file');
 

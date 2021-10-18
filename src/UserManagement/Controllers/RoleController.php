@@ -7,7 +7,6 @@ use Escape\Argon\Authentication\RoleRepository;
 use Escape\Argon\Core\Controllers\BaseController;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Input;
 use Lang;
 use Redirect;
 use View;
@@ -52,9 +51,9 @@ class RoleController extends BaseController
             'name' => 'required',
         ]);
 
-        $permissions = Input::get('permissions');
+        $permissions = $this->request->get('permissions');
 
-        $role = $this->roleRepository->update(Input::all(), $roleId);
+        $role = $this->roleRepository->update($this->request->all(), $roleId);
 
         $this->grantRepository->syncGrants($role, $permissions);
 
@@ -90,9 +89,9 @@ class RoleController extends BaseController
             'name' => 'required',
         ]);
 
-        $role = $this->roleRepository->create(Input::all());
+        $role = $this->roleRepository->create($this->request->all());
 
-        $permissions = Input::get('permissions', []);
+        $permissions = $this->request->get('permissions', []);
 
         $this->grantRepository->syncGrants($role, $permissions);
 

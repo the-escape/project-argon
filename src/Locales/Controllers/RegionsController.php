@@ -7,7 +7,6 @@ use Escape\Argon\Locales\Eloquent\CountryRepository;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Locales\Eloquent\RegionRepository;
 use Illuminate\Http\Request;
-use Input;
 use Lang;
 use League\Flysystem\Adapter\Local;
 use Redirect;
@@ -56,7 +55,7 @@ class RegionsController extends BaseController
     public function save(RegionRepository $regionRepository)
     {
         $regionRepository->create(
-            Input::all()
+            $this->request->all()
         );
 
         return Redirect::route('cms:regions:manage');
@@ -93,7 +92,7 @@ class RegionsController extends BaseController
      */
     public function update($regionId, RegionRepository $regionRepository)
     {
-        $regionRepository->update(Input::all(), $regionId);
+        $regionRepository->update($this->request->all(), $regionId);
 
         return Redirect::route('cms:regions:manage')
             ->with('message', Lang::get('argon-locales::region.saved'));

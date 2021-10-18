@@ -9,7 +9,6 @@ use Escape\Argon\EntityManagement\Helpers\Validation as ValidationHelpers;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Illuminate\Http\Request;
-use Input;
 
 class Fields
 {

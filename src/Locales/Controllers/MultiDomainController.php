@@ -6,7 +6,6 @@ use Escape\Argon\Core\Controllers\BaseController;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Locales\Eloquent\MultiDomainRepository;
 use Illuminate\Http\Request;
-use Input;
 use Lang;
 use Redirect;
 use View;
@@ -62,7 +61,7 @@ class MultiDomainController extends BaseController
     public function save(MultiDomainRepository $multiDomainRepository)
     {
       $multiDomainRepository->create(
-            Input::all()
+            $this->request->all()
         );
 
         return Redirect::route('cms:multiDomain:manage');
@@ -109,7 +108,7 @@ class MultiDomainController extends BaseController
      */
     public function update($regionId, MultiDomainRepository $multiDomainRepository)
     {
-      $multiDomainRepository->update(Input::all(), $regionId);
+      $multiDomainRepository->update($this->request->all(), $regionId);
 
           return Redirect::route('cms:multiDomain:manage')
               ->with('message', Lang::get('argon-locales::multiDomain.saved'));

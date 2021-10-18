@@ -27,7 +27,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Input;
 use Lang;
 use Redirect;
 use stdClass;
@@ -189,7 +188,7 @@ class PagesController extends BaseController
         $settings->{$localisation->getLocaleId()}->pointer = $request->has('entity_pointer') ? $request->input('entity_pointer') : null;
         $request->merge(['settings' => $settings]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render', 'settings']), $entity->id);
+        $entity = $entityRepository->update($this->request->only(['redirect_url', 'group_order', 'group_render', 'settings']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -198,7 +197,7 @@ class PagesController extends BaseController
         event(new PageSaved($entity, $localisation, $request));
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $entity->id,
+            'id' => $entity->id,
             'locale' => $localisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.created'));
     }
@@ -321,7 +320,7 @@ class PagesController extends BaseController
         $settings->{$localisation->getLocaleId()}->pointer = $request->has('entity_pointer') ? $request->input('entity_pointer') : null;
         $request->merge(['settings' => $settings]);
 
-        $entity = $entityRepository->update(Input::only(['redirect_url', 'group_order', 'group_render', 'settings']), $entity->id);
+        $entity = $entityRepository->update($this->request->only(['redirect_url', 'group_order', 'group_render', 'settings']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -330,7 +329,7 @@ class PagesController extends BaseController
         event(new PageSaved($entity, $localisation, $request));
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $entity->id,
+            'id' => $entity->id,
             'locale' => $localisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.created'));
     }
@@ -342,7 +341,7 @@ class PagesController extends BaseController
         $locale = $page->getDefaultLocalisation();
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $pageId,
+            'id' => $pageId,
             'locale' => $locale->getLocaleId(),
         ]);
     }
@@ -455,7 +454,7 @@ class PagesController extends BaseController
         event(new PageSaved($entity, $currentLocalisation, $request));
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $entity->id,
+            'id' => $entity->id,
             'locale' => $currentLocalisation->getLocaleId(),
         ])->with('message', Lang::get('argon-entities::page.updated'));
     }
@@ -535,7 +534,7 @@ class PagesController extends BaseController
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $entity->id,
+            'id' => $entity->id,
             'locale' => $currentLocalisation->getLocaleId(),
         ])->with('message', 'Revision has been saved.');
     }
@@ -643,7 +642,7 @@ class PagesController extends BaseController
         $locale = Locale::find($localeId);
 
         if (!$locale) {
-            return Redirect::route('cms:pages:edit_locale', ['page' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
+            return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
         $localisation = $localisationRepository->create([
@@ -719,7 +718,7 @@ class PagesController extends BaseController
         EntityCache::cache($page, $localisation);
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $pageId,
+            'id' => $pageId,
             'locale' => $localeId,
         ]);
     }
@@ -744,7 +743,7 @@ class PagesController extends BaseController
         EntityCache::uncache($pageId, $localeId);
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $pageId,
+            'id' => $pageId,
             'locale' => $defaultLocale->getLocaleId(),
         ]);
     }
@@ -959,13 +958,13 @@ class PagesController extends BaseController
             DB::rollBack();
 
             return Redirect::route('cms:pages:edit_locale', [
-                'page' => $pageId,
+                'id' => $pageId,
                 'locale' => $currentLocalisation->getLocaleId(),
             ])->with('message', 'Something went wrong when saving the translation.');
         }
 
         return Redirect::route('cms:pages:edit_locale', [
-            'page' => $pageId,
+            'id' => $pageId,
             'locale' => $currentLocalisation->getLocaleId(),
         ])->with('message', 'Translation uploaded successfully.');
     }

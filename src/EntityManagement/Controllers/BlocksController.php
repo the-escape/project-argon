@@ -19,7 +19,6 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Input;
 use Redirect;
 use stdClass;
 use View;
@@ -139,7 +138,7 @@ class BlocksController extends BaseController
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['group_order']), $entity->id);
+        $entity = $entityRepository->update($this->request->only(['group_order']), $entity->id);
 
         $solr->indexEntity($entity, $localisation);
 
@@ -147,7 +146,7 @@ class BlocksController extends BaseController
 
         return Redirect::route(
             'cms:blocks:edit_locale',
-            ['page' => $entity->id, 'locale' => $localisation->getLocaleId()]
+            ['id' => $entity->id, 'locale' => $localisation->getLocaleId()]
         )->with('message', Lang::get('argon-entities::page.created'));
     }
 
@@ -157,7 +156,7 @@ class BlocksController extends BaseController
         $page = $entityRepository->find($pageId);
         $locale = $page->getDefaultLocalisation();
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $locale->getLocaleId()]);
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $pageId, 'locale' => $locale->getLocaleId()]);
     }
 
     public function update(
@@ -206,7 +205,7 @@ class BlocksController extends BaseController
         $group_order->{$localeId} = $request->input('group_order', $page->getGroupOrderString($localeId));
         $request->merge(['group_order' => $group_order]);
 
-        $entity = $entityRepository->update(Input::only(['name', 'slug', 'group_order']), $pageId);
+        $entity = $entityRepository->update($this->request->only(['name', 'slug', 'group_order']), $pageId);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $localisation->id,
@@ -228,7 +227,7 @@ class BlocksController extends BaseController
             EntityCache::cache($entity, $localisation);
         }
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $entity->id, 'locale'=>$localisation->getLocaleId()])
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
@@ -347,6 +346,6 @@ class BlocksController extends BaseController
 
         EntityCache::cache($page, $localisation);
 
-        return Redirect::route('cms:blocks:edit_locale', ['page' => $pageId, 'locale' => $localeId]);
+        return Redirect::route('cms:blocks:edit_locale', ['id' => $pageId, 'locale' => $localeId]);
     }
 }
