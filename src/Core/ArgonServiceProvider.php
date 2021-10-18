@@ -18,11 +18,17 @@ use Prettus\Repository\Providers\RepositoryServiceProvider;
 use Escape\Argon\Libs\Slack\ServiceProvider as SlackServiceProvider;
 use Maknz\Slack\Facades\Slack;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
 
 class ArgonServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+
+        Blade::withoutDoubleEncoding();
+        Paginator::useBootstrapThree();
+
         if (!$this->app->routesAreCached()) {
             require __DIR__ . '/../../routes.php';
         }
