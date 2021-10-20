@@ -14,7 +14,7 @@
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.5",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium": "^3.5.1",
+        "solarium/solarium": "^5.2",
         "maknz/slack": "^1.7",
         "symfony/options-resolver": "^5.0",
         "ps/image-optimizer": "^2.0.2",
