@@ -13,6 +13,7 @@ return [
             'host'    => env('SOLR_HOST', '127.0.0.1'),
             'port'    => env('SOLR_PORT', 8983),
             'path'    => env('SOLR_PATH', '/solr'),
+            'collection' => env('SOLR_CORE', 'test'),
             'core'    => env('SOLR_CORE', 'test'),
             'timeout' => env('SOLR_TIMEOUT', 15),
         ],

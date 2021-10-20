@@ -7,6 +7,7 @@ use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
 use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
+use DateTimeInterface;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,11 @@ class EntityCache extends Model implements Compressable
         'entity_updated_at',
         'cache',
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     public function setCacheAttribute($value)
     {

@@ -32,7 +32,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'locales/create',
-            'cms:locales:create',
+            'cms:locales:save',
             LocalesController::class,
             'save',
             Request::METHOD_POST
@@ -45,7 +45,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'locales/{localeId}/edit',
-            'cms:locales:edit',
+            'cms:locales:update',
             LocalesController::class,
             'update',
             Request::METHOD_POST
@@ -78,7 +78,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'regions/create',
-            'cms:regions:create',
+            'cms:regions:save',
             RegionsController::class,
             'save',
             Request::METHOD_POST
@@ -91,7 +91,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'regions/{regionId}/edit',
-            'cms:regions:edit',
+            'cms:regions:update',
             RegionsController::class,
             'update',
             Request::METHOD_POST
@@ -118,7 +118,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'multidomain/create',
-            'cms:multiDomain:create',
+            'cms:multiDomain:save',
             MultiDomainController::class,
             'save',
             Request::METHOD_POST
@@ -131,7 +131,7 @@ class LocalesServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'multidomain/{multiDomainId}/edit',
-            'cms:multiDomain:edit',
+            'cms:multiDomain:update',
             MultiDomainController::class,
             'update',
             Request::METHOD_POST
