@@ -17,7 +17,7 @@
         "solarium/solarium": "^3.5.1",
         "maknz/slack": "^1.7",
         "symfony/options-resolver": "^4.0",
-        "ps/image-optimizer": "^1.2",
+        "ps/image-optimizer": "^2.0.2",
         "fideloper/proxy": "^4.0"
     },
     "require-dev": {
