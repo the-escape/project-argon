@@ -16,7 +16,7 @@
 
         @include('argon::inc.alerts', compact($errors))
 
-        <form action="{{ route('cms:content:saveroot', $type->id) }}" method="POST">
+        <form action="{{ route('cms:content:saveroot', [$type->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="card">
                 <div class="card-header">Details</div>
