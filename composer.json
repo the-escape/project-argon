@@ -16,7 +16,7 @@
         "doctrine/dbal": "^2.5",
         "solarium/solarium": "^3.5.1",
         "maknz/slack": "^1.7",
-        "symfony/options-resolver": "^4.0",
+        "symfony/options-resolver": "^5.0",
         "ps/image-optimizer": "^2.0.2",
         "fideloper/proxy": "^4.0"
     },
@@ -24,8 +24,8 @@
         "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "^8.5",
         "laravel/laravel": "^7.0",
-        "symfony/dom-crawler": "^4.0",
-        "symfony/css-selector": "^4.0",
+        "symfony/dom-crawler": "^5.0",
+        "symfony/css-selector": "^5.0",
         "filp/whoops": "~2.0"
     },
     "autoload": {
