@@ -976,7 +976,7 @@ class MediaController extends BaseController
                 and `entities`.`deleted_at` is null
                 and `entity_localisations`.`deleted_at` is null
                 and `entity_fields`.`deleted_at` is null
-                group by entity_revisions.entity_localisation_id";
+                group by entity_revisions.entity_localisation_id, revision_id, data_id";
 
         $results = DB::select(DB::raw($sql), ['%"'.$id.'"%']);
 
