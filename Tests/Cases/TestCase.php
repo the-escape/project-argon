@@ -1,6 +1,6 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
 
 use Escape\Argon\Core\ArgonServiceProvider;
 use Escape\Argon\Tests\LaravelStubs\LaravelApplication;
@@ -27,7 +27,7 @@ class TestCase extends LaravelTestCase
     {
         /** @var Application $app */
         $app = new LaravelApplication(
-            realpath(__DIR__.'/../../vendor/laravel/laravel')
+            realpath(__DIR__ . '/../../vendor/laravel/laravel')
         );
 
         $app->singleton(

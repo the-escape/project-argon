@@ -1,15 +1,13 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
 
 use Escape\Argon\Authentication\Permission;
 use Escape\Argon\Authentication\PermissionGrant;
 use Escape\Argon\Authentication\Role;
 use Escape\Argon\Authentication\User;
 use Exception;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AuthenticationTest extends TestCase
 {
@@ -31,7 +29,7 @@ class AuthenticationTest extends TestCase
 
     public function testCreateRole()
     {
-        $role = new Role;
+        $role = new Role();
         $role->name = 'MadeUp';
         $role->save();
 
@@ -44,7 +42,6 @@ class AuthenticationTest extends TestCase
 
     public function testCreateUser()
     {
-
         $user = factory(User::class)->make();
         $user->save();
 
@@ -58,7 +55,7 @@ class AuthenticationTest extends TestCase
 
     public function testGrantingPermission()
     {
-        $role = new Role;
+        $role = new Role();
         $role->name = 'MadeUp';
         $role->save();
 
@@ -124,6 +121,7 @@ class AuthenticationTest extends TestCase
         $this->assertEquals('Admin', $perm->roles->first()->name);
 
         $exceptionThrown = false;
+
         try {
             $foo = $perm->madeUp;
         } catch (Exception $exp) {
@@ -133,6 +131,7 @@ class AuthenticationTest extends TestCase
         $this->assertTrue($exceptionThrown);
 
         $exceptionThrown = false;
+
         try {
             $foo = Permission::find('doesnt:exist');
         } catch (Exception $exp) {
@@ -153,6 +152,5 @@ class AuthenticationTest extends TestCase
         $this->assertContains('cms:login', $manager->getDefinedPermissions());
         $this->assertContains('cms:user:manage', $manager->getDefinedPermissions());
         $this->assertContains('cms:role:manage', $manager->getDefinedPermissions());
-
     }
 }
