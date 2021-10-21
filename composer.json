@@ -9,21 +9,21 @@
     "license": "Proprietary",
     "type": "project",
     "require": {
-        "php": ">=7.2.5",
-        "laravel/framework": "^7.0",
+        "php": ">=7.3.0",
+        "laravel/framework": "^8.0",
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.5",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium": "^5.2",
-        "maknz/slack": "^1.7",
+        "solarium/solarium": "^6.1",
+        "alek13/slack": "^2.2",
         "symfony/options-resolver": "^5.0",
         "ps/image-optimizer": "^2.0.2",
         "fideloper/proxy": "^4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "phpunit/phpunit": "^8.5",
-        "laravel/laravel": "^7.0",
+        "phpunit/phpunit": "^9.5",
+        "laravel/laravel": "^8.0",
         "symfony/dom-crawler": "^5.0",
         "symfony/css-selector": "^5.0",
         "filp/whoops": "~2.0"
