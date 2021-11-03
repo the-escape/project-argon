@@ -2,7 +2,6 @@
 
 use Escape\Argon\Locales\Eloquent\RegionRepository;
 use Escape\Argon\Menus\Eloquent\MenuRepository;
-use Throwable;
 
 /**
  * @return Escape\Argon\EntityManagement\Eloquent\EntityCache - registered as singleton in Escape\Argon\EntityManagement\EntityManagementServiceProvider
