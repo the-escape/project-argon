@@ -2,27 +2,28 @@
 
 namespace Escape\Argon\EntityManagement\Controllers;
 
-use Escape\Argon\EntityManagement\Eloquent\Entity;
-use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
-use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\EntityManagement\Eloquent\Entity;
+use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
-use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
+use Escape\Argon\EntityManagement\Eloquent\LocalisationRepository;
+use Escape\Argon\EntityManagement\Helpers\Fields as FieldsHelpers;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Events\PageSaved;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
-use Escape\Argon\Events\PageSaved;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
-use Redirect;
 use stdClass;
-use View;
-use Lang;
 
 class PagesController extends BaseController
 {
@@ -69,6 +70,7 @@ class PagesController extends BaseController
     ) {
         $type = $typeRepository->find($typeId);
         $groups = $groupRepository->getUsedGroupsByEntityType($typeId, ['order']);
+
         return view(
             'argon::pages.create',
             [
@@ -98,14 +100,14 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         // use submitted slug or auto-generate from name
         $slug = Str::slug(($input_slug = $request->input('slug')) ? $input_slug : $request->input('name'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
             'name' => "required",
@@ -116,29 +118,65 @@ class PagesController extends BaseController
 
         $this->validate($request, $rules, [], $niceNames);
 
-        $entity = $entityRepository->create([
-            'name' => $request->input('name'),
-            'entity_type_id' => $type->id,
-            'owner_id' => $request->user()->id,
-            'parent_id' => $parentId,
-            'slug' => $slug,
-            'status' => $request->input('status'),
-        ]);
+        DB::beginTransaction();
+
+        try {
+            $entity = $entityRepository->create([
+                'name' => $request->input('name'),
+                'entity_type_id' => $type->id,
+                'owner_id' => $request->user()->id,
+                'parent_id' => $parentId,
+                'slug' => $slug,
+                'status' => $request->input('status'),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem creating entity: ' . $msg);
+
+            return Redirect::back()->with('message', $msg);
+        }
 
         $locale = $localeRepository->getDefault();
 
-        $localisation = $localisationRepository->create([
-            'entity_id' => $entity->getId(),
-            'locale_id' => $locale->getId(),
-        ]);
+        try {
+            $localisation = $localisationRepository->create([
+                'entity_id' => $entity->getId(),
+                'locale_id' => $locale->getId(),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem creating localisation: ' . $msg);
 
-        $revision = $revisionRepository->create([
-            'entity_localisation_id' => $localisation->getId(),
-            'status' => RevisionStatus::PUBLISHED,
-            'created_by' => $request->user()->id
-        ]);
+            return Redirect::back()->with('message', $msg);
+        }
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
+        try {
+            $revision = $revisionRepository->create([
+                'entity_localisation_id' => $localisation->getId(),
+                'status' => RevisionStatus::PUBLISHED,
+                'created_by' => $request->user()->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem creating revision: ' . $msg);
+
+            return Redirect::back()->with('message', $msg);
+        }
+
+        try {
+            FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $locale);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem saving fields: ' . $msg);
+
+            return Redirect::back()->with('message', $msg);
+        }
+
+        DB::commit();
 
         $redirect_url = new stdClass();
         $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
@@ -181,8 +219,8 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request,
-        Solr $solr)
-    {
+        Solr $solr
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -197,13 +235,13 @@ class PagesController extends BaseController
 
         $niceNames = [
             'name' => 'Name',
-            'slug' => 'URL Slug'
+            'slug' => 'URL Slug',
         ];
 
         $slug = Str::slug($request->input('slug'));
 
         // update input slug value to reflect str_slug, then validate it
-        $request->merge(array('slug' => $slug));
+        $request->merge(['slug' => $slug]);
 
         $rules = [
             'name' => "required",
@@ -233,41 +271,74 @@ class PagesController extends BaseController
         $group_render->{$localeId} = $request->input('group_render', []);
         $request->merge(['group_render' => $group_render]);
 
-        if (!$preview) {
-            $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+        DB::beginTransaction();
+
+        try {
+            if (!$preview) {
+                $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
+            }
+
+            $revision = $revisionsRepository->create([
+                'entity_localisation_id' => $currentLocalisation->id,
+                'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
+                'created_by' => $this->request->user()->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem creating revision: ' . $msg . $e->getTraceAsString());
+
+            return Redirect::back()->with('message', $msg);
         }
 
-        $revision = $revisionsRepository->create([
-            'entity_localisation_id' => $currentLocalisation->id,
-            'status' => $preview ? RevisionStatus::PREVIEW : RevisionStatus::PUBLISHED,
-            'created_by' => $this->request->user()->id
-        ]);
+        try {
+            FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
-        FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
+            if ($preview) {
+                $revisionsRepository->deletePreviews([$revision->id]);
+                $previewUrl = url($entity->toPage()->getUrl($currentLocale) . '?' . http_build_query(['preview_page' => $revision->id]));
 
-        if ($preview) {
-            $revisionsRepository->deletePreviews([$revision->id]);
-            $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
-            return response($previewUrl);
+                DB::commit();
+
+                return response($previewUrl);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem saving fields: ' . $msg);
+
+            return Redirect::back()->with('message', $msg);
         }
 
-        $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        try {
+            $revisionsRepository->archiveRevisions($currentLocalisation->id, $revision->id);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $msg = $e->getMessage();
+            Log::error('Problem archiving revisions: ' . $msg);
+
+            return Redirect::back()->with('message', $msg);
+        }
+
+        DB::commit();
 
         $localisations = $entity->localisations;
+
         foreach ($localisations as $localisation) {
             $solr->indexEntity($entity, $localisation);
         }
 
         event(new PageSaved($entity, $currentLocalisation));
 
-        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
-            ->with('message', Lang::get('argon-entities::page.updated'));
+        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale' => $currentLocalisation->getLocaleId()])
+            ->with('message', Lang::get('argon-entities::page.updated'))
+        ;
     }
 
     public function editLocale(
         $pageId,
         $localeId,
-        $clone=null
+        $clone = null
     ) {
         $entityRepository = app()->make(EntityRepository::class);
         $groupRepository = app()->make(EntityGroupRepository::class);
@@ -315,31 +386,29 @@ class PagesController extends BaseController
         EntityRepository $entityRepository,
         Solr $solr
     ) {
-        $localeId = (int)$request->input('locale');
-        $clone = (int)$request->input('clone');
+        $localeId = (int) $request->input('locale');
+        $clone = (int) $request->input('clone');
 
         $locale = Locale::find($localeId);
 
-        if (!$locale)
-        {
+        if (!$locale) {
             return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
         $localisation = $localisationRepository->create([
             'locale_id' => $localeId,
-            'entity_id' => $pageId
+            'entity_id' => $pageId,
         ]);
 
         $revision = $revisionRepository->create([
             'entity_localisation_id' => $localisation->getId(),
             'status' => RevisionStatus::DRAFT,
-            'created_by' => $request->user()->id
+            'created_by' => $request->user()->id,
         ]);
 
         $page = $entityRepository->find($pageId);
 
-        if ($clone)
-        {
+        if ($clone) {
             $typeRepository = app()->make(EntityTypeRepository::class);
             $fieldDataRepository = app()->make(FieldDataRepository::class);
 
@@ -366,15 +435,12 @@ class PagesController extends BaseController
             $type = $typeRepository->find($page->entity_type_id);
             $fields = $type->fields;
 
-            foreach ($fields as $field)
-            {
-                if (!$latestRevisionFields->has($field->id))
-                {
+            foreach ($fields as $field) {
+                if (!$latestRevisionFields->has($field->id)) {
                     continue;
                 }
 
-                switch ($field->field_type)
-                {
+                switch ($field->field_type) {
                     case 'combo':
                     case 'image':
                     case 'file':
@@ -382,10 +448,11 @@ class PagesController extends BaseController
                     case 'select':
                     case 'item':
                         $value = $latestRevisionFields[$field->id]->getData();
+
                         break;
 
                     default:
-                        $value = (string)$latestRevisionFields[$field->id];
+                        $value = (string) $latestRevisionFields[$field->id];
                 }
 
                 FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
@@ -401,7 +468,6 @@ class PagesController extends BaseController
         return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => $localeId]);
     }
 
-
     // Handles JSTree ajax reorder requests
     public function updateParent($pageId, $parentId, EntityRepository $entityRepository, Solr $solr)
     {
@@ -413,6 +479,7 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
+
         foreach ($localisations as $localisation) {
             $solr->indexEntity($page, $localisation);
         }
@@ -426,5 +493,4 @@ class PagesController extends BaseController
 
         return view('argon::pages.revisions')->with(compact('revisions'));
     }
-
 }
