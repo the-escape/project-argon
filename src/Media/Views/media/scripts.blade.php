@@ -146,5 +146,13 @@
             alert($(this).parents('.mediaitem').data('id'));
         });
 
+        $('#folders').on("dblclick.jstree", function (e) {
+            var node = $(e.target).closest("li");
+            if (node.hasClass('has-content')) {
+                var id = argon.helpers.getIdFromNodeIdString(node[0].id);
+                location.href = '/admin/media?folder=' + id;
+            }
+        });
+
     </script>
 @stop
