@@ -1,8 +1,7 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
 
-use Escape\Argon\Authentication\Middleware\AssertPermission;
 use Escape\Argon\Authentication\Middleware\Authenticate;
 use Escape\Argon\Authentication\User;
 use Illuminate\Auth\Guard;
@@ -55,6 +54,5 @@ class AuthenticateMiddlewareTest extends TestCase
         /** @var bool $response */
         $response = $authenticate->handle($request, $closure);
         $this->assertTrue($response);
-
     }
 }

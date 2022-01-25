@@ -205,7 +205,7 @@ function email_submission($email, array $input, $subject='')
             $message->to($email)->subject($subject);
         });
     }
-    catch (Exception $e)
+    catch (Throwable $e)
     {
         alert_escape($e, $timestamp);
         return false;
@@ -216,10 +216,10 @@ function email_submission($email, array $input, $subject='')
 
 /**
  * Log error and submitted input, then email Escape
- * @param Exception $error
+ * @param Throwable $error
  * @param string $timestamp - optional
  */
-function alert_escape(Exception $e, $timestamp=null)
+function alert_escape(Throwable $e, $timestamp=null)
 {
     if (is_null($timestamp))
     {
@@ -295,7 +295,7 @@ function email_escape($data, $subject=null, $template='argon::emails.error', $fr
         \Mail::setSwiftMailer($backup);
 
     }
-    catch (Exception $e)
+    catch (Throwable $e)
     {
         \Log::error(format_message($e->getMessage(), PHP_EOL));
         return false;
@@ -324,10 +324,10 @@ function format_message($message, $glue='<br>')
 
 /**
  * Prepare error data array
- * @param Exception $e
+ * @param Throwable $e
  * @return array $data
  */
-function format_error(Exception $e)
+function format_error(Throwable $e)
 {
     $data['msg'] 	    = $e->getMessage();
     $data['trace'] 		= $e->getTraceAsString();

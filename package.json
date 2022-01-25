@@ -1,9 +1,23 @@
 {
-  "private": true,
-  "devDependencies": {
-    "gulp": "^3.9.1"
-  },
-  "dependencies": {
-    "laravel-elixir": "^3.0.0"
-  }
+    "private": true,
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "gulp": "^4.0.2",
+        "node-sass": "^6.0.1",
+        "postcss": "^8.3.11",
+        "resolve-url-loader": "^4.0.0",
+        "sass": "^1.32.13",
+        "sass-loader": "^12.2.0"
+    },
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "dependencies": {
+        "laravel-mix": "^6.0.34"
+    }
 }

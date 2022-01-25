@@ -1,8 +1,7 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
 
-use Escape\Argon\Authentication\Middleware\AssertPermission;
 use Escape\Argon\Authentication\Middleware\AssertRole;
 use Escape\Argon\Authentication\User;
 use Illuminate\Auth\Guard;
