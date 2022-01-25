@@ -21,6 +21,11 @@ class MediaFolder extends Model
         return $this->hasMany(MediaFolder::class, 'parent');
     }
 
+    public function hasItems()
+    {
+        return $this->items->count() > 0;
+    }
+
     public function hasChildren()
     {
         return count($this->children) > 0;

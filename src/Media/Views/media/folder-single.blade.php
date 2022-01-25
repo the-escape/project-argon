@@ -1,7 +1,7 @@
-<li class="folder" id="folder-{{$folder->id}}" data-id="{{$folder->id}}">
+<li class="folder @if (!$folder->hasChildren() || $folder->hasItems()) has-content @endif" id="folder-{{$folder->id}}" data-id="{{$folder->id}}">
     {{ $folder->name }}
 
-    @if($items = $folder->items)
+    {{-- @if($items = $folder->items)
         <ul>
             @foreach($items as $mediaItem)
                 @if(\Escape\Argon\Media\Helpers\Media::isImage($mediaItem->mimetype))
@@ -19,7 +19,7 @@
                 @endif
             @endforeach
         </ul>
-    @endif
+    @endif --}}
 
     @if($folder->hasChildren())
         <ul>
