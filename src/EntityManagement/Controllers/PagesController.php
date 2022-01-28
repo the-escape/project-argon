@@ -19,12 +19,14 @@ use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Escape\Argon\Events\PageSaved;
+use Exception;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
 use stdClass;
 use View;
 use Lang;
+use Log;
 
 class PagesController extends BaseController
 {
@@ -77,9 +79,14 @@ class PagesController extends BaseController
             return Redirect::route('cms:pages:manage')->with('errors', ["Page could not be deleted because it has child pages. Delete child pages first and then try again."]);
         }
 
-        $entityRepository->delete($pageId);
-        $solr->unindexEntity($pageId);
-        EntityCache::uncache($pageId);
+        try {
+            $entityRepository->delete($pageId);
+            $solr->unindexEntity($pageId);
+            EntityCache::uncache($pageId);
+        } catch (Exception $e) {
+            Log::error('Deleting a page thrown an exception: '. $e->getMessage());
+        }
+
         return Redirect::route('cms:pages:manage');
     }
 
