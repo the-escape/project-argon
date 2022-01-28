@@ -65,6 +65,18 @@ class PagesController extends BaseController
 
     public function delete($pageId, EntityRepository $entityRepository, Solr $solr)
     {
+        /** @var Entity $page */
+        $page = $entityRepository->find($pageId);
+
+        if (!$page) {
+            return Redirect::route('cms:pages:manage')->with('errors', ["Page not found."]);
+        }
+        
+        $children = $entityRepository->findByField('parent_id', $pageId);
+        if ($children->count()) {
+            return Redirect::route('cms:pages:manage')->with('errors', ["Page could not be deleted because it has child pages. Delete child pages first and then try again."]);
+        }
+
         $entityRepository->delete($pageId);
         $solr->unindexEntity($pageId);
         EntityCache::uncache($pageId);
