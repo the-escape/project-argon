@@ -260,6 +260,8 @@ class MediaController extends BaseController
             {
                 $fields = json_decode($result->data_value, true);
 
+		$valid = false;
+
                 foreach ($fields as $field) {
                     if ($field['id'] == $id)
                     {
@@ -516,7 +518,7 @@ class MediaController extends BaseController
 
         $file = $request->file('file');
 
-        if (!$file)
+        if (!$request->hasFile('file'))
         {
             $mediaItem->save();
             return redirect(route("cms:media:edit", $id))->with('message', 'Media item updated!');
