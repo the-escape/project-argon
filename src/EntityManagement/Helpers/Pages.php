@@ -16,7 +16,9 @@ class Pages
         {
             if ($entity->parent_id)
             {
-                $entities[$entity->parent_id]->addChild($entity);
+                if ($entities->has($entity->parent_id)) {
+                    $entities[$entity->parent_id]->addChild($entity);
+                }
             }
         }
 
