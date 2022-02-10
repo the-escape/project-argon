@@ -14,6 +14,8 @@
     <div class="main">
         <h1>Pages</h1>
 
+        @include('argon::inc.alerts', compact('errors'))
+
         <a href="" id="edit-button" disabled class="btn btn-primary-outline btn-sm">Edit</a>
         <div class="btn-group add-child-dropdown">
             <button type="button" disabled class="btn btn-primary-outline btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Child</button>
