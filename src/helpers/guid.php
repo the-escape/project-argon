@@ -26,6 +26,7 @@ function guid()
 function toArray($var)
 {
     $newVar = [];
+
     foreach ($var as $key => $value) {
         $newVar[$key] = $value;
     }
@@ -33,11 +34,11 @@ function toArray($var)
     return $newVar;
 }
 
-function spam_check($input, $min_time_to_fill=2)
+function spam_check($input, $min_time_to_fill = 2)
 {
     // If the bot catcher field is populated or the form was loaded and submitted in under $min_time_to_fill seconds
     // then we assume it has been submitted by a spam bot
-    if (($input['catcher']!='') || ( (time()-$min_time_to_fill) < $input['timestamp'])) {
+    if (($input['catcher'] != '') || ((time() - $min_time_to_fill) < $input['timestamp'])) {
         // Add the users user agent to the input data and log the data
         $input['user_agent'] = @$_SERVER['HTTP_USER_AGENT'];
 
@@ -53,43 +54,43 @@ function spam_check($input, $min_time_to_fill=2)
 /**
  * Validated provided email and submits to it provided values.
  * In case email fails, logs values and emails digital team to handle the issue.
+ *
  * @param $email
  * @param array $input
+ * @param mixed $subject
+ *
  * @return bool
  */
-function email_submission($email, array $input, $subject='')
+function email_submission($email, array $input, $subject = '')
 {
     // validate the email supplied to make sure we can send values without a fail
     $validator = \Validator::make(['email' => $email], ['email' => 'required|email']);
 
     // log error and values, so we don't loose anything at all
-    if ($validator->fails())
-    {
-        $error = "Invalid email address \"{$email}\" supplied to ".__METHOD__." in ".__FILE__;
-        \Log::error($error." Submission details saved below.");
+    if ($validator->fails()) {
+        $error = "Invalid email address \"{$email}\" supplied to " . __METHOD__ . " in " . __FILE__;
+        \Log::error($error . " Submission details saved below.");
 
         $msg[] = "Submitted values:";
 
-        foreach ($input as $k => $v)
-        {
-            $msg[] = "{$k}: $v";
+        foreach ($input as $k => $v) {
+            $msg[] = "{$k}: {$v}";
         }
 
-        if ($msg = format_message($msg, PHP_EOL))
-        {
+        if ($msg = format_message($msg, PHP_EOL)) {
             Log::info($msg);
         }
 
-        $data['error'] 		= $error." Submission details saved in error log.";
-        $data['trace'] 		= '';
-        $data['line'] 		= __LINE__;
-        $data['file'] 		= __FILE__;
+        $data['error'] = $error . " Submission details saved in error log.";
+        $data['trace'] = '';
+        $data['line'] = __LINE__;
+        $data['file'] = __FILE__;
 
-        \Mail::send('argon::emails.error', $data, function($message)
-        {
+        \Mail::send('argon::emails.error', $data, function ($message) {
             $message
                 ->to('pawel-nowak@the-escape.co.uk', 'Error reporting')
-                ->subject('Website - Error!');
+                ->subject('Website - Error!')
+            ;
         });
 
         return false;
@@ -98,39 +99,33 @@ function email_submission($email, array $input, $subject='')
     // email address is OK, format a message and email it
     $msg = "<h3>Submitted values</h3><br>";
 
-    foreach ($input as $k => $v)
-    {
-        $msg .= "<p><strong>{$k}:</strong> $v</p>";
+    foreach ($input as $k => $v) {
+        $msg .= "<p><strong>{$k}:</strong> {$v}</p>";
     }
 
-    if (!$subject)
-    {
-        $subject = "Form submission (".date('Y-m-d H:i:s').")";
+    if (!$subject) {
+        $subject = "Form submission (" . date('Y-m-d H:i:s') . ")";
     }
 
-    \Mail::send('argon::emails.template', ['content'=>$msg], function ($message) use ($email, $subject)
-    {
+    \Mail::send('argon::emails.template', ['content' => $msg], function ($message) use ($email, $subject) {
         $message->to($email)->subject($subject);
     });
 
     return true;
 }
 
-
-function format_message($message, $glue='<br>')
+function format_message($message, $glue = '<br>')
 {
-    if ($message)
-    {
-        if (is_array($message))
-        {
+    if ($message) {
+        if (is_array($message)) {
             $message = array_filter($message);
             // compress array to string format
             $message = implode($glue, $message);
         }
+
         return $message;
     }
 }
-
 
 /**
  * Easy pagination.
@@ -152,17 +147,18 @@ function format_message($message, $glue='<br>')
  * @param array $items
  * @param int $per_page (-1 or any positive int, not 0)
  * @param null $current_page
+ * @param null|mixed $current_page_number
+ *
  * @return null|pagination array
  */
-function easyPagination(array $items, $per_page=10, $current_page_number=null)
+function easyPagination(array $items, $per_page = 10, $current_page_number = null)
 {
-    if ($items)
-    {
+    if ($items) {
         $pagination['items_count'] = count($items);
         $pagination['per_page'] = (preg_match('/^-1|[1-9][0-9]*$/', $per_page))
             ? (int) $per_page
             : trigger_error("Invalid 'per_page' argument supplied '{$per_page}'.", E_USER_ERROR);
-        $pagination['pages'] = ($pagination['per_page']  > 0) ? array_chunk($items, $pagination['per_page']) : array_chunk($items, count($items));
+        $pagination['pages'] = ($pagination['per_page'] > 0) ? array_chunk($items, $pagination['per_page']) : array_chunk($items, count($items));
         $pagination['pages_count'] = count($pagination['pages']);
 
         // get the integer value of a variable
@@ -173,19 +169,18 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
         // valid page can only be a non-negative integer
         $pagination['current_page_number'] = (preg_match('/^[1-9][0-9]*$/', $current_page_number)) ? (int) $current_page_number : null;
 
-        if ($pagination['current_page_number'] > $pagination['pages_count'])
-        {
+        if ($pagination['current_page_number'] > $pagination['pages_count']) {
             return null;
         }
-        if ($pagination['current_page_number'] < 1)
-        {
+
+        if ($pagination['current_page_number'] < 1) {
             return null;
         }
 
         // since arrays indexes are 0 based subscribe 1 from current page
         // and see if corresponding index exists in pages array
         // valid page can only be a non-negative integer
-        $pagination['page'] = isset($pagination['pages'][$pagination['current_page_number']-1]) ? $pagination['pages'][$pagination['current_page_number']-1] : null;
+        $pagination['page'] = isset($pagination['pages'][$pagination['current_page_number'] - 1]) ? $pagination['pages'][$pagination['current_page_number'] - 1] : null;
 
         $pagination['page_count'] = count($pagination['page']);
 
@@ -209,8 +204,72 @@ function easyPagination(array $items, $per_page=10, $current_page_number=null)
     return null;
 }
 
+function paginationPresenter($pagination, $hellip = '...', $minThreshold = 1, $maxThreshold = 2, callable $callback = null)
+{
+    $output = [];
 
-function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encode=true)
+    $current_page_number = $pagination['current_page_number'];
+
+    $maxThreshold = $pagination['pages_count'] - $maxThreshold;
+
+    $range = range(1, $pagination['pages_count']);
+
+    foreach ($range as $num) {
+        if ($current_page_number == $num) {
+            $output[] = $num;
+
+            continue;
+        }
+
+        if ($current_page_number == ($num - 1)) {
+            $output[] = $num;
+
+            continue;
+        }
+
+        if (($num + 1) <= $pagination['pages_count'] && $current_page_number == ($num + 1)) {
+            $output[] = $num;
+
+            continue;
+        }
+
+        if ($num <= $minThreshold) {
+            $output[] = $num;
+
+            continue;
+        }
+
+        if ($num > $maxThreshold) {
+            $output[] = $num;
+
+            continue;
+        }
+
+        $output[] = $hellip;
+    }
+
+    $v = '';
+
+    // collapse duplicate segments of  $hellip values into single instance
+    foreach ($output as $key => $value) {
+        if ($value != $v) {
+            $v = $value;
+        } else {
+            unset($output[$key]);
+        }
+    }
+
+    // if defined apply callback to each output item
+    if ($callback) {
+        foreach ($output as $key => &$value) {
+            $value = call_user_func_array($callback, [$value, $hellip, $current_page_number]);
+        }
+    }
+
+    return $output;
+}
+
+function getUrlWithQueryString(array $set = [], array $unset = [], $url = null, $encode = true)
 {
     if ($url === null) {
         $url = $_SERVER['REQUEST_URI'];
@@ -232,8 +291,7 @@ function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encod
         $url .= http_build_query($qs);
     }
 
-    if (!$encode)
-    {
+    if (!$encode) {
         $url = urldecode($url);
         $url = preg_replace('/\s+/', '+', $url);
     }
@@ -241,41 +299,38 @@ function getUrlWithQueryString(array $set=[], array $unset=[], $url=null, $encod
     return $url;
 }
 
-function getUrlWithQueryStringNoEncoding(array $set=[], array $unset=[], $url=null)
+function getUrlWithQueryStringNoEncoding(array $set = [], array $unset = [], $url = null)
 {
     return getUrlWithQueryString($set, $unset, $url, false);
 }
 
-
 /**
- * Sorts collection looking at CMS field values
+ * Sorts collection looking at CMS field values.
+ *
  * @param $collection
  * @param $field
  * @param string $direction asc|desc
+ *
  * @return mixed
  */
-function sortByField($collection, $field, $direction='asc')
+function sortByField($collection, $field, $direction = 'asc')
 {
     $temp = $collection->splice(0, $collection->count());
 
     $directions = ['asc', 'desc'];
-    if (!in_array($direction, $directions))
-    {
-        throw new \RuntimeException("Invalid sorting direction. Expected asc|desc, '$direction' given.");
+
+    if (!in_array($direction, $directions)) {
+        throw new \RuntimeException("Invalid sorting direction. Expected asc|desc, '{$direction}' given.");
     }
 
     $sorted = [];
 
-    foreach($temp as $item)
-    {
+    foreach ($temp as $item) {
         $f = $item->field($field);
 
-        if ($f instanceof DatetimeFieldValue)
-        {
+        if ($f instanceof DatetimeFieldValue) {
             $v = $f->timestamp;
-        }
-        else
-        {
+        } else {
             $v = (string) $f;
         }
 
@@ -284,21 +339,18 @@ function sortByField($collection, $field, $direction='asc')
 
     natcasesort($sorted);
 
-    if ($direction == 'desc')
-    {
+    if ($direction == 'desc') {
         $sorted = array_reverse($sorted);
     }
 
-    foreach ($sorted as $sortedValue)
-    {
-        foreach($temp as $i => $item)
-        {
+    foreach ($sorted as $sortedValue) {
+        foreach ($temp as $i => $item) {
             $itemValue = (string) $item->field($field);
 
-            if ($sortedValue == $itemValue)
-            {
+            if ($sortedValue == $itemValue) {
                 $collection->push($item);
                 $temp->forget($i);
+
                 break;
             }
         }
