@@ -241,7 +241,7 @@ class MediaController extends BaseController
 
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $media->getParentId()])->first();
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
@@ -264,7 +264,7 @@ class MediaController extends BaseController
 
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $media->getParentId()])->first();
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
@@ -292,7 +292,7 @@ class MediaController extends BaseController
 
         $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
 
-        if (null === $folder) {
+        if ($folder === null) {
             throw new RuntimeException('Parent folder is required!');
         }
 
@@ -365,7 +365,7 @@ class MediaController extends BaseController
 
         $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $folderId])->first();
 
-        if (null === $folder) {
+        if ($folder === null) {
             throw new RuntimeException('Parent folder is required!');
         }
 
@@ -451,7 +451,7 @@ class MediaController extends BaseController
             $message = ['Could not delete, media item in use:'];
 
             foreach ($results as $i => $result) {
-                $message[] = '('.($i + 1).") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
+                $message[] = '(' . ($i + 1) . ") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
             }
 
             return back()
@@ -479,6 +479,7 @@ class MediaController extends BaseController
     public function modal_delete($id, MediaItemRepository $itemRepository)
     {
         $results = $this->deleteItemCheck($id, $itemRepository);
+
         if ($results) {
 //            $stop=1;
 //            return response()->json([
@@ -489,7 +490,7 @@ class MediaController extends BaseController
             $message = ['Could not delete, media item in use:'];
 
             foreach ($results as $i => $result) {
-                $message[] = '('.($i + 1).") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
+                $message[] = '(' . ($i + 1) . ") Type: {$result->entity_type}, Name:  {$result->entity_name}, Locale: {$result->locale_name} (Entity ID: {$result->entity_id})";
             }
 
             return back()
@@ -525,13 +526,14 @@ class MediaController extends BaseController
 
         $query = $query->where(function ($query) use ($request) {
             $query
-                ->where('filename', 'like', '%'.$request->input('keywords').'%')
-                ->orWhere('extension', 'like', '%'.$request->input('keywords').'%')
-                ->orWhere('mimetype', 'like', '%'.$request->input('keywords').'%')
+                ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
                 ->orWhereHas('mediaFolder', function ($q) use ($request) {
-                    $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
+                    $q->where('name', 'like', '%' . $request->input('keywords') . '%')->whereNull('deleted_at');
                 })
             ;
+
             if (is_numeric($request->input('keywords'))) {
                 $query->orWhere('id', '=', $request->input('keywords'));
             }
@@ -555,13 +557,14 @@ class MediaController extends BaseController
 
         $query = $query->where(function ($query) use ($request) {
             $query
-                ->where('filename', 'like', '%'.$request->input('keywords').'%')
-                ->orWhere('extension', 'like', '%'.$request->input('keywords').'%')
-                ->orWhere('mimetype', 'like', '%'.$request->input('keywords').'%')
+                ->where('filename', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('extension', 'like', '%' . $request->input('keywords') . '%')
+                ->orWhere('mimetype', 'like', '%' . $request->input('keywords') . '%')
                 ->orWhereHas('mediaFolder', function ($q) use ($request) {
-                    $q->where('name', 'like', '%'.$request->input('keywords').'%')->whereNull('deleted_at');
+                    $q->where('name', 'like', '%' . $request->input('keywords') . '%')->whereNull('deleted_at');
                 })
             ;
+
             if (is_numeric($request->input('keywords'))) {
                 $query->orWhere('id', '=', $request->input('keywords'));
             }
@@ -597,7 +600,7 @@ class MediaController extends BaseController
     {
         $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $request->input('folder')])->first();
 
-        if (null === $folder) {
+        if ($folder === null) {
             throw new RuntimeException("No folder with ID: '{$request->input('folder')}'. Perhaps soft deleted?");
         }
 
@@ -615,7 +618,7 @@ class MediaController extends BaseController
         $msgSuccess = [];
 
         foreach ($files as $file) {
-            if (0 !== $file->getError()) {
+            if ($file->getError() !== 0) {
                 $msgErrors[] = $file->getErrorMessage();
 
                 continue;
@@ -648,7 +651,7 @@ class MediaController extends BaseController
     {
         $folder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $request->input('folder')])->first();
 
-        if (null === $folder) {
+        if ($folder === null) {
             throw new RuntimeException("No folder with ID: '{$request->input('folder')}'. Perhaps soft deleted?");
         }
 
@@ -666,7 +669,7 @@ class MediaController extends BaseController
         $msgSuccess = [];
 
         foreach ($files as $file) {
-            if (0 !== $file->getError()) {
+            if ($file->getError() !== 0) {
                 $msgErrors[] = $file->getErrorMessage();
 
                 continue;
@@ -699,7 +702,7 @@ class MediaController extends BaseController
     {
         $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $parentFolder) {
+        if ($parentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
@@ -718,7 +721,7 @@ class MediaController extends BaseController
     {
         $parentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $parentFolder) {
+        if ($parentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
@@ -737,13 +740,13 @@ class MediaController extends BaseController
     {
         $parent = $folderRepository->findWhere(['deleted_at' => null, 'id' => $request->input('parent')])->first();
 
-        if (null === $parent) {
+        if ($parent === null) {
             return redirect(route('cms:media:modal:folders'))->with('message', 'Parent folder is required!');
         }
 
         $name = $request->input('name');
 
-        if ('' == trim($name)) {
+        if (trim($name) == '') {
             return redirect(route('cms:media:modal:folders'))->with('message', "Folder name can't be empty");
         }
 
@@ -760,13 +763,13 @@ class MediaController extends BaseController
     {
         $parent = $folderRepository->findWhere(['deleted_at' => null, 'id' => $request->input('parent')])->first();
 
-        if (null === $parent) {
+        if ($parent === null) {
             return redirect(route('cms:media:folders'))->with('message', 'Parent folder is required!');
         }
 
         $name = $request->input('name');
 
-        if ('' == trim($name)) {
+        if (trim($name) == '') {
             return redirect(route('cms:media:folders'))->with('message', "Folder name can't be empty");
         }
 
@@ -783,11 +786,11 @@ class MediaController extends BaseController
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
-        if (1 === $currentFolder->getid()) {
+        if ($currentFolder->getid() === 1) {
             return redirect(route('cms:media:folders'))->with('message', "Root folder can't be changed!");
         }
 
@@ -806,11 +809,11 @@ class MediaController extends BaseController
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
-        if (1 === $currentFolder->getid()) {
+        if ($currentFolder->getid() === 1) {
             return redirect(route('cms:media:folders'))->with('message', "Root folder can't be changed!");
         }
 
@@ -829,18 +832,18 @@ class MediaController extends BaseController
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $currentFolder->getParentId()) {
+        if ($currentFolder->getParentId() === null) {
             return redirect(route('cms:media:folders:edit', $id))->with('message', "Master folder can't be changed");
         }
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
         $name = $request->input('name', '');
         $parent = $request->input('parent');
 
-        if ('' == trim($name)) {
+        if (trim($name) == '') {
             return redirect(route('cms:media:modal:folders:edit', $id))->with('message', "Folder name can't be empty");
         }
 
@@ -853,18 +856,18 @@ class MediaController extends BaseController
     {
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $currentFolder->getParentId()) {
+        if ($currentFolder->getParentId() === null) {
             return redirect(route('cms:media:folders:edit', $id))->with('message', "Master folder can't be changed");
         }
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
         $name = $request->input('name', '');
         $parent = $request->input('parent');
 
-        if ('' == trim($name)) {
+        if (trim($name) == '') {
             return redirect(route('cms:media:folders:edit', $id))->with('message', "Folder name can't be empty");
         }
 
@@ -878,7 +881,7 @@ class MediaController extends BaseController
         MediaFolderRepository $folderRepository,
         MediaItemRepository $itemRepository
     ) {
-        if (1 == $folderId) {
+        if ($folderId == 1) {
             return redirect(route('cms:media:modal:folders'))->with('message', "Root folder can't be removed!");
         }
 
@@ -896,7 +899,7 @@ class MediaController extends BaseController
         MediaFolderRepository $folderRepository,
         MediaItemRepository $itemRepository
     ) {
-        if (1 == $folderId) {
+        if ($folderId == 1) {
             return redirect(route('cms:media:folders'))->with('message', "Root folder can't be removed!");
         }
 
@@ -913,13 +916,13 @@ class MediaController extends BaseController
     {
         $parent = $folderRepository->findWhere(['deleted_at' => null, 'id' => $parentId])->first();
 
-        if (null === $parent) {
+        if ($parent === null) {
             throw new RuntimeException('Parent folder is required!');
         }
 
         $currentFolder = $folderRepository->findWhere(['deleted_at' => null, 'id' => $id])->first();
 
-        if (null === $currentFolder) {
+        if ($currentFolder === null) {
             throw new RuntimeException("No folder with ID: '{$id}'. Perhaps soft deleted?");
         }
 
@@ -932,7 +935,7 @@ class MediaController extends BaseController
     {
         $parent = $folderRepository->findWhere(['deleted_at' => null, 'id' => $parentId])->first();
 
-        if (null === $parent) {
+        if ($parent === null) {
             throw new RuntimeException('Parent folder is required!');
         }
 
@@ -978,10 +981,10 @@ class MediaController extends BaseController
                 and `entity_fields`.`deleted_at` is null
                 group by entity_revisions.entity_localisation_id";
 
-        $results = DB::select(DB::raw($sql), ['%"'.$id.'"%']);
+        $results = DB::select(DB::raw($sql), ['%"' . $id . '"%']);
 
         foreach ($results as $i => &$result) {
-            if ('combo' == $result->field_type) {
+            if ($result->field_type == 'combo') {
                 // validate combo subfields to see if subfield with matching value is image/file field type
                 $comboFields = json_decode($result->data_value, true);
 
@@ -994,7 +997,8 @@ class MediaController extends BaseController
                                 if (is_array($value) && array_key_exists('id', $value)) {
                                     $value = $value['id'];
                                 }
-                                if (false !== strpos($value, $id)) {
+
+                                if (strpos($value, $id) !== false) {
                                     // select field type to check if image/file
                                     $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
                                         where 1
@@ -1014,7 +1018,7 @@ class MediaController extends BaseController
                                 }
                             }
                         } else {
-                            if (false !== strpos($fval, $id)) {
+                            if (strpos($fval, $id) !== false) {
                                 // select field type to check if image/file
                                 $sql = "select `field_type`, `name` as 'field_name' from `entity_fields`
                                         where 1
@@ -1040,6 +1044,7 @@ class MediaController extends BaseController
                     unset($results[$i]);
                 }
             } elseif (in_array($result->field_type, ['image', 'file'])) {
+                $valid = false;
                 $fields = json_decode($result->data_value, true);
 
                 foreach ($fields as $field) {

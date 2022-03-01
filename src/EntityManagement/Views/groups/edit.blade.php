@@ -1,4 +1,4 @@
-<?php use 
+<?php 
 use Illuminate\Support\Str;
 ?>
 @extends('argon::layout.master')
