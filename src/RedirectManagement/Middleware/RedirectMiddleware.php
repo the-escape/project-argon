@@ -17,7 +17,8 @@ class RedirectMiddleware
      * NOTE: You can exclude parameter(s) can end with * - wildcard.
      *
      * @param \Illuminate\Http\Request $request
-     * @param string                   $exclude - parameters as a comma-separated list - avoid whitespace!
+     * @param string $exclude - parameters as a comma-separated list - avoid whitespace!
+     * @param Closure $next
      *
      * @return mixed
      */
@@ -25,7 +26,7 @@ class RedirectMiddleware
     {
         $REQUEST_URI = filter_input(INPUT_SERVER, 'REQUEST_URI');
 
-        if (is_null($REQUEST_URI)) {
+        if (is_null($REQUEST_URI) || !is_null($request->query('preview_page'))) {
             return $next($request);
         }
 
@@ -44,11 +45,11 @@ class RedirectMiddleware
 
             $last = $exclude[strlen($exclude) - 1];
 
-            if ('*' == $last) {
+            if ($last == '*') {
                 $exclude = rtrim($exclude, '*');
                 $strpos = strpos($path, $exclude);
 
-                if (0 === $strpos) {
+                if ($strpos === 0) {
                     return $next($request);
                 }
             }
