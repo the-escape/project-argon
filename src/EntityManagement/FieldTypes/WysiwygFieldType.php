@@ -159,6 +159,20 @@ class WysiwygFieldType extends AbstractFieldType
             'help' => "Enable 'Bulleted List' option.",
             'toolbar' => 'BulletedList',
         ],
+        'indent' => [
+            'label' => 'Indent',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Enable 'Indent' option.",
+            'toolbar' => 'Indent',
+        ],
+        'outdent' => [
+            'label' => 'Outdent',
+            'type' => 'boolean',
+            'default' => false,
+            'help' => "Enable 'Outdent' option.",
+            'toolbar' => 'Outdent',
+        ],
         'image' => [
             'label' => 'Image',
             'type' => 'boolean',
