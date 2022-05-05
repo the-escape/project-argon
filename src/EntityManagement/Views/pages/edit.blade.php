@@ -76,7 +76,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getLocaleId() == $localeId) active @endif"
-                               href="{{ route('cms:pages:edit_locale', [$page->getId(), $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
+                               href="{{ route('cms:pages:edit_locale', ['id' => $page->getId(), 'locale' => $l->getLocaleId()])}}" title="@if($localSlug = $l->getLocale()->getSlug()) {{ '/'.$localSlug.$defaultFronEndPageUrl }} @else {{ $defaultFronEndPageUrl }} @endif">
                                 {{$l->getLocale()->getName()}}
                             </a>
                             @if($defaultLocalisation->getLocaleId() !== $l->getLocaleId())
