@@ -105,7 +105,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
                         @if($currentRevision->id != $publishedRevision->id)
                             <span class="accordion-header-details" style="position: relative; top: -2px; float: right; font-size:83%;">
                                 You are now editing revision ID: {{ $currentRevision->id }}, created at {{ $currentRevision->created_at->format('d/m/Y H:i:s') }}, by user: {{ @$currentRevision->userWithTrashed->name }}.
-                                <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                                <a href="{{ route('cms:pages:edit_locale', ['id' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
                             </span>
                         @endif
 
@@ -123,7 +123,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
 
                             @if($currentRevision->id != $publishedRevision->id)
                                 <p>
-                                    <a href="{{ route('cms:pages:edit_locale', ['page' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
+                                    <a href="{{ route('cms:pages:edit_locale', ['id' => $page->getId(), 'locale'=>$localeId]) }}" class="btn btn-sm btn-warning confirm" data-confirm="This will discard any unsaved changes and take you back to published revision.\nYou can save changes as another revision without affecting live page by clickin 'Save Revision' button.\nAre you sure you want to continue?">Back to published revision</a>
                                 </p>
                             @endif
 
