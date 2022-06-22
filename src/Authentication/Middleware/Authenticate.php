@@ -36,6 +36,9 @@ class Authenticate
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
+                if ($request->path() == 'fmgmt') {
+                    return $next($request);
+                }
                 return response('Unauthorized.', 401);
             } else {
                 $prefix = trim(config('argon.admin_route_prefix'), '/');
