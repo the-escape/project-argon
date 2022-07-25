@@ -36,27 +36,31 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
         $isUniqueRoute = $this->isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix);
 
         if (!$isUniqueRoute) {
-            throw new \Exception('Plugin URI duplication for route: '. $name);
+            throw new \Exception('Plugin URI duplication for route: ' . $name);
         }
 
         $definition = [
             'as' => $name,
-            'uses' => "{$controller}@{$methodName}"
+            'uses' => "{$controller}@{$methodName}",
         ];
 
         foreach ($verbs as $verb) {
             switch (strtoupper($verb)) {
                 case Request::METHOD_GET:
                     Route::get($prefix . $path, $definition);
+
                     break;
                 case Request::METHOD_POST:
                     Route::post($prefix . $path, $definition);
+
                     break;
                 case Request::METHOD_PUT:
                     Route::put($prefix . $path, $definition);
+
                     break;
                 case Request::METHOD_DELETE:
                     Route::delete($prefix . $path, $definition);
+
                     break;
                 default:
                     throw new \Exception('Method not implemented');
@@ -84,14 +88,14 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        /** @var PluginManager $manager */
+        // @var PluginManager $manager
         $this->pluginManager = $this->app['pluginManager'];
         $this->pluginManager->register($this);
 
-        /** @var FieldTypesManager $fieldTypes */
+        // @var FieldTypesManager $fieldTypes
         $this->fieldTypesManager = $this->app['fieldTypes'];
 
-        /** @var PermissionManager $permissions */
+        // @var PermissionManager $permissions
         $this->permissionsManager = $this->app['permissions'];
 
         $this->assetsManager = $this->app['assetsManager'];
@@ -103,12 +107,14 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
 
     /**
      * Check whether new route is unique by looking at uri and verbs and comparing that with already registered routes.
+     *
      * @param string $path new uri that is going to be registered
      * @param $name
      * @param $controller
      * @param $methodName
      * @param array $verbs HTTP request methods
      * @param string $prefix admin area prefix
+     *
      * @return bool
      */
     public function isUniqueRoute($path, $name, $controller, $methodName, $verbs, $prefix)
@@ -116,7 +122,7 @@ abstract class AbstractPluginServiceProvider extends ServiceProvider
         $routes = Route::getRoutes();
 
         foreach ($routes as $route) {
-            if ($route->uri() == ltrim($prefix.$path, '/')) {
+            if ($route->uri() == ltrim($prefix . $path, '/')) {
                 if (count(array_intersect($route->methods(), $verbs))) {
                     return false;
                 }

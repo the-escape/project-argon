@@ -33,7 +33,7 @@ class Reindex extends Command
 
         if (!$solr->isEnabled()) {
             $this->warn('Solr not enabled! Review configuration and try again.');
-            return;
+            return 0;
         }
 
         $this->info('Content reindexing...');

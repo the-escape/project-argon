@@ -40,7 +40,7 @@ class BlocksLibraryConnect extends Command
         {
             if (!$this->confirm('This project is already connected to Blocks Library. Do you want to create new connection?'))
             {
-                return false;
+                return 0;
             }
         }
 
@@ -66,7 +66,7 @@ class BlocksLibraryConnect extends Command
             if ($response->getStatusCode() !== 201)
             {
                 $this->warn('Authentication code is invalid.');
-                return false;
+                return 0;
             }
         }
 
