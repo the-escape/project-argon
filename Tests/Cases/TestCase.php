@@ -1,6 +1,7 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
+
 
 use Escape\Argon\Core\ArgonServiceProvider;
 use Escape\Argon\Tests\LaravelStubs\LaravelApplication;

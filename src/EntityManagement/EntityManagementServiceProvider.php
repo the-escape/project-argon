@@ -194,7 +194,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'types/create',
-            'cms:types:create',
+            'cms:types:save',
             EntityTypeController::class,
             'save',
             Request::METHOD_POST
@@ -306,7 +306,7 @@ class EntityManagementServiceProvider extends AbstractPluginServiceProvider
 
         $this->addRoute(
             'types/{typeId}/groups',
-            'cms:types:groups',
+            'cms:types:saveGroups',
             EntityTypeController::class,
             'saveGroups',
             Request::METHOD_POST

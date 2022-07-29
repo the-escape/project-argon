@@ -269,14 +269,14 @@ class MediaServiceProvider extends AbstractPluginServiceProvider
         );
         $this->addRoute(
             'media/{itemId}/folderParentUpdate/{parentId}',
-            'cms:media:parent:update',
+            'cms:media:parent:updateFolderParent',
             MediaController::class,
             'folderParentUpdate',
             Request::METHOD_POST
         );
         $this->addRoute(
             'media/{itemId}/itemParentUpdate/{parentId}',
-            'cms:media:parent:update',
+            'cms:media:parent:updateItemParent',
             MediaController::class,
             'itemParentUpdate',
             Request::METHOD_POST

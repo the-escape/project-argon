@@ -276,13 +276,13 @@ Then install the dependencies with:
 bower install
 ```
 
-The Sass is compiled with Gulp and Laravel Elixir. Install Gulp if not already installed globally with:
+The Sass is compiled with Gulp and Laravel Mix. Install Gulp if not already installed globally with:
 
 ```
 npm install -g gulp
 ```
 
-Then install the local dependencies, including Elixir with:
+Then install the local dependencies, including Mix with:
 
 ```
 npm install

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use stdClass;
+use DateTimeInterface;
 
 class EntityCache extends Model implements Compressable
 {
@@ -36,6 +37,11 @@ class EntityCache extends Model implements Compressable
         'entity_updated_at',
         'cache',
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
     public function setCacheAttribute($value)
     {

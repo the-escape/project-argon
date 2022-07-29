@@ -1,6 +1,6 @@
 <?php
 
-namespace Escape\Argon\Tests;
+namespace Escape\Argon\Test\Cases;
 
 use Escape\Argon\Authentication\Permission;
 use Escape\Argon\Authentication\PermissionGrant;
@@ -31,7 +31,7 @@ class AuthenticationTest extends TestCase
 
     public function testCreateRole()
     {
-        $role = new Role;
+        $role = new Role();
         $role->name = 'MadeUp';
         $role->save();
 
@@ -58,7 +58,7 @@ class AuthenticationTest extends TestCase
 
     public function testGrantingPermission()
     {
-        $role = new Role;
+        $role = new Role();
         $role->name = 'MadeUp';
         $role->save();
 
