@@ -1,6 +1,9 @@
 <?php namespace Escape\Argon\Media\Helpers;
 
-use ImageOptimizer\OptimizerFactory;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Spatie\ImageOptimizer\Optimizers\Jpegoptim;
+use Spatie\ImageOptimizer\Optimizers\Optipng;
+use Spatie\ImageOptimizer\Optimizers\Gifsicle;
 
 /**
  * Class ImageOptim
@@ -14,7 +17,9 @@ class ImageOptim
 {
     protected $enable;
 
-    public $factory;
+    // public $factory;
+
+    public $optimizer;
 
     public function __construct()
     {
@@ -22,14 +27,22 @@ class ImageOptim
 
         if($this->isEnabled())
         {
-            $this->factory = new OptimizerFactory([
-                'ignore_errors' => false,
-                'execute_only_first_jpeg_optimizer' => false,
-                'execute_only_first_png_optimizer' => false,
-                'jpegoptim_options' => ['--strip-all', '--all-progressive', '-m70'],
-                'optipng_options' => ['-i0', '-o2', '-strip all', '-quiet'],
-                'gifsicle_options' => ['-b', '-O5'],
-            ]);
+            $this->optimizer = OptimizerChainFactory::create()
+                ->addOptimizer(new Jpegoptim([
+                    '--strip-all',
+                    '--all-progressive',
+                    '-m70',
+                ]))
+                ->addOptimizer(new Optipng([
+                    '-i0', 
+                    '-o2', 
+                    '-strip all', 
+                    '-quiet',
+                ]))
+                ->addOptimizer(new Gifsicle([
+                    '-b',
+                    '-05',
+                ]));
         }
     }
 
@@ -50,7 +63,7 @@ class ImageOptim
             return false;
         }
 
-        $optimizer = $this->factory->get();
+        $optimizer = $this->optimizer;
         $optimizer->optimize($filepath);
 
         return true;

@@ -13,7 +13,7 @@
         "solarium/solarium":"^6.1",
         "alek13/slack": "^2.2",
         "symfony/options-resolver": "^5.0",
-        "ps/image-optimizer": "^2.0.2",
+        "spatie/image-optimizer": "^1.6.2",
         "laravel/ui": "^3.0"
     },
     "require-dev": {
