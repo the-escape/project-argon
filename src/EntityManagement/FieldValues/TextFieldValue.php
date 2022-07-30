@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Traversable;
+
 class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \Countable
 {
     public function __toString()
@@ -19,7 +21,7 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \
         }
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if ($this->data == null) {
             $data = [''];
@@ -34,7 +36,7 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \
         return new \ArrayIterator($data);
     }
 
-    public function count()
+    public function count(): int
     {
         if (is_array($this->data)) {
             return count($this->data);

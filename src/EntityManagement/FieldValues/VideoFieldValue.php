@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Traversable;
+
 class VideoFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
     public function __toString()
@@ -15,7 +17,7 @@ class VideoFieldValue extends AbstractFieldValue implements \IteratorAggregate
         }
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if ($this->data == null) {
             $data = [''];

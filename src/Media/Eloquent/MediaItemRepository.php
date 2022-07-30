@@ -26,4 +26,19 @@ class MediaItemRepository extends BaseRepository
         $count = $this->findWhere(['folder' => $folderId, 'filename' => $name])->count();
         return $count > 0;
     }
+
+    public function delete($id)
+    {
+        $deleted = parent::delete($id);
+
+        if ($deleted) {
+            $path = 'media/' . $id;
+
+            if ($exists = \File::exists($path)) {
+                \File::deleteDirectory($path);
+            }
+        }
+
+        return $deleted;
+    }
 }

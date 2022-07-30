@@ -3,6 +3,7 @@
 namespace Escape\Argon\EntityManagement\FieldValues;
 
 use Carbon\Carbon;
+use Traversable;
 
 /**
  * Class DatetimeFieldValue
@@ -47,7 +48,7 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return $date;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if ($this->isEmpty()) {
             $data = [''];

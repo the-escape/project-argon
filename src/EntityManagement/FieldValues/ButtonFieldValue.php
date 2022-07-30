@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Traversable;
+
 class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
     public function __construct($data = null)
@@ -86,7 +88,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
         return false;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if ($this->data == null) {
             $data = [''];

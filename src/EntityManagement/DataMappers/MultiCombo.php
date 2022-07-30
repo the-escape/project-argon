@@ -7,6 +7,7 @@ use ArrayIterator;
 use Countable;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
 use IteratorAggregate;
+use Traversable;
 
 /**
  * Class MultiCombo handles multiple combo instances providing convenient abstraction using
@@ -68,7 +69,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->combos);
     }
@@ -78,7 +79,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->combos);
     }
@@ -107,7 +108,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return mixed
      */
-    public function __set($key, Combo $value)
+    public function __set($key, ?Combo $value)
     {
         return $this->combos[$key] = $value;
     }
@@ -132,7 +133,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -144,7 +145,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return ($this->__get($offset) !== null);
     }
@@ -154,7 +155,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @param mixed $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->__set($offset, null);
     }
@@ -166,7 +167,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->__get($offset);
     }

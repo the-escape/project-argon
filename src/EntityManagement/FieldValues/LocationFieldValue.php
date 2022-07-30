@@ -2,6 +2,8 @@
 
 namespace Escape\Argon\EntityManagement\FieldValues;
 
+use Traversable;
+
 class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregate
 {
     public function __construct($data = null)
@@ -76,7 +78,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return false;
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         if ($this->data == null) {
             $data = [''];

@@ -5,22 +5,20 @@
     "license": "Proprietary",
     "type": "project",
     "require": {
-        "php": ">=7.3",
-        "laravel/framework": "^8.0",
+        "php": ">=8.0.2",
+        "laravel/framework": "^9.0",
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.5",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium":"^5.0",
+        "solarium/solarium":"^6.1",
         "alek13/slack": "^2.2",
         "symfony/options-resolver": "^5.0",
         "ps/image-optimizer": "^2.0.2",
-        "fideloper/proxy": "^4.0",
         "laravel/ui": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "phpunit/phpunit": "^9.5",
-        "phpspec/phpspec": "~6.1",
         "laravel/laravel": "^7.0",
         "symfony/dom-crawler": "^5.0",
         "symfony/css-selector": "^5.0",
@@ -32,8 +30,7 @@
             "Escape\\Argon\\": "src"
         },
         "files": [
-            "src/helpers/guid.php",
-            "src/helpers/Solr.php"
+            "src/Helpers/Guid.php"
         ]
     },
     "autoload-dev": {

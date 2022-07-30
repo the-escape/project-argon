@@ -37,7 +37,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         $this->subfields = $subfields;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -49,7 +49,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
      * <b>Traversable</b>
      * @since 5.0.0
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $data = [];
 

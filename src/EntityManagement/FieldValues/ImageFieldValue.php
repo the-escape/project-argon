@@ -50,7 +50,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return $this->current();
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }

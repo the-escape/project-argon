@@ -24,7 +24,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         $this->position = 0;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
