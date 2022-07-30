@@ -160,15 +160,15 @@ class PagesController extends BaseController
 
         $redirect_url = new stdClass();
         $redirect_url->{$localisation->getLocaleId()} = $request->input('redirect_url');
-        $request->merge(['redirect_url' => $redirect_url]);
+        $request->merge(['redirect_url' => (array)$redirect_url]);
 
         $group_order = new stdClass();
         $group_order->{$localisation->getLocaleId()} = $request->input('group_order', $entity->getGroupOrderString($localisation->getLocaleId()));
-        $request->merge(['group_order' => $group_order]);
+        $request->merge(['group_order' => (array)$group_order]);
 
         $group_render = new stdClass();
         $group_render->{$localisation->getLocaleId()} = $request->input('group_render', []);
-        $request->merge(['group_render' => $group_render]);
+        $request->merge(['group_render' => (array)$group_render]);
 
         $entity = $entityRepository->update($request->only(['redirect_url', 'group_order', 'group_render']), $entity->id);
 
@@ -250,15 +250,15 @@ class PagesController extends BaseController
 
         $redirect_url = ($entity->redirect_url instanceof stdClass) ? $entity->redirect_url : new stdClass();
         $redirect_url->{$localeId} = $request->input('redirect_url');
-        $request->merge(['redirect_url' => $redirect_url]);
+        $request->merge(['redirect_url' => (array)$redirect_url]);
 
         $group_order = ($entity->group_order instanceof stdClass) ? $entity->group_order : new stdClass();
         $group_order->{$localeId} = $request->input('group_order', $entity->getGroupOrderString($localeId));
-        $request->merge(['group_order' => $group_order]);
+        $request->merge(['group_order' => (array)$group_order]);
 
         $group_render = ($entity->group_render instanceof stdClass) ? $entity->group_render : new stdClass();
         $group_render->{$localeId} = $request->input('group_render', []);
-        $request->merge(['group_render' => $group_render]);
+        $request->merge(['group_render' => (array)$group_render]);
 
         if (!$preview) {
             $entity->update($request->only(['name', 'slug', 'status', 'redirect_url', 'group_order', 'group_render']));
@@ -343,15 +343,15 @@ class PagesController extends BaseController
 
         $redirect_url = ($entity->redirect_url instanceof stdClass) ? $entity->redirect_url : new stdClass();
         $redirect_url->{$localeId} = $request->input('redirect_url');
-        $request->merge(['redirect_url' => $redirect_url]);
+        $request->merge(['redirect_url' =>(array) $redirect_url]);
 
         $group_order = ($entity->group_order instanceof stdClass) ? $entity->group_order : new stdClass();
         $group_order->{$localeId} = $request->input('group_order', $entity->getGroupOrderString($localeId));
-        $request->merge(['group_order' => $group_order]);
+        $request->merge(['group_order' => (array)$group_order]);
 
         $group_render = ($entity->group_render instanceof stdClass) ? $entity->group_render : new stdClass();
         $group_render->{$localeId} = $request->input('group_render', []);
-        $request->merge(['group_render' => $group_render]);
+        $request->merge(['group_render' => (array)$group_render]);
 
         $revision = $revisionsRepository->create([
             'entity_localisation_id' => $currentLocalisation->id,

@@ -5,7 +5,7 @@
         <h1 class="page-header">Import Field Group</h1>
 
         <div class="js-alerts">
-            @include('argon::inc.alerts', compact($errors))
+            @include('argon::inc.alerts', compact('errors'))
         </div>
 
         <form action="{{ route('cms:types:groups:post-import-json', [$type->id]) }}" method="POST" autocomplete="false">

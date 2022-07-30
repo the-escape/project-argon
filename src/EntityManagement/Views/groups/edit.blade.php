@@ -4,7 +4,7 @@
     <div class="main">
         <h1 class="page-header">Edit Group</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', compact('errors'))
 
         <form action="{{ route('cms:types:groups:update', [$type->id, $group->id]) }}" method="POST" autocomplete="false">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

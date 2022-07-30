@@ -4,7 +4,7 @@
     <div class="main">
         <h1 class="page-header">Add Subfield</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', compact('errors'))
 
         <form action="{{ route('cms:types:combos:fields:save', [$type->id, $combo->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -4,7 +4,7 @@
     <div class="main">
         <h1 class="page-header">Menus</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', compact('errors'))
 
         <div class="dashboard-actions dashboard-actions--top">
             <a href="{{ route('cms:menus:create') }}" class="btn btn-primary">Create</a>

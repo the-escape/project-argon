@@ -272,7 +272,6 @@ class MediaController extends BaseController
                 }
 
                 if (!isset($value) || !$valid) {
-                {
                     unset($results[$i]);
                 }
 

@@ -4,7 +4,7 @@
     <div class="main">
         <h1 class="page-header">Add Combo</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', compact('errors'))
 
         <form action="{{ route('cms:types:combos:save', [$type->id]) }}" method="POST">
 
