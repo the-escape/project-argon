@@ -24,9 +24,9 @@ use Escape\Argon\Locales\Eloquent\LocaleRepository;
 use Escape\Argon\Media\Eloquent\MediaFolderRepository;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Lang;
 use Redirect;
 use stdClass;
@@ -64,8 +64,9 @@ class PagesController extends BaseController
         if (!$page) {
             return Redirect::route('cms:pages:manage')->with('errors', ["Page not found."]);
         }
-        
+
         $children = $entityRepository->findByField('parent_id', $pageId);
+
         if ($children->count()) {
             return Redirect::route('cms:pages:manage')->with('errors', ["Page could not be deleted because it has child pages. Delete child pages first and then try again."]);
         }
@@ -75,7 +76,7 @@ class PagesController extends BaseController
             $solr->unindexEntity($pageId);
             EntityCache::uncache($pageId);
         } catch (Exception $e) {
-            Log::error('Deleting a page threw an exception: '. $e->getMessage());
+            Log::error('Deleting a page threw an exception: ' . $e->getMessage());
         }
 
         return Redirect::route('cms:pages:manage');
@@ -86,6 +87,9 @@ class PagesController extends BaseController
      *
      * @param $parentId
      * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityGroupRepository $groupRepository
+     * @param MediaFolderRepository $folderRepository
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -114,6 +118,14 @@ class PagesController extends BaseController
      *
      * @param $parentId
      * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityRepository $entityRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param FieldDataRepository $fieldDataRepository
+     * @param LocalisationRepository $localisationRepository
+     * @param LocaleRepository $localeRepository
+     * @param Request $request
+     * @param Solr $solr
      *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -222,6 +234,9 @@ class PagesController extends BaseController
      * create a new root node in the site tree.
      *
      * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityGroupRepository $groupRepository
+     * @param MediaFolderRepository $folderRepository
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -248,6 +263,14 @@ class PagesController extends BaseController
      * save new root node in the site tree.
      *
      * @param $typeId
+     * @param EntityTypeRepository $typeRepository
+     * @param EntityRepository $entityRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param FieldDataRepository $fieldDataRepository
+     * @param LocalisationRepository $localisationRepository
+     * @param LocaleRepository $localeRepository
+     * @param Request $request
+     * @param Solr $solr
      *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -404,10 +427,10 @@ class PagesController extends BaseController
             'name' => 'required',
         ];
 
-        if (null != $entity->parent_id) {
+        if ($entity->parent_id != null) {
             $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
         } else {
-            if (empty($entity->slug) || '/' == $entity->slug) {
+            if (empty($entity->slug) || $entity->slug == '/') {
                 $request->merge(['slug' => '/']);
             } else {
                 $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,NULL,deleted_at,NULL";
@@ -433,6 +456,7 @@ class PagesController extends BaseController
         $request->merge(['group_render' => $group_render]);
 
         $settings = ($entity->settings instanceof stdClass) ? $entity->settings : new stdClass();
+
         if (!isset($settings->{$localeId})) {
             $settings->{$localeId} = new stdClass();
         }
@@ -453,7 +477,7 @@ class PagesController extends BaseController
 
         if ($preview) {
             $revisionsRepository->deletePreviews([$revision->id]);
-            $previewUrl = url($entity->toPage()->getUrl($currentLocale).'?'.http_build_query(['preview_page' => $revision->id]));
+            $previewUrl = url($entity->toPage()->getUrl($currentLocale) . '?' . http_build_query(['preview_page' => $revision->id]));
 
             return response($previewUrl);
         }
@@ -508,11 +532,11 @@ class PagesController extends BaseController
             'name' => 'required',
         ];
 
-        if (null != $entity->parent_id) {
+        if ($entity->parent_id != null) {
             $rules['slug'] = "required|unique:entities,slug,{$entity->id},id,parent_id,{$entity->parent_id},deleted_at,NULL";
         } else {
-            if ('/' !== $entity->slug) {
-                $request->merge(['slug' => '/'.$entity->slug]);
+            if ($entity->slug !== '/') {
+                $request->merge(['slug' => '/' . $entity->slug]);
             } else {
                 $request->merge(['slug' => '/']);
             }
@@ -599,7 +623,7 @@ class PagesController extends BaseController
                 }
             }
 
-            if (null === $currentRevision) {
+            if ($currentRevision === null) {
                 return back()->with('message', 'Invalid revision.');
             }
         } else {
@@ -639,6 +663,11 @@ class PagesController extends BaseController
      * create a new locale (country / language).
      *
      * @param $pageId
+     * @param Request $request
+     * @param LocalisationRepository $localisationRepository
+     * @param EntityRevisionRepository $revisionRepository
+     * @param EntityRepository $entityRepository
+     * @param Solr $solr
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
@@ -724,7 +753,7 @@ class PagesController extends BaseController
                 FieldsHelpers::saveField($field, $revision, $value, $fieldDataRepository, $locale);
             }
 
-            if (1 == $page->status) {
+            if ($page->status == 1) {
                 event(new PageSaved($page, $localisation, $request));
             }
         }
@@ -775,6 +804,7 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
+
         foreach ($localisations as $localisation) {
             $solr->indexEntity($page, $localisation);
             EntityCache::cache($page, $localisation);
@@ -809,7 +839,7 @@ class PagesController extends BaseController
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-        if (null === $revision) {
+        if ($revision === null) {
             return back()->with('message', 'Invalid revision.');
         }
 
@@ -850,11 +880,12 @@ class PagesController extends BaseController
         $xml = new DOMDocument('1.0', 'utf-8');
         $xml->load($file);
 
-        if (false === $xml) {
+        if ($xml === false) {
             $errors = libxml_get_errors();
             libxml_clear_errors();
 
             $validator->errors()->add('xml', 'The uploaded file is invalid.');
+
             foreach ($errors as $error) {
                 $validator->errors()->add('xml', $error->message);
             }
@@ -862,7 +893,7 @@ class PagesController extends BaseController
             return redirect()->back()->withErrors($validator->errors());
         }
 
-        $schema = __DIR__.'/../../../public/translation-schema.xsd';
+        $schema = __DIR__ . '/../../../public/translation-schema.xsd';
 
         if (file_exists($schema) && !$xml->schemaValidate($schema)) {
             $validator->errors()->add('xml', 'The uploaded file has failed the schema valiadtion.');
@@ -930,27 +961,8 @@ class PagesController extends BaseController
                         $value = $latestRevisionFields[$field->id]->getData();
 
                         break;
-
-                    case 'combo':
-                        $defaultValue = $latestRevisionFields[$field->id]->getData();
+                    case "combo":
                         $value = isset($xmlData[$field->id]) ? $xmlData[$field->id] : [];
-                        $vKeys = array_keys($value);
-                        $dvKeys = array_keys($defaultValue);
-
-                        foreach ($value as $hash => $combo) {
-                            $valueIndex = array_search($hash, $vKeys);
-                            $defaultHash = false !== $valueIndex && isset($dvKeys[$valueIndex]) ? $dvKeys[$valueIndex] : false;
-
-                            if ($defaultHash) {
-                                $defaultValueFields = $defaultValue[$defaultHash]->fields;
-
-                                foreach ($defaultValueFields as $subfieldId => $subfieldValue) {
-                                    if (!isset($combo->fields[$subfieldId])) {
-                                        $combo->fields[$subfieldId] = $subfieldValue;
-                                    }
-                                }
-                            }
-                        }
 
                         break;
 
@@ -1032,14 +1044,17 @@ class PagesController extends BaseController
     {
         $dom = $xml->documentElement;
         $fields = $dom->getElementsByTagName('field');
+
         if ($fields->length) {
             foreach ($fields as $field) {
                 $xmlFieldId = $field->getAttribute('id');
                 $xmlFieldType = $field->getAttribute('type');
 
                 $translationContent = $field->getElementsByTagName('translationContent');
-                if ('combo' !== $xmlFieldType && $translationContent->length) {
+
+                if ($xmlFieldType !== 'combo' && $translationContent->length) {
                     $xmlFieldValue = [];
+
                     foreach ($translationContent as $node) {
                         $xmlFieldValue[] = $node->nodeValue;
                     }
@@ -1048,6 +1063,7 @@ class PagesController extends BaseController
                 }
 
                 $subfieldsWrapper = $field->getElementsByTagName('subfields');
+
                 if ($subfieldsWrapper->length) {
                     if ($subfieldsWrapper->length > 0) {
                         foreach ($subfieldsWrapper as $subfieldsNode) {
@@ -1069,6 +1085,7 @@ class PagesController extends BaseController
     private function getTranslationDataFromNode($node)
     {
         $subfields = $node->getElementsByTagName('field');
+
         if ($subfields->length) {
             $xmlFieldSubfields = [];
 
@@ -1078,14 +1095,15 @@ class PagesController extends BaseController
                 $xmlSubFieldType = $subfield->getAttribute('type');
 
                 $translationContent = $subfield->getElementsByTagName('translationContent');
+
                 if ($translationContent->length) {
                     foreach ($translationContent as $node) {
                         $xmlSubFieldValue[] = $node->nodeValue;
                     }
                 }
 
-                if ('grid' !== $xmlSubFieldType) {
-                    $xmlFieldSubfields['fields'][] = $xmlSubFieldValue;
+                if ($xmlSubFieldType !== 'grid') {
+                    $xmlFieldSubfields['fields'][$xmlSubFieldId] = $xmlSubFieldValue;
                 }
             }
 
@@ -1096,6 +1114,7 @@ class PagesController extends BaseController
     private function getSubfieldFromSlug($slug, $fields)
     {
         $result = false;
+
         foreach ($fields as $field) {
             if ($field->getFieldSlug() == $slug) {
                 $result = $field;
@@ -1135,7 +1154,7 @@ class PagesController extends BaseController
             if (true) {
                 if ($field['field'] instanceof ComboFieldType) {
                     $hash = guid();
-                    $originalValue = $field['content'];
+                    $originalValue = $field['content'] ?: [];
                     $translationValue = $field['translation'];
 
                     $xmlField = $xml->createElement('field');
@@ -1184,7 +1203,8 @@ class PagesController extends BaseController
                                     $empty = false;
                                 }
                             }
-                            if (false === $empty) {
+
+                            if ($empty === false) {
                                 $xmlField->appendChild($xmlSubFields);
                                 $xmlFields->appendChild($xmlField);
                             }
@@ -1193,6 +1213,7 @@ class PagesController extends BaseController
                         $xmlSubFields = $xml->createElement('subfields');
 
                         $empty = true;
+
                         foreach ($subfields as $subfield) {
                             $subfieldValue = $originalValue->field($subfield->getFieldSlug());
 
@@ -1227,7 +1248,8 @@ class PagesController extends BaseController
                                 $empty = false;
                             }
                         }
-                        if (false === $empty) {
+
+                        if ($empty === false) {
                             $xmlField->appendChild($xmlSubFields);
                             $xmlFields->appendChild($xmlField);
                         }
@@ -1242,9 +1264,14 @@ class PagesController extends BaseController
                     $xmlField->setAttribute('multiple', $field['field']->allowMultiple() ? 'true' : 'false');
                     $xmlField->setAttribute('type', $field['field']->getKey());
 
-                    foreach ($field['content'] as $value) {
-                        $value = !is_object($value) ? htmlspecialchars($value) : '';
-                        $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                    if (!empty($field['content'])) {
+                        foreach ($field['content'] as $value) {
+                            $value = !is_object($value) ? htmlspecialchars($value) : '';
+                            $xmlOriginalContent = $xml->createElement('originalContent', $value);
+                            $xmlField->appendChild($xmlOriginalContent);
+                        }
+                    } else {
+                        $xmlOriginalContent = $xml->createElement('originalContent');
                         $xmlField->appendChild($xmlOriginalContent);
                     }
 
