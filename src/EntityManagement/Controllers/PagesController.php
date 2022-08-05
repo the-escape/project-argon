@@ -1137,9 +1137,9 @@ class PagesController extends BaseController
         $skipFieldTypes = [
             'boolean',
             'item',
-            'image',
-            'file',
-            'video',
+            //'image',
+            //'file',
+            //'video',
             'user',
             // 'select',
             'colourpicker',
