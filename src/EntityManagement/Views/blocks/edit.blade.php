@@ -38,7 +38,7 @@
                     @foreach ($page->getLocalisations() as $l)
                         <li class="nav-item">
                             <a class="nav-link @if ($l->getId() == $localisation->getId()) active @endif"
-                               href="{{ route('cms:blocks:edit_locale', [$page->getId(), $l->getLocaleId()])}}">
+                               href="{{ route('cms:blocks:edit_locale', ['id' => $page->getId(), 'locale' => $l->getLocaleId()])}}">
                                 {{$l->getLocale()->getName()}}
                             </a>
                         </li>

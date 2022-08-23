@@ -37,6 +37,8 @@ class Localisation extends Model
 
     /**
      * @return EntityRevision
+     *
+     * @param null|mixed $revisionId
      */
     public function publishedRevision($revisionId = null)
     {
@@ -47,23 +49,34 @@ class Localisation extends Model
         } else {
             $revision = $revision
                 ->whereIn('status', [RevisionStatus::DRAFT, RevisionStatus::PUBLISHED])
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'desc')
+            ;
         }
 
         $revision = $revision->first();
 
         if ($revision === null) {
-            throw new Exception('Entity has no published revisions.');
+            $revision = $this->revisions()->where('status', [RevisionStatus::PREVIOUSLY_PUBLISHED])->orderBy('updated_at', 'desc')->first();
+            $revision->status = RevisionStatus::PUBLISHED;
+            $revision->save();
+
+            if (!$revision || $revision === null) {
+                throw new Exception('Entity has no published revisions.');
+            }
         }
 
         return $revision;
     }
 
-
-
     /**
-     * Equivalent to Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository@archivedRevisions
+     * Equivalent to Escape\Argon\EntityManagement\Eloquent\EntityRevisionRepository@archivedRevisions.
+     *
      * @return collection of EntityRevisions
+     *
+     * @param null|mixed $perPage
+     * @param mixed $columns
+     * @param mixed $pageName
+     * @param null|mixed $page
      */
     public function archivedRevisions($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
@@ -74,7 +87,8 @@ class Localisation extends Model
                 $query->withTrashed();
             }])
             ->whereIn('status', [RevisionStatus::PREVIOUSLY_PUBLISHED])
-            ->paginate($perPage, $columns, $pageName, $page);
+            ->paginate($perPage, $columns, $pageName, $page)
+        ;
     }
 
     public function locale()
@@ -92,17 +106,17 @@ class Localisation extends Model
 
     public function getId()
     {
-        return (int)$this->id;
+        return (int) $this->id;
     }
 
     public function getLocaleId()
     {
-        return (int)$this->attributes['locale_id'];
+        return (int) $this->attributes['locale_id'];
     }
 
     public function getEntityId()
     {
-        return (int)$this->attributes['entity_id'];
+        return (int) $this->attributes['entity_id'];
     }
 
     public function newCollection(array $models = [])
