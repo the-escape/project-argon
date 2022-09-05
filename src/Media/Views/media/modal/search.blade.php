@@ -42,6 +42,9 @@
 
             <form action="{{ route("cms:media:modal:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="{{ $request->input('keywords') }}"  class="form-control">
+                @foreach($request->only('CKEditor', 'CKEditorFuncNum', 'langCode') as $k => $v)
+                    <input type="hidden" name="{{ $k }}" value="{{ $v }}" class="form-control">
+                @endforeach
                 <button type="submit" class="btn btn-primary-outline">Search</button>
             </form>
 
