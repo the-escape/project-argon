@@ -13,7 +13,8 @@
         "solarium/solarium":"^3.5.1",
         "maknz/slack-laravel": "^1.0",
         "symfony/options-resolver": "2.1.*",
-        "ps/image-optimizer": "^1.2"
+        "ps/image-optimizer": "^1.2",
+        "owen-it/laravel-auditing": "~2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

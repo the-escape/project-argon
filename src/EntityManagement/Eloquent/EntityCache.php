@@ -12,9 +12,10 @@ use Escape\Argon\Media\Eloquent\MediaItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use OwenIt\Auditing\Auditing;
 use stdClass;
 
-class EntityCache extends Model implements Compressable
+class EntityCache extends Auditing implements Compressable
 {
     use SoftDeletes;
 
