@@ -11,7 +11,8 @@
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
         "solarium/solarium":"^3.5.1",
-        "maknz/slack-laravel": "^1.0"
+        "maknz/slack-laravel": "^1.0",
+        "owen-it/laravel-auditing": "~2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
