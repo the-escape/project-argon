@@ -8,6 +8,7 @@ use Escape\Argon\Core\Plugins\PluginServiceProvider;
 use Escape\Argon\EntityManagement\EntityManagementServiceProvider;
 use Escape\Argon\Locales\LocalesServiceProvider;
 use Escape\Argon\Media\MediaServiceProvider;
+use Escape\Argon\Menus\MenusServiceProvider;
 use Escape\Argon\RedirectManagement\RedirectManagementServiceProvider;
 use Escape\Argon\UserManagement\UserManagementServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -71,9 +72,12 @@ class ArgonServiceProvider extends ServiceProvider
 
         $this->app->register(RedirectManagementServiceProvider::class);
 
-        $this->app->register(RedirectManagementServiceProvider::class);
+        $this->app->register(MenusServiceProvider::class);
 
         $this->app->register(SlackServiceProvider::class);
-        class_alias(Slack::class, 'Maknz\Slack\Laravel\Facade');
+
+        // this is how we load the facade in the service provider
+        $loader = AliasLoader::getInstance();
+        $loader->alias('Slack', 'Maknz\Slack\Laravel\Facade');
     }
 }

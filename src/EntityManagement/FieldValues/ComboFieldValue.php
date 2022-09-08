@@ -193,6 +193,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
             }
 
         } else {
+            reset($this->data);
             $currentIteration = current($this->data);
         }
 
