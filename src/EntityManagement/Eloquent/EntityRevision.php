@@ -6,8 +6,8 @@ use Escape\Argon\EntityManagement\Collections\RevisionsCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-class EntityRevision extends Model
+use OwenIt\Auditing\Auditing;
+class EntityRevision extends Auditing
 {
     use SoftDeletes;
 
