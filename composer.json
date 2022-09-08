@@ -18,7 +18,8 @@
         "alek13/slack": "^2.2",
         "symfony/options-resolver": "^5.0",
         "ps/image-optimizer": "^2.0.2",
-        "fideloper/proxy": "^4.0"
+        "fideloper/proxy": "^4.0",
+        "owen-it/laravel-auditing": "^13.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

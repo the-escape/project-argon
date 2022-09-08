@@ -2,21 +2,23 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
+use DateTimeInterface;
 use Escape\Argon\EntityManagement\Contracts\Compressable;
 use Escape\Argon\EntityManagement\FieldTypes\ComboFieldType;
 use Escape\Argon\EntityManagement\FieldValues\AbstractFieldValue;
 use Escape\Argon\EntityManagement\FieldValues\CacheMediaItemValue;
 use Escape\Argon\EntityManagement\FieldValues\ComboFieldValue;
-use DateTimeInterface;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Media\Eloquent\MediaItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use OwenIt\Auditing\Contracts\Auditable;
 use stdClass;
 
-class EntityCache extends Model implements Compressable
+class EntityCache extends Model implements Compressable, Auditable
 {
+    use OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
     protected $table = "entity_cache";
@@ -75,16 +77,17 @@ class EntityCache extends Model implements Compressable
     }
 
     /**
-     * Returns array from saved json value
+     * Returns array from saved json value.
+     *
      * @param $value
+     *
      * @return array
      */
     public function getEntitySettingsAttribute($value)
     {
         $value = json_decode($value, true);
 
-        if ($value === null)
-        {
+        if ($value === null) {
             return [];
         }
 
@@ -96,14 +99,11 @@ class EntityCache extends Model implements Compressable
         $this->attributes['entity_settings'] = json_encode($value);
     }
 
-    public function getEntitySetting($locale, $name, $default=null)
+    public function getEntitySetting($locale, $name, $default = null)
     {
-        if (isset($this->entity_settings[$locale]))
-        {
-            foreach ($this->entity_settings[$locale] as $k => $v)
-            {
-                if ($name == $k)
-                {
+        if (isset($this->entity_settings[$locale])) {
+            foreach ($this->entity_settings[$locale] as $k => $v) {
+                if ($name == $k) {
                     return $v;
                 }
             }
@@ -112,12 +112,13 @@ class EntityCache extends Model implements Compressable
         return $default;
     }
 
-
     /**
      * Prepares values to create instance of EntityCache object.
+     *
      * @param Entity $entity
-     * @param Localisation|null $localisation
-     * @param EntityRevision|null $revision
+     * @param null|Localisation $localisation
+     * @param null|EntityRevision $revision
+     *
      * @return array
      */
     private static function setCacheValues(Entity $entity, Localisation $localisation = null, EntityRevision $revision = null)
@@ -147,41 +148,32 @@ class EntityCache extends Model implements Compressable
 
         $cacheFields = [];
 
-        foreach ($fields as $field)
-        {
-            if (!$field->field)
-            {
+        foreach ($fields as $field) {
+            if (!$field->field) {
                 // skip deleted field
                 continue;
             }
 
             $fieldValue = $field->value;
 
-            if ($field->field->field_type == 'combo')
-            {
+            if ($field->field->field_type == 'combo') {
                 $fieldValue = [];
 
                 $formattedValues = $field->value;
 
-                if ($formattedValues)
-                {
+                if ($formattedValues) {
                     $subfields = $field->field->type->getSubFields();
 
-                    foreach ($formattedValues as $formattedHash => $formattedSubfields)
-                    {
-                        $formattedSubfields = (array)$formattedSubfields->fields;
+                    foreach ($formattedValues as $formattedHash => $formattedSubfields) {
+                        $formattedSubfields = (array) $formattedSubfields->fields;
 
-                        foreach ($formattedSubfields as $formattedSubfieldKey => $formattedSubfieldValue)
-                        {
-                            foreach ($subfields as $subfield)
-                            {
-                                if ($subfield->getId() != $formattedSubfieldKey)
-                                {
+                        foreach ($formattedSubfields as $formattedSubfieldKey => $formattedSubfieldValue) {
+                            foreach ($subfields as $subfield) {
+                                if ($subfield->getId() != $formattedSubfieldKey) {
                                     continue;
                                 }
 
-                                if ($subfield->getKey() == 'image')
-                                {
+                                if ($subfield->getKey() == 'image') {
                                     $formattedSubfieldValue = self::prepMediaItemValue($formattedSubfieldValue);
                                 }
 
@@ -196,13 +188,11 @@ class EntityCache extends Model implements Compressable
                 }
             }
 
-            if ($field->field->field_type == 'image')
-            {
+            if ($field->field->field_type == 'image') {
                 $fieldValue = self::prepMediaItemValue($field->value);
             }
 
-            if ($field->field->field_type == 'file')
-            {
+            if ($field->field->field_type == 'file') {
                 $fieldValue = self::prepMediaItemValue($field->value);
             }
 
@@ -220,25 +210,22 @@ class EntityCache extends Model implements Compressable
         $values['entity_groups']['group_order'] = !is_null($revision) && $revision->entity_groups && !is_null($revision->entity_groups->group_order) ? $revision->entity_groups->group_order : $entity->group_order;
         $values['entity_groups']['group_render'] = !is_null($revision) && $revision->entity_groups && !is_null($revision->entity_groups->group_render) ? $revision->entity_groups->group_render : $entity->group_render;
 
-
         $groups = $entity->getGroups($localisation->locale_id);
 
         $g = [];
-        foreach ($groups as $group)
-        {
+
+        foreach ($groups as $group) {
             $grp = [];
             $grp['id'] = $group->id;
             $fillable = $group->getFillable();
 
-            foreach ($fillable as $attr)
-            {
+            foreach ($fillable as $attr) {
                 $grp[$attr] = $group->getAttribute($attr);
             }
             $g[$group->id] = $grp;
         }
 
         $values['entity_groups']['groups'] = $g;
-
 
         $origin = $entity->type->type;
 
@@ -270,13 +257,11 @@ class EntityCache extends Model implements Compressable
         return $entityCache;
     }
 
-
-    public static function uncache($entityId, $localeId=null)
+    public static function uncache($entityId, $localeId = null)
     {
         $query = static::where('entity_id', $entityId);
 
-        if (!is_null($localeId))
-        {
+        if (!is_null($localeId)) {
             $query->where('entity_locale_id', $localeId);
         }
 
@@ -285,27 +270,24 @@ class EntityCache extends Model implements Compressable
         return $result;
     }
 
-
     /**
      * @param $fieldValue
+     *
      * @return null|stdClass
      */
     public static function prepMediaItemValue($fieldValue)
     {
-        if (is_null($fieldValue))
-        {
+        if (is_null($fieldValue)) {
             return null;
         }
 
         $values = [];
         $empty = [];
 
-        foreach ($fieldValue as $key => $value)
-        {
+        foreach ($fieldValue as $key => $value) {
             $id = is_object($value) ? $value->id : $value;
 
-            if ($id)
-            {
+            if ($id) {
                 $values[$id] = [
                     'key' => $key,
                     'alt' => @$value->alt,
@@ -315,15 +297,13 @@ class EntityCache extends Model implements Compressable
             }
         }
 
-        if ($empty)
-        {
+        if ($empty) {
             return $empty;
         }
 
         $mediaItems = MediaItem::withTrashed()->whereIn('id', array_keys($values))->get();
 
-        if ($mediaItems->isEmpty())
-        {
+        if ($mediaItems->isEmpty()) {
             return null;
         }
 
@@ -333,12 +313,9 @@ class EntityCache extends Model implements Compressable
         // Properties like width, height, filesize cat me affected without changing cache,
         // However asset's i and url will not change, so safe to use.
         // And alt text change will trigger cache update so we can use it here safely.
-        foreach ($values as $id => $value)
-        {
-            foreach ($mediaItems as $mediaItem)
-            {
-                if ($mediaItem->getId() != $id)
-                {
+        foreach ($values as $id => $value) {
+            foreach ($mediaItems as $mediaItem) {
+                if ($mediaItem->getId() != $id) {
                     continue;
                 }
 
@@ -359,10 +336,8 @@ class EntityCache extends Model implements Compressable
         $segments = [];
         $parent = $entity;
 
-        while ($parent)
-        {
-            if($parent->slug !== '/')
-            {
+        while ($parent) {
+            if ($parent->slug !== '/') {
                 $segments[] = $parent->slug;
             }
             $parent = $parent->parent ? $parent->parent : false;
@@ -370,8 +345,7 @@ class EntityCache extends Model implements Compressable
 
         $locale = Locale::where('id', $localisation->locale_id)->first();
 
-        if ($locale)
-        {
+        if ($locale) {
             $segments[] = $locale->getSlug();
         }
 
@@ -384,15 +358,16 @@ class EntityCache extends Model implements Compressable
 
     /**
      * Example call
-     * $cache = $entityCache->findByField('entity_url', $url)->first();
+     * $cache = $entityCache->findByField('entity_url', $url)->first();.
      *
      * @param $field
      * @param null $value
      * @param string $operator
      * @param array $columns
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function findByField($field, $value = null, $operator = '=', $columns = array('*'))
+    public function findByField($field, $value = null, $operator = '=', $columns = ['*'])
     {
         return $this->findByFields([
             [$field, $operator, $value],
@@ -400,7 +375,7 @@ class EntityCache extends Model implements Compressable
     }
 
     /**
-     * Example calls:
+     * Example calls:.
      *
      * Easy/quick syntax, without passing operators - defaults to '=' for each key => value
      * $cache = $entityCache->findByFields([
@@ -428,29 +403,25 @@ class EntityCache extends Model implements Compressable
      *
      * @param array $array
      * @param array $columns
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function findByFields(array $array, $columns = array('*'))
+    public function findByFields(array $array, $columns = ['*'])
     {
         $query = $this->newQuery();
-        foreach ($array as $k => $v)
-        {
-            if (is_array($v))
-            {
+
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
                 $count = count($v);
-                if ($count == 3)
-                {
+
+                if ($count == 3) {
                     list($field, $operator, $value) = $v;
                     $query->where($field, $operator, $value);
-                }
-                elseif ($count == 2)
-                {
+                } elseif ($count == 2) {
                     list($field, $value) = $v;
                     $query->where($field, '=', $value);
                 }
-            }
-            else
-            {
+            } else {
                 $query->where($k, '=', $v);
             }
         }
@@ -462,8 +433,7 @@ class EntityCache extends Model implements Compressable
     {
         $fields = $this->cache;
 
-        if (isset($fields->{$fieldName}))
-        {
+        if (isset($fields->{$fieldName})) {
             return true;
         }
 
@@ -474,8 +444,7 @@ class EntityCache extends Model implements Compressable
     {
         $fields = $this->cache;
 
-        if (!isset($fields->{$fieldName}))
-        {
+        if (!isset($fields->{$fieldName})) {
             return $default;
         }
 
@@ -485,13 +454,11 @@ class EntityCache extends Model implements Compressable
             ? $fieldValue = new ComboFieldValue($fields->{$fieldName}->value)
             : $fieldType->parseData($fields->{$fieldName}->value);
 
-        if (!$isEmptyCheck)
-        {
+        if (!$isEmptyCheck) {
             return $fieldValue;
         }
 
-        if (!$fieldValue->isEmpty())
-        {
+        if (!$fieldValue->isEmpty()) {
             return $fieldValue;
         }
 
@@ -502,20 +469,17 @@ class EntityCache extends Model implements Compressable
     {
         $fields = $this->cache;
 
-        if (!isset($fields->{$fieldName}))
-        {
+        if (!isset($fields->{$fieldName})) {
             return $default;
         }
 
         $fieldValue = new ComboFieldValue($fields->{$fieldName}->value);
 
-        if (!$isEmptyCheck)
-        {
+        if (!$isEmptyCheck) {
             return $fieldValue;
         }
 
-        if (!$fieldValue->isEmpty())
-        {
+        if (!$fieldValue->isEmpty()) {
             return $fieldValue;
         }
 
@@ -524,8 +488,7 @@ class EntityCache extends Model implements Compressable
 
     public function firstField($fieldName, $default = null)
     {
-        if(($f = $this->field($fieldName)) && !$f->isEmpty())
-        {
+        if (($f = $this->field($fieldName)) && !$f->isEmpty()) {
             $f = $f->first();
 
             return $f;
@@ -584,19 +547,16 @@ class EntityCache extends Model implements Compressable
         return $this->entity_status;
     }
 
-    public function getRedirect($localeId=null)
+    public function getRedirect($localeId = null)
     {
         $redirects = $this->entity_redirect;
 
-        if (is_null($localeId))
-        {
+        if (is_null($localeId)) {
             $localeId = $this->getLocaleId();
         }
 
-        if (isset($redirects->{$localeId}))
-        {
-            if ($trim = trim($redirects->{$localeId}))
-            {
+        if (isset($redirects->{$localeId})) {
+            if ($trim = trim($redirects->{$localeId})) {
                 return $trim;
             }
         }
@@ -606,47 +566,45 @@ class EntityCache extends Model implements Compressable
 
     /**
      * Returns poiter entity as EntityCache object.
+     *
      * @param null $localeId
-     * @return null | EntityCache $cache
+     *
+     * @return null|EntityCache $cache
      */
-    public function getPointer($localeId=null)
+    public function getPointer($localeId = null)
     {
-        if (is_null($localeId))
-        {
+        if (is_null($localeId)) {
             $localeId = $this->getLocaleId();
         }
 
-        if ($pointerId = $this->getEntitySetting($localeId, "pointer"))
-        {
+        if ($pointerId = $this->getEntitySetting($localeId, "pointer")) {
             return entityCache()
                 ->where('entity_id', $pointerId)
                 ->where('entity_status', 1)
-                ->first();
+                ->first()
+            ;
         }
 
         return null;
     }
 
-    public function findForPath($url=null, $status=1, $trigger404=true)
+    public function findForPath($url = null, $status = 1, $trigger404 = true)
     {
         $preview = request()->query->get("preview_page");
 
-        if($preview)
-        {
+        if ($preview) {
             $entityRepository = app()->make(EntityRepository::class);
 
             $entity = $entityRepository->findForPath(request());
 
-            if (!$entity)
-            {
+            if (!$entity) {
                 abort(404);
             }
 
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $revision = $revisionsRepository->findByField("id", $preview)->first();
 
-            if (!$revision)
-            {
+            if (!$revision) {
                 abort(404);
             }
 
@@ -662,45 +620,37 @@ class EntityCache extends Model implements Compressable
         $cache = $this
             ->where('entity_url', $url)
             ->where('entity_status', $status)
-            ->first();
+            ->first()
+        ;
 
-        if (!$cache && $trigger404)
-        {
+        if (!$cache && $trigger404) {
             abort(404);
         }
 
         return $cache;
     }
 
-    public function compress(array $fieldNames=['*'])
+    public function compress(array $fieldNames = ['*'])
     {
         $data = [];
 
-        if ($fieldNames == ['*'])
-        {
-            if ($this->cache)
-            {
-                $fields = (array)$this->cache;
+        if ($fieldNames == ['*']) {
+            if ($this->cache) {
+                $fields = (array) $this->cache;
                 $fieldNames = array_keys($fields);
             }
         }
 
-        foreach ($fieldNames as $fieldName)
-        {
+        foreach ($fieldNames as $fieldName) {
             $field = $this->field($fieldName);
-            if ($field instanceof AbstractFieldValue)
-            {
-                if (array_key_exists($fieldName, $data))
-                {
+
+            if ($field instanceof AbstractFieldValue) {
+                if (array_key_exists($fieldName, $data)) {
                     $data[$fieldName] = $field->compress();
-                }
-                else
-                {
+                } else {
                     $data[$fieldName] = null;
                 }
-            }
-            elseif ($field instanceof CacheMediaItemValue)
-            {
+            } elseif ($field instanceof CacheMediaItemValue) {
                 $data[$fieldName] = $field->compress();
             }
         }
@@ -711,31 +661,28 @@ class EntityCache extends Model implements Compressable
     public function toJson($options = 0)
     {
         $values = $this->compress();
+
         return json_encode($values, $options);
     }
 
-    public function block($slug, array $where=null)
+    public function block($slug, array $where = null)
     {
         $whereArray = ['entity_slug' => $slug];
 
-        if (!is_null($where))
-        {
+        if (!is_null($where)) {
             $whereArray = array_merge($whereArray, $where);
         }
 
         return $this->blocks($whereArray)->first();
     }
 
-    public function blocks(array $where=null, array $order=null)
+    public function blocks(array $where = null, array $order = null)
     {
         $cache = $this->where('entity_type_type', 'block');
 
-        if (!is_null($where))
-        {
-            foreach ($where as $k => $v)
-            {
-                if (is_array($v))
-                {
+        if (!is_null($where)) {
+            foreach ($where as $k => $v) {
+                if (is_array($v)) {
                     list($k, $operator, $v) = $v;
 
                     $cache->where($k, $operator, $v);
@@ -747,51 +694,40 @@ class EntityCache extends Model implements Compressable
             }
         }
 
-        if (!is_null($order))
-        {
-            foreach ($order as $column => $dir)
-            {
+        if (!is_null($order)) {
+            foreach ($order as $column => $dir) {
                 $cache->orderBy($column, $dir);
             }
-
         }
 
         return $cache->get();
     }
 
-    public function getGroups(array $ids=null, array $settings=null)
+    public function getGroups(array $ids = null, array $settings = null)
     {
         $groups = new Collection();
 
-        if (isset($this->entity_groups->groups))
-        {
-            foreach ($this->entity_groups->groups as $g)
-            {
-                if (!is_null($ids))
-                {
-                    if (!in_array($g->id, $ids))
-                    {
+        if (isset($this->entity_groups->groups)) {
+            foreach ($this->entity_groups->groups as $g) {
+                if (!is_null($ids)) {
+                    if (!in_array($g->id, $ids)) {
                         continue;
                     }
                 }
 
                 $group = new EntityGroup();
-                foreach ($g as $k => $v)
-                {
-                    $group->$k = $v;
+
+                foreach ($g as $k => $v) {
+                    $group->{$k} = $v;
                 }
                 $groups->push($group);
             }
         }
 
-        if (!is_null($settings))
-        {
-            foreach($groups as $groupId => $group)
-            {
-                foreach ($settings as $k => $v)
-                {
-                    if(@$group->settings[$k] != $v)
-                    {
+        if (!is_null($settings)) {
+            foreach ($groups as $groupId => $group) {
+                foreach ($settings as $k => $v) {
+                    if (@$group->settings[$k] != $v) {
                         $groups->forget($groupId);
                     }
                 }
@@ -801,26 +737,29 @@ class EntityCache extends Model implements Compressable
         return $groups;
     }
 
-    public function getSortableGroups() {
+    public function getSortableGroups()
+    {
         return $this->getGroups()->filter(function ($group) {
             return $group->isSortable();
         });
     }
 
-    public function getNonSortableGroups($locale_id) {
+    public function getNonSortableGroups($locale_id)
+    {
         return $this->getGroups()->filter(function ($group) {
             return !$group->isSortable();
         });
     }
 
-
     public function getGroupOrder()
     {
         $order = [];
         $groups = $this->getSortableGroups();
+
         foreach ($groups as $group) {
             $order[] = $group->id;
         }
+
         return $order;
     }
 
@@ -829,15 +768,15 @@ class EntityCache extends Model implements Compressable
         return implode(',', $this->getGroupOrder());
     }
 
-
-
-    public function getRenderableGroups() {
+    public function getRenderableGroups()
+    {
         return $this->getGroups()->filter(function ($group) {
             return $group->isRenderable();
         });
     }
 
-    public function getNonRenderableGroups() {
+    public function getNonRenderableGroups()
+    {
         return $this->getGroups()->filter(function ($group) {
             return !$group->isRenderable();
         });
@@ -847,9 +786,11 @@ class EntityCache extends Model implements Compressable
     {
         $order = [];
         $groups = $this->getRenderableGroups();
+
         foreach ($groups as $group) {
             $order[] = $group->id;
         }
+
         return $order;
     }
 
@@ -858,7 +799,6 @@ class EntityCache extends Model implements Compressable
         return implode(',', $this->getRenderableGroupOrder());
     }
 
-
     public function isGroupRender($localeId, $groupId)
     {
         return (bool) @$this->entity_groups->group_render->{$localeId}->{$groupId};
@@ -866,35 +806,30 @@ class EntityCache extends Model implements Compressable
 
     /**
      * Returns rendered and ordered groups.
+     *
      * @param array/null $settings - optional key=>value settings based on which groups are filtered by
+     *
      * @return Collection|static
      */
-    public function getRenderedGroups(array $settings=null)
+    public function getRenderedGroups(array $settings = null)
     {
         $renderableGroups = $this->getRenderableGroupOrder();
 
         $r = new Collection();
 
-        foreach ($renderableGroups as $renderableGroup)
-        {
-            if ($this->isGroupRender($this->entity_locale_id, $renderableGroup))
-            {
+        foreach ($renderableGroups as $renderableGroup) {
+            if ($this->isGroupRender($this->entity_locale_id, $renderableGroup)) {
                 $r->push($renderableGroup);
             }
         }
 
-        if ($r->count())
-        {
+        if ($r->count()) {
             $r = $this->getGroups($r->toArray())->keyBy('id');
 
-            if (!is_null($settings))
-            {
-                foreach($r as $groupId => $group)
-                {
-                    foreach ($settings as $k => $v)
-                    {
-                        if(@$group->settings[$k] != $v)
-                        {
+            if (!is_null($settings)) {
+                foreach ($r as $groupId => $group) {
+                    foreach ($settings as $k => $v) {
+                        if (@$group->settings[$k] != $v) {
                             $r->forget($groupId);
                         }
                     }
