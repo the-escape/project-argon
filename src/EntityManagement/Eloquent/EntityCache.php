@@ -18,7 +18,7 @@ use stdClass;
 
 class EntityCache extends Model implements Compressable, Auditable
 {
-    use OwenIt\Auditing\Auditable;
+    use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
     protected $table = "entity_cache";
