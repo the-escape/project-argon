@@ -2,10 +2,10 @@
 
 namespace Escape\Argon\EntityManagement\Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditing;
 
-class FieldData extends Model
+class FieldData extends Auditing
 {
     use SoftDeletes;
 

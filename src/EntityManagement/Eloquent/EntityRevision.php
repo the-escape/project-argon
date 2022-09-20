@@ -6,8 +6,8 @@ use Escape\Argon\EntityManagement\Collections\RevisionsCollection;
 use Escape\Argon\EntityManagement\FieldTypes\FieldTypesManager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Auditing;
-class EntityRevision extends Auditing
+
+class EntityRevision extends Model
 {
     use SoftDeletes;
 
@@ -48,6 +48,7 @@ class EntityRevision extends Auditing
     public function fieldById($id, $fieldDataIds = [])
     {
         $field = $this->entity->type->fieldById($id);
+
         return $this->fieldValue($field, $fieldDataIds);
     }
 
@@ -60,7 +61,8 @@ class EntityRevision extends Auditing
                 ->whereIn('id', $fieldDataIds)
                 ->where('field_id', $field->id)
                 ->where('entity_revision_id', $this->id)
-                ->get();
+                ->get()
+            ;
         } else {
             $fieldDataCollection = $this->fields()->where('field_id', $field->id)
                 ->where('entity_revision_id', $this->id)->get();
@@ -84,8 +86,7 @@ class EntityRevision extends Auditing
             function ($f) {
                 $field = $f->field;
 
-                if ($field !== null)
-                {
+                if ($field !== null) {
                     return $field->type->parseData($f);
                 }
 
@@ -98,6 +99,7 @@ class EntityRevision extends Auditing
     {
         /** @var EntityField $f */
         $f = $this->fields()->where('field_id', $fieldId)->first();
+
         if ($f === null) {
             // Latest revision doesn't contain this field - it's probably new.
             return null;
