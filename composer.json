@@ -1,7 +1,11 @@
 {
     "name": "escape/argon",
     "description": "The Escape's CMS.",
-    "keywords": ["cms", "laravel", "argon"],
+    "keywords": [
+        "cms",
+        "laravel",
+        "argon"
+    ],
     "license": "Proprietary",
     "type": "project",
     "require": {
@@ -10,10 +14,8 @@
         "prettus/l5-repository": "^2.1",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
-        "solarium/solarium":"^3.5.1",
-        "owen-it/laravel-auditing": "~2.4",
-        "doctrine/annotations": "1.2.7",
-        "doctrine/collections": "1.2.1"
+        "solarium/solarium": "^3.5.1",
+        "owen-it/laravel-auditing": "~2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
