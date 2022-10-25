@@ -6,8 +6,7 @@ use Escape\Argon\Authentication\Exceptions\PermissionNotDefinedException;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Class Permission
- * @package Escape\Argon
+ * Class Permission.
  *
  * @property string $name
  * @property Collection $roles
@@ -16,6 +15,7 @@ class Permission
 {
     /** @var Collection */
     protected $grants;
+
     /** @var string */
     protected $name;
 
@@ -32,9 +32,9 @@ class Permission
         /** @var PermissionManager $manager */
         $manager = app('permissions');
 
-        if (!$manager->validate($name)) {
-            throw new PermissionNotDefinedException();
-        }
+        // if (!$manager->validate($name)) {
+        //     throw new PermissionNotDefinedException();
+        // }
 
         $grants = PermissionGrant::where('permission', $name)->get();
 
@@ -52,9 +52,11 @@ class Permission
         switch ($field) {
             case 'roles':
                 return $this->getRoles();
+
                 break;
             case 'name':
                 return $this->getName();
+
                 break;
             default:
                 throw new \Exception('Invalid Property');
