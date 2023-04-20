@@ -127,8 +127,10 @@ class AuthController extends BaseController
         $throttles = $this->isUsingThrottlesLoginsTrait();
 
         $credentials = $this->getCredentials($request);
-
         if (Auth::attempt($credentials, $request->has('remember'))) {
+            session()->set('login_attempts_' . $this->username, 0);
+            $this->clearLoginAttempts($request);
+            $this->logoutOtherSessions();
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -151,8 +153,7 @@ class AuthController extends BaseController
             return $this->sendLockoutResponse($request);
         }
 
-        if (auth()->attempt($data)) {
-
+        if (Auth::attempt($data)) {
             session()->set('login_attempts_' . $this->username, 0);
             $this->clearLoginAttempts($request);
             $this->logoutOtherSessions();
