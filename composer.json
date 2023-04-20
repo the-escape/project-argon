@@ -15,7 +15,8 @@
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
         "solarium/solarium": "^3.5.1",
-        "owen-it/laravel-auditing": "~2.4"
+        "owen-it/laravel-auditing": "~2.4",
+        "mikehaertl/php-pdftk": "^0.13.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -38,6 +39,9 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }

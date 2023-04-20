@@ -4,7 +4,7 @@ $prefix = config('argon.admin_route_prefix');
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::get('login', 'Escape\\Argon\\Authentication\\Controllers\\AuthController@getLogin');
+    Route::get('login', ['as' => 'admin:login', 'uses' => 'Escape\\Argon\\Authentication\\Controllers\\AuthController@getLogin']);
     Route::post('login', 'Escape\\Argon\\Authentication\\Controllers\\AuthController@postLogin');
     Route::get(
         'logout',

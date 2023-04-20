@@ -6,6 +6,8 @@ use Escape\Argon\Media\Eloquent\MediaItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Image;
+use Illuminate\Support\Facades\Log;
+use mikehaertl\pdftk\Pdf;
 use stdClass;
 
 class Media
@@ -114,6 +116,7 @@ class Media
         }
 
         $isImage =  Media::isImage($file->getMimeType());
+        $isPdf = $file->getMimeType() == 'application/pdf';
 
         $tmpPath = $file->getRealPath();
 
@@ -156,6 +159,37 @@ class Media
             $mediaItem->save();
         }
 
+        if ($isPdf) {
+            $disk = Storage::disk($storageDisk);
+            $filepath  = $disk->getAdapter()->applyPathPrefix($mediaItem->id . "/" . $mediaItem->id . ".original." . $file->getClientOriginalExtension());
+            $tmpFile = $filepath . '.tmp';
+
+            if (is_file($filepath)) {
+                copy($filepath, $tmpFile);
+            }
+
+            try {
+                if (is_file($filepath)) {
+                    $pdf = new Pdf();
+                    $pdf->addFile($filepath);
+                    $result = $pdf->cat()->saveAs($filepath);
+
+                    if ($result === false) {
+                        throw new \Exception($pdf->getError());
+                    }
+                }
+            } catch(\Exception $e) {
+                Log::error($e);
+                if (is_file($tmpFile)) {
+
+                    if (is_file($filepath)) {
+                        unlink($filepath);
+                    }
+                    rename($tmpFile, $filepath);
+                }
+            }
+        }
+        
         return $mediaItem;
     }
 

@@ -25,13 +25,33 @@
             </div>
 
             <div class="login-box">
-                @if(!$errors->isEmpty())
+               
+                @if ($errors->count() > 0)
                     <div class="alert alert-danger" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">Error:</span>
-                        {{$errors->get('email')[0]}}
+                        <span>Problem logging in!</span>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{!! $error !!}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
+
+                @if (session()->has('status'))
+                    <div class="alert alert-success">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span>{{ session()->get('status') }}</span>
+                    </div>
+                @endif
+
+                @if (session()->has('warning'))
+                    <div class="alert alert-info" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span>{{ session()->get('warning') }}</span>
+                    </div>
+                @endif
+                
                 <form action="/admin/login" method="post">
                     {!! csrf_field() !!}
                     <div class="form-group">
