@@ -13,6 +13,7 @@ use Escape\Argon\EntityManagement\Eloquent\EntityTypeRepository;
 use Escape\Argon\EntityManagement\Eloquent\EntityGroupRepository;
 use Escape\Argon\EntityManagement\Eloquent\FieldDataRepository;
 use Escape\Argon\EntityManagement\RevisionStatus;
+use Escape\Argon\Events\BlockSaved;
 use Escape\Argon\Helpers\Solr;
 use Escape\Argon\Locales\Eloquent\Locale;
 use Escape\Argon\Locales\Eloquent\LocaleRepository;
@@ -182,6 +183,8 @@ class BlocksController extends BaseController
 
         EntityCache::cache($entity, $localisation);
 
+        event(new BlockSaved($entity));
+
         return Redirect::route(
             'cms:blocks:edit_locale',
             ['id' => $entity->id, 'locale' => $localisation->getLocaleId()]
@@ -264,6 +267,8 @@ class BlocksController extends BaseController
 
             EntityCache::cache($entity, $localisation);
         }
+
+        event(new BlockSaved($entity));
 
         return Redirect::route('cms:blocks:edit_locale', ['id' => $entity->id, 'locale'=>$localisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));

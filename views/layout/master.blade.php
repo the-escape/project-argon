@@ -54,7 +54,7 @@
 </div>
 
 <div class="modals">@yield('modals')</div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="/argon/js/jquery.min.js"></script>
 <script src="/argon/js/core.js"></script>
 <script src="/argon/js/widget.js"></script>

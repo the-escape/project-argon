@@ -3,6 +3,7 @@
 namespace Escape\Argon\Menus\Controllers;
 
 use Escape\Argon\Core\Controllers\BaseController;
+use Escape\Argon\Events\MenuSaved;
 use Escape\Argon\Menus\Eloquent\Menu;
 use Escape\Argon\Menus\Eloquent\MenuRepository;
 use Illuminate\Http\Request;
@@ -54,6 +55,8 @@ class MenusController extends BaseController
                 ->withErrors(["There war a problem. Please try again."]);
         }
 
+        event(new MenuSaved($menu));
+
         return redirect(route('cms:menus:edit', ["id" => $menu->id]));
     }
 
@@ -79,6 +82,8 @@ class MenusController extends BaseController
         $this->validate($request, $rules, $messages=[], $customAttributes=[]);
 
         $menu = $menuRepository->update($request->all(), $id);
+
+        event(new MenuSaved($menu));
 
         return redirect(route('cms:menus:edit', ['id' => $menu->id]))->with('message', "Menu updated.");
     }
