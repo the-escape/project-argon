@@ -1,4 +1,4 @@
-@import "../../../bower_components/bootstrap/scss/bootstrap";
+@import "../../../node_modules/bootstrap/scss/bootstrap";
 @import "../../../bower_components/font-awesome/scss/font-awesome";
 
 @import "login";
@@ -6,3 +6,5 @@
 @import "media";
 @import "fields/boolean";
 @import "fields/datetime";
+
+@import "updates"

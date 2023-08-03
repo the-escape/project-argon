@@ -1,0 +1,21 @@
+@import "updates/_vars";
+@import "updates/_reboot";
+@import "updates/_nav";
+@import "updates/_forms";
+@import "updates/_media";
+@import "updates/_tables";
+@import "updates/_buttons";
+@import "updates/_cards";
+@import "updates/_layout";
+@import "updates/_accordions";
+
+.fa {
+    display: inline-block;
+    font: normal normal normal #{$fa-font-size-base}/#{$fa-line-height-base} FontAwesome; // shortening font declaration
+    font-size: inherit; // can't have font-size inherit on line above, so need to override
+    text-rendering: auto; // optimizelegibility throws things off #1094
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+  }
+  

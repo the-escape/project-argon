@@ -83,7 +83,7 @@
                                             <span class="sortable-handle btn">&#8645;</span>
                                         </td>
                                         <td>
-                                            <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                            <span data-bs-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
                                         </td>
                                         <td>
                                             {{ $field->field_slug }}

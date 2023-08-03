@@ -15,14 +15,16 @@
         <h1>Pages</h1>
 
         <a href="" id="edit-button" disabled class="btn btn-primary-outline btn-sm">Edit</a>
-        <div class="btn-group add-child-dropdown">
-            <button type="button" disabled class="btn btn-primary-outline btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Child</button>
+
+        <div class="btn-group add-child-dropdown dropdown">
+            <button type="button" disabled class="btn btn-primary-outline btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add Child</button>
             <div class="dropdown-menu">
                 @foreach ($types as $type)
                     <a class="dropdown-item" data-type="{{$type->id}}" href="">{{ $type->name }}</a>
                 @endforeach
             </div>
         </div>
+        
         <form id="delete-form" style="display: inline" method="POST" action="" class="confirm">
             {{csrf_field()}}
             {{method_field('DELETE')}}

@@ -24,8 +24,10 @@
                         <td>{{ $revision->id }}</td>
                         <td>{{ $revision->created_at->format('d/m/Y H:i:s') }}</td>
                         <td>
+                        <div class="pull-xs-right">
                             <a href="" class="btn btn-primary">Preview</a>
                             <a href="" class="btn btn-primary">Restore</a>
+                        </div>
                         </td>
                     </tr>
                 @endforeach

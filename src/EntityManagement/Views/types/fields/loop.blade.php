@@ -106,7 +106,7 @@
                                     <span class="sortable-handle btn">&#8645;</span>
                                 </td>
                                 <td>
-                                    <span data-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
+                                    <span data-bs-toggle="tooltip" data-placement="left" title="Option ID: {{ $opt_id }}">{{ $opt_value }}</span>
                                 </td>
                                 <td>
                                     <input type="hidden" name="options[]" value="{{$opt_value}}">

@@ -1,0 +1,18 @@
+// Base vars
+$font-size-root: 16px;
+$font-size-base: 16px;
+$line-height: 1.5 !default;
+$abbr-border-color: $gray-light !default;
+$link-hover-decoration: null !default;
+$border-radius: .25rem !default;
+$border-radius-lg: .3rem !default;
+$border-radius-sm: .2rem !default;
+$enable-hover-media-query:  false !default;
+$table-cell-padding: .75rem !default;
+$font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$link-decoration: none;
+$btn-primary-color:              #fff;
+$btn-primary-bg:                 $brand-primary;
+$btn-primary-border:             darken($btn-primary-bg, 5%);
+$btn-secondary-color:            $btn-primary-bg;
+$btn-secondary-bg:            $btn-secondary-color;

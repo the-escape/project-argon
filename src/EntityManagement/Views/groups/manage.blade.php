@@ -34,7 +34,7 @@
                                             <span class="sortable-handle btn">&#8645;</span>
                                         </td>
                                         <td>
-                                            <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $group->id }}">{{ $group->name }}</span>
+                                            <span data-bs-toggle="tooltip" data-placement="left" title="Field ID: {{ $group->id }}">{{ $group->name }}</span>
                                         </td>
                                         <td>
                                             <a class="btn btn-secondary-outline btn-sm" href="{{route('cms:types:groups:edit', [$type->id, $group->id])}}">Edit</a>

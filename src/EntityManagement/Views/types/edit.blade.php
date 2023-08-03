@@ -55,7 +55,7 @@
                                         <span class="sortable-handle btn">&#8645;</span>
                                     </td>
                                     <td>
-                                        <span data-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
+                                        <span data-bs-toggle="tooltip" data-placement="left" title="Field ID: {{ $field->id }}">{{ $field->name }}</span>
                                     </td>
                                     <td>
                                         {{ $field->field_slug }}
@@ -67,6 +67,7 @@
                                         {{ @$field->group->name }}
                                     </td>
                                     <td>
+                                        <div  class="pull-xs-right">
                                         @if($field->field_type == $comboFieldType->getKey())
                                             <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:combos:edit', [$type->id, $field->id]) }}">Edit</a>
                                             <a class="btn btn-link btn-sm confirm" data-confirm="This will remove combo and all subfields.\nAre you sure you want to continue?" href="{{ route('cms:types:combos:delete', [$type->id, $field->id]) }}">Remove</a>
@@ -74,6 +75,7 @@
                                             <a class="btn btn-secondary-outline btn-sm" href="{{ route('cms:types:fields:edit', [$type->id, $field->id]) }}">Edit</a>
                                             <a class="btn btn-link btn-sm confirm" href="{{ route('cms:types:fields:delete', [$type->id, $field->id]) }}">Remove</a>
                                         @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -83,7 +85,7 @@
                     @endif
 
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-primary-outline dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Add Field
                             <span class="caret"></span>
                         </button>

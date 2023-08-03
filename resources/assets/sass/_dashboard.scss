@@ -115,6 +115,7 @@ body.dashboard {
 
     .input-group {
         width: 100%;
+        display: flex;
     }
     .input-group .form-control:last-child {
         border-radius: $standard-border-radius;
@@ -122,6 +123,7 @@ body.dashboard {
 
     .input-group > .card {
         margin-bottom: 0;
+        flex-grow: 1;
     }
 
     .form-control + .field-clone,

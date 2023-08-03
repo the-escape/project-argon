@@ -1,0 +1,32 @@
+#medialib {
+    .modal-dialog {
+        max-width: unset;
+        .modal-header {
+            justify-content: space-between;
+            h4 {
+                order: 1;
+            }
+            .close {
+                order: 2;
+            }
+        }
+    }
+
+    .close {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: .2;
+    }
+
+}
+
+.actions-top {
+    display: block;
+    form {
+        display: flex;
+    }
+}

@@ -43,7 +43,7 @@
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
             <progress class="progress" value="25" max="100"></progress>
             <div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Options
                     <span class="caret"></span>
                 </button>

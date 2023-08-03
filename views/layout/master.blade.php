@@ -47,20 +47,21 @@
             @endforeach
         </div>
 
-        <div class="col-sm-9 offset-sm-3 col-md-10 col-md-offset-2">
+        <div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
             @yield('content')
         </div>
     </div>
 </div>
 
 <div class="modals"></div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="/argon/js/jquery.min.js"></script>
-<script src="/argon/js/core.js"></script>
+<script src="/argon/js/jquery-ui.js"></script>
+{{-- <script src="/argon/js/core.js"></script>
 <script src="/argon/js/widget.js"></script>
 <script src="/argon/js/mouse.js"></script>
 <script src="/argon/js/accordion.js"></script>
-<script src="/argon/js/sortable.js"></script>
+<script src="/argon/js/sortable.js"></script> --}}
 <script src="/argon/js/tether.min.js"></script>
 <script src="/argon/js/bootstrap.min.js"></script>
 <script src="/argon/js/ckeditor/ckeditor.js"></script>
@@ -293,7 +294,7 @@
 //    });
 
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-bs-toggle="tooltip"]').tooltip();
 
 
     $('#locale-select').change(function () {

@@ -335,7 +335,7 @@
 //    });
 
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-bs-toggle="tooltip"]').tooltip();
 
 
     $('#locale-select').change(function () {

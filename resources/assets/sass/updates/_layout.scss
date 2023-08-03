@@ -1,0 +1,11 @@
+.pull {
+    &-md,
+    &-sm,
+    &-xs,
+    &-lg,
+    &-xl {
+        &-right {
+            float: right!important;
+        }
+    }
+}

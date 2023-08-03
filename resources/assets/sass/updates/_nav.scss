@@ -1,0 +1,24 @@
+ul.nav.nav-pills.nav-stacked {
+    flex-direction: column;
+    .nav-item + .nav-item {
+        margin-top: 0.2rem;
+        margin-left: 0;
+    }
+}
+
+.navbar-fixed-top {
+    .navbar-nav {
+        order: 2;
+        flex-direction: row;
+        gap: 1rem;
+        margin-right: 1rem;
+    }
+    .navbar-brand {
+        order: 1;
+    }
+    .nav-item {
+        a {
+            color: rgba(255,255,255,0.5);
+        }
+    }
+}

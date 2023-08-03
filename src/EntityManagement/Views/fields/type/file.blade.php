@@ -20,6 +20,6 @@
         @endforeach
     </div>
 
-    <a href="#addField" class="btn btn-secondary-outline btn-sm field-add-file" data-field="{{$field->getId()}}">Add File</a>
+    <a href="#addField" class="btn btn-secondary-outline btn-sm field-add-file" data-field="{{$field->getId()}}" data-bs-toggle="modal" data-bs-target="#medialib">Add File</a>
 </div>
 

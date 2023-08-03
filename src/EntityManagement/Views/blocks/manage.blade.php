@@ -7,15 +7,15 @@
 
         @include('argon::inc.alerts', compact($errors))
 
-        <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown">
+            <button type="button" class="btn btn-primary-outline dropdown-toggle" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButtonBlocks">
                 Add Block
                 <span class="caret"></span>
             </button>
             @if(!$types->isEmpty())
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonBlocks">
                     @foreach($types as $type)
-                        <li><a href="{{ route('cms:blocks:create', ['typeId'=>$type->id]) }}" class="btn btn-block">{{ $type->name }}</a></li>
+                        <li><a href="{{ route('cms:blocks:create', ['typeId'=>$type->id]) }}" class="btn btn-block dropdown-item">{{ $type->name }}</a></li>
                     @endforeach
                 </ul>
             @endif
@@ -36,8 +36,10 @@
                         <td>{{$block->name}}</td>
                         <td>{{$block->type->name}}</td>
                         <td>
+                        <div class="pull-xs-right">
                             <a href="{{ route('cms:blocks:edit', ['blockId'=>$block->id, ]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                            <a href="{{ route('cms:blocks:delete', ['blockId'=>$block->id]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
+                            <a href="{{ route('cms:blocks:delete', ['blockId'=>$block->id]) }}" class="btn btn-danger btn-sm confirm">Delete</a>
+                        </div>
                         </td>
                     </tr>
                 @endforeach

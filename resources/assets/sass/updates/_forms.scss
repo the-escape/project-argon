@@ -1,0 +1,72 @@
+// Form specific
+
+//
+// Text input groups
+//
+
+.input-group-addon {
+    padding: $input-padding-y $input-padding-x;
+    font-size: $font-size-base;
+    font-weight: normal;
+    line-height: 1;
+    color: $input-color;
+    text-align: center;
+    background-color: $input-group-addon-bg;
+    border: $input-btn-border-width solid $input-group-addon-border-color;
+    @include border-radius($border-radius);
+    
+    // Sizing
+    &.form-control-sm {
+        padding: $input-padding-y-sm $input-padding-x-sm;
+        font-size: $font-size-sm;
+        @include border-radius($border-radius-sm);
+    }
+    &.form-control-lg {
+        padding: $input-padding-y-lg $input-padding-x-lg;
+        font-size: $font-size-lg;
+        @include border-radius($border-radius-lg);
+    }
+    
+    // Nuke default margins from checkboxes and radios to vertically center within.
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-top: 0;
+    }
+    &.sortable-handle,
+    &.field-remove {
+        align-items: center;
+        display: flex;
+    }
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.radio-inline, .checkbox-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+    font-weight: normal;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.radio-inline + .radio-inline, .checkbox-inline + .checkbox-inline {
+    margin-top: 0;
+    margin-left: 0.75rem;
+}
+
+.field-media {
+    .media-preview {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.input-group {
+    >.form-control {
+        width: unset;
+    }
+}
