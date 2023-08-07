@@ -11,8 +11,27 @@ $enable-hover-media-query:  false !default;
 $table-cell-padding: .75rem !default;
 $font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $link-decoration: none;
+
 $btn-primary-color: #fff;
 $btn-primary-bg: $brand-primary;
 $btn-primary-border: darken($btn-primary-bg, 5%);
-$btn-secondary-color: $btn-primary-bg;
+
+$btn-secondary-color: #ccc;
 $btn-secondary-bg: $btn-secondary-color;
+$btn-secondary-border: darken($btn-secondary-bg, 5%);
+
+$btn-info-color: #00cbd2;
+$btn-info-bg: $btn-info-color;
+$btn-info-border: darken($btn-info-bg, 5%);
+
+$btn-success-color: #0a8f00;
+$btn-success-bg: $btn-success-color;
+$btn-success-border: darken($btn-success-bg, 5%);
+
+$btn-warning-color: #ff8800;
+$btn-warning-bg: $btn-warning-color;
+$btn-warning-border: darken($btn-warning-bg, 5%);
+
+$btn-danger-color: #ff0000;
+$btn-danger-bg: $btn-danger-color;
+$btn-danger-border: darken($btn-danger-bg, 5%);

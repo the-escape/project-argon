@@ -2,6 +2,33 @@
 //
 // Global resets to common HTML elements and more for easier usage by Bootstrap.
 // Adds additional rules on top of Normalize.css, including several overrides.
+@mixin hover() {
+    &:hover { @content; }
+  }
+  
+  @mixin hover-focus() {
+    &:hover,
+    &:focus {
+      @content;
+    }
+  }
+  
+  @mixin plain-hover-focus() {
+    &,
+    &:hover,
+    &:focus {
+      @content;
+    }
+  }
+  
+  @mixin hover-focus-active() {
+    &:hover,
+    &:focus,
+    &:active {
+      @content;
+    }
+  }
+
 @mixin hover-focus {
     @if $enable-hover-media-query {
         &:focus { @content }
