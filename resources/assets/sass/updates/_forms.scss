@@ -70,3 +70,8 @@
         width: unset;
     }
 }
+
+form.form-inline {
+    display: flex;
+    gap: 1rem;
+}
