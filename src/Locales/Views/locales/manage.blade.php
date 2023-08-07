@@ -30,7 +30,7 @@
                     <td>
                         <a href="{{ route('cms:locales:edit', ['localeId' => $locale->id]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
                         @if (count($locales) > 1)
-                            <a href="{{ route('cms:locales:delete', ['localeId' => $locale->id]) }}" class="btn btn-danger-outline btn-sm">Delete</a>
+                            <a href="{{ route('cms:locales:delete', ['localeId' => $locale->id]) }}" class="btn btn-danger btn-sm">Delete</a>
                         @endif
                     </td>
                 </tr>

@@ -17,7 +17,7 @@
 
             <a href="" id="edit-button" class="btn btn-primary-outline" data-item-edit="{{ route("cms:media:edit", ['%%ID%%']) }}" data-folder-edit="{{ route("cms:media:folders:edit", ['%%ID%%']) }}">Edit</a>
             <button id="add-button" disabled class="btn btn-primary-outline" data-folder-add="{{ route("cms:media:folders:add", ['%%ID%%']) }}">Add Subfolder</button>
-            <button id="delete-button" disabled class="btn btn-danger-outline confirm" data-item-delete="{{ route("cms:media:delete", ['%%ID%%']) }}" data-folder-delete="{{ route("cms:media:folders:remove", ['%%ID%%']) }}">Delete</button>
+            <button id="delete-button" disabled class="btn btn-danger confirm" data-item-delete="{{ route("cms:media:delete", ['%%ID%%']) }}" data-folder-delete="{{ route("cms:media:folders:remove", ['%%ID%%']) }}">Delete</button>
 
 
             <div class="pull-xs-right">

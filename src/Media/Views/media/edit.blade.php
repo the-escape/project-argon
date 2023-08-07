@@ -15,7 +15,7 @@
         <div class="actions-top">
 
             <a href="{{ $media->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline">View</a>
-            <a href="{{ route("cms:media:delete", [$media->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+            <a href="{{ route("cms:media:delete", [$media->getId()]) }}" class="btn btn-danger confirm">Delete</a>
 
             <form action="{{ route("cms:media:search") }}" method="get" class="form-inline search-form">
                 <input type="text" name="keywords" value="" class="form-control">

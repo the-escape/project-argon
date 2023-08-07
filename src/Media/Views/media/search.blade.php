@@ -138,7 +138,7 @@
                     <td>
                         <a href="{{ $mediaItem->getUrl() }}" target="_blank"  title="Open in new tab" class="btn btn-primary-outline btn-sm">View</a>
                         <a href="{{ route("cms:media:edit", [$mediaItem->getId()]) }}" class="btn btn-primary-outline btn-sm">Edit</a>
-                        <a href="{{ route("cms:media:delete", [$mediaItem->getId()]) }}" class="btn btn-danger-outline btn-sm confirm">Delete</a>
+                        <a href="{{ route("cms:media:delete", [$mediaItem->getId()]) }}" class="btn btn-danger btn-sm confirm">Delete</a>
                     </td>
                 </tr>
             @endforeach

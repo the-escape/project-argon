@@ -31,7 +31,7 @@
                         <form action="{{ route('cms:redirects:delete', $redirect->id) }}" method="POST" style="display: inline;">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger-outline btn-sm confirm" data-confirm="Are you sure you want to delete?">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm confirm" data-confirm="Are you sure you want to delete?">Delete</button>
                         </form>
                     </td>
                 </tr>

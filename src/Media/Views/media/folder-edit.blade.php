@@ -15,7 +15,7 @@
 
         <div class="actions-top">
 
-            <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger-outline confirm">Delete</a>
+            <a href="{{ route("cms:media:folders:remove", [$currentFolder->getId()]) }}" class="btn btn-danger confirm">Delete</a>
 
         </div>
 
