@@ -21,7 +21,7 @@ $defaultLocalisation = $page->getDefaultLocalisation();
             </div>
         </div>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts',(array) $errors)
 
         <form action="{{ route('cms:pages:update', [$page->getId(), $localeId]) }}" method="POST" id="pageEditForm">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

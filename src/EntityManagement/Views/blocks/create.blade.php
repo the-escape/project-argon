@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', (array) $errors)
 
         <form action="{{ route('cms:blocks:save', [$type->id]) }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

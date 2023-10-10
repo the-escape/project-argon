@@ -4,7 +4,7 @@
     <div class="main">
         <h1 class="page-header">Create Type</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', (array) $errors)
 
         <form action="{{ route('cms:types:create') }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

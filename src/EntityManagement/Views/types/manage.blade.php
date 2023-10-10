@@ -5,7 +5,7 @@
 
         <h1 class="page-header">Types</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', (array) $errors)
 
         <div class="dashboard-actions dashboard-actions--top">
             <a href="{{ route('cms:types:create') }}" class="btn btn-primary">Create</a>

@@ -5,7 +5,7 @@
 
         <h1 class="page-header">Blocks</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', (array) $errors)
 
         <div class="dashboard-actions dashboard-actions--top">
             <div class="btn-group" role="group">
