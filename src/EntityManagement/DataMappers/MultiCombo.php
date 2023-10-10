@@ -68,6 +68,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->combos);
@@ -78,6 +79,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->combos);
@@ -132,6 +134,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      * @param mixed $offset
      * @param mixed $value
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->__set($offset, $value);
@@ -144,6 +147,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return ($this->__get($offset) !== null);
@@ -154,6 +158,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @param mixed $offset
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->__set($offset, null);
@@ -166,6 +171,7 @@ class MultiCombo implements IteratorAggregate, Countable, ArrayAccess
      *
      * @return mixed|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);

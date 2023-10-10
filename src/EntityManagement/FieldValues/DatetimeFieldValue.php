@@ -47,6 +47,7 @@ class DatetimeFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return $date;
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         if ($this->isEmpty()) {

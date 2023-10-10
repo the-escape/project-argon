@@ -86,6 +86,7 @@ class ButtonFieldValue extends AbstractFieldValue implements \IteratorAggregate
         return false;
     }
 
+    #[\ReturnTypeWillChange]    
     public function getIterator()
     {
         if ($this->data == null) {

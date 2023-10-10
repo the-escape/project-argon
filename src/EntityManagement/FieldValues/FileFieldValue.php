@@ -24,6 +24,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
         $this->position = 0;
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->data);
@@ -35,6 +36,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
      * @return MediaItem
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $key = @array_keys($this->data)[$this->position];
@@ -75,6 +77,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -86,6 +89,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
      * @return mixed scalar on success, or null on failure.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -98,6 +102,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
      * Returns true on success or false on failure.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return array_key_exists($this->position, array_keys($this->data));
@@ -109,6 +114,7 @@ class FileFieldValue extends AbstractFieldValue implements \Countable, \Iterator
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;

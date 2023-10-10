@@ -51,6 +51,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
         return $this->current();
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->data);
@@ -62,6 +63,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      * @return MediaItem
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $key = @array_keys($this->data)[$this->position];
@@ -109,6 +111,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -120,6 +123,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      * @return mixed scalar on success, or null on failure.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -132,6 +136,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      * Returns true on success or false on failure.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return array_key_exists($this->position, array_keys($this->data));
@@ -143,6 +148,7 @@ class ImageFieldValue extends AbstractFieldValue implements \Iterator, \Countabl
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;

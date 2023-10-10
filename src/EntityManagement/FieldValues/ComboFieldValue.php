@@ -60,6 +60,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         return json_encode($string);
     }
 
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->data);
@@ -75,6 +76,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
      *
      * @since 5.0.0
      */
+     #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $data = [];
@@ -144,6 +146,7 @@ class ComboFieldValue extends AbstractFieldValue implements \IteratorAggregate, 
         return $field->parseData($fieldData);
     }
 
+    #[\ReturnTypeWillChange]
     public function first()
     {
         if (is_array($this->data) && (count($this->data) > 1)) {

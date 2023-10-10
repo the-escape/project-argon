@@ -21,6 +21,7 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         if ($this->data == null) {
@@ -35,7 +36,8 @@ class TextFieldValue extends AbstractFieldValue implements \IteratorAggregate, \
 
         return new \ArrayIterator($data);
     }
-
+    
+    #[\ReturnTypeWillChange]
     public function count()
     {
         if (is_array($this->data))
