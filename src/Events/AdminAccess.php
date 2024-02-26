@@ -1,20 +1,23 @@
 <?php
+
 namespace Escape\Argon\Events;
 
-
 use Event;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Http\Request;
+use Illuminate\Queue\SerializesModels;
 
 class AdminAccess extends Event
 {
     use SerializesModels;
 
+    private $request;
+
     /**
      * Create a new event instance.
      *
      * @return void
+     *
+     * @param Request $request
      */
     public function __construct(Request $request)
     {
