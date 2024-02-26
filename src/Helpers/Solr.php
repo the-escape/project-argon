@@ -326,7 +326,7 @@ class Solr
         return $documents;
     }
 
-    public static function getDocumentFieldValuesFromGroupedResultset($resultset, $groupValue = null, $field)
+    public static function getDocumentFieldValuesFromGroupedResultset($resultset, $groupValue, $field)
     {
         $values = [];
 
@@ -345,7 +345,7 @@ class Solr
         return $values;
     }
 
-    public static function getDocumentFieldValues($resultset, $groupValue = null, $field)
+    public static function getDocumentFieldValues($resultset, $groupValue, $field)
     {
         $values = [];
         $documents = [];
