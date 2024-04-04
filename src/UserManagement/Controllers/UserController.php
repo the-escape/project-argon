@@ -17,6 +17,8 @@ class UserController extends BaseController
 {
     protected $userRepository;
 
+    private $roleRepository;
+
     public function __construct(Request $request, UserRepository $userRepository, RoleRepository $roleRepository)
     {
         $this->userRepository = $userRepository;
@@ -42,16 +44,17 @@ class UserController extends BaseController
         if ($search = $request->input('keywords'))
         {
             $search = trim($search);
-            $query = $query->where(function($q) use ($search) {
+            $query = $query->where(function ($q) use ($search) {
                 $q->where('email', 'LIKE', "%{$search}%")
-                    ->orWhere('name', 'LIKE', "%{$search}%");
+                    ->orWhere('name', 'LIKE', "%{$search}%")
+                ;
             });
         }
 
         if ($role = $request->input('role'))
         {
-            $query = $query->whereHas('roles', function($q) use ($role) {
-                $q->where('role_id','=',$role);
+            $query = $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('role_id', '=', $role);
             });
         }
 
@@ -65,7 +68,7 @@ class UserController extends BaseController
         return View::make('argon::user.users', [
             'users' => $users,
             'roles' => $roles,
-            'request' => $request
+            'request' => $request,
         ]);
     }
 
@@ -77,8 +80,9 @@ class UserController extends BaseController
     public function edit($userId)
     {
         $user = $this->userRepository->find($userId);
+
         if (!$user) {
-            return \Redirect::route('cms:user:manage');
+            return Redirect::route('cms:user:manage');
         }
 
         $roles = $this->roleRepository->all();
@@ -90,7 +94,7 @@ class UserController extends BaseController
     {
         $this->validate($this->request, [
             'name' => 'required',
-            'email' => 'required'
+            'email' => 'required',
         ]);
 
         if ($this->request->get('password')) {
@@ -132,7 +136,7 @@ class UserController extends BaseController
 
         $user->update([
             'name' => 'Deleted user',
-            'email' => $user->id."@deleted.user",
+            'email' => $user->id . "@deleted.user",
         ]);
 
         $this->userRepository->delete($userId);
@@ -152,7 +156,7 @@ class UserController extends BaseController
         $this->validate($this->request, [
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $this->userRepository->create($this->request->all());
@@ -168,19 +172,23 @@ class UserController extends BaseController
         {
             case 'id':
                 $query = $query->orderBy('id', $dir);
+
                 break;
 
             case 'name':
                 $query = $query->orderBy('name', $dir);
+
                 break;
 
             case 'email':
                 $query = $query->orderBy('email', $dir);
+
                 break;
 
             case 'created_at':
                 $query = $query->orderBy('created_at', $dir);
                 $query = $query->orderBy('id', $dir);
+
                 break;
 
             default:

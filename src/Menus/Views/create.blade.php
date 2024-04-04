@@ -5,7 +5,7 @@
     <div class="main">
         <h1>Menu</h1>
 
-        @include('argon::inc.alerts', compact($errors))
+        @include('argon::inc.alerts', (array) $errors)
 
         <form action="{{ route('cms:menus:save') }}" method="POST">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

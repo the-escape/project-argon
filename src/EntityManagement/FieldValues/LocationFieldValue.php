@@ -9,11 +9,12 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         // make data consistently object
         if ($data) {
             if (is_object($data)) {
-                $data = (array)$data;
+                $data = (array) $data;
             }
+
             foreach ($data as $k => &$v) {
                 if (is_array($v)) {
-                    $v = (object)$v;
+                    $v = (object) $v;
                 }
             }
         }
@@ -34,6 +35,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
     public function toJson($options = 0)
     {
         $values = $this->compress();
+
         return json_encode($values, $options);
     }
 
@@ -41,6 +43,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
     {
         $values = [];
         $data = $this->toArray();
+
         foreach ($data as $value)
         {
             $values[] = (array) $value;
@@ -66,6 +69,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
                     }
                 }
             }
+
             return true;
         }
 
@@ -76,6 +80,7 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return false;
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         if ($this->data == null) {
@@ -91,7 +96,6 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return new \ArrayIterator($data);
     }
 
-
     public function getLatitude()
     {
         if (!empty($this->data)) {
@@ -103,7 +107,6 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
         return null;
     }
 
-
     public function getLongitude()
     {
         if (!empty($this->data)) {
@@ -114,5 +117,4 @@ class LocationFieldValue extends AbstractFieldValue implements \IteratorAggregat
 
         return null;
     }
-
 }
