@@ -55,6 +55,7 @@ class DataMapper
     protected $DataMapper__Key;
     protected $DataMapper__KeyMapFormat = "%s:%d";
     protected $DataMapper__KeyRegex = '/^[1-9][0-9]*$/';
+    private $DataMapper__ClassProperties;
 
     /**
      * Maps $cache fields/combos to class properties.
