@@ -21,17 +21,19 @@ class Page implements Compressable
 
     protected $revisionId;
 
-    public function __construct(Entity $entity, Request $request=null)
+    private $url;
+
+    public function __construct(Entity $entity, Request $request = null)
     {
         $this->entity = $entity;
 
-        if (!$request instanceof \Escape\Argon\Core\Http\Request)
+        if (!$request instanceof Request)
         {
-            $request = new \Escape\Argon\Core\Http\Request;
+            $request = new Request();
             $request->adjustLocale();
         }
 
-        $this->request  = $request;
+        $this->request = $request;
 
         $this->revisionId = $this->isPreview();
     }
@@ -66,7 +68,6 @@ class Page implements Compressable
         return $this->entity->getLocalisations();
     }
 
-
     public function fields()
     {
         return $this->entity->type->fields;
@@ -75,14 +76,15 @@ class Page implements Compressable
     public function fieldExists($field_slug)
     {
         $fields = $this->fields();
+
         foreach ($fields as $field) {
             if ($field_slug == $field->field_slug) {
                 return true;
             }
         }
+
         return false;
     }
-
 
     public function field($fieldName)
     {
@@ -116,20 +118,21 @@ class Page implements Compressable
         }
         $segments = [];
         $parent = $this->entity;
-        if($parent->parent) {
+
+        if ($parent->parent) {
             $segments[] = $parent->slug;
 
             while ($parent->parent) {
                 $parent = $parent->parent;
-                if(!is_null($parent->slug))
+
+                if (!is_null($parent->slug))
                 {
                     $segments[] = $parent->slug;
                 }
             }
         }
-        else
-        {
-            if($this->entity->slug !== '/')#
+        else {
+            if ($this->entity->slug !== '/')
             {
                 $segments[] = $this->entity->slug;
             }
@@ -167,15 +170,15 @@ class Page implements Compressable
         return $url;
     }
 
-    public function getUrlWithQueryString(array $set=[], array $unset=[])
+    public function getUrlWithQueryString(array $set = [], array $unset = [])
     {
         return getUrlWithQueryString($set, $unset, $this->getUrl());
     }
 
-//    public function getEntity()
-//    {
-//        return $this->entity;
-//    }
+    //    public function getEntity()
+    //    {
+    //        return $this->entity;
+    //    }
 
     public function getName()
     {
@@ -207,7 +210,7 @@ class Page implements Compressable
         return $this->request->getArgonLocale();
     }
 
-    public function getBreadcrumbs($formatItems=true, $glue='/', callable $callback=null)
+    public function getBreadcrumbs($formatItems = true, $glue = '/', callable $callback = null)
     {
         $breadcrumbs = [];
         $segments = [];
@@ -216,6 +219,7 @@ class Page implements Compressable
         $request_url = $this->request->url();
 
         $parent = $this->entity;
+
         if ($callback)
         {
             $parent = call_user_func_array($callback, [$parent, $this->request]);
@@ -234,9 +238,9 @@ class Page implements Compressable
                 $page_url = url($page->getUrl());
 
                 if ($page_url == $request_url) {
-                    $formatted = '<li class="breadcrumb current"><span>'.$parent->name.'</span></li>';
+                    $formatted = '<li class="breadcrumb current"><span>' . $parent->name . '</span></li>';
                 } else {
-                    $formatted = '<li class="breadcrumb"><a href="'.$page_url.'">'.$parent->name.'</a></li>';
+                    $formatted = '<li class="breadcrumb"><a href="' . $page_url . '">' . $parent->name . '</a></li>';
                 }
 
                 $breadcrumbs[] = $formatted;
@@ -252,9 +256,9 @@ class Page implements Compressable
 
         if ($formatItems) {
             $page = new self($parent, $this->request);
-            $formatted = '<li class="breadcrumb"><a href="'.$page->getUrl().'">'.$parent->name.'</a></li>';
+            $formatted = '<li class="breadcrumb"><a href="' . $page->getUrl() . '">' . $parent->name . '</a></li>';
             $breadcrumbs[] = $formatted;
-            $breadcrumbs = '<ul class="breadcrumbs">'.implode("<li class='divider'>$glue</li>", array_reverse($breadcrumbs)).'</ul>';
+            $breadcrumbs = '<ul class="breadcrumbs">' . implode("<li class='divider'>{$glue}</li>", array_reverse($breadcrumbs)) . '</ul>';
             $output = $breadcrumbs;
         } else {
             $segments[] = $parent;
@@ -269,53 +273,61 @@ class Page implements Compressable
     {
         $entityRepository = app()->make(EntityRepository::class);
         $block = $entityRepository->block($name);
+
         if ($block === null) {
-            throw new \RuntimeException("Undefined block '{$name}'.");
+            throw new RuntimeException("Undefined block '{$name}'.");
         }
+
         return $block->toPage($this->request);
     }
 
-
-    public function findByTypeId(array $typeIds, array $order=[], $paginate=null)
+    public function findByTypeId(array $typeIds, array $order = [], $paginate = null)
     {
         $entityRepository = app()->make(EntityRepository::class);
+
         return $entityRepository->findByTypeId($typeIds, $order, $paginate);
     }
 
-    public function getRedirect($localeId=null)
+    public function getRedirect($localeId = null)
     {
         $redirects = $this->entity->redirect_url;
+
         if (!$localeId) {
             $localeId = $this->getLocale()->getId();
         }
+
         if (isset($redirects->{$localeId})) {
             return $redirects->{$localeId};
         }
+
         return null;
 
     }
 
-    public function getGroupOrder($localeId=null)
+    public function getGroupOrder($localeId = null)
     {
         if (!$localeId) {
             $localeId = $this->getLocale()->getId();
         }
+
         return $this->entity->getGroupOrder($localeId);
     }
 
-    public function getRenderableGroupOrder($localeId=null)
+    public function getRenderableGroupOrder($localeId = null)
     {
         if (!$localeId) {
             $localeId = $this->getLocale()->getId();
         }
+
         return $this->entity->getRenderableGroupOrder($localeId);
     }
 
-    public function isGroupRender($groupId, $localeId=null)
+    public function isGroupRender($groupId, $localeId = null)
     {
         if (!$localeId) {
             $localeId = $this->getLocale()->getId();
         }
+
         return $this->entity->isGroupRender($localeId, $groupId);
     }
 
@@ -324,23 +336,26 @@ class Page implements Compressable
         $renderableGroups = $this->getRenderableGroupOrder();
 
         $r = new Collection();
+
         foreach ($renderableGroups as $renderableGroup) {
             if ($this->isGroupRender($renderableGroup)) {
                 $r->push($renderableGroup);
             }
         }
+
         return $r;
     }
 
-
-    public function findWhere(array $where , $columns = array('*'))
+    public function findWhere(array $where, $columns = ['*'])
     {
         $entityRepository = app()->make(EntityRepository::class);
         $results = $entityRepository->findWhere($where, $columns);
         $r = new Collection();
+
         foreach ($results as $result) {
             $r->push($result->toPage($this->request));
         }
+
         return $r;
     }
 
