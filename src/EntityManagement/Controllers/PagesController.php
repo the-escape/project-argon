@@ -145,8 +145,7 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $localisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
@@ -201,8 +200,8 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request,
-        Solr $solr)
-    {
+        Solr $solr
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -211,16 +210,14 @@ class PagesController extends BaseController
 
         $result = event(new BeforePageSaved($entity, $currentLocalisation, $request));
 
-        if (isset($result->request))
-        {
+        if (isset($result->request)) {
             $request = $result->request;
         }
 
         $type = $typeRepository->find($entity->entity_type_id);
 
         $fields = $type->fields;
-
-        $preview = $request->exists('preview_page');
+        $preview = $request->query('preview');
 
         $niceNames = [
             'name' => 'Name',
@@ -282,8 +279,7 @@ class PagesController extends BaseController
 
         $localisations = $entity->localisations;
 
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($entity, $localisation);
 
             EntityCache::cache($entity, $localisation);
@@ -291,7 +287,7 @@ class PagesController extends BaseController
 
         event(new PageSaved($entity, $currentLocalisation, $request));
 
-        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale' => $currentLocalisation->getLocaleId()])
             ->with('message', Lang::get('argon-entities::page.updated'));
     }
 
@@ -303,8 +299,7 @@ class PagesController extends BaseController
         FieldDataRepository $fieldDataRepository,
         EntityTypeRepository $typeRepository,
         Request $request
-    )
-    {
+    ) {
         $entity = $entityRepository->find($pageId);
 
         $currentLocale = Locale::find($localeId);
@@ -343,7 +338,7 @@ class PagesController extends BaseController
 
         $redirect_url = ($entity->redirect_url instanceof stdClass) ? $entity->redirect_url : new stdClass();
         $redirect_url->{$localeId} = $request->input('redirect_url');
-        $request->merge(['redirect_url' =>(array) $redirect_url]);
+        $request->merge(['redirect_url' => (array) $redirect_url]);
 
         $group_order = ($entity->group_order instanceof stdClass) ? $entity->group_order : new stdClass();
         $group_order->{$localeId} = $request->input('group_order', $entity->getGroupOrderString($localeId));
@@ -361,14 +356,14 @@ class PagesController extends BaseController
 
         FieldsHelpers::saveFields($request, $fields, $revision, $fieldDataRepository, $currentLocale);
 
-        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale'=>$currentLocalisation->getLocaleId()])
+        return Redirect::route('cms:pages:edit_locale', ['id' => $entity->id, 'locale' => $currentLocalisation->getLocaleId()])
             ->with('message', "Revision has been saved.");
     }
 
     public function editLocale(
         $pageId,
         $localeId,
-        $revisionId=null
+        $revisionId = null
     ) {
         $entityRepository = app()->make(EntityRepository::class);
         $groupRepository = app()->make(EntityGroupRepository::class);
@@ -377,28 +372,24 @@ class PagesController extends BaseController
         /** @var Entity $page */
         $page = $entityRepository->find($pageId);
 
-//        if ($clone) {
-//            $localisation = $page->getDefaultLocalisation();
-//        } else {
-            $currentLocale = Locale::find($localeId);
-            $localisation = $page->getLocalisation($currentLocale);
-//        }
+        //        if ($clone) {
+        //            $localisation = $page->getDefaultLocalisation();
+        //        } else {
+        $currentLocale = Locale::find($localeId);
+        $localisation = $page->getLocalisation($currentLocale);
+        //        }
 
         $currentRevision = null;
         $publishedRevision = $localisation->publishedRevision();
 
-        if ($revisionId)
-        {
+        if ($revisionId) {
             $revisionsRepository = app()->make(EntityRevisionRepository::class);
             $currentRevision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-            if ($currentRevision === null)
-            {
+            if ($currentRevision === null) {
                 return back()->with('message', 'Invalid revision.');
             }
-        }
-        else
-        {
+        } else {
             $currentRevision = $publishedRevision;
         }
 
@@ -444,8 +435,7 @@ class PagesController extends BaseController
 
         $locale = Locale::find($localeId);
 
-        if (!$locale)
-        {
+        if (!$locale) {
             return Redirect::route('cms:pages:edit_locale', ['id' => $pageId, 'locale' => 1])->with('message', 'Locale is required.');
         }
 
@@ -462,8 +452,7 @@ class PagesController extends BaseController
 
         $page = $entityRepository->find($pageId);
 
-        if ($clone)
-        {
+        if ($clone) {
             $typeRepository = app()->make(EntityTypeRepository::class);
             $fieldDataRepository = app()->make(FieldDataRepository::class);
 
@@ -490,15 +479,12 @@ class PagesController extends BaseController
             $type = $typeRepository->find($page->entity_type_id);
             $fields = $type->fields;
 
-            foreach ($fields as $field)
-            {
-                if (!$latestRevisionFields->has($field->id))
-                {
+            foreach ($fields as $field) {
+                if (!$latestRevisionFields->has($field->id)) {
                     continue;
                 }
 
-                switch ($field->field_type)
-                {
+                switch ($field->field_type) {
                     case 'combo':
                     case 'image':
                     case 'file':
@@ -554,8 +540,7 @@ class PagesController extends BaseController
         $result = $page->save();
 
         $localisations = $page->localisations;
-        foreach ($localisations as $localisation)
-        {
+        foreach ($localisations as $localisation) {
             $solr->indexEntity($page, $localisation);
             EntityCache::cache($page, $localisation);
         }
@@ -587,8 +572,7 @@ class PagesController extends BaseController
         $revisionsRepository = app()->make(EntityRevisionRepository::class);
         $revision = $revisionsRepository->findWhere(['id' => $revisionId])->first();
 
-        if ($revision === null)
-        {
+        if ($revision === null) {
             return back()->with('message', 'Invalid revision.');
         }
 

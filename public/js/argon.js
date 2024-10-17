@@ -124,7 +124,8 @@ $('.preview-page').on('click', function(e) {
     }
 
     var formdata = $form.serializeArray();
-    formdata.push({ name: 'preview_page', value: true });
+    var previewParam = '?preview=true';
+    var fullUrl = $form.attr('action') + previewParam;
 
     for (var i in formdata)
     {
@@ -137,7 +138,7 @@ $('.preview-page').on('click', function(e) {
 
     $.ajax({
         type: 'POST',
-        url: $form.attr('action'),
+        url: fullUrl,
         data: $.param(formdata),
         success: function(url, status) {
             if (status === 'success') {
@@ -179,7 +180,7 @@ $('.save-revision').on('click', function(e) {
 $('form').submit(function(e) {
     var $form = $(this);
     var $ckeditor = $form.find('.ckeditor');
-    
+
     if ($ckeditor && $ckeditor.length)
     {
         for (var i in CKEDITOR.instances)
@@ -214,6 +215,7 @@ $('#settings-add').on('click', function(e) {
             console.error('Could not add setting.');
         });
 });
+
 var expand = {
 
 };
@@ -899,5 +901,3 @@ $('.add-localisation').click(function(e) {
 
     $('#newLocalisationModal').modal();
 });
-
-//# sourceMappingURL=argon.js.map
