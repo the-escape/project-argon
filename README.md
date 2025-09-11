@@ -1,5 +1,10 @@
 # Project Argon (Name TBD)
 
+> [!WARNING]
+> This project is deprecated as of 2025-09-11. It is recommended that your project migrate to a new CMS dependency.
+>
+> New features will not be added to this project. It may receive critical bug fixes and security fixes as required.
+
 ## Installation
 
 Create a basic Laravel (5.1) project:
